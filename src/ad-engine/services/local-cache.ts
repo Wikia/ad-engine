@@ -1,4 +1,4 @@
-import { UniversalStorage } from './universal-storage';
+import { Storage, UniversalStorage } from './universal-storage';
 import { Dictionary } from '../models';
 
 interface CacheItem<T = any> {
@@ -6,7 +6,7 @@ interface CacheItem<T = any> {
 	data: T;
 }
 
-class LocalCache {
+class LocalCache implements Storage<any> {
 	private storage = new UniversalStorage();
 
 	isAvailable(): boolean {
@@ -14,8 +14,8 @@ class LocalCache {
 	}
 
 	// @TODO: Should not return boolean if item expired
-	get(key: string): boolean | unknown {
-		const cacheItem: CacheItem<unknown> | string = this.storage.getItem(key);
+	getItem(key: string): string | any {
+		const cacheItem: CacheItem<any> | string = this.storage.getItem(key);
 
 		if (cacheItem && typeof cacheItem !== 'string') {
 			// Check if item has expired
@@ -31,7 +31,7 @@ class LocalCache {
 		return false;
 	}
 
-	set(key: string, value: string | Dictionary<unknown>, expires?: number): boolean {
+	setItem(key: string, value: string | Dictionary<unknown>, expires?: number): boolean {
 		if (!this.isStorable(value)) {
 			return false;
 		}

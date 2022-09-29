@@ -75,7 +75,7 @@ class LiveConnect extends BaseServiceSetup {
 				return;
 			}
 
-			this.saveToStorage(partnerName, partnerIdentityId);
+			this.storage.setItem(partnerName, partnerIdentityId, this.storageConfig.ttl);
 
 			communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
 				partnerName,
@@ -135,28 +135,12 @@ class LiveConnect extends BaseServiceSetup {
 		return shouldLoadScript;
 	}
 
-	isAvailableInStorage(key: string): boolean {
-		return !!this.getStorageData(key);
-	}
-
-	getStorageData(key: string) {
-		if (this.storageConfig.type === 'local') {
-			return this.storage.get(key);
-		} else {
-			return this.storage.getItem(key);
-		}
-	}
-
-	saveToStorage(key: string, value: string) {
-		if (this.storageConfig.type === 'local') {
-			this.storage.set(key, value, this.storageConfig.ttl);
-		} else {
-			this.storage.setItem(key, value);
-		}
-	}
-
 	getConfigName(id: string): string {
 		return idConfigMapping.find((config) => config.id === id)?.name;
+	}
+
+	isAvailableInStorage(key: string): boolean {
+		return !!this.storage.getItem(key);
 	}
 }
 
