@@ -121,15 +121,18 @@ class LiveConnect extends BaseServiceSetup {
 			return true;
 		}
 
-		this.storageConfig.mandatoryParams.forEach((param) => {
+		let shouldLoadScript = false;
+
+		for (const param of this.storageConfig.mandatoryParams) {
 			const storageKey = idConfigMapping.find((config) => config.id === param)?.name;
 
 			if (!this.isAvailableInStorage(storageKey)) {
-				return true;
+				shouldLoadScript = true;
+				break;
 			}
-		});
+		}
 
-		return false;
+		return shouldLoadScript;
 	}
 
 	isAvailableInStorage(key: string): boolean {
