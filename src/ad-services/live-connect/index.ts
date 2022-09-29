@@ -100,9 +100,7 @@ class LiveConnect extends BaseServiceSetup {
 			return;
 		}
 		idConfigMapping.forEach(({ id, name, params }) => {
-			const storageKey = this.getConfigName(id);
-
-			if (!this.isAvailableInStorage(storageKey)) {
+			if (!this.isAvailableInStorage(name)) {
 				this.resolveAndReportId(id, name, params);
 			}
 		});
@@ -123,20 +121,15 @@ class LiveConnect extends BaseServiceSetup {
 			return true;
 		}
 
-		let shouldLoadScript = false;
-
 		this.storageConfig.mandatoryParams.forEach((param) => {
-			const storageKey = this.getConfigName(param);
+			const storageKey = idConfigMapping.find((config) => config.id === param)?.name;
+
 			if (!this.isAvailableInStorage(storageKey)) {
-				shouldLoadScript = true;
+				return true;
 			}
 		});
 
-		return shouldLoadScript;
-	}
-
-	getConfigName(id: string): string {
-		return idConfigMapping.find((config) => config.id === id)?.name;
+		return false;
 	}
 
 	isAvailableInStorage(key: string): boolean {
