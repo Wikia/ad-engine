@@ -1,6 +1,5 @@
-import { BaseServiceSetup, context, localCache, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, localCache, UniversalStorage, utils } from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { UniversalStorage } from '../../ad-engine/services/universal-storage';
 
 interface IdConfig {
 	id: string;

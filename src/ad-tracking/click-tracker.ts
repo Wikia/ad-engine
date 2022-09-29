@@ -13,8 +13,6 @@ class AdClickTracker extends BaseTracker implements BaseTrackerInterface {
 	];
 	compilers = [slotTrackingCompiler];
 
-	isEnabled = () => true;
-
 	register(callback): void {
 		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ adSlotName }) => {
 			this.addClickTrackingListeners(callback, adSlotName);

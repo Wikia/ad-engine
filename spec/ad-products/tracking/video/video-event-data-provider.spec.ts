@@ -18,6 +18,7 @@ describe('Video event data provider', () => {
 
 	afterEach(() => {
 		sandbox.restore();
+		context.remove('geo.country');
 		context.remove('targeting.skin');
 		context.remove('wiki.pvNumber');
 	});
