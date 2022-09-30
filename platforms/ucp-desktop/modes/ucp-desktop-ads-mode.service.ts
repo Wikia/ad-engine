@@ -56,7 +56,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 					dependencies: [
 						userIdentity.initialized,
 						playerSetup.initialized,
-						jwPlayerInhibitor.initialized,
+						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
 					],
 					timeout: jwPlayerInhibitor.isRequiredToRun()
 						? jwPlayerInhibitor.getDelayTimeoutInMs()
