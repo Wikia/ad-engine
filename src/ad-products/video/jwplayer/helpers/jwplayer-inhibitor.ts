@@ -5,11 +5,7 @@ export class JWPlayerInhibitor {
 	private logGroup = 'jwp-player-inhibitor';
 	private videoLines: Array<string>;
 	private maxDelayTimeoutInMs = 0;
-	initialized: utils.ExtendedPromise<void>;
-
-	constructor() {
-		this.initialized = utils.createExtendedPromise();
-	}
+	initialized: utils.ExtendedPromise<void> = utils.createExtendedPromise();
 
 	private isEnabled(): boolean {
 		if (!this.videoLines) {
@@ -30,7 +26,7 @@ export class JWPlayerInhibitor {
 
 	get(): Promise<void> {
 		if (!this.isEnabled()) {
-			return Promise.resolve();
+			this.initialized.resolve();
 		}
 
 		return this.initialized;

@@ -53,16 +53,18 @@ export class UcpDesktopAdsModeDeprecated implements DiProcess {
 	private setupJWPlayer(inhibitors = []): void {
 		new JWPlayerManager().manage();
 
-		const maxTimeout = context.get('options.jwpMaxDelayTimeout');
+		const maxTimeout = context.get('options.maxDelayTimeout');
 		const runner = new Runner(inhibitors, maxTimeout, 'jwplayer-runner');
 
 		runner.waitForInhibitors().then(() => {
 			this.dispatchJWPlayerSetupAction();
 		});
 	}
+
 	private dispatchJWPlayerSetupAction(): void {
 		communicationService.dispatch(jwpSetup({ showAds: true, autoplayDisabled: false }));
 	}
+
 	private initIncontentPlayer(incontentPlayer) {
 		if (!incontentPlayer) return;
 		slotDataParamsUpdater.updateOnCreate(incontentPlayer);
@@ -76,6 +78,7 @@ export class UcpDesktopAdsModeDeprecated implements DiProcess {
 			connatix.call();
 		}
 	}
+
 	private callExternals(): Promise<any>[] {
 		const inhibitors: Promise<any>[] = [];
 
