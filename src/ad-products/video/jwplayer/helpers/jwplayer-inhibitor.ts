@@ -32,6 +32,10 @@ export class JWPlayerInhibitor {
 		return this.initialized;
 	}
 
+	isRequiredToRun(): boolean {
+		return this.isEnabled();
+	}
+
 	getDelayTimeoutInMs(): number {
 		if (!this.isEnabled()) {
 			return 0;
