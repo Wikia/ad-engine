@@ -176,7 +176,10 @@ export class BaseContextSetup implements DiProcess {
 		context.set('services.liveRampPixel.enabled', this.instantConfig.get('icLiveRampPixel'));
 		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
 		context.set('services.ppidRepository', this.instantConfig.get('icPpidRepository'));
-		context.set('services.messageBox.enabled', this.instantConfig.get('icMessageBox', false));
+		context.set(
+			'services.messageBox.enabled',
+			this.instantConfig.get('icAdCollapsedMessageBox', false),
+		);
 
 		this.setupOutstreamPlayers();
 	}
