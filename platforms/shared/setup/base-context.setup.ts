@@ -93,6 +93,10 @@ export class BaseContextSetup implements DiProcess {
 			'options.video.isPostrollEnabled',
 			this.instantConfig.get('icFeaturedVideoPostroll'),
 		);
+		context.set(
+			'options.video.forceVideoAdsOnAllVideosExceptSecond',
+			this.instantConfig.get('icFeaturedVideoForceVideoAdsEverywhereExcept2ndVideo'),
+		);
 
 		context.set(
 			'options.floorAdhesionNumberOfViewportsFromTopToPush',
@@ -139,7 +143,6 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setServicesContext(): void {
-		context.set('services.adMarketplace.enabled', this.instantConfig.get('icAdMarketplace'));
 		context.set('services.audigent.enabled', this.instantConfig.get('icAudigent'));
 		context.set(
 			'services.audigent.tracking.sampling',
@@ -162,6 +165,10 @@ export class BaseContextSetup implements DiProcess {
 			this.instantConfig.get('icInterventionTracking'),
 		);
 		context.set('services.liveConnect.enabled', this.instantConfig.get('icLiveConnect'));
+		context.set(
+			'services.liveConnect.cachingStrategy',
+			this.instantConfig.get('icLiveConnectCachingStrategy'),
+		);
 		context.set('services.nativo.enabled', this.instantConfig.get('icNativo'));
 		context.set('services.nielsen.enabled', this.instantConfig.get('icNielsen'));
 		context.set('services.sailthru.enabled', this.instantConfig.get('icSailthru'));

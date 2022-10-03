@@ -1,7 +1,6 @@
 import { startAdEngine, wadRunner } from '@platforms/shared';
 import {
 	userIdentity,
-	adMarketplace,
 	anyclip,
 	audigent,
 	bidders,
@@ -42,8 +41,8 @@ export class UcpDesktopAdsModeDeprecated implements DiProcess {
 		this.setupJWPlayer(inhibitors);
 
 		const requiredInhibitors = [jwPlayerInhibitor.get(), userIdentity.initialized];
-		const maxTimeout = context.get('options.maxDelayTimeout');
-		new Runner(requiredInhibitors, maxTimeout).waitForInhibitors().then(() => {
+		const jwpMaxTimeout = context.get('options.jwpMaxDelayTimeout');
+		new Runner(requiredInhibitors, jwpMaxTimeout).waitForInhibitors().then(() => {
 			startAdEngine(inhibitors);
 		});
 
@@ -60,9 +59,11 @@ export class UcpDesktopAdsModeDeprecated implements DiProcess {
 			this.dispatchJWPlayerSetupAction();
 		});
 	}
+
 	private dispatchJWPlayerSetupAction(): void {
 		communicationService.dispatch(jwpSetup({ showAds: true, autoplayDisabled: false }));
 	}
+
 	private initIncontentPlayer(incontentPlayer) {
 		if (!incontentPlayer) return;
 		slotDataParamsUpdater.updateOnCreate(incontentPlayer);
@@ -76,12 +77,13 @@ export class UcpDesktopAdsModeDeprecated implements DiProcess {
 			connatix.call();
 		}
 	}
+
 	private callExternals(): Promise<any>[] {
 		const inhibitors: Promise<any>[] = [];
 
 		inhibitors.push(bidders.call());
 		inhibitors.push(wadRunner.call());
-		inhibitors.push(userIdentity.call());
+		inhibitors.push(userIdentity.execute());
 
 		ats.call();
 		eyeota.call();
@@ -96,7 +98,6 @@ export class UcpDesktopAdsModeDeprecated implements DiProcess {
 		liveConnect.call();
 		identityHub.call();
 
-		adMarketplace.call();
 		prebidNativeProvider.call();
 
 		communicationService.on(

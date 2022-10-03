@@ -1,7 +1,6 @@
 import { startAdEngine, wadRunner } from '@platforms/shared';
 import {
 	userIdentity,
-	adMarketplace,
 	audigent,
 	bidders,
 	communicationService,
@@ -34,7 +33,7 @@ export class UcpMobileDeprecatedAdsMode implements DiProcess {
 		this.setupJWPlayer(inhibitors);
 
 		const requiredInhibitors = [jwPlayerInhibitor.get(), userIdentity.initialized];
-		const jwpMaxTimeout = context.get('options.maxDelayTimeout');
+		const jwpMaxTimeout = context.get('options.jwpMaxDelayTimeout');
 		new Runner(requiredInhibitors, jwpMaxTimeout).waitForInhibitors().then(() => {
 			startAdEngine(inhibitors);
 		});
@@ -47,7 +46,7 @@ export class UcpMobileDeprecatedAdsMode implements DiProcess {
 
 		inhibitors.push(bidders.call());
 		inhibitors.push(wadRunner.call());
-		inhibitors.push(userIdentity.call());
+		inhibitors.push(userIdentity.execute());
 
 		ats.call();
 		eyeota.call();
@@ -60,7 +59,6 @@ export class UcpMobileDeprecatedAdsMode implements DiProcess {
 		durationMedia.call();
 		nielsen.call();
 
-		adMarketplace.call();
 		prebidNativeProvider.call();
 		identityHub.call();
 		liveConnect.call();

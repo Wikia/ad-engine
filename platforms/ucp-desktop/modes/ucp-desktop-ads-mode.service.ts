@@ -4,7 +4,6 @@ import {
 	bidders,
 	communicationService,
 	confiant,
-	context,
 	DiProcess,
 	durationMedia,
 	eventsRepository,
@@ -17,7 +16,6 @@ import {
 	PartnerPipeline,
 	prebidNativeProvider,
 	stroer,
-	adMarketplace,
 	userIdentity,
 	ats,
 	jwPlayerInhibitor,
@@ -48,18 +46,19 @@ export class UcpDesktopAdsMode implements DiProcess {
 				stroer,
 				identityHub,
 				nielsen,
-				adMarketplace,
 				prebidNativeProvider,
 				playerSetup.setOptions({
 					dependencies: [bidders.initialized, wadRunner.initialized],
-					timeout: context.get('options.jwpMaxDelayTimeout'),
 				}),
 				gptSetup.setOptions({
 					dependencies: [
 						userIdentity.initialized,
 						playerSetup.initialized,
-						jwPlayerInhibitor.initialized,
+						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
 					],
+					timeout: jwPlayerInhibitor.isRequiredToRun()
+						? jwPlayerInhibitor.getDelayTimeoutInMs()
+						: null,
 				}),
 			)
 			.execute()

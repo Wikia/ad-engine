@@ -8,5 +8,5 @@ interface LiQ {
 
 interface LiQParams {
 	qf: string;
-	resolve: 'sha256' | 'sha1' | 'sha2' | 'md5' | 'gender' | 'age';
+	resolve: 'sha1' | 'sha2' | 'md5';
 }
