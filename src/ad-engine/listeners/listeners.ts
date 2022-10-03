@@ -13,6 +13,7 @@ export interface VideoData {
 	position: string;
 	user_block_autoplay?: -1 | 0 | 1;
 	video_id?: string;
+	video_number?: number | string;
 }
 
 export interface VideoEventData extends VideoData {

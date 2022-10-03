@@ -22,11 +22,16 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 		clearTimeout(this.initializationTimeout);
 	}
 
+	getDelayTimeoutInMs(): number {
+		return context.get('options.maxDelayTimeout');
+	}
+
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	call(): void | Promise<any> {}
 
 	async execute(): Promise<void> {
-		const maxInitializationTime = this.options?.timeout || context.get('options.maxDelayTimeout');
+		const maxInitializationTime = this.options?.timeout || this.getDelayTimeoutInMs();
+
 		if (this.options) {
 			Promise.race([
 				new Promise((res) => setTimeout(res, maxInitializationTime)),
