@@ -209,7 +209,10 @@
 
 	.incontent-sticked {
 		position: fixed;
-		top: 65px;
+		top: $fandom-navbar-height;
+		width: 100%;
+		padding: 15px 0;
+		background-color: var(--theme-page-background-color);
 		z-index: 501;
 	}
 }
