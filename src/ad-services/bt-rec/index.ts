@@ -50,7 +50,11 @@ class BTRec {
 	 * Inserts BT side units
 	 */
 	private insertSideUnits(): void {
-		if (context.get('state.isMobile') || !context.get('options.wad.btRec.sideUnits')) {
+		if (
+			context.get('state.isMobile') ||
+			!context.get('options.wad.btRec.sideUnits') ||
+			document.body.classList.contains('is-content-expanded')
+		) {
 			return;
 		}
 
