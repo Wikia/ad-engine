@@ -68,11 +68,6 @@ export const basicContext = {
 		},
 	},
 	services: {
-		adMarketplace: {
-			enabled: false,
-			insertMethod: 'after',
-			insertSelector: '.search-modal__content > form',
-		},
 		anyclip: {
 			enabled: false,
 			pubname: 'fandomcom',
