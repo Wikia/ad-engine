@@ -25,7 +25,7 @@ export class SportsAdsDeprecatedMode implements DiProcess {
 
 		inhibitors.push(bidders.call());
 		inhibitors.push(wadRunner.call());
-		inhibitors.push(userIdentity.call());
+		inhibitors.push(userIdentity.execute());
 
 		audigent.call();
 		liveConnect.call();
