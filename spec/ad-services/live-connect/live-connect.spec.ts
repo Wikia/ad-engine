@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { createSandbox, SinonSpy } from 'sinon';
 import { context, utils } from '../../../src/core';
-import { liveConnect } from '../../../src/ad-services';
+import { liveConnect } from '@wikia/ad-services';
 import { communicationService, eventsRepository } from '@wikia/communication';
 
 const mockedStorageStrategyVariable = {
