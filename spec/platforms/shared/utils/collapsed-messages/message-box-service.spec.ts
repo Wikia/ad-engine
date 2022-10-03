@@ -25,6 +25,8 @@ describe('Message Box Service', () => {
 		});
 
 		afterEach(() => {
+			context.remove('services.sailthru.enabled');
+
 			sandbox.restore();
 		});
 
