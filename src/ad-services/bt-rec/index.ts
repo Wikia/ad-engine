@@ -53,7 +53,8 @@ class BTRec {
 		if (
 			context.get('state.isMobile') ||
 			!context.get('options.wad.btRec.sideUnits') ||
-			document.body.classList.contains('is-content-expanded')
+			document.body.classList.contains('is-content-expanded') ||
+			document.documentElement.classList.contains('is-content-expanded')
 		) {
 			return;
 		}

@@ -173,6 +173,13 @@ $content-side-width: calc(
 	}
 }
 
+html.is-content-expanded,
+body.is-content-expanded {
+	.side-bt-container {
+		display: none;
+	}
+}
+
 .ntv-ad {
 	@include nativo;
 	margin-bottom: 24px;
