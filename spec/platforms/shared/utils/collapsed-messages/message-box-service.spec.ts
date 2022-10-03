@@ -4,11 +4,11 @@ import { createSandbox } from 'sinon';
 import { MessageBoxService } from '../../../../../platforms/shared';
 
 describe('Message Box Service', () => {
-	function getMockElement(containsClass = false): HTMLElement {
+	function getMockElement(): HTMLElement {
 		return {
 			classList: {
 				add: () => {},
-				contains: () => containsClass,
+				contains: () => {},
 				remove: () => {},
 			},
 		} as any;
@@ -30,11 +30,12 @@ describe('Message Box Service', () => {
 			sandbox.restore();
 		});
 
-		it('MB is added - when slot is collapsed & is not a top/bottom leaderboard', () => {
+		it('MB is added - when slot is collapsed, is not a top/bottom leaderboard and does not include message box already', () => {
 			sandbox.stub(messageBoxService, 'isTopLeaderboard').returns(false);
 			sandbox.stub(messageBoxService, 'isBottomLeaderoard').returns(false);
+			sandbox.stub(messageBoxService, 'hasAlreadyMessageBox').returns(false);
 
-			expect(messageBoxService.shouldAddMessageBox(actionEventMock, getMockElement(true))).to.equal(
+			expect(messageBoxService.shouldAddMessageBox(actionEventMock, getMockElement())).to.equal(
 				true,
 			);
 		});
@@ -44,8 +45,9 @@ describe('Message Box Service', () => {
 
 			sandbox.stub(messageBoxService, 'isTopLeaderboard').returns(false);
 			sandbox.stub(messageBoxService, 'isBottomLeaderoard').returns(false);
+			sandbox.stub(messageBoxService, 'hasAlreadyMessageBox').returns(false);
 
-			expect(messageBoxService.shouldAddMessageBox(actionEventMock, getMockElement(true))).to.equal(
+			expect(messageBoxService.shouldAddMessageBox(actionEventMock, getMockElement())).to.equal(
 				false,
 			);
 		});
@@ -53,8 +55,9 @@ describe('Message Box Service', () => {
 		it('MB is not added - when collapsed slot is top_leaderboard', () => {
 			sandbox.stub(messageBoxService, 'isTopLeaderboard').returns(true);
 			sandbox.stub(messageBoxService, 'isBottomLeaderoard').returns(false);
+			sandbox.stub(messageBoxService, 'hasAlreadyMessageBox').returns(false);
 
-			expect(messageBoxService.shouldAddMessageBox(actionEventMock, getMockElement(true))).to.equal(
+			expect(messageBoxService.shouldAddMessageBox(actionEventMock, getMockElement())).to.equal(
 				false,
 			);
 		});
@@ -62,8 +65,19 @@ describe('Message Box Service', () => {
 		it('MB is not added - when collapsed slot is bottom_leaderboard', () => {
 			sandbox.stub(messageBoxService, 'isTopLeaderboard').returns(false);
 			sandbox.stub(messageBoxService, 'isBottomLeaderoard').returns(true);
+			sandbox.stub(messageBoxService, 'hasAlreadyMessageBox').returns(false);
 
-			expect(messageBoxService.shouldAddMessageBox(actionEventMock, getMockElement(true))).to.equal(
+			expect(messageBoxService.shouldAddMessageBox(actionEventMock, getMockElement())).to.equal(
+				false,
+			);
+		});
+
+		it('MB is not added - when the placeholder has already message-box class', () => {
+			sandbox.stub(messageBoxService, 'isTopLeaderboard').returns(false);
+			sandbox.stub(messageBoxService, 'isBottomLeaderoard').returns(false);
+			sandbox.stub(messageBoxService, 'hasAlreadyMessageBox').returns(true);
+
+			expect(messageBoxService.shouldAddMessageBox(actionEventMock, getMockElement())).to.equal(
 				false,
 			);
 		});
@@ -73,8 +87,9 @@ describe('Message Box Service', () => {
 
 			sandbox.stub(messageBoxService, 'isTopLeaderboard').returns(false);
 			sandbox.stub(messageBoxService, 'isBottomLeaderoard').returns(false);
+			sandbox.stub(messageBoxService, 'hasAlreadyMessageBox').returns(false);
 
-			expect(messageBoxService.shouldAddMessageBox(actionEventMock, getMockElement(true))).to.equal(
+			expect(messageBoxService.shouldAddMessageBox(actionEventMock, getMockElement())).to.equal(
 				false,
 			);
 		});
