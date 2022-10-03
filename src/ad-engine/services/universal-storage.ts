@@ -7,7 +7,12 @@ export interface StorageProvider {
 	clear(): void;
 }
 
-export class UniversalStorage {
+export interface Storage<T> {
+	getItem(key: string): T | string;
+	setItem(key: string, input: Dictionary | string, timeToLiveMs?: number): boolean;
+}
+
+export class UniversalStorage implements Storage<any> {
 	private fallbackStorage: Dictionary = {};
 
 	constructor(private provider: StorageProvider = window.localStorage) {}

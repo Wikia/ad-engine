@@ -52,7 +52,7 @@ export class UcpMobileLighterAds implements DiProcess {
 					dependencies: [
 						userIdentity.initialized,
 						playerSetup.initialized,
-						jwPlayerInhibitor.initialized,
+						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
 					],
 				}),
 			)

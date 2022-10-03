@@ -4,7 +4,6 @@ import {
 	bidders,
 	communicationService,
 	confiant,
-	context,
 	DiProcess,
 	durationMedia,
 	eventsRepository,
@@ -52,14 +51,16 @@ export class UcpDesktopAdsMode implements DiProcess {
 				prebidNativeProvider,
 				playerSetup.setOptions({
 					dependencies: [bidders.initialized, wadRunner.initialized],
-					timeout: context.get('options.jwpMaxDelayTimeout'),
 				}),
 				gptSetup.setOptions({
 					dependencies: [
 						userIdentity.initialized,
 						playerSetup.initialized,
-						jwPlayerInhibitor.initialized,
+						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
 					],
+					timeout: jwPlayerInhibitor.isRequiredToRun()
+						? jwPlayerInhibitor.getDelayTimeoutInMs()
+						: null,
 				}),
 			)
 			.execute()

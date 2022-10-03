@@ -35,7 +35,7 @@ export class UcpMobileLighterDeprecatedAdsMode implements DiProcess {
 	private callExternals(): Promise<any>[] {
 		const inhibitors: Promise<any>[] = [];
 
-		inhibitors.push(userIdentity.call());
+		inhibitors.push(userIdentity.execute());
 
 		ats.call();
 		facebookPixel.call();
