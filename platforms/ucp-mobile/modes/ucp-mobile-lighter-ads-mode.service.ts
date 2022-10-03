@@ -1,6 +1,5 @@
 import { Injectable } from '@wikia/dependency-injection';
 import {
-	adMarketplace,
 	ats,
 	audigent,
 	bidders,
@@ -39,7 +38,6 @@ export class UcpMobileLighterAds implements DiProcess {
 				confiant,
 				durationMedia,
 				liveConnect,
-				adMarketplace,
 				stroer,
 				bidders,
 				nielsen,
@@ -52,7 +50,7 @@ export class UcpMobileLighterAds implements DiProcess {
 					dependencies: [
 						userIdentity.initialized,
 						playerSetup.initialized,
-						jwPlayerInhibitor.initialized,
+						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
 					],
 				}),
 			)

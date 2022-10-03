@@ -1,7 +1,7 @@
 import { BaseServiceSetup, context, slotService, utils } from '@ad-engine/core';
 
 const logGroup = 'confiant';
-const scriptDomain = 'confiant-integrations.global.ssl.fastly.net';
+const scriptDomain = 'cdn.confiant-integrations.net';
 
 /**
  * Injects Confiant script

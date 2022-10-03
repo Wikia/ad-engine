@@ -10,7 +10,7 @@ function createCacheKey(): string {
 }
 
 function findRecordInCache(): any {
-	return localCache.get(createCacheKey());
+	return localCache.getItem(createCacheKey());
 }
 
 function wasDefaultStateSeen(): boolean {
@@ -22,7 +22,7 @@ function wasDefaultStateSeen(): boolean {
 }
 
 function updateInformationAboutSeenDefaultStateAd(): void {
-	localCache.set(
+	localCache.setItem(
 		createCacheKey(),
 		{
 			adId: universalAdPackage.getUapId(),
