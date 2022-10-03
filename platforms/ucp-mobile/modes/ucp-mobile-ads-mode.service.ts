@@ -17,7 +17,6 @@ import {
 	PartnerPipeline,
 	prebidNativeProvider,
 	stroer,
-	adMarketplace,
 	userIdentity,
 	ats,
 	jwPlayerInhibitor,
@@ -47,7 +46,6 @@ export class UcpMobileAdsMode implements DiProcess {
 				stroer,
 				identityHub,
 				nielsen,
-				adMarketplace,
 				prebidNativeProvider,
 				playerSetup.setOptions({
 					dependencies: [bidders.initialized, wadRunner.initialized],
