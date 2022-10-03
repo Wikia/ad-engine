@@ -7,12 +7,14 @@ export class MessageBoxService {
 	private messageBoxCreator: MessageBoxCreator;
 	private types: MessageBoxType[];
 	private currentType = 0;
+	private isEnabled: boolean;
 
-	constructor() {
+	constructor(isEnabledConfigurationFlag: boolean) {
 		this.messageBoxCreator = new MessageBoxCreator();
 		this.types = sailthru.isEnabled()
 			? ['REGISTER', 'FANLAB', 'NEWSLETTER_FORM', 'NEWSLETTER_LINK']
 			: ['REGISTER', 'FANLAB', 'NEWSLETTER_LINK'];
+		this.isEnabled = isEnabledConfigurationFlag;
 	}
 
 	getCurrentTypeIndex(): number {
@@ -35,6 +37,10 @@ export class MessageBoxService {
 	}
 
 	shouldAddMessageBox(actionEvent: string, placeholder: HTMLElement): boolean {
+		if (!this.isEnabled) {
+			return false;
+		}
+
 		if (this.isTopLeaderboard(placeholder) || this.isBottomLeaderoard(placeholder)) {
 			return false;
 		}

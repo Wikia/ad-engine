@@ -21,7 +21,7 @@ describe('Message Box Service', () => {
 
 		beforeEach(() => {
 			actionEventMock = 'collapse';
-			messageBoxService = new MessageBoxService();
+			messageBoxService = new MessageBoxService(true);
 		});
 
 		afterEach(() => {
@@ -65,6 +65,17 @@ describe('Message Box Service', () => {
 				false,
 			);
 		});
+
+		it('MB is not added - when the feature is disabled', () => {
+			messageBoxService = new MessageBoxService(false);
+
+			sandbox.stub(messageBoxService, 'isTopLeaderboard').returns(false);
+			sandbox.stub(messageBoxService, 'isBottomLeaderoard').returns(false);
+
+			expect(messageBoxService.shouldAddMessageBox(actionEventMock, getMockElement(true))).to.equal(
+				false,
+			);
+		});
 	});
 
 	describe('Test if message box indexes are changed correctly (Sailthru enabled)', () => {
@@ -76,7 +87,7 @@ describe('Message Box Service', () => {
 
 		const adSlotMock: AdSlot = new AdSlot({ id: 'top_leaderboard' });
 		adSlotMock.element = elementMock;
-		const messageBoxService = new MessageBoxService();
+		const messageBoxService = new MessageBoxService(true);
 
 		it('index changes to 1 - when Register box is added', () => {
 			expect(messageBoxService.getCurrentTypeIndex()).to.equal(0);
@@ -117,7 +128,7 @@ describe('Message Box Service', () => {
 
 		const adSlotMock: AdSlot = new AdSlot({ id: 'top_leaderboard' });
 		adSlotMock.element = elementMock;
-		const messageBoxService = new MessageBoxService();
+		const messageBoxService = new MessageBoxService(true);
 
 		it('index changes to 1 - when Register box is added', () => {
 			expect(messageBoxService.getCurrentTypeIndex()).to.equal(0);
