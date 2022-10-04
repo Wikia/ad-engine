@@ -143,7 +143,6 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setServicesContext(): void {
-		context.set('services.adMarketplace.enabled', this.instantConfig.get('icAdMarketplace'));
 		context.set('services.audigent.enabled', this.instantConfig.get('icAudigent'));
 		context.set(
 			'services.audigent.tracking.sampling',
@@ -177,6 +176,10 @@ export class BaseContextSetup implements DiProcess {
 		context.set('services.liveRampPixel.enabled', this.instantConfig.get('icLiveRampPixel'));
 		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
 		context.set('services.ppidRepository', this.instantConfig.get('icPpidRepository'));
+		context.set(
+			'services.messageBox.enabled',
+			this.instantConfig.get('icAdCollapsedMessageBox', false),
+		);
 
 		this.setupOutstreamPlayers();
 	}

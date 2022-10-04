@@ -164,15 +164,6 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		payload: props<Dictionary>(),
 	},
 	// Integrated partners events //
-	ADMARKETPLACE_INIT: {
-		category: '[Search suggestions]',
-		name: 'Initialized',
-	},
-	ADMARKETPLACE_CALLED: {
-		category: '[Search suggestions]',
-		name: 'Called',
-		payload: props<{ query: string }>(),
-	},
 	AUDIGENT_SEGMENT_LIBRARY_LOADED: {
 		name: 'Audigent segment library loaded',
 	},

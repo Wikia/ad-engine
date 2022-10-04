@@ -238,7 +238,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	}
 
 	private registerAdPlaceholderService(): void {
-		const messageBoxService = new MessageBoxService();
+		const messageBoxService = new MessageBoxService(context.get('services.messageBox.enabled'));
 		const placeholderService = new PlaceholderService(messageBoxService);
 		placeholderService.init();
 	}

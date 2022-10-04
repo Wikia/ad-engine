@@ -34,6 +34,7 @@ export class MessageBox {
 		elements?.map((element) => wrapper.append(element));
 
 		placeholder.appendChild(wrapper);
+		placeholder.classList.add('has-message-box');
 		this.sendTrackingEvent(this.statusImpression);
 	}
 
