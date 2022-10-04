@@ -7,12 +7,14 @@ export class MessageBoxService {
 	private messageBoxCreator: MessageBoxCreator;
 	private types: MessageBoxType[];
 	private currentType = 0;
+	private isEnabled: boolean;
 
-	constructor() {
+	constructor(isEnabledConfigurationFlag: boolean) {
 		this.messageBoxCreator = new MessageBoxCreator();
 		this.types = sailthru.isEnabled()
 			? ['REGISTER', 'FANLAB', 'NEWSLETTER_FORM', 'NEWSLETTER_LINK']
 			: ['REGISTER', 'FANLAB', 'NEWSLETTER_LINK'];
+		this.isEnabled = isEnabledConfigurationFlag;
 	}
 
 	getCurrentTypeIndex(): number {
@@ -35,7 +37,15 @@ export class MessageBoxService {
 	}
 
 	shouldAddMessageBox(actionEvent: string, placeholder: HTMLElement): boolean {
-		if (this.isTopLeaderboard(placeholder) || this.isBottomLeaderoard(placeholder)) {
+		if (!this.isEnabled) {
+			return false;
+		}
+
+		if (
+			this.isTopLeaderboard(placeholder) ||
+			this.isBottomLeaderoard(placeholder) ||
+			this.hasAlreadyMessageBox(placeholder)
+		) {
 			return false;
 		}
 
@@ -48,5 +58,9 @@ export class MessageBoxService {
 
 	isBottomLeaderoard(placeholder: HTMLElement): boolean {
 		return placeholder.classList.contains('bottom-leaderboard');
+	}
+
+	hasAlreadyMessageBox(placeholder: HTMLElement): boolean {
+		return placeholder.classList.contains('has-message-box');
 	}
 }
