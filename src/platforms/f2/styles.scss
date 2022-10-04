@@ -1,0 +1,243 @@
+@import './styles/original/variables';
+@import '../shared/styles/index';
+@import '../shared/styles/mixin';
+
+@mixin non-uap-advertisement-label() {
+	$advertisement-label-height: 24px;
+
+	color: $fandom-color-dark-gray;
+	content: 'Advertisement';
+	display: block;
+	font-size: 10px;
+	font-weight: $fandom-font-weight-medium;
+	line-height: $advertisement-label-height;
+	position: relative;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+@mixin f2-styles() {
+	$label-height: -24px;
+	$space-between-uap-components: 30px;
+
+	#top_leaderboard {
+		justify-content: center;
+		margin: 0 auto;
+		max-width: 100vw;
+		overflow: hidden;
+		padding: 18px 24px 0;
+		text-align: center;
+
+		> div {
+			text-align: center;
+			margin: 0 auto;
+		}
+	}
+
+	#bottom_leaderboard {
+		margin: 0 auto;
+	}
+
+	.gpt-ad {
+		text-align: center;
+
+		&.hide,
+		& .hide {
+			display: none !important;
+		}
+
+		& > div > iframe {
+			display: block;
+			margin: 0 auto;
+		}
+	}
+
+	body {
+		.companion-stick {
+			.article-layout__rail {
+				margin-top: 0;
+			}
+
+			.article-layout__top-box-ad,
+			.feed-layout__right-rail {
+				position: sticky;
+				z-index: 100;
+				padding-top: $space-between-uap-components;
+			}
+		}
+	}
+
+	body:not(.uap-sticked) {
+		.companion-stick {
+			.article-layout__top-box-ad,
+			.feed-layout__right-rail {
+				top: 0 !important;
+			}
+		}
+	}
+
+	.feed-item .gpt-ad {
+		padding: 24px 24px 30px;
+		position: sticky;
+		top: 55px;
+		width: 300px;
+
+		@media #{$wds-breakpoint-large-up} {
+			padding-top: 6px;
+		}
+	}
+
+	@media #{$wds-breakpoint-small-only} {
+		#top_leaderboard[data-slot-result='success']::after {
+			@include non-uap-advertisement-label();
+		}
+	}
+
+	#top_boxad[data-slot-result='success']::after,
+	#incontent_boxad[data-slot-result='success']::after,
+	#bottom_leaderboard[data-slot-result='success']::after {
+		@include non-uap-advertisement-label();
+	}
+
+	#top_boxad[data-slot-result='success']::after {
+		@media #{$wds-breakpoint-large-up} {
+			background: #fff;
+			margin: auto;
+			width: 31%;
+		}
+	}
+
+	/* Adjust label height for ad alignment */
+	.article__wrapper #top_boxad {
+		position: relative;
+		top: $label-height;
+	}
+
+	.article-layout__rail.has-incontent-ad {
+		margin-top: 29px;
+	}
+
+	#floor_adhesion {
+		background: rgba(0, 0, 0, 0.8);
+		bottom: 0;
+		left: 0;
+		padding: 20px 0;
+
+		.button-close {
+			border: 2px solid white;
+			border-radius: 50%;
+			width: 40px;
+			height: 40px;
+			top: -20px;
+
+			&:after {
+				content: '';
+				position: absolute;
+				width: 45px;
+				height: 45px;
+			}
+		}
+	}
+}
+
+@mixin out-of-page-styles() {
+	@include out-of-page-template();
+	@include floor-adhesion();
+}
+
+@mixin f2-uap-styles() {
+	.has-uap {
+		#top_leaderboard {
+			height: 292px; // 250px slot height + 18px top padding + 24px bottom label
+			display: flex;
+			flex-direction: column;
+
+			@media #{$wds-breakpoint-medium-down} {
+				@include bfaa-slot();
+				@include sticky-tlb-slot();
+			}
+
+			@media #{$wds-breakpoint-medium-up} {
+				$global-navigation-width: 66px;
+
+				@include bfaa-slot(202, $global-navigation-width);
+				@include sticky-tlb-slot($global-navigation-width);
+
+				left: unset;
+				right: 0;
+			}
+		}
+
+		#bottom_leaderboard {
+			@include bfab-slot();
+		}
+
+		.top-ads-container {
+			padding: 0;
+
+			.ad-slot-placeholder.top-leaderboard {
+				min-height: unset;
+
+				#top_leaderboard {
+					height: unset;
+
+					html.mobile & {
+						z-index: 5000102;
+					}
+				}
+			}
+		}
+
+		#top_leaderboard,
+		#bottom_leaderboard {
+			@include uap-porvata();
+
+			html.desktop & {
+				@include uap-porvata-right-position();
+			}
+
+			html.tablet.landscape & {
+				@include uap-porvata-right-position();
+			}
+
+			html.tablet.portrait & {
+				@include uap-porvata-learn-more();
+			}
+
+			html.mobile & {
+				@include uap-porvata-learn-more();
+			}
+
+			@include uap-button-close();
+
+			&.is-dark {
+				@include uap-dark-theme();
+			}
+		}
+
+		.feed-layout {
+			& #top_boxad {
+				@media #{$wds-breakpoint-medium-down} {
+					margin-top: 18px;
+				}
+			}
+		}
+
+		#top_leaderboard[data-slot-result='success']::after,
+		#bottom_leaderboard[data-slot-result='success']::after {
+			display: none;
+		}
+	}
+
+	@include expanded-slot();
+}
+
+#top_leaderboard,
+#bottom_leaderboard {
+	@include uap-advertisement-label();
+}
+
+@include f2-styles();
+@include f2-uap-styles();
+@include logo-replacement(56px, 0, 0, 93px, 27px);
+@include out-of-page-styles();

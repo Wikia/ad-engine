@@ -1,4 +1,4 @@
-import { RxJsOperator } from '@ad-engine/models';
+import { RxJsOperator } from '@ad-engine/core';
 import { merge, Observable, of } from 'rxjs';
 import {
 	distinctUntilChanged,

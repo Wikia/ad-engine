@@ -1,5 +1,5 @@
 import { RubiconDisplay } from '@wikia/ad-bidders/prebid/adapters/rubicon-display';
-import { context } from '@wikia/ad-engine/services/context-service';
+import { context } from '@wikia/core/services/context-service';
 import { expect } from 'chai';
 
 describe('RubiconDisplay bidder adapter', () => {

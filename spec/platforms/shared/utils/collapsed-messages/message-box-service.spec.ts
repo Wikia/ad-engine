@@ -1,7 +1,7 @@
-import { AdSlot, context } from '@wikia/ad-engine';
+import { AdSlot, context } from '@wikia/core';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { MessageBoxService } from '../../../../../platforms/shared';
+import { MessageBoxService } from '../../../../../src/platforms/shared';
 
 describe('Message Box Service', () => {
 	function getMockElement(): HTMLElement {

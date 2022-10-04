@@ -1,7 +1,6 @@
 import { IdentityRepositoryInterface } from '../identity-repositories';
-import { utils } from '@ad-engine/core';
+import { UniversalStorage, utils } from '@ad-engine/core';
 import { UserIdentity } from '../';
-import { UniversalStorage } from '../../../ad-engine/services/universal-storage';
 
 class LocalStorageRepository implements IdentityRepositoryInterface {
 	storage = new UniversalStorage();

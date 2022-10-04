@@ -1,7 +1,6 @@
 import { context, utils } from '@ad-engine/core';
 import { ConnatixPlayer } from './connatix-player';
 import { PlayerInjector, PlayerInjectorInterface } from './player-injector';
-import { ScriptLoaderInterface } from '../../ad-engine/utils';
 
 export const logGroup = 'connatix';
 
@@ -15,7 +14,7 @@ export class Connatix {
 	}
 
 	constructor(
-		private scriptLoader: ScriptLoaderInterface,
+		private scriptLoader: utils.ScriptLoaderInterface,
 		private playerInjector: PlayerInjectorInterface,
 	) {}
 

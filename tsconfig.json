@@ -15,6 +15,6 @@
 		"skipLibCheck": true,
 		"typeRoots": ["node_modules/@types", "@types"]
 	},
-	"include": ["src", "spec", "platforms"],
+	"include": ["src", "spec"],
 	"exclude": ["**/dist/**/*"]
 }

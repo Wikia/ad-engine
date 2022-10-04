@@ -1,7 +1,7 @@
 import { InstantConfigService } from '@wikia/ad-services';
 import sinon from 'sinon';
 import { expect } from 'chai';
-import { OutstreamExperiment } from '../../../../platforms/shared';
+import { OutstreamExperiment } from '../../../../src/platforms/shared';
 
 const excoVariant = 'exco';
 const anyclipVariant = 'anyclip';

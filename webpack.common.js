@@ -5,15 +5,11 @@ const { getTypeScriptLoader } = require('./configs/webpack-app.config');
 const { mergeCompilerOptionsPaths } = require('./configs/merge-compiler-options-paths');
 const pkg = require('./package.json');
 
-const include = [
-	path.resolve(__dirname, 'src'),
-	path.resolve(__dirname, 'platforms'),
-	path.resolve(__dirname, 'spec'),
-];
+const include = [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'spec')];
 
 const paths = mergeCompilerOptionsPaths([
 	path.resolve(__dirname, 'src/tsconfig.json'),
-	path.resolve(__dirname, 'platforms/tsconfig.json'),
+	path.resolve(__dirname, 'src/platforms/tsconfig.json'),
 	path.resolve(__dirname, 'spec/tsconfig.json'),
 ]);
 
@@ -43,7 +39,7 @@ module.exports = () => ({
 				use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
 			},
 			{
-				test: path.resolve(__dirname, 'src/ad-engine/log-version.ts'),
+				test: path.resolve(__dirname, 'src/core/log-version.ts'),
 				loader: 'string-replace-loader',
 				options: {
 					search: '<?= PACKAGE(version) ?>',
