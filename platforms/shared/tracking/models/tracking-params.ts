@@ -45,4 +45,5 @@ export interface TrackingParams {
 	ua?: string;
 	value?: any;
 	x?: string;
+	word_count?: number;
 }

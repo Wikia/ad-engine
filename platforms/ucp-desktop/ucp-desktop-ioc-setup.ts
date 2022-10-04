@@ -4,6 +4,7 @@ import {
 	DiProcess,
 	slotBiddersTrackingMiddleware,
 	slotPropertiesTrackingMiddleware,
+	pagePropertiesTrackingMiddleware,
 	slotTrackingMiddleware,
 } from '@wikia/ad-engine';
 import { Container, Injectable } from '@wikia/dependency-injection';
@@ -18,6 +19,7 @@ export class UcpDesktopIocSetup implements DiProcess {
 		TrackingSetup.provideMiddlewares({
 			slotTrackingMiddlewares: [
 				slotPropertiesTrackingMiddleware,
+				pagePropertiesTrackingMiddleware,
 				slotBiddersTrackingMiddleware,
 				slotTrackingMiddleware,
 			],
