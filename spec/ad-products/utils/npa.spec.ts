@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import { createSandbox, SinonStub } from 'sinon';
-import { context, trackingOptIn } from '../../../src/ad-engine';
+import { context, trackingOptIn } from '../../../src/core';
 import { setupNpaContext } from '../../../src/ad-products/utils/npa';
 
 describe('NPA - setup context ', () => {

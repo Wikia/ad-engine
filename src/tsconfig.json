@@ -4,11 +4,12 @@
 		"declaration": true,
 		"declarationDir": "../dist/types",
 		"paths": {
-			"@ad-engine/core": ["src/ad-engine"],
-			"@ad-engine/services": ["src/ad-services"],
-			"@ad-engine/tracking": ["src/ad-tracking"],
+			"@ad-engine/core": ["src/core"],
 			"@ad-engine/communication": ["src/communication"],
-			"@ad-engine/models": ["src/models"]
+			"@ad-engine/bidders": ["src/ad-bidders"],
+			"@ad-engine/products": ["src/ad-products"],
+			"@ad-engine/services": ["src/ad-services"],
+			"@ad-engine/tracking": ["src/ad-tracking"]
 		}
 	},
 	"include": ["."]

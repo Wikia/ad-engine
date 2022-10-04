@@ -1,12 +1,12 @@
 import { makeUserStateStoreSpy } from '../test_doubles/state-store.spy';
-import { SequenceContinuationHandler } from '../../../../../platforms/shared/sequential-messaging/domain/sequence-continuation-handler';
+import { SequenceContinuationHandler } from '../../../../../src/platforms/shared/sequential-messaging/domain/sequence-continuation-handler';
 import { expect } from 'chai';
 import { assert } from 'sinon';
 import { makeTargetingManagerSpy } from '../test_doubles/targeting-manager.spy';
 import {
 	SequenceState,
 	UserSequentialMessageState,
-} from '../../../../../platforms/shared/sequential-messaging/domain/data-structures/user-sequential-message-state';
+} from '../../../../../src/platforms/shared/sequential-messaging/domain/data-structures/user-sequential-message-state';
 
 const sequenceId = '5928558921';
 const sampleWidth = 970;

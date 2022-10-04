@@ -1,8 +1,0 @@
-@import 'platforms/shared/styles/mixin';
-
-@mixin bfab-slot() {
-	z-index: 201;
-	position: relative;
-
-	@include bfaa-bfab-overlay;
-}

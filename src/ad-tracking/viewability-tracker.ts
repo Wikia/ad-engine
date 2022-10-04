@@ -1,37 +1,22 @@
 import { communicationService } from '@ad-engine/communication';
-import { AdSlot, context, FuncPipeline, FuncPipelineStep } from '@ad-engine/core';
+import { AdSlot, context } from '@ad-engine/core';
+import { viewabilityTrackingCompiler, viewabilityPropertiesTrackingCompiler } from './compilers';
+import { BaseTracker, BaseTrackerInterface } from './base-tracker';
 
-export interface AdViewabilityContext {
-	data: any;
-	slot: AdSlot;
-}
-
-class ViewabilityTracker {
-	private pipeline = new FuncPipeline<AdViewabilityContext>();
-
-	add(...middlewares: FuncPipelineStep<AdViewabilityContext>[]): this {
-		this.pipeline.add(...middlewares);
-
-		return this;
-	}
+class ViewabilityTracker extends BaseTracker implements BaseTrackerInterface {
+	compilers = [viewabilityTrackingCompiler, viewabilityPropertiesTrackingCompiler];
 
 	isEnabled(): boolean {
 		return context.get('options.tracking.slot.viewability');
 	}
 
-	register(callback: FuncPipelineStep<AdViewabilityContext>): void {
+	register(callback): void {
 		if (!this.isEnabled()) {
 			return;
 		}
 
 		communicationService.onSlotEvent(AdSlot.SLOT_VIEWED_EVENT, ({ slot }) => {
-			this.pipeline.execute(
-				{
-					slot,
-					data: {},
-				},
-				callback,
-			);
+			callback(this.compileData(slot));
 		});
 	}
 }

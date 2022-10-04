@@ -1,4 +1,4 @@
-import { utils } from '@wikia/ad-engine';
+import { utils } from '@wikia/core';
 import { RegionMatcher } from '@wikia/ad-services/instant-config/matchers/region-matcher';
 import { expect } from 'chai';
 import * as sinon from 'sinon';

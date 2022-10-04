@@ -1,31 +1,19 @@
 import { communicationService, EventOptions, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, FuncPipeline, FuncPipelineStep, slotService, utils } from '@ad-engine/core';
+import { AdSlot, Dictionary, slotService, utils } from '@ad-engine/core';
+import { slotTrackingCompiler } from './compilers';
+import { BaseTracker, BaseTrackerInterface } from './base-tracker';
 
 const logGroup = 'ad-click-tracker';
 
-interface AdClickContext {
-	slot: AdSlot;
-	data: {
-		ad_status: string;
-		click_position?: string;
-	};
-}
-
-class AdClickTracker {
-	private pipeline = new FuncPipeline<AdClickContext>();
+class AdClickTracker extends BaseTracker implements BaseTrackerInterface {
 	private eventsToRegister = [
 		eventsRepository.AD_ENGINE_VIDEO_LEARN_MORE_CLICKED,
 		eventsRepository.AD_ENGINE_VIDEO_OVERLAY_CLICKED,
 		eventsRepository.AD_ENGINE_VIDEO_TOGGLE_UI_OVERLAY_CLICKED,
 	];
+	compilers = [slotTrackingCompiler];
 
-	add(...middlewares: FuncPipelineStep<AdClickContext>[]): this {
-		this.pipeline.add(...middlewares);
-
-		return this;
-	}
-
-	register(callback: FuncPipelineStep<AdClickContext>): void {
+	register(callback): void {
 		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ adSlotName }) => {
 			this.addClickTrackingListeners(callback, adSlotName);
 		});
@@ -33,25 +21,17 @@ class AdClickTracker {
 		this.eventsToRegister.map((event) => this.addToTracking(event, callback));
 	}
 
-	private addToTracking(event: EventOptions, callback: FuncPipelineStep<AdClickContext>): void {
+	private addToTracking(event: EventOptions, callback: (data: Dictionary) => void): void {
 		communicationService.on(
 			event,
 			({ adSlotName, ad_status }) => {
-				this.pipeline.execute(
-					{
-						slot: slotService.get(adSlotName),
-						data: {
-							ad_status,
-						},
-					},
-					callback,
-				);
+				callback(this.compileData(slotService.get(adSlotName), null, { ad_status }));
 			},
 			false,
 		);
 	}
 
-	private addClickTrackingListeners(callback: FuncPipelineStep<AdClickContext>, slotName): void {
+	private addClickTrackingListeners(callback: (data: Dictionary) => void, slotName): void {
 		const adSlot = slotService.get(slotName);
 		const iframeElement = adSlot.getIframe();
 		const slotElement = adSlot.getAdContainer();
@@ -79,7 +59,7 @@ class AdClickTracker {
 	}
 
 	private handleClickEvent(
-		callback: FuncPipelineStep<AdClickContext>,
+		callback: (data: Dictionary) => void,
 		slot: AdSlot,
 		event?: MouseEvent,
 	): void {
@@ -94,13 +74,8 @@ class AdClickTracker {
 			};
 			data['click_position'] = JSON.stringify(clickData);
 		}
-		this.pipeline.execute(
-			{
-				slot,
-				data,
-			},
-			callback,
-		);
+
+		callback(this.compileData(slot, null, data));
 	}
 }
 

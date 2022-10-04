@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
-import { context, utils } from '../../../src/ad-engine';
-import { iasPublisherOptimization } from '../../../src/ad-services';
+import { createSandbox, spy } from 'sinon';
+import { context, utils } from '../../../src/core';
+import { iasPublisherOptimization } from '@wikia/ad-services';
 
 describe('IAS Publisher Optimization', () => {
 	const sandbox = createSandbox();
@@ -32,6 +32,14 @@ describe('IAS Publisher Optimization', () => {
 		context.set('options.optOutSale', false);
 		context.set('wiki.targeting.directedAtChildren', false);
 		context.remove('services.iasPublisherOptimization.slots');
+
+		window.googletag = {
+			enableServices: spy(),
+		} as any;
+		window.googletag.cmd = window.googletag.cmd || [];
+		window.googletag.cmd.push = ((cb) => {
+			cb();
+		}) as any;
 	});
 
 	afterEach(() => {

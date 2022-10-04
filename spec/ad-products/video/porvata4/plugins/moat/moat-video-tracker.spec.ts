@@ -2,7 +2,7 @@ import { PorvataSettings } from '@wikia/ad-products';
 import { moatVideoTracker } from '@wikia/ad-products/video/porvata/plugins/moat/moat-video-tracker';
 import { assert } from 'chai';
 import * as sinon from 'sinon';
-import { context, slotService, utils } from '../../../../../../src/ad-engine';
+import { context, slotService, utils } from '../../../../../../src/core';
 
 describe('MOAT video tracker', () => {
 	const sandbox = sinon.createSandbox();

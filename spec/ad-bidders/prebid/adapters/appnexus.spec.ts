@@ -1,5 +1,5 @@
 import { Appnexus } from '@wikia/ad-bidders/prebid/adapters/appnexus';
-import { context } from '@wikia/ad-engine';
+import { context } from '@wikia/core';
 import { expect } from 'chai';
 
 describe('Appnexus bidder adapter', () => {

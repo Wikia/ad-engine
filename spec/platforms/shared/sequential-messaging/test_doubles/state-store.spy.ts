@@ -1,6 +1,6 @@
 import { createStubInstance, SinonStubbedInstance } from 'sinon';
-import { UserSequentialMessageStateStoreInterface } from '../../../../../platforms/shared/sequential-messaging/domain/interfaces/user-sequential-message-state-store.interface';
-import { UserSequentialMessageState } from '../../../../../platforms/shared/sequential-messaging/domain/data-structures/user-sequential-message-state';
+import { UserSequentialMessageStateStoreInterface } from '../../../../../src/platforms/shared/sequential-messaging/domain/interfaces/user-sequential-message-state-store.interface';
+import { UserSequentialMessageState } from '../../../../../src/platforms/shared/sequential-messaging/domain/data-structures/user-sequential-message-state';
 
 class UserStateStoreSpy implements UserSequentialMessageStateStoreInterface {
 	/* eslint-disable @typescript-eslint/no-unused-vars */
