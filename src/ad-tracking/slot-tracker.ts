@@ -2,6 +2,7 @@ import { communicationService } from '@ad-engine/communication';
 import { AdSlot, context } from '@ad-engine/core';
 import {
 	slotTrackingCompiler,
+	pageTrackingCompiler,
 	slotPropertiesTrackingCompiler,
 	slotBiddersTrackingCompiler,
 } from './compilers';
@@ -26,7 +27,7 @@ class SlotTracker extends BaseTracker implements BaseTrackerInterface {
 		AdSlot.STATUS_HEAVY_AD_INTERVENTION,
 		AdSlot.STATUS_UNKNOWN_INTERVENTION,
 	];
-	compilers = [slotPropertiesTrackingCompiler, slotTrackingCompiler];
+	compilers = [slotPropertiesTrackingCompiler, slotTrackingCompiler, pageTrackingCompiler];
 
 	isEnabled(): boolean {
 		return context.get('options.tracking.slot.status');
