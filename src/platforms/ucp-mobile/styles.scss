@@ -206,6 +206,15 @@
 	.hide {
 		display: none;
 	}
+
+	.incontent-sticked {
+		position: fixed;
+		top: $fandom-navbar-height;
+		width: 100%;
+		padding: 15px 0;
+		background-color: var(--theme-page-background-color);
+		z-index: 501;
+	}
 }
 
 body.bab-detected {
