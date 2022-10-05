@@ -1,4 +1,4 @@
-import { ScriptLoaderInterface } from '@wikia/ad-engine/utils';
+import { ScriptLoaderInterface } from '@wikia/core/utils';
 import sinon, { SinonStubbedInstance } from 'sinon';
 
 class ScriptLoaderSpy implements ScriptLoaderInterface {

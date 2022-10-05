@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ContextInterface } from '@wikia/ad-engine';
+import { ContextInterface } from '@wikia/core';
 import { createStubInstance, SinonStubbedInstance } from 'sinon';
 
 class ContextSpy implements ContextInterface {

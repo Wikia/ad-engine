@@ -1,5 +1,4 @@
-import { context, VastParams, vastParser } from '@ad-engine/core';
-import { RxJsOperator } from '@ad-engine/models';
+import { context, RxJsOperator, VastParams, vastParser } from '@ad-engine/core';
 import { combineLatest, merge, Observable } from 'rxjs';
 import { map, scan, shareReplay, startWith, withLatestFrom } from 'rxjs/operators';
 import { JWPlayer } from '../external-types/jwplayer';

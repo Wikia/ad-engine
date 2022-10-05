@@ -1,4 +1,4 @@
-import { Dictionary, utils } from '@wikia/ad-engine';
+import { Dictionary, utils } from '@wikia/core';
 import { InstantConfigOverrider } from '@wikia/ad-services/instant-config/instant-config.overrider';
 import { expect } from 'chai';
 import * as sinon from 'sinon';

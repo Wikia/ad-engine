@@ -24,7 +24,7 @@ export interface GoogleAnalyticsPayload {
 
 export type TrackingMessage = GoogleAnalyticsMessage & DataWarehouseMessage;
 
-export const trackingPayloadValidationMiddleware: FuncPipelineStep<TrackingMessage> = (
+export const trackingPayloadValidationStep: FuncPipelineStep<TrackingMessage> = (
 	message: Partial<TrackingMessage>,
 	next,
 ) => {
@@ -43,12 +43,8 @@ export const trackingPayloadValidationMiddleware: FuncPipelineStep<TrackingMessa
 export class PostmessageTracker {
 	private pipeline = new FuncPipeline<any>();
 
-	constructor(private readonly requiredKeys: string[]) {}
-
-	add(...middlewares: FuncPipelineStep<any>[]): this {
-		this.pipeline.add(...middlewares);
-
-		return this;
+	constructor(private readonly requiredKeys: string[]) {
+		this.pipeline.add(trackingPayloadValidationStep);
 	}
 
 	register<T>(callback: FuncPipelineStep<T>, origin?: string[]): this {

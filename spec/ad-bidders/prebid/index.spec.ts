@@ -1,8 +1,8 @@
-import { PrebidProvider } from '@wikia/ad-bidders/prebid/index';
-import { context } from '@wikia/ad-engine/services/context-service';
+import { PrebidProvider } from '@wikia/ad-bidders/prebid';
+import { context } from '@wikia/core/services/context-service';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { stubPbjs } from '../../ad-engine/services/pbjs.stub';
+import { stubPbjs } from '../../core/services/pbjs.stub';
 
 const bidderConfig = {
 	enabled: false,

@@ -1,7 +1,7 @@
 import { eyeota } from '@wikia/ad-services';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { context, tcf, utils } from '../../../src/ad-engine/index';
+import { context, tcf, utils } from '../../../src/core/index';
 
 describe('Eyeota', () => {
 	const sandbox = createSandbox();

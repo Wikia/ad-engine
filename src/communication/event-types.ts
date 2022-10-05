@@ -263,13 +263,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Bids response',
 		payload: props<{ bidResponse: TrackingBidDefinition }>(),
 	},
-	BIDDERS_INIT_STAGE_DONE: {
+	BIDDERS_AUCTION_DONE: {
 		category: '[Prebid]',
-		name: 'Init stage done',
-	},
-	BIDDERS_MAIN_STAGE_DONE: {
-		category: '[Prebid]',
-		name: 'Main stage done',
+		name: 'Auction done',
 	},
 	// Video events //
 	VIDEO_EVENT: {

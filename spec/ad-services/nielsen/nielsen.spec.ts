@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { context } from '../../../src/ad-engine/index';
+import { context } from '../../../src/core/index';
 import { nielsen } from '../../../src/ad-services/nielsen';
 
 describe('Nielsen service', () => {

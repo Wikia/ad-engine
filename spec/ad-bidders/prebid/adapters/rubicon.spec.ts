@@ -1,5 +1,5 @@
 import { Rubicon } from '@wikia/ad-bidders/prebid/adapters/rubicon';
-import { context } from '@wikia/ad-engine';
+import { context } from '@wikia/core';
 import { expect } from 'chai';
 
 describe('Rubicon bidder adapter', () => {

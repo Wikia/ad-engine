@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { context } from '../../../src/ad-engine';
+import { context } from '../../../src/core';
 import { facebookPixel } from '../../../src/ad-services';
 
 describe('Facebook pixel', () => {
