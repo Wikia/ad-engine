@@ -3,9 +3,9 @@ import { CompilerPartial } from '../base-tracker';
 function getWordCountFromParserOutput() {
 	let wordCount = 0;
 
-	const parserOutput = document.querySelector('.mw-parser-output')?.innerHTML || '';
-	const strippedHtmlText = parserOutput.replace(/(<([^>]+)>)/gi, ' ');
-	const replacedMultipleWhitespaces = strippedHtmlText.replace(/\s{2,}/gi, ' ');
+	//@ts-ignore innerText exists in the HTMLElement
+	const parserOutput = document.querySelector('.mw-parser-output')?.innerText || '';
+	const replacedMultipleWhitespaces = parserOutput.replace(/\s{2,}/gi, ' ');
 	const noEmptyLines = replacedMultipleWhitespaces
 		.trim()
 		.split('\n')
