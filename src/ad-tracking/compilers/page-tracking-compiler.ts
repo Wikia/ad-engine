@@ -1,11 +1,15 @@
 import { CompilerPartial } from '../base-tracker';
 
-function getWordCount() {
+function getWordCountFromParserOutput() {
 	let wordCount = 0;
 
 	const parserOutput = document.querySelector('.mw-parser-output')?.innerHTML || '';
-	const strippedHtmlText = parserOutput.replace(/(<([^>]+)>)/gi, '');
-	const noEmptyLines = strippedHtmlText.split('\n').filter((line) => line !== '');
+	const strippedHtmlText = parserOutput.replace(/(<([^>]+)>)/gi, ' ');
+	const replacedMultipleWhitespaces = strippedHtmlText.replace(/\s{2,}/gi, ' ');
+	const noEmptyLines = replacedMultipleWhitespaces
+		.trim()
+		.split('\n')
+		.filter((line) => line !== '');
 
 	noEmptyLines.forEach((line) => {
 		wordCount += line.split(' ').length;
@@ -19,7 +23,7 @@ export const pageTrackingCompiler = ({ data, slot }: CompilerPartial): CompilerP
 		slot,
 		data: {
 			...data,
-			word_count: getWordCount(),
+			word_count: getWordCountFromParserOutput(),
 		},
 	};
 };
