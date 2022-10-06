@@ -7,7 +7,7 @@ export const pageTrackingCompiler = ({ data, slot }: CompilerPartial): CompilerP
 		slot,
 		data: {
 			...data,
-			word_count: context.get('wiki.wordCount'),
+			word_count: context.get('custom.wordCount'),
 		},
 	};
 };
