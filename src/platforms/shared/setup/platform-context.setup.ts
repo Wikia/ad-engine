@@ -16,8 +16,8 @@ export class PlatformContextSetup implements DiProcess {
 	private getContentWordCountFrom(): number {
 		let wordCount = 0;
 
-		//@ts-ignore innerText exists in the HTMLElement
-		const parserOutput = document.querySelector(this.contentSelector)?.innerText || '';
+		const parserOutput =
+			(document.querySelector(this.contentSelector) as HTMLElement)?.innerText || '';
 		const replacedMultipleWhitespaces = parserOutput.replace(/\s{2,}/gi, ' ');
 		const noEmptyLines = replacedMultipleWhitespaces
 			.trim()
