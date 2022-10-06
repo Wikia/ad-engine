@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import sinon from 'sinon';
-import { UserSequentialMessageStateStore } from '../../../../../platforms/shared/sequential-messaging/infrastructure/user-sequential-message-state-store';
-import { SequenceState } from '../../../../../platforms/shared/sequential-messaging/domain/data-structures/user-sequential-message-state';
+import { UserSequentialMessageStateStore } from '../../../../../src/platforms/shared/sequential-messaging/infrastructure/user-sequential-message-state-store';
+import { SequenceState } from '../../../../../src/platforms/shared/sequential-messaging/domain/data-structures/user-sequential-message-state';
 import { expect } from 'chai';
 
 const sampleState = { 5928558921: new SequenceState(1, 970, 250, true) };

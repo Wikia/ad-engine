@@ -1,7 +1,7 @@
 import { eyeota } from '@wikia/ad-services';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { context, tcf, utils } from '../../../src/ad-engine/index';
+import { context, tcf, utils } from '../../../src/core/index';
 
 describe('Eyeota', () => {
 	const sandbox = createSandbox();
@@ -75,9 +75,7 @@ describe('Eyeota', () => {
 		context.set('targeting.s0v', 'lifestyle');
 		const src = await eyeota.createScriptSource();
 
-		expect(src).to.equal(
-			'https://ps.eyeota.net/pixel?pid=r8rcb20&sid=fandom&gdpr=1&gdpr_consent=test&t=ajs&s0v=lifestyle',
-		);
+		expect(src).to.equal('https://ps.eyeota.net/pixel?pid=r8rcb20&sid=fandom&t=ajs&s0v=lifestyle');
 
 		context.remove('targeting.s0v');
 	});

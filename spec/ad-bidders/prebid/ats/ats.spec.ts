@@ -1,5 +1,5 @@
 import { ats } from '@wikia/ad-bidders';
-import { context, utils } from '@wikia/ad-engine';
+import { context, utils } from '@wikia/core';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 

@@ -1,29 +1,16 @@
-import {
-	communicationService,
-	eventsRepository,
-	TrackingBidDefinition,
-} from '@ad-engine/communication';
-import { context, FuncPipeline, FuncPipelineStep } from '@ad-engine/core';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { context } from '@ad-engine/core';
+import { bidderTrackingCompiler } from './compilers';
+import { BaseTracker, BaseTrackerInterface } from './base-tracker';
 
-export interface AdBidderContext {
-	bid: TrackingBidDefinition;
-	data: any;
-}
-
-class BidderTracker {
-	private pipeline = new FuncPipeline<AdBidderContext>();
-
-	add(...middlewares: FuncPipelineStep<AdBidderContext>[]): this {
-		this.pipeline.add(...middlewares);
-
-		return this;
-	}
+class BidderTracker extends BaseTracker implements BaseTrackerInterface {
+	compilers = [bidderTrackingCompiler];
 
 	isEnabled(): boolean {
 		return context.get('options.tracking.slot.bidder');
 	}
 
-	register(callback: FuncPipelineStep<AdBidderContext>): void {
+	register(callback): void {
 		if (!this.isEnabled()) {
 			return;
 		}
@@ -31,13 +18,7 @@ class BidderTracker {
 		communicationService.on(
 			eventsRepository.BIDDERS_BIDS_RESPONSE,
 			({ bidResponse }) => {
-				this.pipeline.execute(
-					{
-						bid: bidResponse,
-						data: {},
-					},
-					callback,
-				);
+				callback(this.compileData(null, bidResponse));
 			},
 			false,
 		);

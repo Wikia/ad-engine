@@ -93,32 +93,50 @@ export class JWPlayerHelper {
 		this.adSlot.setConfigProperty('targeting.rv', state.rv);
 	}
 
-	shouldPlayPreroll(videoDepth: number): boolean {
-		return this.canAdBePlayed(videoDepth);
+	shouldPlayPreroll(videoPlaylistOrderNumber: number): boolean {
+		return this.canAdBePlayed(videoPlaylistOrderNumber);
 	}
 
-	shouldPlayMidroll(videoDepth: number): boolean {
-		return context.get('options.video.isMidrollEnabled') && this.canAdBePlayed(videoDepth);
-	}
-
-	shouldPlayPostroll(videoDepth: number): boolean {
-		return context.get('options.video.isPostrollEnabled') && this.canAdBePlayed(videoDepth);
-	}
-
-	private canAdBePlayed(depth: number): boolean {
-		const isReplay = depth > 1;
-
+	shouldPlayMidroll(videoPlaylistOrderNumber: number): boolean {
 		return (
-			this.adSlot.isEnabled() && (!isReplay || (isReplay && this.shouldPlayAdOnNextVideo(depth)))
+			context.get('options.video.isMidrollEnabled') && this.canAdBePlayed(videoPlaylistOrderNumber)
 		);
 	}
 
-	private shouldPlayAdOnNextVideo(depth: number): boolean {
+	shouldPlayPostroll(videoPlaylistOrderNumber: number): boolean {
+		return (
+			context.get('options.video.isPostrollEnabled') && this.canAdBePlayed(videoPlaylistOrderNumber)
+		);
+	}
+
+	private canAdBePlayed(videoPlaylistOrderNumber: number): boolean {
+		const isReplay = videoPlaylistOrderNumber > 1;
+
+		return (
+			this.adSlot.isEnabled() &&
+			(!isReplay || (isReplay && this.shouldPlayAdOnNextVideo(videoPlaylistOrderNumber)))
+		);
+	}
+
+	private shouldPlayAdOnNextVideo(videoPlaylistOrderNumber: number): boolean {
+		const SPONSORED_VIDEO_INDEX = 2;
 		const capping = context.get('options.video.adsOnNextVideoFrequency');
-
-		return (
-			context.get('options.video.playAdsOnNextVideo') && capping > 0 && (depth - 1) % capping === 0
+		const videoAdsOnAllVideosExceptSecond = context.get(
+			'options.video.forceVideoAdsOnAllVideosExceptSecond',
 		);
+
+		if (videoAdsOnAllVideosExceptSecond) {
+			return (
+				context.get('options.video.playAdsOnNextVideo') &&
+				videoPlaylistOrderNumber !== SPONSORED_VIDEO_INDEX
+			);
+		} else {
+			return (
+				context.get('options.video.playAdsOnNextVideo') &&
+				capping > 0 &&
+				(videoPlaylistOrderNumber - 1) % capping === 0
+			);
+		}
 	}
 
 	playVideoAd(position: 'midroll' | 'postroll' | 'preroll', state: JwpState): void {

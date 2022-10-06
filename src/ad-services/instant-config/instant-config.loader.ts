@@ -8,10 +8,40 @@ class InstantConfigLoader {
 
 	async getConfig(): Promise<InstantConfigResponse> {
 		if (!this.configPromise) {
-			this.configPromise = this.fetchInstantConfig();
+			this.configPromise = this.fetchInstantConfig().then((config) => {
+				utils.logger(logGroup, config);
+				return config ? config : this.fetchFallbackConfig();
+			});
 		}
+		return this.configPromise.then((config) => {
+			utils.logger(logGroup, config);
+			return config;
+		});
+	}
 
-		return this.configPromise;
+	private async fetchFallbackConfig(): Promise<InstantConfigResponse> {
+		utils.logger(logGroup, 'Fetching fallback config');
+		const request = new XMLHttpRequest();
+		const fallbackConfig = context.get('services.instantConfig.fallback') || {};
+
+		request.open('GET', fallbackConfig, true);
+		request.responseType = 'json';
+
+		utils.logger(logGroup, fallbackConfig);
+		return new Promise((resolve) => {
+			request.onreadystatechange = function (): void {
+				if (this.readyState === 4) {
+					if (this.status === 200) {
+						utils.logger(logGroup, 'fallback config fetched', this.response);
+						resolve(this.response);
+					} else {
+						utils.logger(logGroup, 'could not fetch fallback config', this.response);
+						resolve({});
+					}
+				}
+			};
+			request.send();
+		});
 	}
 
 	private async fetchInstantConfig(): Promise<InstantConfigResponse> {
@@ -25,11 +55,11 @@ class InstantConfigLoader {
 
 		return new Promise((resolve) => {
 			request.addEventListener('timeout', () => {
-				resolve({});
+				resolve();
 				utils.logger(logGroup, 'timed out');
 			});
 			request.addEventListener('error', () => {
-				resolve({});
+				resolve();
 				utils.logger(logGroup, 'errored');
 			});
 			request.onreadystatechange = function (): void {
@@ -39,7 +69,7 @@ class InstantConfigLoader {
 						resolve(this.response);
 					} else {
 						utils.logger(logGroup, 'did not respond successfully', this.response);
-						resolve({});
+						resolve();
 					}
 				}
 			};

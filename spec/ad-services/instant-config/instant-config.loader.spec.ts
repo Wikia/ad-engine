@@ -1,4 +1,4 @@
-import { context, Dictionary } from '@wikia/ad-engine';
+import { context, Dictionary } from '@wikia/core';
 import { instantConfigLoader } from '@wikia/ad-services/instant-config/instant-config.loader';
 import { expect } from 'chai';
 import {
@@ -7,6 +7,7 @@ import {
 	SinonFakeXMLHttpRequestStatic,
 	SinonStub,
 } from 'sinon';
+import { wait } from '@wikia/core/utils';
 
 describe('Instant Config Loader', () => {
 	const sandbox = createSandbox();
@@ -59,14 +60,37 @@ describe('Instant Config Loader', () => {
 		});
 	});
 
-	it('should return {} if error', async () => {
+	it('should return {} if current and fallback config fetch fails', async () => {
 		const promise = instantConfigLoader.getConfig();
 
+		request.error();
+		await wait(100);
 		request.error();
 
 		const value = await promise;
 
 		expect(value).to.deep.equal({});
+	});
+
+	it('should return fallback if current config fetch fails', async () => {
+		const promise = instantConfigLoader.getConfig();
+
+		request.error();
+		await wait(100);
+
+		request.setStatus(200);
+		request.setResponseHeaders({ 'Content-Type': 'application/json' });
+		request.setResponseBody(
+			JSON.stringify({
+				foo: 'bar',
+			}),
+		);
+
+		const value = await promise;
+
+		expect(value).to.deep.equal({
+			foo: 'bar',
+		});
 	});
 
 	it('should be called once', async () => {

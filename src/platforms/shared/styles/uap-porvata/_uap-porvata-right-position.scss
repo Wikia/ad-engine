@@ -1,0 +1,8 @@
+@import '../mixin';
+
+@mixin uap-porvata-right-position() {
+	.video-overlay,
+	.player-overlay {
+		@include bfaa-bfab-hivi-right-position;
+	}
+}

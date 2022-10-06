@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
-import { NativoSlotsDefinitionRepository } from '../../../../platforms/shared/dynamic-slots/nativo-slots-definition-repository';
-import { context, DomListener } from '../../../../src/ad-engine';
+import { NativoSlotsDefinitionRepository } from '../../../../src/platforms/shared/dynamic-slots/nativo-slots-definition-repository';
+import { context, DomListener } from '../../../../src/core';
 
 describe('Nativo slots definition repository', () => {
 	let domListener, nativoSlotDefinitionRepository: NativoSlotsDefinitionRepository;

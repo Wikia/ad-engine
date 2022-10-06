@@ -1,12 +1,12 @@
 import { expect } from 'chai';
 
-import { context } from '../../../../../../../src/ad-engine';
+import { context } from '../../../../../../../src/core';
 import {
 	FandomContext,
 	Site,
 	Page,
-} from '../../../../../../../platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
-import { CombinedStrategySiteTagsBased } from '../../../../../../../platforms/shared/context/targeting/targeting-strategies/strategies/combined-strategy-site-tags-based';
+} from '../../../../../../../src/platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
+import { CombinedStrategySiteTagsBased } from '../../../../../../../src/platforms/shared/context/targeting/targeting-strategies/strategies/combined-strategy-site-tags-based';
 
 describe('CombinedStrategySiteTagsBased execution', () => {
 	beforeEach(() => {

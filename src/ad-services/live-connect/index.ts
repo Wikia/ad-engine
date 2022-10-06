@@ -1,10 +1,16 @@
-import { BaseServiceSetup, context, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, localCache, utils, UniversalStorage } from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 
 interface IdConfig {
 	id: string;
 	name: string;
 	params?: LiQParams;
+}
+
+interface CachingStrategyConfig {
+	type: 'local' | 'session';
+	mandatoryParams: string[];
+	ttl?: number;
 }
 
 const partnerName = 'liveConnect';
@@ -14,15 +20,13 @@ const liveConnectScriptUrl = 'https://b-code.liadm.com/a-07ev.min.js';
 const idConfigMapping: IdConfig[] = [
 	{ id: 'unifiedId', name: `${partnerName}-unifiedId` },
 	{ id: 'sha2', name: partnerName, params: { qf: '0.3', resolve: 'sha2' } },
-	{ id: 'sha256', name: `${partnerName}-sha256`, params: { qf: '0.3', resolve: 'sha256' } },
 	{ id: 'md5', name: `${partnerName}-md5`, params: { qf: '0.3', resolve: 'md5' } },
 	{ id: 'sha1', name: `${partnerName}-sha1`, params: { qf: '0.3', resolve: 'sha1' } },
-	{ id: 'gender', name: `${partnerName}-gender`, params: { qf: '0.3', resolve: 'gender' } },
-	{ id: 'age', name: `${partnerName}-age`, params: { qf: '0.3', resolve: 'age' } },
 ];
 
 class LiveConnect extends BaseServiceSetup {
-	private isLoaded = false;
+	private storage;
+	private storageConfig: CachingStrategyConfig;
 
 	private isEnabled(): boolean {
 		return (
@@ -39,7 +43,9 @@ class LiveConnect extends BaseServiceSetup {
 			return;
 		}
 
-		if (!this.isLoaded) {
+		this.setupStorage();
+
+		if (this.shouldLoadScript()) {
 			utils.logger(logGroup, 'loading');
 			communicationService.emit(eventsRepository.LIVE_CONNECT_STARTED);
 
@@ -49,8 +55,8 @@ class LiveConnect extends BaseServiceSetup {
 					utils.logger(logGroup, 'loaded');
 					this.track();
 				});
-
-			this.isLoaded = true;
+		} else {
+			utils.logger(logGroup, `already loaded and available in ${this.storageConfig.type}Storage`);
 		}
 	}
 
@@ -58,14 +64,18 @@ class LiveConnect extends BaseServiceSetup {
 		return (nonId) => {
 			const partnerIdentityId = nonId[idName];
 
+			utils.logger(logGroup, `id ${idName}: ${partnerIdentityId}`);
+
 			if (idName === 'unifiedId') {
 				communicationService.emit(eventsRepository.LIVE_CONNECT_RESPONDED_UUID);
 			}
-			utils.logger(logGroup, `id ${idName}: ${partnerIdentityId}`);
 
 			if (!partnerIdentityId) {
 				return;
 			}
+
+			this.storage.setItem(partnerName, partnerIdentityId, this.storageConfig.ttl);
+
 			communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
 				partnerName,
 				partnerIdentityId,
@@ -89,8 +99,43 @@ class LiveConnect extends BaseServiceSetup {
 			return;
 		}
 		idConfigMapping.forEach(({ id, name, params }) => {
-			this.resolveAndReportId(id, name, params);
+			if (!this.isAvailableInStorage(name)) {
+				this.resolveAndReportId(id, name, params);
+			}
 		});
+	}
+
+	setupStorage(): void {
+		this.storageConfig = context.get('services.liveConnect.cachingStrategy');
+
+		if (this.storageConfig.type === 'local') {
+			this.storage = localCache;
+		} else {
+			this.storage = new UniversalStorage(window.sessionStorage);
+		}
+	}
+
+	shouldLoadScript(): boolean {
+		if (!this.storageConfig) {
+			return true;
+		}
+
+		let shouldLoadScript = false;
+
+		for (const param of this.storageConfig.mandatoryParams) {
+			const storageKey = idConfigMapping.find((config) => config.id === param)?.name;
+
+			if (!this.isAvailableInStorage(storageKey)) {
+				shouldLoadScript = true;
+				break;
+			}
+		}
+
+		return shouldLoadScript;
+	}
+
+	isAvailableInStorage(key: string): boolean {
+		return !!this.storage.getItem(key);
 	}
 }
 

@@ -1,4 +1,4 @@
-import { RxJsOperator } from '@ad-engine/models';
+import { RxJsOperator } from '@ad-engine/core';
 import { Observable } from 'rxjs';
 import { filter, map, withLatestFrom } from 'rxjs/operators';
 import { JWPlayer } from '../external-types/jwplayer';

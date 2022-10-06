@@ -5,10 +5,10 @@ import {
 	transformPriceFromBid,
 	transformPriceFromCpm,
 } from '@wikia/ad-bidders/prebid/price-helper';
-import { context } from '@wikia/ad-engine';
+import { context } from '@wikia/core';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { PbjsStub, stubPbjs } from '../../ad-engine/services/pbjs.stub';
+import { PbjsStub, stubPbjs } from '../../core/services/pbjs.stub';
 import { PrebidBidFactory } from './prebid-bid.factory';
 
 describe('transformPriceFromCpm', () => {
