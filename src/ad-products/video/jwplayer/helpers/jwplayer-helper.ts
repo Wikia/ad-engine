@@ -11,9 +11,9 @@ const EMPTY_VAST_CODE = 21009;
  */
 export class JWPlayerHelper {
 	constructor(
-		private adSlot: AdSlot,
-		private jwplayer: JWPlayer,
-		private readonly targeting: VideoTargeting,
+		protected adSlot: AdSlot,
+		protected jwplayer: JWPlayer,
+		protected readonly targeting: VideoTargeting,
 	) {}
 
 	isMoatTrackingEnabled(): boolean {
@@ -109,7 +109,7 @@ export class JWPlayerHelper {
 		);
 	}
 
-	private canAdBePlayed(videoPlaylistOrderNumber: number): boolean {
+	protected canAdBePlayed(videoPlaylistOrderNumber: number): boolean {
 		const isReplay = videoPlaylistOrderNumber > 1;
 
 		return (
@@ -118,25 +118,14 @@ export class JWPlayerHelper {
 		);
 	}
 
-	private shouldPlayAdOnNextVideo(videoPlaylistOrderNumber: number): boolean {
-		const SPONSORED_VIDEO_INDEX = 2;
+	protected shouldPlayAdOnNextVideo(videoPlaylistOrderNumber: number): boolean {
 		const capping = context.get('options.video.adsOnNextVideoFrequency');
-		const videoAdsOnAllVideosExceptSecond = context.get(
-			'options.video.forceVideoAdsOnAllVideosExceptSecond',
-		);
 
-		if (videoAdsOnAllVideosExceptSecond) {
-			return (
-				context.get('options.video.playAdsOnNextVideo') &&
-				videoPlaylistOrderNumber !== SPONSORED_VIDEO_INDEX
-			);
-		} else {
-			return (
-				context.get('options.video.playAdsOnNextVideo') &&
-				capping > 0 &&
-				(videoPlaylistOrderNumber - 1) % capping === 0
-			);
-		}
+		return (
+			context.get('options.video.playAdsOnNextVideo') &&
+			capping > 0 &&
+			(videoPlaylistOrderNumber - 1) % capping === 0
+		);
 	}
 
 	playVideoAd(position: 'midroll' | 'postroll' | 'preroll', state: JwpState): void {

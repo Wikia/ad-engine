@@ -1,8 +1,8 @@
-import { utils } from '@ad-engine/core';
+import { context, utils } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge, Observable } from 'rxjs';
 import { filter, mergeMap, tap } from 'rxjs/operators';
-import { JWPlayerHelper } from '../helpers/jwplayer-helper';
+import { JWPlayerHelper, JWPlayerHelperSkippingSecondVideo } from '../helpers';
 import { jwPlayerInhibitor } from '../helpers/jwplayer-inhibitor';
 import { PlayerReadyResult } from '../helpers/player-ready-result';
 import { JwpStream, ofJwpEvent } from '../streams/jwplayer-stream';
@@ -19,7 +19,7 @@ export class JWPlayerHandler {
 
 	handle({ jwplayer, adSlot, targeting, stream$ }: PlayerReadyResult): Observable<unknown> {
 		this.stream$ = stream$;
-		this.helper = new JWPlayerHelper(adSlot, jwplayer, targeting);
+		this.helper = this.createHelper(adSlot, jwplayer, targeting);
 
 		return merge(
 			this.adError(),
@@ -30,6 +30,18 @@ export class JWPlayerHandler {
 			this.videoMidPoint(),
 			this.beforeComplete(),
 		);
+	}
+
+	private createHelper(adSlot, jwplayer, targeting) {
+		const videoAdsOnAllVideosExceptSecond = context.get(
+			'options.video.forceVideoAdsOnAllVideosExceptSecond',
+		);
+
+		if (videoAdsOnAllVideosExceptSecond) {
+			return new JWPlayerHelperSkippingSecondVideo(adSlot, jwplayer, targeting);
+		} else {
+			return new JWPlayerHelper(adSlot, jwplayer, targeting);
+		}
 	}
 
 	private adRequest(): Observable<unknown> {
