@@ -2,7 +2,11 @@ import { context, utils } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge, Observable } from 'rxjs';
 import { filter, mergeMap, tap } from 'rxjs/operators';
-import { JWPlayerHelper, JWPlayerHelperSkippingSecondVideo } from '../helpers';
+import {
+	JWPlayerHelper,
+	JWPlayerHelperSkippingSecondVideo,
+	JwplayerHelperSkippingSponsoredVideo,
+} from '../helpers';
 import { jwPlayerInhibitor } from '../helpers/jwplayer-inhibitor';
 import { PlayerReadyResult } from '../helpers/player-ready-result';
 import { JwpStream, ofJwpEvent } from '../streams/jwplayer-stream';
@@ -36,10 +40,25 @@ export class JWPlayerHandler {
 		const videoAdsOnAllVideosExceptSecond = context.get(
 			'options.video.forceVideoAdsOnAllVideosExceptSecond',
 		);
+		const videoAdsOnAllVideosExceptSponsored = context.get(
+			'options.video.forceVideoAdsOnAllVideosExceptSponsored',
+		);
 
-		if (videoAdsOnAllVideosExceptSecond) {
+		if (videoAdsOnAllVideosExceptSponsored) {
+			// @ts-ignore Fandom JWPlayer sets the global
+			log('Creating JwplayerHelperSkippingSponsoredVideo...', window.sponsoredVideos);
+			// @ts-ignore Fandom JWPlayer sets the global
+			return new JwplayerHelperSkippingSponsoredVideo(
+				adSlot,
+				jwplayer,
+				targeting,
+				window.sponsoredVideos,
+			);
+		} else if (videoAdsOnAllVideosExceptSecond) {
+			log('Creating JWPlayerHelperSkippingSecondVideo...');
 			return new JWPlayerHelperSkippingSecondVideo(adSlot, jwplayer, targeting);
 		} else {
+			log('Creating JWPlayerHelper...');
 			return new JWPlayerHelper(adSlot, jwplayer, targeting);
 		}
 	}
@@ -92,7 +111,9 @@ export class JWPlayerHandler {
 		return this.stream$.pipe(
 			ofJwpEvent('beforePlay'),
 			tap(({ state }) => this.helper.updateVideoProperties(state)),
-			filter(({ state }) => this.helper.shouldPlayPreroll(state.depth)),
+			filter(({ state }) =>
+				this.helper.shouldPlayPreroll(state.depth, state?.playlistItem?.mediaid),
+			),
 			mergeMap((payload) => this.helper.awaitIasTracking(payload)),
 			tap(({ state }) => this.helper.playVideoAd('preroll', state)),
 		);
@@ -101,7 +122,9 @@ export class JWPlayerHandler {
 	private videoMidPoint(): Observable<unknown> {
 		return this.stream$.pipe(
 			ofJwpEvent('videoMidPoint'),
-			filter(({ state }) => this.helper.shouldPlayMidroll(state.depth)),
+			filter(({ state }) =>
+				this.helper.shouldPlayMidroll(state.depth, state?.playlistItem?.mediaid),
+			),
 			tap(({ state }) => this.helper.playVideoAd('midroll', state)),
 		);
 	}
@@ -109,7 +132,9 @@ export class JWPlayerHandler {
 	private beforeComplete(): Observable<unknown> {
 		return this.stream$.pipe(
 			ofJwpEvent('beforeComplete'),
-			filter(({ state }) => this.helper.shouldPlayPostroll(state.depth)),
+			filter(({ state }) =>
+				this.helper.shouldPlayPostroll(state.depth, state?.playlistItem?.mediaid),
+			),
 			tap(({ state }) => this.helper.playVideoAd('postroll', state)),
 		);
 	}

@@ -19,12 +19,11 @@ describe('JwplayerHelperSkippingSponsoredVideo', () => {
 				isEnabled: sandbox.stub().returns(true),
 			};
 
-			helper = new JwplayerHelperSkippingSponsoredVideo(adSlotStub, null, null);
+			helper = new JwplayerHelperSkippingSponsoredVideo(adSlotStub, null, null, []);
 
 			context.set('options.video.playAdsOnNextVideo', true);
 			context.set('options.video.isMidrollEnabled', false);
 			context.set('options.video.isPostrollEnabled', false);
-			context.set('options.video.sponsoredVideos', []);
 		});
 
 		afterEach(() => {
@@ -33,7 +32,6 @@ describe('JwplayerHelperSkippingSponsoredVideo', () => {
 			context.remove('options.video.playAdsOnNextVideo');
 			context.remove('options.video.isMidrollEnabled');
 			context.remove('options.video.isPostrollEnabled');
-			context.remove('options.video.sponsoredVideos');
 		});
 
 		it('works correctly for the default settings - no ad for the 2nd video, no midroll, no postroll', () => {
@@ -66,7 +64,7 @@ describe('JwplayerHelperSkippingSponsoredVideo', () => {
 		});
 
 		it('works correctly when the 3rd ad is a sponsored one', () => {
-			context.set('options.video.sponsoredVideos', ['testMediaId-3']);
+			helper = new JwplayerHelperSkippingSponsoredVideo(adSlotStub, null, null, ['testMediaId-3']);
 
 			simulatePlaysAndVerifyResults([
 				[true, false, false],

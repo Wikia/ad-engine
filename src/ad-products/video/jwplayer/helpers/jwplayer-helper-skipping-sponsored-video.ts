@@ -1,4 +1,4 @@
-import { AdSlot, context } from '@ad-engine/core';
+import { AdSlot, context, utils } from '@ad-engine/core';
 
 import { JWPlayerHelper } from './jwplayer-helper';
 import { JWPlayer } from '../external-types/jwplayer';
@@ -9,16 +9,15 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 		protected adSlot: AdSlot,
 		protected jwplayer: JWPlayer,
 		protected readonly targeting: VideoTargeting,
+		private readonly sponsoredVideos,
 	) {
 		super(adSlot, jwplayer, targeting);
 	}
 
-	// @ts-ignore we want to extend the method
 	shouldPlayPreroll(videoPlaylistOrderNumber: number, currentMediaId: string): boolean {
 		return this.canAdBePlayed(videoPlaylistOrderNumber, currentMediaId);
 	}
 
-	// @ts-ignore we want to extend the method
 	shouldPlayMidroll(videoPlaylistOrderNumber: number, currentMediaId: string): boolean {
 		return (
 			context.get('options.video.isMidrollEnabled') &&
@@ -26,7 +25,6 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 		);
 	}
 
-	// @ts-ignore we want to extend the method
 	shouldPlayPostroll(videoPlaylistOrderNumber: number, currentMediaId: string): boolean {
 		return (
 			context.get('options.video.isPostrollEnabled') &&
@@ -34,7 +32,6 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 		);
 	}
 
-	// @ts-ignore we want to extend the method
 	protected canAdBePlayed(videoPlaylistOrderNumber: number, currentMediaId: string): boolean {
 		const isReplay = videoPlaylistOrderNumber > 1;
 
@@ -45,16 +42,15 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 		);
 	}
 
-	// @ts-ignore we want to extend the method
 	protected shouldPlayAdOnNextVideo(
 		videoPlaylistOrderNumber: number,
 		currentMediaId: string,
 	): boolean {
-		const sponsoredVideos = context.get('options.video.sponsoredVideos');
+		utils.logger(JWPlayerHelper.LOG_GROUP_NAME, videoPlaylistOrderNumber, currentMediaId);
 
 		return (
 			context.get('options.video.playAdsOnNextVideo') &&
-			sponsoredVideos.indexOf(currentMediaId) === -1
+			this.sponsoredVideos.indexOf(currentMediaId) === -1
 		);
 	}
 }

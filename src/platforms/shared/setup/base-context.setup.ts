@@ -97,6 +97,10 @@ export class BaseContextSetup implements DiProcess {
 			'options.video.forceVideoAdsOnAllVideosExceptSecond',
 			this.instantConfig.get('icFeaturedVideoForceVideoAdsEverywhereExcept2ndVideo'),
 		);
+		context.set(
+			'options.video.forceVideoAdsOnAllVideosExceptSponsored',
+			this.instantConfig.get('icFeaturedVideoForceVideoAdsEverywhereExceptSponsoredVideo'),
+		);
 
 		context.set(
 			'options.floorAdhesionNumberOfViewportsFromTopToPush',

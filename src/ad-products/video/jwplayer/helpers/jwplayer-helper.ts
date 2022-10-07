@@ -10,6 +10,8 @@ const EMPTY_VAST_CODE = 21009;
  * Describes how things are done
  */
 export class JWPlayerHelper {
+	static LOG_GROUP_NAME = 'jwplayer-helper';
+
 	constructor(
 		protected adSlot: AdSlot,
 		protected jwplayer: JWPlayer,
@@ -93,33 +95,43 @@ export class JWPlayerHelper {
 		this.adSlot.setConfigProperty('targeting.rv', state.rv);
 	}
 
-	shouldPlayPreroll(videoPlaylistOrderNumber: number): boolean {
-		return this.canAdBePlayed(videoPlaylistOrderNumber);
+	shouldPlayPreroll(videoPlaylistOrderNumber: number, currentMediaId: string = null): boolean {
+		return this.canAdBePlayed(videoPlaylistOrderNumber, currentMediaId);
 	}
 
-	shouldPlayMidroll(videoPlaylistOrderNumber: number): boolean {
+	shouldPlayMidroll(videoPlaylistOrderNumber: number, currentMediaId: string = null): boolean {
 		return (
-			context.get('options.video.isMidrollEnabled') && this.canAdBePlayed(videoPlaylistOrderNumber)
+			context.get('options.video.isMidrollEnabled') &&
+			this.canAdBePlayed(videoPlaylistOrderNumber, currentMediaId)
 		);
 	}
 
-	shouldPlayPostroll(videoPlaylistOrderNumber: number): boolean {
+	shouldPlayPostroll(videoPlaylistOrderNumber: number, currentMediaId: string = null): boolean {
 		return (
-			context.get('options.video.isPostrollEnabled') && this.canAdBePlayed(videoPlaylistOrderNumber)
+			context.get('options.video.isPostrollEnabled') &&
+			this.canAdBePlayed(videoPlaylistOrderNumber, currentMediaId)
 		);
 	}
 
-	protected canAdBePlayed(videoPlaylistOrderNumber: number): boolean {
+	protected canAdBePlayed(
+		videoPlaylistOrderNumber: number,
+		currentMediaId: string = null,
+	): boolean {
 		const isReplay = videoPlaylistOrderNumber > 1;
 
 		return (
 			this.adSlot.isEnabled() &&
-			(!isReplay || (isReplay && this.shouldPlayAdOnNextVideo(videoPlaylistOrderNumber)))
+			(!isReplay ||
+				(isReplay && this.shouldPlayAdOnNextVideo(videoPlaylistOrderNumber, currentMediaId)))
 		);
 	}
 
-	protected shouldPlayAdOnNextVideo(videoPlaylistOrderNumber: number): boolean {
+	protected shouldPlayAdOnNextVideo(
+		videoPlaylistOrderNumber: number,
+		currentMediaId: string = null,
+	): boolean {
 		const capping = context.get('options.video.adsOnNextVideoFrequency');
+		utils.logger(JWPlayerHelper.LOG_GROUP_NAME, videoPlaylistOrderNumber, currentMediaId);
 
 		return (
 			context.get('options.video.playAdsOnNextVideo') &&
