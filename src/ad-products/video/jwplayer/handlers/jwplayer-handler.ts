@@ -45,9 +45,7 @@ export class JWPlayerHandler {
 		);
 
 		if (videoAdsOnAllVideosExceptSponsored) {
-			// @ts-ignore Fandom JWPlayer sets the global
 			log('Creating JwplayerHelperSkippingSponsoredVideo...', window.sponsoredVideos);
-			// @ts-ignore Fandom JWPlayer sets the global
 			return new JwplayerHelperSkippingSponsoredVideo(
 				adSlot,
 				jwplayer,

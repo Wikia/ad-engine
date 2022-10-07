@@ -46,4 +46,6 @@ interface Window {
 	SilverSurferSDK?: SilverSurferSDK;
 	wgCookiePath?: string;
 	XMLHttpRequest?: any;
+	// Fandom JWPlayer sets the sponsored videos list
+	sponsoredVideos?: string[];
 }
