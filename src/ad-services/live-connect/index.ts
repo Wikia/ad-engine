@@ -31,6 +31,7 @@ class LiveConnect extends BaseServiceSetup {
 	private isEnabled(): boolean {
 		return (
 			context.get('services.liveConnect.enabled') &&
+			context.get('services.liveConnect.cachingStrategy') &&
 			context.get('options.trackingOptIn') &&
 			!context.get('options.optOutSale') &&
 			!context.get('wiki.targeting.directedAtChildren')
