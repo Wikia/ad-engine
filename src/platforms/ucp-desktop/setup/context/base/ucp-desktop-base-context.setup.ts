@@ -1,9 +1,11 @@
 import { BaseContextSetup } from '@platforms/shared';
-import { context } from '@wikia/ad-engine';
+import { context, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpDesktopBaseContextSetup extends BaseContextSetup {
+	protected contentSelector = '.mw-parser-output';
+
 	execute(): void {
 		super.execute();
 
@@ -20,5 +22,10 @@ export class UcpDesktopBaseContextSetup extends BaseContextSetup {
 			'events.pushOnScroll.nativoThreshold',
 			this.instantConfig.get('icPushOnScrollNativoThreshold', 200),
 		);
+		context.set('custom.wordCount', this.getContentWordCount());
+	}
+
+	getContentWordCount(): number {
+		return utils.getContentWordCount(this.contentSelector);
 	}
 }
