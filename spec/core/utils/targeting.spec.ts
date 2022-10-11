@@ -11,6 +11,11 @@ describe('targeting', () => {
 	});
 
 	afterEach(() => {
+		context.remove('targeting.bundles');
+		context.remove('targeting.esrb');
+		context.remove('targeting.s1');
+		context.remove('targeting.skin');
+
 		sandbox.restore();
 	});
 
