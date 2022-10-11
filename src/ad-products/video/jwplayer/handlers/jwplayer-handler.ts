@@ -45,13 +45,8 @@ export class JWPlayerHandler {
 		);
 
 		if (videoAdsOnAllVideosExceptSponsored) {
-			log('Creating JwplayerHelperSkippingSponsoredVideo...', window.sponsoredVideos);
-			return new JwplayerHelperSkippingSponsoredVideo(
-				adSlot,
-				jwplayer,
-				targeting,
-				window.sponsoredVideos,
-			);
+			log('Creating JwplayerHelperSkippingSponsoredVideo...');
+			return new JwplayerHelperSkippingSponsoredVideo(adSlot, jwplayer, targeting);
 		} else if (videoAdsOnAllVideosExceptSecond) {
 			log('Creating JWPlayerHelperSkippingSecondVideo...');
 			return new JWPlayerHelperSkippingSecondVideo(adSlot, jwplayer, targeting);

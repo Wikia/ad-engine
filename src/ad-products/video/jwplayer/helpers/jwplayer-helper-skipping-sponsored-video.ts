@@ -9,7 +9,6 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 		protected adSlot: AdSlot,
 		protected jwplayer: JWPlayer,
 		protected readonly targeting: VideoTargeting,
-		private readonly sponsoredVideos,
 	) {
 		super(adSlot, jwplayer, targeting);
 	}
@@ -46,9 +45,14 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 		videoPlaylistOrderNumber: number,
 		currentMediaId: string,
 	): boolean {
-		utils.logger(JWPlayerHelper.LOG_GROUP_NAME, videoPlaylistOrderNumber, currentMediaId);
+		utils.logger(
+			JWPlayerHelper.LOG_GROUP_NAME,
+			videoPlaylistOrderNumber,
+			currentMediaId,
+			window.sponsoredVideos,
+		);
 
-		if (!Array.isArray(this.sponsoredVideos)) {
+		if (!Array.isArray(window.sponsoredVideos)) {
 			externalLogger.log('JWPlayer - no window.sponsoredVideos', {
 				currentMediaId,
 				videoPlaylistOrderNumber,
@@ -59,7 +63,7 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 
 		return (
 			context.get('options.video.playAdsOnNextVideo') &&
-			this.sponsoredVideos.indexOf(currentMediaId) === -1
+			window.sponsoredVideos.indexOf(currentMediaId) === -1
 		);
 	}
 }
