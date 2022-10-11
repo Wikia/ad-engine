@@ -1,4 +1,4 @@
-import { AdSlot, context, utils } from '@ad-engine/core';
+import { AdSlot, context, externalLogger, utils } from '@ad-engine/core';
 
 import { JWPlayerHelper } from './jwplayer-helper';
 import { JWPlayer } from '../external-types/jwplayer';
@@ -47,6 +47,15 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 		currentMediaId: string,
 	): boolean {
 		utils.logger(JWPlayerHelper.LOG_GROUP_NAME, videoPlaylistOrderNumber, currentMediaId);
+
+		if (!Array.isArray(this.sponsoredVideos)) {
+			externalLogger.log('JWPlayer - no window.sponsoredVideos', {
+				currentMediaId,
+				videoPlaylistOrderNumber,
+			});
+
+			return false;
+		}
 
 		return (
 			context.get('options.video.playAdsOnNextVideo') &&

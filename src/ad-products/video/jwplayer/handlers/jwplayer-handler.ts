@@ -1,4 +1,4 @@
-import { context, externalLogger, utils } from '@ad-engine/core';
+import { context, utils } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge, Observable } from 'rxjs';
 import { filter, mergeMap, tap } from 'rxjs/operators';
@@ -44,13 +44,7 @@ export class JWPlayerHandler {
 			'options.video.forceVideoAdsOnAllVideosExceptSponsored',
 		);
 
-		if (videoAdsOnAllVideosExceptSponsored && !window.sponsoredVideos) {
-			externalLogger.log('JWPlayer - no window.sponsoredVideos', {
-				targeting,
-			});
-		}
-
-		if (videoAdsOnAllVideosExceptSponsored && window.sponsoredVideos) {
+		if (videoAdsOnAllVideosExceptSponsored) {
 			log('Creating JwplayerHelperSkippingSponsoredVideo...', window.sponsoredVideos);
 			return new JwplayerHelperSkippingSponsoredVideo(
 				adSlot,

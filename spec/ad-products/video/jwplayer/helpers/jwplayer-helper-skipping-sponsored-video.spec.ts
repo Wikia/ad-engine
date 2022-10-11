@@ -73,6 +73,16 @@ describe('JwplayerHelperSkippingSponsoredVideo', () => {
 			]);
 		});
 
+		it('works correctly when there is no global window.sponsoredVideos', () => {
+			helper = new JwplayerHelperSkippingSponsoredVideo(adSlotStub, null, null, undefined);
+
+			simulatePlaysAndVerifyResults([
+				[true, false, false],
+				[false, false, false],
+				[false, false, false],
+			]);
+		});
+
 		function simulatePlaysAndVerifyResults(testData: videoTestRow[]): void {
 			testData.forEach((expectedResults, videoPlayIndex) => {
 				const videoNumber = videoPlayIndex + 1;
