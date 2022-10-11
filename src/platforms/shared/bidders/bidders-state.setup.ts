@@ -1,9 +1,29 @@
-import { context, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
+import { context, Dictionary, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class BiddersStateSetup implements DiProcess {
 	private selectedBidder: string;
+	private prebidBidders: Dictionary<string> = {
+		appnexus: 'icPrebidAppNexus',
+		appnexusAst: 'icPrebidAppNexusAst',
+		appnexusNative: 'icPrebidAppNexusNative',
+		gumgum: 'icPrebidGumGum',
+		indexExchange: 'icPrebidIndexExchange',
+		kargo: 'icPrebidKargo',
+		medianet: 'icPrebidMedianet',
+		nobid: 'icPrebidNobid',
+		oneVideo: 'icPrebidOneVideo',
+		openx: 'icPrebidOpenX',
+		pubmatic: 'icPrebidPubmatic',
+		rubicon_display: 'icPrebidRubiconDisplay',
+		roundel: 'icPrebidRoundel',
+		rubicon_pg: 'icPrebidRubiconPG',
+		rubicon: 'icPrebidRubicon',
+		telaria: 'icPrebidTelaria',
+		triplelift: 'icPrebidTriplelift',
+		verizon: 'icPrebidVerizon',
+	};
 
 	constructor(private instantConfig: InstantConfigService) {
 		this.selectedBidder = utils.queryString.get('select_bidder') || '';
@@ -27,32 +47,17 @@ export class BiddersStateSetup implements DiProcess {
 		if (this.instantConfig.get('icPrebid')) {
 			context.set('bidders.prebid.enabled', true);
 
-			this.enableBidder('appnexus', 'icPrebidAppNexus');
-			this.enableBidder('appnexusAst', 'icPrebidAppNexusAst');
-			this.enableBidder('appnexusNative', 'icPrebidAppNexusNative');
-			this.enableBidder('gumgum', 'icPrebidGumGum');
-			this.enableBidder('indexExchange', 'icPrebidIndexExchange');
-			this.enableBidder('kargo', 'icPrebidKargo');
-			this.enableBidder('medianet', 'icPrebidMedianet');
-			this.enableBidder('nobid', 'icPrebidNobid');
-			this.enableBidder('oneVideo', 'icPrebidOneVideo');
-			this.enableBidder('openx', 'icPrebidOpenX');
-			this.enableBidder('pubmatic', 'icPrebidPubmatic');
-			this.enableBidder('rubicon_display', 'icPrebidRubiconDisplay');
-			this.enableBidder('roundel', 'icPrebidRoundel');
-			this.enableBidder('rubicon_pg', 'icPrebidRubiconPG');
-			this.enableBidder('rubicon', 'icPrebidRubicon');
-			this.enableBidder('telaria', 'icPrebidTelaria');
-			this.enableBidder('triplelift', 'icPrebidTriplelift');
-			this.enableBidder('verizon', 'icPrebidVerizon');
+			for (const [bidderName, icVariable] of Object.entries(this.prebidBidders)) {
+				this.enableIfApplicable(bidderName, icVariable);
+			}
 
 			const testBidderConfig: object = this.instantConfig.get('icPrebidTestBidder');
 			if (testBidderConfig) {
 				context.set('bidders.prebid.testBidder', {
-					enabled: true,
 					name: testBidderConfig['name'],
 					slots: testBidderConfig['slots'],
 				});
+				this.enableIfApplicable('testBidder', 'icPrebidTestBidder');
 			}
 		}
 
@@ -62,11 +67,12 @@ export class BiddersStateSetup implements DiProcess {
 		);
 	}
 
-	private enableBidder(name: string, icKey: string): void {
+	private enableIfApplicable(name: string, icKey: string): void {
 		if (this.selectedBidder && name !== this.selectedBidder) {
 			context.set(`bidders.prebid.${name}.enabled`, false);
+			return;
 		}
 
-		context.set(`bidders.prebid.${name}.enabled`, this.instantConfig.get(icKey));
+		context.set(`bidders.prebid.${name}.enabled`, !!this.instantConfig.get(icKey));
 	}
 }
