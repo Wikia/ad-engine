@@ -5,12 +5,16 @@ import { getMediaWikiVariable } from '../../../../utils/get-media-wiki-variable'
 import { FandomContext } from '../models/fandom-context';
 import { CommonStrategyParams } from '../interfaces/common-strategy-params';
 import { OptionalStrategyParams } from '../interfaces/optional-strategy-params';
-import { TagsType } from '../interfaces/targeting-strategy';
+import { TagsType, TargetingStrategyInterface } from '../interfaces/targeting-strategy';
 
-export class CommonStrategy {
+export class CommonStrategy implements TargetingStrategyInterface {
 	private prefixableKeys = ['gnre', 'media', 'pform', 'pub', 'theme', 'tv'];
 
 	constructor(private skin: string, private fandomContext: FandomContext) {}
+
+	execute(): Partial<Targeting> {
+		return this.getCommonParams();
+	}
 
 	public getCommonParams(): Partial<Targeting> {
 		const domain = getDomain();
