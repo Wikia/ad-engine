@@ -1,9 +1,13 @@
-import { context, DiProcess, InstantConfigService } from '@wikia/ad-engine';
+import { context, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class BiddersStateSetup implements DiProcess {
-	constructor(private instantConfig: InstantConfigService) {}
+	private selectedBidder: string;
+
+	constructor(private instantConfig: InstantConfigService) {
+		this.selectedBidder = utils.queryString.get('select_bidder') || '';
+	}
 
 	execute(): void {
 		this.setupBidders();
@@ -22,39 +26,25 @@ export class BiddersStateSetup implements DiProcess {
 
 		if (this.instantConfig.get('icPrebid')) {
 			context.set('bidders.prebid.enabled', true);
-			context.set('bidders.prebid.appnexus.enabled', this.instantConfig.get('icPrebidAppNexus'));
-			context.set(
-				'bidders.prebid.appnexusAst.enabled',
-				this.instantConfig.get('icPrebidAppNexusAst'),
-			);
-			context.set(
-				'bidders.prebid.appnexusNative.enabled',
-				this.instantConfig.get('icPrebidAppNexusNative'),
-			);
-			context.set('bidders.prebid.gumgum.enabled', this.instantConfig.get('icPrebidGumGum'));
-			context.set(
-				'bidders.prebid.indexExchange.enabled',
-				this.instantConfig.get('icPrebidIndexExchange'),
-			);
-			context.set('bidders.prebid.kargo.enabled', this.instantConfig.get('icPrebidKargo'));
-			context.set('bidders.prebid.medianet.enabled', this.instantConfig.get('icPrebidMedianet'));
-			context.set('bidders.prebid.nobid.enabled', this.instantConfig.get('icPrebidNobid'));
-			context.set('bidders.prebid.oneVideo.enabled', this.instantConfig.get('icPrebidOneVideo'));
-			context.set('bidders.prebid.openx.enabled', this.instantConfig.get('icPrebidOpenX'));
-			context.set('bidders.prebid.pubmatic.enabled', this.instantConfig.get('icPrebidPubmatic'));
-			context.set(
-				'bidders.prebid.rubicon_display.enabled',
-				this.instantConfig.get('icPrebidRubiconDisplay'),
-			);
-			context.set('bidders.prebid.roundel.enabled', this.instantConfig.get('icPrebidRoundel'));
-			context.set('bidders.prebid.rubicon_pg.enabled', this.instantConfig.get('icPrebidRubiconPG'));
-			context.set('bidders.prebid.rubicon.enabled', this.instantConfig.get('icPrebidRubicon'));
-			context.set('bidders.prebid.telaria.enabled', this.instantConfig.get('icPrebidTelaria'));
-			context.set(
-				'bidders.prebid.triplelift.enabled',
-				this.instantConfig.get('icPrebidTriplelift'),
-			);
-			context.set('bidders.prebid.verizon.enabled', this.instantConfig.get('icPrebidVerizon'));
+
+			this.enableBidder('appnexus', 'icPrebidAppNexus');
+			this.enableBidder('appnexusAst', 'icPrebidAppNexusAst');
+			this.enableBidder('appnexusNative', 'icPrebidAppNexusNative');
+			this.enableBidder('gumgum', 'icPrebidGumGum');
+			this.enableBidder('indexExchange', 'icPrebidIndexExchange');
+			this.enableBidder('kargo', 'icPrebidKargo');
+			this.enableBidder('medianet', 'icPrebidMedianet');
+			this.enableBidder('nobid', 'icPrebidNobid');
+			this.enableBidder('oneVideo', 'icPrebidOneVideo');
+			this.enableBidder('openx', 'icPrebidOpenX');
+			this.enableBidder('pubmatic', 'icPrebidPubmatic');
+			this.enableBidder('rubicon_display', 'icPrebidRubiconDisplay');
+			this.enableBidder('roundel', 'icPrebidRoundel');
+			this.enableBidder('rubicon_pg', 'icPrebidRubiconPG');
+			this.enableBidder('rubicon', 'icPrebidRubicon');
+			this.enableBidder('telaria', 'icPrebidTelaria');
+			this.enableBidder('triplelift', 'icPrebidTriplelift');
+			this.enableBidder('verizon', 'icPrebidVerizon');
 
 			const testBidderConfig: object = this.instantConfig.get('icPrebidTestBidder');
 			if (testBidderConfig) {
@@ -70,5 +60,13 @@ export class BiddersStateSetup implements DiProcess {
 			'bidders.enabled',
 			context.get('bidders.prebid.enabled') || context.get('bidders.a9.enabled'),
 		);
+	}
+
+	private enableBidder(name: string, icKey: string): void {
+		if (this.selectedBidder && name !== this.selectedBidder) {
+			context.set(`bidders.prebid.${name}.enabled`, false);
+		}
+
+		context.set(`bidders.prebid.${name}.enabled`, this.instantConfig.get(icKey));
 	}
 }
