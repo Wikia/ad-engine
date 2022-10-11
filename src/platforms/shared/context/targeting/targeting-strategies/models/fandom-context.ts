@@ -1,3 +1,5 @@
+import { TaxonomyTags } from '../interfaces/taxonomy-tags';
+
 export class FandomContext {
 	constructor(public readonly site: Site, public readonly page: Page) {}
 }
@@ -8,7 +10,7 @@ export class Site {
 	public readonly esrbRating: string;
 	public readonly siteName: string;
 	public readonly top1000: boolean;
-	public readonly tags: any;
+	public readonly tags: TaxonomyTags;
 	public readonly taxonomy: string[];
 	// 'vertical' should be removed after UCP release from ADEN-12194
 	public readonly vertical: string;
@@ -40,7 +42,7 @@ export class Page {
 	public readonly pageId: number;
 	public readonly pageName: string;
 	public readonly pageType: string;
-	public readonly tags: any;
+	public readonly tags: TaxonomyTags;
 
 	constructor(
 		articleId: number,

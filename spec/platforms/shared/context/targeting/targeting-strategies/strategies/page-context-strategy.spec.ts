@@ -7,6 +7,7 @@ import {
 	Page,
 } from '../../../../../../../src/platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
 import { PageContextStrategy } from '../../../../../../../src/platforms/shared/context/targeting/targeting-strategies/strategies/page-context-strategy';
+import { CommonStrategy } from '@wikia/platforms/shared/context/targeting/targeting-strategies/strategies/common-strategy';
 
 describe('PageContextStrategy execution', () => {
 	beforeEach(() => {
@@ -43,7 +44,7 @@ describe('PageContextStrategy execution', () => {
 		s1: '_test',
 		s2: 'article-test',
 		sex: [],
-		skin: 'test',
+		skin: mockedSkin,
 		theme: [],
 		tv: [],
 		uap: 'none',
@@ -57,9 +58,9 @@ describe('PageContextStrategy execution', () => {
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
-		expect(new PageContextStrategy(mockedSkin, mockedContext).execute()).to.deep.eq(
-			defaultExpectedTargeting,
-		);
+		expect(
+			new PageContextStrategy(new CommonStrategy(mockedSkin, mockedContext)).execute(),
+		).to.deep.eq(defaultExpectedTargeting);
 	});
 
 	it('Returns empty tags when site tags are not empty and page tags are empty', function () {
@@ -72,9 +73,9 @@ describe('PageContextStrategy execution', () => {
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
-		expect(new PageContextStrategy(mockedSkin, mockedContext).execute()).to.deep.eq(
-			defaultExpectedTargeting,
-		);
+		expect(
+			new PageContextStrategy(new CommonStrategy(mockedSkin, mockedContext)).execute(),
+		).to.deep.eq(defaultExpectedTargeting);
 	});
 
 	it('Returns tags when site tags are empty and page tags are not empty', function () {
@@ -92,9 +93,9 @@ describe('PageContextStrategy execution', () => {
 			...{ theme: ['p_test2', 'p_superheroes'] },
 		};
 
-		expect(new PageContextStrategy(mockedSkin, mockedContext).execute()).to.deep.eq(
-			expectedTargeting,
-		);
+		expect(
+			new PageContextStrategy(new CommonStrategy(mockedSkin, mockedContext)).execute(),
+		).to.deep.eq(expectedTargeting);
 	});
 
 	it('Returns correct tags when site and page tags are not empty', function () {
@@ -118,8 +119,8 @@ describe('PageContextStrategy execution', () => {
 			...{ theme: ['p_test4', 'p_superheroes'] },
 		};
 
-		expect(new PageContextStrategy(mockedSkin, mockedContext).execute()).to.deep.eq(
-			expectedTargeting,
-		);
+		expect(
+			new PageContextStrategy(new CommonStrategy(mockedSkin, mockedContext)).execute(),
+		).to.deep.eq(expectedTargeting);
 	});
 });

@@ -6,6 +6,11 @@ export enum TargetingStrategy {
 	COMBINED = 'combined',
 }
 
+export enum TagsType {
+	SITE = 'site',
+	PAGE = 'page',
+}
+
 export interface TargetingStrategyInterface {
 	execute(): Partial<Targeting>;
 }

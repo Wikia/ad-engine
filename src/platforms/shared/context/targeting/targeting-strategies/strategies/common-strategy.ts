@@ -1,21 +1,20 @@
 import { context, Targeting, utils } from '@wikia/ad-engine';
-
 import { TaxonomyTags } from '../interfaces/taxonomy-tags';
 import { getDomain } from '../../../../utils/get-domain';
 import { getMediaWikiVariable } from '../../../../utils/get-media-wiki-variable';
-import { FandomContext, Page, Site } from '../models/fandom-context';
+import { FandomContext } from '../models/fandom-context';
 import { CommonStrategyParams } from '../interfaces/common-strategy-params';
 import { OptionalStrategyParams } from '../interfaces/optional-strategy-params';
+import { TagsType } from '../interfaces/targeting-strategy';
 
-export abstract class CommonStrategy {
+export class CommonStrategy {
 	private prefixableKeys = ['gnre', 'media', 'pform', 'pub', 'theme', 'tv'];
 
-	protected getCommonParams(
-		fandomContext: FandomContext,
-		wiki: MediaWikiAdsContext,
-		skin: string,
-	): Partial<Targeting> {
+	constructor(private skin: string, private fandomContext: FandomContext) {}
+
+	public getCommonParams(): Partial<Targeting> {
 		const domain = getDomain();
+		const wiki: MediaWikiAdsContext = context.get('wiki');
 
 		const commonParams: Partial<Targeting> = {
 			ar: window.innerWidth > window.innerHeight ? '4:3' : '3:4',
@@ -23,35 +22,35 @@ export abstract class CommonStrategy {
 			geo: utils.geoService.getCountryCode() || 'none',
 			hostpre: utils.targeting.getHostnamePrefix(),
 			original_host: wiki.opts?.isGamepedia ? 'gamepedia' : 'fandom',
-			skin: skin,
+			skin: this.skin,
 			uap: 'none',
 			uap_c: 'none',
-			is_mobile: utils.client.isMobileSkin(skin) ? '1' : '0',
+			is_mobile: utils.client.isMobileSkin(this.skin) ? '1' : '0',
 		};
 
 		const commonContextParams: CommonStrategyParams = {
-			artid: fandomContext.page.articleId ? fandomContext.page.articleId.toString() : '',
-			esrb: fandomContext.site.esrbRating || '',
-			kid_wiki: fandomContext.site.directedAtChildren ? '1' : '0',
-			lang: fandomContext.page.lang || 'unknown',
-			// 'fandomContext.site.vertical' should be removed after UCP release from ADEN-12194
-			s0: fandomContext.site.taxonomy?.[0] || fandomContext.site.vertical,
-			s0c: fandomContext.site.categories,
+			artid: this.fandomContext.page.articleId ? this.fandomContext.page.articleId.toString() : '',
+			esrb: this.fandomContext.site.esrbRating || '',
+			kid_wiki: this.fandomContext.site.directedAtChildren ? '1' : '0',
+			lang: this.fandomContext.page.lang || 'unknown',
+			// 'this.fandomContext.site.vertical' should be removed after UCP release from ADEN-12194
+			s0: this.fandomContext.site.taxonomy?.[0] || this.fandomContext.site.vertical,
+			s0c: this.fandomContext.site.categories,
 			// 'wiki.targeting.wikiVertical' should be removed after UCP release from ADEN-12194
-			s0v: fandomContext.site.taxonomy?.[1] || wiki.targeting.wikiVertical,
-			s1: utils.targeting.getRawDbName(fandomContext.site.siteName),
-			s2: this.getAdLayout(fandomContext.page.pageType || 'article'),
-			wpage: fandomContext.page.pageName && fandomContext.page.pageName.toLowerCase(),
+			s0v: this.fandomContext.site.taxonomy?.[1] || wiki.targeting.wikiVertical,
+			s1: utils.targeting.getRawDbName(this.fandomContext.site.siteName),
+			s2: this.getAdLayout(this.fandomContext.page.pageType || 'article'),
+			wpage: this.fandomContext.page.pageName && this.fandomContext.page.pageName.toLowerCase(),
 		};
 
 		return {
 			...commonParams,
 			...commonContextParams,
-			...this.getOptionalKeyVals(fandomContext),
+			...this.getOptionalKeyVals(),
 		};
 	}
 
-	protected getAdLayout(pageType: string): string {
+	private getAdLayout(pageType: string): string {
 		const videoStatus = this.getVideoStatus();
 		const hasFeaturedVideo = !!videoStatus.hasVideoOnPage;
 		const hasIncontentPlayer =
@@ -76,21 +75,29 @@ export abstract class CommonStrategy {
 		return pageType;
 	}
 
-	protected getTaxonomyTags(contextTags: Site['tags'] | Page['tags']): TaxonomyTags {
+	public getTaxonomyTags(tagsType: TagsType): TaxonomyTags {
+		const contextTags =
+			tagsType === TagsType.SITE ? this.fandomContext.site.tags : this.fandomContext.page.tags;
+
+		if (!contextTags) {
+			utils.warner('Targeting', 'Getting fandomContext tags failed');
+			return;
+		}
+
 		return {
-			age: contextTags?.age || [],
-			bundles: contextTags?.tags?.bundles || [],
-			gnre: contextTags?.gnre || [],
-			media: contextTags?.media || [],
-			pform: contextTags?.pform || [],
-			pub: contextTags?.pub || [],
-			sex: contextTags?.sex || [],
-			theme: contextTags?.theme || [],
-			tv: contextTags?.tv || [],
+			age: contextTags.age || [],
+			bundles: contextTags.bundles || [],
+			gnre: contextTags.gnre || [],
+			media: contextTags.media || [],
+			pform: contextTags.pform || [],
+			pub: contextTags.pub || [],
+			sex: contextTags.sex || [],
+			theme: contextTags.theme || [],
+			tv: contextTags.tv || [],
 		};
 	}
 
-	protected addPagePrefixToValues(tags: TaxonomyTags): TaxonomyTags {
+	public addPagePrefixToValues(tags: TaxonomyTags): TaxonomyTags {
 		for (const [key, value] of Object.entries(tags)) {
 			if (this.prefixableKeys.includes(key) && Array.isArray(value) && value.length > 0) {
 				tags[key] = value.map((val) => 'p_' + val);
@@ -100,7 +107,7 @@ export abstract class CommonStrategy {
 		return tags;
 	}
 
-	protected combinePrefixableTags(siteTags: TaxonomyTags, pageTags: TaxonomyTags): TaxonomyTags {
+	public combinePrefixableTags(siteTags: TaxonomyTags, pageTags: TaxonomyTags): TaxonomyTags {
 		const combinedTags: TaxonomyTags = {};
 
 		for (const [key, value] of Object.entries(siteTags)) {
@@ -139,7 +146,7 @@ export abstract class CommonStrategy {
 		context.set('custom.hasIncontentPlayer', hasIncontentPlayer);
 	}
 
-	private getOptionalKeyVals(fandomContext: FandomContext): OptionalStrategyParams {
+	private getOptionalKeyVals(): OptionalStrategyParams {
 		const keyVals: OptionalStrategyParams = {};
 
 		const keyValsMap = {
@@ -154,7 +161,7 @@ export abstract class CommonStrategy {
 			}
 		});
 
-		if (fandomContext.site.top1000) {
+		if (this.fandomContext.site.top1000) {
 			keyVals.top = '1k';
 		}
 

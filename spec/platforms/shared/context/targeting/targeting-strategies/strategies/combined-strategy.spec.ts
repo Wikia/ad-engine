@@ -7,6 +7,7 @@ import {
 	Page,
 } from '../../../../../../../src/platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
 import { CombinedStrategySiteTagsBased } from '../../../../../../../src/platforms/shared/context/targeting/targeting-strategies/strategies/combined-strategy-site-tags-based';
+import { CommonStrategy } from '@wikia/platforms/shared/context/targeting/targeting-strategies/strategies/common-strategy';
 
 describe('CombinedStrategySiteTagsBased execution', () => {
 	beforeEach(() => {
@@ -41,7 +42,7 @@ describe('CombinedStrategySiteTagsBased execution', () => {
 		s1: '_test',
 		s2: 'article-test',
 		sex: [],
-		skin: 'test',
+		skin: mockedSkin,
 		theme: [],
 		tv: [],
 		uap: 'none',
@@ -55,9 +56,9 @@ describe('CombinedStrategySiteTagsBased execution', () => {
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
-		expect(new CombinedStrategySiteTagsBased(mockedSkin, mockedContext).execute()).to.deep.eq(
-			defaultExpectedTargeting,
-		);
+		expect(
+			new CombinedStrategySiteTagsBased(new CommonStrategy(mockedSkin, mockedContext)).execute(),
+		).to.deep.eq(defaultExpectedTargeting);
 	});
 
 	it('Returns tags when site tags are not empty and page tags are empty', function () {
@@ -71,9 +72,9 @@ describe('CombinedStrategySiteTagsBased execution', () => {
 		);
 		const expectedTargeting = { ...defaultExpectedTargeting, ...mockedSiteTags };
 
-		expect(new CombinedStrategySiteTagsBased(mockedSkin, mockedContext).execute()).to.deep.eq(
-			expectedTargeting,
-		);
+		expect(
+			new CombinedStrategySiteTagsBased(new CommonStrategy(mockedSkin, mockedContext)).execute(),
+		).to.deep.eq(expectedTargeting);
 	});
 
 	it('Returns tags when site tags are empty and page tags are not empty', function () {
@@ -91,9 +92,9 @@ describe('CombinedStrategySiteTagsBased execution', () => {
 			...{ theme: ['p_test2', 'p_superheroes'] },
 		};
 
-		expect(new CombinedStrategySiteTagsBased(mockedSkin, mockedContext).execute()).to.deep.eq(
-			expectedTargeting,
-		);
+		expect(
+			new CombinedStrategySiteTagsBased(new CommonStrategy(mockedSkin, mockedContext)).execute(),
+		).to.deep.eq(expectedTargeting);
 	});
 
 	it('Returns combined tags when site and page tags are not empty', function () {
@@ -117,8 +118,8 @@ describe('CombinedStrategySiteTagsBased execution', () => {
 			...{ theme: ['test3', 'superheroes', 'p_test4', 'p_superheroes'] },
 		};
 
-		expect(new CombinedStrategySiteTagsBased(mockedSkin, mockedContext).execute()).to.deep.eq(
-			expectedTargeting,
-		);
+		expect(
+			new CombinedStrategySiteTagsBased(new CommonStrategy(mockedSkin, mockedContext)).execute(),
+		).to.deep.eq(expectedTargeting);
 	});
 });
