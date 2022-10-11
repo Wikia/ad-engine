@@ -18,6 +18,14 @@ class LiveRampPixel extends BaseServiceSetup {
 	insertLiveRampPixel(token): void {
 		const element = document.createElement('img');
 		element.src = this.PIXEL_URL + token;
+		element.onload = () => {
+			communicationService.emit(eventsRepository.LIVE_RAMP_LOADED);
+			utils.logger(this.logGroup, 'Loaded pixel');
+		};
+		element.onerror = () => {
+			communicationService.emit(eventsRepository.LIVE_RAMP_FAILED);
+			utils.logger(this.logGroup, 'Failed to load pixel');
+		};
 		document.body.appendChild(element);
 	}
 
@@ -26,6 +34,8 @@ class LiveRampPixel extends BaseServiceSetup {
 			utils.logger(this.logGroup, 'pixel disabled');
 			return;
 		}
+		communicationService.emit(eventsRepository.LIVE_RAMP_STARTED);
+
 		communicationService.on(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, (event) => {
 			if (event.payload.partnerName === 'Google') {
 				this.insertLiveRampPixel(event.payload.partnerIdentityId);

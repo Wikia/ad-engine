@@ -13,6 +13,9 @@ const eventsToTrack = {
 	audigent_segment_library_loaded: eventsRepository.AUDIGENT_SEGMENT_LIBRARY_LOADED,
 	audigent_segments_ready: eventsRepository.AUDIGENT_SEGMENTS_READY,
 	eyeota_started: eventsRepository.EYEOTA_STARTED,
+	liveramp_started: eventsRepository.LIVE_RAMP_STARTED,
+	liveramp_loaded: eventsRepository.LIVE_RAMP_LOADED,
+	liveramp_failed: eventsRepository.LIVE_RAMP_FAILED,
 };
 
 export class LoadTimesTracker {

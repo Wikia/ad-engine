@@ -186,6 +186,15 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	LIVE_CONNECT_RESPONDED_UUID: {
 		name: 'LiveConnect responded with UUID',
 	},
+	LIVE_RAMP_STARTED: {
+		name: 'LiveRamp started',
+	},
+	LIVE_RAMP_LOADED: {
+		name: 'LiveRamp Loaded',
+	},
+	LIVE_RAMP_FAILED: {
+		name: 'LiveRamp load failed',
+	},
 	NATIVO_LOADED: {
 		name: 'Nativo loaded',
 		payload: props<{ isLoaded: boolean }>(),
