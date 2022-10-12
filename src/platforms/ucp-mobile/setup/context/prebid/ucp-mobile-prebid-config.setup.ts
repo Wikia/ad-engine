@@ -5,6 +5,7 @@ import { getAppnexusAstContext } from '../../../bidders/prebid/appnexus-ast';
 import { getGumgumContext } from '../../../bidders/prebid/gumgum';
 import { getIndexExchangeContext } from '../../../bidders/prebid/index-exchange';
 import { getKargoContext } from '../../../bidders/prebid/kargo';
+import { getMedianetContext } from '../../../bidders/prebid/medianet';
 import { getNobidContext } from '../../../bidders/prebid/nobid';
 import { getOneVideoContext } from '../../../bidders/prebid/one-video';
 import { getOpenXContext } from '../../../bidders/prebid/openx';
@@ -26,6 +27,7 @@ export class UcpMobilePrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.gumgum', getGumgumContext());
 		context.set('bidders.prebid.indexExchange', getIndexExchangeContext());
 		context.set('bidders.prebid.kargo', getKargoContext());
+		context.set('bidders.prebid.medianet', getMedianetContext());
 		context.set('bidders.prebid.nobid', getNobidContext());
 		context.set('bidders.prebid.onevideo', getOneVideoContext());
 		context.set('bidders.prebid.openx', getOpenXContext());
