@@ -1,9 +1,15 @@
 import { createFandomContext } from './create-fandom-context';
 import { TargetingStrategyInterface, TargetingStrategy } from '../interfaces/targeting-strategy';
-import { PageContextStrategy } from '../strategies/page-context-strategy';
-import { CombinedStrategySiteTagsBased } from '../strategies/combined-strategy-site-tags-based';
-import { SiteContextStrategy } from '../strategies/site-context-strategy';
-import { CommonStrategy } from '../strategies/common-strategy';
+import { PageLevelTaxonomyTags } from '../strategies/page-level-taxonomy-tags';
+import { SiteLevelTaxonomyTags } from '../strategies/site-level-taxonomy-tags';
+import { CommonTags } from '../strategies/common-tags';
+import { SummaryDecorator } from '../decorators/summary-decorator';
+import { PrefixDecorator } from '../decorators/prefix-decorator';
+import { CombineTagsDecorator } from '../decorators/combine-tags-decorator';
+import { utils } from '@wikia/ad-engine';
+
+const logGroup = 'Targeting';
+const fandomContext = createFandomContext();
 
 export function createSelectedStrategy(
 	selectedStrategy: string,
@@ -11,11 +17,29 @@ export function createSelectedStrategy(
 ): TargetingStrategyInterface {
 	switch (selectedStrategy) {
 		case TargetingStrategy.SITE_CONTEXT:
-			return new SiteContextStrategy(new CommonStrategy(skin, createFandomContext()));
+			utils.logger(logGroup, 'Executing SiteContext strategy...');
+
+			return new SummaryDecorator(
+				new CommonTags(skin, fandomContext),
+				new SiteLevelTaxonomyTags(fandomContext),
+			);
 		case TargetingStrategy.PAGE_CONTEXT:
-			return new PageContextStrategy(new CommonStrategy(skin, createFandomContext()));
+			utils.logger(logGroup, 'Executing PageContext strategy...');
+
+			return new SummaryDecorator(
+				new CommonTags(skin, fandomContext),
+				new PrefixDecorator(new PageLevelTaxonomyTags(fandomContext)),
+			);
 		case TargetingStrategy.COMBINED:
 		default:
-			return new CombinedStrategySiteTagsBased(new CommonStrategy(skin, createFandomContext()));
+			utils.logger(logGroup, 'Executing Combined strategy...');
+
+			return new SummaryDecorator(
+				new CommonTags(skin, fandomContext),
+				new CombineTagsDecorator([
+					new SiteLevelTaxonomyTags(fandomContext),
+					new PrefixDecorator(new PageLevelTaxonomyTags(fandomContext)),
+				]),
+			);
 	}
 }

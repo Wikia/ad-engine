@@ -1,15 +1,12 @@
 import { context, Targeting, utils } from '@wikia/ad-engine';
-import { TaxonomyTags } from '../interfaces/taxonomy-tags';
 import { getDomain } from '../../../../utils/get-domain';
 import { getMediaWikiVariable } from '../../../../utils/get-media-wiki-variable';
 import { FandomContext } from '../models/fandom-context';
 import { CommonStrategyParams } from '../interfaces/common-strategy-params';
 import { OptionalStrategyParams } from '../interfaces/optional-strategy-params';
-import { TagsType, TargetingStrategyInterface } from '../interfaces/targeting-strategy';
+import { TargetingStrategyInterface } from '../interfaces/targeting-strategy';
 
-export class CommonStrategy implements TargetingStrategyInterface {
-	private prefixableKeys = ['gnre', 'media', 'pform', 'pub', 'theme', 'tv'];
-
+export class CommonTags implements TargetingStrategyInterface {
 	constructor(private skin: string, private fandomContext: FandomContext) {}
 
 	execute(): Partial<Targeting> {
@@ -77,54 +74,6 @@ export class CommonStrategy implements TargetingStrategyInterface {
 		}
 
 		return pageType;
-	}
-
-	public getTaxonomyTags(tagsType: TagsType): TaxonomyTags {
-		const contextTags =
-			tagsType === TagsType.SITE ? this.fandomContext.site.tags : this.fandomContext.page.tags;
-
-		if (!contextTags) {
-			utils.warner('Targeting', 'Getting fandomContext tags failed');
-			return;
-		}
-
-		return {
-			age: contextTags.age || [],
-			bundles: contextTags.bundles || [],
-			gnre: contextTags.gnre || [],
-			media: contextTags.media || [],
-			pform: contextTags.pform || [],
-			pub: contextTags.pub || [],
-			sex: contextTags.sex || [],
-			theme: contextTags.theme || [],
-			tv: contextTags.tv || [],
-		};
-	}
-
-	public addPagePrefixToValues(tags: TaxonomyTags): TaxonomyTags {
-		for (const [key, value] of Object.entries(tags)) {
-			if (this.prefixableKeys.includes(key) && Array.isArray(value) && value.length > 0) {
-				tags[key] = value.map((val) => 'p_' + val);
-			}
-		}
-
-		return tags;
-	}
-
-	public combinePrefixableTags(siteTags: TaxonomyTags, pageTags: TaxonomyTags): TaxonomyTags {
-		const combinedTags: TaxonomyTags = {};
-
-		for (const [key, value] of Object.entries(siteTags)) {
-			if (this.prefixableKeys.includes(key) && Array.isArray(value)) {
-				if (value.length > 0) {
-					combinedTags[key] = siteTags[key].concat(pageTags[key]);
-				} else if (value.length === 0) {
-					combinedTags[key] = pageTags[key];
-				}
-			}
-		}
-
-		return combinedTags;
 	}
 
 	private getVideoStatus(): VideoStatus {
