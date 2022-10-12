@@ -1,5 +1,6 @@
 import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
+import { context } from '@ad-engine/core';
 
 export class Medianet extends PrebidAdapter {
 	static bidderName = 'medianet';
@@ -12,7 +13,15 @@ export class Medianet extends PrebidAdapter {
 		return Medianet.bidderName;
 	}
 
-	prepareConfigForAdUnit(code, { cid, crid }: PrebidAdSlotConfig): PrebidAdUnit {
+	prepareConfigForAdUnit(code, { sizes, cid, crid }: PrebidAdSlotConfig): PrebidAdUnit {
+		if (context.get(`slots.${code}.isVideo`)) {
+			return this.getVideoConfig(code, cid, crid);
+		}
+
+		return this.getStandardConfig(code, sizes, cid, crid);
+	}
+
+	private getVideoConfig(code, cid, crid): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
@@ -42,6 +51,26 @@ export class Medianet extends PrebidAdapter {
 							minduration: 1,
 							startdelay: 0,
 						},
+					},
+				},
+			],
+		};
+	}
+
+	private getStandardConfig(code, sizes, cid, crid): PrebidAdUnit {
+		return {
+			code,
+			mediaTypes: {
+				banner: {
+					sizes,
+				},
+			},
+			bids: [
+				{
+					bidder: this.bidderName,
+					params: {
+						cid,
+						crid,
 					},
 				},
 			],
