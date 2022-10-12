@@ -1,12 +1,4 @@
-import {
-	BaseServiceSetup,
-	context,
-	Dictionary,
-	postponeExecutionUntilGptLoads,
-	SlotConfig,
-	utils,
-} from '@ad-engine/core';
-import { decorate } from 'core-decorators';
+import { BaseServiceSetup, context, Dictionary, SlotConfig, utils } from '@ad-engine/core';
 
 const logGroup = 'ias-publisher-optimization';
 const scriptUrl = '//cdn.adsafeprotected.com/iasPET.1.js';
@@ -68,7 +60,6 @@ class IasPublisherOptimization extends BaseServiceSetup {
 		}
 	}
 
-	@decorate(postponeExecutionUntilGptLoads)
 	private setup(): void {
 		const iasPETSlots: IasSlotConfig[] = [];
 		this.slotList = context.get('services.iasPublisherOptimization.slots');
