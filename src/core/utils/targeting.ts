@@ -64,7 +64,7 @@ class Targeting {
 
 		if (
 			context.get('targeting.skin').includes('ucp_') &&
-			!bundles.includes('VIDEO_TIER_1_AND_2_BUNDLE')
+			!bundles.some((bundle) => bundle.toUpperCase() === 'VIDEO_TIER_1_AND_2_BUNDLE')
 		) {
 			bundles.push('VIDEO_TIER_3_BUNDLE');
 		}
