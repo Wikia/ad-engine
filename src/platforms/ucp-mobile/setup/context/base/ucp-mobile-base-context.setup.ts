@@ -4,6 +4,8 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpMobileBaseContextSetup extends BaseContextSetup {
+	protected contentSelector = '.mw-parser-output';
+
 	execute(): void {
 		super.execute();
 
@@ -20,5 +22,10 @@ export class UcpMobileBaseContextSetup extends BaseContextSetup {
 			'events.pushOnScroll.nativoThreshold',
 			this.instantConfig.get('icPushOnScrollNativoThreshold', 200),
 		);
+		context.set('custom.wordCount', this.getContentWordCount());
+	}
+
+	getContentWordCount(): number {
+		return utils.getContentWordCount(this.contentSelector);
 	}
 }

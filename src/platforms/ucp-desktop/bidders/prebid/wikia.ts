@@ -12,7 +12,7 @@ export function getWikiaContext(): object {
 				sizes: [[300, 250]],
 			},
 			bottom_leaderboard: {
-				sizes: [[728, 90]],
+				sizes: [[970, 250]],
 			},
 			ntv_ad: {
 				position: 'native',
