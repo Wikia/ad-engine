@@ -2,12 +2,12 @@ import { TargetingStrategyInterface } from '../interfaces/targeting-strategy';
 import { Targeting } from '@wikia/ad-engine';
 
 export class CombineTagsDecorator implements TargetingStrategyInterface {
-	constructor(private strategiesToCombine: TargetingStrategyInterface[]) {}
+	constructor(private tagsToCombine: TargetingStrategyInterface[]) {}
 
 	execute(): Partial<Targeting> {
 		const result = {};
 
-		this.strategiesToCombine.map((strategy) => {
+		this.tagsToCombine.map((strategy) => {
 			const strategyTags = strategy.execute();
 			this.combineTags(result, strategyTags);
 		});
