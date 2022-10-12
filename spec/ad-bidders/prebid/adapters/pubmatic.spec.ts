@@ -1,5 +1,5 @@
 import { Pubmatic } from '@wikia/ad-bidders/prebid/adapters/pubmatic';
-import { context } from '@wikia/ad-engine';
+import { context } from '@wikia/core';
 import { expect } from 'chai';
 
 describe('Pubmatic bidder adapter', () => {

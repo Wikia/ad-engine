@@ -30,6 +30,7 @@ export class UserIdentity {
 				partnerIdentityId: ppid,
 			});
 			context.set('targeting.ppid', ppid);
+			utils.logger(UserIdentity.logGroup, 'Passed PPID to page-level targeting');
 		} catch (e) {
 			utils.logger(UserIdentity.logGroup, 'Setting up PPID has failed!', e);
 		}
@@ -37,6 +38,7 @@ export class UserIdentity {
 
 	async call(): Promise<void> {
 		if (context.get('services.ppid.enabled')) {
+			utils.logger(UserIdentity.logGroup, 'enabled - awaiting setup');
 			await this.setupPPID();
 		} else {
 			utils.logger(UserIdentity.logGroup, 'disabled');

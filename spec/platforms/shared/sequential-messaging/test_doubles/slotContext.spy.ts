@@ -1,6 +1,6 @@
 import { createStubInstance, SinonStubbedInstance } from 'sinon';
-import { SlotsContextInterface } from '../../../../../platforms/shared';
-import { AdSlot } from '@wikia/ad-engine';
+import { SlotsContextInterface } from '../../../../../src/platforms/shared';
+import { AdSlot } from '@wikia/core';
 import { PorvataParams } from '@wikia/ad-products';
 
 class SlotsContextSpy implements SlotsContextInterface {

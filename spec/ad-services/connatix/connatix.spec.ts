@@ -1,6 +1,6 @@
 import { Connatix } from '@wikia/ad-services';
 import sinon from 'sinon';
-import { context } from '@wikia/ad-engine';
+import { context } from '@wikia/core';
 import { makePlayerInjectorSpy } from './test_doubles/player-injector-spy';
 import { makeScriptLoaderSpy } from './test_doubles/script-loader-spy';
 

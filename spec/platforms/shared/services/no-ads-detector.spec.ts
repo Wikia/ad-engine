@@ -1,4 +1,4 @@
-import { NoAdsDetector } from '../../../../platforms/shared';
+import { NoAdsDetector } from '../../../../src/platforms/shared';
 import { expect } from 'chai';
 
 describe('No Ads Detector', () => {

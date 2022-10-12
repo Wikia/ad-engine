@@ -164,15 +164,6 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		payload: props<Dictionary>(),
 	},
 	// Integrated partners events //
-	ADMARKETPLACE_INIT: {
-		category: '[Search suggestions]',
-		name: 'Initialized',
-	},
-	ADMARKETPLACE_CALLED: {
-		category: '[Search suggestions]',
-		name: 'Called',
-		payload: props<{ query: string }>(),
-	},
 	AUDIGENT_SEGMENT_LIBRARY_LOADED: {
 		name: 'Audigent segment library loaded',
 	},
@@ -272,13 +263,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Bids response',
 		payload: props<{ bidResponse: TrackingBidDefinition }>(),
 	},
-	BIDDERS_INIT_STAGE_DONE: {
+	BIDDERS_AUCTION_DONE: {
 		category: '[Prebid]',
-		name: 'Init stage done',
-	},
-	BIDDERS_MAIN_STAGE_DONE: {
-		category: '[Prebid]',
-		name: 'Main stage done',
+		name: 'Auction done',
 	},
 	// Video events //
 	VIDEO_EVENT: {

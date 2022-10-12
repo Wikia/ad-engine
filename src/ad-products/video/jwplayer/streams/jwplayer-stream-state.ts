@@ -1,5 +1,4 @@
-import { context, VastParams, vastParser } from '@ad-engine/core';
-import { RxJsOperator } from '@ad-engine/models';
+import { context, RxJsOperator, VastParams, vastParser } from '@ad-engine/core';
 import { combineLatest, merge, Observable } from 'rxjs';
 import { map, scan, shareReplay, startWith, withLatestFrom } from 'rxjs/operators';
 import { JWPlayer } from '../external-types/jwplayer';
@@ -105,7 +104,15 @@ function scanCorrelatorDepth<T>(): RxJsOperator<T, VideoDepth> {
 }
 
 function calculateRV(depth: number, capping: number): number {
-	return depth < 2 || !capping ? 1 : Math.floor((depth - 1) / capping) + 1;
+	const videoAdsOnAllVideosExceptSecond = context.get(
+		'options.video.forceVideoAdsOnAllVideosExceptSecond',
+	);
+
+	if (videoAdsOnAllVideosExceptSecond) {
+		return depth <= 2 ? 1 : depth - 1;
+	} else {
+		return depth < 2 || !capping ? 1 : Math.floor((depth - 1) / capping) + 1;
+	}
 }
 
 function createVastParams<T extends { payload: JWPlayerEvent }>(): RxJsOperator<T, VastParams> {

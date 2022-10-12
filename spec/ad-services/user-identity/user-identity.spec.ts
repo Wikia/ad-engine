@@ -1,11 +1,11 @@
 import { expect } from 'chai';
-import { context } from '@wikia/ad-engine';
+import { context } from '@wikia/core';
 import { userIdentity } from '@wikia/ad-services';
 import { createSandbox, SinonStub, spy, stub } from 'sinon';
 import { IdentityRepositories } from '@wikia/ad-services/user-identity/identity-repositories';
 import { admsClient } from '@wikia/ad-services/user-identity/adms-identity-repository/adms-client';
 import { ActionType } from '@wikia/ad-services/user-identity/adms-identity-repository/adms-actions';
-import { uuid } from '@wikia/ad-engine/utils/uuid';
+import { uuid } from '@wikia/core/utils/uuid';
 import { localStorageRepository } from '@wikia/ad-services/user-identity/local-storage-repository';
 
 describe('User Identity', () => {

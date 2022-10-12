@@ -1,7 +1,6 @@
 import { ActionType, Action, ActiveData } from './adms-actions';
-import { utils } from '@ad-engine/core';
+import { UniversalStorage, utils } from '@ad-engine/core';
 import { UserIdentity } from '../index';
-import { UniversalStorage } from '../../../ad-engine/services/universal-storage';
 
 export function getServicesBaseURL() {
 	const fandomDomains = ['fandom.com', 'muthead.com', 'futhead.com'];

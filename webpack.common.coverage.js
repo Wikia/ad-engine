@@ -8,7 +8,7 @@ const config = () => ({
 			{
 				test: /\.ts$/,
 				enforce: 'post',
-				include: [path.resolve(`src/`), path.resolve(`platforms/`)], // instrument only sources with Istanbul
+				include: [path.resolve(`src/`)], // instrument only sources with Istanbul
 				exclude: [/node_modules/],
 				loader: 'istanbul-instrumenter-loader',
 				options: {

@@ -1,7 +1,7 @@
 import { Wikia } from '@wikia/ad-bidders/prebid/adapters/wikia';
 import { assert, expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { stubPbjs } from '../../../ad-engine/services/pbjs.stub';
+import { stubPbjs } from '../../../core/services/pbjs.stub';
 
 describe('Wikia bidder adapter', () => {
 	const sandbox = createSandbox();
@@ -72,7 +72,7 @@ describe('Wikia bidder adapter', () => {
 		};
 		const responseCpm = 20;
 		const responseAd =
-			'<div style="background: rgb(0, 183, 224); color: rgb(255, 255, 255); font-family: sans-serif; height: 100%; text-align: center; width: 100%;"><p style="font-weight: bold; margin: 0px; padding-top: 10px;"></p><small></small></div>';
+			'<div style="background: rgb(0, 183, 224); color: rgb(255, 255, 255); font-family: sans-serif; width: 728px; height: 90px; text-align: center;"><p style="font-weight: bold; margin: 0px; padding-top: 10px;"></p><small></small></div>';
 		const clock = sandbox.useFakeTimers();
 		const addBidResponseSpy = sandbox.spy();
 

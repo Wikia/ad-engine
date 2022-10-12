@@ -2,14 +2,12 @@ import {
 	communicationService,
 	eventsRepository,
 	TrackingBidDefinition,
-	UapLoadStatus,
 } from '@ad-engine/communication';
 import {
 	AdSlot,
 	config,
 	context,
 	DEFAULT_MAX_DELAY,
-	DEFAULT_MIN_DELAY,
 	Dictionary,
 	pbjsFactory,
 	Tcf,
@@ -189,75 +187,12 @@ export class PrebidProvider extends BidderProvider {
 
 		this.applySettings();
 		this.removeAdUnits();
-
-		if (context.get('bidders.prebid.multiAuction')) {
-			utils.logger(logGroup, 'multi auction request enabled');
-
-			communicationService.on(
-				eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
-				(action: UapLoadStatus) => {
-					if (action.isLoaded) {
-						communicationService.emit(eventsRepository.BIDDERS_INIT_STAGE_DONE);
-						communicationService.emit(eventsRepository.BIDDERS_MAIN_STAGE_DONE);
-					}
-				},
-			);
-
-			this.requestBids(
-				this.filterAdUnits(this.adUnits, 'init'),
-				() => {
-					bidsBackHandler();
-					communicationService.emit(eventsRepository.BIDDERS_INIT_STAGE_DONE);
-					utils.logger(logGroup, 'multi auction in init stage - done');
-				},
-				context.get('bidders.prebid.initTimeout') || this.timeout,
-			);
-
-			this.runSecondBidRequest();
-		} else {
-			this.requestBids(this.adUnits, () => {
-				bidsBackHandler();
-				communicationService.emit(eventsRepository.BIDDERS_INIT_STAGE_DONE);
-			});
-		}
+		this.requestBids(this.adUnits, () => {
+			bidsBackHandler();
+			communicationService.emit(eventsRepository.BIDDERS_AUCTION_DONE);
+		});
 
 		communicationService.emit(eventsRepository.BIDDERS_BIDS_CALLED);
-	}
-
-	private runSecondBidRequest(): void {
-		setTimeout(() => {
-			const mainStageTimeout = context.get('bidders.prebid.mainTimeout') || this.timeout;
-			const mainStageDonePromise = utils.createExtendedPromise();
-
-			this.requestBids(
-				this.filterAdUnits(this.adUnits, 'main'),
-				() => {
-					mainStageDonePromise.resolve();
-				},
-				mainStageTimeout,
-			);
-			Promise.race([
-				mainStageDonePromise,
-				utils.buildPromisedTimeout(mainStageTimeout + DEFAULT_MIN_DELAY).promise,
-			]).then(() => {
-				communicationService.emit(eventsRepository.BIDDERS_MAIN_STAGE_DONE);
-				utils.logger(logGroup, 'multi auction in main stage - done');
-			});
-		}, context.get('bidders.prebid.mainDelayed') || DEFAULT_MIN_DELAY);
-	}
-
-	private filterAdUnits(adUnits: PrebidAdUnit[], stage: string): PrebidAdUnit[] {
-		const initStageCodes = context.get('bidders.prebid.initStageSlots') || [];
-
-		if (stage === 'init') {
-			return adUnits.filter((adUnit) => initStageCodes.includes(adUnit.code));
-		}
-
-		if (stage === 'main') {
-			return adUnits.filter((adUnit) => !initStageCodes.includes(adUnit.code));
-		}
-
-		return adUnits;
 	}
 
 	async removeAdUnits(): Promise<void> {
