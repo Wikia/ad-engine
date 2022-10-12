@@ -1,13 +1,16 @@
 import { expect } from 'chai';
-
-import { context } from '../../../../../../../src/core';
+import { context } from '@wikia/core';
 import {
 	FandomContext,
 	Site,
 	Page,
-} from '../../../../../../../src/platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
-import { CombinedStrategySiteTagsBased } from '../../../../../../../src/platforms/shared/context/targeting/targeting-strategies/strategies/combined-strategy-site-tags-based';
-import { CommonStrategy } from '@wikia/platforms/shared/context/targeting/targeting-strategies/strategies/common-strategy';
+} from '@wikia/platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
+import { CommonTags } from '@wikia/platforms/shared/context/targeting/targeting-strategies/strategies/common-tags';
+import { SummaryDecorator } from '@wikia/platforms/shared/context/targeting/targeting-strategies/decorators/summary-decorator';
+import { CombineTagsDecorator } from '@wikia/platforms/shared/context/targeting/targeting-strategies/decorators/combine-tags-decorator';
+import { SiteLevelTaxonomyTags } from '@wikia/platforms/shared/context/targeting/targeting-strategies/strategies/site-level-taxonomy-tags';
+import { PrefixDecorator } from '@wikia/platforms/shared/context/targeting/targeting-strategies/decorators/prefix-decorator';
+import { PageLevelTaxonomyTags } from '@wikia/platforms/shared/context/targeting/targeting-strategies/strategies/page-level-taxonomy-tags';
 
 describe('CombinedStrategySiteTagsBased execution', () => {
 	beforeEach(() => {
@@ -56,9 +59,15 @@ describe('CombinedStrategySiteTagsBased execution', () => {
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
-		expect(
-			new CombinedStrategySiteTagsBased(new CommonStrategy(mockedSkin, mockedContext)).execute(),
-		).to.deep.eq(defaultExpectedTargeting);
+		const combinedStrategy = new SummaryDecorator(
+			new CommonTags(mockedSkin, mockedContext),
+			new CombineTagsDecorator([
+				new SiteLevelTaxonomyTags(mockedContext),
+				new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
+			]),
+		);
+
+		expect(combinedStrategy.execute()).to.deep.eq(defaultExpectedTargeting);
 	});
 
 	it('Returns tags when site tags are not empty and page tags are empty', function () {
@@ -72,9 +81,15 @@ describe('CombinedStrategySiteTagsBased execution', () => {
 		);
 		const expectedTargeting = { ...defaultExpectedTargeting, ...mockedSiteTags };
 
-		expect(
-			new CombinedStrategySiteTagsBased(new CommonStrategy(mockedSkin, mockedContext)).execute(),
-		).to.deep.eq(expectedTargeting);
+		const combinedStrategy = new SummaryDecorator(
+			new CommonTags(mockedSkin, mockedContext),
+			new CombineTagsDecorator([
+				new SiteLevelTaxonomyTags(mockedContext),
+				new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
+			]),
+		);
+
+		expect(combinedStrategy.execute()).to.deep.eq(expectedTargeting);
 	});
 
 	it('Returns tags when site tags are empty and page tags are not empty', function () {
@@ -92,9 +107,15 @@ describe('CombinedStrategySiteTagsBased execution', () => {
 			...{ theme: ['p_test2', 'p_superheroes'] },
 		};
 
-		expect(
-			new CombinedStrategySiteTagsBased(new CommonStrategy(mockedSkin, mockedContext)).execute(),
-		).to.deep.eq(expectedTargeting);
+		const combinedStrategy = new SummaryDecorator(
+			new CommonTags(mockedSkin, mockedContext),
+			new CombineTagsDecorator([
+				new SiteLevelTaxonomyTags(mockedContext),
+				new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
+			]),
+		);
+
+		expect(combinedStrategy.execute()).to.deep.eq(expectedTargeting);
 	});
 
 	it('Returns combined tags when site and page tags are not empty', function () {
@@ -118,8 +139,14 @@ describe('CombinedStrategySiteTagsBased execution', () => {
 			...{ theme: ['test3', 'superheroes', 'p_test4', 'p_superheroes'] },
 		};
 
-		expect(
-			new CombinedStrategySiteTagsBased(new CommonStrategy(mockedSkin, mockedContext)).execute(),
-		).to.deep.eq(expectedTargeting);
+		const combinedStrategy = new SummaryDecorator(
+			new CommonTags(mockedSkin, mockedContext),
+			new CombineTagsDecorator([
+				new SiteLevelTaxonomyTags(mockedContext),
+				new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
+			]),
+		);
+
+		expect(combinedStrategy.execute()).to.deep.eq(expectedTargeting);
 	});
 });

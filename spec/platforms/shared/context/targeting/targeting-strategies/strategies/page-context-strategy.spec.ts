@@ -1,15 +1,16 @@
 import { expect } from 'chai';
-
-import { context } from '../../../../../../../src/core';
+import { context } from '@wikia/core';
 import {
 	FandomContext,
 	Site,
 	Page,
-} from '../../../../../../../src/platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
-import { PageContextStrategy } from '../../../../../../../src/platforms/shared/context/targeting/targeting-strategies/strategies/page-context-strategy';
-import { CommonStrategy } from '@wikia/platforms/shared/context/targeting/targeting-strategies/strategies/common-strategy';
+} from '@wikia/platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
+import { PageLevelTaxonomyTags } from '@wikia/platforms/shared/context/targeting/targeting-strategies/strategies/page-level-taxonomy-tags';
+import { SummaryDecorator } from '@wikia/platforms/shared/context/targeting/targeting-strategies/decorators/summary-decorator';
+import { CommonTags } from '@wikia/platforms/shared/context/targeting/targeting-strategies/strategies/common-tags';
+import { PrefixDecorator } from '@wikia/platforms/shared/context/targeting/targeting-strategies/decorators/prefix-decorator';
 
-describe('PageContextStrategy execution', () => {
+describe('PageLevelTaxonomyTags execution', () => {
 	beforeEach(() => {
 		context.set('geo.country', 'PL');
 		context.set('wiki.targeting.wikiDbName', 'test');
@@ -58,9 +59,12 @@ describe('PageContextStrategy execution', () => {
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
-		expect(
-			new PageContextStrategy(new CommonStrategy(mockedSkin, mockedContext)).execute(),
-		).to.deep.eq(defaultExpectedTargeting);
+		const pageStrategy = new SummaryDecorator(
+			new CommonTags(mockedSkin, mockedContext),
+			new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
+		);
+
+		expect(pageStrategy.execute()).to.deep.eq(defaultExpectedTargeting);
 	});
 
 	it('Returns empty tags when site tags are not empty and page tags are empty', function () {
@@ -73,9 +77,12 @@ describe('PageContextStrategy execution', () => {
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
-		expect(
-			new PageContextStrategy(new CommonStrategy(mockedSkin, mockedContext)).execute(),
-		).to.deep.eq(defaultExpectedTargeting);
+		const pageStrategy = new SummaryDecorator(
+			new CommonTags(mockedSkin, mockedContext),
+			new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
+		);
+
+		expect(pageStrategy.execute()).to.deep.eq(defaultExpectedTargeting);
 	});
 
 	it('Returns tags when site tags are empty and page tags are not empty', function () {
@@ -93,9 +100,12 @@ describe('PageContextStrategy execution', () => {
 			...{ theme: ['p_test2', 'p_superheroes'] },
 		};
 
-		expect(
-			new PageContextStrategy(new CommonStrategy(mockedSkin, mockedContext)).execute(),
-		).to.deep.eq(expectedTargeting);
+		const pageStrategy = new SummaryDecorator(
+			new CommonTags(mockedSkin, mockedContext),
+			new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
+		);
+
+		expect(pageStrategy.execute()).to.deep.eq(expectedTargeting);
 	});
 
 	it('Returns correct tags when site and page tags are not empty', function () {
@@ -119,8 +129,11 @@ describe('PageContextStrategy execution', () => {
 			...{ theme: ['p_test4', 'p_superheroes'] },
 		};
 
-		expect(
-			new PageContextStrategy(new CommonStrategy(mockedSkin, mockedContext)).execute(),
-		).to.deep.eq(expectedTargeting);
+		const pageStrategy = new SummaryDecorator(
+			new CommonTags(mockedSkin, mockedContext),
+			new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
+		);
+
+		expect(pageStrategy.execute()).to.deep.eq(expectedTargeting);
 	});
 });
