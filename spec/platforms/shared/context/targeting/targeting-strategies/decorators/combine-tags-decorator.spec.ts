@@ -1,10 +1,9 @@
 import { CombineTagsDecorator } from '@wikia/platforms/shared/context/targeting/targeting-strategies/decorators/combine-tags-decorator';
 import { expect } from 'chai';
-import { MockedTestLevelTags } from '../mocks/mocked-test-level-tags';
 
 describe('Combine Tags Decorator', () => {
 	it('tags are combined correctly', () => {
-		const combined = new CombineTagsDecorator([new MockedTestLevelTags()]);
+		const combinedDecorator = new CombineTagsDecorator(null);
 
 		const tagsToCombine1 = {
 			age: ['age1', 'age2'],
@@ -19,7 +18,7 @@ describe('Combine Tags Decorator', () => {
 			tv: ['tv3', 'tv4'],
 		};
 
-		const combinedTags = combined.combineTags(tagsToCombine1, tagsToCombine2);
+		const combinedTags = combinedDecorator.combineTags(tagsToCombine1, tagsToCombine2);
 
 		expect(combinedTags).to.deep.eq({
 			age: ['age1', 'age2', 'age3', 'age4'],
@@ -30,7 +29,7 @@ describe('Combine Tags Decorator', () => {
 	});
 
 	it('combining tags to empty array works', () => {
-		const combined = new CombineTagsDecorator([new MockedTestLevelTags()]);
+		const combinedDecorator = new CombineTagsDecorator(null);
 
 		const tagsToCombine1 = {};
 
@@ -41,13 +40,13 @@ describe('Combine Tags Decorator', () => {
 			tv: ['tv3', 'tv4'],
 		};
 
-		const combinedTags = combined.combineTags(tagsToCombine1, tagsToCombine2);
+		const combinedTags = combinedDecorator.combineTags(tagsToCombine1, tagsToCombine2);
 
 		expect(combinedTags).to.deep.eq(tagsToCombine2);
 	});
 
 	it('combined tags are not doubled', () => {
-		const combined = new CombineTagsDecorator([new MockedTestLevelTags()]);
+		const combinedDecorator = new CombineTagsDecorator(null);
 
 		const tagsToCombine1 = {
 			age: ['age1', 'age2'],
@@ -55,7 +54,7 @@ describe('Combine Tags Decorator', () => {
 			tv: ['tv1', 'tv2'],
 		};
 
-		const combinedTags = combined.combineTags(tagsToCombine1, tagsToCombine1);
+		const combinedTags = combinedDecorator.combineTags(tagsToCombine1, tagsToCombine1);
 
 		expect(combinedTags).to.deep.eq(tagsToCombine1);
 	});

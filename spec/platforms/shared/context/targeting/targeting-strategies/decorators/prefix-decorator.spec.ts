@@ -1,10 +1,9 @@
 import { PrefixDecorator } from '@wikia/platforms/shared/context/targeting/targeting-strategies/decorators/prefix-decorator';
 import { expect } from 'chai';
-import { MockedTestLevelTags } from '../mocks/mocked-test-level-tags';
 
 describe('Combine Tags Decorator', () => {
 	it('page prefixes are added correctly to tag values', () => {
-		const prefixDecorator = new PrefixDecorator(new MockedTestLevelTags());
+		const prefixDecorator = new PrefixDecorator(null);
 
 		const valuesToAddPrefix = {
 			gnre: ['gnre1', 'gnre2', 'gnre3'],
@@ -24,7 +23,7 @@ describe('Combine Tags Decorator', () => {
 	});
 
 	it("page prefixes are not added to tags that are not in 'tagsToAddPrefix' list", () => {
-		const prefixDecorator = new PrefixDecorator(new MockedTestLevelTags());
+		const prefixDecorator = new PrefixDecorator(null);
 
 		const valuesToAddPrefix = {
 			age: ['age1', 'age2'],
@@ -46,7 +45,7 @@ describe('Combine Tags Decorator', () => {
 	});
 
 	it('page prefixes are not added to tag values that are not array', () => {
-		const prefixDecorator = new PrefixDecorator(new MockedTestLevelTags());
+		const prefixDecorator = new PrefixDecorator(null);
 
 		const valuesToAddPrefix = {
 			media: 'media',
