@@ -10,7 +10,7 @@ export class PrefixDecorator implements TargetingStrategyInterface {
 		return this.addPagePrefixToValues(strategyTags);
 	}
 
-	private addPagePrefixToValues(tags) {
+	public addPagePrefixToValues(tags) {
 		for (const [key, value] of Object.entries(tags)) {
 			if (this.tagsToAddPrefix.includes(key) && Array.isArray(value) && value.length > 0) {
 				tags[key] = value.map((val) => 'p_' + val);
