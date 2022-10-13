@@ -31,9 +31,9 @@ export class Wikia extends PrebidAdapter {
 		creative.style.background = '#00b7e0';
 		creative.style.color = '#fff';
 		creative.style.fontFamily = 'sans-serif';
-		creative.style.height = '100%';
+		creative.style.width = `${size[0]}px`;
+		creative.style.height = `${size[1]}px`;
 		creative.style.textAlign = 'center';
-		creative.style.width = '100%';
 
 		const title = document.createElement('p');
 
