@@ -29,5 +29,7 @@ export class CombineTagsDecorator implements TargetingStrategyInterface {
 				result[key] = value;
 			}
 		}
+
+		return result;
 	}
 }
