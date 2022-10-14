@@ -1,4 +1,4 @@
-import { PrefixDecorator } from '@wikia/platforms/shared/context/targeting/targeting-strategies/decorators/prefix-decorator';
+import { PrefixDecorator } from '@wikia/platforms/shared/context/targeting/targeting-strategies/structures/prefix-decorator';
 import { expect } from 'chai';
 
 describe('Combine Tags Decorator', () => {

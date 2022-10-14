@@ -6,10 +6,10 @@ import {
 	Page,
 } from '@wikia/platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
 import { CommonTags } from '@wikia/platforms/shared/context/targeting/targeting-strategies/strategies/common-tags';
-import { TagsPlainSumBuilder } from '@wikia/platforms/shared/context/targeting/targeting-strategies/decorators/tags-plain-sum-builder';
-import { TagsByKeyComposer } from '@wikia/platforms/shared/context/targeting/targeting-strategies/decorators/tags-by-key-composer';
+import { TagsPlainSumBuilder } from '@wikia/platforms/shared/context/targeting/targeting-strategies/structures/tags-plain-sum-builder';
+import { TagsByKeyComposer } from '@wikia/platforms/shared/context/targeting/targeting-strategies/structures/tags-by-key-composer';
 import { SiteLevelTaxonomyTags } from '@wikia/platforms/shared/context/targeting/targeting-strategies/strategies/site-level-taxonomy-tags';
-import { PrefixDecorator } from '@wikia/platforms/shared/context/targeting/targeting-strategies/decorators/prefix-decorator';
+import { PrefixDecorator } from '@wikia/platforms/shared/context/targeting/targeting-strategies/structures/prefix-decorator';
 import { PageLevelTaxonomyTags } from '@wikia/platforms/shared/context/targeting/targeting-strategies/strategies/page-level-taxonomy-tags';
 
 describe('CombinedStrategySiteTagsBased execution', () => {

@@ -1,4 +1,4 @@
-import { TagsByKeyComposer } from '@wikia/platforms/shared/context/targeting/targeting-strategies/decorators/tags-by-key-composer';
+import { TagsByKeyComposer } from '@wikia/platforms/shared/context/targeting/targeting-strategies/structures/tags-by-key-composer';
 import { expect } from 'chai';
 
 describe('Combine Tags Decorator', () => {

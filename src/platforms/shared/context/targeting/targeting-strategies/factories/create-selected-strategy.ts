@@ -3,9 +3,9 @@ import { TargetingStrategyInterface, TargetingStrategy } from '../interfaces/tar
 import { PageLevelTaxonomyTags } from '../strategies/page-level-taxonomy-tags';
 import { SiteLevelTaxonomyTags } from '../strategies/site-level-taxonomy-tags';
 import { CommonTags } from '../strategies/common-tags';
-import { TagsPlainSumBuilder } from '../decorators/tags-plain-sum-builder';
-import { PrefixDecorator } from '../decorators/prefix-decorator';
-import { TagsByKeyComposer } from '../decorators/tags-by-key-composer';
+import { TagsPlainSumBuilder } from '../structures/tags-plain-sum-builder';
+import { PrefixDecorator } from '../structures/prefix-decorator';
+import { TagsByKeyComposer } from '../structures/tags-by-key-composer';
 import { utils } from '@wikia/ad-engine';
 
 const logGroup = 'Targeting';
