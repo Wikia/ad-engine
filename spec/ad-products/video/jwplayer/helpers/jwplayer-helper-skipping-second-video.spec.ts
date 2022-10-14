@@ -2,14 +2,14 @@ import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 
 import { context } from '@wikia/ad-engine';
-import { JWPlayerHelper } from '@wikia/ad-products/video/jwplayer/helpers/jwplayer-helper';
+import { JWPlayerHelperSkippingSecondVideo } from '@wikia/ad-products/video/jwplayer/helpers';
 
 type shouldPrerollAppear = boolean;
 type shouldMidrollAppear = boolean;
 type shouldPostrollAppear = boolean;
 type videoTestRow = [shouldPrerollAppear, shouldMidrollAppear, shouldPostrollAppear];
 
-describe('JWPlayerHelper', () => {
+describe('JWPlayerHelperSkippingSecondVideo', () => {
 	const sandbox = createSandbox();
 	let adSlotStub, helper;
 
@@ -19,7 +19,7 @@ describe('JWPlayerHelper', () => {
 				isEnabled: sandbox.stub().returns(true),
 			};
 
-			helper = new JWPlayerHelper(adSlotStub, null, null);
+			helper = new JWPlayerHelperSkippingSecondVideo(adSlotStub, null, null);
 
 			context.set('options.video.playAdsOnNextVideo', true);
 			context.set('options.video.isMidrollEnabled', false);
@@ -38,7 +38,7 @@ describe('JWPlayerHelper', () => {
 			simulatePlaysAndVerifyResults([
 				[true, false, false],
 				[false, false, false],
-				[false, false, false],
+				[true, false, false],
 			]);
 		});
 
@@ -49,7 +49,7 @@ describe('JWPlayerHelper', () => {
 			simulatePlaysAndVerifyResults([
 				[true, true, true],
 				[false, false, false],
-				[false, false, false],
+				[true, true, true],
 			]);
 		});
 
@@ -59,20 +59,6 @@ describe('JWPlayerHelper', () => {
 			simulatePlaysAndVerifyResults([
 				[true, false, false],
 				[false, false, false],
-				[false, false, false],
-			]);
-		});
-
-		it('works correctly for the capping logic - ads before 1st and 3rd video, no midroll, no postroll', () => {
-			context.set('options.video.forceVideoAdsOnAllVideosExceptSecond', false);
-			context.set('options.video.adsOnNextVideoFrequency', 2);
-			context.set('options.video.isMidrollEnabled', false);
-			context.set('options.video.isPostrollEnabled', false);
-
-			simulatePlaysAndVerifyResults([
-				[true, false, false],
-				[false, false, false],
-				[true, false, false],
 				[false, false, false],
 			]);
 		});

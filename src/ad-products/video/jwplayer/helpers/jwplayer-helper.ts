@@ -10,10 +10,12 @@ const EMPTY_VAST_CODE = 21009;
  * Describes how things are done
  */
 export class JWPlayerHelper {
+	static LOG_GROUP_NAME = 'jwplayer-helper';
+
 	constructor(
-		private adSlot: AdSlot,
-		private jwplayer: JWPlayer,
-		private readonly targeting: VideoTargeting,
+		protected adSlot: AdSlot,
+		protected jwplayer: JWPlayer,
+		protected readonly targeting: VideoTargeting,
 	) {}
 
 	isMoatTrackingEnabled(): boolean {
@@ -93,50 +95,49 @@ export class JWPlayerHelper {
 		this.adSlot.setConfigProperty('targeting.rv', state.rv);
 	}
 
-	shouldPlayPreroll(videoPlaylistOrderNumber: number): boolean {
-		return this.canAdBePlayed(videoPlaylistOrderNumber);
+	shouldPlayPreroll(videoPlaylistOrderNumber: number, currentMediaId: string = null): boolean {
+		return this.canAdBePlayed(videoPlaylistOrderNumber, currentMediaId);
 	}
 
-	shouldPlayMidroll(videoPlaylistOrderNumber: number): boolean {
+	shouldPlayMidroll(videoPlaylistOrderNumber: number, currentMediaId: string = null): boolean {
 		return (
-			context.get('options.video.isMidrollEnabled') && this.canAdBePlayed(videoPlaylistOrderNumber)
+			context.get('options.video.isMidrollEnabled') &&
+			this.canAdBePlayed(videoPlaylistOrderNumber, currentMediaId)
 		);
 	}
 
-	shouldPlayPostroll(videoPlaylistOrderNumber: number): boolean {
+	shouldPlayPostroll(videoPlaylistOrderNumber: number, currentMediaId: string = null): boolean {
 		return (
-			context.get('options.video.isPostrollEnabled') && this.canAdBePlayed(videoPlaylistOrderNumber)
+			context.get('options.video.isPostrollEnabled') &&
+			this.canAdBePlayed(videoPlaylistOrderNumber, currentMediaId)
 		);
 	}
 
-	private canAdBePlayed(videoPlaylistOrderNumber: number): boolean {
+	protected canAdBePlayed(
+		videoPlaylistOrderNumber: number,
+		currentMediaId: string = null,
+	): boolean {
 		const isReplay = videoPlaylistOrderNumber > 1;
 
 		return (
 			this.adSlot.isEnabled() &&
-			(!isReplay || (isReplay && this.shouldPlayAdOnNextVideo(videoPlaylistOrderNumber)))
+			(!isReplay ||
+				(isReplay && this.shouldPlayAdOnNextVideo(videoPlaylistOrderNumber, currentMediaId)))
 		);
 	}
 
-	private shouldPlayAdOnNextVideo(videoPlaylistOrderNumber: number): boolean {
-		const SPONSORED_VIDEO_INDEX = 2;
+	protected shouldPlayAdOnNextVideo(
+		videoPlaylistOrderNumber: number,
+		currentMediaId: string = null,
+	): boolean {
 		const capping = context.get('options.video.adsOnNextVideoFrequency');
-		const videoAdsOnAllVideosExceptSecond = context.get(
-			'options.video.forceVideoAdsOnAllVideosExceptSecond',
-		);
+		utils.logger(JWPlayerHelper.LOG_GROUP_NAME, videoPlaylistOrderNumber, currentMediaId);
 
-		if (videoAdsOnAllVideosExceptSecond) {
-			return (
-				context.get('options.video.playAdsOnNextVideo') &&
-				videoPlaylistOrderNumber !== SPONSORED_VIDEO_INDEX
-			);
-		} else {
-			return (
-				context.get('options.video.playAdsOnNextVideo') &&
-				capping > 0 &&
-				(videoPlaylistOrderNumber - 1) % capping === 0
-			);
-		}
+		return (
+			context.get('options.video.playAdsOnNextVideo') &&
+			capping > 0 &&
+			(videoPlaylistOrderNumber - 1) % capping === 0
+		);
 	}
 
 	playVideoAd(position: 'midroll' | 'postroll' | 'preroll', state: JwpState): void {
