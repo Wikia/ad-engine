@@ -1,7 +1,7 @@
 import { TargetingStrategyInterface } from '../interfaces/targeting-strategy';
 import { Targeting } from '@wikia/ad-engine';
 
-export class SummaryDecorator implements TargetingStrategyInterface {
+export class TagsPlainSumBuilder implements TargetingStrategyInterface {
 	constructor(private tagsToSum: TargetingStrategyInterface[]) {}
 
 	execute(): Partial<Targeting> {

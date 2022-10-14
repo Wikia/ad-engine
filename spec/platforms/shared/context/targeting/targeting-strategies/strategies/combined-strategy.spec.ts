@@ -6,8 +6,8 @@ import {
 	Page,
 } from '@wikia/platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
 import { CommonTags } from '@wikia/platforms/shared/context/targeting/targeting-strategies/strategies/common-tags';
-import { SummaryDecorator } from '@wikia/platforms/shared/context/targeting/targeting-strategies/decorators/summary-decorator';
-import { CombineTagsDecorator } from '@wikia/platforms/shared/context/targeting/targeting-strategies/decorators/combine-tags-decorator';
+import { TagsPlainSumBuilder } from '@wikia/platforms/shared/context/targeting/targeting-strategies/decorators/tags-plain-sum-builder';
+import { TagsByKeyComposer } from '@wikia/platforms/shared/context/targeting/targeting-strategies/decorators/tags-by-key-composer';
 import { SiteLevelTaxonomyTags } from '@wikia/platforms/shared/context/targeting/targeting-strategies/strategies/site-level-taxonomy-tags';
 import { PrefixDecorator } from '@wikia/platforms/shared/context/targeting/targeting-strategies/decorators/prefix-decorator';
 import { PageLevelTaxonomyTags } from '@wikia/platforms/shared/context/targeting/targeting-strategies/strategies/page-level-taxonomy-tags';
@@ -59,9 +59,9 @@ describe('CombinedStrategySiteTagsBased execution', () => {
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
-		const combinedStrategy = new SummaryDecorator([
+		const combinedStrategy = new TagsPlainSumBuilder([
 			new CommonTags(mockedSkin, mockedContext),
-			new CombineTagsDecorator([
+			new TagsByKeyComposer([
 				new SiteLevelTaxonomyTags(mockedContext),
 				new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
 			]),
@@ -81,9 +81,9 @@ describe('CombinedStrategySiteTagsBased execution', () => {
 		);
 		const expectedTargeting = { ...defaultExpectedTargeting, ...mockedSiteTags };
 
-		const combinedStrategy = new SummaryDecorator([
+		const combinedStrategy = new TagsPlainSumBuilder([
 			new CommonTags(mockedSkin, mockedContext),
-			new CombineTagsDecorator([
+			new TagsByKeyComposer([
 				new SiteLevelTaxonomyTags(mockedContext),
 				new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
 			]),
@@ -107,9 +107,9 @@ describe('CombinedStrategySiteTagsBased execution', () => {
 			...{ theme: ['p_test2', 'p_superheroes'] },
 		};
 
-		const combinedStrategy = new SummaryDecorator([
+		const combinedStrategy = new TagsPlainSumBuilder([
 			new CommonTags(mockedSkin, mockedContext),
-			new CombineTagsDecorator([
+			new TagsByKeyComposer([
 				new SiteLevelTaxonomyTags(mockedContext),
 				new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
 			]),
@@ -139,9 +139,9 @@ describe('CombinedStrategySiteTagsBased execution', () => {
 			...{ theme: ['test3', 'superheroes', 'p_test4', 'p_superheroes'] },
 		};
 
-		const combinedStrategy = new SummaryDecorator([
+		const combinedStrategy = new TagsPlainSumBuilder([
 			new CommonTags(mockedSkin, mockedContext),
-			new CombineTagsDecorator([
+			new TagsByKeyComposer([
 				new SiteLevelTaxonomyTags(mockedContext),
 				new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
 			]),

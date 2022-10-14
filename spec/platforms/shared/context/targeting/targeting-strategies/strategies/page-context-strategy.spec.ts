@@ -6,7 +6,7 @@ import {
 	Page,
 } from '@wikia/platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
 import { PageLevelTaxonomyTags } from '@wikia/platforms/shared/context/targeting/targeting-strategies/strategies/page-level-taxonomy-tags';
-import { SummaryDecorator } from '@wikia/platforms/shared/context/targeting/targeting-strategies/decorators/summary-decorator';
+import { TagsPlainSumBuilder } from '@wikia/platforms/shared/context/targeting/targeting-strategies/decorators/tags-plain-sum-builder';
 import { CommonTags } from '@wikia/platforms/shared/context/targeting/targeting-strategies/strategies/common-tags';
 import { PrefixDecorator } from '@wikia/platforms/shared/context/targeting/targeting-strategies/decorators/prefix-decorator';
 
@@ -59,7 +59,7 @@ describe('PageLevelTaxonomyTags execution', () => {
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
-		const pageStrategy = new SummaryDecorator([
+		const pageStrategy = new TagsPlainSumBuilder([
 			new CommonTags(mockedSkin, mockedContext),
 			new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
 		]);
@@ -77,7 +77,7 @@ describe('PageLevelTaxonomyTags execution', () => {
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
-		const pageStrategy = new SummaryDecorator([
+		const pageStrategy = new TagsPlainSumBuilder([
 			new CommonTags(mockedSkin, mockedContext),
 			new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
 		]);
@@ -100,7 +100,7 @@ describe('PageLevelTaxonomyTags execution', () => {
 			...{ theme: ['p_test2', 'p_superheroes'] },
 		};
 
-		const pageStrategy = new SummaryDecorator([
+		const pageStrategy = new TagsPlainSumBuilder([
 			new CommonTags(mockedSkin, mockedContext),
 			new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
 		]);
@@ -129,7 +129,7 @@ describe('PageLevelTaxonomyTags execution', () => {
 			...{ theme: ['p_test4', 'p_superheroes'] },
 		};
 
-		const pageStrategy = new SummaryDecorator([
+		const pageStrategy = new TagsPlainSumBuilder([
 			new CommonTags(mockedSkin, mockedContext),
 			new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
 		]);

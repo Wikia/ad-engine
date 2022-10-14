@@ -1,9 +1,9 @@
-import { CombineTagsDecorator } from '@wikia/platforms/shared/context/targeting/targeting-strategies/decorators/combine-tags-decorator';
+import { TagsByKeyComposer } from '@wikia/platforms/shared/context/targeting/targeting-strategies/decorators/tags-by-key-composer';
 import { expect } from 'chai';
 
 describe('Combine Tags Decorator', () => {
 	it('tags are combined correctly', () => {
-		const combinedDecorator = new CombineTagsDecorator(null);
+		const combinedDecorator = new TagsByKeyComposer(null);
 
 		const tagsToCombine1 = {
 			age: ['age1', 'age2'],
@@ -29,7 +29,7 @@ describe('Combine Tags Decorator', () => {
 	});
 
 	it('combining tags to empty array works', () => {
-		const combinedDecorator = new CombineTagsDecorator(null);
+		const combinedDecorator = new TagsByKeyComposer(null);
 
 		const tagsToCombine1 = {};
 
@@ -46,7 +46,7 @@ describe('Combine Tags Decorator', () => {
 	});
 
 	it('combined tags are not doubled', () => {
-		const combinedDecorator = new CombineTagsDecorator(null);
+		const combinedDecorator = new TagsByKeyComposer(null);
 
 		const tagsToCombine1 = {
 			age: ['age1', 'age2'],

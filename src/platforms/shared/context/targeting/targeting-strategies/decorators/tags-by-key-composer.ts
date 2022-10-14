@@ -1,7 +1,7 @@
 import { TargetingStrategyInterface } from '../interfaces/targeting-strategy';
 import { Targeting } from '@wikia/ad-engine';
 
-export class CombineTagsDecorator implements TargetingStrategyInterface {
+export class TagsByKeyComposer implements TargetingStrategyInterface {
 	constructor(private tagsToCombine: TargetingStrategyInterface[]) {}
 
 	execute(): Partial<Targeting> {

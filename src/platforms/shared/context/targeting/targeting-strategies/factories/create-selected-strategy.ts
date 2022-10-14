@@ -3,9 +3,9 @@ import { TargetingStrategyInterface, TargetingStrategy } from '../interfaces/tar
 import { PageLevelTaxonomyTags } from '../strategies/page-level-taxonomy-tags';
 import { SiteLevelTaxonomyTags } from '../strategies/site-level-taxonomy-tags';
 import { CommonTags } from '../strategies/common-tags';
-import { SummaryDecorator } from '../decorators/summary-decorator';
+import { TagsPlainSumBuilder } from '../decorators/tags-plain-sum-builder';
 import { PrefixDecorator } from '../decorators/prefix-decorator';
-import { CombineTagsDecorator } from '../decorators/combine-tags-decorator';
+import { TagsByKeyComposer } from '../decorators/tags-by-key-composer';
 import { utils } from '@wikia/ad-engine';
 
 const logGroup = 'Targeting';
@@ -19,14 +19,14 @@ export function createSelectedStrategy(
 		case TargetingStrategy.SITE_CONTEXT:
 			utils.logger(logGroup, 'Executing SiteContext strategy...');
 
-			return new SummaryDecorator([
+			return new TagsPlainSumBuilder([
 				new CommonTags(skin, fandomContext),
 				new SiteLevelTaxonomyTags(fandomContext),
 			]);
 		case TargetingStrategy.PAGE_CONTEXT:
 			utils.logger(logGroup, 'Executing PageContext strategy...');
 
-			return new SummaryDecorator([
+			return new TagsPlainSumBuilder([
 				new CommonTags(skin, fandomContext),
 				new PrefixDecorator(new PageLevelTaxonomyTags(fandomContext)),
 			]);
@@ -34,9 +34,9 @@ export function createSelectedStrategy(
 		default:
 			utils.logger(logGroup, 'Executing Combined strategy...');
 
-			return new SummaryDecorator([
+			return new TagsPlainSumBuilder([
 				new CommonTags(skin, fandomContext),
-				new CombineTagsDecorator([
+				new TagsByKeyComposer([
 					new SiteLevelTaxonomyTags(fandomContext),
 					new PrefixDecorator(new PageLevelTaxonomyTags(fandomContext)),
 				]),
