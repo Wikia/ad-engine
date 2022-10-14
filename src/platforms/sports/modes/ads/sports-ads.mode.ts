@@ -34,7 +34,7 @@ export class SportsAdsMode implements DiProcess {
 				confiant,
 				durationMedia,
 				gptSetup.setOptions({
-					dependencies: [userIdentity.initialized],
+					dependencies: [userIdentity.initialized, iasPublisherOptimization.IASReady],
 				}),
 			)
 			.execute()
