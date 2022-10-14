@@ -59,10 +59,10 @@ describe('PageLevelTaxonomyTags execution', () => {
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
-		const pageStrategy = new SummaryDecorator(
+		const pageStrategy = new SummaryDecorator([
 			new CommonTags(mockedSkin, mockedContext),
 			new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
-		);
+		]);
 
 		expect(pageStrategy.execute()).to.deep.eq(defaultExpectedTargeting);
 	});
@@ -77,10 +77,10 @@ describe('PageLevelTaxonomyTags execution', () => {
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
-		const pageStrategy = new SummaryDecorator(
+		const pageStrategy = new SummaryDecorator([
 			new CommonTags(mockedSkin, mockedContext),
 			new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
-		);
+		]);
 
 		expect(pageStrategy.execute()).to.deep.eq(defaultExpectedTargeting);
 	});
@@ -100,10 +100,10 @@ describe('PageLevelTaxonomyTags execution', () => {
 			...{ theme: ['p_test2', 'p_superheroes'] },
 		};
 
-		const pageStrategy = new SummaryDecorator(
+		const pageStrategy = new SummaryDecorator([
 			new CommonTags(mockedSkin, mockedContext),
 			new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
-		);
+		]);
 
 		expect(pageStrategy.execute()).to.deep.eq(expectedTargeting);
 	});
@@ -129,10 +129,10 @@ describe('PageLevelTaxonomyTags execution', () => {
 			...{ theme: ['p_test4', 'p_superheroes'] },
 		};
 
-		const pageStrategy = new SummaryDecorator(
+		const pageStrategy = new SummaryDecorator([
 			new CommonTags(mockedSkin, mockedContext),
 			new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
-		);
+		]);
 
 		expect(pageStrategy.execute()).to.deep.eq(expectedTargeting);
 	});

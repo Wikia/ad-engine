@@ -19,27 +19,27 @@ export function createSelectedStrategy(
 		case TargetingStrategy.SITE_CONTEXT:
 			utils.logger(logGroup, 'Executing SiteContext strategy...');
 
-			return new SummaryDecorator(
+			return new SummaryDecorator([
 				new CommonTags(skin, fandomContext),
 				new SiteLevelTaxonomyTags(fandomContext),
-			);
+			]);
 		case TargetingStrategy.PAGE_CONTEXT:
 			utils.logger(logGroup, 'Executing PageContext strategy...');
 
-			return new SummaryDecorator(
+			return new SummaryDecorator([
 				new CommonTags(skin, fandomContext),
 				new PrefixDecorator(new PageLevelTaxonomyTags(fandomContext)),
-			);
+			]);
 		case TargetingStrategy.COMBINED:
 		default:
 			utils.logger(logGroup, 'Executing Combined strategy...');
 
-			return new SummaryDecorator(
+			return new SummaryDecorator([
 				new CommonTags(skin, fandomContext),
 				new CombineTagsDecorator([
 					new SiteLevelTaxonomyTags(fandomContext),
 					new PrefixDecorator(new PageLevelTaxonomyTags(fandomContext)),
 				]),
-			);
+			]);
 	}
 }
