@@ -64,7 +64,7 @@ describe('PageLevelTaxonomyTags execution', () => {
 			new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
 		]);
 
-		expect(pageStrategy.execute()).to.deep.eq(defaultExpectedTargeting);
+		expect(pageStrategy.get()).to.deep.eq(defaultExpectedTargeting);
 	});
 
 	it('Returns empty tags when site tags are not empty and page tags are empty', function () {
@@ -82,7 +82,7 @@ describe('PageLevelTaxonomyTags execution', () => {
 			new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
 		]);
 
-		expect(pageStrategy.execute()).to.deep.eq(defaultExpectedTargeting);
+		expect(pageStrategy.get()).to.deep.eq(defaultExpectedTargeting);
 	});
 
 	it('Returns tags when site tags are empty and page tags are not empty', function () {
@@ -105,7 +105,7 @@ describe('PageLevelTaxonomyTags execution', () => {
 			new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
 		]);
 
-		expect(pageStrategy.execute()).to.deep.eq(expectedTargeting);
+		expect(pageStrategy.get()).to.deep.eq(expectedTargeting);
 	});
 
 	it('Returns correct tags when site and page tags are not empty', function () {
@@ -134,6 +134,6 @@ describe('PageLevelTaxonomyTags execution', () => {
 			new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
 		]);
 
-		expect(pageStrategy.execute()).to.deep.eq(expectedTargeting);
+		expect(pageStrategy.get()).to.deep.eq(expectedTargeting);
 	});
 });

@@ -1,12 +1,12 @@
-import { TargetingStrategyInterface } from '../interfaces/targeting-strategy';
+import { TargetingProvider } from '../interfaces/targeting-strategy';
 import { Targeting } from '@wikia/ad-engine';
 
-export class PrefixDecorator implements TargetingStrategyInterface {
+export class PrefixDecorator implements TargetingProvider {
 	private tagsToAddPrefix = ['gnre', 'media', 'pform', 'pub', 'theme', 'tv'];
-	constructor(private strategyToDecorate: TargetingStrategyInterface) {}
+	constructor(private strategyToDecorate: TargetingProvider) {}
 
-	execute(): Partial<Targeting> {
-		const strategyTags = this.strategyToDecorate.execute();
+	get(): Partial<Targeting> {
+		const strategyTags = this.strategyToDecorate.get();
 		return this.addPagePrefixToValues(strategyTags);
 	}
 

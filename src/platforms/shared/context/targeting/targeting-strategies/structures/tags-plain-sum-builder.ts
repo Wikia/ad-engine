@@ -1,14 +1,14 @@
-import { TargetingStrategyInterface } from '../interfaces/targeting-strategy';
+import { TargetingProvider } from '../interfaces/targeting-strategy';
 import { Targeting } from '@wikia/ad-engine';
 
-export class TagsPlainSumBuilder implements TargetingStrategyInterface {
-	constructor(private tagsToSum: TargetingStrategyInterface[]) {}
+export class TagsPlainSumBuilder implements TargetingProvider {
+	constructor(private tagsToSum: TargetingProvider[]) {}
 
-	execute(): Partial<Targeting> {
+	get(): Partial<Targeting> {
 		let result = {};
 
 		this.tagsToSum.map((tagSet) => {
-			result = { ...result, ...tagSet.execute() };
+			result = { ...result, ...tagSet.get() };
 		});
 
 		return result;

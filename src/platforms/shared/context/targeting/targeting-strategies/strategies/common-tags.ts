@@ -4,12 +4,12 @@ import { getMediaWikiVariable } from '../../../../utils/get-media-wiki-variable'
 import { FandomContext } from '../models/fandom-context';
 import { CommonStrategyParams } from '../interfaces/common-strategy-params';
 import { OptionalStrategyParams } from '../interfaces/optional-strategy-params';
-import { TargetingStrategyInterface } from '../interfaces/targeting-strategy';
+import { TargetingProvider } from '../interfaces/targeting-strategy';
 
-export class CommonTags implements TargetingStrategyInterface {
+export class CommonTags implements TargetingProvider {
 	constructor(private skin: string, private fandomContext: FandomContext) {}
 
-	execute(): Partial<Targeting> {
+	get(): Partial<Targeting> {
 		return this.getCommonParams();
 	}
 

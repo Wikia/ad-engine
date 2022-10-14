@@ -64,6 +64,6 @@ export class UcpTargetingSetup implements DiProcess {
 
 		utils.logger('Targeting', `Selected targeting priority strategy: ${selectedStrategy}`);
 
-		return createSelectedStrategy(selectedStrategy, this.skin).execute();
+		return createSelectedStrategy(selectedStrategy, this.skin).get();
 	}
 }

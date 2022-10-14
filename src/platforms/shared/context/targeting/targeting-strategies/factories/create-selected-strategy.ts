@@ -1,5 +1,5 @@
 import { createFandomContext } from './create-fandom-context';
-import { TargetingStrategyInterface, TargetingStrategy } from '../interfaces/targeting-strategy';
+import { TargetingProvider, TargetingStrategy } from '../interfaces/targeting-strategy';
 import { PageLevelTaxonomyTags } from '../strategies/page-level-taxonomy-tags';
 import { SiteLevelTaxonomyTags } from '../strategies/site-level-taxonomy-tags';
 import { CommonTags } from '../strategies/common-tags';
@@ -11,10 +11,7 @@ import { utils } from '@wikia/ad-engine';
 const logGroup = 'Targeting';
 const fandomContext = createFandomContext();
 
-export function createSelectedStrategy(
-	selectedStrategy: string,
-	skin: string,
-): TargetingStrategyInterface {
+export function createSelectedStrategy(selectedStrategy: string, skin: string): TargetingProvider {
 	switch (selectedStrategy) {
 		case TargetingStrategy.SITE_CONTEXT:
 			utils.logger(logGroup, 'Executing SiteContext strategy...');

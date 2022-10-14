@@ -6,6 +6,6 @@ export enum TargetingStrategy {
 	COMBINED = 'combined',
 }
 
-export interface TargetingStrategyInterface {
-	execute(): Partial<Targeting>;
+export interface TargetingProvider {
+	get(): Partial<Targeting>;
 }

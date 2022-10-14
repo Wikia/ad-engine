@@ -67,7 +67,7 @@ describe('CombinedStrategySiteTagsBased execution', () => {
 			]),
 		]);
 
-		expect(combinedStrategy.execute()).to.deep.eq(defaultExpectedTargeting);
+		expect(combinedStrategy.get()).to.deep.eq(defaultExpectedTargeting);
 	});
 
 	it('Returns tags when site tags are not empty and page tags are empty', function () {
@@ -89,7 +89,7 @@ describe('CombinedStrategySiteTagsBased execution', () => {
 			]),
 		]);
 
-		expect(combinedStrategy.execute()).to.deep.eq(expectedTargeting);
+		expect(combinedStrategy.get()).to.deep.eq(expectedTargeting);
 	});
 
 	it('Returns tags when site tags are empty and page tags are not empty', function () {
@@ -115,7 +115,7 @@ describe('CombinedStrategySiteTagsBased execution', () => {
 			]),
 		]);
 
-		expect(combinedStrategy.execute()).to.deep.eq(expectedTargeting);
+		expect(combinedStrategy.get()).to.deep.eq(expectedTargeting);
 	});
 
 	it('Returns combined tags when site and page tags are not empty', function () {
@@ -147,6 +147,6 @@ describe('CombinedStrategySiteTagsBased execution', () => {
 			]),
 		]);
 
-		expect(combinedStrategy.execute()).to.deep.eq(expectedTargeting);
+		expect(combinedStrategy.get()).to.deep.eq(expectedTargeting);
 	});
 });
