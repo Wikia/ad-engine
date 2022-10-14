@@ -8,6 +8,11 @@ import { CookieStorageAdapter } from '../services/';
  *  This class is about to be expanded in ADEN-10310
  */
 class Targeting {
+	private static containsValue(valuesList: string[], value: string): boolean {
+		const upperValue = value.toUpperCase();
+		return valuesList.some((existingBundle) => existingBundle.toUpperCase() === upperValue);
+	}
+
 	getHostnamePrefix(): string {
 		const hostname = window.location.hostname.toLowerCase();
 		const match = /(^|.)(showcase|externaltest|preview|verify|stable|sandbox-[^.]+)\./.exec(
@@ -43,7 +48,11 @@ class Targeting {
 				}
 			});
 
-			selectedBundles.forEach((bundle) => targetingBundles.push(bundle));
+			selectedBundles.forEach((bundle) => {
+				if (!Targeting.containsValue(targetingBundles, bundle)) {
+					targetingBundles.push(bundle);
+				}
+			});
 		} catch (e) {
 			logger('targeting-bundles', 'Invalid input data!');
 		}
@@ -61,10 +70,12 @@ class Targeting {
 		if (cookieAdapter.getItem('_ae_intrsttl_imp')) {
 			bundles.push('interstitial_disabled');
 		}
+		const skin = context.get('targeting.skin');
 
 		if (
-			context.get('targeting.skin').includes('ucp_') &&
-			!bundles.some((bundle) => bundle.toUpperCase() === 'VIDEO_TIER_1_AND_2_BUNDLE')
+			skin &&
+			skin.includes('ucp_') &&
+			!Targeting.containsValue(bundles, 'VIDEO_TIER_1_AND_2_BUNDLE')
 		) {
 			bundles.push('VIDEO_TIER_3_BUNDLE');
 		}

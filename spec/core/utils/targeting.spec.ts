@@ -123,4 +123,26 @@ describe('targeting', () => {
 			}),
 		).to.deep.equal(['backend_bundle', 'bundle1', 'bundle2', 'VIDEO_TIER_3_BUNDLE']);
 	});
+
+	it('getTargetingBundles should not overwrite existing bundles', () => {
+		context.set('targeting.bundles', ['existing_bundle']);
+		context.set('targeting.s1', '_harrypotter');
+
+		expect(
+			targeting.getTargetingBundles({
+				EXISTING_BUNDLE: {
+					s1: ['_project34', '_harrypotter'],
+				},
+				existing_BUNDLE: {
+					s1: ['_harrypotter'],
+				},
+				EXISTING_bundle: {
+					s1: ['_harrypotter'],
+				},
+				new_bundle: {
+					s1: ['_harrypotter'],
+				},
+			}),
+		).to.deep.equal(['existing_bundle', 'new_bundle']);
+	});
 });

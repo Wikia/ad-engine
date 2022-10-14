@@ -44,6 +44,8 @@ interface Window {
 	trackingOptIn?: any;
 	Sailthru?: Sailthru;
 	SilverSurferSDK?: SilverSurferSDK;
+	// Fandom JWPlayer sets the sponsored videos list
+	sponsoredVideos?: string[];
 	wgCookiePath?: string;
 	XMLHttpRequest?: any;
 }
