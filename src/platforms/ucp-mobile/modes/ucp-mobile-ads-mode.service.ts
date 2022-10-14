@@ -56,6 +56,7 @@ export class UcpMobileAdsMode implements DiProcess {
 						jwPlayerInhibitor.initialized,
 						userIdentity.initialized,
 						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
+						iasPublisherOptimization.IASReady,
 					],
 				}),
 			)

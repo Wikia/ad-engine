@@ -44,6 +44,11 @@ class IasPublisherOptimization extends BaseServiceSetup {
 		);
 	}
 
+	private resolveIASReady: () => void;
+	IASReady: Promise<void> = new Promise<void>((resolve) => {
+		this.resolveIASReady = resolve;
+	});
+
 	call(): Promise<void> {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
@@ -88,7 +93,7 @@ class IasPublisherOptimization extends BaseServiceSetup {
 		window.__iasPET.pubId = context.get('services.iasPublisherOptimization.pubId');
 		window.__iasPET.queue.push({
 			adSlots: iasPETSlots,
-			dataHandler: this.iasDataHandler,
+			dataHandler: this.iasDataHandler.bind(this),
 		});
 	}
 
@@ -129,6 +134,8 @@ class IasPublisherOptimization extends BaseServiceSetup {
 		for (const [slotName, slotTargeting] of Object.entries(iasTargetingData.slots)) {
 			context.set(`slots.${slotName}.targeting.vw`, slotTargeting.vw || slotTargeting.vw_vv);
 		}
+		utils.logger(logGroup, 'Done.', this);
+		this.resolveIASReady();
 	}
 
 	private static setBrandSafetyKeyValuesInTargeting(brandSafetyData): void {
