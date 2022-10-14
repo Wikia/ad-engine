@@ -45,6 +45,7 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 						userIdentity.initialized,
 						playerSetup.initialized,
 						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
+						iasPublisherOptimization.IASReady,
 					],
 				}),
 			)
