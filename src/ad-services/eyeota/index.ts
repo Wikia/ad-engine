@@ -30,6 +30,7 @@ class Eyeota extends BaseServiceSetup {
 				utils.logger(logGroup, 'ready');
 			})
 			.catch(() => {
+				communicationService.emit(eventsRepository.EYEOTA_FAILED);
 				throw new Error(`Error occurred while loading ${logGroup}`);
 			});
 	}
