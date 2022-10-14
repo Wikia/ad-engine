@@ -31,7 +31,6 @@ export class CommonTags implements TargetingStrategyInterface {
 
 		const commonContextParams: CommonStrategyParams = {
 			artid: this.fandomContext.page.articleId ? this.fandomContext.page.articleId.toString() : '',
-			esrb: this.fandomContext.site.esrbRating || '',
 			kid_wiki: this.fandomContext.site.directedAtChildren ? '1' : '0',
 			lang: this.fandomContext.page.lang || 'unknown',
 			// 'this.fandomContext.site.vertical' should be removed after UCP release from ADEN-12194
@@ -104,6 +103,7 @@ export class CommonTags implements TargetingStrategyInterface {
 
 		const keyValsMap = {
 			cid: utils.queryString.get('cid'),
+			esrb: this.fandomContext.site.esrbRating,
 			pv: context.get('wiki.pvNumber'),
 			pvg: context.get('wiki.pvNumberGlobal'),
 		};
