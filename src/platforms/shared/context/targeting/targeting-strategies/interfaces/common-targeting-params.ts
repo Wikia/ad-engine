@@ -1,4 +1,4 @@
-export interface CommonStrategyParams {
+export interface CommonTargetingParams {
 	artid?: string;
 	esrb?: string;
 	kid_wiki?: '0' | '1';

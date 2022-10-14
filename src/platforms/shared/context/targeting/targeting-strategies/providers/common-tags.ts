@@ -2,9 +2,9 @@ import { context, Targeting, utils } from '@wikia/ad-engine';
 import { getDomain } from '../../../../utils/get-domain';
 import { getMediaWikiVariable } from '../../../../utils/get-media-wiki-variable';
 import { FandomContext } from '../models/fandom-context';
-import { CommonStrategyParams } from '../interfaces/common-strategy-params';
-import { OptionalStrategyParams } from '../interfaces/optional-strategy-params';
-import { TargetingProvider } from '../interfaces/targeting-strategy';
+import { CommonTargetingParams } from '../interfaces/common-targeting-params';
+import { OptionalTargetingParams } from '../interfaces/optional-targeting-params';
+import { TargetingProvider } from '../interfaces/targeting-provider';
 
 export class CommonTags implements TargetingProvider {
 	constructor(private skin: string, private fandomContext: FandomContext) {}
@@ -29,7 +29,7 @@ export class CommonTags implements TargetingProvider {
 			is_mobile: utils.client.isMobileSkin(this.skin) ? '1' : '0',
 		};
 
-		const commonContextParams: CommonStrategyParams = {
+		const commonContextParams: CommonTargetingParams = {
 			artid: this.fandomContext.page.articleId ? this.fandomContext.page.articleId.toString() : '',
 			kid_wiki: this.fandomContext.site.directedAtChildren ? '1' : '0',
 			lang: this.fandomContext.page.lang || 'unknown',
@@ -98,8 +98,8 @@ export class CommonTags implements TargetingProvider {
 		context.set('custom.hasIncontentPlayer', hasIncontentPlayer);
 	}
 
-	private getOptionalKeyVals(): OptionalStrategyParams {
-		const keyVals: OptionalStrategyParams = {};
+	private getOptionalKeyVals(): OptionalTargetingParams {
+		const keyVals: OptionalTargetingParams = {};
 
 		const keyValsMap = {
 			cid: utils.queryString.get('cid'),

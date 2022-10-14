@@ -5,9 +5,9 @@ import {
 	Site,
 	Page,
 } from '@wikia/platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
-import { PageLevelTaxonomyTags } from '@wikia/platforms/shared/context/targeting/targeting-strategies/strategies/page-level-taxonomy-tags';
+import { PageLevelTaxonomyTags } from '@wikia/platforms/shared/context/targeting/targeting-strategies/providers/page-level-taxonomy-tags';
 import { TagsPlainSumBuilder } from '@wikia/platforms/shared/context/targeting/targeting-strategies/structures/tags-plain-sum-builder';
-import { CommonTags } from '@wikia/platforms/shared/context/targeting/targeting-strategies/strategies/common-tags';
+import { CommonTags } from '@wikia/platforms/shared/context/targeting/targeting-strategies/providers/common-tags';
 import { PrefixDecorator } from '@wikia/platforms/shared/context/targeting/targeting-strategies/structures/prefix-decorator';
 
 describe('PageLevelTaxonomyTags execution', () => {

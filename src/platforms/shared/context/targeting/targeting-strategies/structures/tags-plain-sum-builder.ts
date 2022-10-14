@@ -1,4 +1,4 @@
-import { TargetingProvider } from '../interfaces/targeting-strategy';
+import { TargetingProvider } from '../interfaces/targeting-provider';
 import { Targeting } from '@wikia/ad-engine';
 
 export class TagsPlainSumBuilder implements TargetingProvider {

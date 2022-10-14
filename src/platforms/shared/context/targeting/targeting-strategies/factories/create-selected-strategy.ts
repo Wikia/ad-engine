@@ -1,8 +1,9 @@
 import { createFandomContext } from './create-fandom-context';
-import { TargetingProvider, TargetingStrategy } from '../interfaces/targeting-strategy';
-import { PageLevelTaxonomyTags } from '../strategies/page-level-taxonomy-tags';
-import { SiteLevelTaxonomyTags } from '../strategies/site-level-taxonomy-tags';
-import { CommonTags } from '../strategies/common-tags';
+import { TargetingProvider } from '../interfaces/targeting-provider';
+import { TargetingStrategy } from '../interfaces/targeting-strategy';
+import { PageLevelTaxonomyTags } from '../providers/page-level-taxonomy-tags';
+import { SiteLevelTaxonomyTags } from '../providers/site-level-taxonomy-tags';
+import { CommonTags } from '../providers/common-tags';
 import { TagsPlainSumBuilder } from '../structures/tags-plain-sum-builder';
 import { PrefixDecorator } from '../structures/prefix-decorator';
 import { TagsByKeyComposer } from '../structures/tags-by-key-composer';

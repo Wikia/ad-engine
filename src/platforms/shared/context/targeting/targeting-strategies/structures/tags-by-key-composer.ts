@@ -1,4 +1,4 @@
-import { TargetingProvider } from '../interfaces/targeting-strategy';
+import { TargetingProvider } from '../interfaces/targeting-provider';
 import { Targeting } from '@wikia/ad-engine';
 
 export class TagsByKeyComposer implements TargetingProvider {
@@ -7,9 +7,8 @@ export class TagsByKeyComposer implements TargetingProvider {
 	get(): Partial<Targeting> {
 		const result = {};
 
-		this.tagsToCombine.map((strategy) => {
-			const strategyTags = strategy.get();
-			this.combineTags(result, strategyTags);
+		this.tagsToCombine.map((tagSet) => {
+			this.combineTags(result, tagSet.get());
 		});
 
 		return result;

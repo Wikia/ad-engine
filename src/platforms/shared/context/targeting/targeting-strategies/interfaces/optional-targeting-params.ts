@@ -1,4 +1,4 @@
-export interface OptionalStrategyParams {
+export interface OptionalTargetingParams {
 	cid?: string;
 	pv?: number;
 	pvg?: number;
