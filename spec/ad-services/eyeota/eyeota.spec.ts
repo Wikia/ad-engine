@@ -15,7 +15,6 @@ describe('Eyeota', () => {
 			.returns(Promise.resolve({} as any));
 
 		sandbox.stub(tcf, 'getTCData').returns(Promise.resolve({ tcString: 'test' }) as any);
-
 		context.set('services.eyeota.enabled', true);
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);
@@ -76,6 +75,22 @@ describe('Eyeota', () => {
 		const src = await eyeota.createScriptSource();
 
 		expect(src).to.equal('https://ps.eyeota.net/pixel?pid=r8rcb20&sid=fandom&t=ajs&s0v=lifestyle');
+
+		context.remove('targeting.s0v');
+	});
+
+	it('constructs proper params on GPDR-related geo', async () => {
+		sandbox.restore();
+		sandbox
+			.stub(tcf, 'getTCData')
+			.returns(Promise.resolve({ tcString: 'test', gdprApplies: true }) as any);
+		context.set('targeting.s0v', 'lifestyle');
+
+		const src = await eyeota.createScriptSource();
+
+		expect(src).to.equal(
+			'https://ps.eyeota.net/pixel?pid=r8rcb20&sid=fandom&t=ajs&s0v=lifestyle&gdpr=1&gdpr_consent=test',
+		);
 
 		context.remove('targeting.s0v');
 	});
