@@ -11,7 +11,7 @@ import { UcpMobileA9ConfigSetup } from './setup/context/a9/ucp-mobile-a9-config.
 import { UcpMobileDynamicSlotsSetup } from './setup/dynamic-slots/ucp-mobile-dynamic-slots.setup';
 import { UcpMobileTemplatesSetup } from './templates/ucp-mobile-templates.setup';
 import { UcpMobileDeprecatedAdsMode } from './modes/ucp-mobile-ads-mode-deprecated.service';
-import { UcpMobileLighterAds } from './modes/ucp-mobile-lighter-ads-mode.service';
+import { UcpMobileAdsMode } from './modes/ucp-mobile-ads-mode.service';
 
 @Injectable()
 export class UcpMobileLegacySetup {
@@ -27,7 +27,7 @@ export class UcpMobileLegacySetup {
 			BiddersStateSetup,
 			conditional(() => this.noAdsDetector.isAdsMode(), {
 				yes: conditional(() => context.get('options.adsInitializeV2'), {
-					yes: UcpMobileLighterAds,
+					yes: UcpMobileAdsMode,
 					no: UcpMobileDeprecatedAdsMode,
 				}),
 				no: NoAdsMode,

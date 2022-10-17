@@ -1,4 +1,4 @@
-import { BaseServiceSetup, context, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, tcf, utils } from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 
 const logGroup = 'eyeota';
@@ -30,14 +30,21 @@ class Eyeota extends BaseServiceSetup {
 				utils.logger(logGroup, 'ready');
 			})
 			.catch(() => {
+				communicationService.emit(eventsRepository.EYEOTA_FAILED);
 				throw new Error(`Error occurred while loading ${logGroup}`);
 			});
 	}
 
 	async createScriptSource(): Promise<string> {
+		const tcfData = await tcf.getTCData();
 		const s0v = context.get('targeting.s0v');
+		let url = `https://ps.eyeota.net/pixel?pid=${pid}&sid=${siteName}&t=ajs&s0v=${s0v}`;
 
-		return `https://ps.eyeota.net/pixel?pid=${pid}&sid=${siteName}&t=ajs&s0v=${s0v}`;
+		if (tcfData.gdprApplies) {
+			url += `&gdpr=1&gdpr_consent=${tcfData.tcString}`;
+		}
+
+		return url;
 	}
 }
 
