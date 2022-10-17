@@ -13,6 +13,7 @@ const eventsToTrack = {
 	audigent_segment_library_loaded: eventsRepository.AUDIGENT_SEGMENT_LIBRARY_LOADED,
 	audigent_segments_ready: eventsRepository.AUDIGENT_SEGMENTS_READY,
 	eyeota_started: eventsRepository.EYEOTA_STARTED,
+	eyeota_failed: eventsRepository.EYEOTA_FAILED,
 };
 
 export class LoadTimesTracker {
