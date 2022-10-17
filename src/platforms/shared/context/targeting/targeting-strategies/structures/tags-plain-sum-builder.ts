@@ -5,12 +5,17 @@ export class TagsPlainSumBuilder implements TargetingProvider {
 	constructor(private tagsToSum: TargetingProvider[]) {}
 
 	get(): Partial<Targeting> {
-		let result = {};
+		const result = {};
 
 		this.tagsToSum.map((tagSet) => {
-			result = { ...result, ...tagSet.get() };
+			this.sumTags(result, tagSet.get());
 		});
 
+		return result;
+	}
+
+	public sumTags(result, tags) {
+		result = { ...result, ...tags };
 		return result;
 	}
 }
