@@ -43,10 +43,10 @@ export class F2Platform {
 			F2IocSetup,
 			TrackingParametersSetup,
 			() => context.set('state.isMobile', f2env.isPageMobile),
+			F2TargetingSetup,
 			LoadTimesSetup,
 			F2BaseContextSetup,
 			F2SlotsContextSetup,
-			F2TargetingSetup,
 			F2DynamicSlotsSetup,
 			F2TemplatesSetup,
 			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM might break
