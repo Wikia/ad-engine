@@ -40,7 +40,7 @@ describe('targeting', () => {
 			targeting.getTargetingBundles({
 				bundle1: {
 					s1: ['_project34', '_harry'],
-					rating: ['teen'],
+					rating: ['esrb:teen'],
 				},
 				bundle2: {
 					s1: ['_project43', '_harrypotter'],
