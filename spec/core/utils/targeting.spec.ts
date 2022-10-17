@@ -11,6 +11,11 @@ describe('targeting', () => {
 	});
 
 	afterEach(() => {
+		context.remove('targeting.bundles');
+		context.remove('targeting.esrb');
+		context.remove('targeting.s1');
+		context.remove('targeting.skin');
+
 		sandbox.restore();
 	});
 
@@ -73,6 +78,35 @@ describe('targeting', () => {
 		).to.deep.equal([]);
 	});
 
+	it('getTargetingBundles will not add VIDEO_TIER_3_BUNDLE for tier 1 and 2', () => {
+		context.set('targeting.s1', '_project34');
+		context.set('targeting.skin', 'ucp_desktop');
+
+		expect(
+			targeting.getTargetingBundles({
+				VIDEO_TIER_1_AND_2_BUNDLE: {
+					s1: ['_project34'],
+				},
+			}),
+		).to.deep.equal(['VIDEO_TIER_1_AND_2_BUNDLE']);
+
+		expect(
+			targeting.getTargetingBundles({
+				video_tier_1_and_2_bundle: {
+					s1: ['_project34'],
+				},
+			}),
+		).to.deep.equal(['video_tier_1_and_2_bundle']);
+
+		expect(
+			targeting.getTargetingBundles({
+				VIDEO_tier_1_and_2_bundle: {
+					s1: ['_project34'],
+				},
+			}),
+		).to.deep.equal(['VIDEO_tier_1_and_2_bundle']);
+	});
+
 	it('getTargetingBundles returns backend, frontent and code bundles', () => {
 		context.set('targeting.bundles', ['backend_bundle']);
 		context.set('targeting.s1', '_harrypotter');
@@ -88,5 +122,27 @@ describe('targeting', () => {
 				},
 			}),
 		).to.deep.equal(['backend_bundle', 'bundle1', 'bundle2', 'VIDEO_TIER_3_BUNDLE']);
+	});
+
+	it('getTargetingBundles should not overwrite existing bundles', () => {
+		context.set('targeting.bundles', ['existing_bundle']);
+		context.set('targeting.s1', '_harrypotter');
+
+		expect(
+			targeting.getTargetingBundles({
+				EXISTING_BUNDLE: {
+					s1: ['_project34', '_harrypotter'],
+				},
+				existing_BUNDLE: {
+					s1: ['_harrypotter'],
+				},
+				EXISTING_bundle: {
+					s1: ['_harrypotter'],
+				},
+				new_bundle: {
+					s1: ['_harrypotter'],
+				},
+			}),
+		).to.deep.equal(['existing_bundle', 'new_bundle']);
 	});
 });
