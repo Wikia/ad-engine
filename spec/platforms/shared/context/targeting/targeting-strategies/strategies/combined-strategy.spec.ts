@@ -6,12 +6,8 @@ import {
 	Site,
 	Page,
 } from '@wikia/platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
-import { TagsPlainSumBuilder } from '@wikia/platforms/shared/context/targeting/targeting-strategies/structures/tags-plain-sum-builder';
-import { CommonTags } from '@wikia/platforms/shared/context/targeting/targeting-strategies/providers/common-tags';
-import { TagsByKeyComposer } from '@wikia/platforms/shared/context/targeting/targeting-strategies/structures/tags-by-key-composer';
-import { SiteLevelTaxonomyTags } from '@wikia/platforms/shared/context/targeting/targeting-strategies/providers/site-level-taxonomy-tags';
-import { PrefixDecorator } from '@wikia/platforms/shared/context/targeting/targeting-strategies/structures/prefix-decorator';
-import { PageLevelTaxonomyTags } from '@wikia/platforms/shared/context/targeting/targeting-strategies/providers/page-level-taxonomy-tags';
+import { createSelectedStrategy } from '@wikia/platforms/shared/context/targeting/targeting-strategies/factories/create-selected-strategy';
+import { TargetingStrategy } from '@wikia/platforms/shared/context/targeting/targeting-strategies/interfaces/targeting-strategy';
 
 describe('CombinedStrategy', () => {
 	beforeEach(() => {
@@ -65,13 +61,11 @@ describe('CombinedStrategy', () => {
 			tv: [],
 		};
 
-		const combinedStrategy = new TagsPlainSumBuilder([
-			new CommonTags(mockedSkin, mockedContext),
-			new TagsByKeyComposer([
-				new SiteLevelTaxonomyTags(mockedContext),
-				new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
-			]),
-		]);
+		const combinedStrategy = createSelectedStrategy(
+			TargetingStrategy.COMBINED,
+			mockedContext,
+			mockedSkin,
+		);
 
 		expect(combinedStrategy.get()).to.deep.eq({ ...mockedCommonParams, ...expectedTaxonomyTags });
 	});
@@ -100,13 +94,11 @@ describe('CombinedStrategy', () => {
 			tv: ['test1', 'movie'],
 		};
 
-		const combinedStrategy = new TagsPlainSumBuilder([
-			new CommonTags(mockedSkin, mockedContext),
-			new TagsByKeyComposer([
-				new SiteLevelTaxonomyTags(mockedContext),
-				new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
-			]),
-		]);
+		const combinedStrategy = createSelectedStrategy(
+			TargetingStrategy.COMBINED,
+			mockedContext,
+			mockedSkin,
+		);
 
 		expect(combinedStrategy.get()).to.deep.eq({ ...mockedCommonParams, ...expectedTaxonomyTags });
 	});
@@ -134,13 +126,11 @@ describe('CombinedStrategy', () => {
 			tv: [],
 		};
 
-		const combinedStrategy = new TagsPlainSumBuilder([
-			new CommonTags(mockedSkin, mockedContext),
-			new TagsByKeyComposer([
-				new SiteLevelTaxonomyTags(mockedContext),
-				new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
-			]),
-		]);
+		const combinedStrategy = createSelectedStrategy(
+			TargetingStrategy.COMBINED,
+			mockedContext,
+			mockedSkin,
+		);
 
 		expect(combinedStrategy.get()).to.deep.eq({ ...mockedCommonParams, ...expectedTaxonomyTags });
 	});
@@ -172,13 +162,11 @@ describe('CombinedStrategy', () => {
 			tv: [],
 		};
 
-		const combinedStrategy = new TagsPlainSumBuilder([
-			new CommonTags(mockedSkin, mockedContext),
-			new TagsByKeyComposer([
-				new SiteLevelTaxonomyTags(mockedContext),
-				new PrefixDecorator(new PageLevelTaxonomyTags(mockedContext)),
-			]),
-		]);
+		const combinedStrategy = createSelectedStrategy(
+			TargetingStrategy.COMBINED,
+			mockedContext,
+			mockedSkin,
+		);
 
 		expect(combinedStrategy.get()).to.deep.eq({ ...mockedCommonParams, ...expectedTaxonomyTags });
 	});
