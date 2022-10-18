@@ -10,17 +10,8 @@ import { createSelectedStrategy } from '@wikia/platforms/shared/context/targetin
 import { TargetingStrategy } from '@wikia/platforms/shared/context/targeting/targeting-strategies/interfaces/targeting-strategy';
 
 describe('CombinedStrategy', () => {
-	beforeEach(() => {
-		context.set('geo.country', 'PL');
-		context.set('wiki.targeting.wikiVertical', 'test');
-	});
-
-	afterEach(() => {
-		context.set('geo.country', undefined);
-		context.set('wiki.targeting.wikiVertical', undefined);
-	});
-
 	const mockedSkin = 'test';
+	const mockedTaxonomy = ['life', 'lifestyle'];
 	const mockedCommonParams = {
 		ar: '4:3',
 		artid: '666',
@@ -32,9 +23,9 @@ describe('CombinedStrategy', () => {
 		kid_wiki: '1',
 		lang: 'pl',
 		original_host: 'fandom',
-		s0: 'life',
+		s0: mockedTaxonomy[0],
 		s0c: [],
-		s0v: 'lifestyle',
+		s0v: mockedTaxonomy[1],
 		s1: '_test',
 		s2: 'article-test',
 		skin: 'test',
@@ -43,9 +34,17 @@ describe('CombinedStrategy', () => {
 		wpage: 'test',
 	};
 
+	beforeEach(() => {
+		context.set('geo.country', 'PL');
+	});
+
+	afterEach(() => {
+		context.set('geo.country', undefined);
+	});
+
 	it('sets up targeting correctly when taxonomy tags are empty', function () {
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, {}, ['life', 'lifestyle'], 'life'),
+			new Site([], true, 'ec', 'test', false, {}, mockedTaxonomy, 'life'),
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
@@ -61,13 +60,15 @@ describe('CombinedStrategy', () => {
 			tv: [],
 		};
 
+		const expectedResult = { ...mockedCommonParams, ...expectedTaxonomyTags };
+
 		const combinedStrategy = createSelectedStrategy(
 			TargetingStrategy.COMBINED,
 			mockedContext,
 			mockedSkin,
 		);
 
-		expect(combinedStrategy.get()).to.deep.eq({ ...mockedCommonParams, ...expectedTaxonomyTags });
+		expect(combinedStrategy.get()).to.deep.eq(expectedResult);
 	});
 
 	it('sets up targeting correctly when site tags are not empty and page tags are empty', function () {
@@ -78,7 +79,7 @@ describe('CombinedStrategy', () => {
 		};
 
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, mockedSiteTags, ['life', 'lifestyle'], 'life'),
+			new Site([], true, 'ec', 'test', false, mockedSiteTags, mockedTaxonomy, 'life'),
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
@@ -94,13 +95,15 @@ describe('CombinedStrategy', () => {
 			tv: ['test1', 'movie'],
 		};
 
+		const expectedResult = { ...mockedCommonParams, ...expectedTaxonomyTags };
+
 		const combinedStrategy = createSelectedStrategy(
 			TargetingStrategy.COMBINED,
 			mockedContext,
 			mockedSkin,
 		);
 
-		expect(combinedStrategy.get()).to.deep.eq({ ...mockedCommonParams, ...expectedTaxonomyTags });
+		expect(combinedStrategy.get()).to.deep.eq(expectedResult);
 	});
 
 	it('sets up targeting correctly when site tags are empty and page tags are not empty', function () {
@@ -110,7 +113,7 @@ describe('CombinedStrategy', () => {
 		};
 
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, {}, ['life', 'lifestyle'], 'life'),
+			new Site([], true, 'ec', 'test', false, {}, mockedTaxonomy, 'life'),
 			new Page(666, 'pl', 666, 'test', 'article-test', mockedPageTags),
 		);
 
@@ -126,13 +129,15 @@ describe('CombinedStrategy', () => {
 			tv: [],
 		};
 
+		const expectedResult = { ...mockedCommonParams, ...expectedTaxonomyTags };
+
 		const combinedStrategy = createSelectedStrategy(
 			TargetingStrategy.COMBINED,
 			mockedContext,
 			mockedSkin,
 		);
 
-		expect(combinedStrategy.get()).to.deep.eq({ ...mockedCommonParams, ...expectedTaxonomyTags });
+		expect(combinedStrategy.get()).to.deep.eq(expectedResult);
 	});
 
 	it('sets up targeting correctly when site tags and page tags are not empty', function () {
@@ -146,7 +151,7 @@ describe('CombinedStrategy', () => {
 		};
 
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, mockedSiteTags, ['life', 'lifestyle'], 'life'),
+			new Site([], true, 'ec', 'test', false, mockedSiteTags, mockedTaxonomy, 'life'),
 			new Page(666, 'pl', 666, 'test', 'article-test', mockedPageTags),
 		);
 
@@ -162,12 +167,14 @@ describe('CombinedStrategy', () => {
 			tv: [],
 		};
 
+		const expectedResult = { ...mockedCommonParams, ...expectedTaxonomyTags };
+
 		const combinedStrategy = createSelectedStrategy(
 			TargetingStrategy.COMBINED,
 			mockedContext,
 			mockedSkin,
 		);
 
-		expect(combinedStrategy.get()).to.deep.eq({ ...mockedCommonParams, ...expectedTaxonomyTags });
+		expect(combinedStrategy.get()).to.deep.eq(expectedResult);
 	});
 });
