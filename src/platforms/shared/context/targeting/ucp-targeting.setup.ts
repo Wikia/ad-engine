@@ -11,6 +11,7 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { createSelectedStrategy } from './targeting-strategies/factories/create-selected-strategy';
+import { createFandomContext } from './targeting-strategies/factories/create-fandom-context';
 
 const SKIN = Symbol('targeting skin');
 
@@ -64,6 +65,6 @@ export class UcpTargetingSetup implements DiProcess {
 
 		utils.logger('Targeting', `Selected targeting priority strategy: ${selectedStrategy}`);
 
-		return createSelectedStrategy(selectedStrategy, this.skin).get();
+		return createSelectedStrategy(selectedStrategy, createFandomContext(), this.skin).get();
 	}
 }
