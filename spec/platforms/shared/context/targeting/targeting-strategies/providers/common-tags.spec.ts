@@ -10,20 +10,18 @@ import { CommonTags } from '@wikia/platforms/shared/context/targeting/targeting-
 describe('CommonTags', () => {
 	beforeEach(() => {
 		context.set('geo.country', 'PL');
-		context.set('wiki', {
-			opts: {},
-			targeting: {},
-		});
 	});
 
 	afterEach(() => {
 		context.set('geo.country', undefined);
 	});
 
+	const mockedSkin = 'test';
+	const mockedTaxonomy = ['life', 'lifestyle'];
+
 	it('commonTags are returned correctly', function () {
-		const mockedSkin = 'test';
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, {}, ['life', 'lifestyle'], 'life'),
+			new Site([], true, 'ec', 'test', false, {}, mockedTaxonomy, null),
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
@@ -40,9 +38,9 @@ describe('CommonTags', () => {
 			kid_wiki: '1',
 			lang: 'pl',
 			original_host: 'fandom',
-			s0: 'life',
+			s0: mockedTaxonomy[0],
 			s0c: [],
-			s0v: 'lifestyle',
+			s0v: mockedTaxonomy[1],
 			s1: '_test',
 			s2: 'article-test',
 			skin: mockedSkin,
