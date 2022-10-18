@@ -9,6 +9,7 @@ import {
 	liveRampPixel,
 	liveConnect,
 	userIdentity,
+	utils,
 } from '@wikia/ad-engine';
 import { wadRunner, playerSetup, gptSetup, adEngineSetup } from '@platforms/shared';
 
@@ -32,6 +33,7 @@ export class F2AdsMode {
 			)
 			.execute()
 			.then(() => {
+				utils.logger('DJ', 'Pipeline done');
 				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);
 			});
 	}

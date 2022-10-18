@@ -15,6 +15,7 @@ import { playerSetup } from './player.setup';
 })
 class GptSetup {
 	call() {
+		utils.logger('GPT Setup', 'Called');
 		const GPT_LIBRARY_URL = '//www.googletagservices.com/tag/js/gpt.js';
 
 		utils.logger('gpt-provider', 'loading GPT...');
