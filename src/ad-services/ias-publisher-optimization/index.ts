@@ -38,7 +38,7 @@ class IasPublisherOptimization {
 	private isLoaded = false;
 	private slotList: string[] = [];
 
-	private isEnabled(): boolean {
+	isEnabled(): boolean {
 		return (
 			context.get('services.iasPublisherOptimization.enabled') &&
 			context.get('options.trackingOptIn') &&

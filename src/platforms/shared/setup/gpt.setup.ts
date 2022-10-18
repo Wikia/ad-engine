@@ -6,12 +6,18 @@ import {
 	utils,
 	userIdentity,
 	jwPlayer,
+	iasPublisherOptimization,
 } from '@wikia/ad-engine';
 import { playerSetup } from './player.setup';
 
 @Service({
 	stage: ServiceStage.preProvider,
-	dependencies: [userIdentity, playerSetup, jwPlayer],
+	dependencies: [
+		userIdentity,
+		playerSetup,
+		jwPlayer.isRequiredToRun() ? jwPlayer.initialized : Promise.resolve(),
+		iasPublisherOptimization.isEnabled() ? iasPublisherOptimization.IASReady : Promise.resolve(),
+	],
 })
 class GptSetup {
 	call() {
