@@ -1,8 +1,11 @@
-import { BaseServiceSetup, context, utils } from '@ad-engine/core';
+import { context, ServiceStage, utils, Service } from '@ad-engine/core';
 
 const logGroup = 'ATS';
 
-class Ats extends BaseServiceSetup {
+@Service({
+	stage: ServiceStage.preProvider,
+})
+class Ats {
 	private isLoaded = false;
 	private atsScriptSrc = 'https://ats.rlcdn.com/ats.js';
 

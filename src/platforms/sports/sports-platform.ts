@@ -24,7 +24,6 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 import { getBasicContext } from './ad-context';
 import { SportsAdsMode } from './modes/ads/sports-ads.mode';
-import { SportsAdsDeprecatedMode } from './modes/ads/sports-ads-deprecated.mode';
 import { SportsA9ConfigSetup } from './setup/context/a9/sports-a9-config.setup';
 import { SportsPrebidConfigSetup } from './setup/context/prebid/sports-prebid-config.setup';
 import { SportsSlotsContextSetup } from './setup/context/slots/sports-slots-context.setup';
@@ -67,10 +66,7 @@ export class SportsPlatform {
 		// Run
 		this.pipeline.add(
 			conditional(() => this.noAdsDetector.isAdsMode(), {
-				yes: conditional(() => context.get('options.adsInitializeV2'), {
-					yes: SportsAdsMode,
-					no: SportsAdsDeprecatedMode,
-				}),
+				yes: SportsAdsMode,
 			}),
 		);
 

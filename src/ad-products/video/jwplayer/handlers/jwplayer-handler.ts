@@ -7,7 +7,7 @@ import {
 	JWPlayerHelperSkippingSecondVideo,
 	JwplayerHelperSkippingSponsoredVideo,
 } from '../helpers';
-import { jwPlayerInhibitor } from '../helpers/jwplayer-inhibitor';
+import { jwPlayer } from '../helpers/jw-player';
 import { PlayerReadyResult } from '../helpers/player-ready-result';
 import { JwpStream, ofJwpEvent } from '../streams/jwplayer-stream';
 
@@ -72,7 +72,7 @@ export class JWPlayerHandler {
 				this.helper.setSlotParams(state.vastParams);
 				this.helper.setSlotElementAttributes('success', state.vastParams);
 				this.helper.emitVideoAdImpression();
-				jwPlayerInhibitor.resolve(state.vastParams.lineItemId, state.vastParams.creativeId);
+				jwPlayer.resolve(state.vastParams.lineItemId, state.vastParams.creativeId);
 			}),
 			filter(() => this.helper.isMoatTrackingEnabled()),
 			tap(({ payload }) => this.helper.trackMoat(payload)),
@@ -87,7 +87,7 @@ export class JWPlayerHandler {
 				this.helper.setSlotParams(state.vastParams);
 				this.helper.setSlotElementAttributes('error', state.vastParams);
 				this.helper.emitVideoAdError(payload.adErrorCode);
-				jwPlayerInhibitor.resolve();
+				jwPlayer.resolve();
 			}),
 		);
 	}

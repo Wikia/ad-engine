@@ -5,6 +5,7 @@ export * from './models/device-mode';
 export * from './tracking/bab-tracker';
 export * from './tracking/data-warehouse';
 export * from './setup/ad-engine-runner.setup';
+export * from './setup/ad-engine.setup';
 export * from './setup/ad-layout-initializer.setup';
 export * from './setup/base-context.setup';
 export * from './setup/gpt.setup';

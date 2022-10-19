@@ -1,8 +1,11 @@
-import { BaseServiceSetup, context, utils } from '@ad-engine/core';
+import { context, ServiceStage, utils, Service } from '@ad-engine/core';
 import { insertFacebookPixel } from './facebook-pixel-script';
 
 const logGroup = 'facebook-pixel';
-class FacebookPixel extends BaseServiceSetup {
+@Service({
+	stage: ServiceStage.preProvider,
+})
+class FacebookPixel {
 	isSetUp = false;
 
 	private isEnabled(): boolean {

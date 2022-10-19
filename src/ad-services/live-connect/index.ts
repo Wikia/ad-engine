@@ -1,4 +1,11 @@
-import { BaseServiceSetup, context, localCache, utils, UniversalStorage } from '@ad-engine/core';
+import {
+	context,
+	ServiceStage,
+	localCache,
+	utils,
+	UniversalStorage,
+	Service,
+} from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 
 interface IdConfig {
@@ -24,7 +31,10 @@ const idConfigMapping: IdConfig[] = [
 	{ id: 'sha1', name: `${partnerName}-sha1`, params: { qf: '0.3', resolve: 'sha1' } },
 ];
 
-class LiveConnect extends BaseServiceSetup {
+@Service({
+	stage: ServiceStage.preProvider,
+})
+class LiveConnect {
 	private storage;
 	private storageConfig: CachingStrategyConfig;
 

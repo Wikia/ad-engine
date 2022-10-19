@@ -1,4 +1,4 @@
-import { BaseServiceSetup, context, slotService, utils } from '@ad-engine/core';
+import { context, ServiceStage, slotService, utils, Service } from '@ad-engine/core';
 
 const logGroup = 'confiant';
 const scriptDomain = 'cdn.confiant-integrations.net';
@@ -30,7 +30,10 @@ function trackBlock(blockingType, blockingId, isBlocked, wrapperId, tagId, impre
 /**
  * Confiant service handler
  */
-class Confiant extends BaseServiceSetup {
+@Service({
+	stage: ServiceStage.preProvider,
+})
+class Confiant {
 	/**
 	 * Requests service and injects script tag
 	 * @returns {Promise}

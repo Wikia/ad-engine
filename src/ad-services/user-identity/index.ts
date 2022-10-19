@@ -1,10 +1,13 @@
-import { BaseServiceSetup, context, utils } from '@ad-engine/core';
+import { context, utils, ServiceStage, Service } from '@ad-engine/core';
 import { IdentityRepositories, IdentityRepositoryInterface } from './identity-repositories';
 import { localStorageRepository } from './local-storage-repository';
 import { admsIdentityRepository } from './adms-identity-repository';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 
-export class UserIdentity extends BaseServiceSetup {
+@Service({
+	stage: ServiceStage.baseSetup,
+})
+export class UserIdentity {
 	public static logGroup = 'user-identity';
 
 	private getPPID(strategy: IdentityRepositories): IdentityRepositoryInterface {

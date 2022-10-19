@@ -1,8 +1,11 @@
-import { BaseServiceSetup, context, utils } from '@ad-engine/core';
+import { context, ServiceStage, utils, Service } from '@ad-engine/core';
 
 const logGroup = 'duration-media';
 
-class DurationMedia extends BaseServiceSetup {
+@Service({
+	stage: ServiceStage.preProvider,
+})
+class DurationMedia {
 	call(): Promise<void> {
 		const libraryUrl: string = context.get('services.durationMedia.libraryUrl');
 
