@@ -4,11 +4,19 @@ import { CommonStrategy } from './common-strategy';
 import { createTaxonomyTags } from '../factories/create-taxonomy-tags';
 import { TaxonomyTags } from '../interfaces/taxonomy-tags';
 import { TargetingStrategyInterface } from '../interfaces/targeting-strategy';
-import { FandomContext } from '../models/fandom-context';
+import { FandomContext, Site } from '../models/fandom-context';
 
 export class CombinedStrategy extends CommonStrategy implements TargetingStrategyInterface {
 	constructor(private skin: string, private context: FandomContext) {
 		super();
+	}
+
+	private createRatingTag(site: Site) {
+		const tags = [];
+
+		site.esrbRating ? tags.push('esrb:' + site.esrbRating) : null;
+		site.mpaRating ? tags.push('mpa:' + site.mpaRating) : null;
+		return tags.join(',');
 	}
 
 	execute(): Partial<Targeting> {
@@ -40,12 +48,8 @@ export class CombinedStrategy extends CommonStrategy implements TargetingStrateg
 			...this.combineSiteAndPageTags(siteLevelTags, pageLevelTags),
 		};
 
-		if (this.context.site.esrbRating) {
-			targeting.rating = 'esrb:' + this.context.site.esrbRating;
-		}
-
-		if (this.context.site.esrbRating) {
-			targeting.esrb = this.context.site.esrbRating;
+		if (wiki.targeting.mpaRating || wiki.targeting.esrbRating) {
+			targeting.rating = this.createRatingTag(this.context.site);
 		}
 
 		if (this.context.site.top1000) {
