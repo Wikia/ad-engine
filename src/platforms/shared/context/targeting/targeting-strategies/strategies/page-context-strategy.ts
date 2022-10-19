@@ -36,6 +36,10 @@ export class PageContextStrategy extends CommonStrategy implements TargetingStra
 
 		targeting = { ...targeting, ...pageLevelTags };
 
+		if (this.context.site.mpaRating) {
+			targeting.esrb = this.context.site.mpaRating;
+		}
+
 		if (this.context.site.esrbRating) {
 			targeting.esrb = this.context.site.esrbRating;
 		}

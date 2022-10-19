@@ -55,7 +55,7 @@ describe('PageContextStrategy execution', () => {
 
 	it('Returns empty tags when site and page tags are empty', function () {
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, {}, 'lifestyle'),
+			new Site([], true, 'ec', 'test', false, {}, 'lifestyle', 'g'),
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
@@ -70,7 +70,7 @@ describe('PageContextStrategy execution', () => {
 			theme: ['test2', 'superheroes'],
 		};
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, mockedSiteTags, 'lifestyle'),
+			new Site([], true, 'ec', 'test', false, mockedSiteTags, 'lifestyle', 'g'),
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
@@ -85,7 +85,7 @@ describe('PageContextStrategy execution', () => {
 			theme: ['test2', 'superheroes'],
 		};
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, {}, 'lifestyle'),
+			new Site([], true, 'ec', 'test', false, {}, 'lifestyle', 'g'),
 			new Page(666, 'pl', 666, 'test', 'article-test', mockedPageTags),
 		);
 		const expectedTargeting = {
@@ -109,7 +109,7 @@ describe('PageContextStrategy execution', () => {
 			theme: ['test4', 'superheroes'],
 		};
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, mockedSiteTags, 'lifestyle'),
+			new Site([], true, 'ec', 'test', false, mockedSiteTags, 'lifestyle', 'g'),
 			new Page(666, 'pl', 666, 'test', 'article-test', mockedPageTags),
 		);
 		const expectedTargeting = {

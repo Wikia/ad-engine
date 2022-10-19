@@ -27,6 +27,7 @@ interface MediaWikiAdsTargeting {
 	directedAtChildren: boolean;
 	enablePageCategories: boolean;
 	esrbRating: string;
+	mpaRating: string;
 	featuredVideo?: MediaWikiFeaturedVideoInfo;
 	hasFeaturedVideo: boolean;
 	mappedVerticalName: string;
@@ -57,6 +58,7 @@ interface AdTagManagerTags {
 	age?: string[];
 	bundles?: string[];
 	esrb?: string[];
+	mpa?: string[];
 	gnre?: string[];
 	media?: string[];
 	pform?: string[];

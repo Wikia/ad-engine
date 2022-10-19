@@ -32,6 +32,10 @@ export class LegacyStrategy extends CommonStrategy implements TargetingStrategyI
 			wpage: wiki.targeting.pageName && wiki.targeting.pageName.toLowerCase(),
 		};
 
+		if (wiki.targeting.mpaRating) {
+			targeting.esrb = wiki.targeting.mpaRating;
+		}
+
 		if (wiki.targeting.esrbRating) {
 			targeting.esrb = wiki.targeting.esrbRating;
 		}
