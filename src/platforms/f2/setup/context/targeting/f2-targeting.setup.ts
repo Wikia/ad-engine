@@ -37,8 +37,7 @@ export class F2TargetingSetup implements DiProcess {
 			s0: 'fandom',
 			s1: '_fandom',
 			s2: this.f2State.pageType === 'topic' ? 'vertical' : this.f2State.pageType,
-			esrb: 'teen',
-			mpa: 'g',
+			rating: 'esrb:teen',
 			labrador: this.cacheStorage.mapSamplingResults(
 				this.instantConfig.get('icLABradorGamKeyValues'),
 			),

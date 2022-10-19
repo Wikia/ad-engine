@@ -37,7 +37,7 @@ export class LegacyStrategy extends CommonStrategy implements TargetingStrategyI
 		}
 
 		if (wiki.targeting.esrbRating) {
-			targeting.esrb = wiki.targeting.esrbRating;
+			targeting.rating = 'esrb:' + wiki.targeting.esrbRating;
 		}
 
 		if (wiki.targeting.wikiIsTop1000) {
