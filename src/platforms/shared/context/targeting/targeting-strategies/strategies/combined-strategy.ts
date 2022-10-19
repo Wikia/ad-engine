@@ -12,11 +12,11 @@ export class CombinedStrategy extends CommonStrategy implements TargetingStrateg
 	}
 
 	private createRatingTag(site: Site) {
-		const tags = [];
+		const ratingTags = [];
 
-		site.esrbRating ? tags.push('esrb:' + site.esrbRating) : null;
-		site.mpaRating ? tags.push('mpa:' + site.mpaRating) : null;
-		return tags.join(',');
+		site.esrbRating ? ratingTags.push('esrb:' + site.esrbRating) : null;
+		site.mpaRating ? ratingTags.push('mpa:' + site.mpaRating) : null;
+		return ratingTags.join(',');
 	}
 
 	execute(): Partial<Targeting> {

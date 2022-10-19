@@ -12,11 +12,11 @@ export class PageContextStrategy extends CommonStrategy implements TargetingStra
 	}
 
 	private createRatingTag(site: Site) {
-		const tags = [];
+		const ratingTags = [];
 
-		site.esrbRating ? tags.push('esrb:' + site.esrbRating) : null;
-		site.mpaRating ? tags.push('mpa:' + site.mpaRating) : null;
-		return tags.join(',');
+		site.esrbRating ? ratingTags.push('esrb:' + site.esrbRating) : null;
+		site.mpaRating ? ratingTags.push('mpa:' + site.mpaRating) : null;
+		return ratingTags.join(',');
 	}
 
 	execute(): Partial<Targeting> {
@@ -43,10 +43,6 @@ export class PageContextStrategy extends CommonStrategy implements TargetingStra
 		this.addPagePrefixToValues(pageLevelTags);
 
 		targeting = { ...targeting, ...pageLevelTags };
-
-		if (this.context.site.mpaRating) {
-			targeting.rating += 'mpa:' + this.context.site.mpaRating;
-		}
 
 		if (wiki.targeting.mpaRating || wiki.targeting.esrbRating) {
 			targeting.rating = this.createRatingTag(this.context.site);

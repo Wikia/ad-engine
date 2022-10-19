@@ -8,11 +8,11 @@ export class LegacyStrategy extends CommonStrategy implements TargetingStrategyI
 	}
 
 	private createRatingTag(wiki: MediaWikiAdsContext) {
-		const tags = [];
+		const ratingTags = [];
 
-		wiki.targeting.esrbRating ? tags.push('esrb:' + wiki.targeting.esrbRating) : null;
-		wiki.targeting.mpaRating ? tags.push('mpa:' + wiki.targeting.mpaRating) : null;
-		return tags.join(',');
+		wiki.targeting.esrbRating ? ratingTags.push('esrb:' + wiki.targeting.esrbRating) : null;
+		wiki.targeting.mpaRating ? ratingTags.push('mpa:' + wiki.targeting.mpaRating) : null;
+		return ratingTags.join(',');
 	}
 
 	execute(): Partial<Targeting> {
