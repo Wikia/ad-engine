@@ -176,6 +176,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	EYEOTA_STARTED: {
 		name: 'Eyeota started',
 	},
+	EYEOTA_FAILED: {
+		name: 'Eyeota loading failed',
+	},
 	IDENTITY_PARTNER_DATA_OBTAINED: {
 		name: 'Identity partner data obtained',
 		payload: payload<IdentityDataPayload>(),
