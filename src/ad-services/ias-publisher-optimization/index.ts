@@ -1,4 +1,4 @@
-import { context, Dictionary, ServiceStage, SlotConfig, utils, Service } from '@ad-engine/core';
+import { BaseServiceSetup, context, Dictionary, SlotConfig, utils } from '@ad-engine/core';
 
 const logGroup = 'ias-publisher-optimization';
 const scriptUrl = '//cdn.adsafeprotected.com/iasPET.1.js';
@@ -31,14 +31,11 @@ interface IasTargetingData {
 	slots?: IasTargetingSlotData[];
 }
 
-@Service({
-	stage: ServiceStage.preProvider,
-})
-class IasPublisherOptimization {
+class IasPublisherOptimization extends BaseServiceSetup {
 	private isLoaded = false;
 	private slotList: string[] = [];
 
-	isEnabled(): boolean {
+	private isEnabled(): boolean {
 		return (
 			context.get('services.iasPublisherOptimization.enabled') &&
 			context.get('options.trackingOptIn') &&

@@ -1,7 +1,7 @@
 import { context, utils } from '@ad-engine/core';
 import { universalAdPackage } from '../../../templates';
 
-export class JWPlayer {
+export class JWPlayerInhibitor {
 	private logGroup = 'jwp-player-inhibitor';
 	private videoLines: Array<string>;
 	private maxDelayTimeoutInMs = 0;
@@ -61,4 +61,4 @@ export class JWPlayer {
 	}
 }
 
-export const jwPlayer = new JWPlayer();
+export const jwPlayerInhibitor = new JWPlayerInhibitor();

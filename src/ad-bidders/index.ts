@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, context, Dictionary, Service, ServiceStage, utils } from '@ad-engine/core';
+import { AdSlot, BaseServiceSetup, context, Dictionary, utils } from '@ad-engine/core';
 import { A9Provider } from './a9';
 import { PrebidProvider } from './prebid';
 
@@ -10,14 +10,12 @@ interface BiddersProviders {
 
 const logGroup = 'bidders';
 
-@Service({
-	stage: ServiceStage.preProvider,
-})
-class Bidders {
+class Bidders extends BaseServiceSetup {
 	private biddersProviders: BiddersProviders = {};
 	private realSlotPrices = {};
 
 	constructor() {
+		super();
 		communicationService.onSlotEvent(AdSlot.VIDEO_AD_REQUESTED, ({ slot }) => {
 			slot.updateWinningPbBidderDetails();
 		});
