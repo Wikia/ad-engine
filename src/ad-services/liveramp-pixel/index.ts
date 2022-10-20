@@ -1,12 +1,7 @@
-import { context, Service, ServiceStage, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, utils } from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { UserIdentity } from '../user-identity';
 
-@Service({
-	stage: ServiceStage.preProvider,
-	dependencies: [UserIdentity],
-})
-class LiveRampPixel {
+class LiveRampPixel extends BaseServiceSetup {
 	private PIXEL_ID = 712315;
 	private logGroup = 'LiveRamp';
 	private PIXEL_URL = `https://idsync.rlcdn.com/${this.PIXEL_ID}.gif?partner_uid=`;

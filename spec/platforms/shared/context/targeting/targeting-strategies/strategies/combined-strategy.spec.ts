@@ -26,6 +26,7 @@ describe('CombinedStrategy execution', () => {
 		artid: '666',
 		bundles: [],
 		dmn: '',
+		rating: 'esrb:ec',
 		geo: 'PL',
 		gnre: [],
 		hostpre: '',

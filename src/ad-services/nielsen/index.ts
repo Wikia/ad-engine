@@ -1,6 +1,5 @@
-import { context, Dictionary, ServiceStage, utils, Service } from '@ad-engine/core';
+import { BaseServiceSetup, context, Dictionary, utils } from '@ad-engine/core';
 import { initNielsenStaticQueue } from './static-queue-script';
-
 const logGroup = 'nielsen-dcr';
 const nlsnConfig: Dictionary = {};
 
@@ -18,16 +17,14 @@ function createInstance(nielsenKey): any {
 /**
  * Nielsen service handler
  */
-@Service({
-	stage: ServiceStage.preProvider,
-})
-class Nielsen {
+class Nielsen extends BaseServiceSetup {
 	nlsnInstance: any = null;
 	/**
 	 * Class constructor
 	 */
 
 	constructor() {
+		super();
 		if (utils.queryString.get('nielsen-dcr-debug') === '1') {
 			nlsnConfig.nol_sdkDebug = 'debug';
 		}
