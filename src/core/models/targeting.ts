@@ -17,7 +17,7 @@ export interface Targeting {
 	lang: string;
 	wpage: string;
 	ref: string;
-	esrb: string;
+	rating: string;
 	geo: string;
 	pv: string;
 	cid: string;
