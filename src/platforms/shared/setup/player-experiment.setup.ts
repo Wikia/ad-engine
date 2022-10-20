@@ -1,21 +1,17 @@
 import {
 	anyclip,
+	BaseServiceSetup,
 	communicationService,
 	connatix,
 	distroScale,
 	eventsRepository,
 	exCo,
-	ServiceStage,
-	Service,
 	slotDataParamsUpdater,
 	slotService,
 	UapLoadStatus,
 } from '@wikia/ad-engine';
 
-@Service({
-	stage: ServiceStage.baseSetup,
-})
-class PlayerExperimentSetup {
+class PlayerExperimentSetup extends BaseServiceSetup {
 	private initIncontentPlayer(incontentPlayer) {
 		if (!incontentPlayer) return;
 		slotDataParamsUpdater.updateOnCreate(incontentPlayer);

@@ -2,6 +2,7 @@ import { communicationService, eventsRepository } from '@ad-engine/communication
 import { scrollListener } from './listeners';
 import { AdSlot } from './models';
 import { GptProvider, Nativo, NativoProvider, PrebidiumProvider, Provider } from './providers';
+import { Runner } from './runner';
 import {
 	btfBlockerService,
 	context,
@@ -51,7 +52,7 @@ export class AdEngine {
 		);
 	}
 
-	async init(): Promise<void> {
+	async init(inhibitors: Promise<any>[] = []): Promise<void> {
 		this.setupProviders();
 		this.setupAdStack();
 		btfBlockerService.init();
@@ -61,7 +62,11 @@ export class AdEngine {
 		templateService.subscribeCommunicator();
 		slotTweaker.registerMessageListener();
 
-		this.runAdQueue();
+		if (context.get('options.adsInitializeV2')) {
+			this.runAdQueue();
+		} else {
+			this.runAdQueueDeprecated(inhibitors);
+		}
 
 		scrollListener.init();
 		slotRepeater.init();
@@ -134,6 +139,19 @@ export class AdEngine {
 
 	runAdQueue() {
 		communicationService.on(eventsRepository.AD_ENGINE_PARTNERS_READY, () => {
+			if (!this.started) {
+				communicationService.emit(eventsRepository.AD_ENGINE_STACK_START);
+
+				this.started = true;
+				this.adStack.start();
+			}
+		});
+	}
+
+	runAdQueueDeprecated(inhibitors: Promise<any>[] = []): void {
+		const maxTimeout: number = context.get('options.maxDelayTimeout');
+
+		new Runner(inhibitors, maxTimeout, 'ad-engine-runner').waitForInhibitors().then(() => {
 			if (!this.started) {
 				communicationService.emit(eventsRepository.AD_ENGINE_STACK_START);
 

@@ -1,14 +1,11 @@
-import { context, ServiceStage, utils, Service } from '@ad-engine/core';
+import { BaseServiceSetup, context, utils } from '@ad-engine/core';
 
 const profileId = '2721';
 const pubId = '156260';
 
 const logGroup = 'IdentityHub';
 
-@Service({
-	stage: ServiceStage.preProvider,
-})
-class IdentityHub {
+class IdentityHub extends BaseServiceSetup {
 	private isLoaded = false;
 	private identityHubScriptSrc = `https://ads.pubmatic.com/AdServer/js/pwt/${pubId}/${profileId}/pwt.js`;
 

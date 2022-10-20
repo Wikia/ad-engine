@@ -1,14 +1,11 @@
-import { context, ServiceStage, utils, Service, tcf } from '@ad-engine/core';
+import { BaseServiceSetup, context, tcf, utils } from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 
 const logGroup = 'eyeota';
 const pid = 'r8rcb20';
 const siteName = 'fandom';
 
-@Service({
-	stage: ServiceStage.preProvider,
-})
-class Eyeota {
+class Eyeota extends BaseServiceSetup {
 	isEnabled(): boolean {
 		return (
 			context.get('services.eyeota.enabled') &&

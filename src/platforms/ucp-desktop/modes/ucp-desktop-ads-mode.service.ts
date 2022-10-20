@@ -4,6 +4,7 @@ import {
 	bidders,
 	communicationService,
 	confiant,
+	DiProcess,
 	durationMedia,
 	eventsRepository,
 	eyeota,
@@ -12,30 +13,25 @@ import {
 	identityHub,
 	liveConnect,
 	nielsen,
-	ServicePipeline,
+	PartnerPipeline,
 	prebidNativeProvider,
 	stroer,
 	userIdentity,
 	ats,
+	jwPlayerInhibitor,
 	liveRampPixel,
 } from '@wikia/ad-engine';
-import {
-	wadRunner,
-	playerSetup,
-	gptSetup,
-	playerExperimentSetup,
-	adEngineSetup,
-} from '@platforms/shared';
+import { wadRunner, playerSetup, gptSetup, playerExperimentSetup } from '@platforms/shared';
 
 @Injectable()
-export class UcpDesktopAdsMode {
-	constructor(private pipeline: ServicePipeline) {}
+export class UcpDesktopAdsMode implements DiProcess {
+	constructor(private pipeline: PartnerPipeline) {}
 
 	execute(): void {
 		this.pipeline
 			.add(
 				userIdentity,
-				liveRampPixel,
+				liveRampPixel.setOptions({ dependencies: [userIdentity.initialized] }),
 				playerExperimentSetup,
 				ats,
 				audigent,
@@ -51,9 +47,20 @@ export class UcpDesktopAdsMode {
 				identityHub,
 				nielsen,
 				prebidNativeProvider,
-				playerSetup,
-				gptSetup,
-				adEngineSetup,
+				playerSetup.setOptions({
+					dependencies: [bidders.initialized, wadRunner.initialized],
+				}),
+				gptSetup.setOptions({
+					dependencies: [
+						userIdentity.initialized,
+						playerSetup.initialized,
+						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
+						iasPublisherOptimization.IASReady,
+					],
+					timeout: jwPlayerInhibitor.isRequiredToRun()
+						? jwPlayerInhibitor.getDelayTimeoutInMs()
+						: null,
+				}),
 			)
 			.execute()
 			.then(() => {

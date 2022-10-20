@@ -2,6 +2,7 @@ import * as utils from './utils';
 
 export * from './ad-engine';
 export * from './listeners';
+export * from './runner';
 export * from './rxjs';
 export * from './models';
 export * from './providers';
@@ -21,6 +22,6 @@ export * from './pipeline/imps/process-pipeline/compound-processes/conditional-p
 export * from './pipeline/imps/process-pipeline/compound-processes/once-process';
 export * from './pipeline/imps/process-pipeline/compound-processes/parallel-process';
 export * from './pipeline/imps/process-pipeline/compound-processes/sequential-process';
-export * from './pipeline/imps/service-pipeline';
+export * from './pipeline/imps/partner-pipeline';
 export { logVersion } from './log-version';
 export { utils };

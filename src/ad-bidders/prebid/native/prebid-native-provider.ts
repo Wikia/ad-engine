@@ -1,15 +1,12 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, context, ServiceStage, slotService, utils, Service } from '@ad-engine/core';
+import { AdSlot, BaseServiceSetup, context, slotService, utils } from '@ad-engine/core';
 import { PrebidNativeData } from './native-models';
 import { PrebidNativeConfig } from './prebid-native-config';
 import { PrebidNativeHelper } from './prebid-native-helper';
 
 const logGroup = 'prebid-native-provider';
 
-@Service({
-	stage: ServiceStage.preProvider,
-})
-export class PrebidNativeProvider {
+export class PrebidNativeProvider extends BaseServiceSetup {
 	static ACTION_CLICK = 'click';
 	static ACTION_IMPRESSION = 'impression';
 
