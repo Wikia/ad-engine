@@ -48,7 +48,7 @@ export class CombinedStrategy extends CommonStrategy implements TargetingStrateg
 			...this.combineSiteAndPageTags(siteLevelTags, pageLevelTags),
 		};
 
-		if (wiki.targeting.mpaRating || wiki.targeting.esrbRating) {
+		if (this.context.site.mpaRating || this.context.site.esrbRating) {
 			targeting.rating = this.createRatingTag(this.context.site);
 		}
 

@@ -44,7 +44,7 @@ export class PageContextStrategy extends CommonStrategy implements TargetingStra
 
 		targeting = { ...targeting, ...pageLevelTags };
 
-		if (wiki.targeting.mpaRating || wiki.targeting.esrbRating) {
+		if (this.context.site.mpaRating || this.context.site.esrbRating) {
 			targeting.rating = this.createRatingTag(this.context.site);
 		}
 
