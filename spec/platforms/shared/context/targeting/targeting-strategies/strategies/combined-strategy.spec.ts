@@ -26,7 +26,7 @@ describe('CombinedStrategy execution', () => {
 		artid: '666',
 		bundles: [],
 		dmn: '',
-		rating: 'esrb:ec,mpa:g',
+		rating: 'esrb:ec,mpa:general',
 		geo: 'PL',
 		gnre: [],
 		hostpre: '',
@@ -53,7 +53,7 @@ describe('CombinedStrategy execution', () => {
 
 	it('Returns empty tags when site and page tags are empty', function () {
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, {}, 'lifestyle', 'g'),
+			new Site([], true, 'ec', 'test', false, {}, 'lifestyle', 'general'),
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
