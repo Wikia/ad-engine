@@ -7,11 +7,11 @@ export class LegacyStrategy extends CommonStrategy implements TargetingStrategyI
 		super();
 	}
 
-	private createRatingTag(wiki: MediaWikiAdsContext) {
+	private createRatingTag(targeting: MediaWikiAdsTargeting) {
 		const ratingTags = [];
 
-		wiki.targeting.esrbRating ? ratingTags.push('esrb:' + wiki.targeting.esrbRating) : null;
-		wiki.targeting.mpaRating ? ratingTags.push('mpa:' + wiki.targeting.mpaRating) : null;
+		targeting.esrbRating ? ratingTags.push('esrb:' + targeting.esrbRating) : null;
+		targeting.mpaRating ? ratingTags.push('mpa:' + targeting.mpaRating) : null;
 		return ratingTags.join(',');
 	}
 
@@ -41,7 +41,7 @@ export class LegacyStrategy extends CommonStrategy implements TargetingStrategyI
 		};
 
 		if (wiki.targeting.mpaRating || wiki.targeting.esrbRating) {
-			targeting.rating = this.createRatingTag(wiki);
+			targeting.rating = this.createRatingTag(wiki.targeting);
 		}
 
 		if (wiki.targeting.wikiIsTop1000) {
