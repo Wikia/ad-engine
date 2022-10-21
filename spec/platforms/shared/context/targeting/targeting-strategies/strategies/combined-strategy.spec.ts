@@ -68,7 +68,7 @@ describe('CombinedStrategy execution', () => {
 			theme: ['test2', 'superheroes'],
 		};
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, mockedSiteTags, 'lifestyle', 'g'),
+			new Site([], true, 'ec', 'test', false, mockedSiteTags, 'lifestyle', 'general'),
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 		const expectedTargeting = { ...defaultExpectedTargeting, ...mockedSiteTags };
@@ -82,7 +82,7 @@ describe('CombinedStrategy execution', () => {
 			theme: ['test2', 'superheroes'],
 		};
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, {}, 'lifestyle', 'g'),
+			new Site([], true, 'ec', 'test', false, {}, 'lifestyle', 'general'),
 			new Page(666, 'pl', 666, 'test', 'article-test', mockedPageTags),
 		);
 		const expectedTargeting = {
@@ -104,7 +104,7 @@ describe('CombinedStrategy execution', () => {
 			theme: ['test4', 'superheroes'],
 		};
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, mockedSiteTags, 'lifestyle', 'g'),
+			new Site([], true, 'ec', 'test', false, mockedSiteTags, 'lifestyle', 'general'),
 			new Page(666, 'pl', 666, 'test', 'article-test', mockedPageTags),
 		);
 		const expectedTargeting = {

@@ -70,7 +70,7 @@ describe('PageContextStrategy execution', () => {
 			theme: ['test2', 'superheroes'],
 		};
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, mockedSiteTags, 'lifestyle', 'g'),
+			new Site([], true, 'ec', 'test', false, mockedSiteTags, 'lifestyle', 'general'),
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
@@ -85,7 +85,7 @@ describe('PageContextStrategy execution', () => {
 			theme: ['test2', 'superheroes'],
 		};
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, {}, 'lifestyle', 'g'),
+			new Site([], true, 'ec', 'test', false, {}, 'lifestyle', 'general'),
 			new Page(666, 'pl', 666, 'test', 'article-test', mockedPageTags),
 		);
 		const expectedTargeting = {
@@ -109,7 +109,7 @@ describe('PageContextStrategy execution', () => {
 			theme: ['test4', 'superheroes'],
 		};
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, mockedSiteTags, 'lifestyle', 'g'),
+			new Site([], true, 'ec', 'test', false, mockedSiteTags, 'lifestyle', 'general'),
 			new Page(666, 'pl', 666, 'test', 'article-test', mockedPageTags),
 		);
 		const expectedTargeting = {
