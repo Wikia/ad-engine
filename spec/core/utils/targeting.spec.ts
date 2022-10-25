@@ -12,7 +12,7 @@ describe('targeting', () => {
 
 	afterEach(() => {
 		context.remove('targeting.bundles');
-		context.remove('targeting.esrb');
+		context.remove('targeting.rating');
 		context.remove('targeting.s1');
 		context.remove('targeting.skin');
 
@@ -33,18 +33,18 @@ describe('targeting', () => {
 
 	it('getTargetingBundles returns filtered bundles', () => {
 		context.set('targeting.s1', '_harrypotter');
-		context.set('targeting.esrb', ['teen', 'adult']);
+		context.set('targeting.rating', ['esrb:teen', 'esrb:adult']);
 		context.set('targeting.skin', 'fandom_desktop');
 
 		expect(
 			targeting.getTargetingBundles({
 				bundle1: {
 					s1: ['_project34', '_harry'],
-					esrb: ['teen'],
+					rating: ['esrb:teen'],
 				},
 				bundle2: {
 					s1: ['_project43', '_harrypotter'],
-					esrb: ['teen'],
+					rating: ['esrb:teen'],
 				},
 				bundle3: {
 					skin: ['fandom_desktop'],
@@ -56,7 +56,7 @@ describe('targeting', () => {
 			targeting.getTargetingBundles({
 				bundle1: {
 					s1: ['_project34', '_harry'],
-					esrb: ['teen'],
+					rating: ['esrb:teen'],
 				},
 			}),
 		).to.deep.equal([]);
@@ -64,7 +64,7 @@ describe('targeting', () => {
 		expect(
 			targeting.getTargetingBundles({
 				bundle1: {
-					esrb: ['adult'],
+					rating: ['esrb:adult'],
 				},
 			}),
 		).to.deep.equal(['bundle1']);
@@ -72,7 +72,7 @@ describe('targeting', () => {
 		expect(
 			targeting.getTargetingBundles({
 				bundle1: {
-					esrb: ['child'],
+					rating: ['esrb:child'],
 				},
 			}),
 		).to.deep.equal([]);

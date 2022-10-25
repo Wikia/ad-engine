@@ -16,7 +16,7 @@ describe('CombinedStrategy', () => {
 		ar: '4:3',
 		artid: '666',
 		dmn: '',
-		esrb: 'ec',
+		rating: 'esrb:ec',
 		geo: 'PL',
 		hostpre: '',
 		is_mobile: '0',
