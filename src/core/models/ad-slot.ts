@@ -112,6 +112,8 @@ export class AdSlot {
 	static STATUS_HEAVY_AD_INTERVENTION = 'heavy-ad-intervention';
 	static STATUS_UNKNOWN_INTERVENTION = 'unknown-intervention';
 
+	static DEMAND_NO_TEMPLATE = 'no_template';
+
 	static AD_CLASS = 'gpt-ad';
 	static AD_SLOT_PLACEHOLDER_CLASS = 'ad-slot-placeholder';
 	static HIDDEN_CLASS = 'hide';
@@ -123,6 +125,7 @@ export class AdSlot {
 	config: SlotConfig;
 	element: null | HTMLElement = null;
 	status: null | string = null;
+	demand: null | string = null;
 	isEmpty = true;
 	pushTime: number;
 	enabled: boolean;
@@ -184,10 +187,12 @@ export class AdSlot {
 					const {
 						event,
 						adType,
-					}: { event: googletag.events.SlotRenderEndedEvent; adType: string } = payload;
+						adDemand,
+					}: { event: googletag.events.SlotRenderEndedEvent; adType: string; adDemand: string } =
+						payload;
 
 					this.setupSizesTracking(adType);
-					this.updateOnRenderEnd(event, adType);
+					this.updateOnRenderEnd(event, adType, adDemand);
 
 					resolve();
 				},
@@ -377,6 +382,10 @@ export class AdSlot {
 		return this.status;
 	}
 
+	getDemand(): string {
+		return this.demand;
+	}
+
 	getPushTime(): number {
 		return this.pushTime;
 	}
@@ -459,9 +468,11 @@ export class AdSlot {
 		}
 		this.setStatus(status);
 
-		const templateNames = this.getConfigProperty('defaultTemplates') || [];
+		let templateNames = this.getConfigProperty('defaultTemplates') || [];
 
-		if (templateNames && templateNames.length) {
+		if (this.getDemand() === AdSlot.DEMAND_NO_TEMPLATE) {
+			templateNames = [];
+		} else if (templateNames && templateNames.length) {
 			templateNames.forEach((templateName: string) => templateService.init(templateName, this));
 		}
 
@@ -505,7 +516,11 @@ export class AdSlot {
 		}
 	}
 
-	private updateOnRenderEnd(event: googletag.events.SlotRenderEndedEvent, adType: string): void {
+	private updateOnRenderEnd(
+		event: googletag.events.SlotRenderEndedEvent,
+		adType: string,
+		adDemand: string | null,
+	): void {
 		if (!event) {
 			return;
 		}
@@ -514,6 +529,7 @@ export class AdSlot {
 		let lineItemId: string | number = event.lineItemId;
 
 		this.isEmpty = event.isEmpty;
+		this.demand = adDemand || null;
 
 		if (!event.isEmpty && event.slot) {
 			const resp = event.slot.getResponseInformation();

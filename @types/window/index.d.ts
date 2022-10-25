@@ -8,6 +8,7 @@ interface Window {
 	__tcfapi: WindowTCF;
 	__uspapi?: WindowUSP;
 	AdEngine_adType?: ManualAdType;
+	AdEngine_adDemand?: string;
 	ads?: MediaWikiAds;
 	adsQueue?: any;
 	PWT: { jsLoaded: () => void };
