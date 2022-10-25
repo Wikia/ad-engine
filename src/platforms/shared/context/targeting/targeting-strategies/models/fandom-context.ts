@@ -10,6 +10,7 @@ export class Site {
 	public readonly top1000: boolean;
 	public readonly tags: any;
 	public readonly vertical: string;
+	public readonly mpaRating: string;
 
 	constructor(
 		categories: [],
@@ -19,10 +20,12 @@ export class Site {
 		top1000: boolean,
 		tags: object,
 		vertical: string,
+		mpaRating: string,
 	) {
 		this.categories = typeof categories === 'object' ? categories : null;
 		this.directedAtChildren = typeof directedAtChildren === 'boolean' ? directedAtChildren : null;
 		this.esrbRating = typeof esrbRating === 'string' ? esrbRating : null;
+		this.mpaRating = typeof mpaRating === 'string' ? mpaRating : null;
 		this.siteName = typeof siteName === 'string' ? siteName : null;
 		this.top1000 = typeof top1000 === 'boolean' ? top1000 : null;
 		this.tags = typeof tags === 'object' ? tags : null;
