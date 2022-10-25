@@ -70,17 +70,13 @@ export function createJwpStateStream(
 		),
 	) as any;
 	const common$ = stream$.pipe(
-		map(() => {
-			const playlistItem =
+		map(() => ({
+			playlistItem:
 				jwplayer.getPlaylistItem() ||
-				({ sources: [], tracks: [], variations: [], images: [], allSources: [] } as any);
-
-			return {
-				playlistItem,
-				config: jwplayer.getConfig(),
-				mute: jwplayer.getMute(),
-			};
-		}),
+				({ sources: [], tracks: [], variations: [], images: [], allSources: [] } as any),
+			config: jwplayer.getConfig(),
+			mute: jwplayer.getMute(),
+		})),
 	);
 
 	return combineLatest([videoDepth$, adRequestsCount$, vastParams$, adInVideo$, common$]).pipe(
