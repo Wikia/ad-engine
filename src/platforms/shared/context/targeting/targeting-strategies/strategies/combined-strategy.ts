@@ -41,7 +41,7 @@ export class CombinedStrategy extends CommonStrategy implements TargetingStrateg
 		};
 
 		if (this.context.site.esrbRating) {
-			targeting.esrb = this.context.site.esrbRating;
+			targeting.rating = 'esrb:' + this.context.site.esrbRating;
 		}
 
 		if (this.context.site.top1000) {
