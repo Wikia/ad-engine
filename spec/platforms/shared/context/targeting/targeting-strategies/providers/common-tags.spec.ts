@@ -31,7 +31,7 @@ describe('CommonTags', () => {
 			ar: '4:3',
 			artid: '666',
 			dmn: '',
-			esrb: 'ec',
+			rating: 'ec',
 			geo: 'PL',
 			hostpre: '',
 			is_mobile: '0',

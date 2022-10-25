@@ -103,7 +103,7 @@ export class CommonTags implements TargetingProvider {
 
 		const keyValsMap = {
 			cid: utils.queryString.get('cid'),
-			esrb: this.fandomContext.site.esrbRating,
+			rating: this.fandomContext.site.esrbRating,
 			pv: context.get('wiki.pvNumber'),
 			pvg: context.get('wiki.pvNumberGlobal'),
 		};

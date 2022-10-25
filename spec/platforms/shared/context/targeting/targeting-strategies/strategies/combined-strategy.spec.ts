@@ -44,7 +44,7 @@ describe('CombinedStrategy', () => {
 
 	it('sets up targeting correctly when taxonomy tags are empty', function () {
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, {}, mockedTaxonomy, 'life'),
+			new Site([], true, 'esrb:ec', 'test', false, {}, mockedTaxonomy, 'life'),
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
@@ -79,7 +79,7 @@ describe('CombinedStrategy', () => {
 		};
 
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, mockedSiteTags, mockedTaxonomy, 'life'),
+			new Site([], true, 'esrb:ec', 'test', false, mockedSiteTags, mockedTaxonomy, 'life'),
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
@@ -113,7 +113,7 @@ describe('CombinedStrategy', () => {
 		};
 
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, {}, mockedTaxonomy, 'life'),
+			new Site([], true, 'esrb:ec', 'test', false, {}, mockedTaxonomy, 'life'),
 			new Page(666, 'pl', 666, 'test', 'article-test', mockedPageTags),
 		);
 
@@ -151,7 +151,7 @@ describe('CombinedStrategy', () => {
 		};
 
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, mockedSiteTags, mockedTaxonomy, 'life'),
+			new Site([], true, 'esrb:ec', 'test', false, mockedSiteTags, mockedTaxonomy, 'life'),
 			new Page(666, 'pl', 666, 'test', 'article-test', mockedPageTags),
 		);
 
