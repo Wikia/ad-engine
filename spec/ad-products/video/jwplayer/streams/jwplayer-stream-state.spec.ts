@@ -57,7 +57,9 @@ describe('Jwplayer Stream State', () => {
 			expect(uniq(results.map((value) => value.depth))).to.deep.equal([0, 1, 2]);
 			expect(uniq(results.map((value) => value.correlator)).length).to.equal(3);
 		});
+	});
 
+	describe('Ad requests count (rv key-val)', () => {
 		it('should increase rv after every preroll in the same slot except sponsored video', () => {
 			// init
 			subject$.next({ name: 'adRequest', payload: { tag: 'tag' } });
