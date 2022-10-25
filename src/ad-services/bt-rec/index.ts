@@ -65,7 +65,7 @@ class BTRec {
 		const globalNavigationWidth = 66;
 		const sideContainersSpace =
 			2 * minSideAdWidth + globalNavigationWidth + sideUnitsCalculatedPadding;
-		const resizableContainer = document.querySelector('.page.has-right-rail');
+		const resizableContainer = document.querySelector('.page.has-right-rail, .mainpage .page');
 
 		if (
 			!resizableContainer ||
