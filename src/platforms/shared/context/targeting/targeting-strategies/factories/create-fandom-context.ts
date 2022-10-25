@@ -1,7 +1,7 @@
 import { FandomContext, Page, Site } from '../models/fandom-context';
 
 export function createFandomContext() {
-	const windowContext: WindowFandomContext = window.fandomContext;
+	const windowContext: WindowFandomContext = JSON.parse(JSON.stringify(window.fandomContext));
 	return validateFandomContext(windowContext);
 }
 
