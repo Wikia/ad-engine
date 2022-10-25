@@ -2,13 +2,21 @@ import { context, Targeting, utils } from '@wikia/ad-engine';
 
 import { CommonStrategy } from './common-strategy';
 import { createTaxonomyTags } from '../factories/create-taxonomy-tags';
-import { FandomContext } from '../models/fandom-context';
+import { FandomContext, Site } from '../models/fandom-context';
 import { TaxonomyTags } from '../interfaces/taxonomy-tags';
 import { TargetingStrategyInterface } from '../interfaces/targeting-strategy';
 
 export class PageContextStrategy extends CommonStrategy implements TargetingStrategyInterface {
 	constructor(private skin: string, private context: FandomContext) {
 		super();
+	}
+
+	private createRatingTag(site: Site) {
+		const ratingTags = [];
+
+		site.esrbRating ? ratingTags.push('esrb:' + site.esrbRating) : null;
+		site.mpaRating ? ratingTags.push('mpa:' + site.mpaRating) : null;
+		return ratingTags.join(',');
 	}
 
 	execute(): Partial<Targeting> {
@@ -36,8 +44,8 @@ export class PageContextStrategy extends CommonStrategy implements TargetingStra
 
 		targeting = { ...targeting, ...pageLevelTags };
 
-		if (this.context.site.esrbRating) {
-			targeting.rating = 'esrb:' + this.context.site.esrbRating;
+		if (this.context.site.mpaRating || this.context.site.esrbRating) {
+			targeting.rating = this.createRatingTag(this.context.site);
 		}
 
 		if (this.context.site.top1000) {

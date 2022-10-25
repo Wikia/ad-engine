@@ -7,6 +7,14 @@ export class LegacyStrategy extends CommonStrategy implements TargetingStrategyI
 		super();
 	}
 
+	private createRatingTag(targeting: MediaWikiAdsTargeting) {
+		const ratingTags = [];
+
+		targeting.esrbRating ? ratingTags.push('esrb:' + targeting.esrbRating) : null;
+		targeting.mpaRating ? ratingTags.push('mpa:' + targeting.mpaRating) : null;
+		return ratingTags.join(',');
+	}
+
 	execute(): Partial<Targeting> {
 		utils.logger('Targeting', 'Executing LegacyStrategy...');
 
@@ -32,8 +40,8 @@ export class LegacyStrategy extends CommonStrategy implements TargetingStrategyI
 			wpage: wiki.targeting.pageName && wiki.targeting.pageName.toLowerCase(),
 		};
 
-		if (wiki.targeting.esrbRating) {
-			targeting.rating = 'esrb:' + wiki.targeting.esrbRating;
+		if (wiki.targeting.mpaRating || wiki.targeting.esrbRating) {
+			targeting.rating = this.createRatingTag(wiki.targeting);
 		}
 
 		if (wiki.targeting.wikiIsTop1000) {

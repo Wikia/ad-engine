@@ -15,6 +15,7 @@ function validateFandomContext(windowContext: WindowFandomContext): FandomContex
 			windowContext?.site?.top1000,
 			windowContext?.site?.tags,
 			windowContext?.site?.vertical,
+			windowContext?.site?.mpaRating,
 		),
 		new Page(
 			windowContext?.page?.articleId,
