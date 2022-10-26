@@ -133,7 +133,7 @@ function getAdType(
 	try {
 		isIframeAccessible = !!iframe.contentWindow.document.querySelector;
 	} catch (e) {
-		logger(logGroup, 'getAdTypeAndDemands', 'iframe is not accessible');
+		logger(logGroup, 'getAdType', 'iframe is not accessible');
 	}
 
 	if (isIframeAccessible && iframe.contentWindow.AdEngine_adType) {
