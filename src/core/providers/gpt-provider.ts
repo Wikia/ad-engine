@@ -72,11 +72,11 @@ function configure(): void {
 		// Let's launch our callback in a setTimeout instead.
 		defer(() => {
 			const adSlot = getAdSlotFromEvent(event);
-			const [adType, adDemand] = getAdTypeAndDemand(event, adSlot.getIframe());
+			const adType = getAdType(event, adSlot.getIframe());
 
 			adjustIframeSize(adSlot);
 
-			return adSlot.emit(AdSlot.SLOT_RENDERED_EVENT, { event, adType, adDemand }, false);
+			return adSlot.emit(AdSlot.SLOT_RENDERED_EVENT, { event, adType }, false);
 		});
 	});
 
@@ -120,14 +120,14 @@ function configure(): void {
 	window.googletag.enableServices();
 }
 
-function getAdTypeAndDemand(
+function getAdType(
 	event: googletag.events.SlotRenderEndedEvent,
 	iframe: HTMLIFrameElement | null,
-): [string, string | null] {
+): string {
 	let isIframeAccessible = false;
 
 	if (event.isEmpty) {
-		return [AdSlot.STATUS_COLLAPSE, null];
+		return AdSlot.STATUS_COLLAPSE;
 	}
 
 	try {
@@ -137,10 +137,10 @@ function getAdTypeAndDemand(
 	}
 
 	if (isIframeAccessible && iframe.contentWindow.AdEngine_adType) {
-		return [iframe.contentWindow.AdEngine_adType, iframe.contentWindow.AdEngine_adDemand];
+		return iframe.contentWindow.AdEngine_adType;
 	}
 
-	return [AdSlot.STATUS_SUCCESS, null];
+	return AdSlot.STATUS_SUCCESS;
 }
 
 function adjustIframeSize(adSlot: AdSlot): void {
