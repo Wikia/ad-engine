@@ -103,7 +103,6 @@ export class CommonTags implements TargetingProvider {
 
 		const keyValsMap = {
 			cid: utils.queryString.get('cid'),
-			rating: this.fandomContext.site.esrbRating,
 			pv: context.get('wiki.pvNumber'),
 			pvg: context.get('wiki.pvNumberGlobal'),
 		};
@@ -114,10 +113,25 @@ export class CommonTags implements TargetingProvider {
 			}
 		});
 
+		if (this.fandomContext.site.esrbRating || this.fandomContext.site.mpaRating) {
+			keyVals.rating = this.createRatingTag(
+				this.fandomContext.site.esrbRating,
+				this.fandomContext.site.mpaRating,
+			);
+		}
+
 		if (this.fandomContext.site.top1000) {
 			keyVals.top = '1k';
 		}
 
 		return keyVals;
+	}
+
+	private createRatingTag(esrbRating: string, mpaRating: string): string {
+		const ratingTags = [];
+
+		esrbRating ? ratingTags.push('esrb:' + esrbRating) : null;
+		mpaRating ? ratingTags.push('mpa:' + mpaRating) : null;
+		return ratingTags.join(',');
 	}
 }

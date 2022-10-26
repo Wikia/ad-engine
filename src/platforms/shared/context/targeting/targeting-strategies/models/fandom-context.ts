@@ -14,6 +14,7 @@ export class Site {
 	public readonly taxonomy: string[];
 	// 'vertical' should be removed after UCP release from ADEN-12194
 	public readonly vertical: string;
+	public readonly mpaRating: string;
 
 	constructor(
 		categories: [],
@@ -24,10 +25,12 @@ export class Site {
 		tags: object,
 		taxonomy: string[],
 		vertical: string,
+		mpaRating: string,
 	) {
 		this.categories = typeof categories === 'object' ? categories : null;
 		this.directedAtChildren = typeof directedAtChildren === 'boolean' ? directedAtChildren : null;
 		this.esrbRating = typeof esrbRating === 'string' ? esrbRating : null;
+		this.mpaRating = typeof mpaRating === 'string' ? mpaRating : null;
 		this.siteName = typeof siteName === 'string' ? siteName : null;
 		this.top1000 = typeof top1000 === 'boolean' ? top1000 : null;
 		this.tags = typeof tags === 'object' ? tags : null;

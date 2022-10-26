@@ -3,6 +3,7 @@ interface WindowFandomContext {
 		categories: [];
 		directedAtChildren: boolean;
 		esrbRating: string;
+		mpaRating: string;
 		siteName: string;
 		top1000: boolean | null;
 		tags: any;

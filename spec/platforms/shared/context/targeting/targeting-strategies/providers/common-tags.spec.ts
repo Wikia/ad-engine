@@ -21,7 +21,7 @@ describe('CommonTags', () => {
 
 	it('commonTags are returned correctly', function () {
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, {}, mockedTaxonomy, null),
+			new Site([], true, 'ec', 'test', false, {}, mockedTaxonomy, null, 'general'),
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
@@ -31,7 +31,7 @@ describe('CommonTags', () => {
 			ar: '4:3',
 			artid: '666',
 			dmn: '',
-			rating: 'ec',
+			rating: 'esrb:ec,mpa:general',
 			geo: 'PL',
 			hostpre: '',
 			is_mobile: '0',

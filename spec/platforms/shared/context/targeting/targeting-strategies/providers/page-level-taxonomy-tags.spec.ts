@@ -16,7 +16,7 @@ describe('PageLevelTaxonomyTags execution', () => {
 		};
 
 		const mockedContext: FandomContext = new FandomContext(
-			new Site(null, null, null, null, null, null, null, null),
+			new Site(null, null, null, null, null, null, null, null, null),
 			new Page(null, null, null, null, null, mockedPageTags),
 		);
 
@@ -37,7 +37,7 @@ describe('PageLevelTaxonomyTags execution', () => {
 
 	it('When there are no page level tags - taxonomy tags are created with empty arrays as values', function () {
 		const mockedContext: FandomContext = new FandomContext(
-			new Site(null, null, null, null, null, null, null, null),
+			new Site(null, null, null, null, null, null, null, null, null),
 			new Page(null, null, null, null, null, {}),
 		);
 
