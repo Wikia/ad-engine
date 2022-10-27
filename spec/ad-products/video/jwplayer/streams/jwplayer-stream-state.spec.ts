@@ -57,10 +57,10 @@ describe('Jwplayer Stream State', () => {
 			expect(uniq(results.map((value) => value.depth))).to.deep.equal([0, 1, 2]);
 			expect(uniq(results.map((value) => value.correlator)).length).to.equal(3);
 		});
+	});
 
-		it('should increase rv after every preroll in the same slot except 1st and 2nd', () => {
-			context.set('options.video.forceVideoAdsOnAllVideosExceptSecond', true);
-
+	describe('Ad requests count (rv key-val)', () => {
+		it('should increase rv after every preroll in the same slot except sponsored video', () => {
 			// init
 			subject$.next({ name: 'adRequest', payload: { tag: 'tag' } });
 			expect(results[0].rv).to.equal(1, 'rv in the initial adRequest is incorrect');
@@ -72,64 +72,89 @@ describe('Jwplayer Stream State', () => {
 
 			// midroll
 			subject$.next({ name: 'videoMidPoint', payload: undefined });
+			subject$.next({ name: 'adRequest', payload: { tag: 'tag' } });
 			subject$.next({ name: 'adStarted', payload: undefined });
-			expect(results[6].rv).to.equal(1, 'rv for midroll in 1st video is incorrect');
+			expect(results[10].rv).to.equal(2, 'rv for midroll in 1st video is incorrect');
 
 			// postroll
 			subject$.next({ name: 'beforeComplete', payload: undefined });
+			subject$.next({ name: 'adRequest', payload: { tag: 'tag' } });
 			subject$.next({ name: 'adStarted', payload: undefined });
-			expect(results[9].rv).to.equal(1, 'rv for postroll after 1st video is incorrect');
+			expect(results[13].rv).to.equal(3, 'rv for postroll after 1st video is incorrect');
 
 			subject$.next({ name: 'complete', payload: undefined });
 
-			// second video and preroll
+			// second video and preroll - not sponsored
 			subject$.next({ name: 'beforePlay', payload: undefined });
+			subject$.next({ name: 'adRequest', payload: { tag: 'tag' } });
 			subject$.next({ name: 'adStarted', payload: undefined });
-			expect(results[15].rv).to.equal(1, 'rv for preroll before 2nd video is incorrect');
+			expect(results[25].rv).to.equal(4, 'rv for preroll before 2nd video is incorrect');
 
 			// midroll
 			subject$.next({ name: 'videoMidPoint', payload: undefined });
+			subject$.next({ name: 'adRequest', payload: { tag: 'tag' } });
 			subject$.next({ name: 'adStarted', payload: undefined });
-			expect(results[18].rv).to.equal(1, 'rv for midroll in 2nd video is incorrect');
+			expect(results[31].rv).to.equal(5, 'rv for midroll in 2nd video is incorrect');
 
 			// postroll
 			subject$.next({ name: 'beforeComplete', payload: undefined });
+			subject$.next({ name: 'adRequest', payload: { tag: 'tag' } });
 			subject$.next({ name: 'adStarted', payload: undefined });
-			expect(results[21].rv).to.equal(1, 'rv for postroll after 2nd video is incorrect');
+			expect(results[37].rv).to.equal(6, 'rv for postroll after 2nd video is incorrect');
 
 			subject$.next({ name: 'complete', payload: undefined });
 
-			// third video and preroll
+			// third video and preroll - not sponsored
 			subject$.next({ name: 'beforePlay', payload: undefined });
+			subject$.next({ name: 'adRequest', payload: { tag: 'tag' } });
 			subject$.next({ name: 'adStarted', payload: undefined });
-			expect(results[27].rv).to.equal(2, 'rv for preroll before 3rd video is incorrect');
+			expect(results[46].rv).to.equal(7, 'rv for preroll before 3rd video is incorrect');
 
 			// midroll
 			subject$.next({ name: 'videoMidPoint', payload: undefined });
+			subject$.next({ name: 'adRequest', payload: { tag: 'tag' } });
 			subject$.next({ name: 'adStarted', payload: undefined });
-			expect(results[30].rv).to.equal(2, 'rv for midroll in 3rd video is incorrect');
+			expect(results[52].rv).to.equal(8, 'rv for midroll in 3rd video is incorrect');
 
 			// postroll
 			subject$.next({ name: 'beforeComplete', payload: undefined });
+			subject$.next({ name: 'adRequest', payload: { tag: 'tag' } });
 			subject$.next({ name: 'adStarted', payload: undefined });
-			expect(results[33].rv).to.equal(2, 'rv for postroll after 3rd video is incorrect');
+			expect(results[58].rv).to.equal(9, 'rv for postroll after 3rd video is incorrect');
 
 			subject$.next({ name: 'complete', payload: undefined });
 
-			// fourth video and preroll
+			// fourth video and preroll - sponsored
 			subject$.next({ name: 'beforePlay', payload: undefined });
-			subject$.next({ name: 'adStarted', payload: undefined });
-			expect(results[39].rv).to.equal(3, 'rv for preroll before 4th video is incorrect');
+			expect(results[62].rv).to.equal(9, 'rv for preroll before 4th video is incorrect');
 
 			// midroll
 			subject$.next({ name: 'videoMidPoint', payload: undefined });
-			subject$.next({ name: 'adStarted', payload: undefined });
-			expect(results[42].rv).to.equal(3, 'rv for midroll in 4th video is incorrect');
+			expect(results[63].rv).to.equal(9, 'rv for midroll in 4th video is incorrect');
 
 			// postroll
 			subject$.next({ name: 'beforeComplete', payload: undefined });
+			expect(results[64].rv).to.equal(9, 'rv for postroll after 4th video is incorrect');
+
+			subject$.next({ name: 'complete', payload: undefined });
+
+			// fifth video and preroll - not sponsored
+			subject$.next({ name: 'beforePlay', payload: undefined });
+			subject$.next({ name: 'adRequest', payload: { tag: 'tag' } });
 			subject$.next({ name: 'adStarted', payload: undefined });
-			expect(results[45].rv).to.equal(3, 'rv for postroll after 4th video is incorrect');
+			expect(results[73].rv).to.equal(10, 'rv for preroll before 5th video is incorrect');
+
+			// midroll
+			subject$.next({ name: 'videoMidPoint', payload: undefined });
+			subject$.next({ name: 'adRequest', payload: { tag: 'tag' } });
+			subject$.next({ name: 'adStarted', payload: undefined });
+			expect(results[79].rv).to.equal(11, 'rv for midroll in 5th video is incorrect');
+
+			// postroll
+			subject$.next({ name: 'beforeComplete', payload: undefined });
+			subject$.next({ name: 'adRequest', payload: { tag: 'tag' } });
+			subject$.next({ name: 'adStarted', payload: undefined });
+			expect(results[85].rv).to.equal(12, 'rv for postroll after 5th video is incorrect');
 		});
 	});
 
