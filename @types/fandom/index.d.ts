@@ -7,6 +7,8 @@ interface WindowFandomContext {
 		siteName: string;
 		top1000: boolean | null;
 		tags: any;
+		taxonomy: string[];
+		// 'vertical' should be removed after UCP release from ADEN-12194
 		vertical: string;
 	};
 	page: {
