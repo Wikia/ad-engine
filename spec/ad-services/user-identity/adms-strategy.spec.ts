@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { context } from '@wikia/core';
 import { userIdentity } from '@wikia/ad-services';
-import { createSandbox, SinonStub, stub } from 'sinon';
+import { createSandbox, SinonStub } from 'sinon';
 import { IdentityRepositories } from '@wikia/ad-services/user-identity/identity-repositories';
 import { admsClient } from '@wikia/ad-services/user-identity/adms-identity-repository/adms-client';
 import { ActionType } from '@wikia/ad-services/user-identity/adms-identity-repository/adms-actions';
@@ -12,13 +12,10 @@ describe('User Identity', () => {
 	let sandbox;
 	const mockId = '00000000-0000-0000-0000-000000000000';
 
-	before(() => {
-		v4Stub = stub(uuid, 'v4');
-		v4Stub.returns(mockId);
-	});
-
 	beforeEach(() => {
 		sandbox = createSandbox();
+		v4Stub = sandbox.stub(uuid, 'v4');
+		v4Stub.returns(mockId);
 	});
 	afterEach(() => {
 		sandbox.restore();
