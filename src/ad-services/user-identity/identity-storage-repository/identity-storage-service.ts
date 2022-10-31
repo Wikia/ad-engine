@@ -18,10 +18,6 @@ class IdentityStorageService {
 	async setRemote(data: IdentityStorageDataInterface): Promise<IdentityStorageDataInterface> {
 		return identityStorageClient.postData(data);
 	}
-
-	setLocally(data: IdentityStorageDataInterface): void {
-		identityStorageClient.setLocalData(data);
-	}
 }
 
 export const identityStorageService = new IdentityStorageService();
