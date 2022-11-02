@@ -14,7 +14,9 @@ export interface PrebidAdapterConfig {
 
 export interface PrebidAdSlotConfig {
 	adCode?: string;
+	adUnitId?: string;
 	alias?: string;
+	assetKey?: string;
 	cid?: string;
 	crid?: string;
 	ids?: string[];
