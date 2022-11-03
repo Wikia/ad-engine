@@ -9,7 +9,10 @@ class IdentityStorageService {
 			identityStorageClient.setLocalData(remoteData);
 			return remoteData;
 		} else if (!localData.synced) {
-			return this.setRemote(localData);
+			return this.setRemote(localData).then((response: IdentityStorageDataInterface) => {
+				identityStorageClient.setLocalData(response);
+				return response;
+			});
 		}
 
 		return localData;
