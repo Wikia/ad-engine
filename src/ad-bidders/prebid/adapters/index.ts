@@ -5,6 +5,7 @@ export * from './index-exchange';
 export * from './kargo';
 export * from './medianet';
 export * from './nobid';
+export * from './ogury';
 export * from './one-video';
 export * from './openx';
 export * from './pubmatic';
