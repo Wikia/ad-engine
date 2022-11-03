@@ -6,6 +6,7 @@ class IdentityStorageClient {
 	private logGroup = 'identity-storage';
 	private IdentityStorageKey: 'identity';
 	private ISUrl = servicesBaseURL() + 'identity-storage';
+
 	storage = new UniversalStorage();
 
 	fetchData(): Promise<IdentityStorageDataInterface> {
@@ -24,12 +25,12 @@ class IdentityStorageClient {
 	}
 
 	async postData(data: IdentityStorageDataInterface): Promise<IdentityStorageDataInterface> {
-		return fetch(this.ISUrl, {
+		return fetch(this.ISUrl + '/', {
+			credentials: 'include',
+			mode: 'cors',
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			mode: 'cors',
-			credentials: 'include',
 			method: 'PUT',
 			body: JSON.stringify(data),
 		}).then((response) => response.json());
