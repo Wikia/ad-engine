@@ -5,7 +5,7 @@ import { IdentityStorageDataInterface } from './identity-storage-data-interface'
 class IdentityStorageClient {
 	private logGroup = 'identity-storage';
 	private IdentityStorageKey: 'identity';
-	private ISUrl = servicesBaseURL() + 'identity-storage';
+	private ISUrl = servicesBaseURL() + 'identity-storage/';
 
 	storage = new UniversalStorage();
 
@@ -25,7 +25,7 @@ class IdentityStorageClient {
 	}
 
 	async postData(data: IdentityStorageDataInterface): Promise<IdentityStorageDataInterface> {
-		return fetch(this.ISUrl + '/', {
+		return fetch(this.ISUrl, {
 			credentials: 'include',
 			mode: 'cors',
 			headers: {
