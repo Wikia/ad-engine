@@ -4,7 +4,7 @@ import { IdentityStorageDataInterface } from './identity-storage-data-interface'
 
 class IdentityStorageClient {
 	private logGroup = 'identity-storage';
-	private IdentityStorageKey: 'identity';
+	private IdentityStorageKey = 'identity';
 	private ISUrl = servicesBaseURL() + 'identity-storage/';
 
 	storage = new UniversalStorage();
