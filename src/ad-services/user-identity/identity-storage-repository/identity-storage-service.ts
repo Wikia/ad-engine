@@ -1,15 +1,15 @@
 import { identityStorageClient } from './identity-storage-client';
-import { IdentityStorageDataInterface } from './identity-storage-data-interface';
+import { IdentityStorageDto } from './identity-storage-dto';
 
 class IdentityStorageService {
-	async get(): Promise<Partial<IdentityStorageDataInterface>> {
+	async get(): Promise<Partial<IdentityStorageDto>> {
 		const localData = await identityStorageClient.getLocalData();
 		if (!localData) {
 			const remoteData = await identityStorageClient.fetchData();
 			identityStorageClient.setLocalData(remoteData);
 			return remoteData;
 		} else if (!localData.synced) {
-			return this.setRemote(localData).then((response: IdentityStorageDataInterface) => {
+			return this.setRemote(localData).then((response: IdentityStorageDto) => {
 				identityStorageClient.setLocalData(response);
 				return response;
 			});
@@ -18,7 +18,7 @@ class IdentityStorageService {
 		return localData;
 	}
 
-	async setRemote(data: IdentityStorageDataInterface): Promise<IdentityStorageDataInterface> {
+	async setRemote(data: IdentityStorageDto): Promise<IdentityStorageDto> {
 		return identityStorageClient.postData(data);
 	}
 }

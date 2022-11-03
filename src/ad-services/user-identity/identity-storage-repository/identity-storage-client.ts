@@ -1,6 +1,6 @@
 import { servicesBaseURL } from '../utils/service-base-url';
 import { UniversalStorage, utils } from '@ad-engine/core';
-import { IdentityStorageDataInterface } from './identity-storage-data-interface';
+import { IdentityStorageDto } from './identity-storage-dto';
 
 class IdentityStorageClient {
 	private logGroup = 'identity-storage';
@@ -9,7 +9,7 @@ class IdentityStorageClient {
 
 	storage = new UniversalStorage();
 
-	fetchData(): Promise<IdentityStorageDataInterface> {
+	fetchData(): Promise<IdentityStorageDto> {
 		return fetch(this.ISUrl, {
 			mode: 'cors',
 			credentials: 'include',
@@ -24,7 +24,7 @@ class IdentityStorageClient {
 			});
 	}
 
-	async postData(data: IdentityStorageDataInterface): Promise<IdentityStorageDataInterface> {
+	async postData(data: IdentityStorageDto): Promise<IdentityStorageDto> {
 		return fetch(this.ISUrl, {
 			credentials: 'include',
 			mode: 'cors',
@@ -36,11 +36,11 @@ class IdentityStorageClient {
 		}).then((response) => response.json());
 	}
 
-	getLocalData(): IdentityStorageDataInterface {
-		return this.storage.getItem(this.IdentityStorageKey) as IdentityStorageDataInterface;
+	getLocalData(): IdentityStorageDto {
+		return this.storage.getItem(this.IdentityStorageKey) as IdentityStorageDto;
 	}
 
-	setLocalData(data: Partial<IdentityStorageDataInterface>): void {
+	setLocalData(data: Partial<IdentityStorageDto>): void {
 		this.storage.setItem(this.IdentityStorageKey, data);
 	}
 }
