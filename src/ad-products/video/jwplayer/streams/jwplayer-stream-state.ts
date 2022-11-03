@@ -1,4 +1,4 @@
-import { context, RxJsOperator, VastParams, vastParser } from '@ad-engine/core';
+import { RxJsOperator, VastParams, vastParser } from '@ad-engine/core';
 import { combineLatest, merge, Observable } from 'rxjs';
 import { map, scan, shareReplay, startWith, withLatestFrom } from 'rxjs/operators';
 import { JWPlayer } from '../external-types/jwplayer';
@@ -10,7 +10,6 @@ import { JwpStatelessStream, ofJwpStatelessEvent } from './jwplayer-stream-state
 interface VideoDepth {
 	depth: number;
 	correlator: number;
-	rv: number;
 }
 
 export interface JwpState extends VideoDepth {
@@ -18,6 +17,7 @@ export interface JwpState extends VideoDepth {
 	playlistItem: JWPlayerListItem;
 	config: JWPlayerConfig;
 	mute: boolean;
+	rv: number;
 	adInVideo: 'bootstrap' | 'none' | 'preroll' | 'midroll' | 'postroll';
 }
 
@@ -33,7 +33,10 @@ export function createJwpStateStream(
 	const videoDepth$: Observable<VideoDepth> = stream$.pipe(
 		ofJwpStatelessEvent('beforePlay'),
 		scanCorrelatorDepth(),
-		startWith({ depth: 0, correlator: 0, rv: 1 }),
+		startWith({ depth: 0, correlator: 0 }),
+	);
+	const adRequestsCount$: Observable<number> = merge(
+		stream$.pipe(ofJwpStatelessEvent('adRequest'), scanAdRequestCount(), startWith(1)),
 	);
 	const vastParams$: Observable<VastParams> = stream$.pipe(
 		ofJwpStatelessEvent('adRequest', 'adError', 'adImpression'),
@@ -76,43 +79,33 @@ export function createJwpStateStream(
 		})),
 	);
 
-	return combineLatest([videoDepth$, vastParams$, adInVideo$, common$]).pipe(
-		map(([videoDepth, vastParams, adInVideo, common]) => ({
+	return combineLatest([videoDepth$, adRequestsCount$, vastParams$, adInVideo$, common$]).pipe(
+		map(([videoDepth, adRequestsCount, vastParams, adInVideo, common]) => ({
 			...common,
 			...videoDepth,
 			vastParams,
 			adInVideo,
+			rv: adRequestsCount,
 		})),
 		shareReplay(1),
 	);
 }
 
 function scanCorrelatorDepth<T>(): RxJsOperator<T, VideoDepth> {
-	const capping = context.get('options.video.adsOnNextVideoFrequency');
-
 	return (source: Observable<T>) =>
 		source.pipe(
 			scan(
-				({ depth }) => ({
+				(currentState) => ({
 					correlator: Math.round(Math.random() * 10000000000),
-					depth: depth + 1,
-					rv: calculateRV(depth + 1, capping),
+					depth: currentState.depth + 1,
 				}),
-				{ correlator: 0, depth: 0, rv: 1 },
+				{ correlator: 0, depth: 0 },
 			),
 		);
 }
 
-function calculateRV(depth: number, capping: number): number {
-	const videoAdsOnAllVideosExceptSecond = context.get(
-		'options.video.forceVideoAdsOnAllVideosExceptSecond',
-	);
-
-	if (videoAdsOnAllVideosExceptSecond) {
-		return depth <= 2 ? 1 : depth - 1;
-	} else {
-		return depth < 2 || !capping ? 1 : Math.floor((depth - 1) / capping) + 1;
-	}
+function scanAdRequestCount<T>(): RxJsOperator<T, number> {
+	return (source: Observable<T>) => source.pipe(scan((currentCount) => currentCount + 1, 0));
 }
 
 function createVastParams<T extends { payload: JWPlayerEvent }>(): RxJsOperator<T, VastParams> {
