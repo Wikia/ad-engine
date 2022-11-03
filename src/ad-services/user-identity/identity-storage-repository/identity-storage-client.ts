@@ -32,7 +32,7 @@ class IdentityStorageClient {
 				'Content-Type': 'application/json',
 			},
 			method: 'PUT',
-			body: JSON.stringify(data),
+			body: JSON.stringify({ ppid: data.ppid }),
 		}).then((response) => response.json());
 	}
 
