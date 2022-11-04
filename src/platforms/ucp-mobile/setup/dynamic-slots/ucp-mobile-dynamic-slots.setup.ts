@@ -17,6 +17,7 @@ import {
 	fillerService,
 	Nativo,
 	PorvataFiller,
+	slotImpactWatcher,
 	slotService,
 	universalAdPackage,
 	utils,
@@ -26,13 +27,6 @@ import { UcpMobileSlotsDefinitionRepository } from './ucp-mobile-slots-definitio
 
 @Injectable()
 export class UcpMobileDynamicSlotsSetup implements DiProcess {
-	private CODE_PRIORITY = {
-		floor_adhesion: {
-			active: false,
-			ignore: false,
-		},
-	};
-
 	constructor(
 		private slotsDefinitionRepository: UcpMobileSlotsDefinitionRepository,
 		private nativoSlotDefinitionRepository: NativoSlotsDefinitionRepository,
@@ -191,47 +185,57 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 	private registerFloorAdhesionCodePriority(): void {
 		const slotName = 'floor_adhesion';
-		const disableFloorAdhesionWithStatus = (status: string) => {
-			this.CODE_PRIORITY.floor_adhesion.active = false;
-			slotService.disable(slotName, status);
+		let ntcOverride = false;
+		let codePriorityActive = false;
+		const disableFloorAdhesion = () => {
+			slotService.disable(slotName);
+			slotImpactWatcher.disable([slotName]);
 			document.getElementById('floor_adhesion_anchor').classList.add('hide');
 		};
+
+		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {
+			ntcOverride = true;
+		});
 
 		communicationService.onSlotEvent(
 			AdSlot.STATUS_SUCCESS,
 			() => {
-				this.CODE_PRIORITY.floor_adhesion.active = true;
+				codePriorityActive = true;
 
-				communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {
-					this.CODE_PRIORITY.floor_adhesion.ignore = true;
-				});
-
-				communicationService.onSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, () => {
-					if (
-						!this.CODE_PRIORITY.floor_adhesion.ignore &&
-						this.CODE_PRIORITY.floor_adhesion.active
-					) {
-						disableFloorAdhesionWithStatus(AdSlot.STATUS_CLOSED_BY_PORVATA);
-					}
+				slotImpactWatcher.request({
+					id: slotName,
+					priority: 4,
+					breakCallback: disableFloorAdhesion,
 				});
 
 				communicationService.on(
 					eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED,
 					() => {
-						if (this.CODE_PRIORITY.floor_adhesion.active) {
-							disableFloorAdhesionWithStatus(AdSlot.STATUS_CLOSED_BY_INTERSTITIAL);
-						}
+						slotImpactWatcher.request({
+							id: 'interstitial',
+							priority: 2,
+							ignoreCondition: () => !codePriorityActive,
+						});
 					},
 					false,
 				);
-			},
-			slotName,
-		);
 
-		communicationService.onSlotEvent(
-			AdSlot.HIDDEN_EVENT,
-			() => {
-				this.CODE_PRIORITY.floor_adhesion.active = false;
+				communicationService.onSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, () => {
+					if (!ntcOverride) {
+						disableFloorAdhesion();
+					}
+				});
+
+				communicationService.onSlotEvent(
+					AdSlot.CUSTOM_EVENT,
+					({ payload }) => {
+						if (payload.status === AdSlot.HIDDEN_EVENT) {
+							codePriorityActive = false;
+							slotImpactWatcher.disable([slotName, 'interstitial']);
+						}
+					},
+					slotName,
+				);
 			},
 			slotName,
 		);

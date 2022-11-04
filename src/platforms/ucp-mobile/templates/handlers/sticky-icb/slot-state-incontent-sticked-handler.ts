@@ -2,6 +2,7 @@ import {
 	AdSlot,
 	context,
 	DomListener,
+	slotImpactWatcher,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
@@ -26,7 +27,7 @@ export class SlotStateIncontentStickedHandler implements TemplateStateHandler {
 		const slotBreakPosition =
 			utils.getTopOffset(this.adSlot.element) - context.get('templates.stickyIcb.topPadding');
 
-		context.set('templates.stickyIcb.stickedSlot', this.adSlot.getSlotName());
+		slotImpactWatcher.request({ id: this.adSlot.getSlotName(), priority: 5 });
 		this.manipulator.element(this.adSlot.element).addClass('incontent-sticked');
 
 		from(this.adSlot.viewed)
@@ -56,7 +57,7 @@ export class SlotStateIncontentStickedHandler implements TemplateStateHandler {
 	}
 
 	async onLeave(): Promise<void> {
-		context.remove('templates.stickyIcb.stickedSlot');
+		slotImpactWatcher.disable([this.adSlot.getSlotName()]);
 		this.unsubscribe$.next();
 	}
 }
