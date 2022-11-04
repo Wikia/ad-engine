@@ -25,7 +25,7 @@ class IdentityStorageClient {
 	}
 
 	async postData(data: IdentityStorageDto): Promise<IdentityStorageDto> {
-		return fetch(this.ISUrl, {
+		return fetch(this.ISUrl + 'identity', {
 			credentials: 'include',
 			mode: 'cors',
 			headers: {
