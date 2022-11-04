@@ -1,7 +1,6 @@
 interface ImpactDetails {
 	id: string;
 	priority: number;
-	ignoreCondition?: () => boolean;
 	breakCallback?: () => void;
 }
 
@@ -13,10 +12,6 @@ export class SlotImpactWatcher {
 	}
 
 	public request(details: ImpactDetails): boolean {
-		if (details.ignoreCondition && details.ignoreCondition()) {
-			return false;
-		}
-
 		if (this.activeImpact) {
 			if (this.activeImpact.priority < details.priority) {
 				return false;

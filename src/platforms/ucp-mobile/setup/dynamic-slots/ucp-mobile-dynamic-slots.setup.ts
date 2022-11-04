@@ -211,17 +211,20 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				communicationService.on(
 					eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED,
 					() => {
+						if (!codePriorityActive) {
+							return;
+						}
+
 						slotImpactWatcher.request({
 							id: 'interstitial',
 							priority: 2,
-							ignoreCondition: () => !codePriorityActive,
 						});
 					},
 					false,
 				);
 
 				communicationService.onSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, () => {
-					if (!ntcOverride) {
+					if (codePriorityActive && !ntcOverride) {
 						disableFloorAdhesion();
 					}
 				});
