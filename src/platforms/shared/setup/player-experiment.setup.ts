@@ -1,5 +1,6 @@
 import {
-	anyclip,
+	Anyclip,
+	AnyclipTracker,
 	BaseServiceSetup,
 	communicationService,
 	connatix,
@@ -13,6 +14,8 @@ import {
 
 class PlayerExperimentSetup extends BaseServiceSetup {
 	private initIncontentPlayer(incontentPlayer) {
+		const anyclip = new Anyclip(new AnyclipTracker());
+
 		if (!incontentPlayer) return;
 		slotDataParamsUpdater.updateOnCreate(incontentPlayer);
 		if (distroScale.isEnabled()) {

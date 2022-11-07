@@ -1,13 +1,12 @@
 import { context, utils } from '@ad-engine/core';
-import { AnyclipTracker } from './anyclip-tracker';
 
 const logGroup = 'Anyclip';
 
-class Anyclip {
-	private tracker: AnyclipTracker;
+export class Anyclip {
+	private tracker;
 
-	constructor(tracker: AnyclipTracker | null = null) {
-		this.tracker = tracker ? tracker : new AnyclipTracker();
+	constructor(tracker = null) {
+		this.tracker = tracker;
 	}
 
 	get params(): Record<string, string> {
@@ -47,5 +46,3 @@ class Anyclip {
 			});
 	}
 }
-
-export const anyclip = new Anyclip();
