@@ -48,25 +48,13 @@ describe('CombinedStrategy', () => {
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
-		const expectedTaxonomyTags = {
-			age: [],
-			bundles: [],
-			gnre: [],
-			media: [],
-			pform: [],
-			pub: [],
-			sex: [],
-			theme: [],
-			tv: [],
-		};
-
-		const expectedResult = { ...mockedCommonParams, ...expectedTaxonomyTags };
-
 		const combinedStrategy = createSelectedStrategy(
 			TargetingStrategy.COMBINED,
 			mockedContext,
 			mockedSkin,
 		);
+
+		const expectedResult = { ...mockedCommonParams };
 
 		expect(combinedStrategy.get()).to.deep.eq(expectedResult);
 		expect(mockedContext).to.deep.eq(
@@ -90,13 +78,7 @@ describe('CombinedStrategy', () => {
 		);
 
 		const expectedTaxonomyTags = {
-			age: [],
-			bundles: [],
 			gnre: ['test1', 'drama', 'comedy', 'horror'],
-			media: [],
-			pform: [],
-			pub: [],
-			sex: [],
 			theme: ['test2', 'superheroes'],
 			tv: ['test1', 'movie'],
 		};
@@ -130,15 +112,8 @@ describe('CombinedStrategy', () => {
 		);
 
 		const expectedTaxonomyTags = {
-			age: [],
-			bundles: [],
 			gnre: ['p_test1', 'p_drama', 'p_comedy', 'p_horror'],
-			media: [],
-			pform: [],
-			pub: [],
-			sex: [],
 			theme: ['p_test2', 'p_superheroes'],
-			tv: [],
 		};
 
 		const expectedResult = { ...mockedCommonParams, ...expectedTaxonomyTags };
@@ -177,15 +152,8 @@ describe('CombinedStrategy', () => {
 		);
 
 		const expectedTaxonomyTags = {
-			age: [],
-			bundles: [],
 			gnre: ['test1', 'drama', 'comedy', 'horror', 'p_test2', 'p_drama', 'p_comedy', 'p_horror'],
-			media: [],
-			pform: [],
-			pub: [],
-			sex: [],
 			theme: ['test3', 'superheroes', 'p_test4', 'p_superheroes'],
-			tv: [],
 		};
 
 		const expectedResult = Object.assign({}, mockedCommonParams, expectedTaxonomyTags);

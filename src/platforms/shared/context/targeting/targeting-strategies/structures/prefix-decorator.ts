@@ -10,15 +10,19 @@ export class PrefixDecorator implements TargetingProvider<TaxonomyTags> {
 	}
 
 	public addPagePrefixToValues(tags: TaxonomyTags) {
+		const result = {};
+
 		for (const [key, value] of Object.entries(tags)) {
 			if (this.tagsToAddPrefix.includes(key)) {
-				tags[key] = [];
+				result[key] = [];
 				value.forEach((val) => {
-					tags[key].push('p_' + val);
+					result[key].push('p_' + val);
 				});
+			} else {
+				result[key] = value;
 			}
 		}
 
-		return tags;
+		return result;
 	}
 }
