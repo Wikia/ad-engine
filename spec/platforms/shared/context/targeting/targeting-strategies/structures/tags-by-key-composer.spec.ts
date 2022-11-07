@@ -1,10 +1,16 @@
 import { TagsByKeyComposer } from '@wikia/platforms/shared/context/targeting/targeting-strategies/structures/tags-by-key-composer';
 import { expect } from 'chai';
 
-describe('Combine Tags Decorator', () => {
-	it('tags are combined correctly', () => {
-		const combinedDecorator = new TagsByKeyComposer(null);
+function tagProvider(obj) {
+	return {
+		get() {
+			return obj;
+		},
+	};
+}
 
+describe('Tags By Key Composer', () => {
+	it('tags are combined correctly', () => {
 		const tagsToCombine1 = {
 			age: ['age1', 'age2'],
 			gnre: ['gnre1'],
@@ -18,7 +24,10 @@ describe('Combine Tags Decorator', () => {
 			tv: ['tv3', 'tv4'],
 		};
 
-		const combinedTags = combinedDecorator.combineTags(tagsToCombine1, tagsToCombine2);
+		const combinedTags = new TagsByKeyComposer([
+			tagProvider(tagsToCombine1),
+			tagProvider(tagsToCombine2),
+		]).get();
 
 		expect(combinedTags).to.deep.eq({
 			age: ['age1', 'age2', 'age3', 'age4'],
@@ -40,8 +49,6 @@ describe('Combine Tags Decorator', () => {
 	});
 
 	it('combining tags to empty array works', () => {
-		const combinedDecorator = new TagsByKeyComposer(null);
-
 		const tagsToCombine1 = {};
 
 		const tagsToCombine2 = {
@@ -51,21 +58,25 @@ describe('Combine Tags Decorator', () => {
 			tv: ['tv3', 'tv4'],
 		};
 
-		const combinedTags = combinedDecorator.combineTags(tagsToCombine1, tagsToCombine2);
+		const combinedTags = new TagsByKeyComposer([
+			tagProvider(tagsToCombine1),
+			tagProvider(tagsToCombine2),
+		]).get();
 
 		expect(combinedTags).to.deep.eq(tagsToCombine2);
 	});
 
 	it('combined tags are not doubled', () => {
-		const combinedDecorator = new TagsByKeyComposer(null);
-
 		const tagsToCombine1 = {
 			age: ['age1', 'age2'],
 			gnre: ['gnre1'],
 			tv: ['tv1', 'tv2'],
 		};
 
-		const combinedTags = combinedDecorator.combineTags(tagsToCombine1, tagsToCombine1);
+		const combinedTags = new TagsByKeyComposer([
+			tagProvider(tagsToCombine1),
+			tagProvider(tagsToCombine1),
+		]).get();
 
 		expect(combinedTags).to.deep.eq(tagsToCombine1);
 	});

@@ -7,25 +7,26 @@ export class TagsByKeyComposer implements TargetingProvider {
 	get(): Partial<Targeting> {
 		const result = {};
 
-		this.tagsToCombine.map((tagSet) => {
+		this.tagsToCombine.forEach((tagSet) => {
 			this.combineTags(result, tagSet.get());
 		});
 
 		return result;
 	}
 
-	combineTags(result, tags) {
+	private combineTags(result, tags) {
 		for (const [key, value] of Object.entries(tags)) {
 			if (key in result) {
 				if (Array.isArray(value) && value.length > 0) {
-					value.map((val) => {
+					value.forEach((val) => {
 						if (!result[key].includes(val)) {
 							result[key].push(val);
 						}
 					});
 				}
 			} else {
-				result[key] = value;
+				if (Array.isArray(value)) result[key] = [...value];
+				else result[key] = value;
 			}
 		}
 
