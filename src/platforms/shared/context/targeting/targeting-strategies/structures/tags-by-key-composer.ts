@@ -25,8 +25,7 @@ export class TagsByKeyComposer implements TargetingProvider {
 					});
 				}
 			} else {
-				if (Array.isArray(value)) result[key] = [...value];
-				else result[key] = value;
+				result[key] = Array.isArray(value) ? Array.from(value) : value;
 			}
 		}
 
