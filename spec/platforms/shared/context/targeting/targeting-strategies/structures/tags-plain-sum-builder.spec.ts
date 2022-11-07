@@ -9,7 +9,7 @@ function tagProvider(obj) {
 	};
 }
 
-describe.skip('Tags Plain Sum Builder', () => {
+describe('Tags Plain Sum Builder', () => {
 	it('Two set of tags are combined correctly', () => {
 		const tagsToCombine1 = {
 			age: ['age1', 'age2'],

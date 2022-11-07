@@ -9,7 +9,7 @@ export class PrefixDecorator implements TargetingProvider<TaxonomyTags> {
 		return this.addPagePrefixToValues(this.tagsToDecorate.get());
 	}
 
-	public addPagePrefixToValues(tags: TaxonomyTags) {
+	private addPagePrefixToValues(tags: TaxonomyTags) {
 		const result = {};
 
 		for (const [key, value] of Object.entries(tags)) {
