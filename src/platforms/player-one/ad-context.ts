@@ -1,8 +1,8 @@
 export const basicContext = {
 	adUnitId: '/{custom.dfpId}/aw-{custom.site}/home',
 	custom: {
-		dfpId: '22309610186',
+		dfpId: '5441',
 		site: 'gamefaqs',
 	},
-	src: ['pp1'],
+	src: ['test'],
 };
