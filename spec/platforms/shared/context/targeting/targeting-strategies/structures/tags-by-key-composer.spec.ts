@@ -26,6 +26,17 @@ describe('Combine Tags Decorator', () => {
 			theme: [],
 			tv: ['tv1', 'tv2', 'tv3', 'tv4'],
 		});
+		expect(tagsToCombine1).to.deep.eq({
+			age: ['age1', 'age2'],
+			gnre: ['gnre1'],
+			tv: ['tv1', 'tv2'],
+		});
+		expect(tagsToCombine2).to.deep.eq({
+			age: ['age3', 'age4'],
+			gnre: ['gnre2'],
+			theme: [],
+			tv: ['tv3', 'tv4'],
+		});
 	});
 
 	it('combining tags to empty array works', () => {
