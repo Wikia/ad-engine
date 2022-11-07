@@ -12,7 +12,10 @@ export class PrefixDecorator implements TargetingProvider {
 	public addPagePrefixToValues(tags) {
 		for (const [key, value] of Object.entries(tags)) {
 			if (this.tagsToAddPrefix.includes(key) && Array.isArray(value) && value.length > 0) {
-				tags[key] = value.map((val) => 'p_' + val);
+				tags[key] = [];
+				value.forEach((val) => {
+					tags[key].push('p_' + val);
+				});
 			}
 		}
 

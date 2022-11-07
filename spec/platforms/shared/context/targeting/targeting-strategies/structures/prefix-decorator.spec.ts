@@ -1,7 +1,7 @@
 import { PrefixDecorator } from '@wikia/platforms/shared/context/targeting/targeting-strategies/structures/prefix-decorator';
 import { expect } from 'chai';
 
-describe('Combine Tags Decorator', () => {
+describe('Prefix Tags Decorator', () => {
 	it('page prefixes are added correctly to tag values', () => {
 		const prefixDecorator = new PrefixDecorator(null);
 

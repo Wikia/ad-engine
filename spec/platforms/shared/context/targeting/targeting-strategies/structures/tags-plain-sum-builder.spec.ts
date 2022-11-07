@@ -1,10 +1,16 @@
 import { TagsPlainSumBuilder } from '@wikia/platforms/shared/context/targeting/targeting-strategies/structures/tags-plain-sum-builder';
 import { expect } from 'chai';
 
+function tagProvider(obj) {
+	return {
+		get() {
+			return obj;
+		},
+	};
+}
+
 describe.skip('Tags Plain Sum Builder', () => {
 	it('Two set of tags are combined correctly', () => {
-		const sumBuilder = new TagsPlainSumBuilder(null);
-
 		const tagsToCombine1 = {
 			age: ['age1', 'age2'],
 			gnre: ['gnre1'],
@@ -18,7 +24,10 @@ describe.skip('Tags Plain Sum Builder', () => {
 			s1: [],
 		};
 
-		const combinedTags = sumBuilder.sumTags(tagsToCombine1, tagsToCombine2);
+		const combinedTags = new TagsPlainSumBuilder([
+			tagProvider(tagsToCombine1),
+			tagProvider(tagsToCombine2),
+		]).get();
 
 		expect(combinedTags).to.deep.eq({
 			age: ['age1', 'age2'],
@@ -29,43 +38,53 @@ describe.skip('Tags Plain Sum Builder', () => {
 			pub: ['pub1'],
 			s1: [],
 		});
-	});
-
-	it('Three set of tags are combined correctly', () => {
-		const sumBuilder = new TagsPlainSumBuilder(null);
-
-		const tagsToCombine1 = {
+		expect(tagsToCombine1).to.deep.eq({
 			age: ['age1', 'age2'],
 			gnre: ['gnre1'],
 			tv: ['tv1', 'tv2'],
-		};
-
-		const tagsToCombine2 = {
-			media: ['media1', 'media2'],
-			pform: ['pform1'],
-			pub: ['pub1'],
-			s1: [],
-		};
-
-		const tagsToCombine3 = {
-			sex: ['m', 'f'],
-			bundles: ['tier1', 'tier2'],
-		};
-
-		let combinedTags = sumBuilder.sumTags(tagsToCombine1, tagsToCombine2);
-
-		combinedTags = sumBuilder.sumTags(combinedTags, tagsToCombine3);
-
-		expect(combinedTags).to.deep.eq({
-			age: ['age1', 'age2'],
-			gnre: ['gnre1'],
-			tv: ['tv1', 'tv2'],
-			media: ['media1', 'media2'],
-			pform: ['pform1'],
-			pub: ['pub1'],
-			s1: [],
-			sex: ['m', 'f'],
-			bundles: ['tier1', 'tier2'],
 		});
-	});
+		expect(tagsToCombine2).to.deep.eq({
+			media: ['media1', 'media2'],
+			pform: ['pform1'],
+			pub: ['pub1'],
+			s1: [],
+		});
+	}),
+		it('Three set of tags are combined correctly', () => {
+			const tagsToCombine1 = {
+				age: ['age1', 'age2'],
+				gnre: ['gnre1'],
+				tv: ['tv1', 'tv2'],
+			};
+
+			const tagsToCombine2 = {
+				media: ['media1', 'media2'],
+				pform: ['pform1'],
+				pub: ['pub1'],
+				s1: [],
+			};
+
+			const tagsToCombine3 = {
+				sex: ['m', 'f'],
+				bundles: ['tier1', 'tier2'],
+			};
+
+			const combinedTags = new TagsPlainSumBuilder([
+				tagProvider(tagsToCombine1),
+				tagProvider(tagsToCombine2),
+				tagProvider(tagsToCombine3),
+			]).get();
+
+			expect(combinedTags).to.deep.eq({
+				age: ['age1', 'age2'],
+				gnre: ['gnre1'],
+				tv: ['tv1', 'tv2'],
+				media: ['media1', 'media2'],
+				pform: ['pform1'],
+				pub: ['pub1'],
+				s1: [],
+				sex: ['m', 'f'],
+				bundles: ['tier1', 'tier2'],
+			});
+		});
 });

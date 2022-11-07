@@ -69,6 +69,12 @@ describe('CombinedStrategy', () => {
 		);
 
 		expect(combinedStrategy.get()).to.deep.eq(expectedResult);
+		expect(mockedContext).to.deep.eq(
+			new FandomContext(
+				new Site([], true, 'ec', 'test', false, {}, mockedTaxonomy, 'life', 'general'),
+				new Page(666, 'pl', 666, 'test', 'article-test', {}),
+			),
+		);
 	});
 
 	it('sets up targeting correctly when site tags are not empty and page tags are empty', function () {
@@ -104,6 +110,12 @@ describe('CombinedStrategy', () => {
 		);
 
 		expect(combinedStrategy.get()).to.deep.eq(expectedResult);
+		expect(mockedContext).to.deep.eq(
+			new FandomContext(
+				new Site([], true, 'ec', 'test', false, mockedSiteTags, mockedTaxonomy, 'life', 'general'),
+				new Page(666, 'pl', 666, 'test', 'article-test', {}),
+			),
+		);
 	});
 
 	it('sets up targeting correctly when site tags are empty and page tags are not empty', function () {
@@ -138,6 +150,15 @@ describe('CombinedStrategy', () => {
 		);
 
 		expect(combinedStrategy.get()).to.deep.eq(expectedResult);
+		expect(mockedContext).to.deep.eq(
+			new FandomContext(
+				new Site([], true, 'ec', 'test', false, {}, ['life', 'lifestyle'], 'life', 'general'),
+				new Page(666, 'pl', 666, 'test', 'article-test', {
+					gnre: ['test1', 'drama', 'comedy', 'horror'],
+					theme: ['test2', 'superheroes'],
+				}),
+			),
+		);
 	});
 
 	it('sets up targeting correctly when site tags and page tags are not empty', function () {
@@ -167,7 +188,7 @@ describe('CombinedStrategy', () => {
 			tv: [],
 		};
 
-		const expectedResult = { ...mockedCommonParams, ...expectedTaxonomyTags };
+		const expectedResult = Object.assign({}, mockedCommonParams, expectedTaxonomyTags);
 
 		const combinedStrategy = createSelectedStrategy(
 			TargetingStrategy.COMBINED,
@@ -176,5 +197,27 @@ describe('CombinedStrategy', () => {
 		);
 
 		expect(combinedStrategy.get()).to.deep.eq(expectedResult);
+		expect(mockedContext).to.deep.eq(
+			new FandomContext(
+				new Site(
+					[],
+					true,
+					'ec',
+					'test',
+					false,
+					{
+						gnre: ['test1', 'drama', 'comedy', 'horror'],
+						theme: ['test3', 'superheroes'],
+					},
+					['life', 'lifestyle'],
+					'life',
+					'general',
+				),
+				new Page(666, 'pl', 666, 'test', 'article-test', {
+					gnre: ['test2', 'drama', 'comedy', 'horror'],
+					theme: ['test4', 'superheroes'],
+				}),
+			),
+		);
 	});
 });

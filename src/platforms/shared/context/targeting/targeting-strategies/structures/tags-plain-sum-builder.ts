@@ -8,13 +8,9 @@ export class TagsPlainSumBuilder implements TargetingProvider {
 		let result = {};
 
 		this.tagsToSum.map((tagSet) => {
-			result = { ...result, ...this.sumTags(result, tagSet.get()) };
+			result = Object.assign(result, tagSet.get());
 		});
 
 		return result;
-	}
-
-	public sumTags(result, tags) {
-		return { ...result, ...tags };
 	}
 }

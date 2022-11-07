@@ -8,7 +8,7 @@ export class TagsByKeyComposer implements TargetingProvider {
 		const result = {};
 
 		this.tagsToCombine.map((tagSet) => {
-			this.combineTags(result, { ...tagSet.get() });
+			this.combineTags(result, tagSet.get());
 		});
 
 		return result;
