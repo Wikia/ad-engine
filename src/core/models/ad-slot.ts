@@ -100,6 +100,7 @@ export class AdSlot {
 	static STATUS_DISABLED = 'disabled';
 	static STATUS_FORCED_COLLAPSE = 'forced_collapse';
 	static STATUS_FORCED_SUCCESS = 'forced_success';
+	static STATUS_SKIP_TEMPLATE = 'skip_template';
 	static STATUS_MANUAL = 'manual';
 	static STATUS_REQUESTED = 'requested';
 	static STATUS_ERROR = 'error';
@@ -459,7 +460,9 @@ export class AdSlot {
 		}
 		this.setStatus(status);
 
-		const templateNames = this.getConfigProperty('defaultTemplates') || [];
+		const templateNames = this.getConfigProperty('skipTemplates')
+			? []
+			: this.getConfigProperty('defaultTemplates') || [];
 
 		if (templateNames && templateNames.length) {
 			templateNames.forEach((templateName: string) => templateService.init(templateName, this));
@@ -545,6 +548,10 @@ export class AdSlot {
 				break;
 			case AdSlot.STATUS_MANUAL:
 				this.setStatus(adType);
+				break;
+			case AdSlot.STATUS_SKIP_TEMPLATE:
+				this.setConfigProperty('skipTemplates', true);
+				this.success();
 				break;
 			default:
 				this.success();

@@ -1,46 +1,25 @@
-import { TargetingProvider } from '../interfaces/targeting-provider';
-import { TargetingStrategy } from '../interfaces/targeting-strategy';
-import { PageLevelTaxonomyTags } from '../providers/page-level-taxonomy-tags';
-import { SiteLevelTaxonomyTags } from '../providers/site-level-taxonomy-tags';
-import { CommonTags } from '../providers/common-tags';
-import { TagsPlainSumBuilder } from '../structures/tags-plain-sum-builder';
-import { PrefixDecorator } from '../structures/prefix-decorator';
-import { TagsByKeyComposer } from '../structures/tags-by-key-composer';
 import { utils } from '@wikia/ad-engine';
-import { FandomContext } from '../models/fandom-context';
 
-const logGroup = 'Targeting';
+import { createFandomContext } from './create-fandom-context';
+import { TargetingStrategyInterface, TargetingStrategy } from '../interfaces/targeting-strategy';
+import { LegacyStrategy } from '../strategies/legacy-strategy';
+import { PageContextStrategy } from '../strategies/page-context-strategy';
+import { CombinedStrategy } from '../strategies/combined-strategy';
 
 export function createSelectedStrategy(
 	selectedStrategy: string,
-	fandomContext: FandomContext,
 	skin: string,
-): TargetingProvider {
+): TargetingStrategyInterface {
 	switch (selectedStrategy) {
-		case TargetingStrategy.SITE_CONTEXT:
-			utils.logger(logGroup, 'Executing SiteContext strategy...');
-
-			return new TagsPlainSumBuilder([
-				new CommonTags(skin, fandomContext),
-				new SiteLevelTaxonomyTags(fandomContext),
-			]);
 		case TargetingStrategy.PAGE_CONTEXT:
-			utils.logger(logGroup, 'Executing PageContext strategy...');
-
-			return new TagsPlainSumBuilder([
-				new CommonTags(skin, fandomContext),
-				new PrefixDecorator(new PageLevelTaxonomyTags(fandomContext)),
-			]);
+			return new PageContextStrategy(skin, createFandomContext());
 		case TargetingStrategy.COMBINED:
+			return new CombinedStrategy(skin, createFandomContext());
+		case TargetingStrategy.SITE_CONTEXT:
+		case TargetingStrategy.DEFAULT:
+			return new LegacyStrategy(skin);
 		default:
-			utils.logger(logGroup, 'Executing Combined strategy...');
-
-			return new TagsPlainSumBuilder([
-				new CommonTags(skin, fandomContext),
-				new TagsByKeyComposer([
-					new SiteLevelTaxonomyTags(fandomContext),
-					new PrefixDecorator(new PageLevelTaxonomyTags(fandomContext)),
-				]),
-			]);
+			utils.logger('Targeting', 'Unrecognized strategy, falling back to default');
+			return new LegacyStrategy(skin);
 	}
 }

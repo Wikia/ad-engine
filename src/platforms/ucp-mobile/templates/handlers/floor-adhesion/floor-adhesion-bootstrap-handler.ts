@@ -18,6 +18,7 @@ export class FloorAdhesionBootstrapHandler implements TemplateStateHandler {
 		if (this.adSlot.isOutOfPage()) {
 			await slotTweaker.adjustIframeByContentSize(this.adSlot);
 		}
+
 		transition('display');
 	}
 
