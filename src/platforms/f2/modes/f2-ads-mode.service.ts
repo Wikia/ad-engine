@@ -12,7 +12,6 @@ import {
 	nielsen,
 	PartnerPipeline,
 	userIdentity,
-	utils,
 } from '@wikia/ad-engine';
 import { wadRunner, playerSetup, gptSetup } from '@platforms/shared';
 
@@ -48,7 +47,6 @@ export class F2AdsMode implements DiProcess {
 			)
 			.execute()
 			.then(() => {
-				utils.logger('DJ', 'Pipeline done');
 				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);
 			});
 	}
