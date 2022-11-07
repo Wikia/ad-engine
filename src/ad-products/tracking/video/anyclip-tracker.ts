@@ -6,6 +6,14 @@ const logGroup = 'Anyclip';
 const isSubscribeReady = () => typeof window['lreSubscribe'] !== 'undefined';
 
 export class AnyclipTracker {
+	private timeoutForGlobal: number;
+	private retriesForGlobal: number;
+
+	constructor(timeoutForGlobal = 250, retriesForGlobal = 4) {
+		this.timeoutForGlobal = timeoutForGlobal;
+		this.retriesForGlobal = retriesForGlobal;
+	}
+
 	private trackingEvents = {
 		WidgetLoad: 'ready',
 		adImpression: 'impression',
@@ -27,20 +35,24 @@ export class AnyclipTracker {
 			);
 			isSubscribeReady
 				? this.setupAnyclipListeners()
-				: utils.logger(logGroup, 'Anyclip global subscribe function set');
+				: utils.logger(logGroup, 'Anyclip global subscribe function not set');
 		});
 	}
 
 	private waitForSubscribeReady(): Promise<boolean> {
-		return new utils.WaitFor(isSubscribeReady, 4, 250).until();
+		return new utils.WaitFor(
+			isSubscribeReady,
+			this.retriesForGlobal,
+			this.timeoutForGlobal,
+		).until();
 	}
 
 	private setupAnyclipListeners() {
 		const subscribe = window['lreSubscribe'];
 
-		Object.keys(this.trackingEvents).map((eventName) =>
-			subscribe((data) => this.track(eventName, data), eventName),
-		);
+		Object.keys(this.trackingEvents).map((eventName) => {
+			subscribe((data) => this.track(eventName, data), eventName);
+		});
 	}
 
 	private track(eventName: string, eventData) {
