@@ -1,7 +1,7 @@
-import { Targeting, utils } from '@wikia/ad-engine';
+import { utils } from '@wikia/ad-engine';
 import { TaxonomyTags } from '../interfaces/taxonomy-tags';
 
-export function createTaxonomyTags(contextTags: TaxonomyTags): Partial<Targeting> {
+export function createTaxonomyTags(contextTags: TaxonomyTags): TaxonomyTags {
 	if (!contextTags) {
 		utils.warner('Targeting', 'Taxonomy tags are not available');
 	}

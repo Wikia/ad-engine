@@ -1,3 +1,5 @@
+import { Targeting } from '@wikia/ad-engine';
+
 export interface TaxonomyTags {
 	age?: string[];
 	bundles?: string[];
@@ -9,3 +11,5 @@ export interface TaxonomyTags {
 	theme?: string[];
 	tv?: string[];
 }
+
+export type TargetingTags = Partial<Targeting> | TaxonomyTags;

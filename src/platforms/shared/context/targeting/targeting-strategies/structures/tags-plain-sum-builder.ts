@@ -1,10 +1,10 @@
 import { TargetingProvider } from '../interfaces/targeting-provider';
-import { Targeting } from '@wikia/ad-engine';
+import { TargetingTags } from '../interfaces/taxonomy-tags';
 
-export class TagsPlainSumBuilder implements TargetingProvider {
-	constructor(private tagsToSum: TargetingProvider[]) {}
+export class TagsPlainSumBuilder implements TargetingProvider<TargetingTags> {
+	constructor(private tagsToSum: TargetingProvider<TargetingTags>[]) {}
 
-	get(): Partial<Targeting> {
+	get(): TargetingTags {
 		let result = {};
 
 		this.tagsToSum.map((tagSet) => {

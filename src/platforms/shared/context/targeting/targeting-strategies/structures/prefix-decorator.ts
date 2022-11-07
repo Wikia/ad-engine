@@ -1,17 +1,17 @@
 import { TargetingProvider } from '../interfaces/targeting-provider';
-import { Targeting } from '@wikia/ad-engine';
+import { TaxonomyTags } from '../interfaces/taxonomy-tags';
 
-export class PrefixDecorator implements TargetingProvider {
+export class PrefixDecorator implements TargetingProvider<TaxonomyTags> {
 	private tagsToAddPrefix = ['gnre', 'media', 'pform', 'pub', 'theme', 'tv'];
-	constructor(private tagsToDecorate: TargetingProvider) {}
+	constructor(private tagsToDecorate: TargetingProvider<TaxonomyTags>) {}
 
-	get(): Partial<Targeting> {
+	get(): TaxonomyTags {
 		return this.addPagePrefixToValues(this.tagsToDecorate.get());
 	}
 
-	public addPagePrefixToValues(tags) {
+	public addPagePrefixToValues(tags: TaxonomyTags) {
 		for (const [key, value] of Object.entries(tags)) {
-			if (this.tagsToAddPrefix.includes(key) && Array.isArray(value) && value.length > 0) {
+			if (this.tagsToAddPrefix.includes(key)) {
 				tags[key] = [];
 				value.forEach((val) => {
 					tags[key].push('p_' + val);

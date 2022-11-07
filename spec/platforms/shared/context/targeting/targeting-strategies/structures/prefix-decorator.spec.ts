@@ -43,22 +43,4 @@ describe('Prefix Tags Decorator', () => {
 			tv: ['p_tv1', 'p_tv2'],
 		});
 	});
-
-	it('page prefixes are not added to tag values that are not array', () => {
-		const prefixDecorator = new PrefixDecorator(null);
-
-		const valuesToAddPrefix = {
-			media: 'media',
-			theme: 'theme',
-			tv: ['tv1', 'tv2'],
-		};
-
-		const prefixedTags = prefixDecorator.addPagePrefixToValues(valuesToAddPrefix);
-
-		expect(prefixedTags).to.deep.eq({
-			media: 'media',
-			theme: 'theme',
-			tv: ['p_tv1', 'p_tv2'],
-		});
-	});
 });

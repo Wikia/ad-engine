@@ -8,6 +8,7 @@ import { PrefixDecorator } from '../structures/prefix-decorator';
 import { TagsByKeyComposer } from '../structures/tags-by-key-composer';
 import { utils } from '@wikia/ad-engine';
 import { FandomContext } from '../models/fandom-context';
+import { TargetingTags } from '../interfaces/taxonomy-tags';
 
 const logGroup = 'Targeting';
 
@@ -15,7 +16,7 @@ export function createSelectedStrategy(
 	selectedStrategy: string,
 	fandomContext: FandomContext,
 	skin: string,
-): TargetingProvider {
+): TargetingProvider<TargetingTags> {
 	switch (selectedStrategy) {
 		case TargetingStrategy.SITE_CONTEXT:
 			utils.logger(logGroup, 'Executing SiteContext strategy...');

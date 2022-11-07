@@ -1,10 +1,10 @@
 import { TargetingProvider } from '../interfaces/targeting-provider';
-import { Targeting } from '@wikia/ad-engine';
+import { TaxonomyTags } from '../interfaces/taxonomy-tags';
 
-export class TagsByKeyComposer implements TargetingProvider {
-	constructor(private tagsToCombine: TargetingProvider[]) {}
+export class TagsByKeyComposer implements TargetingProvider<TaxonomyTags> {
+	constructor(private tagsToCombine: TargetingProvider<TaxonomyTags>[]) {}
 
-	get(): Partial<Targeting> {
+	get(): TaxonomyTags {
 		const result = {};
 
 		this.tagsToCombine.forEach((tagSet) => {
@@ -14,18 +14,16 @@ export class TagsByKeyComposer implements TargetingProvider {
 		return result;
 	}
 
-	private combineTags(result, tags) {
+	private combineTags(result: TaxonomyTags, tags: TaxonomyTags) {
 		for (const [key, value] of Object.entries(tags)) {
 			if (key in result) {
-				if (Array.isArray(value) && value.length > 0) {
-					value.forEach((val) => {
-						if (!result[key].includes(val)) {
-							result[key].push(val);
-						}
-					});
-				}
+				value.forEach((val) => {
+					if (!result[key].includes(val)) {
+						result[key].push(val);
+					}
+				});
 			} else {
-				result[key] = Array.isArray(value) ? Array.from(value) : value;
+				result[key] = Array.from(value);
 			}
 		}
 

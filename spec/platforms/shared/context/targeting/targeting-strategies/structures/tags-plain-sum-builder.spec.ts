@@ -15,6 +15,7 @@ describe.skip('Tags Plain Sum Builder', () => {
 			age: ['age1', 'age2'],
 			gnre: ['gnre1'],
 			tv: ['tv1', 'tv2'],
+			s1: null,
 		};
 
 		const tagsToCombine2 = {
@@ -42,6 +43,7 @@ describe.skip('Tags Plain Sum Builder', () => {
 			age: ['age1', 'age2'],
 			gnre: ['gnre1'],
 			tv: ['tv1', 'tv2'],
+			s1: null,
 		});
 		expect(tagsToCombine2).to.deep.eq({
 			media: ['media1', 'media2'],
@@ -49,42 +51,42 @@ describe.skip('Tags Plain Sum Builder', () => {
 			pub: ['pub1'],
 			s1: [],
 		});
-	}),
-		it('Three set of tags are combined correctly', () => {
-			const tagsToCombine1 = {
-				age: ['age1', 'age2'],
-				gnre: ['gnre1'],
-				tv: ['tv1', 'tv2'],
-			};
+	});
+	it('Three set of tags are combined correctly', () => {
+		const tagsToCombine1 = {
+			age: ['age1', 'age2'],
+			gnre: ['gnre1'],
+			tv: ['tv1', 'tv2'],
+		};
 
-			const tagsToCombine2 = {
-				media: ['media1', 'media2'],
-				pform: ['pform1'],
-				pub: ['pub1'],
-				s1: [],
-			};
+		const tagsToCombine2 = {
+			media: ['media1', 'media2'],
+			pform: ['pform1'],
+			pub: ['pub1'],
+			s1: [],
+		};
 
-			const tagsToCombine3 = {
-				sex: ['m', 'f'],
-				bundles: ['tier1', 'tier2'],
-			};
+		const tagsToCombine3 = {
+			sex: ['m', 'f'],
+			bundles: ['tier1', 'tier2'],
+		};
 
-			const combinedTags = new TagsPlainSumBuilder([
-				tagProvider(tagsToCombine1),
-				tagProvider(tagsToCombine2),
-				tagProvider(tagsToCombine3),
-			]).get();
+		const combinedTags = new TagsPlainSumBuilder([
+			tagProvider(tagsToCombine1),
+			tagProvider(tagsToCombine2),
+			tagProvider(tagsToCombine3),
+		]).get();
 
-			expect(combinedTags).to.deep.eq({
-				age: ['age1', 'age2'],
-				gnre: ['gnre1'],
-				tv: ['tv1', 'tv2'],
-				media: ['media1', 'media2'],
-				pform: ['pform1'],
-				pub: ['pub1'],
-				s1: [],
-				sex: ['m', 'f'],
-				bundles: ['tier1', 'tier2'],
-			});
+		expect(combinedTags).to.deep.eq({
+			age: ['age1', 'age2'],
+			gnre: ['gnre1'],
+			tv: ['tv1', 'tv2'],
+			media: ['media1', 'media2'],
+			pform: ['pform1'],
+			pub: ['pub1'],
+			s1: [],
+			sex: ['m', 'f'],
+			bundles: ['tier1', 'tier2'],
 		});
+	});
 });

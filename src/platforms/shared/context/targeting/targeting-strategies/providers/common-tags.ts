@@ -6,7 +6,7 @@ import { CommonTargetingParams } from '../interfaces/common-targeting-params';
 import { OptionalTargetingParams } from '../interfaces/optional-targeting-params';
 import { TargetingProvider } from '../interfaces/targeting-provider';
 
-export class CommonTags implements TargetingProvider {
+export class CommonTags implements TargetingProvider<Partial<Targeting>> {
 	constructor(private skin: string, private fandomContext: FandomContext) {}
 
 	get(): Partial<Targeting> {
