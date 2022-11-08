@@ -18,7 +18,6 @@ interface MediaWikiAdsOpts {
 	isAdTestWiki: boolean;
 	isGamepedia?: boolean;
 	isSubjectToCcpa?: boolean;
-	pageType: string;
 	platformName?: string;
 	showAds: boolean;
 }

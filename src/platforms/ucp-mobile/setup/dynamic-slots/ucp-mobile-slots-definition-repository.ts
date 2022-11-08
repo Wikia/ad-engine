@@ -50,20 +50,12 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	private isTopLeaderboardApplicable(): boolean {
+		const pageType = context.get('wiki.targeting.pageType');
 		const hasFeaturedVideo = context.get('custom.hasFeaturedVideo');
-		const isHome = context.get('wiki.opts.pageType') === 'home';
-		const isSearch = context.get('wiki.opts.pageType') === 'search';
-		const allAdsAllowed = context.get('wiki.opts.pageType') === 'all_ads';
 		const hasPageHeader = !!document.querySelector('.wiki-page-header');
 		const hasPortableInfobox = !!document.querySelector('.portable-infobox');
 
-		return (
-			isSearch ||
-			isHome ||
-			hasPortableInfobox ||
-			(hasPageHeader && !hasFeaturedVideo) ||
-			allAdsAllowed
-		);
+		return pageType !== 'special' || hasPortableInfobox || (hasPageHeader && !hasFeaturedVideo);
 	}
 
 	getTopBoxadConfig(): SlotSetupDefinition {
@@ -166,11 +158,13 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	private isInContentApplicable(): boolean {
-		if (context.get('wiki.opts.pageType') === 'home') {
+		const pageType = context.get('wiki.targeting.pageType');
+
+		if (pageType === 'home') {
 			return !!document.querySelector('.curated-content');
 		}
 
-		return context.get('wiki.opts.pageType') !== 'search';
+		return pageType !== 'search';
 	}
 
 	private injectIncontentAdsPlaceholders(): void {
@@ -229,7 +223,7 @@ export class UcpMobileSlotsDefinitionRepository {
 	private isMobilePrefooterApplicable(): boolean {
 		const MIN_NUMBER_OF_SECTIONS = 4;
 
-		if (context.get('wiki.opts.pageType') === 'home') {
+		if (context.get('wiki.targeting.pageType') === 'home') {
 			return !!document.querySelector('.trending-articles');
 		}
 
@@ -267,7 +261,8 @@ export class UcpMobileSlotsDefinitionRepository {
 
 	private isBottomLeaderboardApplicable(): boolean {
 		return (
-			!!document.querySelector('.global-footer') && context.get('wiki.opts.pageType') !== 'search'
+			!!document.querySelector('.global-footer') &&
+			context.get('wiki.targeting.pageType') !== 'search'
 		);
 	}
 
