@@ -57,6 +57,7 @@ export class AnyclipTracker implements VideoTracker {
 
 	private getVideoData(eventName: string): VideoData {
 		return {
+			ad_error_code: 0,
 			event_name: this.trackingEvents[eventName],
 			player: 'anyclip',
 			ad_product: 'outstream',
