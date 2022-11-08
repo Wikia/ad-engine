@@ -12,6 +12,8 @@ describe('User Identity', () => {
 	const mockId = '00000000-0000-0000-0000-000000000000';
 
 	beforeEach(() => {
+		context.set('services.ppid.enabled', true);
+		context.set('services.ppidRepository', IdentityRepositories.LOCAL);
 		sandbox = createSandbox();
 		v4Stub = sandbox.stub(uuid, 'v4');
 		v4Stub.returns(mockId);
@@ -24,8 +26,6 @@ describe('User Identity', () => {
 	});
 
 	it("use LocalStore strategy and don't have PPID stored", async () => {
-		context.set('services.ppid.enabled', true);
-		context.set('services.ppidRepository', IdentityRepositories.LOCAL);
 		sandbox.stub(localStorageRepository.storage, 'getItem').callsFake(() => null);
 		await userIdentity.call();
 
@@ -33,8 +33,6 @@ describe('User Identity', () => {
 	});
 
 	it('use LocalStore strategy and have PPID stored', async () => {
-		context.set('services.ppid.enabled', true);
-		context.set('services.ppidRepository', IdentityRepositories.LOCAL);
 		sandbox
 			.stub(localStorageRepository.storage, 'getItem')
 			.callsFake(() => '11111111-1111-1111-1111-111111111111');

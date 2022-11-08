@@ -11,6 +11,8 @@ describe('User Identity', () => {
 	const mockId = '00000000-0000-0000-0000-000000000000';
 
 	beforeEach(() => {
+		context.set('services.ppid.enabled', true);
+		context.set('services.ppidRepository', IdentityRepositories.IDENTITY_STORAGE);
 		sandbox = createSandbox();
 		clientSpy = sandbox.spy(identityStorageClient, 'postData');
 	});
@@ -22,8 +24,6 @@ describe('User Identity', () => {
 	});
 
 	it('use Identity Storage strategy and gets synced PPID from API', async () => {
-		context.set('services.ppid.enabled', true);
-		context.set('services.ppidRepository', IdentityRepositories.IDENTITY_STORAGE);
 		sandbox.stub(identityStorageClient, 'fetchData').returns(
 			Promise.resolve({
 				ppid: mockId,
@@ -37,8 +37,6 @@ describe('User Identity', () => {
 	});
 
 	it('use Identity Storage strategy and gets not synced PPID from API', async () => {
-		context.set('services.ppid.enabled', true);
-		context.set('services.ppidRepository', IdentityRepositories.IDENTITY_STORAGE);
 		sandbox.stub(identityStorageClient, 'fetchData').returns(
 			Promise.resolve({
 				ppid: mockId,
@@ -52,8 +50,6 @@ describe('User Identity', () => {
 	});
 
 	it('use Identity Storage strategy and gets synced PPID from Cache', async () => {
-		context.set('services.ppid.enabled', true);
-		context.set('services.ppidRepository', IdentityRepositories.IDENTITY_STORAGE);
 		sandbox.stub(identityStorageClient.storage, 'getItem').callsFake(() => ({
 			ppid: mockId,
 			synced: true,
@@ -66,8 +62,6 @@ describe('User Identity', () => {
 	});
 
 	it('use Identity Storage strategy and gets not synced PPID from Cache', async () => {
-		context.set('services.ppid.enabled', true);
-		context.set('services.ppidRepository', IdentityRepositories.IDENTITY_STORAGE);
 		sandbox.stub(identityStorageClient.storage, 'getItem').callsFake(() => ({
 			ppid: mockId,
 			synced: false,

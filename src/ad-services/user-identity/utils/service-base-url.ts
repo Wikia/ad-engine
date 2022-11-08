@@ -1,4 +1,4 @@
-export function servicesBaseURL() {
+export function getServicesBaseURL() {
 	const fandomDomains = ['fandom.com', 'muthead.com', 'futhead.com'];
 
 	return fandomDomains.find((domain) => window.location.hostname.includes(domain))

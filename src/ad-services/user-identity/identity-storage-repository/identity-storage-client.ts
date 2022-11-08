@@ -1,11 +1,11 @@
-import { servicesBaseURL } from '../utils/service-base-url';
+import { getServicesBaseURL } from '../utils/service-base-url';
 import { UniversalStorage, utils } from '@ad-engine/core';
 import { IdentityStorageDto } from './identity-storage-dto';
 
 class IdentityStorageClient {
 	private logGroup = 'identity-storage';
 	private IdentityStorageKey = 'identity';
-	private ISUrl = servicesBaseURL() + 'identity-storage/';
+	private ISUrl = getServicesBaseURL() + 'identity-storage/';
 
 	storage = new UniversalStorage();
 
@@ -33,7 +33,11 @@ class IdentityStorageClient {
 			},
 			method: 'PUT',
 			body: JSON.stringify({ ppid: data.ppid }),
-		}).then((response) => response.json());
+		})
+			.then((response) => response.json())
+			.catch((reason) => {
+				utils.logger(this.logGroup, 'Updating Identity Storage data failed', reason);
+			});
 	}
 
 	getLocalData(): IdentityStorageDto {

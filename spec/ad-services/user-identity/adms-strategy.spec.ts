@@ -13,6 +13,8 @@ describe('User Identity', () => {
 	const mockId = '00000000-0000-0000-0000-000000000000';
 
 	beforeEach(() => {
+		context.set('services.ppid.enabled', true);
+		context.set('services.ppidRepository', IdentityRepositories.ADMS);
 		sandbox = createSandbox();
 		v4Stub = sandbox.stub(uuid, 'v4');
 		v4Stub.returns(mockId);
@@ -50,8 +52,6 @@ describe('User Identity', () => {
 	});
 
 	it("use ADMS strategy and don't have PPID in store or API", async () => {
-		context.set('services.ppid.enabled', true);
-		context.set('services.ppidRepository', IdentityRepositories.ADMS);
 		sandbox.stub(admsClient, 'fetchData').returns(Promise.resolve({}));
 
 		sandbox.stub(admsClient, 'postData').returns(Promise.resolve());
@@ -62,8 +62,6 @@ describe('User Identity', () => {
 	});
 
 	it('use ADMS strategy and gets PPID from storage', async () => {
-		context.set('services.ppid.enabled', true);
-		context.set('services.ppidRepository', IdentityRepositories.ADMS);
 		sandbox.stub(admsClient.storage, 'getItem').callsFake(() => ({
 			IDENTITY: [
 				{

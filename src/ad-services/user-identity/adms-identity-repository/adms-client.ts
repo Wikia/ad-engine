@@ -1,11 +1,11 @@
 import { ActionType, Action, ActiveData } from './adms-actions';
 import { UniversalStorage, utils } from '@ad-engine/core';
 import { UserIdentity } from '../index';
-import { servicesBaseURL } from '../utils/service-base-url';
+import { getServicesBaseURL } from '../utils/service-base-url';
 
 class AdmsClient {
 	private ADMSStorageKey = 'silver-surfer-active-data-v2';
-	private ADMS = servicesBaseURL() + 'active-data-management-service/';
+	private ADMS = getServicesBaseURL() + 'active-data-management-service/';
 	storage = new UniversalStorage();
 
 	fetchData(): Promise<ActiveData> {
