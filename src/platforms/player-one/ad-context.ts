@@ -4,5 +4,10 @@ export const basicContext = {
 		dfpId: '5441',
 		site: 'gamefaqs',
 	},
+	slots: {
+		leader_plus_top: {
+			defaultSizes: [[728, 90]],
+		},
+	},
 	src: ['test'],
 };

@@ -3,7 +3,6 @@ import { context, ProcessPipeline } from '@wikia/ad-engine';
 import { startAdEngine } from '@platforms/shared';
 
 import { basicContext } from './ad-context';
-import { PlayerOneSlotsContextSetup } from './setup/context/slots/player-one-slots-context';
 
 @Injectable()
 export class PlayerOnePlatform {
@@ -12,7 +11,6 @@ export class PlayerOnePlatform {
 	execute(): void {
 		this.pipeline.add(
 			() => context.extend(basicContext),
-			PlayerOneSlotsContextSetup,
 			() => {
 				context.push('state.adStack', { id: 'leader_plus_top' });
 
