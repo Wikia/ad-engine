@@ -5,7 +5,7 @@ export const basicContext = {
 		site: 'gamefaqs',
 	},
 	slots: {
-		leader_plus_top: {
+		top_leaderboard: {
 			defaultSizes: [[728, 90]],
 		},
 	},

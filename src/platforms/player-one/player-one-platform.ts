@@ -12,7 +12,7 @@ export class PlayerOnePlatform {
 		this.pipeline.add(
 			() => context.extend(basicContext),
 			() => {
-				context.push('state.adStack', { id: 'leader_plus_top' });
+				context.push('state.adStack', { id: 'top_leaderboard' });
 
 				startAdEngine();
 			},
