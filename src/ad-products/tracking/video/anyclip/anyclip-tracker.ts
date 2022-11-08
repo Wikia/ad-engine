@@ -3,16 +3,9 @@ import { PlayerEventEmitter } from '../player-event-emitter';
 import { VideoEventDataProvider } from '../video-event-data-provider';
 
 const logGroup = 'Anyclip';
-const isSubscribeReady = () => typeof window['lreSubscribe'] !== 'undefined';
 
 export class AnyclipTracker implements VideoTracker {
-	private timeoutForGlobal: number;
-	private retriesForGlobal: number;
-
-	constructor(timeoutForGlobal = 250, retriesForGlobal = 4) {
-		this.timeoutForGlobal = timeoutForGlobal;
-		this.retriesForGlobal = retriesForGlobal;
-	}
+	constructor(private subscribeFuncName: string) {}
 
 	private trackingEvents = {
 		WidgetLoad: 'ready',
@@ -26,29 +19,21 @@ export class AnyclipTracker implements VideoTracker {
 	};
 
 	register() {
-		this.waitForSubscribeReady().then((isSubscribeReady) => {
-			utils.logger(
-				logGroup,
-				'Anyclip global subscribe function set',
-				isSubscribeReady,
-				window['lreSubscribe'],
-			);
-			isSubscribeReady
-				? this.setupAnyclipListeners()
-				: utils.logger(logGroup, 'Anyclip global subscribe function not set');
-		});
-	}
-
-	private waitForSubscribeReady(): Promise<boolean> {
-		return new utils.WaitFor(
-			isSubscribeReady,
-			this.retriesForGlobal,
-			this.timeoutForGlobal,
-		).until();
+		this.setupAnyclipListeners();
 	}
 
 	private setupAnyclipListeners() {
-		const subscribe = window['lreSubscribe'];
+		const subscribe = window[this.subscribeFuncName];
+
+		if (typeof subscribe !== 'function') {
+			utils.logger(
+				logGroup,
+				'Given subscribe function is not a function',
+				this.subscribeFuncName,
+				subscribe,
+			);
+			return;
+		}
 
 		Object.keys(this.trackingEvents).map((eventName) => {
 			subscribe((data) => this.track(eventName, data), eventName);

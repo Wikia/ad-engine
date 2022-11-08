@@ -66,7 +66,7 @@ export class UcpDesktopAdsModeDeprecated implements DiProcess {
 	}
 
 	private initIncontentPlayer(incontentPlayer) {
-		const anyclip = new Anyclip(new AnyclipTracker());
+		const anyclip = new Anyclip(new AnyclipTracker(Anyclip.SUBSCRIBE_FUNC_NAME));
 
 		if (!incontentPlayer) return;
 		slotDataParamsUpdater.updateOnCreate(incontentPlayer);
