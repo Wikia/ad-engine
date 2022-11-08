@@ -24,10 +24,19 @@ export class CombinedStrategy extends CommonStrategy implements TargetingStrateg
 
 		const wiki: MediaWikiAdsContext = context.get('wiki');
 
+		const bundles = this.context.site.tags?.bundles || [];
+		if (this.context.page.tags?.bundles) {
+			this.context.page.tags.bundles.forEach((bundle) => {
+				if (!utils.targeting.containsValue(bundles, bundle)) {
+					bundles.push(bundle);
+				}
+			});
+		}
+
 		let targeting: Partial<Targeting> = {
 			age: this.context.site.tags?.age || [],
 			artid: this.context.page.articleId ? this.context.page.articleId.toString() : '',
-			bundles: this.context.site.tags?.bundles || [],
+			bundles: bundles,
 			kid_wiki: this.context.site.directedAtChildren ? '1' : '0',
 			lang: this.context.page.lang || 'unknown',
 			sex: this.context.site.tags?.sex || [],

@@ -103,10 +103,12 @@ describe('PageContextStrategy execution', () => {
 		const mockedSiteTags = {
 			gnre: ['test1', 'drama', 'comedy', 'horror'],
 			theme: ['test3', 'superheroes'],
+			bundles: ['site-bundle'],
 		};
 		const mockedPageTags = {
 			gnre: ['test2', 'drama', 'comedy', 'horror'],
 			theme: ['test4', 'superheroes'],
+			bundles: ['page-bundle'],
 		};
 		const mockedContext: FandomContext = new FandomContext(
 			new Site([], true, 'ec', 'test', false, mockedSiteTags, 'lifestyle', 'general'),
@@ -118,6 +120,7 @@ describe('PageContextStrategy execution', () => {
 				gnre: ['p_test2', 'p_drama', 'p_comedy', 'p_horror'],
 			},
 			...{ theme: ['p_test4', 'p_superheroes'] },
+			...{ bundles: ['page-bundle'] },
 		};
 
 		expect(new PageContextStrategy(mockedSkin, mockedContext).execute()).to.deep.eq(

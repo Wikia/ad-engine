@@ -98,10 +98,12 @@ describe('CombinedStrategy execution', () => {
 		const mockedSiteTags = {
 			gnre: ['test1', 'drama', 'comedy', 'horror'],
 			theme: ['test3', 'superheroes'],
+			bundles: ['site-bundle'],
 		};
 		const mockedPageTags = {
 			gnre: ['test2', 'drama', 'comedy', 'horror'],
 			theme: ['test4', 'superheroes'],
+			bundles: ['SITE-BUNDLE', 'page-bundle'],
 		};
 		const mockedContext: FandomContext = new FandomContext(
 			new Site([], true, 'ec', 'test', false, mockedSiteTags, 'lifestyle', 'general'),
@@ -113,6 +115,7 @@ describe('CombinedStrategy execution', () => {
 				gnre: ['test1', 'drama', 'comedy', 'horror', 'p_test2', 'p_drama', 'p_comedy', 'p_horror'],
 			},
 			...{ theme: ['test3', 'superheroes', 'p_test4', 'p_superheroes'] },
+			...{ bundles: ['site-bundle', 'page-bundle'] },
 		};
 
 		expect(new CombinedStrategy(mockedSkin, mockedContext).execute()).to.deep.eq(expectedTargeting);

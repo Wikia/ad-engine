@@ -8,7 +8,7 @@ import { CookieStorageAdapter } from '../services/';
  *  This class is about to be expanded in ADEN-10310
  */
 class Targeting {
-	private static containsValue(valuesList: string[], value: string): boolean {
+	containsValue(valuesList: string[], value: string): boolean {
 		const upperValue = value.toUpperCase();
 		return valuesList.some((existingBundle) => existingBundle.toUpperCase() === upperValue);
 	}
@@ -49,7 +49,7 @@ class Targeting {
 			});
 
 			selectedBundles.forEach((bundle) => {
-				if (!Targeting.containsValue(targetingBundles, bundle)) {
+				if (!this.containsValue(targetingBundles, bundle)) {
 					targetingBundles.push(bundle);
 				}
 			});
@@ -75,7 +75,7 @@ class Targeting {
 		if (
 			skin &&
 			skin.includes('ucp_') &&
-			!Targeting.containsValue(bundles, 'VIDEO_TIER_1_AND_2_BUNDLE')
+			!this.containsValue(bundles, 'VIDEO_TIER_1_AND_2_BUNDLE')
 		) {
 			bundles.push('VIDEO_TIER_3_BUNDLE');
 		}
