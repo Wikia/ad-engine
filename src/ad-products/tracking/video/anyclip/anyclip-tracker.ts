@@ -1,11 +1,11 @@
-import { utils, VideoData } from '@ad-engine/core';
-import { PlayerEventEmitter } from './player-event-emitter';
-import { VideoEventDataProvider } from './video-event-data-provider';
+import { utils, VideoData, VideoTracker } from '@ad-engine/core';
+import { PlayerEventEmitter } from '../player-event-emitter';
+import { VideoEventDataProvider } from '../video-event-data-provider';
 
 const logGroup = 'Anyclip';
 const isSubscribeReady = () => typeof window['lreSubscribe'] !== 'undefined';
 
-export class AnyclipTracker {
+export class AnyclipTracker implements VideoTracker {
 	private timeoutForGlobal: number;
 	private retriesForGlobal: number;
 

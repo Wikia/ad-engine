@@ -1,13 +1,9 @@
-import { context, utils } from '@ad-engine/core';
+import { context, utils, VideoTracker } from '@ad-engine/core';
 
 const logGroup = 'Anyclip';
 
 export class Anyclip {
-	private tracker;
-
-	constructor(tracker = null) {
-		this.tracker = tracker;
-	}
+	constructor(private tracker: VideoTracker) {}
 
 	get params(): Record<string, string> {
 		return {
