@@ -35,6 +35,11 @@ export class StickyIcbBootstrapHandler implements TemplateStateHandler {
 			transition('done');
 		}
 
+		const creativeSize = this.adSlot.getCreativeSizeAsArray();
+		if (!creativeSize || creativeSize[1] > 250) {
+			transition('done');
+		}
+
 		this.adSlot.emitEvent(universalAdPackage.SLOT_STICKY_READY_STATE);
 		transition('waiting');
 	}
