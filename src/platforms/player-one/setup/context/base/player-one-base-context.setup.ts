@@ -1,8 +1,8 @@
 import { context, DiProcess } from '@wikia/ad-engine';
 
-import { basicContext } from '../ad-context';
+import { basicContext } from '../../../ad-context';
 
-export class PlayerOneContextSetup implements DiProcess {
+export class PlayerOneBaseContextSetup implements DiProcess {
 	execute(): void {
 		context.extend(basicContext);
 

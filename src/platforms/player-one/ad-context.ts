@@ -1,7 +1,7 @@
 export const basicContext = {
 	adUnitId: '/{custom.dfpId}/aw-{custom.site}/{custom.pageType}',
 	custom: {
-		dfpId: '22309610186',
+		dfpId: '5441',
 		site: 'player-one',
 		pageType: 'default',
 	},
@@ -18,6 +18,9 @@ export const basicContext = {
 				[300, 250],
 				[300, 600],
 			],
+		},
+		mpu_top: {
+			defaultSizes: [[300, 250]],
 		},
 	},
 	src: ['test'],
