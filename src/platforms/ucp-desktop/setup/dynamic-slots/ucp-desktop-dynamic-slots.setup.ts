@@ -129,7 +129,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				communicationService.onSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, () => {
 					if (porvataClosedActive) {
 						porvataClosedActive = false;
-						slotService.disable(slotName, AdSlot.STATUS_CLOSED_BY_PORVATA);
+						slotService.disable(slotName);
 					}
 				});
 			},

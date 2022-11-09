@@ -108,8 +108,6 @@ export class AdSlot {
 	static STATUS_CLICKED = 'clicked';
 	static STATUS_VIEWPORT_CONFLICT = 'viewport-conflict';
 	static STATUS_HIVI_COLLAPSE = 'hivi-collapse';
-	static STATUS_CLOSED_BY_PORVATA = 'closed-by-porvata';
-	static STATUS_CLOSED_BY_INTERSTITIAL = 'closed-by-interstitial';
 	static STATUS_HEAVY_AD_INTERVENTION = 'heavy-ad-intervention';
 	static STATUS_UNKNOWN_INTERVENTION = 'unknown-intervention';
 
