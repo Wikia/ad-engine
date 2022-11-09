@@ -47,4 +47,12 @@ describe('Prefix Tags Decorator', () => {
 			tv: ['p_tv1', 'p_tv2'],
 		});
 	});
+
+	it('does not break if tags are null', () => {
+		const valuesToAddPrefix = null;
+
+		const prefixedTags = new PrefixDecorator(tagProvider(valuesToAddPrefix)).get();
+
+		expect(prefixedTags).to.deep.eq(null);
+	});
 });

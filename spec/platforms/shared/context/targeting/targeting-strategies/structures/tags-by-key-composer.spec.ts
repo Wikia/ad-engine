@@ -80,4 +80,21 @@ describe('Tags By Key Composer', () => {
 
 		expect(combinedTags).to.deep.eq(tagsToCombine1);
 	});
+
+	it('does not break if tags are null', () => {
+		const tagsToCombine1 = {
+			age: ['age1', 'age2'],
+			gnre: ['gnre1'],
+			tv: ['tv1', 'tv2'],
+		};
+
+		const tagsToCombine2 = null;
+
+		const combinedTags = new TagsByKeyComposer([
+			tagProvider(tagsToCombine1),
+			tagProvider(tagsToCombine2),
+		]).get();
+
+		expect(combinedTags).to.deep.eq(tagsToCombine1);
+	});
 });
