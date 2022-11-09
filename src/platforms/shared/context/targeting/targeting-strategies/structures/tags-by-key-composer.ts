@@ -2,6 +2,8 @@ import { TargetingProvider } from '../interfaces/targeting-provider';
 import { TaxonomyTags } from '../interfaces/taxonomy-tags';
 
 export class TagsByKeyComposer implements TargetingProvider<TaxonomyTags> {
+	// TODO - Remove after ADEN-12401 is done
+	private tagsToExclude = ['esrb', 'mpa'];
 	constructor(private tagsToCombine: TargetingProvider<TaxonomyTags>[]) {}
 
 	get(): TaxonomyTags {
@@ -20,7 +22,7 @@ export class TagsByKeyComposer implements TargetingProvider<TaxonomyTags> {
 		}
 
 		for (const [key, value] of Object.entries(tags)) {
-			if (key in result) {
+			if (key in result && !this.tagsToExclude.includes(key)) {
 				value.forEach((val) => {
 					if (!result[key].includes(val)) {
 						result[key].push(val);
