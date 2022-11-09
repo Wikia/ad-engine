@@ -15,6 +15,10 @@ export class TagsByKeyComposer implements TargetingProvider<TaxonomyTags> {
 	}
 
 	private combineTags(result: TaxonomyTags, tags: TaxonomyTags) {
+		if (!tags) {
+			return null;
+		}
+
 		for (const [key, value] of Object.entries(tags)) {
 			if (key in result) {
 				value.forEach((val) => {

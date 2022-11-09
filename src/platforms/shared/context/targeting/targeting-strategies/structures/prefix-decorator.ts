@@ -10,6 +10,10 @@ export class PrefixDecorator implements TargetingProvider<TaxonomyTags> {
 	}
 
 	private addPagePrefixToValues(tags: TaxonomyTags) {
+		if (!tags) {
+			return null;
+		}
+
 		const result = {};
 
 		for (const [key, value] of Object.entries(tags)) {
