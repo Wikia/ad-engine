@@ -1,7 +1,8 @@
 import { startAdEngine, wadRunner } from '@platforms/shared';
 import {
 	userIdentity,
-	anyclip,
+	Anyclip,
+	AnyclipTracker,
 	audigent,
 	bidders,
 	communicationService,
@@ -65,6 +66,8 @@ export class UcpDesktopAdsModeDeprecated implements DiProcess {
 	}
 
 	private initIncontentPlayer(incontentPlayer) {
+		const anyclip = new Anyclip(new AnyclipTracker(Anyclip.SUBSCRIBE_FUNC_NAME));
+
 		if (!incontentPlayer) return;
 		slotDataParamsUpdater.updateOnCreate(incontentPlayer);
 		if (distroScale.isEnabled()) {
