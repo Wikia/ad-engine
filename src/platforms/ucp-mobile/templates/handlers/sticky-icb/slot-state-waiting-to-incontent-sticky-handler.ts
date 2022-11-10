@@ -2,6 +2,7 @@ import {
 	AdSlot,
 	context,
 	DomListener,
+	slotImpactWatcher,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
@@ -35,14 +36,11 @@ export class SlotStateWaitingToIncontentStickyHandler implements TemplateStateHa
 						transition('done');
 					}
 
-					if (context.get('templates.stickyIcb.stickedSlot')) {
-						return;
-					}
-
 					if (
+						slotImpactWatcher.isAvailable(5) &&
 						utils.getTopOffset(this.adSlot.element) -
 							context.get('templates.stickyIcb.topPadding') <
-						window.scrollY
+							window.scrollY
 					) {
 						transition('sticky');
 					}

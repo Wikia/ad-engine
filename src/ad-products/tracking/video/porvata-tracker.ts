@@ -1,4 +1,4 @@
-import { context, VideoData, VideoEventData } from '@ad-engine/core';
+import { context, VideoData, VideoEventData, VideoTracker } from '@ad-engine/core';
 import { PorvataEventListener, PorvataListenerParams } from '../../video/porvata/porvata-listener';
 import { PlayerEventEmitter } from './player-event-emitter';
 import { VideoEventDataProvider } from './video-event-data-provider';
@@ -6,7 +6,7 @@ import { VideoEventDataProvider } from './video-event-data-provider';
 /**
  * Ads tracker for Porvata
  */
-class PorvataTracker {
+class PorvataTracker implements VideoTracker {
 	/**
 	 * Register event listeners on player
 	 */
