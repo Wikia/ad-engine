@@ -1,6 +1,7 @@
 export * from './common';
 export * from './templates';
 export * from './tracking';
+export * from './tracking/video/anyclip/anyclip-tracker';
 export * from './video/jwplayer/jwplayer-manager';
 export * from './video/jwplayer/jwplayer-actions';
 export * from './video/jwplayer/helpers/jwplayer-inhibitor';
