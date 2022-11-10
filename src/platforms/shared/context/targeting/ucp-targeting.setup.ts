@@ -5,12 +5,13 @@ import {
 	DiProcess,
 	eventsRepository,
 	InstantConfigService,
-	Targeting,
 	UapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { createSelectedStrategy } from './targeting-strategies/factories/create-selected-strategy';
+import { createFandomContext } from './targeting-strategies/factories/create-fandom-context';
+import { TargetingTags } from './targeting-strategies/interfaces/taxonomy-tags';
 
 const SKIN = Symbol('targeting skin');
 
@@ -59,11 +60,11 @@ export class UcpTargetingSetup implements DiProcess {
 		);
 	}
 
-	private getPageLevelTargeting(): Partial<Targeting> {
+	private getPageLevelTargeting(): TargetingTags {
 		const selectedStrategy: string = this.instantConfig.get('icTargetingStrategy');
 
 		utils.logger('Targeting', `Selected targeting priority strategy: ${selectedStrategy}`);
 
-		return createSelectedStrategy(selectedStrategy, this.skin).execute();
+		return createSelectedStrategy(selectedStrategy, createFandomContext(), this.skin).get();
 	}
 }

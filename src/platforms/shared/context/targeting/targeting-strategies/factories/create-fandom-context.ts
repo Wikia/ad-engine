@@ -2,10 +2,11 @@ import { FandomContext, Page, Site } from '../models/fandom-context';
 
 export function createFandomContext() {
 	const windowContext: WindowFandomContext = window.fandomContext;
-	return validateFandomContext(windowContext);
+
+	return buildFandomContext(windowContext);
 }
 
-function validateFandomContext(windowContext: WindowFandomContext): FandomContext {
+function buildFandomContext(windowContext: WindowFandomContext): FandomContext {
 	return new FandomContext(
 		new Site(
 			windowContext?.site?.categories,
@@ -14,6 +15,8 @@ function validateFandomContext(windowContext: WindowFandomContext): FandomContex
 			windowContext?.site?.siteName,
 			windowContext?.site?.top1000,
 			windowContext?.site?.tags,
+			windowContext?.site?.taxonomy,
+			// 'vertical' should be removed after UCP release from ADEN-12194
 			windowContext?.site?.vertical,
 			windowContext?.site?.mpaRating,
 		),
