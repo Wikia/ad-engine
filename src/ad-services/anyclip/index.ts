@@ -1,8 +1,17 @@
-import { context, utils } from '@ad-engine/core';
+import { context, utils, VideoTracker } from '@ad-engine/core';
 
 const logGroup = 'Anyclip';
+const isSubscribeReady = () => typeof window[Anyclip.SUBSCRIBE_FUNC_NAME] !== 'undefined';
 
-class Anyclip {
+export class Anyclip {
+	public static SUBSCRIBE_FUNC_NAME = 'lreSubscribe';
+
+	constructor(
+		private tracker: VideoTracker,
+		private timeoutForGlobal: number = 250,
+		private retriesForGlobal: number = 4,
+	) {}
+
 	get params(): Record<string, string> {
 		return {
 			pubname: context.get('services.anyclip.pubname'),
@@ -35,8 +44,27 @@ class Anyclip {
 			.then(() => {
 				incontentPlayerContainer.classList.remove('hide');
 				utils.logger(logGroup, 'ready');
+
+				this.waitForSubscribeReady().then((isSubscribeReady) => {
+					utils.logger(
+						logGroup,
+						'Anyclip global subscribe function set',
+						isSubscribeReady,
+						window[Anyclip.SUBSCRIBE_FUNC_NAME],
+					);
+
+					isSubscribeReady
+						? this.tracker.register()
+						: utils.logger(logGroup, 'Anyclip global subscribe function not set');
+				});
 			});
 	}
-}
 
-export const anyclip = new Anyclip();
+	private waitForSubscribeReady(): Promise<boolean> {
+		return new utils.WaitFor(
+			isSubscribeReady,
+			this.retriesForGlobal,
+			this.timeoutForGlobal,
+		).until();
+	}
+}

@@ -1,16 +1,7 @@
 import { ActionType, Action, ActiveData } from './adms-actions';
 import { UniversalStorage, utils } from '@ad-engine/core';
 import { UserIdentity } from '../index';
-
-export function getServicesBaseURL() {
-	const fandomDomains = ['fandom.com', 'muthead.com', 'futhead.com'];
-
-	return fandomDomains.find((domain) => window.location.hostname.includes(domain))
-		? 'https://services.fandom.com/'
-		: 'https://services.fandom-dev.' +
-				(location.hostname.match(/(?!\.)(pl|us)$/) || ['us'])[0] +
-				'/';
-}
+import { getServicesBaseURL } from '../utils/service-base-url';
 
 class AdmsClient {
 	private ADMSStorageKey = 'silver-surfer-active-data-v2';

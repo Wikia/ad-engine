@@ -15,13 +15,11 @@ export class BiddersStateSetup implements DiProcess {
 		nobid: 'icPrebidNobid',
 		ogury: 'icPrebidOgury',
 		oneVideo: 'icPrebidOneVideo',
-		openx: 'icPrebidOpenX',
 		pubmatic: 'icPrebidPubmatic',
 		rubicon_display: 'icPrebidRubiconDisplay',
 		roundel: 'icPrebidRoundel',
 		rubicon_pg: 'icPrebidRubiconPG',
 		rubicon: 'icPrebidRubicon',
-		telaria: 'icPrebidTelaria',
 		triplelift: 'icPrebidTriplelift',
 		verizon: 'icPrebidVerizon',
 	};
