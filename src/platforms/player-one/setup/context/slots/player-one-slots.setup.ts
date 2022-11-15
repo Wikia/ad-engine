@@ -14,7 +14,15 @@ export class PlayerOneSlotsSetup implements DiProcess {
 				break;
 		}
 
+		// TODO: move below to some kind of a dynamic slots setup
 		activeSlots.map((slotName) => {
+			// create slot div
+			const slotDiv = document.createElement('div');
+			slotDiv.id = slotName;
+
+			document.querySelector(`.ad.ad_${slotName}`).appendChild(slotDiv);
+
+			// add slot to the ad stack = request GPT for an ad
 			context.push('state.adStack', { id: slotName });
 		});
 	}
