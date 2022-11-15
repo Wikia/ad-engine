@@ -17,7 +17,8 @@ export function getVerizonContext(): object {
 			},
 			interstitial: {
 				sizes: [[320, 480]],
-				pos: '8a969506017d7d4832a34bb67c90005f',
+				pos: 'Fandom_Mobile_Interstitial',
+				dcn: '8a969506017d7d4832a34bb67c90005f',
 			},
 		},
 	};
