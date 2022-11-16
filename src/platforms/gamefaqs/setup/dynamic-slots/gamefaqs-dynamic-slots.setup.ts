@@ -6,15 +6,18 @@ export class GamefaqsDynamicSlotsSetup implements DiProcess {
 	}
 
 	private injectSlots(): void {
-		const activeSlots = ['leader_plus_top', 'mpu_top'];
+		const activeSlots = ['leader_plus_top', 'leader_top', 'mpu_plus_top', 'mpu_top'];
 
 		activeSlots.map((slotName) => {
-			const container = document.createElement('div');
-			container.id = slotName;
+			const adSlot = document.createElement('div');
+			adSlot.id = slotName;
 
-			document.querySelector(`.ad.ad_${slotName}`).appendChild(container);
+			const adSlotContainer = document.querySelector(`.ad.ad_${slotName}`);
 
-			context.push('state.adStack', { id: slotName });
+			if (adSlotContainer) {
+				adSlotContainer.appendChild(adSlot);
+				context.push('state.adStack', { id: slotName });
+			}
 		});
 	}
 }
