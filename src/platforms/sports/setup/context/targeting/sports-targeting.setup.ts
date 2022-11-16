@@ -1,7 +1,6 @@
 import { getDomain } from '@platforms/shared';
 import { context, DiProcess, Targeting, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { selectApplication } from '../../../utils/application-helper';
 
 @Injectable()
 export class SportsTargetingSetup implements DiProcess {
@@ -19,7 +18,7 @@ export class SportsTargetingSetup implements DiProcess {
 			uap_c: 'none',
 			s0: 'gaming',
 			s1: context.get('application'),
-			s2: this.isSquadPage() ? 'squad' : this.getSportsPageType(),
+			s2: this.getSportsPageType(),
 			dmn: `${domain.name}${domain.tld}`,
 			geo: utils.geoService.getCountryCode() || 'none',
 			is_mobile: context.get('state.isMobile') ? '1' : '0',
@@ -32,21 +31,9 @@ export class SportsTargetingSetup implements DiProcess {
 		return targeting;
 	}
 
-	private isSquadPage(): boolean {
-		const squadPageRegex = /\/\d+\/squads\/\d+/;
-
-		return selectApplication(!!window.location.pathname.match(squadPageRegex), false);
-	}
-
 	private getSportsPageType(): string {
 		const pathName = window.location.pathname;
-		const hostname = window.location.hostname.toLowerCase();
-		const pieces = hostname.split('.').filter((piece) => piece !== 'www');
 
-		if (pieces[0] === 'old') {
-			return 'old';
-		}
-
-		return !pathName || pathName === '/' ? 'home' : 'main';
+		return !pathName || pathName === '/' ? 'home' : pathName;
 	}
 }
