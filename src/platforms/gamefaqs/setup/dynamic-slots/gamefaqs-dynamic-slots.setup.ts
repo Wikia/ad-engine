@@ -2,10 +2,10 @@ import { context, DiProcess } from '@wikia/ad-engine';
 
 export class GamefaqsDynamicSlotsSetup implements DiProcess {
 	execute(): void {
-		this.wrapActiveAdSlots();
+		this.injectSlots();
 	}
 
-	private wrapActiveAdSlots(): void {
+	private injectSlots(): void {
 		const activeSlots = ['leader_plus_top', 'mpu_top'];
 
 		activeSlots.map((slotName) => {
