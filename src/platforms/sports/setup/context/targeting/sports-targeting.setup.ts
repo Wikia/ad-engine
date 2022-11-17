@@ -20,6 +20,7 @@ export class SportsTargetingSetup implements DiProcess {
 			s0: 'gaming',
 			s1: context.get('application'),
 			s2: this.isSquadPage() ? 'squad' : this.getSportsPageType(),
+			pth: this.getPathName(),
 			dmn: `${domain.name}${domain.tld}`,
 			geo: utils.geoService.getCountryCode() || 'none',
 			is_mobile: context.get('state.isMobile') ? '1' : '0',
@@ -38,14 +39,12 @@ export class SportsTargetingSetup implements DiProcess {
 		return selectApplication(!!window.location.pathname.match(squadPageRegex), false);
 	}
 
-	private getSportsPageType(): string {
-		const pathName = window.location.pathname;
-		const hostname = window.location.hostname.toLowerCase();
-		const pieces = hostname.split('.').filter((piece) => piece !== 'www');
+	private getPathName(): string {
+		return window.location.pathname;
+	}
 
-		if (pieces[0] === 'old') {
-			return 'old';
-		}
+	private getSportsPageType(): string {
+		const pathName = this.getPathName();
 
 		return !pathName || pathName === '/' ? 'home' : 'main';
 	}
