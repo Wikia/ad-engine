@@ -22,6 +22,11 @@ export class F2SrcAdapter {
 			src = 'test';
 		}
 
+		// @ts-ignore quick and dirty fix for the new player release on fandom.com/video
+		if (this.f2Env.payload.isProduction) {
+			src = 'ns';
+		}
+
 		return src;
 	}
 
