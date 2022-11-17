@@ -2,19 +2,23 @@ import { context, DiProcess } from '@wikia/ad-engine';
 
 export class GamefaqsDynamicSlotsSetup implements DiProcess {
 	execute(): void {
-		this.wrapActiveAdSlots();
+		this.injectSlots();
 	}
 
-	private wrapActiveAdSlots(): void {
-		const activeSlots = ['leader_plus_top', 'mpu_top'];
+	private injectSlots(): void {
+		const adPlaceholders = document.querySelectorAll('.ad');
 
-		activeSlots.map((slotName) => {
-			const container = document.createElement('div');
-			container.id = slotName;
+		if (!adPlaceholders) {
+			return;
+		}
 
-			document.querySelector(`.ad.ad_${slotName}`).appendChild(container);
+		adPlaceholders.forEach((placeholder) => {
+			const adSlotDiv = document.createElement('div');
+			const adSlotName = placeholder.getAttribute('data-ad-type');
+			adSlotDiv.id = adSlotName;
 
-			context.push('state.adStack', { id: slotName });
+			placeholder.appendChild(adSlotDiv);
+			context.push('state.adStack', { id: adSlotName });
 		});
 	}
 }
