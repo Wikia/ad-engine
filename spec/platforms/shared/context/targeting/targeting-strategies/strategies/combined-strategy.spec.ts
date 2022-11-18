@@ -44,7 +44,7 @@ describe('CombinedStrategy', () => {
 
 	it('sets up targeting correctly when taxonomy tags are empty', function () {
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, {}, mockedTaxonomy, 'life', 'general'),
+			new Site([], true, 'ec', 'test', false, {}, mockedTaxonomy, 'general'),
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
@@ -59,7 +59,7 @@ describe('CombinedStrategy', () => {
 		expect(combinedStrategy.get()).to.deep.eq(expectedResult);
 		expect(mockedContext).to.deep.eq(
 			new FandomContext(
-				new Site([], true, 'ec', 'test', false, {}, mockedTaxonomy, 'life', 'general'),
+				new Site([], true, 'ec', 'test', false, {}, mockedTaxonomy, 'general'),
 				new Page(666, 'pl', 666, 'test', 'article-test', {}),
 			),
 		);
@@ -73,7 +73,7 @@ describe('CombinedStrategy', () => {
 		};
 
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, mockedSiteTags, mockedTaxonomy, 'life', 'general'),
+			new Site([], true, 'ec', 'test', false, mockedSiteTags, mockedTaxonomy, 'general'),
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
@@ -94,7 +94,7 @@ describe('CombinedStrategy', () => {
 		expect(combinedStrategy.get()).to.deep.eq(expectedResult);
 		expect(mockedContext).to.deep.eq(
 			new FandomContext(
-				new Site([], true, 'ec', 'test', false, mockedSiteTags, mockedTaxonomy, 'life', 'general'),
+				new Site([], true, 'ec', 'test', false, mockedSiteTags, mockedTaxonomy, 'general'),
 				new Page(666, 'pl', 666, 'test', 'article-test', {}),
 			),
 		);
@@ -107,7 +107,7 @@ describe('CombinedStrategy', () => {
 		};
 
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, {}, mockedTaxonomy, 'life', 'general'),
+			new Site([], true, 'ec', 'test', false, {}, mockedTaxonomy, 'general'),
 			new Page(666, 'pl', 666, 'test', 'article-test', mockedPageTags),
 		);
 
@@ -127,7 +127,7 @@ describe('CombinedStrategy', () => {
 		expect(combinedStrategy.get()).to.deep.eq(expectedResult);
 		expect(mockedContext).to.deep.eq(
 			new FandomContext(
-				new Site([], true, 'ec', 'test', false, {}, ['life', 'lifestyle'], 'life', 'general'),
+				new Site([], true, 'ec', 'test', false, {}, ['life', 'lifestyle'], 'general'),
 				new Page(666, 'pl', 666, 'test', 'article-test', {
 					gnre: ['test1', 'drama', 'comedy', 'horror'],
 					theme: ['test2', 'superheroes'],
@@ -147,7 +147,7 @@ describe('CombinedStrategy', () => {
 		};
 
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, mockedSiteTags, mockedTaxonomy, 'life', 'general'),
+			new Site([], true, 'ec', 'test', false, mockedSiteTags, mockedTaxonomy, 'general'),
 			new Page(666, 'pl', 666, 'test', 'article-test', mockedPageTags),
 		);
 
@@ -178,7 +178,6 @@ describe('CombinedStrategy', () => {
 						theme: ['test3', 'superheroes'],
 					},
 					['life', 'lifestyle'],
-					'life',
 					'general',
 				),
 				new Page(666, 'pl', 666, 'test', 'article-test', {
