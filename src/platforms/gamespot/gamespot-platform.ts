@@ -1,6 +1,6 @@
 import { Injectable } from '@wikia/dependency-injection';
 import { communicationService, context, eventsRepository, ProcessPipeline } from '@wikia/ad-engine';
-import { startAdEngine } from '@platforms/shared';
+import { gptSetup } from '@platforms/shared';
 
 import { basicContext } from '../gamefaqs/ad-context';
 import { GamespotSlotsContextSetup } from './setup/context/slots/gamespot-slots-context.setup';
@@ -19,9 +19,7 @@ export class GiantBombPlatform {
 			GamespotDynamicSlotsSetup,
 			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
-			() => {
-				startAdEngine();
-			},
+			gptSetup.call,
 		);
 
 		this.pipeline.execute();
