@@ -6,15 +6,19 @@ export class GamespotDynamicSlotsSetup implements DiProcess {
 	}
 
 	private injectSlots(): void {
-		const activeSlots = ['leader_plus_top', 'mpu_top'];
+		const adPlaceholders = document.querySelectorAll('.mapped-ad');
 
-		activeSlots.map((slotName) => {
-			const container = document.createElement('div');
-			container.id = slotName;
+		if (!adPlaceholders) {
+			return;
+		}
 
-			document.querySelector(`.ad.ad_${slotName}`).appendChild(container);
+		adPlaceholders.forEach((placeholder) => {
+			const adSlotDiv = document.createElement('div');
+			const adSlotName = placeholder.getAttribute('data-ad-type');
+			adSlotDiv.id = adSlotName;
 
-			context.push('state.adStack', { id: slotName });
+			placeholder.appendChild(adSlotDiv);
+			context.push('state.adStack', { id: adSlotName });
 		});
 	}
 }

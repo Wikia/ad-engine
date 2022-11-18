@@ -1,9 +1,9 @@
 export const basicContext = {
-	adUnitId: '/{custom.dfpId}/{custom.aw}-{custom.siteName}',
+	adUnitId: '/{custom.dfpId}/{custom.region}-{custom.property}',
 	custom: {
 		dfpId: '5441',
 		region: 'aw',
-		siteName: 'gamespot',
+		property: 'gamespot',
 	},
 	slots: {},
 	targeting: {

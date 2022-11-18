@@ -1,7 +1,8 @@
 import { Injectable } from '@wikia/dependency-injection';
-import { communicationService, eventsRepository, ProcessPipeline } from '@wikia/ad-engine';
+import { communicationService, context, eventsRepository, ProcessPipeline } from '@wikia/ad-engine';
 import { startAdEngine } from '@platforms/shared';
 
+import { basicContext } from '../gamefaqs/ad-context';
 import { GamespotSlotsContextSetup } from './setup/context/slots/gamespot-slots-context.setup';
 import { GamespotDynamicSlotsSetup } from './setup/dynamic-slots/gamespot-dynamic-slots.setup';
 
@@ -11,6 +12,7 @@ export class GiantBombPlatform {
 
 	execute(): void {
 		this.pipeline.add(
+			() => context.extend(basicContext),
 			// TODO: we need a CMP step here, so we won't call for ads unless we have a clear idea of the privacy policy of a visitor
 			// TODO: to decide if we want to call instant-config service for the first releases?
 			GamespotSlotsContextSetup,
