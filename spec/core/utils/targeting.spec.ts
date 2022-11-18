@@ -147,13 +147,13 @@ describe('targeting', () => {
 	});
 
 	it('getTargetingBundles returns short_page bundle', () => {
-		context.set('wiki.targeting.wordCount', 20);
+		context.set('targeting.word_count', 20);
 
 		expect(targeting.getTargetingBundles({})).to.deep.equal(['short_page']);
 	});
 
 	it('getTargetingBundles returns empty array', () => {
-		context.set('wiki.targeting.wordCount', 2000);
+		context.set('targeting.word_count', 2000);
 
 		expect(targeting.getTargetingBundles({})).to.deep.equal([]);
 	});

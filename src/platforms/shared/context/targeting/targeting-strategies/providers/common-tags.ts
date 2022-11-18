@@ -41,6 +41,7 @@ export class CommonTags implements TargetingProvider<Partial<Targeting>> {
 			s1: utils.targeting.getRawDbName(this.fandomContext.site.siteName),
 			s2: this.getAdLayout(this.fandomContext.page.pageType || 'article'),
 			wpage: this.fandomContext.page.pageName && this.fandomContext.page.pageName.toLowerCase(),
+			word_count: this.fandomContext.page.wordCount,
 		};
 
 		return {

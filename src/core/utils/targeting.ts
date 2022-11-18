@@ -81,7 +81,7 @@ class Targeting {
 			bundles.push('VIDEO_TIER_3_BUNDLE');
 		}
 
-		const wordCount = context.get('wiki')?.targeting?.wordCount || -1;
+		const wordCount = context.get('targeting.word_count') || -1;
 
 		if (wordCount <= shortPageWordsLimit) {
 			bundles.push('short_page');

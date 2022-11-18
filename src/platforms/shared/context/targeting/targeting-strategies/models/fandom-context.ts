@@ -46,6 +46,7 @@ export class Page {
 	public readonly pageName: string;
 	public readonly pageType: string;
 	public readonly tags: TaxonomyTags;
+	public readonly wordCount: number;
 
 	constructor(
 		articleId: number,
@@ -54,6 +55,7 @@ export class Page {
 		pageName: string,
 		pageType: string,
 		tags: object,
+		wordCount: number,
 	) {
 		this.articleId = typeof articleId === 'number' ? articleId : null;
 		this.lang = typeof lang === 'string' ? lang : null;
@@ -61,5 +63,6 @@ export class Page {
 		this.pageName = typeof pageName === 'string' ? pageName : null;
 		this.pageType = typeof pageType === 'string' ? pageType : null;
 		this.tags = typeof tags === 'object' ? tags : null;
+		this.wordCount = typeof wordCount === 'number' ? wordCount : -1;
 	}
 }

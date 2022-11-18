@@ -22,7 +22,7 @@ describe('CommonTags', () => {
 	it('commonTags are returned correctly', function () {
 		const mockedContext: FandomContext = new FandomContext(
 			new Site([], true, 'ec', 'test', false, {}, mockedTaxonomy, null, 'general'),
-			new Page(666, 'pl', 666, 'test', 'article-test', {}),
+			new Page(666, 'pl', 666, 'test', 'article-test', {}, 546),
 		);
 
 		const commonTags = new CommonTags(mockedSkin, mockedContext);
@@ -46,6 +46,7 @@ describe('CommonTags', () => {
 			skin: mockedSkin,
 			uap: 'none',
 			uap_c: 'none',
+			word_count: 546,
 			wpage: 'test',
 		});
 	});
@@ -53,7 +54,7 @@ describe('CommonTags', () => {
 	it('should map empty s0v', function () {
 		const mockedContext: FandomContext = new FandomContext(
 			new Site([], true, 'ec', 'test', false, {}, [], 'VERTICAL', 'general'),
-			new Page(666, 'pl', 666, 'test', 'article-test', {}),
+			new Page(666, 'pl', 666, 'test', 'article-test', {}, 546),
 		);
 
 		const commonTags = new CommonTags(mockedSkin, mockedContext).getCommonParams();
@@ -65,7 +66,7 @@ describe('CommonTags', () => {
 	it('should map empty taxonomy tags', function () {
 		const mockedContext: FandomContext = new FandomContext(
 			new Site([], true, 'ec', 'test', false, {}, [], undefined, 'general'),
-			new Page(666, 'pl', 666, 'test', 'article-test', {}),
+			new Page(666, 'pl', 666, 'test', 'article-test', {}, 546),
 		);
 
 		const commonTags = new CommonTags(mockedSkin, mockedContext).getCommonParams();
