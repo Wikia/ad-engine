@@ -83,7 +83,7 @@ class Targeting {
 
 		const wordCount = context.get('targeting.word_count') || -1;
 
-		if (wordCount <= shortPageWordsLimit) {
+		if (wordCount > -1 && wordCount <= shortPageWordsLimit) {
 			bundles.push('short_page');
 			context.set('custom.short_page', true);
 		}

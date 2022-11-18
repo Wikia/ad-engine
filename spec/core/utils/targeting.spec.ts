@@ -50,7 +50,7 @@ describe('targeting', () => {
 					skin: ['fandom_desktop'],
 				},
 			}),
-		).to.deep.equal(['bundle2', 'bundle3', 'short_page']);
+		).to.deep.equal(['bundle2', 'bundle3']);
 
 		expect(
 			targeting.getTargetingBundles({
@@ -59,7 +59,7 @@ describe('targeting', () => {
 					rating: ['esrb:teen'],
 				},
 			}),
-		).to.deep.equal(['short_page']);
+		).to.deep.equal([]);
 
 		expect(
 			targeting.getTargetingBundles({
@@ -67,7 +67,7 @@ describe('targeting', () => {
 					rating: ['esrb:adult'],
 				},
 			}),
-		).to.deep.equal(['bundle1', 'short_page']);
+		).to.deep.equal(['bundle1']);
 
 		expect(
 			targeting.getTargetingBundles({
@@ -75,7 +75,7 @@ describe('targeting', () => {
 					rating: ['esrb:child'],
 				},
 			}),
-		).to.deep.equal(['short_page']);
+		).to.deep.equal([]);
 	});
 
 	it('getTargetingBundles will not add VIDEO_TIER_3_BUNDLE for tier 1 and 2', () => {
@@ -88,7 +88,7 @@ describe('targeting', () => {
 					s1: ['_project34'],
 				},
 			}),
-		).to.deep.equal(['VIDEO_TIER_1_AND_2_BUNDLE', 'short_page']);
+		).to.deep.equal(['VIDEO_TIER_1_AND_2_BUNDLE']);
 
 		expect(
 			targeting.getTargetingBundles({
@@ -96,7 +96,7 @@ describe('targeting', () => {
 					s1: ['_project34'],
 				},
 			}),
-		).to.deep.equal(['video_tier_1_and_2_bundle', 'short_page']);
+		).to.deep.equal(['video_tier_1_and_2_bundle']);
 
 		expect(
 			targeting.getTargetingBundles({
@@ -104,7 +104,7 @@ describe('targeting', () => {
 					s1: ['_project34'],
 				},
 			}),
-		).to.deep.equal(['VIDEO_tier_1_and_2_bundle', 'short_page']);
+		).to.deep.equal(['VIDEO_tier_1_and_2_bundle']);
 	});
 
 	it('getTargetingBundles returns backend, frontent and code bundles', () => {
@@ -121,7 +121,7 @@ describe('targeting', () => {
 					skin: ['ucp_desktop'],
 				},
 			}),
-		).to.deep.equal(['backend_bundle', 'bundle1', 'bundle2', 'VIDEO_TIER_3_BUNDLE', 'short_page']);
+		).to.deep.equal(['backend_bundle', 'bundle1', 'bundle2', 'VIDEO_TIER_3_BUNDLE']);
 	});
 
 	it('getTargetingBundles should not overwrite existing bundles', () => {
@@ -143,7 +143,7 @@ describe('targeting', () => {
 					s1: ['_harrypotter'],
 				},
 			}),
-		).to.deep.equal(['existing_bundle', 'new_bundle', 'short_page']);
+		).to.deep.equal(['existing_bundle', 'new_bundle']);
 	});
 
 	it('getTargetingBundles returns short_page bundle', () => {
@@ -152,9 +152,13 @@ describe('targeting', () => {
 		expect(targeting.getTargetingBundles({})).to.deep.equal(['short_page']);
 	});
 
-	it('getTargetingBundles returns empty array', () => {
+	it('getTargetingBundles returns an empty array if the page is long', () => {
 		context.set('targeting.word_count', 2000);
 
+		expect(targeting.getTargetingBundles({})).to.deep.equal([]);
+	});
+
+	it('getTargetingBundles returns an empty array if word_count is not defined', () => {
 		expect(targeting.getTargetingBundles({})).to.deep.equal([]);
 	});
 });
