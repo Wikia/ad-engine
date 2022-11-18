@@ -15,7 +15,7 @@ describe('SiteLevelTaxonomyTags execution', () => {
 		};
 
 		const mockedContext: FandomContext = new FandomContext(
-			new Site(null, null, null, null, null, mockedSiteTags, null, null, null),
+			new Site(null, null, null, null, null, mockedSiteTags, null, null),
 			new Page(null, null, null, null, null, null),
 		);
 
