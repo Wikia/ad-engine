@@ -14,7 +14,7 @@ export class Verizon extends PrebidAdapter {
 		return Verizon.bidderName;
 	}
 
-	prepareConfigForAdUnit(code, { sizes, pos, dcn }): PrebidAdUnit {
+	prepareConfigForAdUnit(code, { sizes, pos }): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
@@ -27,7 +27,7 @@ export class Verizon extends PrebidAdapter {
 					bidder: this.bidderName,
 					params: {
 						pos,
-						dcn: dcn || this.dcn,
+						dcn: this.dcn,
 					},
 				},
 			],
