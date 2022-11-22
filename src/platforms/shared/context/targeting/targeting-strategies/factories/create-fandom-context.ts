@@ -25,6 +25,7 @@ function buildFandomContext(windowContext: WindowFandomContext): FandomContext {
 			windowContext?.page?.pageName,
 			windowContext?.page?.pageType,
 			windowContext?.page?.tags,
+			windowContext?.page?.wordCount,
 		),
 	);
 }
