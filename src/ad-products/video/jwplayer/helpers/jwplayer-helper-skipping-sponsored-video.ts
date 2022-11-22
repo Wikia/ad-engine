@@ -32,12 +32,9 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 	}
 
 	protected canAdBePlayed(videoPlaylistOrderNumber: number, currentMediaId: string): boolean {
-		const isReplay = videoPlaylistOrderNumber > 1;
-
 		return (
 			this.adSlot.isEnabled() &&
-			(!isReplay ||
-				(isReplay && this.shouldPlayAdOnNextVideo(videoPlaylistOrderNumber, currentMediaId)))
+			this.shouldPlayAdOnNextVideo(videoPlaylistOrderNumber, currentMediaId)
 		);
 	}
 

@@ -76,6 +76,17 @@ describe('JwplayerHelperSkippingSponsoredVideo', () => {
 			]);
 		});
 
+		it('works correctly when the 1st ad is a sponsored one', () => {
+			helper = new JwplayerHelperSkippingSponsoredVideo(adSlotStub, null, null);
+			window.sponsoredVideos = ['testMediaId-1'];
+
+			simulatePlaysAndVerifyResults([
+				[false, false, false],
+				[true, false, false],
+				[true, false, false],
+			]);
+		});
+
 		it('works correctly when there is no global window.sponsoredVideos', () => {
 			helper = new JwplayerHelperSkippingSponsoredVideo(adSlotStub, null, null);
 			window.sponsoredVideos = undefined;
