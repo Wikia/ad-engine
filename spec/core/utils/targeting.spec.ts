@@ -158,7 +158,7 @@ describe('targeting', () => {
 		expect(targeting.getTargetingBundles({})).to.deep.equal([]);
 	});
 
-	it('getTargetingBundles returns an empty array if word_count is not defined', () => {
+	it('getTargetingBundles returns an empty array if word_count is not defined.', () => {
 		expect(targeting.getTargetingBundles({})).to.deep.equal([]);
 	});
 });
