@@ -1,3 +1,13 @@
 {
-	"list": ["bingebot", "comicvine", "f2", "sports", "ucp-desktop", "ucp-mobile", "ucp-no-ads"]
+	"list": [
+		"bingebot",
+    "comicvine"
+		"f2",
+		"gamefaqs",
+		"gamespot",
+		"sports",
+		"ucp-desktop",
+		"ucp-mobile",
+		"ucp-no-ads"
+	]
 }
