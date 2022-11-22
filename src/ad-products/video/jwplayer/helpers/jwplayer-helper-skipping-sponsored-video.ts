@@ -13,38 +13,34 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 		super(adSlot, jwplayer, targeting);
 	}
 
-	shouldPlayPreroll(videoPlaylistOrderNumber: number, currentMediaId: string): boolean {
-		return this.canAdBePlayed(videoPlaylistOrderNumber, currentMediaId);
+	shouldPlayPreroll(videoPlaysCounter: number, currentMediaId: string): boolean {
+		return this.canAdBePlayed(videoPlaysCounter, currentMediaId);
 	}
 
-	shouldPlayMidroll(videoPlaylistOrderNumber: number, currentMediaId: string): boolean {
+	shouldPlayMidroll(videoPlaysCounter: number, currentMediaId: string): boolean {
 		return (
 			context.get('options.video.isMidrollEnabled') &&
-			this.canAdBePlayed(videoPlaylistOrderNumber, currentMediaId)
+			this.canAdBePlayed(videoPlaysCounter, currentMediaId)
 		);
 	}
 
-	shouldPlayPostroll(videoPlaylistOrderNumber: number, currentMediaId: string): boolean {
+	shouldPlayPostroll(videoPlaysCounter: number, currentMediaId: string): boolean {
 		return (
 			context.get('options.video.isPostrollEnabled') &&
-			this.canAdBePlayed(videoPlaylistOrderNumber, currentMediaId)
+			this.canAdBePlayed(videoPlaysCounter, currentMediaId)
 		);
 	}
 
-	protected canAdBePlayed(videoPlaylistOrderNumber: number, currentMediaId: string): boolean {
+	protected canAdBePlayed(videoPlaysCounter: number, currentMediaId: string): boolean {
 		return (
-			this.adSlot.isEnabled() &&
-			this.shouldPlayAdOnNextVideo(videoPlaylistOrderNumber, currentMediaId)
+			this.adSlot.isEnabled() && this.shouldPlayAdOnNextVideo(videoPlaysCounter, currentMediaId)
 		);
 	}
 
-	protected shouldPlayAdOnNextVideo(
-		videoPlaylistOrderNumber: number,
-		currentMediaId: string,
-	): boolean {
+	protected shouldPlayAdOnNextVideo(videoPlaysCounter: number, currentMediaId: string): boolean {
 		utils.logger(
 			JWPlayerHelper.LOG_GROUP_NAME,
-			videoPlaylistOrderNumber,
+			videoPlaysCounter,
 			currentMediaId,
 			window.sponsoredVideos,
 		);
@@ -52,7 +48,7 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 		if (!Array.isArray(window.sponsoredVideos)) {
 			externalLogger.log('JWPlayer - no window.sponsoredVideos', {
 				currentMediaId,
-				videoPlaylistOrderNumber,
+				videoPlaysCounter: videoPlaysCounter,
 			});
 
 			return false;
