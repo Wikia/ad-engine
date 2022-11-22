@@ -45,6 +45,16 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 			window.sponsoredVideos,
 		);
 
+		const forcedVideoId = utils.queryString.get('force_sponsored_video');
+		if (forcedVideoId) {
+			window.sponsoredVideos = [forcedVideoId];
+			utils.logger(
+				JWPlayerHelper.LOG_GROUP_NAME,
+				'Overwritting window.sponsoredVideo!',
+				window.sponsoredVideos,
+			);
+		}
+
 		if (!Array.isArray(window.sponsoredVideos)) {
 			externalLogger.log('JWPlayer - no window.sponsoredVideos', {
 				currentMediaId,
