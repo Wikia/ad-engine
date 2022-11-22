@@ -113,6 +113,18 @@ export class JWPlayerHelper {
 		);
 	}
 
+	requestForSponsoredVideos() {
+		if (!Array.isArray(window.sponsoredVideos)) {
+			const url = utils.getServicesBaseURL() + 'article-video/jw-platform-api/get-sponsored-videos';
+
+			utils.scriptLoader.loadAsset(url).then((response) => {
+				if (Array.isArray(response)) {
+					window.sponsoredVideos = response;
+				}
+			});
+		}
+	}
+
 	protected canAdBePlayed(
 		videoPlaylistOrderNumber: number,
 		currentMediaId: string = null,
