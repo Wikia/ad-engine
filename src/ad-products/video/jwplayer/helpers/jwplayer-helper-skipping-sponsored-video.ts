@@ -13,52 +13,49 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 		super(adSlot, jwplayer, targeting);
 	}
 
-	shouldPlayPreroll(videoPlaysCounter: number, currentMediaId: string): boolean {
-		return this.canAdBePlayed(videoPlaysCounter, currentMediaId);
+	shouldPlayPreroll(videoPlaylistOrderNumber: number, currentMediaId: string): boolean {
+		return this.canAdBePlayed(videoPlaylistOrderNumber, currentMediaId);
 	}
 
-	shouldPlayMidroll(videoPlaysCounter: number, currentMediaId: string): boolean {
+	shouldPlayMidroll(videoPlaylistOrderNumber: number, currentMediaId: string): boolean {
 		return (
 			context.get('options.video.isMidrollEnabled') &&
-			this.canAdBePlayed(videoPlaysCounter, currentMediaId)
+			this.canAdBePlayed(videoPlaylistOrderNumber, currentMediaId)
 		);
 	}
 
-	shouldPlayPostroll(videoPlaysCounter: number, currentMediaId: string): boolean {
+	shouldPlayPostroll(videoPlaylistOrderNumber: number, currentMediaId: string): boolean {
 		return (
 			context.get('options.video.isPostrollEnabled') &&
-			this.canAdBePlayed(videoPlaysCounter, currentMediaId)
+			this.canAdBePlayed(videoPlaylistOrderNumber, currentMediaId)
 		);
 	}
 
-	protected canAdBePlayed(videoPlaysCounter: number, currentMediaId: string): boolean {
+	protected canAdBePlayed(videoPlaylistOrderNumber: number, currentMediaId: string): boolean {
+		const isReplay = videoPlaylistOrderNumber > 1;
+
 		return (
-			this.adSlot.isEnabled() && this.shouldPlayAdOnNextVideo(videoPlaysCounter, currentMediaId)
+			this.adSlot.isEnabled() &&
+			(!isReplay ||
+				(isReplay && this.shouldPlayAdOnNextVideo(videoPlaylistOrderNumber, currentMediaId)))
 		);
 	}
 
-	protected shouldPlayAdOnNextVideo(videoPlaysCounter: number, currentMediaId: string): boolean {
+	protected shouldPlayAdOnNextVideo(
+		videoPlaylistOrderNumber: number,
+		currentMediaId: string,
+	): boolean {
 		utils.logger(
 			JWPlayerHelper.LOG_GROUP_NAME,
-			videoPlaysCounter,
+			videoPlaylistOrderNumber,
 			currentMediaId,
 			window.sponsoredVideos,
 		);
 
-		const forcedVideoId = utils.queryString.get('force_sponsored_video');
-		if (forcedVideoId) {
-			window.sponsoredVideos = [forcedVideoId];
-			utils.logger(
-				JWPlayerHelper.LOG_GROUP_NAME,
-				'Overwritting window.sponsoredVideo!',
-				window.sponsoredVideos,
-			);
-		}
-
 		if (!Array.isArray(window.sponsoredVideos)) {
 			externalLogger.log('JWPlayer - no window.sponsoredVideos', {
 				currentMediaId,
-				videoPlaysCounter: videoPlaysCounter,
+				videoPlaylistOrderNumber,
 			});
 
 			return false;
