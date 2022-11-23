@@ -80,6 +80,7 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 			.then((response) => {
 				if (Array.isArray(response)) {
 					window.sponsoredVideos = response;
+					this.log('Sponsored videos list updated!', window.sponsoredVideos);
 				} else {
 					this.log('Incorrect sponsored videos list from Pandora!', response);
 				}
