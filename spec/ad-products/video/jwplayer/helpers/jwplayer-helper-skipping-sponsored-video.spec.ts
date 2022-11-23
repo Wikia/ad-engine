@@ -55,11 +55,11 @@ describe('JwplayerHelperSkippingSponsoredVideo', () => {
 			]);
 		});
 
-		it('works correctly when the ads for next videos are disabled', () => {
+		it('works correctly when the ads for next videos are disabled - only one preroll', () => {
 			context.set('options.video.playAdsOnNextVideo', false);
 
 			simulatePlaysAndVerifyResults([
-				[false, false, false],
+				[true, false, false],
 				[false, false, false],
 				[false, false, false],
 			]);
@@ -76,23 +76,12 @@ describe('JwplayerHelperSkippingSponsoredVideo', () => {
 			]);
 		});
 
-		it('works correctly when the 1st ad is a sponsored one', () => {
-			helper = new JwplayerHelperSkippingSponsoredVideo(adSlotStub, null, null);
-			window.sponsoredVideos = ['testMediaId-1'];
-
-			simulatePlaysAndVerifyResults([
-				[false, false, false],
-				[true, false, false],
-				[true, false, false],
-			]);
-		});
-
 		it('works correctly when there is no global window.sponsoredVideos', () => {
 			helper = new JwplayerHelperSkippingSponsoredVideo(adSlotStub, null, null);
 			window.sponsoredVideos = undefined;
 
 			simulatePlaysAndVerifyResults([
-				[false, false, false],
+				[true, false, false],
 				[false, false, false],
 				[false, false, false],
 			]);
