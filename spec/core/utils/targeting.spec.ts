@@ -145,4 +145,20 @@ describe('targeting', () => {
 			}),
 		).to.deep.equal(['existing_bundle', 'new_bundle']);
 	});
+
+	it('getTargetingBundles returns short_page bundle', () => {
+		context.set('targeting.word_count', 20);
+
+		expect(targeting.getTargetingBundles({})).to.deep.equal(['short_page']);
+	});
+
+	it('getTargetingBundles returns an empty array if the page is long', () => {
+		context.set('targeting.word_count', 2000);
+
+		expect(targeting.getTargetingBundles({})).to.deep.equal([]);
+	});
+
+	it('getTargetingBundles returns an empty array if word_count is not defined.', () => {
+		expect(targeting.getTargetingBundles({})).to.deep.equal([]);
+	});
 });
