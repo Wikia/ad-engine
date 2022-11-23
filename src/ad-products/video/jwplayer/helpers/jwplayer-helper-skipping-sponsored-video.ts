@@ -81,16 +81,26 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 
 		const url = utils.getServicesBaseURL() + 'article-video/jw-platform-api/get-sponsored-videos';
 
-		utils.scriptLoader.loadAsset(url).then((response) => {
-			if (Array.isArray(response)) {
-				window.sponsoredVideos = response;
+		const request = new XMLHttpRequest();
+		request.open('GET', url, false);
+		request.send(null);
+
+		if (request.status === 200) {
+			if (request.responseText.length > 0) {
+				window.sponsoredVideos = JSON.parse(request.responseText);
 			} else {
 				utils.logger(
 					JWPlayerHelper.LOG_GROUP_NAME,
 					'Incorrect sponsored videos list from Pandora!',
-					response,
+					request.responseText,
 				);
 			}
-		});
+		} else {
+			utils.logger(
+				JWPlayerHelper.LOG_GROUP_NAME,
+				'Incorrect request status from Pandora!',
+				request.status,
+			);
+		}
 	}
 }
