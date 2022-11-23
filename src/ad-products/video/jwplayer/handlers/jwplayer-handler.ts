@@ -96,9 +96,6 @@ export class JWPlayerHandler {
 	private adsManager(): Observable<unknown> {
 		return this.stream$.pipe(
 			ofJwpEvent('adsManager'),
-			tap(async () => {
-				await this.helper.requestForSponsoredVideos();
-			}),
 			filter(() => this.helper.isIasTrackingEnabled()),
 			tap(({ payload }) => this.helper.initIasVideoTracking(payload)),
 		);

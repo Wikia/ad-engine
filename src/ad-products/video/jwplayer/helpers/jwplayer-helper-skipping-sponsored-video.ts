@@ -61,6 +61,8 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 				videoPlaysCounter: videoPlaysCounter,
 			});
 
+			this.requestForSponsoredVideos();
+
 			return false;
 		}
 
@@ -68,5 +70,27 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 			context.get('options.video.playAdsOnNextVideo') &&
 			window.sponsoredVideos.indexOf(currentMediaId) === -1
 		);
+	}
+
+	private requestForSponsoredVideos() {
+		utils.logger(
+			JWPlayerHelper.LOG_GROUP_NAME,
+			'Incorrect window.sponsoredVideos, using fallback to Pandora!',
+			window.sponsoredVideos,
+		);
+
+		const url = utils.getServicesBaseURL() + 'article-video/jw-platform-api/get-sponsored-videos';
+
+		utils.scriptLoader.loadAsset(url).then((response) => {
+			if (Array.isArray(response)) {
+				window.sponsoredVideos = response;
+			} else {
+				utils.logger(
+					JWPlayerHelper.LOG_GROUP_NAME,
+					'Incorrect sponsored videos list from Pandora!',
+					response,
+				);
+			}
+		});
 	}
 }
