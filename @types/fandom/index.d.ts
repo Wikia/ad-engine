@@ -16,5 +16,6 @@ interface WindowFandomContext {
 		pageName: string;
 		pageType: string;
 		tags: any;
+		wordCount: number;
 	};
 }
