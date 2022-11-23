@@ -40,11 +40,12 @@ interface MediaWikiAdsTargeting {
 	wikiId: number;
 	wikiIsTop1000: boolean;
 	wikiLanguage: string;
-	wikiVertical: string;
+	wikiVertical: string; // Remove after ADEN-12118 is done
 	newWikiCategories?: string[];
 	hasPortableInfobox: boolean;
 	adTagManagerTags?: AdTagManagerTags;
 	isMobile: boolean;
+	wordCount: number;
 }
 
 interface MediaWikiFeaturedVideoInfo {

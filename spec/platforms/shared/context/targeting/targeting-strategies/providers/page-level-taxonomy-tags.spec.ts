@@ -15,8 +15,8 @@ describe('PageLevelTaxonomyTags execution', () => {
 		};
 
 		const mockedContext: FandomContext = new FandomContext(
-			new Site(null, null, null, null, null, null, null, null, null),
-			new Page(null, null, null, null, null, mockedPageTags),
+			new Site(null, null, null, null, null, null, null, null),
+			new Page(null, null, null, null, null, mockedPageTags, 546),
 		);
 
 		const pageLevelTags = new PageLevelTaxonomyTags(mockedContext);

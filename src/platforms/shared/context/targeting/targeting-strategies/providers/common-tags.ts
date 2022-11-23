@@ -33,14 +33,14 @@ export class CommonTags implements TargetingProvider<Partial<Targeting>> {
 			artid: this.fandomContext.page.articleId ? this.fandomContext.page.articleId.toString() : '',
 			kid_wiki: this.fandomContext.site.directedAtChildren ? '1' : '0',
 			lang: this.fandomContext.page.lang || 'unknown',
-			// 'this.fandomContext.site.vertical' should be removed after UCP release from ADEN-12194
-			s0: this.fandomContext.site.taxonomy?.[0] || this.fandomContext.site.vertical,
+			s0: this.fandomContext.site.taxonomy?.[0],
 			s0c: this.fandomContext.site.categories,
-			// 'wiki.targeting.wikiVertical' should be removed after UCP release from ADEN-12194
+			// Remove 'wiki.targeting.wikiVertical' after ADEN-12118 is done
 			s0v: this.fandomContext.site.taxonomy?.[1] || wiki.targeting.wikiVertical,
 			s1: utils.targeting.getRawDbName(this.fandomContext.site.siteName),
 			s2: this.getAdLayout(this.fandomContext.page.pageType || 'article'),
 			wpage: this.fandomContext.page.pageName && this.fandomContext.page.pageName.toLowerCase(),
+			word_count: this.fandomContext.page.wordCount,
 		};
 
 		return {

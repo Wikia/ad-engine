@@ -12,8 +12,6 @@ export class Site {
 	public readonly top1000: boolean;
 	public readonly tags: TaxonomyTags;
 	public readonly taxonomy: string[];
-	// 'vertical' should be removed after UCP release from ADEN-12194
-	public readonly vertical: string;
 	public readonly mpaRating: string;
 
 	constructor(
@@ -24,7 +22,6 @@ export class Site {
 		top1000: boolean,
 		tags: object,
 		taxonomy: string[],
-		vertical: string,
 		mpaRating: string,
 	) {
 		this.categories = typeof categories === 'object' ? categories : null;
@@ -35,7 +32,6 @@ export class Site {
 		this.top1000 = typeof top1000 === 'boolean' ? top1000 : null;
 		this.tags = typeof tags === 'object' ? tags : null;
 		this.taxonomy = Array.isArray(taxonomy) ? taxonomy : null;
-		this.vertical = typeof vertical === 'string' ? vertical : null;
 	}
 }
 
@@ -46,6 +42,7 @@ export class Page {
 	public readonly pageName: string;
 	public readonly pageType: string;
 	public readonly tags: TaxonomyTags;
+	public readonly wordCount: number;
 
 	constructor(
 		articleId: number,
@@ -54,6 +51,7 @@ export class Page {
 		pageName: string,
 		pageType: string,
 		tags: object,
+		wordCount: number,
 	) {
 		this.articleId = typeof articleId === 'number' ? articleId : null;
 		this.lang = typeof lang === 'string' ? lang : null;
@@ -61,5 +59,6 @@ export class Page {
 		this.pageName = typeof pageName === 'string' ? pageName : null;
 		this.pageType = typeof pageType === 'string' ? pageType : null;
 		this.tags = typeof tags === 'object' ? tags : null;
+		this.wordCount = typeof wordCount === 'number' ? wordCount : -1;
 	}
 }

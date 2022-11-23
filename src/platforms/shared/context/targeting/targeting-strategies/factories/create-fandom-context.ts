@@ -16,8 +16,6 @@ function buildFandomContext(windowContext: WindowFandomContext): FandomContext {
 			windowContext?.site?.top1000,
 			windowContext?.site?.tags,
 			windowContext?.site?.taxonomy,
-			// 'vertical' should be removed after UCP release from ADEN-12194
-			windowContext?.site?.vertical,
 			windowContext?.site?.mpaRating,
 		),
 		new Page(
@@ -27,6 +25,7 @@ function buildFandomContext(windowContext: WindowFandomContext): FandomContext {
 			windowContext?.page?.pageName,
 			windowContext?.page?.pageType,
 			windowContext?.page?.tags,
+			windowContext?.page?.wordCount,
 		),
 	);
 }
