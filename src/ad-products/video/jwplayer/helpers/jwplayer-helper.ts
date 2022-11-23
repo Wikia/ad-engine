@@ -167,4 +167,8 @@ export class JWPlayerHelper {
 			},
 		});
 	}
+
+	ensureSponsoredVideosList(): void {
+		return;
+	}
 }

@@ -57,8 +57,6 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 				videoPlaysCounter: videoPlaysCounter,
 			});
 
-			this.requestForSponsoredVideos();
-
 			return false;
 		}
 
@@ -68,7 +66,13 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 		);
 	}
 
-	private requestForSponsoredVideos() {
+	public ensureSponsoredVideosList(): void {
+		if (Array.isArray(window.sponsoredVideos)) {
+			this.log('Sponsored videos list exists and seems correct', window.sponsoredVideos);
+
+			return;
+		}
+
 		this.log(
 			'Incorrect window.sponsoredVideos, using fallback to Pandora!',
 			window.sponsoredVideos,
