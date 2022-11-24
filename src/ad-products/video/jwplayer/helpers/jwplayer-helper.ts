@@ -168,7 +168,7 @@ export class JWPlayerHelper {
 		});
 	}
 
-	ensureSponsoredVideosList(): void {
+	ensureAdditionalSettings(): void {
 		return;
 	}
 }

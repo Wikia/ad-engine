@@ -66,7 +66,7 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 		);
 	}
 
-	public ensureSponsoredVideosList(): void {
+	public ensureAdditionalSettings(): void {
 		if (Array.isArray(window.sponsoredVideos)) {
 			this.log('Sponsored videos list exists and seems correct', window.sponsoredVideos);
 
