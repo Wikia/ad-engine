@@ -48,11 +48,7 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 		const forcedVideoId = utils.queryString.get('force_sponsored_video');
 		if (forcedVideoId) {
 			window.sponsoredVideos = [forcedVideoId];
-			utils.logger(
-				JWPlayerHelper.LOG_GROUP_NAME,
-				'Overwritting window.sponsoredVideo!',
-				window.sponsoredVideos,
-			);
+			this.log('Overwritting window.sponsoredVideo!', window.sponsoredVideos);
 		}
 
 		if (!Array.isArray(window.sponsoredVideos)) {
@@ -68,5 +64,37 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 			context.get('options.video.playAdsOnNextVideo') &&
 			window.sponsoredVideos.indexOf(currentMediaId) === -1
 		);
+	}
+
+	public ensureAdditionalSettings(): void {
+		if (Array.isArray(window.sponsoredVideos)) {
+			this.log('Sponsored videos list exists and seems correct', window.sponsoredVideos);
+
+			return;
+		}
+
+		this.log(
+			'Incorrect window.sponsoredVideos, using fallback to Pandora!',
+			window.sponsoredVideos,
+		);
+		const url = utils.getServicesBaseURL() + 'article-video/jw-platform-api/get-sponsored-videos';
+
+		utils.scriptLoader
+			.loadAsset(url)
+			.then((response) => {
+				if (Array.isArray(response)) {
+					window.sponsoredVideos = response;
+					this.log('Sponsored videos list updated!', window.sponsoredVideos);
+				} else {
+					this.log('Incorrect sponsored videos list from Pandora!', response);
+				}
+			})
+			.catch((error) => {
+				this.log('Incorrect request status from Pandora!', error);
+			});
+	}
+
+	private log(message: string, additionalData: any) {
+		utils.logger(JWPlayerHelper.LOG_GROUP_NAME, message, additionalData);
 	}
 }
