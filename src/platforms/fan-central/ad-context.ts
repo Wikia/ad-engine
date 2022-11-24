@@ -27,8 +27,9 @@ export const basicContext = {
 		},
 		instantConfig: {
 			endpoint: 'https://services.fandom.com',
-			appName: 'f2',
-			fallback: 'https://script.wikia.nocookie.net/fandom-ae-assets/icbm/prod/icbm_state_f2.json',
+			appName: 'fancentral',
+			fallback:
+				'https://script.wikia.nocookie.net/fandom-ae-assets/icbm/prod/icbm_state_fancentral.json',
 		},
 		nielsen: {
 			appId: 'P26086A07-C7FB-4124-A679-8AC404198BA7',
