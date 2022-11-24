@@ -45,6 +45,7 @@ interface MediaWikiAdsTargeting {
 	hasPortableInfobox: boolean;
 	adTagManagerTags?: AdTagManagerTags;
 	isMobile: boolean;
+	wordCount: number;
 }
 
 interface MediaWikiFeaturedVideoInfo {
