@@ -1,9 +1,7 @@
 @import '../shared/styles/index';
 @import '../shared/styles/mixin';
+@import '../shared/styles/uap/uap-variables';
 @import '../shared/styles/uap-porvata/porvata';
-
-$global-navigation-width: 66px;
-$sticky-navigation-height: 46px;
 
 @mixin ucp-desktop-uap-styles() {
 	.has-uap {
@@ -25,10 +23,10 @@ $sticky-navigation-height: 46px;
 		}
 
 		#top_leaderboard {
-			@include bfaa-slot(402, $global-navigation-width);
-			@include sticky-tlb-slot($global-navigation-width);
+			@include bfaa-slot(402, $fandom-navbar-width);
+			@include sticky-tlb-slot($fandom-navbar-width);
 
-			margin-left: $global-navigation-width;
+			margin-left: $fandom-navbar-width;
 		}
 
 		#bottom_leaderboard {
@@ -138,7 +136,7 @@ body:not(.uap-sticked) {
 	.companion-stick {
 		.main-page-tag-rcs #top_boxad,
 		#rail-boxad-wrapper {
-			top: calc(#{$sticky-navigation-height} - 10px) !important;
+			top: calc(#{$fandom-sticky-navigation-height} - 10px) !important;
 		}
 	}
 }
@@ -146,7 +144,7 @@ body:not(.uap-sticked) {
 $side-bt-units-single-padding: 10px;
 $side-bt-units-calculated-padding: 60px;
 $content-side-width: calc(
-	(100vw - 100% - #{$global-navigation-width} - #{$side-bt-units-calculated-padding}) / 2
+	(100vw - 100% - #{$fandom-navbar-width} - #{$side-bt-units-calculated-padding}) / 2
 );
 
 .side-bt-container {
@@ -164,7 +162,7 @@ $content-side-width: calc(
 
 	> div {
 		position: sticky;
-		top: $sticky-navigation-height;
+		top: $fandom-sticky-navigation-height;
 		width: fit-content;
 		height: fit-content;
 		min-height: 728px;

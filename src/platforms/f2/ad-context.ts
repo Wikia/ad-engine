@@ -51,9 +51,6 @@ export const basicContext = {
 			appName: 'f2',
 			fallback: 'https://script.wikia.nocookie.net/fandom-ae-assets/icbm/prod/icbm_state_f2.json',
 		},
-		moatYi: {
-			partnerCode: 'wikiaprebidheader490634422386',
-		},
 		nielsen: {
 			appId: 'P26086A07-C7FB-4124-A679-8AC404198BA7',
 			customSection: 'news_and_stories',

@@ -5,7 +5,7 @@ import {
 	context,
 	CookieStorageAdapter,
 	eventsRepository,
-	insertMethodType,
+	InsertMethodType,
 	InstantConfigService,
 	RepeatableSlotPlaceholderConfig,
 	scrollListener,
@@ -18,7 +18,7 @@ import { Injectable } from '@wikia/dependency-injection';
 
 interface SlotCreatorInsertionParamsType {
 	anchorSelector: string;
-	insertMethod: insertMethodType;
+	insertMethod: InsertMethodType;
 }
 
 @Injectable()

@@ -1,7 +1,7 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import {
 	AdStackPayload,
-	insertMethodType,
+	InsertMethodType,
 	SlotPlaceholderContextConfig,
 	slotTweaker,
 	utils,
@@ -45,7 +45,7 @@ export interface SlotConfig {
 	insertBeforeSelector?: string;
 	insertAfterSelector?: string;
 	parentContainerSelector?: string;
-	insertIntoParentContainerMethod?: insertMethodType;
+	insertIntoParentContainerMethod?: InsertMethodType;
 
 	targeting: Targeting;
 	videoAdUnit?: string;

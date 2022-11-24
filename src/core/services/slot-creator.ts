@@ -9,11 +9,11 @@ import {
 	logger,
 } from '../utils';
 import { context } from './context-service';
-export type insertMethodType = 'append' | 'prepend' | 'after' | 'before';
+export type InsertMethodType = 'append' | 'prepend' | 'after' | 'before';
 
 export interface SlotCreatorConfig {
 	slotName: string;
-	insertMethod: insertMethodType;
+	insertMethod: InsertMethodType;
 	anchorSelector: string;
 	/**
 	 * @default firstViable
