@@ -66,6 +66,7 @@ class Targeting {
 
 	private applyCodeLevelBundles(bundles: string[]): string[] {
 		const cookieAdapter = new CookieStorageAdapter();
+		const shortPageWordsLimit = 100;
 
 		if (cookieAdapter.getItem('_ae_intrsttl_imp')) {
 			bundles.push('interstitial_disabled');
@@ -78,6 +79,13 @@ class Targeting {
 			!Targeting.containsValue(bundles, 'VIDEO_TIER_1_AND_2_BUNDLE')
 		) {
 			bundles.push('VIDEO_TIER_3_BUNDLE');
+		}
+
+		const wordCount = context.get('targeting.word_count') || -1;
+
+		if (wordCount > -1 && wordCount <= shortPageWordsLimit) {
+			bundles.push('short_page');
+			context.set('custom.short_page', true);
 		}
 
 		return bundles;
