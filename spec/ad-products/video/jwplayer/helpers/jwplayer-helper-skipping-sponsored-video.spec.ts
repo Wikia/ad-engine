@@ -18,7 +18,7 @@ describe('JwplayerHelperSkippingSponsoredVideo', () => {
 			adSlotStub = {
 				isEnabled: sandbox.stub().returns(true),
 			};
-			window.sponsoredVideos = [];
+			window.sponsoredVideos = ['AbCd123e'];
 			helper = new JwplayerHelperSkippingSponsoredVideo(
 				adSlotStub,
 				null,
