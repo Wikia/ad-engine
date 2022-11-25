@@ -18,6 +18,8 @@ export class JWPlayerHelper {
 		protected readonly targeting: VideoTargeting,
 	) {}
 
+	private calledOnce = false;
+
 	isMoatTrackingEnabled(): boolean {
 		return context.get('options.video.moatTracking.enabledForArticleVideos') && !!window.moatjw;
 	}
@@ -157,6 +159,13 @@ export class JWPlayerHelper {
 	}
 
 	private getVastUrl(position: string, state: JwpState): string {
+		if (!this.calledOnce) {
+			this.calledOnce = true;
+		} else {
+			state.rv++;
+			this.updateVideoProperties(state);
+		}
+
 		return utils.buildVastUrl(16 / 9, this.adSlot.getSlotName(), {
 			correlator: state.correlator,
 			vpos: position,
@@ -166,5 +175,9 @@ export class JWPlayerHelper {
 				...this.targeting,
 			},
 		});
+	}
+
+	ensureAdditionalSettings(): void {
+		return;
 	}
 }

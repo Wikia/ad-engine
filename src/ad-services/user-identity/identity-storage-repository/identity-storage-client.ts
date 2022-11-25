@@ -1,11 +1,10 @@
-import { getServicesBaseURL } from '../utils/service-base-url';
 import { UniversalStorage, utils } from '@ad-engine/core';
 import { IdentityStorageDto } from './identity-storage-dto';
 
 class IdentityStorageClient {
 	private logGroup = 'identity-storage';
 	private IdentityStorageKey = 'identity';
-	private ISUrl = getServicesBaseURL() + 'identity-storage/';
+	private ISUrl = utils.getServicesBaseURL() + 'identity-storage/';
 
 	storage = new UniversalStorage();
 

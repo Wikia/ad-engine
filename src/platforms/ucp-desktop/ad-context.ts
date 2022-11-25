@@ -42,14 +42,14 @@ export const basicContext = {
 		adUnitId:
 			'/{custom.dfpId}' +
 			'/{custom.serverPrefix}.{slotConfig.group}' +
-			'/{slotConfig.adProduct}{slotConfig.slotNameSuffix}' +
+			'/{slotConfig.adProduct}{slotConfig.slotNameSuffix}_{slotConfig.targeting.rv}' +
 			'/{state.deviceType}' +
 			'/{targeting.skin}-{targeting.original_host}-{targeting.s2}' +
 			'/{custom.wikiIdentifier}-{targeting.s0}',
 		adUnitIdWithDbName:
 			'/{custom.dfpId}' +
 			'/{custom.serverPrefix}.{slotConfig.group}' +
-			'/{slotConfig.adProduct}{slotConfig.slotNameSuffix}' +
+			'/{slotConfig.adProduct}{slotConfig.slotNameSuffix}_{slotConfig.targeting.rv}' +
 			'/{state.deviceType}' +
 			'/{targeting.skin}-{targeting.original_host}-{targeting.s2}' +
 			'/{custom.dbNameForAdUnit}-{targeting.s0}',

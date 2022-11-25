@@ -9,6 +9,7 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 		protected adSlot: AdSlot,
 		protected jwplayer: JWPlayer,
 		protected readonly targeting: VideoTargeting,
+		private sponsoredVideos = undefined,
 	) {
 		super(adSlot, jwplayer, targeting);
 	}
@@ -42,21 +43,17 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 			JWPlayerHelper.LOG_GROUP_NAME,
 			videoPlaysCounter,
 			currentMediaId,
-			window.sponsoredVideos,
+			this.sponsoredVideos,
 		);
 
 		const forcedVideoId = utils.queryString.get('force_sponsored_video');
 		if (forcedVideoId) {
-			window.sponsoredVideos = [forcedVideoId];
-			utils.logger(
-				JWPlayerHelper.LOG_GROUP_NAME,
-				'Overwritting window.sponsoredVideo!',
-				window.sponsoredVideos,
-			);
+			this.sponsoredVideos = [forcedVideoId];
+			this.log('Overwritting window.sponsoredVideo!', this.sponsoredVideos);
 		}
 
-		if (!Array.isArray(window.sponsoredVideos)) {
-			externalLogger.log('JWPlayer - no window.sponsoredVideos', {
+		if (!Array.isArray(this.sponsoredVideos)) {
+			externalLogger.log('JWPlayer - no sponsored videos', {
 				currentMediaId,
 				videoPlaysCounter: videoPlaysCounter,
 			});
@@ -66,7 +63,40 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 
 		return (
 			context.get('options.video.playAdsOnNextVideo') &&
-			window.sponsoredVideos.indexOf(currentMediaId) === -1
+			this.sponsoredVideos.indexOf(currentMediaId) === -1
 		);
+	}
+
+	public ensureAdditionalSettings(): void {
+		if (Array.isArray(window.sponsoredVideos)) {
+			this.log('Sponsored videos list exists and seems correct', window.sponsoredVideos);
+			this.sponsoredVideos = window.sponsoredVideos;
+
+			return;
+		}
+
+		this.log(
+			'Incorrect window.sponsoredVideos, using fallback to Pandora!',
+			window.sponsoredVideos,
+		);
+		const url = utils.getServicesBaseURL() + 'article-video/jw-platform-api/get-sponsored-videos';
+
+		utils.scriptLoader
+			.loadAsset(url)
+			.then((response) => {
+				if (Array.isArray(response)) {
+					this.sponsoredVideos = response;
+					this.log('Sponsored videos list updated!', this.sponsoredVideos);
+				} else {
+					this.log('Incorrect sponsored videos list from Pandora!', response);
+				}
+			})
+			.catch((error) => {
+				this.log('Incorrect request status from Pandora!', error);
+			});
+	}
+
+	private log(message: string, additionalData: any) {
+		utils.logger(JWPlayerHelper.LOG_GROUP_NAME, message, additionalData);
 	}
 }
