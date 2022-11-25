@@ -9,6 +9,7 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 		protected adSlot: AdSlot,
 		protected jwplayer: JWPlayer,
 		protected readonly targeting: VideoTargeting,
+		private sponsoredVideos = undefined,
 	) {
 		super(adSlot, jwplayer, targeting);
 	}
@@ -42,17 +43,17 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 			JWPlayerHelper.LOG_GROUP_NAME,
 			videoPlaysCounter,
 			currentMediaId,
-			window.sponsoredVideos,
+			this.sponsoredVideos,
 		);
 
 		const forcedVideoId = utils.queryString.get('force_sponsored_video');
 		if (forcedVideoId) {
-			window.sponsoredVideos = [forcedVideoId];
-			this.log('Overwritting window.sponsoredVideo!', window.sponsoredVideos);
+			this.sponsoredVideos = [forcedVideoId];
+			this.log('Overwritting window.sponsoredVideo!', this.sponsoredVideos);
 		}
 
-		if (!Array.isArray(window.sponsoredVideos)) {
-			externalLogger.log('JWPlayer - no window.sponsoredVideos', {
+		if (!Array.isArray(this.sponsoredVideos)) {
+			externalLogger.log('JWPlayer - no sponsored videos', {
 				currentMediaId,
 				videoPlaysCounter: videoPlaysCounter,
 			});
@@ -62,13 +63,14 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 
 		return (
 			context.get('options.video.playAdsOnNextVideo') &&
-			window.sponsoredVideos.indexOf(currentMediaId) === -1
+			this.sponsoredVideos.indexOf(currentMediaId) === -1
 		);
 	}
 
 	public ensureAdditionalSettings(): void {
 		if (Array.isArray(window.sponsoredVideos)) {
 			this.log('Sponsored videos list exists and seems correct', window.sponsoredVideos);
+			this.sponsoredVideos = window.sponsoredVideos;
 
 			return;
 		}
@@ -83,8 +85,8 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 			.loadAsset(url)
 			.then((response) => {
 				if (Array.isArray(response)) {
-					window.sponsoredVideos = response;
-					this.log('Sponsored videos list updated!', window.sponsoredVideos);
+					this.sponsoredVideos = response;
+					this.log('Sponsored videos list updated!', this.sponsoredVideos);
 				} else {
 					this.log('Incorrect sponsored videos list from Pandora!', response);
 				}
