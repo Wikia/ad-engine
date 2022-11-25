@@ -25,6 +25,13 @@ export function getPubmaticContext(): object {
 				],
 				ids: ['/5441/TOP_RIGHT_BOXAD_300x250@300x250', '/5441/TOP_RIGHT_BOXAD_300x600@300x600'],
 			},
+			bottom_leaderboard: {
+				sizes: [
+					[728, 90],
+					[970, 250],
+				],
+				ids: ['/5441/BOTTOM_LEADERBOARD_728x90@728x90', '/5441/BOTTOM_LEADERBOARD_970x250@970x250'],
+			},
 			incontent_boxad_1: {
 				sizes: [
 					[160, 600],
@@ -36,13 +43,6 @@ export function getPubmaticContext(): object {
 					'/5441/INCONTENT_BOXAD_1_300x250@300x250',
 					'/5441/INCONTENT_BOXAD_1_300x600@300x600',
 				],
-			},
-			bottom_leaderboard: {
-				sizes: [
-					[728, 90],
-					[970, 250],
-				],
-				ids: ['/5441/BOTTOM_LEADERBOARD_728x90@728x90', '/5441/BOTTOM_LEADERBOARD_970x250@970x250'],
 			},
 		},
 	};

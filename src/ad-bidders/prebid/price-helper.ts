@@ -5,7 +5,6 @@ import { getWinningBid } from './prebid-helper';
 
 /**
  * Round cpm to predefined values.
- * ToDo: Replace with pbjs.setConfig({'cpmRoundingFunction'})
  */
 function roundCpm(cpm: number, maxCpm: number): number {
 	let result: number = Math.floor(maxCpm);
