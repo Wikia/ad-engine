@@ -74,13 +74,7 @@ export class PrebidProvider extends BidderProvider {
 				singleRequest: true,
 			},
 			sendBidsControl: {
-				bidLimit: 2,
 				dealPrioritization: true,
-			},
-			targetingControls: {
-				alwaysIncludeDeals: true,
-				allowTargetingKeys: ['AD_ID', 'PRICE_BUCKET', 'UUID', 'SIZE', 'DEAL'],
-				allowSendAllBidsTargetingKeys: ['AD_ID', 'PRICE_BUCKET', 'UUID', 'SIZE', 'DEAL'],
 			},
 			userSync: {
 				filterSettings: {
