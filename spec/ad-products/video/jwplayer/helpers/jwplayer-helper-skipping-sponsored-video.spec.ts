@@ -18,8 +18,13 @@ describe('JwplayerHelperSkippingSponsoredVideo', () => {
 			adSlotStub = {
 				isEnabled: sandbox.stub().returns(true),
 			};
-			window.sponsoredVideos = [];
-			helper = new JwplayerHelperSkippingSponsoredVideo(adSlotStub, null, null);
+			window.sponsoredVideos = ['AbCd123e'];
+			helper = new JwplayerHelperSkippingSponsoredVideo(
+				adSlotStub,
+				null,
+				null,
+				window.sponsoredVideos,
+			);
 
 			context.set('options.video.playAdsOnNextVideo', true);
 			context.set('options.video.isMidrollEnabled', false);
@@ -55,19 +60,24 @@ describe('JwplayerHelperSkippingSponsoredVideo', () => {
 			]);
 		});
 
-		it('works correctly when the ads for next videos are disabled - only one preroll', () => {
+		it('works correctly when the ads for next videos are disabled', () => {
 			context.set('options.video.playAdsOnNextVideo', false);
 
 			simulatePlaysAndVerifyResults([
-				[true, false, false],
+				[false, false, false],
 				[false, false, false],
 				[false, false, false],
 			]);
 		});
 
 		it('works correctly when the 3rd ad is a sponsored one', () => {
-			helper = new JwplayerHelperSkippingSponsoredVideo(adSlotStub, null, null);
 			window.sponsoredVideos = ['testMediaId-3'];
+			helper = new JwplayerHelperSkippingSponsoredVideo(
+				adSlotStub,
+				null,
+				null,
+				window.sponsoredVideos,
+			);
 
 			simulatePlaysAndVerifyResults([
 				[true, false, false],
@@ -76,12 +86,33 @@ describe('JwplayerHelperSkippingSponsoredVideo', () => {
 			]);
 		});
 
-		it('works correctly when there is no global window.sponsoredVideos', () => {
-			helper = new JwplayerHelperSkippingSponsoredVideo(adSlotStub, null, null);
-			window.sponsoredVideos = undefined;
+		it('works correctly when the 1st ad is a sponsored one', () => {
+			window.sponsoredVideos = ['testMediaId-1'];
+			helper = new JwplayerHelperSkippingSponsoredVideo(
+				adSlotStub,
+				null,
+				null,
+				window.sponsoredVideos,
+			);
 
 			simulatePlaysAndVerifyResults([
+				[false, false, false],
 				[true, false, false],
+				[true, false, false],
+			]);
+		});
+
+		it('works correctly when there is no global window.sponsoredVideos', () => {
+			window.sponsoredVideos = undefined;
+			helper = new JwplayerHelperSkippingSponsoredVideo(
+				adSlotStub,
+				null,
+				null,
+				window.sponsoredVideos,
+			);
+
+			simulatePlaysAndVerifyResults([
+				[false, false, false],
 				[false, false, false],
 				[false, false, false],
 			]);
