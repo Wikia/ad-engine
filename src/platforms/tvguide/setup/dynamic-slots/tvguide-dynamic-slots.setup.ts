@@ -6,7 +6,7 @@ export class TvguideDynamicSlotsSetup implements DiProcess {
 	}
 
 	private injectSlots(): void {
-		const adPlaceholders = document.querySelectorAll('.c-adDisplay');
+		const adPlaceholders = document.querySelectorAll('.c-adDisplay_container');
 
 		if (!adPlaceholders) {
 			return;
@@ -14,11 +14,23 @@ export class TvguideDynamicSlotsSetup implements DiProcess {
 
 		adPlaceholders.forEach((placeholder) => {
 			const adSlotDiv = document.createElement('div');
-			const adSlotName = placeholder.getAttribute('data-ad');
+			const adSlotName = this.getAdSlotNameFromPlaceholder(placeholder);
 			adSlotDiv.id = adSlotName;
 
 			placeholder.appendChild(adSlotDiv);
 			context.push('state.adStack', { id: adSlotName });
 		});
+	}
+
+	getAdSlotNameFromPlaceholder(placeholder: Element) {
+		let adSlotName = null;
+
+		placeholder.classList.forEach((className) => {
+			if (className.includes('c-adDisplay_container_')) {
+				adSlotName = className.slice('c-adDisplay_container_'.length);
+			}
+		});
+
+		return adSlotName;
 	}
 }
