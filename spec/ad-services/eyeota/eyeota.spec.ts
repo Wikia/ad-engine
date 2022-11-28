@@ -1,4 +1,4 @@
-import { eyeota } from '@wikia/ad-services';
+import { appendContextTags, eyeota } from '@wikia/ad-services';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 import { context, tcf, utils } from '../../../src/core/index';
@@ -9,6 +9,7 @@ describe('Eyeota', () => {
 
 	beforeEach(() => {
 		window.__tcfapi = window.__tcfapi as WindowTCF;
+		window.fandomContext = { site: {}, page: {} } as any;
 
 		loadScriptStub = sandbox
 			.stub(utils.scriptLoader, 'loadScript')
@@ -25,6 +26,7 @@ describe('Eyeota', () => {
 		sandbox.restore();
 		context.remove('services.eyeota.enabled');
 		delete window.__tcfapi;
+		delete window.fandomContext;
 
 		context.remove('services.eyeota.enabled');
 		context.remove('options.trackingOptIn');
@@ -79,6 +81,17 @@ describe('Eyeota', () => {
 		context.remove('targeting.s0v');
 	});
 
+	it('constructs proper url with context', async () => {
+		sandbox
+			.stub(window.fandomContext, 'site')
+			.value({ tags: { gnre: [1, 2, 3], pub: ['test'], pform: ['xbox'] } });
+		const src = await eyeota.createScriptSource();
+
+		expect(src).to.equal(
+			'https://ps.eyeota.net/pixel?pid=r8rcb20&sid=fandom&t=ajs&s0v=undefined&gnre=1&gnre=2&gnre=3&pform=xbox&pub=test',
+		);
+	});
+
 	it('constructs proper params on GPDR-related geo', async () => {
 		sandbox.restore();
 		sandbox
@@ -93,5 +106,16 @@ describe('Eyeota', () => {
 		);
 
 		context.remove('targeting.s0v');
+	});
+
+	describe('appendContextTags', () => {
+		it('should add params from context tag object', () => {
+			const testUrl = new URL('http://localhost/');
+			const testTags = { a: [1, 2, 3], b: ['a'] };
+
+			appendContextTags(testTags, testUrl);
+
+			expect(testUrl.toString()).to.equal('http://localhost/?a=1&a=2&a=3&b=a');
+		});
 	});
 });
