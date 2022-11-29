@@ -84,7 +84,7 @@ describe('Eyeota', () => {
 	});
 
 	it('constructs proper url with context', async () => {
-		window.fandomContext = { site: null } as any;
+		window.fandomContext = { site: null, page: null } as FandomContext;
 		const mockedTags = { gnre: ['1', '2', '3'], pub: ['test'], pform: ['xbox'] };
 		const mockedContext = new FandomContext(
 			new Site([], true, 'ec', 'test', false, mockedTags, null, 'general'),
