@@ -5,7 +5,7 @@ const logGroup = 'eyeota';
 const pid = 'r8rcb20';
 const siteName = 'fandom';
 
-export function appendContextTags(tags: object, url: URL): void {
+export function appendContextTags(tags: TaxonomyTags, url: URL): void {
 	Object.keys(tags).forEach((tagName) =>
 		(tags[tagName] || []).forEach((tagValue) => url.searchParams.append(tagName, tagValue)),
 	);

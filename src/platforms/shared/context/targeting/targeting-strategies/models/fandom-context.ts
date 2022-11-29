@@ -1,5 +1,3 @@
-import { TaxonomyTags } from '../interfaces/taxonomy-tags';
-
 export class FandomContext {
 	constructor(public readonly site: Site, public readonly page: Page) {}
 }
