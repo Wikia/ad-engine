@@ -95,6 +95,26 @@ class ScriptLoader implements ScriptLoaderInterface {
 			request.send();
 		});
 	}
+
+	loadSync(url: string): string | boolean {
+		try {
+			const request = new XMLHttpRequest();
+			request.open('GET', url, false);
+			request.send(null);
+
+			if (request.status !== 200) {
+				return false;
+			}
+
+			if (request.responseText.length === 0) {
+				return false;
+			}
+
+			return request.responseText;
+		} catch (e) {
+			return false;
+		}
+	}
 }
 
 export const scriptLoader = new ScriptLoader();

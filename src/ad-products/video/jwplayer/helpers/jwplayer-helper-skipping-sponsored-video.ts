@@ -9,7 +9,7 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 		protected adSlot: AdSlot,
 		protected jwplayer: JWPlayer,
 		protected readonly targeting: VideoTargeting,
-		private sponsoredVideos = undefined,
+		private sponsoredVideos = window.sponsoredVideos,
 	) {
 		super(adSlot, jwplayer, targeting);
 	}
@@ -53,6 +53,16 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 		}
 
 		if (!Array.isArray(this.sponsoredVideos)) {
+			this.log(
+				'Incorrect window.sponsoredVideos, using fallback to Pandora!',
+				this.sponsoredVideos,
+			);
+
+			const url = utils.getServicesBaseURL() + 'article-video/jw-platform-api/get-sponsored-videos';
+			this.sponsoredVideos = JSON.parse(<string>utils.scriptLoader.loadSync(url));
+		}
+
+		if (!this.sponsoredVideos) {
 			externalLogger.log('JWPlayer - no sponsored videos', {
 				currentMediaId,
 				videoPlaysCounter: videoPlaysCounter,
@@ -65,35 +75,6 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 			context.get('options.video.playAdsOnNextVideo') &&
 			this.sponsoredVideos.indexOf(currentMediaId) === -1
 		);
-	}
-
-	public ensureAdditionalSettings(): void {
-		if (Array.isArray(window.sponsoredVideos)) {
-			this.log('Sponsored videos list exists and seems correct', window.sponsoredVideos);
-			this.sponsoredVideos = window.sponsoredVideos;
-
-			return;
-		}
-
-		this.log(
-			'Incorrect window.sponsoredVideos, using fallback to Pandora!',
-			window.sponsoredVideos,
-		);
-		const url = utils.getServicesBaseURL() + 'article-video/jw-platform-api/get-sponsored-videos';
-
-		utils.scriptLoader
-			.loadAsset(url)
-			.then((response) => {
-				if (Array.isArray(response)) {
-					this.sponsoredVideos = response;
-					this.log('Sponsored videos list updated!', this.sponsoredVideos);
-				} else {
-					this.log('Incorrect sponsored videos list from Pandora!', response);
-				}
-			})
-			.catch((error) => {
-				this.log('Incorrect request status from Pandora!', error);
-			});
 	}
 
 	private log(message: string, additionalData: any) {
