@@ -102,7 +102,7 @@ describe('JwplayerHelperSkippingSponsoredVideo', () => {
 			]);
 		});
 
-		it('works correctly when there is no global window.sponsoredVideos', () => {
+		it('works correctly when there is no global window.sponsoredVideos', (done) => {
 			window.sponsoredVideos = undefined;
 			helper = new JwplayerHelperSkippingSponsoredVideo(
 				adSlotStub,
@@ -110,6 +110,7 @@ describe('JwplayerHelperSkippingSponsoredVideo', () => {
 				null,
 				window.sponsoredVideos,
 			);
+			done();
 
 			simulatePlaysAndVerifyResults([
 				[false, false, false],
