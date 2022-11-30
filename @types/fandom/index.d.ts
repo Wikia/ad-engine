@@ -1,3 +1,17 @@
+interface TaxonomyTags {
+	age?: string[];
+	bundles?: string[];
+	esrb?: string[];
+	gnre?: string[];
+	media?: string[];
+	mpa?: string[];
+	pform?: string[];
+	pub?: string[];
+	sex?: string[];
+	theme?: string[];
+	tv?: string[];
+}
+
 interface WindowFandomContext {
 	site: {
 		categories: [];
@@ -6,7 +20,7 @@ interface WindowFandomContext {
 		mpaRating: string;
 		siteName: string;
 		top1000: boolean | null;
-		tags: any;
+		tags: TaxonomyTags;
 		taxonomy: string[];
 	};
 	page: {
@@ -15,7 +29,7 @@ interface WindowFandomContext {
 		pageId: number;
 		pageName: string;
 		pageType: string;
-		tags: any;
+		tags: TaxonomyTags;
 		wordCount: number;
 	};
 }
