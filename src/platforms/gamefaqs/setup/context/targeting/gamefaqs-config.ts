@@ -5,7 +5,7 @@ export const gamefaqsConfig = {
 			subsession: 4,
 		},
 		cookie: {
-			consolidate: true,
+			consolidate: true, // comes as true from the backend: https://github.com/Wikia/phoenix/blob/master/SiteBundle/Resources/js/src/ads/bidbarrel/adManager.js#L888
 			keyMap: {
 				ftag: 'ftag',
 				ttag: 'ttag',

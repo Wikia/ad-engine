@@ -176,8 +176,4 @@ export class JWPlayerHelper {
 			},
 		});
 	}
-
-	ensureAdditionalSettings(): void {
-		return;
-	}
 }

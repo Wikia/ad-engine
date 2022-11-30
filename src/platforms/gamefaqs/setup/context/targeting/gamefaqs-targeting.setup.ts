@@ -94,8 +94,6 @@ export class GamefaqsTargetingSetup implements DiProcess {
 		const browserSessionCookie = '_BB.bs';
 		const dailySessionCookie = '_BB.d';
 
-		// "consolidate" comes as true from the backend
-		//  https://github.com/Wikia/phoenix/blob/master/SiteBundle/Resources/js/src/ads/bidbarrel/adManager.js#L888
 		const consolidate = gamefaqsConfig.targeting.cookie.consolidate;
 		let surround = null;
 		const surroundCookie = cookieAdapter.getItem('surround');

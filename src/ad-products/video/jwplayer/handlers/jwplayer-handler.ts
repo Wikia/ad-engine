@@ -104,9 +104,6 @@ export class JWPlayerHandler {
 	private beforePlay(): Observable<unknown> {
 		return this.stream$.pipe(
 			ofJwpEvent('beforePlay'),
-			tap(async () => {
-				await this.helper.ensureAdditionalSettings();
-			}),
 			tap(({ state }) => this.helper.updateVideoProperties(state)),
 			filter(({ state }) =>
 				this.helper.shouldPlayPreroll(state.depth, state?.playlistItem?.mediaid),
