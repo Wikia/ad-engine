@@ -89,7 +89,7 @@ export class GamefaqsTargetingSetup implements DiProcess {
 	}
 
 	// Transfered from: https://github.com/Wikia/player1-ads-adlibrary/blob/0df200c535adf3599c7de9e99b719953af2784e1/core/targeting.js#L205
-	getCookieBasedTargeting() {
+	getCookieBasedTargeting(): CookieBasedTargetingParams {
 		const cookieAdapter = new CookieStorageAdapter();
 		const browserSessionCookie = '_BB.bs';
 		const dailySessionCookie = '_BB.d';
@@ -133,7 +133,9 @@ export class GamefaqsTargetingSetup implements DiProcess {
 				'z',
 			].slice(0, gamefaqsConfig.targeting.seats.session);
 			const session = availableSessions[Math.floor(Math.random() * availableSessions.length)];
-			const subsession = Math.floor(Math.random() * gamefaqsConfig.targeting.seats.subsession) + 1;
+			const subsession = (
+				Math.floor(Math.random() * gamefaqsConfig.targeting.seats.subsession) + 1
+			).toString();
 			surround = [session, subsession];
 		}
 
@@ -166,12 +168,12 @@ export class GamefaqsTargetingSetup implements DiProcess {
 		const browserSessionData = bbCookies[0] ? JSON.parse(bbCookies[0]) : {};
 		const dailySessionData = bbCookies[1] ? JSON.parse(bbCookies[1]) : {};
 
-		const result = {
+		const result: CookieBasedTargetingParams = {
 			ttag: dailySessionData.ttag || existingCookies.ttag,
 			ftag: dailySessionData.ftag || existingCookies.ftag,
 			session: browserSessionData.session || existingCookies.session,
 			subses: browserSessionData.subses || existingCookies.subses,
-			pv: parseInt(dailySessionData.pv || existingCookies.pv || 0, 10),
+			pv: dailySessionData.pv || existingCookies.pv || '0',
 		};
 
 		if (!consolidate) {
@@ -180,7 +182,11 @@ export class GamefaqsTargetingSetup implements DiProcess {
 		}
 
 		if (typeof result.pv !== 'undefined') {
-			result.pv += 1;
+			let currentPvNumber = parseInt(result.pv, 10);
+
+			currentPvNumber += 1;
+
+			result.pv = currentPvNumber.toString();
 		}
 
 		if (consolidate) {
