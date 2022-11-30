@@ -5,10 +5,15 @@ const logGroup = 'eyeota';
 const pid = 'r8rcb20';
 const siteName = 'fandom';
 
-export function appendContextTags(tags: TaxonomyTags, url: URL): void {
+export function parseContextTags(tags: TaxonomyTags): string {
+	let urlParams = '';
 	Object.keys(tags).forEach((tagName) =>
-		(tags[tagName] || []).forEach((tagValue) => url.searchParams.append(tagName, tagValue)),
+		(tags[tagName] || []).forEach(
+			(tagValue) => (urlParams += `&${tagName}=${encodeURI(tagValue)}`),
+		),
 	);
+
+	return urlParams;
 }
 
 class Eyeota extends BaseServiceSetup {
@@ -51,9 +56,10 @@ class Eyeota extends BaseServiceSetup {
 		url.searchParams.append('t', 'ajs');
 		url.searchParams.append('s0v', s0v);
 
+		let contextTags = '';
 		if (window.fandomContext?.site?.tags) {
 			const { gnre, pform, pub, tv } = window.fandomContext.site.tags;
-			appendContextTags({ gnre, pform, pub, tv }, url);
+			contextTags = parseContextTags({ gnre, pform, pub, tv });
 		}
 
 		if (tcfData.gdprApplies) {
@@ -61,7 +67,7 @@ class Eyeota extends BaseServiceSetup {
 			url.searchParams.append('gdpr_consent', tcfData.tcString);
 		}
 
-		return url.toString();
+		return url.toString() + contextTags;
 	}
 }
 

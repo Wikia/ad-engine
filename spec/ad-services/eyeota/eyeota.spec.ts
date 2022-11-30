@@ -1,4 +1,4 @@
-import { appendContextTags, eyeota } from '@wikia/ad-services';
+import { parseContextTags, eyeota } from '@wikia/ad-services';
 import {
 	FandomContext,
 	Site,
@@ -115,14 +115,21 @@ describe('Eyeota', () => {
 		context.remove('targeting.s0v');
 	});
 
-	describe('appendContextTags', () => {
+	describe('parseContextTags', () => {
 		it('should add params from context tag object', () => {
-			const testUrl = new URL('http://localhost/');
 			const testTags = { gnre: ['1', '2', '3'], tv: ['a'] };
 
-			appendContextTags(testTags, testUrl);
+			const testUrl = parseContextTags(testTags);
 
-			expect(testUrl.toString()).to.equal('http://localhost/?gnre=1&gnre=2&gnre=3&tv=a');
+			expect(testUrl).to.equal('&gnre=1&gnre=2&gnre=3&tv=a');
+		});
+
+		it('should encode special characters and spaces', () => {
+			const testTags = { pform: ['xbox series x', 'ś'] };
+
+			const testUrl = parseContextTags(testTags);
+
+			expect(testUrl).to.equal('&pform=xbox%20series%20x&pform=%C5%9B');
 		});
 	});
 });
