@@ -9,11 +9,13 @@ import { Injectable } from '@wikia/dependency-injection';
 
 import { getAppnexusContext } from '../../../bidders/appnexus';
 import { getWikiaContext } from '../../../bidders/wikia';
+import { getIndexExchangeContext } from '../../../bidders/index-exchange';
 
 @Injectable()
 export class GamefaqsPrebidConfigSetup implements DiProcess {
 	execute(): void {
 		context.set('bidders.prebid.appnexus', getAppnexusContext());
+		context.set('bidders.prebid.indexExchange', getIndexExchangeContext());
 		context.set('bidders.prebid.wikia', getWikiaContext());
 
 		context.set('bidders.enabled', true);
@@ -24,6 +26,7 @@ export class GamefaqsPrebidConfigSetup implements DiProcess {
 		);
 
 		context.set('bidders.prebid.appnexus.enabled', true);
+		context.set('bidders.prebid.indexExchange.enabled', true);
 		context.set('bidders.prebid.wikia.enabled', true);
 
 		this.registerListeners();
