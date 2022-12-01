@@ -11,7 +11,7 @@ export const basicContext = {
 			},
 			cookie: {
 				// "consolidate" variable was added in AdLib to support sites that controlled their own cookies for session, subsession, pv.
-				// It comes as true for Phoenix based sites:
+				// It comes as true for Gamefaqs and Phoenix based sites:
 				// https://github.com/Wikia/phoenix/blob/master/SiteBundle/Resources/js/src/ads/bidbarrel/adManager.js#L888
 				consolidate: true,
 				keyMap: {
