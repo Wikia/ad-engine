@@ -24,7 +24,7 @@ export class GamefaqsPrebidConfigSetup implements DiProcess {
 		);
 
 		context.set('bidders.prebid.appnexus.enabled', true);
-		context.set('bidders.prebid.appnexus.wikia', true);
+		context.set('bidders.prebid.wikia.enabled', true);
 
 		this.registerListeners();
 	}
