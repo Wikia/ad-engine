@@ -24,6 +24,7 @@ interface TargetingParams extends CookieBasedTargetingParams {
 	env?: string;
 	publisher?: string;
 	ptype?: string;
+	rating?: string;
 	rdate?: string;
 	score?: string;
 	user?: string;
@@ -52,6 +53,7 @@ export class GamefaqsTargetingSetup implements DiProcess {
 			genre: targetParams?.genre,
 			publisher: targetParams?.publisher,
 			ptype: utagData?.pageType,
+			rating: targetParams?.rating,
 			rdate: targetParams?.rdate,
 			score: targetParams?.score,
 			user: utagData?.userType,
