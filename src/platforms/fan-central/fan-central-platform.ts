@@ -7,7 +7,6 @@ import {
 	NoAdsDetector,
 	TrackingParametersSetup,
 	TrackingSetup,
-	PlatformContextSetup,
 	getDeviceMode,
 	NoAdsMode,
 	BaseContextSetup,
@@ -36,7 +35,6 @@ export class FanCentralPlatform {
 		// Config
 		this.pipeline.add(
 			() => context.extend(basicContext),
-			PlatformContextSetup,
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
 			TrackingParametersSetup,
 			() => context.set('state.isMobile', getDeviceMode() === 'mobile'),
