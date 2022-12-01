@@ -33,12 +33,16 @@ interface TargetingParams extends CookieBasedTargetingParams {
 
 export class GamefaqsTargetingSetup implements DiProcess {
 	execute(): Promise<void> | void {
-		this.setSlParamForAdSlots();
+		const targeting = {
+			...this.getPageLevelTargeting(),
+			...this.getCookieBasedTargeting(),
+		};
+
+		this.setSlotLevelTargeting(targeting);
 
 		context.set('targeting', {
 			...context.get('targeting'),
-			...this.getPageLevelTargeting(),
-			...this.getCookieBasedTargeting(),
+			...targeting,
 		});
 	}
 
@@ -66,28 +70,6 @@ export class GamefaqsTargetingSetup implements DiProcess {
 			.querySelector('[id=ad-settings]')
 			.getAttribute('data-settings');
 		return JSON.parse(dataSettingsElement).target_params;
-	}
-
-	// Transfered from: https://github.com/Wikia/player1-ads-adlibrary/blob/0df200c535adf3599c7de9e99b719953af2784e1/configs/global-config.js#L414-L435
-	setSlParamForAdSlots() {
-		communicationService.on(
-			eventsRepository.AD_ENGINE_SLOT_ADDED,
-			({ slot: adSlot }) => {
-				const slParams = [];
-
-				if (adSlot.getConfigProperty('lazyLoad')) {
-					slParams.push('LL');
-				}
-
-				if (gamefaqsConfig.timeouts.bidder) {
-					slParams.push(`T-${gamefaqsConfig.timeouts.bidder}`);
-				}
-
-				adSlot.config.targeting.sl =
-					adSlot.getSlotName() + (slParams.length > 0 ? '?' + slParams.join('|') : '');
-			},
-			false,
-		);
 	}
 
 	// Transfered from: https://github.com/Wikia/player1-ads-adlibrary/blob/0df200c535adf3599c7de9e99b719953af2784e1/core/targeting.js#L205
@@ -220,5 +202,45 @@ export class GamefaqsTargetingSetup implements DiProcess {
 		}
 
 		return result;
+	}
+
+	// Transfered from: https://github.com/Wikia/player1-ads-adlibrary/blob/0df200c535adf3599c7de9e99b719953af2784e1/configs/global-config.js
+	setSlotLevelTargeting(targeting) {
+		communicationService.on(
+			eventsRepository.AD_ENGINE_SLOT_ADDED,
+			({ slot: adSlot }) => {
+				adSlot.config.targeting.sl = this.getSlValue(adSlot);
+				adSlot.config.targeting.iid = this.getIidValue(adSlot, targeting);
+			},
+			false,
+		);
+	}
+
+	getSlValue(adSlot) {
+		const slParams = [];
+
+		if (adSlot.getConfigProperty('lazyLoad')) {
+			slParams.push('LL');
+		}
+
+		if (gamefaqsConfig.timeouts.bidder) {
+			slParams.push(`T-${gamefaqsConfig.timeouts.bidder}`);
+		}
+
+		return adSlot.getSlotName() + (slParams.length > 0 ? '?' + slParams.join('|') : '');
+	}
+
+	getIidValue(adSlot, targeting) {
+		let iid = `unit=${adSlot.getSlotName()}|`;
+
+		if (targeting.vguid) {
+			iid = iid + `vguid=${targeting.vguid}|`;
+		}
+
+		if (targeting.pv) {
+			iid = iid + `pv=${targeting.pv}`;
+		}
+
+		return iid;
 	}
 }
