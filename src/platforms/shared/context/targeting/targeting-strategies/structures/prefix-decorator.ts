@@ -1,5 +1,4 @@
 import { TargetingProvider } from '../interfaces/targeting-provider';
-import { TaxonomyTags } from '../interfaces/taxonomy-tags';
 
 export class PrefixDecorator implements TargetingProvider<TaxonomyTags> {
 	private tagsToAddPrefix = ['gnre', 'media', 'pform', 'pub', 'theme', 'tv'];
