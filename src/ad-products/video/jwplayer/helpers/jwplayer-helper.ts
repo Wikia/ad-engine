@@ -19,7 +19,7 @@ export class JWPlayerHelper {
 		protected jwplayer: JWPlayer,
 		protected readonly targeting: VideoTargeting,
 	) {
-		this.trackEachSeqInRv = context.get('options.video.trackEachSequence') == true;
+		this.trackEachSeqInRv = !!context.get('options.video.trackEachSequence');
 	}
 
 	private calledOnce = false;
