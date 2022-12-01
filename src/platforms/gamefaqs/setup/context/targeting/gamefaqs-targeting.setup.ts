@@ -5,7 +5,6 @@ import {
 	DiProcess,
 	eventsRepository,
 } from '@wikia/ad-engine';
-import { gamefaqsConfig } from './gamefaqs-config';
 import isMatch from 'lodash/isMatch.js';
 
 interface CookieBasedTargetingParams {
@@ -33,12 +32,14 @@ interface TargetingParams extends CookieBasedTargetingParams {
 
 export class GamefaqsTargetingSetup implements DiProcess {
 	execute(): Promise<void> | void {
+		const customConfig = context.get('custom');
+
 		const targeting = {
 			...this.getPageLevelTargeting(),
-			...this.getCookieBasedTargeting(),
+			...this.getCookieBasedTargeting(customConfig),
 		};
 
-		this.setSlotLevelTargeting(targeting);
+		this.setSlotLevelTargeting(targeting, customConfig);
 
 		context.set('targeting', {
 			...context.get('targeting'),
@@ -73,12 +74,12 @@ export class GamefaqsTargetingSetup implements DiProcess {
 	}
 
 	// Transfered from: https://github.com/Wikia/player1-ads-adlibrary/blob/0df200c535adf3599c7de9e99b719953af2784e1/core/targeting.js#L205
-	getCookieBasedTargeting(): CookieBasedTargetingParams {
+	getCookieBasedTargeting(customConfig): CookieBasedTargetingParams {
 		const cookieAdapter = new CookieStorageAdapter();
 		const browserSessionCookie = '_BB.bs';
 		const dailySessionCookie = '_BB.d';
 
-		const consolidate = gamefaqsConfig.targeting.cookie.consolidate;
+		const consolidate = customConfig.targeting.cookie.consolidate;
 		let surround = null;
 		const surroundCookie = cookieAdapter.getItem('surround');
 
@@ -115,10 +116,10 @@ export class GamefaqsTargetingSetup implements DiProcess {
 				'x',
 				'y',
 				'z',
-			].slice(0, gamefaqsConfig.targeting.seats.session);
+			].slice(0, customConfig.targeting.seats.session);
 			const session = availableSessions[Math.floor(Math.random() * availableSessions.length)];
 			const subsession = (
-				Math.floor(Math.random() * gamefaqsConfig.targeting.seats.subsession) + 1
+				Math.floor(Math.random() * customConfig.targeting.seats.subsession) + 1
 			).toString();
 			surround = [session, subsession];
 		}
@@ -134,7 +135,7 @@ export class GamefaqsTargetingSetup implements DiProcess {
 		};
 
 		const cookieKeyMapKeys = ['session', 'subses', 'ftag', 'ttag'];
-		const keyMap = gamefaqsConfig.targeting.cookie.keyMap;
+		const keyMap = customConfig.targeting.cookie.keyMap;
 
 		for (let i = 0; i < cookieKeyMapKeys.length; i += 1) {
 			const key = cookieKeyMapKeys[i];
@@ -205,26 +206,26 @@ export class GamefaqsTargetingSetup implements DiProcess {
 	}
 
 	// Transfered from: https://github.com/Wikia/player1-ads-adlibrary/blob/0df200c535adf3599c7de9e99b719953af2784e1/configs/global-config.js
-	setSlotLevelTargeting(targeting) {
+	setSlotLevelTargeting(targeting, customConfig) {
 		communicationService.on(
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
 			({ slot: adSlot }) => {
-				adSlot.config.targeting.sl = this.getSlValue(adSlot);
+				adSlot.config.targeting.sl = this.getSlValue(adSlot, customConfig);
 				adSlot.config.targeting.iid = this.getIidValue(adSlot, targeting);
 			},
 			false,
 		);
 	}
 
-	getSlValue(adSlot) {
+	getSlValue(adSlot, customConfig) {
 		const slParams = [];
 
 		if (adSlot.getConfigProperty('lazyLoad')) {
 			slParams.push('LL');
 		}
 
-		if (gamefaqsConfig.timeouts.bidder) {
-			slParams.push(`T-${gamefaqsConfig.timeouts.bidder}`);
+		if (customConfig.timeouts.bidder) {
+			slParams.push(`T-${customConfig.timeouts.bidder}`);
 		}
 
 		return adSlot.getSlotName() + (slParams.length > 0 ? '?' + slParams.join('|') : '');
