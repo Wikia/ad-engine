@@ -12,15 +12,11 @@ const EMPTY_VAST_CODE = 21009;
 export class JWPlayerHelper {
 	static LOG_GROUP_NAME = 'jwplayer-helper';
 
-	private readonly trackEachSeqInRv;
-
 	constructor(
 		protected adSlot: AdSlot,
 		protected jwplayer: JWPlayer,
 		protected readonly targeting: VideoTargeting,
-	) {
-		this.trackEachSeqInRv = !!context.get('options.video.trackEachSequence');
-	}
+	) {}
 
 	private calledOnce = false;
 
@@ -182,10 +178,6 @@ export class JWPlayerHelper {
 	}
 
 	private getRvKeyVal(rv: number): string | string[] {
-		if (rv === 1) return '1';
-		if (this.trackEachSeqInRv) {
-			return [rv.toString(), '2+'];
-		}
-		return '2+';
+		return rv === 1 ? '1' : [rv.toString(), '2+'];
 	}
 }
