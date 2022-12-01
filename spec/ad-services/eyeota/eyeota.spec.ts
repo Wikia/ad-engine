@@ -1,4 +1,8 @@
-import { eyeota } from '@wikia/ad-services';
+import { parseContextTags, eyeota } from '@wikia/ad-services';
+import {
+	FandomContext,
+	Site,
+} from '@wikia/platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 import { context, tcf, utils } from '../../../src/core/index';
@@ -79,6 +83,22 @@ describe('Eyeota', () => {
 		context.remove('targeting.s0v');
 	});
 
+	it('constructs proper url with context', async () => {
+		window.fandomContext = { site: null, page: null } as FandomContext;
+		const mockedTags = { gnre: ['1', '2', '3'], pub: ['test'], pform: ['xbox'] };
+		const mockedContext = new FandomContext(
+			new Site([], true, 'ec', 'test', false, mockedTags, null, 'general'),
+			null,
+		);
+		sandbox.stub(window.fandomContext, 'site').value(mockedContext.site);
+		const src = await eyeota.createScriptSource();
+		delete window.fandomContext;
+
+		expect(src).to.equal(
+			'https://ps.eyeota.net/pixel?pid=r8rcb20&sid=fandom&t=ajs&s0v=undefined&gnre=1&gnre=2&gnre=3&pform=xbox&pub=test',
+		);
+	});
+
 	it('constructs proper params on GPDR-related geo', async () => {
 		sandbox.restore();
 		sandbox
@@ -93,5 +113,23 @@ describe('Eyeota', () => {
 		);
 
 		context.remove('targeting.s0v');
+	});
+
+	describe('parseContextTags', () => {
+		it('should add params from context tag object', () => {
+			const testTags = { gnre: ['1', '2', '3'], tv: ['a'] };
+
+			const testUrl = parseContextTags(testTags);
+
+			expect(testUrl).to.equal('&gnre=1&gnre=2&gnre=3&tv=a');
+		});
+
+		it('should encode special characters and spaces', () => {
+			const testTags = { pform: ['xbox series x', 'ś'] };
+
+			const testUrl = parseContextTags(testTags);
+
+			expect(testUrl).to.equal('&pform=xbox%20series%20x&pform=%C5%9B');
+		});
 	});
 });
