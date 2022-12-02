@@ -170,10 +170,14 @@ export class JWPlayerHelper {
 			correlator: state.correlator,
 			vpos: position,
 			targeting: {
-				rv: state.rv,
+				rv: this.getRvKeyVal(state.rv),
 				v1: state.playlistItem.mediaid || '',
 				...this.targeting,
 			},
 		});
+	}
+
+	private getRvKeyVal(rv: number): string | string[] {
+		return rv === 1 ? '1' : [rv.toString(), '2+'];
 	}
 }
