@@ -5,33 +5,11 @@ import {
 	DiProcess,
 	eventsRepository,
 } from '@wikia/ad-engine';
+import { TargetingParams, CookieBasedTargetingParams } from './interfaces/targeting-params';
 import isMatch from 'lodash/isMatch.js';
 
-interface CookieBasedTargetingParams {
-	ftag?: string;
-	ttag?: string;
-	pv?: string;
-	session?: string;
-	subses?: string;
-}
-
-interface TargetingParams extends CookieBasedTargetingParams {
-	con?: string;
-	franchise?: string;
-	game?: string;
-	genre?: string;
-	env?: string;
-	publisher?: string;
-	ptype?: string;
-	rating?: string;
-	rdate?: string;
-	score?: string;
-	user?: string;
-	vguid?: string;
-}
-
-export class GamefaqsTargetingSetup implements DiProcess {
-	execute(): Promise<void> | void {
+export class NewsAndRatingsTargetingSetup implements DiProcess {
+	execute(): void {
 		const customConfig = context.get('custom');
 
 		const targeting = {
@@ -47,23 +25,35 @@ export class GamefaqsTargetingSetup implements DiProcess {
 		});
 	}
 
-	getPageLevelTargeting() {
+	getPageLevelTargeting(): TargetingParams {
 		const targetParams = this.getMetadataTargetingParams();
+
+		let targeting: TargetingParams = {};
+
+		if (targetParams) {
+			for (const [key, value] of Object.entries(targetParams)) {
+				targeting[key] = value;
+			}
+		}
+
+		targeting = {
+			...targeting,
+			...this.getUtagDataParams(),
+		};
+
+		return targeting;
+	}
+
+	getUtagDataParams() {
 		const utagData = window.utag_data;
 
-		return {
-			con: targetParams?.con,
-			franchise: targetParams?.franchise,
-			game: targetParams?.game,
-			genre: targetParams?.genre,
-			publisher: targetParams?.publisher,
-			ptype: utagData?.pageType,
-			rating: targetParams?.rating,
-			rdate: targetParams?.rdate,
-			score: targetParams?.score,
-			user: utagData?.userType,
-			vguid: utagData?.pageViewGuid,
-		};
+		if (utagData) {
+			return {
+				ptype: utagData?.pageType,
+				user: utagData?.userType,
+				vguid: utagData?.pageViewGuid,
+			};
+		}
 	}
 
 	getMetadataTargetingParams(): TargetingParams {
