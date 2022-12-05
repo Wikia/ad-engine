@@ -4,6 +4,7 @@ import {
 	context,
 	DiProcess,
 	eventsRepository,
+	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -22,8 +23,11 @@ export class GamefaqsPrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.rubicon_display', getRubiconDisplayContext());
 		context.set('bidders.prebid.wikia', getWikiaContext());
 
-		context.set('bidders.enabled', true);
-		context.set('bidders.prebid.enabled', true);
+		this.registerListeners();
+
+		// TODO: we could replace everything below with the instant-config once we add it
+		context.set('bidders.enabled', !!utils.queryString.get('adengine_prebid'));
+		context.set('bidders.prebid.enabled', !!utils.queryString.get('adengine_prebid'));
 		context.set(
 			'bidders.prebid.libraryUrl',
 			'//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v6.9.0/20221115.min.js',
@@ -34,8 +38,6 @@ export class GamefaqsPrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.medianet.enabled', true);
 		context.set('bidders.prebid.rubicon_display.enabled', true);
 		context.set('bidders.prebid.wikia.enabled', true);
-
-		this.registerListeners();
 	}
 
 	private registerListeners() {
