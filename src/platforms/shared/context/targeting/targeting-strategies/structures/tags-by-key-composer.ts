@@ -1,5 +1,5 @@
 import { TargetingProvider } from '../interfaces/targeting-provider';
-import { TaxonomyTags, taxonomyTags } from '../interfaces/taxonomy-tags';
+import { taxonomyTags } from '../interfaces/taxonomy-tags';
 
 export class TagsByKeyComposer implements TargetingProvider<TaxonomyTags> {
 	constructor(private tagsToCombine: TargetingProvider<TaxonomyTags>[]) {}
