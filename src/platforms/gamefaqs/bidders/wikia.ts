@@ -2,6 +2,9 @@ export function getWikiaContext(): object {
 	return {
 		enabled: false,
 		slots: {
+			leader_top: {
+				sizes: [[728, 90]],
+			},
 			leader_plus_top: {
 				sizes: [[728, 90]],
 			},
