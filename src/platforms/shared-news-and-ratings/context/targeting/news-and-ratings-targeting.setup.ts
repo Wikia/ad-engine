@@ -59,8 +59,13 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 	getMetadataTargetingParams(): TargetingParams {
 		const dataSettingsElement = document.head
 			.querySelector('[id=ad-settings]')
-			.getAttribute('data-settings');
-		return JSON.parse(dataSettingsElement).target_params;
+			?.getAttribute('data-settings');
+
+		if (dataSettingsElement) {
+			return JSON.parse(dataSettingsElement)?.target_params;
+		}
+
+		return null;
 	}
 
 	// Transfered from: https://github.com/Wikia/player1-ads-adlibrary/blob/0df200c535adf3599c7de9e99b719953af2784e1/core/targeting.js#L205
