@@ -1,4 +1,3 @@
-import { slotsContext } from '@platforms/shared';
 import { context, DiProcess, universalAdPackage } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -116,8 +115,6 @@ export class FanCentralSlotsContextSetup implements DiProcess {
 				],
 			},
 		};
-
-		slotsContext.setupSlotVideoContext();
 
 		context.set('slots', slots);
 	}
