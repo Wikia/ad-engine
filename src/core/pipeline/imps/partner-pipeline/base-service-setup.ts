@@ -12,6 +12,15 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 		this.resolve = resolve;
 	});
 
+	isEnabled(contextVariable: string): boolean {
+		return (
+			context.get(contextVariable) &&
+			context.get('options.trackingOptIn') &&
+			!context.get('options.optOutSale') &&
+			!context.get('wiki.targeting.directedAtChildren')
+		);
+	}
+
 	setOptions(opt: PartnerInitializationProcessOptions): PartnerInitializationProcess {
 		this.options = opt;
 		return this;

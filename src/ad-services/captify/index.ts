@@ -1,32 +1,19 @@
-import { BaseServiceSetup, context, utils } from '@ad-engine/core';
+import { BaseServiceSetup, utils } from '@ad-engine/core';
 
 const logGroup = 'captify';
 
 class Captify extends BaseServiceSetup {
 	PIXEL_URL = 'https://p.cpx.to/p/12974/px.js';
 
-	isEnabled(): boolean {
-		return (
-			context.get('services.captify.enabled') &&
-			context.get('options.trackingOptIn') &&
-			!context.get('options.optOutSale') &&
-			!context.get('wiki.targeting.directedAtChildren')
-		);
-	}
-
 	async call(): Promise<void> {
-		if (!this.isEnabled()) {
+		if (!this.isEnabled('services.captify.enabled')) {
 			utils.logger(logGroup, 'disabled');
 
 			return Promise.resolve();
 		}
 		window.captify_kw_query_12974 = '';
-		const elem = document.createElement('script');
 		const section = document.getElementsByTagName('script')[0];
-		elem.type = 'text/javascript';
-		elem.async = !0;
-		elem.src = this.PIXEL_URL;
-		section.parentNode.insertBefore(elem, section);
+		utils.scriptLoader.createScript(this.PIXEL_URL, 'text/javascript', false, section);
 
 		return Promise.resolve();
 	}

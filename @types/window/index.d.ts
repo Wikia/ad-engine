@@ -16,7 +16,7 @@ interface Window {
 	au_seg?: any;
 	beaconId?: string;
 	beacon_id?: string;
-	captify_kw_query_12974: string;
+	captify_kw_query_12974?: string;
 	canPlayVideo?: any;
 	cnx?: any;
 	confiant?: Confiant;
