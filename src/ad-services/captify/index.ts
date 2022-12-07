@@ -3,6 +3,8 @@ import { BaseServiceSetup, context, utils } from '@ad-engine/core';
 const logGroup = 'captify';
 
 class Captify extends BaseServiceSetup {
+	PIXEL_URL = 'https://p.cpx.to/p/12974/px.js';
+
 	isEnabled(): boolean {
 		return (
 			context.get('services.captify.enabled') &&
@@ -23,7 +25,7 @@ class Captify extends BaseServiceSetup {
 		const section = document.getElementsByTagName('script')[0];
 		elem.type = 'text/javascript';
 		elem.async = !0;
-		elem.src = 'https://p.cpx.to/p/12974/px.js';
+		elem.src = this.PIXEL_URL;
 		section.parentNode.insertBefore(elem, section);
 
 		return Promise.resolve();
