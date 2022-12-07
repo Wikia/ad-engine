@@ -1,4 +1,4 @@
-import { BaseServiceSetup, context, utils } from '@ad-engine/core';
+import { BaseServiceSetup, utils } from '@ad-engine/core';
 
 const profileId = '2721';
 const pubId = '156260';
@@ -10,7 +10,7 @@ class IdentityHub extends BaseServiceSetup {
 	private identityHubScriptSrc = `https://ads.pubmatic.com/AdServer/js/pwt/${pubId}/${profileId}/pwt.js`;
 
 	call(): Promise<void> {
-		if (!this.isEnabled()) {
+		if (!this.isEnabled('pubmatic.identityHub.enabled')) {
 			utils.logger(logGroup, 'disabled');
 			return;
 		}
@@ -31,14 +31,6 @@ class IdentityHub extends BaseServiceSetup {
 				this.isLoaded = true;
 			});
 		}
-	}
-
-	private isEnabled(): boolean {
-		return (
-			context.get('pubmatic.identityHub.enabled') &&
-			!context.get('options.optOutSale') &&
-			!context.get('wiki.targeting.directedAtChildren')
-		);
 	}
 }
 
