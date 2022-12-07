@@ -1,5 +1,6 @@
 import { Injectable } from '@wikia/dependency-injection';
 import {
+	captify,
 	communicationService,
 	context,
 	DiProcess,
@@ -33,6 +34,7 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 				audigent,
 				iasPublisherOptimization,
 				confiant,
+				captify,
 				stroer,
 				nielsen,
 				identityHub,
