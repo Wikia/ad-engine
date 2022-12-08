@@ -20,5 +20,9 @@ export class UcpDesktopBaseContextSetup extends BaseContextSetup {
 			'events.pushOnScroll.nativoThreshold',
 			this.instantConfig.get('icPushOnScrollNativoThreshold', 200),
 		);
+		context.set(
+			'services.nativo.gamIncontentEnabled',
+			!context.get('state.isMobile') && this.instantConfig.get('icIncontentLeaderboard'),
+		);
 	}
 }

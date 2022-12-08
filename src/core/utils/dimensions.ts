@@ -4,9 +4,20 @@ export interface ElementOffset {
 }
 
 /**
+ * Replaces jQuery `width()` method
+ */
+export function getWidth(element: HTMLElement): number {
+	if (!element) return 0;
+
+	return parseFloat(getComputedStyle(element, null).width.replace('px', ''));
+}
+
+/**
  * Replaces jQuery `height()` method
  */
 export function getHeight(element: HTMLElement): number {
+	if (!element) return 0;
+
 	return parseFloat(getComputedStyle(element, null).height.replace('px', ''));
 }
 
