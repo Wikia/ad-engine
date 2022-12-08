@@ -17,6 +17,14 @@ import { getMedianetContext } from '../../../bidders/medianet';
 @Injectable()
 export class GamefaqsPrebidConfigSetup implements DiProcess {
 	execute(): void {
+		// TODO: we could replace everything below with the instant-config once we add it
+		context.set('bidders.enabled', !!utils.queryString.get('adengine_prebid'));
+		context.set('bidders.prebid.enabled', !!utils.queryString.get('adengine_prebid'));
+
+		if (this.isPrebidEnabled()) {
+			return;
+		}
+
 		context.set('bidders.prebid.appnexus', getAppnexusContext());
 		context.set('bidders.prebid.indexExchange', getIndexExchangeContext());
 		context.set('bidders.prebid.medianet', getMedianetContext());
@@ -26,8 +34,6 @@ export class GamefaqsPrebidConfigSetup implements DiProcess {
 		this.registerListeners();
 
 		// TODO: we could replace everything below with the instant-config once we add it
-		context.set('bidders.enabled', !!utils.queryString.get('adengine_prebid'));
-		context.set('bidders.prebid.enabled', !!utils.queryString.get('adengine_prebid'));
 		context.set(
 			'bidders.prebid.libraryUrl',
 			'//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v6.9.0/20221115.min.js',
@@ -48,5 +54,9 @@ export class GamefaqsPrebidConfigSetup implements DiProcess {
 			},
 			false,
 		);
+	}
+
+	private isPrebidEnabled() {
+		return context.get('bidders.prebid.enabled') === false;
 	}
 }
