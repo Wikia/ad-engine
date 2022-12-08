@@ -6,7 +6,7 @@ import {
 	ProcessPipeline,
 	utils,
 } from '@wikia/ad-engine';
-import { gptSetup } from '@platforms/shared';
+import { bootstrapAndGetConsent, gptSetup } from '@platforms/shared';
 import { basicContext } from './ad-context';
 
 import { ComicvineSlotsContextSetup } from './setup/context/slots/comicvine-slots-context.setup';
@@ -21,7 +21,7 @@ export class ComicvinePlatform {
 			() => context.extend(basicContext),
 			() => context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441),
 			() => context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src')),
-			// TODO: we need a CMP step here, so we won't call for ads unless we have a clear idea of the privacy policy of a visitor
+			() => bootstrapAndGetConsent(),
 			// TODO: to decide if we want to call instant-config service for the first releases?
 			ComicvineDynamicSlotsSetup,
 			ComicvineSlotsContextSetup,
