@@ -8,12 +8,12 @@ import {
 } from '@wikia/ad-engine';
 import { gptSetup } from '@platforms/shared';
 
-import { basicContext } from '../gamefaqs/ad-context';
+import { basicContext } from './ad-context';
 import { GamespotSlotsContextSetup } from './setup/context/slots/gamespot-slots-context.setup';
 import { GamespotDynamicSlotsSetup } from './setup/dynamic-slots/gamespot-dynamic-slots.setup';
 
 @Injectable()
-export class GiantBombPlatform {
+export class GameSpotPlatform {
 	constructor(private pipeline: ProcessPipeline) {}
 
 	execute(): void {
