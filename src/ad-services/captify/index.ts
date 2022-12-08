@@ -1,4 +1,5 @@
 import { BaseServiceSetup, utils } from '@ad-engine/core';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 
 const logGroup = 'captify';
 
@@ -13,8 +14,10 @@ class Captify extends BaseServiceSetup {
 		}
 		window.captify_kw_query_12974 = '';
 		const section = document.getElementsByTagName('script')[0];
-		utils.scriptLoader.createScript(this.PIXEL_URL, 'text/javascript', false, section);
-
+		const elem = utils.scriptLoader.createScript(this.PIXEL_URL, 'text/javascript', true, section);
+		elem.onload = () => {
+			communicationService.emit(eventsRepository.CAPTIFY_LOADED);
+		};
 		return Promise.resolve();
 	}
 }
