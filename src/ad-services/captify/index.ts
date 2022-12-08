@@ -12,12 +12,15 @@ class Captify extends BaseServiceSetup {
 
 			return Promise.resolve();
 		}
+
 		window.captify_kw_query_12974 = '';
 		const section = document.getElementsByTagName('script')[0];
 		const elem = utils.scriptLoader.createScript(this.PIXEL_URL, 'text/javascript', true, section);
+
 		elem.onload = () => {
 			communicationService.emit(eventsRepository.CAPTIFY_LOADED);
 		};
+
 		return Promise.resolve();
 	}
 }
