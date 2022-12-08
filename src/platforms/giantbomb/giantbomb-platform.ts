@@ -8,7 +8,7 @@ import {
 } from '@wikia/ad-engine';
 import { gptSetup } from '@platforms/shared';
 
-import { basicContext } from '../gamefaqs/ad-context';
+import { basicContext } from './ad-context';
 import { GiantbombSlotsContextSetup } from './setup/context/slots/giantbomb-slots-context.setup';
 import { GiantbombDynamicSlotsSetup } from './setup/dynamic-slots/giantbomb-dynamic-slots.setup';
 
