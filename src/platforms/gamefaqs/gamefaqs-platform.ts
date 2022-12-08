@@ -4,6 +4,7 @@ import {
 	communicationService,
 	context,
 	eventsRepository,
+	utils,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
 import { bootstrapAndGetConsent, gptSetup } from '@platforms/shared';
@@ -20,6 +21,16 @@ export class GamefaqsPlatform {
 	execute(): void {
 		this.pipeline.add(
 			() => context.extend(basicContext),
+			() =>
+				context.set(
+					'custom.dfpId',
+					utils.queryString.get('switch_to_rv_gam') === '1' ? 22309610186 : 5441,
+				),
+			() =>
+				context.set(
+					'src',
+					utils.queryString.get('switch_src_to_test') === '1' ? ['test'] : ['gpt'],
+				),
 			// TODO: to decide if we want to call instant-config service for the first releases?
 			() => bootstrapAndGetConsent(),
 			GamefaqsSlotsContextSetup,
