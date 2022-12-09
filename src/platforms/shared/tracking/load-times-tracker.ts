@@ -12,6 +12,7 @@ const eventsToTrack = {
 	audigent_matches_library_loaded: eventsRepository.AUDIGENT_MATCHES_LIBRARY_LOADED,
 	audigent_segment_library_loaded: eventsRepository.AUDIGENT_SEGMENT_LIBRARY_LOADED,
 	audigent_segments_ready: eventsRepository.AUDIGENT_SEGMENTS_READY,
+	captify_loaded: eventsRepository.CAPTIFY_LOADED,
 	eyeota_started: eventsRepository.EYEOTA_STARTED,
 	eyeota_failed: eventsRepository.EYEOTA_FAILED,
 };

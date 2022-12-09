@@ -2,6 +2,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import {
 	audigent,
 	bidders,
+	captify,
 	communicationService,
 	confiant,
 	context,
@@ -36,6 +37,7 @@ export class UcpMobileAdsMode implements DiProcess {
 				ats,
 				audigent,
 				bidders,
+				captify,
 				liveConnect,
 				facebookPixel,
 				wadRunner,

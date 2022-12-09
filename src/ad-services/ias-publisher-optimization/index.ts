@@ -35,22 +35,13 @@ class IasPublisherOptimization extends BaseServiceSetup {
 	private isLoaded = false;
 	private slotList: string[] = [];
 
-	private isEnabled(): boolean {
-		return (
-			context.get('services.iasPublisherOptimization.enabled') &&
-			context.get('options.trackingOptIn') &&
-			!context.get('options.optOutSale') &&
-			!context.get('wiki.targeting.directedAtChildren')
-		);
-	}
-
 	private resolveIASReady: () => void;
 	IASReady: Promise<void> = new Promise<void>((resolve) => {
 		this.resolveIASReady = resolve;
 	});
 
 	call(): Promise<void> {
-		if (!this.isEnabled()) {
+		if (!this.isEnabled('services.iasPublisherOptimization.enabled')) {
 			utils.logger(logGroup, 'disabled');
 			return Promise.resolve();
 		}
