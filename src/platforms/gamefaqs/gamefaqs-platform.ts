@@ -5,6 +5,7 @@ import { bootstrapAndGetConsent, gptSetup } from '@platforms/shared';
 import { basicContext } from './ad-context';
 import { GamefaqsSlotsContextSetup } from './setup/context/slots/gamefaqs-slots-context.setup';
 import { GamefaqsDynamicSlotsSetup } from './setup/dynamic-slots/gamefaqs-dynamic-slots.setup';
+import { GamefaqsTargetingSetup } from './setup/context/targeting/gamefaqs-targeting.setup';
 
 @Injectable()
 export class GamefaqsPlatform {
@@ -15,9 +16,9 @@ export class GamefaqsPlatform {
 			() => context.extend(basicContext),
 			// TODO: to decide if we want to call instant-config service for the first releases?
 			() => bootstrapAndGetConsent(),
+      GamefaqsTargetingSetup,
 			GamefaqsSlotsContextSetup,
 			GamefaqsDynamicSlotsSetup,
-			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 			gptSetup.call,
 		);
