@@ -6,7 +6,7 @@ import {
 	utils,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
-import { gptSetup } from '@platforms/shared';
+import { getDeviceMode, gptSetup } from '@platforms/shared';
 import { basicContext } from './ad-context';
 
 import { CcnSlotsContextSetup } from './setup/context/slots/ccn-slots-context.setup';
@@ -19,6 +19,7 @@ export class CcnPlatform {
 	execute(): void {
 		this.pipeline.add(
 			() => context.extend(basicContext),
+			() => context.set('state.isMobile', getDeviceMode() === 'mobile'),
 			() => context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 4788 : 5441),
 			() => context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src')),
 			// TODO: do we need a CMP step here if the CCN does not have it now? ;-)

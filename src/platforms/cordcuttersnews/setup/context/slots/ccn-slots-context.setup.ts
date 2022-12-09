@@ -4,7 +4,8 @@ import { Injectable } from '@wikia/dependency-injection';
 @Injectable()
 export class CcnSlotsContextSetup implements DiProcess {
 	execute(): void {
-		const slots = {
+		const isMobile = context.get('state.isMobile');
+		const desktopSlots = {
 			'div-gpt-ad-headerad': {
 				defaultSizes: [[728, 90]],
 				targeting: {
@@ -34,7 +35,44 @@ export class CcnSlotsContextSetup implements DiProcess {
 				},
 			},
 		};
+		const mobileSlots = {
+			'div-gpt-ad-headerad': {
+				defaultSizes: [[320, 50]],
+				targeting: {
+					loc: 'top',
+					pos: 'mlb1',
+				},
+			},
+			'div-gpt-ad-hero': {
+				defaultSizes: [[300, 250]],
+				targeting: {
+					loc: 'middle',
+					pos: 'mmr4',
+				},
+			},
+			'div-gpt-ad-abovecontent': {
+				defaultSizes: [[320, 50]],
+				targeting: {
+					loc: 'middle',
+					pos: 'mlb5',
+				},
+			},
+			'div-gpt-ad-catsidebar': {
+				defaultSizes: [[300, 250]],
+				targeting: {
+					loc: 'bottom',
+					pos: 'mmr4',
+				},
+			},
+			'div-gpt-ad-anchorad': {
+				defaultSizes: [[320, 50]],
+				targeting: {
+					loc: 'bottom',
+					pos: 'mlb3',
+				},
+			},
+		};
 
-		context.set('slots', slots);
+		context.set('slots', isMobile ? mobileSlots : desktopSlots);
 	}
 }
