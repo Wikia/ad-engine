@@ -17,17 +17,8 @@ export function parseContextTags(tags: TaxonomyTags): string {
 }
 
 class Eyeota extends BaseServiceSetup {
-	isEnabled(): boolean {
-		return (
-			context.get('services.eyeota.enabled') &&
-			context.get('options.trackingOptIn') &&
-			!context.get('options.optOutSale') &&
-			!context.get('wiki.targeting.directedAtChildren')
-		);
-	}
-
 	async call(): Promise<void> {
-		if (!this.isEnabled()) {
+		if (!this.isEnabled('services.eyeota.enabled')) {
 			utils.logger(logGroup, 'disabled');
 
 			return Promise.resolve();
