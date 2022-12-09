@@ -1,6 +1,7 @@
 import { Injectable } from '@wikia/dependency-injection';
 import {
 	audigent,
+	captify,
 	communicationService,
 	context,
 	DiProcess,
@@ -27,6 +28,7 @@ export class F2AdsMode implements DiProcess {
 					dependencies: [userIdentity.initialized],
 				}),
 				audigent,
+				captify,
 				liveConnect,
 				iasPublisherOptimization,
 				nielsen,
