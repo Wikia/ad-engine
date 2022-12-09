@@ -13,15 +13,6 @@ class Audigent extends BaseServiceSetup {
 	private matchesTagScriptLoader: Promise<void>;
 	private segmentsScriptLoader: Promise<void>;
 
-	private isEnabled(): boolean {
-		return (
-			context.get('services.audigent.enabled') &&
-			context.get('options.trackingOptIn') &&
-			!context.get('options.optOutSale') &&
-			!context.get('wiki.targeting.directedAtChildren')
-		);
-	}
-
 	loadSegmentLibrary(): void {
 		this.segmentsScriptLoader = utils.scriptLoader
 			.loadScript(
@@ -59,7 +50,7 @@ class Audigent extends BaseServiceSetup {
 	}
 
 	async call(): Promise<void> {
-		if (!this.isEnabled()) {
+		if (!this.isEnabled('services.audigent.enabled')) {
 			utils.logger(logGroup, 'disabled');
 			return;
 		}

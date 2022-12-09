@@ -28,18 +28,8 @@ class LiveConnect extends BaseServiceSetup {
 	private storage;
 	private storageConfig: CachingStrategyConfig;
 
-	private isEnabled(): boolean {
-		return (
-			context.get('services.liveConnect.enabled') &&
-			context.get('services.liveConnect.cachingStrategy') &&
-			context.get('options.trackingOptIn') &&
-			!context.get('options.optOutSale') &&
-			!context.get('wiki.targeting.directedAtChildren')
-		);
-	}
-
 	call(): void {
-		if (!this.isEnabled()) {
+		if (!this.isEnabled(['services.liveConnect.enabled', 'services.liveConnect.cachingStrategy'])) {
 			utils.logger(logGroup, 'disabled');
 			return;
 		}

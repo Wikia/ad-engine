@@ -7,7 +7,7 @@ class Ats extends BaseServiceSetup {
 	private atsScriptSrc = 'https://ats.rlcdn.com/ats.js';
 
 	call(): Promise<void> {
-		if (!this.isEnabled()) {
+		if (!this.isEnabled('bidders.liveRampATS.enabled')) {
 			utils.logger(logGroup, 'disabled');
 			return Promise.resolve();
 		}
@@ -34,14 +34,6 @@ class Ats extends BaseServiceSetup {
 				this.isLoaded = true;
 			});
 		}
-	}
-
-	private isEnabled(): boolean {
-		return (
-			context.get('bidders.liveRampATS.enabled') &&
-			!context.get('options.optOutSale') &&
-			!context.get('wiki.targeting.directedAtChildren')
-		);
 	}
 }
 

@@ -19,6 +19,7 @@ describe('ATS', () => {
 
 		context.set('bidders.liveRampATS.enabled', true);
 		context.set('options.optOutSale', false);
+		context.set('options.trackingOptIn', true);
 		context.set('wiki.targeting.directedAtChildren', false);
 		context.set('wiki.opts.userEmailHashes', ['hash1', 'hash2', 'hash3']);
 		context.set('state.isLogged', true);
