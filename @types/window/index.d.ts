@@ -42,11 +42,12 @@ interface Window {
 	RLQ?: any;
 	sessionId?: string;
 	session_id?: string;
-	trackingOptIn?: any;
 	Sailthru?: Sailthru;
 	SilverSurferSDK?: SilverSurferSDK;
 	// Fandom JWPlayer sets the sponsored videos list
 	sponsoredVideos?: string[];
+	trackingOptIn?: any;
+	utag_data?: any;
 	wgCookiePath?: string;
 	XMLHttpRequest?: any;
 }
