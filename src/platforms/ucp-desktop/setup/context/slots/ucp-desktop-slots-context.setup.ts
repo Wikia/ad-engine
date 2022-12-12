@@ -57,6 +57,16 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 					rv: 1,
 				},
 			},
+			incontent_leaderboard: {
+				adProduct: 'incontent_leaderboard',
+				group: 'ILB',
+				options: {},
+				defaultSizes: [[728, 90]],
+				targeting: {
+					loc: 'middle',
+					rv: 1,
+				},
+			},
 			incontent_boxad_1: {
 				adProduct: 'incontent_boxad_1',
 				bidderAlias: 'incontent_boxad_1',

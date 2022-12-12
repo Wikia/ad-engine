@@ -29,7 +29,7 @@ export class NativoSlotsDefinitionRepository {
 	}
 
 	getNativoIncontentAdConfig(headerPosition: number): SlotSetupDefinition {
-		if (!this.nativo.isEnabled()) {
+		if (context.get('services.nativo.gamIncontentEnabled') || !this.nativo.isEnabled()) {
 			return;
 		}
 
