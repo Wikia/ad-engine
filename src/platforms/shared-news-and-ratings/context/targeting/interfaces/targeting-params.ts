@@ -1,6 +1,6 @@
 export interface CookieBasedTargetingParams {
 	ftag?: string;
-	ttag?: string;
+	ttag?: string; // TODO: Is this key needed?
 	pv?: string;
 	session?: string;
 	subses?: string;
