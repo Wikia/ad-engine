@@ -173,6 +173,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	AUDIGENT_SEGMENTS_READY: {
 		name: 'Audigent segments ready',
 	},
+	CAPTIFY_LOADED: {
+		name: 'Captify loaded',
+	},
 	EYEOTA_STARTED: {
 		name: 'Eyeota started',
 	},

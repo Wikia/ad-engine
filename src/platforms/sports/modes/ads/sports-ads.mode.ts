@@ -2,6 +2,7 @@ import { gptSetup, wadRunner } from '@platforms/shared';
 import {
 	audigent,
 	bidders,
+	captify,
 	communicationService,
 	confiant,
 	DiProcess,
@@ -28,6 +29,7 @@ export class SportsAdsMode implements DiProcess {
 				}),
 				liveConnect,
 				bidders,
+				captify,
 				wadRunner,
 				audigent,
 				iasPublisherOptimization,

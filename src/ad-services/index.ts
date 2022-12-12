@@ -2,6 +2,7 @@ export * from './anyclip';
 export * from './audigent';
 export * from './user-identity';
 export * from './bt-rec';
+export * from './captify';
 export * from './confiant';
 export * from './connatix';
 export * from './duration-media';

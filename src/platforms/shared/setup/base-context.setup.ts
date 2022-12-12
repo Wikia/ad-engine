@@ -154,6 +154,7 @@ export class BaseContextSetup implements DiProcess {
 			this.instantConfig.get('icAudigentTrackingSampling'),
 		);
 		context.set('services.audigent.segmentLimit', this.instantConfig.get('icAudigentSegmentLimit'));
+		context.set('services.captify.enabled', this.instantConfig.get('icCaptify'));
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
 		context.set('services.durationMedia.enabled', this.instantConfig.get('icDurationMedia'));
 		if (!this.instantConfig.get('icDurationMedia')) {

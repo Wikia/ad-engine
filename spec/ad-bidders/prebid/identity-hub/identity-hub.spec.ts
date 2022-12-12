@@ -12,6 +12,7 @@ describe('Pubmatic IdentityHub', () => {
 		loadScriptSpy.resolvesThis();
 		contextStub = sandbox.stub(context);
 		contextStub.get.withArgs('pubmatic.identityHub.enabled').returns(true);
+		contextStub.get.withArgs('options.trackingOptIn').returns(true);
 		contextStub.get.withArgs('options.optOutSale').returns(false);
 		contextStub.get.withArgs('wiki.targeting.directedAtChildren').returns(false);
 	});

@@ -13,6 +13,7 @@ import { basicContext } from './ad-context';
 import { GamefaqsSlotsContextSetup } from './setup/context/slots/gamefaqs-slots-context.setup';
 import { GamefaqsDynamicSlotsSetup } from './setup/dynamic-slots/gamefaqs-dynamic-slots.setup';
 import { GamefaqsPrebidConfigSetup } from './setup/context/prebid/gamefaqs-prebid-config.setup';
+import { GamefaqsTargetingSetup } from './setup/context/targeting/gamefaqs-targeting.setup';
 
 @Injectable()
 export class GamefaqsPlatform {
@@ -25,6 +26,7 @@ export class GamefaqsPlatform {
 			() => context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src')),
 			// TODO: to decide if we want to call instant-config service for the first releases?
 			() => bootstrapAndGetConsent(),
+			GamefaqsTargetingSetup,
 			GamefaqsSlotsContextSetup,
 			GamefaqsDynamicSlotsSetup,
 			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
