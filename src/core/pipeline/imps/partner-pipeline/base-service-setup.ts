@@ -27,8 +27,8 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 		return (
 			contextVariablesValue &&
 			(trackingRequired ? ( context.get('options.trackingOptIn') && !context.get('options.optOutSale') &&
-				!context.get('wiki.targeting.directedAtChildren')
-		) : true));
+				!context.get('wiki.targeting.directedAtChildren') ) : true
+			));
 	}
 
 	setOptions(opt: PartnerInitializationProcessOptions): PartnerInitializationProcess {

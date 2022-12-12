@@ -30,5 +30,5 @@ export const basicContext = {
 		},
 	},
 	slots: {},
-	src: ['test'],
+	src: ['gamefaqs'],
 };
