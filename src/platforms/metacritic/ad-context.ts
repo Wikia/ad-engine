@@ -5,6 +5,11 @@ export const basicContext = {
 		region: 'aw',
 		property: 'metacritic',
 	},
+	services: {
+		instantConfig: {
+			appName: 'metacritic',
+		},
+	},
 	slots: {},
 	src: ['test'],
 };

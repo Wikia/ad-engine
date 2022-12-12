@@ -1,6 +1,6 @@
 import { Injectable } from '@wikia/dependency-injection';
 import { communicationService, context, eventsRepository, ProcessPipeline } from '@wikia/ad-engine';
-import { gptSetup } from '@platforms/shared';
+import { bootstrapAndGetConsent, gptSetup, InstantConfigSetup } from '@platforms/shared';
 import { basicContext } from './ad-context';
 
 import { MetacriticSlotsContextSetup } from './setup/context/slots/metacritic-slots-context.setup';
@@ -13,8 +13,8 @@ export class MetacriticPlatform {
 	execute(): void {
 		this.pipeline.add(
 			() => context.extend(basicContext),
-			// TODO: we need a CMP step here, so we won't call for ads unless we have a clear idea of the privacy policy of a visitor
-			// TODO: to decide if we want to call instant-config service for the first releases?
+			() => bootstrapAndGetConsent(),
+			InstantConfigSetup,
 			MetacriticDynamicSlotsSetup,
 			MetacriticSlotsContextSetup,
 			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
