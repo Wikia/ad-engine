@@ -5,6 +5,11 @@ export const basicContext = {
 		region: 'aw',
 		property: 'comicvine',
 	},
+	services: {
+		instantConfig: {
+			appName: 'comicvine',
+		},
+	},
 	slots: {},
 	src: ['test'],
 };
