@@ -5,6 +5,11 @@ export const basicContext = {
 		region: 'aw',
 		property: 'giantbomb',
 	},
+	services: {
+		instantConfig: {
+			appName: 'giantbomb',
+		},
+	},
 	slots: {},
 	targeting: {
 		seg: '',
