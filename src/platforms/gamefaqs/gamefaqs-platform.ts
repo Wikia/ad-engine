@@ -1,6 +1,6 @@
 import { Injectable } from '@wikia/dependency-injection';
 import { communicationService, context, eventsRepository, ProcessPipeline } from '@wikia/ad-engine';
-import { bootstrapAndGetConsent, gptSetup } from '@platforms/shared';
+import { bootstrapAndGetConsent, gptSetup, InstantConfigSetup } from '@platforms/shared';
 
 import { basicContext } from './ad-context';
 import { GamefaqsSlotsContextSetup } from './setup/context/slots/gamefaqs-slots-context.setup';
@@ -14,9 +14,9 @@ export class GamefaqsPlatform {
 	execute(): void {
 		this.pipeline.add(
 			() => context.extend(basicContext),
-			// TODO: to decide if we want to call instant-config service for the first releases?
 			() => bootstrapAndGetConsent(),
-      GamefaqsTargetingSetup,
+			InstantConfigSetup,
+			GamefaqsTargetingSetup,
 			GamefaqsSlotsContextSetup,
 			GamefaqsDynamicSlotsSetup,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
