@@ -5,6 +5,11 @@ export const basicContext = {
 		region: 'aw',
 		property: 'gamespot',
 	},
+	services: {
+		instantConfig: {
+			appName: 'gamespot',
+		},
+	},
 	slots: {},
 	targeting: {
 		seg: '',
