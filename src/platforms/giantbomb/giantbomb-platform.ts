@@ -1,8 +1,14 @@
 import { Injectable } from '@wikia/dependency-injection';
-import { communicationService, context, eventsRepository, ProcessPipeline } from '@wikia/ad-engine';
-import { gptSetup } from '@platforms/shared';
+import {
+	communicationService,
+	context,
+	eventsRepository,
+	utils,
+	ProcessPipeline,
+} from '@wikia/ad-engine';
+import { bootstrapAndGetConsent, gptSetup } from '@platforms/shared';
 
-import { basicContext } from '../gamefaqs/ad-context';
+import { basicContext } from './ad-context';
 import { GiantbombSlotsContextSetup } from './setup/context/slots/giantbomb-slots-context.setup';
 import { GiantbombDynamicSlotsSetup } from './setup/dynamic-slots/giantbomb-dynamic-slots.setup';
 
@@ -13,7 +19,9 @@ export class GiantbombPlatform {
 	execute(): void {
 		this.pipeline.add(
 			() => context.extend(basicContext),
-			// TODO: we need a CMP step here, so we won't call for ads unless we have a clear idea of the privacy policy of a visitor
+			() => context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441),
+			() => context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src')),
+			() => bootstrapAndGetConsent(),
 			// TODO: to decide if we want to call instant-config service for the first releases?
 			GiantbombSlotsContextSetup,
 			GiantbombDynamicSlotsSetup,
@@ -23,5 +31,13 @@ export class GiantbombPlatform {
 		);
 
 		this.pipeline.execute();
+	}
+
+	private shouldSwitchGamToRV() {
+		return utils.queryString.get('switch_to_rv_gam') === '1';
+	}
+
+	private shouldSwitchSrcToTest() {
+		return utils.queryString.get('switch_src_to_test') === '1';
 	}
 }

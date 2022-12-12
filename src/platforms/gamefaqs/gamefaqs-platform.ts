@@ -21,16 +21,8 @@ export class GamefaqsPlatform {
 	execute(): void {
 		this.pipeline.add(
 			() => context.extend(basicContext),
-			() =>
-				context.set(
-					'custom.dfpId',
-					utils.queryString.get('switch_to_rv_gam') === '1' ? 22309610186 : 5441,
-				),
-			() =>
-				context.set(
-					'src',
-					utils.queryString.get('switch_src_to_test') === '1' ? ['test'] : ['gpt'],
-				),
+			() => context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441),
+			() => context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src')),
 			// TODO: to decide if we want to call instant-config service for the first releases?
 			() => bootstrapAndGetConsent(),
 			GamefaqsSlotsContextSetup,
@@ -46,5 +38,13 @@ export class GamefaqsPlatform {
 		);
 
 		this.pipeline.execute();
+	}
+
+	private shouldSwitchGamToRV() {
+		return utils.queryString.get('switch_to_rv_gam') === '1';
+	}
+
+	private shouldSwitchSrcToTest() {
+		return utils.queryString.get('switch_src_to_test') === '1';
 	}
 }

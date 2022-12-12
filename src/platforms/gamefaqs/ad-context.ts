@@ -6,4 +6,5 @@ export const basicContext = {
 		property: 'gamefaqs',
 	},
 	slots: {},
+	src: ['gamefaqs'],
 };

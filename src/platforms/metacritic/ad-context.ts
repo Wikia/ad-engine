@@ -6,5 +6,5 @@ export const basicContext = {
 		property: 'metacritic',
 	},
 	slots: {},
-	src: ['test'],
+	src: ['metacritic'],
 };
