@@ -27,6 +27,7 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 
 	getPageLevelTargeting(): TargetingParams {
 		const targetParams = this.getMetadataTargetingParams();
+		const utagData = window.utag_data;
 
 		let targeting: TargetingParams = {};
 
@@ -38,22 +39,12 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 
 		targeting = {
 			...targeting,
-			...this.getUtagDataParams(),
+			ptype: utagData?.pageType,
+			user: utagData?.userType,
+			vguid: this.getViewGuid(),
 		};
 
 		return targeting;
-	}
-
-	getUtagDataParams() {
-		const utagData = window.utag_data;
-
-		if (utagData) {
-			return {
-				ptype: utagData?.pageType,
-				user: utagData?.userType,
-				vguid: utagData?.pageViewGuid,
-			};
-		}
 	}
 
 	getMetadataTargetingParams(): TargetingParams {
@@ -66,6 +57,19 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 		}
 
 		return null;
+	}
+
+	getViewGuid() {
+		const el = document.getElementById('view-guid-meta');
+		const key = 'content';
+
+		let guid;
+
+		if (el && el.hasAttribute(key)) {
+			guid = el.getAttribute(key);
+		}
+
+		return guid;
 	}
 
 	// Transfered from: https://github.com/Wikia/player1-ads-adlibrary/blob/0df200c535adf3599c7de9e99b719953af2784e1/core/targeting.js#L205
