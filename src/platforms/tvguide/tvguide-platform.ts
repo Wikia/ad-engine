@@ -12,9 +12,6 @@ export class TvguidePlatform {
 
 	execute(): void {
 		this.pipeline.add(
-			() => {
-				window.googletag.destroySlots();
-			}, // TODO: Remove when AdEngine will be enabled on TvGuide
 			() => context.extend(basicContext),
 			// TODO: we need a CMP step here, so we won't call for ads unless we have a clear idea of the privacy policy of a visitor
 			// TODO: to decide if we want to call instant-config service for the first releases?
