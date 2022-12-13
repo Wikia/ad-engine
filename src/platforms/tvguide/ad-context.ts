@@ -6,5 +6,5 @@ export const basicContext = {
 		property: 'tvguide',
 	},
 	slots: {},
-	src: ['test'],
+	src: ['tvguide'],
 };
