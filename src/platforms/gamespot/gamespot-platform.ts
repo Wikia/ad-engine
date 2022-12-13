@@ -1,6 +1,12 @@
 import { Injectable } from '@wikia/dependency-injection';
 
-import { communicationService, context, eventsRepository, utils, ProcessPipeline } from '@wikia/ad-engine';
+import {
+	communicationService,
+	context,
+	eventsRepository,
+	utils,
+	ProcessPipeline,
+} from '@wikia/ad-engine';
 import { bootstrapAndGetConsent, gptSetup, InstantConfigSetup } from '@platforms/shared';
 
 import { basicContext } from './ad-context';
@@ -16,6 +22,7 @@ export class GameSpotPlatform {
 			() => context.extend(basicContext),
 			() => context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441),
 			() => context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src')),
+			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
 			GamespotSlotsContextSetup,
