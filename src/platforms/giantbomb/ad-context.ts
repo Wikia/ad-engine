@@ -29,5 +29,5 @@ export const basicContext = {
 		seg: '',
 		aamid: '',
 	},
-	src: ['test'],
+	src: ['giantbomb'],
 };
