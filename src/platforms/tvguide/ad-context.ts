@@ -5,6 +5,11 @@ export const basicContext = {
 		region: 'aw',
 		property: 'tvguide',
 	},
+	services: {
+		instantConfig: {
+			appName: 'tvguide',
+		},
+	},
 	slots: {},
 	src: ['tvguide'],
 };

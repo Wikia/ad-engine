@@ -6,7 +6,7 @@ import {
 	ProcessPipeline,
 	utils,
 } from '@wikia/ad-engine';
-import { bootstrapAndGetConsent, gptSetup } from '@platforms/shared';
+import { bootstrapAndGetConsent, gptSetup, InstantConfigSetup } from '@platforms/shared';
 import { basicContext } from './ad-context';
 
 import { TvguideSlotsContextSetup } from './setup/context/slots/tvguide-slots-context.setup';
@@ -23,6 +23,7 @@ export class TvguidePlatform {
 			() => context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src')),
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
+			InstantConfigSetup,
 			TvguideDynamicSlotsSetup,
 			TvguideSlotsContextSetup,
 			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
