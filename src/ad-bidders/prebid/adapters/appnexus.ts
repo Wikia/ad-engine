@@ -27,7 +27,10 @@ export class Appnexus extends PrebidAdapter {
 	): PrebidAdUnit {
 		if (context.get(`slots.${code}.isNative`)) {
 			const prebidNativeProvider = new PrebidNativeProvider();
-			if (prebidNativeProvider.isEnabled('bidders.prebid.native.enabled', false) && this.isNativeModeOn()) {
+			if (
+				prebidNativeProvider.isEnabled('bidders.prebid.native.enabled', false) &&
+				this.isNativeModeOn()
+			) {
 				return this.prepareNativeConfig(code, { sizes, placementId, position });
 			}
 		}
