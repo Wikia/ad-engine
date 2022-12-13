@@ -16,6 +16,7 @@ interface Window {
 	au_seg?: any;
 	beaconId?: string;
 	beacon_id?: string;
+	captify_kw_query_12974?: string;
 	canPlayVideo?: any;
 	cnx?: any;
 	confiant?: Confiant;
@@ -41,11 +42,12 @@ interface Window {
 	RLQ?: any;
 	sessionId?: string;
 	session_id?: string;
-	trackingOptIn?: any;
 	Sailthru?: Sailthru;
 	SilverSurferSDK?: SilverSurferSDK;
 	// Fandom JWPlayer sets the sponsored videos list
 	sponsoredVideos?: string[];
+	trackingOptIn?: any;
+	utag_data?: any;
 	wgCookiePath?: string;
 	XMLHttpRequest?: any;
 }

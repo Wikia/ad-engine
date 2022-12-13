@@ -1,18 +1,9 @@
-import { BaseServiceSetup, context, utils } from '@ad-engine/core';
+import { BaseServiceSetup,  utils } from '@ad-engine/core';
 import { insertFacebookPixel } from './facebook-pixel-script';
 
 const logGroup = 'facebook-pixel';
 class FacebookPixel extends BaseServiceSetup {
 	isSetUp = false;
-
-	private isEnabled(): boolean {
-		return (
-			context.get('services.facebookPixel.enabled') &&
-			context.get('options.trackingOptIn') &&
-			!context.get('options.optOutSale') &&
-			!context.get('wiki.targeting.directedAtChildren')
-		);
-	}
 
 	setup(): void {
 		utils.logger(logGroup, 'loading');
@@ -20,7 +11,7 @@ class FacebookPixel extends BaseServiceSetup {
 	}
 
 	call(): void {
-		if (!this.isEnabled()) {
+		if (!this.isEnabled('services.facebookPixel.enabled')) {
 			utils.logger(logGroup, 'disabled');
 			return;
 		}

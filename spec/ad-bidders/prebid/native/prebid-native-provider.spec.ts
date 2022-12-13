@@ -19,7 +19,7 @@ describe('Prebid native provider', () => {
 	it('Prebid native provider is disabled by feature flag', () => {
 		contextStub.get.withArgs('bidders.prebid.native.enabled').returns(false);
 
-		expect(prebidNativeProvider.isEnabled()).to.be.false;
+		expect(prebidNativeProvider.isEnabled('bidders.prebid.native.enabled', false)).to.be.false;
 	});
 
 	it('Generates ad from template with displayURL and image', () => {

@@ -2,6 +2,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import {
 	audigent,
 	bidders,
+	captify,
 	communicationService,
 	confiant,
 	DiProcess,
@@ -45,6 +46,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 				durationMedia,
 				stroer,
 				identityHub,
+				captify,
 				nielsen,
 				prebidNativeProvider,
 				playerSetup.setOptions({
