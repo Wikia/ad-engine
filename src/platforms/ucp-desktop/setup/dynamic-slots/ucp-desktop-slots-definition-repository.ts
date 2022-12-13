@@ -71,6 +71,37 @@ export class UcpDesktopSlotsDefinitionRepository {
 		};
 	}
 
+	private isIncontentLeaderboardApplicable(): boolean {
+		if (!context.get('services.nativo.gamIncontentEnabled')) {
+			return false;
+		}
+
+		const icLbMaxWidth = 768;
+		const pageContentSelector = 'main.page__main #content';
+
+		return utils.getWidth(document.querySelector(pageContentSelector)) >= icLbMaxWidth;
+	}
+
+	getIncontentLeaderboardConfig(headerPosition: number): SlotSetupDefinition {
+		if (!this.isIncontentLeaderboardApplicable()) {
+			return;
+		}
+
+		const slotName = 'incontent_leaderboard';
+
+		return {
+			slotCreatorConfig: {
+				slotName,
+				anchorSelector: `.mw-parser-output > h2:nth-of-type(${headerPosition})`,
+				insertMethod: 'before',
+				classList: ['hide', 'ad-slot'],
+			},
+			activator: () => {
+				context.push('events.pushOnScroll.ids', slotName);
+			},
+		};
+	}
+
 	getIncontentBoxadConfig(): SlotSetupDefinition {
 		if (!this.isRightRailApplicable()) {
 			return;

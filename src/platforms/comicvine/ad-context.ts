@@ -6,5 +6,5 @@ export const basicContext = {
 		property: 'comicvine',
 	},
 	slots: {},
-	src: ['test'],
+	src: ['comicvine'],
 };
