@@ -1,12 +1,14 @@
 import { context, DiProcess } from '@wikia/ad-engine';
 
 export class TvGuideDynamicSlotsSetup implements DiProcess {
+	private adPlaceholderSelector = 'c-adDisplay_container';
+
 	execute(): void {
 		this.injectSlots();
 	}
 
 	private injectSlots(): void {
-		const adPlaceholders = document.querySelectorAll('.c-adDisplay_container');
+		const adPlaceholders = document.querySelectorAll(`.${this.adPlaceholderSelector}`);
 
 		if (!adPlaceholders) {
 			return;
@@ -24,10 +26,11 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 
 	getAdSlotNameFromPlaceholder(placeholder: Element) {
 		let adSlotName = null;
+		const adSlotNameSelector = `${this.adPlaceholderSelector}_`;
 
 		placeholder.classList.forEach((className) => {
-			if (className.includes('c-adDisplay_container_')) {
-				adSlotName = className.slice('c-adDisplay_container_'.length);
+			if (className.includes(adSlotNameSelector)) {
+				adSlotName = className.slice(adSlotNameSelector.length);
 			}
 		});
 
