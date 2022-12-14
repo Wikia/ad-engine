@@ -27,6 +27,7 @@ export class GamefaqsPlatform {
 
 	execute(): void {
 		this.pipeline.add(
+			// setup
 			() => context.extend(basicContext),
 			() => context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441),
 			() => context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src')),
@@ -38,11 +39,13 @@ export class GamefaqsPlatform {
 			GamefaqsDynamicSlotsSetup,
 			BiddersStateSetup,
 			GamefaqsPrebidConfigSetup,
+			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
+
+			// run
 			() =>
 				bidders
 					.call()
 					.then(() => communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY)),
-			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 			gptSetup.call,
 		);
 
