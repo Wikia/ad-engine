@@ -1,7 +1,7 @@
 import { Container } from '@wikia/dependency-injection';
-import { TvguidePlatform } from './tvguide-platform';
+import { TvGuidePlatform } from './tvguide-platform';
 
 const container = new Container();
-const platform = container.get(TvguidePlatform);
+const platform = container.get(TvGuidePlatform);
 
 platform.execute();

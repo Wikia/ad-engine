@@ -1,6 +1,6 @@
 import { context, DiProcess } from '@wikia/ad-engine';
 
-export class TvguideDynamicSlotsSetup implements DiProcess {
+export class TvGuideDynamicSlotsSetup implements DiProcess {
 	execute(): void {
 		this.injectSlots();
 	}

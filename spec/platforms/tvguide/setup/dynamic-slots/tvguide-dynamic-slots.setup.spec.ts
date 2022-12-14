@@ -1,4 +1,4 @@
-import { TvguideDynamicSlotsSetup } from '@wikia/platforms/tvguide/setup/dynamic-slots/tvguide-dynamic-slots.setup';
+import { TvGuideDynamicSlotsSetup } from '@wikia/platforms/tvguide/setup/dynamic-slots/tvguide-dynamic-slots.setup';
 import { expect } from 'chai';
 
 describe('TV Guide - getAdSlotNameFromPlaceholde() works properly', () => {
@@ -6,9 +6,9 @@ describe('TV Guide - getAdSlotNameFromPlaceholde() works properly', () => {
 		const placeholder = document.createElement('div');
 		placeholder.classList.add('class1', 'c-adDisplay_container_slot1', 'class2');
 
-		const tvguideInstance = new TvguideDynamicSlotsSetup();
+		const tvGuideInstance = new TvGuideDynamicSlotsSetup();
 
-		const adSlotName = tvguideInstance.getAdSlotNameFromPlaceholder(placeholder);
+		const adSlotName = tvGuideInstance.getAdSlotNameFromPlaceholder(placeholder);
 
 		expect(adSlotName).to.equal('slot1');
 	});
@@ -17,9 +17,9 @@ describe('TV Guide - getAdSlotNameFromPlaceholde() works properly', () => {
 		const placeholder = document.createElement('div');
 		placeholder.classList.add('class1', 'class2');
 
-		const tvguideInstance = new TvguideDynamicSlotsSetup();
+		const tvGuideInstance = new TvGuideDynamicSlotsSetup();
 
-		const adSlotName = tvguideInstance.getAdSlotNameFromPlaceholder(placeholder);
+		const adSlotName = tvGuideInstance.getAdSlotNameFromPlaceholder(placeholder);
 
 		expect(adSlotName).to.be.null;
 	});

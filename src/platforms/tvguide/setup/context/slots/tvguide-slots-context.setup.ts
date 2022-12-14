@@ -2,7 +2,7 @@ import { context, DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class TvguideSlotsContextSetup implements DiProcess {
+export class TvGuideSlotsContextSetup implements DiProcess {
 	execute(): void {
 		const slots = {
 			'nav-ad-plus': {
