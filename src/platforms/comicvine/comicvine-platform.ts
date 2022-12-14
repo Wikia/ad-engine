@@ -1,18 +1,25 @@
 import { Injectable } from '@wikia/dependency-injection';
 
 import {
+	bidders,
 	communicationService,
 	context,
 	eventsRepository,
 	utils,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
-import { bootstrapAndGetConsent, gptSetup, InstantConfigSetup } from '@platforms/shared';
+import {
+	BiddersStateSetup,
+	bootstrapAndGetConsent,
+	gptSetup,
+	InstantConfigSetup,
+} from '@platforms/shared';
 
 import { basicContext } from './ad-context';
 
 import { ComicvineSlotsContextSetup } from './setup/context/slots/comicvine-slots-context.setup';
 import { ComicvineDynamicSlotsSetup } from './setup/dynamic-slots/comicvine-dynamic-slots.setup';
+import { ComicvinePrebidConfigSetup } from './setup/context/prebid/comicvine-prebid-config.setup';
 
 @Injectable()
 export class ComicvinePlatform {
@@ -28,6 +35,12 @@ export class ComicvinePlatform {
 			InstantConfigSetup,
 			ComicvineDynamicSlotsSetup,
 			ComicvineSlotsContextSetup,
+			BiddersStateSetup,
+			ComicvinePrebidConfigSetup,
+			() =>
+				bidders
+					.call()
+					.then(() => communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY)),
 			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 			gptSetup.call,
