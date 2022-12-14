@@ -1,18 +1,25 @@
 import { Injectable } from '@wikia/dependency-injection';
 
 import {
+	bidders,
 	communicationService,
 	context,
 	eventsRepository,
 	utils,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
-import { bootstrapAndGetConsent, gptSetup, InstantConfigSetup } from '@platforms/shared';
+import {
+	BiddersStateSetup,
+	bootstrapAndGetConsent,
+	gptSetup,
+	InstantConfigSetup,
+} from '@platforms/shared';
 
 import { basicContext } from './ad-context';
 
 import { MetacriticSlotsContextSetup } from './setup/context/slots/metacritic-slots-context.setup';
 import { MetacriticDynamicSlotsSetup } from './setup/dynamic-slots/metacritic-dynamic-slots.setup';
+import { MetacriticPrebidConfigSetup } from './setup/context/prebid/metacritic-prebid-config.setup';
 
 @Injectable()
 export class MetacriticPlatform {
@@ -20,6 +27,7 @@ export class MetacriticPlatform {
 
 	execute(): void {
 		this.pipeline.add(
+			// setup
 			() => context.extend(basicContext),
 			() => context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441),
 			() => context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src')),
@@ -30,6 +38,14 @@ export class MetacriticPlatform {
 			MetacriticSlotsContextSetup,
 			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
+			BiddersStateSetup,
+			MetacriticPrebidConfigSetup,
+
+			// run
+			() =>
+				bidders
+					.call()
+					.then(() => communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY)),
 			gptSetup.call,
 		);
 
