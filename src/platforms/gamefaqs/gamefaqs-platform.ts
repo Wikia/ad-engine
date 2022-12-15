@@ -18,6 +18,7 @@ import {
 import { basicContext } from './ad-context';
 import { GamefaqsSlotsContextSetup } from './setup/context/slots/gamefaqs-slots-context.setup';
 import { GamefaqsDynamicSlotsSetup } from './setup/dynamic-slots/gamefaqs-dynamic-slots.setup';
+import { NewsAndRatingsTargetingSetup } from '../shared-news-and-ratings/context/targeting/news-and-ratings-targeting.setup';
 import { GamefaqsPrebidConfigSetup } from './setup/context/prebid/gamefaqs-prebid-config.setup';
 import { GamefaqsTargetingSetup } from './setup/context/targeting/gamefaqs-targeting.setup';
 
@@ -33,6 +34,7 @@ export class GamefaqsPlatform {
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
+			NewsAndRatingsTargetingSetup,
 			GamefaqsTargetingSetup,
 			GamefaqsSlotsContextSetup,
 			GamefaqsDynamicSlotsSetup,

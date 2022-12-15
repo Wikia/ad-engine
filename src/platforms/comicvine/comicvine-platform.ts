@@ -13,6 +13,7 @@ import { basicContext } from './ad-context';
 
 import { ComicvineSlotsContextSetup } from './setup/context/slots/comicvine-slots-context.setup';
 import { ComicvineDynamicSlotsSetup } from './setup/dynamic-slots/comicvine-dynamic-slots.setup';
+import { NewsAndRatingsTargetingSetup } from '../shared-news-and-ratings/context/targeting/news-and-ratings-targeting.setup';
 
 @Injectable()
 export class ComicvinePlatform {
@@ -26,6 +27,7 @@ export class ComicvinePlatform {
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
+			NewsAndRatingsTargetingSetup,
 			ComicvineDynamicSlotsSetup,
 			ComicvineSlotsContextSetup,
 			// TODO: add targeting setup once we have idea of page-level and slot-level targeting

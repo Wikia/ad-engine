@@ -12,6 +12,7 @@ import { bootstrapAndGetConsent, gptSetup, InstantConfigSetup } from '@platforms
 import { basicContext } from './ad-context';
 import { GamespotSlotsContextSetup } from './setup/context/slots/gamespot-slots-context.setup';
 import { GamespotDynamicSlotsSetup } from './setup/dynamic-slots/gamespot-dynamic-slots.setup';
+import { NewsAndRatingsTargetingSetup } from '../shared-news-and-ratings/context/targeting/news-and-ratings-targeting.setup';
 
 @Injectable()
 export class GameSpotPlatform {
@@ -25,6 +26,7 @@ export class GameSpotPlatform {
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
+			NewsAndRatingsTargetingSetup,
 			GamespotSlotsContextSetup,
 			GamespotDynamicSlotsSetup,
 			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
