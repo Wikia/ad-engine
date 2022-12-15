@@ -35,7 +35,6 @@ export class ComicvinePlatform {
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
-			// TODO: to decide if we want to call instant-config service for the first releases?
 			NewsAndRatingsTargetingSetup,
 			ComicvineDynamicSlotsSetup,
 			ComicvineSlotsContextSetup,
