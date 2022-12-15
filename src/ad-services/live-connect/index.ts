@@ -47,6 +47,7 @@ class LiveConnect extends BaseServiceSetup {
 					this.track();
 				});
 		} else {
+			communicationService.emit(eventsRepository.LIVE_CONNECT_CACHED);
 			utils.logger(logGroup, `already loaded and available in ${this.storageConfig.type}Storage`);
 		}
 	}
