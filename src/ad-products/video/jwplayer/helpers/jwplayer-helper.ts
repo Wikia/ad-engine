@@ -145,6 +145,12 @@ export class JWPlayerHelper {
 	playVideoAd(position: 'midroll' | 'postroll' | 'preroll', state: JwpState): void {
 		this.adSlot.setConfigProperty('audio', !state.mute);
 
+		document.querySelectorAll('.jw-controlbar').forEach((controls: HTMLElement) => {
+			if (controls) {
+				controls.style.visibility = 'visible';
+			}
+		});
+
 		const vastUrl = this.getVastUrl(position, state);
 
 		if (context.get('options.video.pauseJWPlayerAd')) {
