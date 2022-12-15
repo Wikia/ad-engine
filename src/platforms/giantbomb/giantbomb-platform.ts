@@ -19,6 +19,7 @@ import { basicContext } from './ad-context';
 import { GiantbombSlotsContextSetup } from './setup/context/slots/giantbomb-slots-context.setup';
 import { GiantbombDynamicSlotsSetup } from './setup/dynamic-slots/giantbomb-dynamic-slots.setup';
 import { GiantbombPrebidConfigSetup } from './setup/context/prebid/giantbomb-prebid-config.setup';
+import { NewsAndRatingsTargetingSetup } from '../shared-news-and-ratings/context/targeting/news-and-ratings-targeting.setup';
 
 @Injectable()
 export class GiantbombPlatform {
@@ -33,6 +34,8 @@ export class GiantbombPlatform {
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
+			// TODO: to decide if we want to call instant-config service for the first releases?
+			NewsAndRatingsTargetingSetup,
 			GiantbombSlotsContextSetup,
 			GiantbombDynamicSlotsSetup,
 			BiddersStateSetup,
