@@ -1,39 +1,40 @@
-import { context, DiProcess } from '@wikia/ad-engine';
+import { context, DiProcess, utils } from '@wikia/ad-engine';
 
 export class TvGuideDynamicSlotsSetup implements DiProcess {
-	private adPlaceholderSelector = 'c-adDisplay_container';
-
 	execute(): void {
-		this.injectSlots();
-	}
-
-	private injectSlots(): void {
-		const adPlaceholders = document.querySelectorAll(`.${this.adPlaceholderSelector}`);
+		const adPlaceholders = document.querySelectorAll('.c-adDisplay_container');
 
 		if (!adPlaceholders) {
 			return;
 		}
 
-		adPlaceholders.forEach((placeholder) => {
-			const adSlotDiv = document.createElement('div');
-			const adSlotName = this.getAdSlotNameFromPlaceholder(placeholder);
-			adSlotDiv.id = adSlotName;
+		new utils.WaitFor(() => this.adDivsReady(adPlaceholders), 10, 100)
+			.until()
+			.then(() => this.injectSlots(adPlaceholders));
+	}
 
-			placeholder.appendChild(adSlotDiv);
+	private injectSlots(adPlaceholders): void {
+		adPlaceholders.forEach((placeholder) => {
+			const adWrapper = placeholder.getElementsByTagName('div')?.[0];
+
+			if (!adWrapper) {
+				return;
+			}
+
+			const adSlotName = adWrapper.getAttribute('data-ad');
+			adWrapper.id = adSlotName;
+
 			context.push('state.adStack', { id: adSlotName });
 		});
 	}
 
-	getAdSlotNameFromPlaceholder(placeholder: Element) {
-		let adSlotName = null;
-		const adSlotNameSelector = `${this.adPlaceholderSelector}_`;
+	// TODO: This is temporary workaround. Change it for the proper event informing that ad placeholders
+	//  are ready to inject the ad slots (event should be ready after RV code freeze is over).
+	adDivsReady(adPlaceholders) {
+		const firstPlaceholder = adPlaceholders[0];
 
-		placeholder.classList.forEach((className) => {
-			if (className.includes(adSlotNameSelector)) {
-				adSlotName = className.slice(adSlotNameSelector.length);
-			}
-		});
+		const adDiv = firstPlaceholder?.getElementsByTagName('div')?.[0];
 
-		return adSlotName;
+		return !!adDiv;
 	}
 }
