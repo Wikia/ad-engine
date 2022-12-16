@@ -189,6 +189,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	LIVE_CONNECT_STARTED: {
 		name: 'LiveConnect started',
 	},
+	LIVE_CONNECT_CACHED: {
+		name: 'LiveConnect data cached',
+	},
 	LIVE_CONNECT_RESPONDED_UUID: {
 		name: 'LiveConnect responded with UUID',
 	},
