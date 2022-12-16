@@ -1,13 +1,12 @@
 import { Injectable } from '@wikia/dependency-injection';
 import {
-	bidders,
 	communicationService,
 	context,
 	eventsRepository,
 	utils,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
-import { bootstrapAndGetConsent, gptSetup } from '@platforms/shared';
+import { bootstrapAndGetConsent } from '@platforms/shared';
 
 import { basicContext } from './ad-context';
 import { GamefaqsSlotsContextSetup } from './setup/context/slots/gamefaqs-slots-context.setup';
@@ -15,6 +14,7 @@ import { GamefaqsDynamicSlotsSetup } from './setup/dynamic-slots/gamefaqs-dynami
 import { NewsAndRatingsTargetingSetup } from '../shared-news-and-ratings/context/targeting/news-and-ratings-targeting.setup';
 import { GamefaqsPrebidConfigSetup } from './setup/context/prebid/gamefaqs-prebid-config.setup';
 import { GamefaqsTargetingSetup } from './setup/context/targeting/gamefaqs-targeting.setup';
+import { GamefaqsAdsMode } from './modes/gamefaqs-ads-mode.service';
 
 @Injectable()
 export class GamefaqsPlatform {
@@ -33,12 +33,8 @@ export class GamefaqsPlatform {
 			GamefaqsDynamicSlotsSetup,
 			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
 			GamefaqsPrebidConfigSetup,
-			() =>
-				bidders
-					.call()
-					.then(() => communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY)),
+			GamefaqsAdsMode,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
-			gptSetup.call,
 		);
 
 		this.pipeline.execute();
