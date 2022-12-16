@@ -7,13 +7,14 @@ import {
 	utils,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
-import { bootstrapAndGetConsent, gptSetup, InstantConfigSetup } from '@platforms/shared';
+import { BaseContextSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
 
 import { basicContext } from './ad-context';
 
 import { ComicvineSlotsContextSetup } from './setup/context/slots/comicvine-slots-context.setup';
 import { ComicvineDynamicSlotsSetup } from './setup/dynamic-slots/comicvine-dynamic-slots.setup';
 import { NewsAndRatingsTargetingSetup } from '../shared-news-and-ratings/context/targeting/news-and-ratings-targeting.setup';
+import { ComicvineAdsMode } from './modes/comicvine-ads-mode.service';
 
 @Injectable()
 export class ComicvinePlatform {
@@ -27,12 +28,13 @@ export class ComicvinePlatform {
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
+			BaseContextSetup,
 			NewsAndRatingsTargetingSetup,
 			ComicvineDynamicSlotsSetup,
 			ComicvineSlotsContextSetup,
 			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
+			ComicvineAdsMode,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
-			gptSetup.call,
 		);
 
 		this.pipeline.execute();

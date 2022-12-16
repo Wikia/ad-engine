@@ -7,7 +7,12 @@ import {
 	utils,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
-import { bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
+import {
+	BaseContextSetup,
+	BiddersStateSetup,
+	bootstrapAndGetConsent,
+	InstantConfigSetup,
+} from '@platforms/shared';
 
 import { basicContext } from './ad-context';
 import { GiantbombSlotsContextSetup } from './setup/context/slots/giantbomb-slots-context.setup';
@@ -27,10 +32,11 @@ export class GiantbombPlatform {
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
+			BaseContextSetup,
 			NewsAndRatingsTargetingSetup,
 			GiantbombSlotsContextSetup,
+			BiddersStateSetup,
 			GiantbombDynamicSlotsSetup,
-			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
 			GiantbombAdsMode,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 		);

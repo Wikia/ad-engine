@@ -7,12 +7,13 @@ import {
 	utils,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
-import { bootstrapAndGetConsent, gptSetup, InstantConfigSetup } from '@platforms/shared';
+import { BaseContextSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
 
 import { basicContext } from './ad-context';
 
 import { MetacriticSlotsContextSetup } from './setup/context/slots/metacritic-slots-context.setup';
 import { MetacriticDynamicSlotsSetup } from './setup/dynamic-slots/metacritic-dynamic-slots.setup';
+import { MetacriticAdsModeService } from './modes/metacritic-ads-mode.service';
 
 @Injectable()
 export class MetacriticPlatform {
@@ -26,11 +27,12 @@ export class MetacriticPlatform {
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
+			BaseContextSetup,
 			MetacriticDynamicSlotsSetup,
 			MetacriticSlotsContextSetup,
 			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
+			MetacriticAdsModeService,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
-			gptSetup.call,
 		);
 
 		this.pipeline.execute();
