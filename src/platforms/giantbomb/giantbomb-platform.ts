@@ -1,4 +1,5 @@
 import { Injectable } from '@wikia/dependency-injection';
+
 import {
 	communicationService,
 	context,
@@ -6,7 +7,7 @@ import {
 	utils,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
-import { bootstrapAndGetConsent } from '@platforms/shared';
+import { bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
 
 import { basicContext } from './ad-context';
 import { GiantbombSlotsContextSetup } from './setup/context/slots/giantbomb-slots-context.setup';
@@ -23,8 +24,9 @@ export class GiantbombPlatform {
 			() => context.extend(basicContext),
 			() => context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441),
 			() => context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src')),
+			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
-			// TODO: to decide if we want to call instant-config service for the first releases?
+			InstantConfigSetup,
 			NewsAndRatingsTargetingSetup,
 			GiantbombSlotsContextSetup,
 			GiantbombDynamicSlotsSetup,
