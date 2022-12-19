@@ -14,7 +14,7 @@ export class GamefaqsDynamicSlotsSetup implements DiProcess {
 
 		adPlaceholders.forEach((placeholder) => {
 			const adSlotName = placeholder.getAttribute('data-ad-type');
-			const adWrapper = placeholder.querySelector('#' + adSlotName);
+			const adWrapper = placeholder.firstElementChild;
 
 			if (!adWrapper) {
 				return;
