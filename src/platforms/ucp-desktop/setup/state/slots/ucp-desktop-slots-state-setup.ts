@@ -20,8 +20,6 @@ export class UcpDesktopSlotsStateSetup implements DiProcess {
 		const adUnit = getAdUnitString(slotName, params);
 
 		globalRuntimeVariableSetter.addNewVariableToRuntime('video', { adUnit });
-		// ToDo: Remove after switching Distroscale to a general variable
-		globalRuntimeVariableSetter.addNewVariableToRuntime('distroscale', { adUnit });
 	}
 
 	private disableIncontentPlayerSlot(): void {
