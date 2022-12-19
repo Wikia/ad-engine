@@ -15,7 +15,7 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 
 	private injectSlots(adPlaceholders): void {
 		adPlaceholders.forEach((placeholder) => {
-			const adWrapper = placeholder.getElementsByTagName('div')?.[0];
+			const adWrapper = placeholder.firstElementChild;
 
 			if (!adWrapper) {
 				return;
@@ -33,7 +33,7 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 	adDivsReady(adPlaceholders) {
 		const firstPlaceholder = adPlaceholders[0];
 
-		const adDiv = firstPlaceholder?.getElementsByTagName('div')?.[0];
+		const adDiv = firstPlaceholder.firstElementChild;
 
 		return !!adDiv;
 	}
