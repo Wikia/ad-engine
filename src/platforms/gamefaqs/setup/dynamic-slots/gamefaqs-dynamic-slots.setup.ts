@@ -13,11 +13,13 @@ export class GamefaqsDynamicSlotsSetup implements DiProcess {
 		}
 
 		adPlaceholders.forEach((placeholder) => {
-			const adSlotDiv = document.createElement('div');
 			const adSlotName = placeholder.getAttribute('data-ad-type');
-			adSlotDiv.id = adSlotName;
+			const adWrapper = placeholder.querySelector('#' + adSlotName);
 
-			placeholder.appendChild(adSlotDiv);
+			if (!adWrapper) {
+				return;
+			}
+
 			context.push('state.adStack', { id: adSlotName });
 		});
 	}
