@@ -20,6 +20,8 @@ export class GamefaqsDynamicSlotsSetup implements DiProcess {
 				return;
 			}
 
+			adWrapper.id = adSlotName;
+
 			context.push('state.adStack', { id: adSlotName });
 		});
 	}
