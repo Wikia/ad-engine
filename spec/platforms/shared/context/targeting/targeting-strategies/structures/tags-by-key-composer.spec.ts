@@ -97,4 +97,31 @@ describe('Tags By Key Composer', () => {
 
 		expect(combinedTags).to.deep.eq(tagsToCombine1);
 	});
+
+	it('tags not included in array "taxonomyTags" are not combined', () => {
+		const tagsToCombine1 = {
+			age: ['age1', 'age2'],
+			gnre: ['gnre1'],
+			tv: ['tv1', 'tv2'],
+		};
+
+		const tagsToCombine2 = {
+			age: ['age3', 'age4'],
+			gnre: ['gnre2'],
+			esrb: ['esrb'],
+			mpa: ['mpa'],
+			tv: ['tv3', 'tv4'],
+		};
+
+		const combinedTags = new TagsByKeyComposer([
+			tagProvider(tagsToCombine1),
+			tagProvider(tagsToCombine2),
+		]).get();
+
+		expect(combinedTags).to.deep.eq({
+			age: ['age1', 'age2', 'age3', 'age4'],
+			gnre: ['gnre1', 'gnre2'],
+			tv: ['tv1', 'tv2', 'tv3', 'tv4'],
+		});
+	});
 });

@@ -82,4 +82,25 @@ describe('CommonTags', () => {
 		expect(commonTags.s0).to.be.undefined;
 		expect(commonTags.s0v).to.be.undefined;
 	});
+
+	it('should create rating tag', function () {
+		const mockedContext: FandomContext = new FandomContext(
+			new Site(
+				[],
+				true,
+				'test',
+				false,
+				{
+					mpa: ['general'],
+					esrb: ['ec'],
+				},
+				[],
+			),
+			new Page(666, 'pl', 666, 'test', 'article-test', {}, 546),
+		);
+
+		const commonTags = new CommonTags(mockedSkin, mockedContext);
+
+		expect(commonTags.getCommonParams().rating).to.be.eq('esrb:ec,mpa:general');
+	});
 });
