@@ -1,17 +1,11 @@
 import { Injectable } from '@wikia/dependency-injection';
-import {
-	communicationService,
-	context,
-	eventsRepository,
-	ProcessPipeline,
-	utils,
-} from '@wikia/ad-engine';
+import { communicationService, eventsRepository, ProcessPipeline } from '@wikia/ad-engine';
 import { bootstrapAndGetConsent, gptSetup } from '@platforms/shared';
 
-import { basicContext } from './ad-context';
 import { GamespotSlotsContextSetup } from './setup/context/slots/gamespot-slots-context.setup';
 import { GamespotDynamicSlotsSetup } from './setup/dynamic-slots/gamespot-dynamic-slots.setup';
-import { NewsAndRatingsTargetingSetup } from '../shared-news-and-ratings/context/targeting/news-and-ratings-targeting.setup';
+import { NewsAndRatingsTargetingSetup } from '../shared';
+import { NewsAndRatingsBaseContextSetup } from '../shared';
 
 @Injectable()
 export class GameSpotPlatform {
@@ -19,9 +13,7 @@ export class GameSpotPlatform {
 
 	execute(): void {
 		this.pipeline.add(
-			() => context.extend(basicContext),
-			() => context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441),
-			() => context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src')),
+			NewsAndRatingsBaseContextSetup,
 			() => bootstrapAndGetConsent(),
 			// TODO: to decide if we want to call instant-config service for the first releases?
 			NewsAndRatingsTargetingSetup,
@@ -33,13 +25,5 @@ export class GameSpotPlatform {
 		);
 
 		this.pipeline.execute();
-	}
-
-	private shouldSwitchGamToRV() {
-		return utils.queryString.get('switch_to_rv_gam') === '1';
-	}
-
-	private shouldSwitchSrcToTest() {
-		return utils.queryString.get('switch_src_to_test') === '1';
 	}
 }

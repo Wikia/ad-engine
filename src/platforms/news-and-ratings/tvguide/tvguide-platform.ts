@@ -1,16 +1,10 @@
 import { Injectable } from '@wikia/dependency-injection';
-import {
-	communicationService,
-	context,
-	eventsRepository,
-	ProcessPipeline,
-	utils,
-} from '@wikia/ad-engine';
+import { communicationService, eventsRepository, ProcessPipeline } from '@wikia/ad-engine';
 import { bootstrapAndGetConsent, gptSetup, InstantConfigSetup } from '@platforms/shared';
-import { basicContext } from './ad-context';
 
 import { TvGuideSlotsContextSetup } from './setup/context/slots/tvguide-slots-context.setup';
 import { TvGuideDynamicSlotsSetup } from './setup/dynamic-slots/tvguide-dynamic-slots.setup';
+import { NewsAndRatingsBaseContextSetup } from '../shared';
 
 @Injectable()
 export class TvGuidePlatform {
@@ -18,9 +12,7 @@ export class TvGuidePlatform {
 
 	execute(): void {
 		this.pipeline.add(
-			() => context.extend(basicContext),
-			() => context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441),
-			() => context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src')),
+			NewsAndRatingsBaseContextSetup,
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
@@ -32,13 +24,5 @@ export class TvGuidePlatform {
 		);
 
 		this.pipeline.execute();
-	}
-
-	private shouldSwitchGamToRV() {
-		return utils.queryString.get('switch_to_rv_gam') === '1';
-	}
-
-	private shouldSwitchSrcToTest() {
-		return utils.queryString.get('switch_src_to_test') === '1';
 	}
 }
