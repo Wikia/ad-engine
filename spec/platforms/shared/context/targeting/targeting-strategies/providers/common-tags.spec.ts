@@ -21,7 +21,17 @@ describe('CommonTags', () => {
 
 	it('commonTags are returned correctly', function () {
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, {}, mockedTaxonomy, 'general'),
+			new Site(
+				[],
+				true,
+				'test',
+				false,
+				{
+					mpa: ['general'],
+					esrb: ['ec'],
+				},
+				mockedTaxonomy,
+			),
 			new Page(666, 'pl', 666, 'test', 'article-test', {}, 546),
 		);
 
@@ -53,7 +63,17 @@ describe('CommonTags', () => {
 
 	it('should map empty taxonomy tags', function () {
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, {}, [], 'general'),
+			new Site(
+				[],
+				true,
+				'test',
+				false,
+				{
+					mpa: ['general'],
+					esrb: ['ec'],
+				},
+				[],
+			),
 			new Page(666, 'pl', 666, 'test', 'article-test', {}, 546),
 		);
 

@@ -19,17 +19,25 @@ export class TagsByKeyComposer implements TargetingProvider<TaxonomyTags> {
 		}
 
 		for (const [key, value] of Object.entries(tags)) {
-			if (key in result) {
-				value.forEach((val) => {
-					if (!result[key].includes(val)) {
-						result[key].push(val);
-					}
-				});
-			} else {
-				result[key] = Array.from(value);
+			if (!this.isRatingTag(key)) {
+				if (key in result) {
+					value.forEach((val) => {
+						if (!result[key].includes(val)) {
+							result[key].push(val);
+						}
+					});
+				} else {
+					result[key] = Array.from(value);
+				}
 			}
 		}
 
 		return result;
+	}
+
+	private isRatingTag(key) {
+		const ratingTags = ['esrb', 'mpa'];
+
+		return ratingTags.includes(key);
 	}
 }
