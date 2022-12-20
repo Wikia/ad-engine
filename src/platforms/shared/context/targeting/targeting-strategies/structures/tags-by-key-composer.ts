@@ -1,5 +1,4 @@
 import { TargetingProvider } from '../interfaces/targeting-provider';
-import { taxonomyTags } from '../interfaces/taxonomy-tags';
 
 export class TagsByKeyComposer implements TargetingProvider<TaxonomyTags> {
 	constructor(private tagsToCombine: TargetingProvider<TaxonomyTags>[]) {}
@@ -20,16 +19,14 @@ export class TagsByKeyComposer implements TargetingProvider<TaxonomyTags> {
 		}
 
 		for (const [key, value] of Object.entries(tags)) {
-			if (taxonomyTags.includes(key)) {
-				if (key in result) {
-					value.forEach((val) => {
-						if (!result[key].includes(val)) {
-							result[key].push(val);
-						}
-					});
-				} else {
-					result[key] = Array.from(value);
-				}
+			if (key in result) {
+				value.forEach((val) => {
+					if (!result[key].includes(val)) {
+						result[key].push(val);
+					}
+				});
+			} else {
+				result[key] = Array.from(value);
 			}
 		}
 
