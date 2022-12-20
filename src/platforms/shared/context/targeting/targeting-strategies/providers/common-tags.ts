@@ -114,7 +114,7 @@ export class CommonTags implements TargetingProvider<Partial<Targeting>> {
 		});
 
 		if (this.fandomContext.site.tags.esrb || this.fandomContext.site.tags.mpa) {
-			keyVals.rating = CommonTags.createRatingTag(
+			keyVals.rating = this.createRatingTag(
 				this.fandomContext.site.tags.esrb,
 				this.fandomContext.site.tags.mpa,
 			);
@@ -127,7 +127,7 @@ export class CommonTags implements TargetingProvider<Partial<Targeting>> {
 		return keyVals;
 	}
 
-	private static createRatingTag(esrbRating: string[], mpaRating: string[]): string {
+	private createRatingTag(esrbRating: string[], mpaRating: string[]): string {
 		const ratingTags = [];
 
 		esrbRating ? ratingTags.push(...esrbRating.map((rating) => 'esrb:' + rating)) : null;
