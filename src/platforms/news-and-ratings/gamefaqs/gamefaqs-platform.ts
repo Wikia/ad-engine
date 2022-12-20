@@ -1,7 +1,14 @@
 import { Injectable } from '@wikia/dependency-injection';
-import { bidders, communicationService, eventsRepository, ProcessPipeline } from '@wikia/ad-engine';
+import {
+	bidders,
+	communicationService,
+	context,
+	eventsRepository,
+	ProcessPipeline,
+} from '@wikia/ad-engine';
 import { bootstrapAndGetConsent, gptSetup } from '@platforms/shared';
 
+import { basicContext } from './ad-context';
 import { GamefaqsSlotsContextSetup } from './setup/context/slots/gamefaqs-slots-context.setup';
 import { GamefaqsDynamicSlotsSetup } from './setup/dynamic-slots/gamefaqs-dynamic-slots.setup';
 import { NewsAndRatingsTargetingSetup } from '../shared';
@@ -14,6 +21,7 @@ export class GamefaqsPlatform {
 
 	execute(): void {
 		this.pipeline.add(
+			() => context.extend(basicContext),
 			NewsAndRatingsBaseContextSetup,
 			() => bootstrapAndGetConsent(),
 			NewsAndRatingsTargetingSetup,

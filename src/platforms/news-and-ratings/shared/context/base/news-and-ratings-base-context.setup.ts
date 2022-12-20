@@ -1,9 +1,7 @@
 import { context, DiProcess, utils } from '@wikia/ad-engine';
-import { basicContext } from '../../../comicvine/ad-context';
 
 export class NewsAndRatingsBaseContextSetup implements DiProcess {
 	execute(): void {
-		context.extend(basicContext);
 		context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441);
 		context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src'));
 	}

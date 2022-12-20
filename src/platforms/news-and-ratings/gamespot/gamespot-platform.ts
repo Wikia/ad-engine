@@ -1,7 +1,8 @@
 import { Injectable } from '@wikia/dependency-injection';
-import { communicationService, eventsRepository, ProcessPipeline } from '@wikia/ad-engine';
+import { communicationService, context, eventsRepository, ProcessPipeline } from '@wikia/ad-engine';
 import { bootstrapAndGetConsent, gptSetup } from '@platforms/shared';
 
+import { basicContext } from './ad-context';
 import { GamespotSlotsContextSetup } from './setup/context/slots/gamespot-slots-context.setup';
 import { GamespotDynamicSlotsSetup } from './setup/dynamic-slots/gamespot-dynamic-slots.setup';
 import { NewsAndRatingsTargetingSetup } from '../shared';
@@ -13,6 +14,7 @@ export class GameSpotPlatform {
 
 	execute(): void {
 		this.pipeline.add(
+			() => context.extend(basicContext),
 			NewsAndRatingsBaseContextSetup,
 			() => bootstrapAndGetConsent(),
 			// TODO: to decide if we want to call instant-config service for the first releases?

@@ -1,7 +1,8 @@
 import { Injectable } from '@wikia/dependency-injection';
-import { communicationService, eventsRepository, ProcessPipeline } from '@wikia/ad-engine';
+import { communicationService, context, eventsRepository, ProcessPipeline } from '@wikia/ad-engine';
 import { bootstrapAndGetConsent, gptSetup } from '@platforms/shared';
 
+import { basicContext } from './ad-context';
 import { MetacriticSlotsContextSetup } from './setup/context/slots/metacritic-slots-context.setup';
 import { MetacriticDynamicSlotsSetup } from './setup/dynamic-slots/metacritic-dynamic-slots.setup';
 import { NewsAndRatingsBaseContextSetup } from '../shared';
@@ -12,6 +13,7 @@ export class MetacriticPlatform {
 
 	execute(): void {
 		this.pipeline.add(
+			() => context.extend(basicContext),
 			NewsAndRatingsBaseContextSetup,
 			() => bootstrapAndGetConsent(),
 			// TODO: to decide if we want to call instant-config service for the first releases?

@@ -1,7 +1,8 @@
 import { Injectable } from '@wikia/dependency-injection';
-import { communicationService, eventsRepository, ProcessPipeline } from '@wikia/ad-engine';
+import { communicationService, context, eventsRepository, ProcessPipeline } from '@wikia/ad-engine';
 import { bootstrapAndGetConsent, gptSetup, InstantConfigSetup } from '@platforms/shared';
 
+import { basicContext } from './ad-context';
 import { TvGuideSlotsContextSetup } from './setup/context/slots/tvguide-slots-context.setup';
 import { TvGuideDynamicSlotsSetup } from './setup/dynamic-slots/tvguide-dynamic-slots.setup';
 import { NewsAndRatingsBaseContextSetup } from '../shared';
@@ -12,6 +13,7 @@ export class TvGuidePlatform {
 
 	execute(): void {
 		this.pipeline.add(
+			() => context.extend(basicContext),
 			NewsAndRatingsBaseContextSetup,
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
