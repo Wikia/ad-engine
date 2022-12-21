@@ -1,19 +1,7 @@
 import { Injectable } from '@wikia/dependency-injection';
 
-import {
-	bidders,
-	communicationService,
-	context,
-	eventsRepository,
-	utils,
-	ProcessPipeline,
-} from '@wikia/ad-engine';
-import {
-	bootstrapAndGetConsent,
-	gptSetup,
-	BiddersStateSetup,
-	InstantConfigSetup,
-} from '@platforms/shared';
+import { context, utils, ProcessPipeline } from '@wikia/ad-engine';
+import { bootstrapAndGetConsent, BiddersStateSetup, InstantConfigSetup } from '@platforms/shared';
 
 import { basicContext } from './ad-context';
 import { GamefaqsSlotsContextSetup } from './setup/context/slots/gamefaqs-slots-context.setup';
@@ -21,6 +9,7 @@ import { GamefaqsDynamicSlotsSetup } from './setup/dynamic-slots/gamefaqs-dynami
 import { NewsAndRatingsTargetingSetup } from '../shared-news-and-ratings/context/targeting/news-and-ratings-targeting.setup';
 import { GamefaqsPrebidConfigSetup } from './setup/context/prebid/gamefaqs-prebid-config.setup';
 import { GamefaqsTargetingSetup } from './setup/context/targeting/gamefaqs-targeting.setup';
+import { GamefaqsAdsMode } from './modes/gamefaqs-ads-mode';
 
 @Injectable()
 export class GamefaqsPlatform {
@@ -28,7 +17,6 @@ export class GamefaqsPlatform {
 
 	execute(): void {
 		this.pipeline.add(
-			// setup
 			() => context.extend(basicContext),
 			() => context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441),
 			() => context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src')),
@@ -39,16 +27,9 @@ export class GamefaqsPlatform {
 			GamefaqsTargetingSetup,
 			GamefaqsSlotsContextSetup,
 			GamefaqsDynamicSlotsSetup,
-			BiddersStateSetup,
 			GamefaqsPrebidConfigSetup,
-			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
-
-			// run
-			() =>
-				bidders
-					.call()
-					.then(() => communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY)),
-			gptSetup.call,
+			BiddersStateSetup,
+			GamefaqsAdsMode,
 		);
 
 		this.pipeline.execute();
