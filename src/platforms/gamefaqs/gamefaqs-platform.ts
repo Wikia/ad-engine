@@ -27,8 +27,8 @@ export class GamefaqsPlatform {
 			GamefaqsTargetingSetup,
 			GamefaqsSlotsContextSetup,
 			GamefaqsDynamicSlotsSetup,
-			GamefaqsPrebidConfigSetup,
 			BiddersStateSetup,
+			GamefaqsPrebidConfigSetup,
 			GamefaqsAdsMode,
 		);
 
