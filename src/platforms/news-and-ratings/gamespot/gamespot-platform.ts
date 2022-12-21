@@ -4,9 +4,9 @@ import { bootstrapAndGetConsent, gptSetup } from '@platforms/shared';
 
 import { basicContext } from './ad-context';
 import { GamespotSlotsContextSetup } from './setup/context/slots/gamespot-slots-context.setup';
-import { GamespotDynamicSlotsSetup } from './setup/dynamic-slots/gamespot-dynamic-slots.setup';
 import { NewsAndRatingsTargetingSetup } from '../shared';
 import { NewsAndRatingsBaseContextSetup } from '../shared';
+import { NewsAndRatingsDynamicSlotsSetup } from '../shared/setup/dynamic-slots/news-and-ratings-dynamic-slots.setup';
 
 @Injectable()
 export class GameSpotPlatform {
@@ -20,7 +20,7 @@ export class GameSpotPlatform {
 			// TODO: to decide if we want to call instant-config service for the first releases?
 			NewsAndRatingsTargetingSetup,
 			GamespotSlotsContextSetup,
-			GamespotDynamicSlotsSetup,
+			NewsAndRatingsDynamicSlotsSetup,
 			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 			gptSetup.call,

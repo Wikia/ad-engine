@@ -1,12 +1,12 @@
 import { context, DiProcess } from '@wikia/ad-engine';
 
-export class GamefaqsDynamicSlotsSetup implements DiProcess {
+export class NewsAndRatingsDynamicSlotsSetup implements DiProcess {
 	execute(): void {
 		this.injectSlots();
 	}
 
 	private injectSlots(): void {
-		const adPlaceholders = document.querySelectorAll('.ad');
+		const adPlaceholders = document.querySelectorAll('.mapped-ad');
 
 		if (!adPlaceholders) {
 			return;

@@ -4,9 +4,9 @@ import { bootstrapAndGetConsent, gptSetup } from '@platforms/shared';
 
 import { basicContext } from './ad-context';
 import { ComicvineSlotsContextSetup } from './setup/context/slots/comicvine-slots-context.setup';
-import { ComicvineDynamicSlotsSetup } from './setup/dynamic-slots/comicvine-dynamic-slots.setup';
 import { NewsAndRatingsTargetingSetup } from '../shared';
 import { NewsAndRatingsBaseContextSetup } from '../shared';
+import { NewsAndRatingsDynamicSlotsSetup } from '../shared/setup/dynamic-slots/news-and-ratings-dynamic-slots.setup';
 
 @Injectable()
 export class ComicvinePlatform {
@@ -19,7 +19,7 @@ export class ComicvinePlatform {
 			() => bootstrapAndGetConsent(),
 			// TODO: to decide if we want to call instant-config service for the first releases?
 			NewsAndRatingsTargetingSetup,
-			ComicvineDynamicSlotsSetup,
+			NewsAndRatingsDynamicSlotsSetup,
 			ComicvineSlotsContextSetup,
 			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),

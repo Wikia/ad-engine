@@ -4,9 +4,9 @@ import { bootstrapAndGetConsent, gptSetup } from '@platforms/shared';
 
 import { basicContext } from './ad-context';
 import { GiantbombSlotsContextSetup } from './setup/context/slots/giantbomb-slots-context.setup';
-import { GiantbombDynamicSlotsSetup } from './setup/dynamic-slots/giantbomb-dynamic-slots.setup';
 import { NewsAndRatingsTargetingSetup } from '../shared';
 import { NewsAndRatingsBaseContextSetup } from '../shared';
+import { NewsAndRatingsDynamicSlotsSetup } from '../shared/setup/dynamic-slots/news-and-ratings-dynamic-slots.setup';
 
 @Injectable()
 export class GiantbombPlatform {
@@ -20,7 +20,7 @@ export class GiantbombPlatform {
 			// TODO: to decide if we want to call instant-config service for the first releases?
 			NewsAndRatingsTargetingSetup,
 			GiantbombSlotsContextSetup,
-			GiantbombDynamicSlotsSetup,
+			NewsAndRatingsDynamicSlotsSetup,
 			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 			gptSetup.call,

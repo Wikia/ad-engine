@@ -10,10 +10,10 @@ import { bootstrapAndGetConsent, gptSetup } from '@platforms/shared';
 
 import { basicContext } from './ad-context';
 import { GamefaqsSlotsContextSetup } from './setup/context/slots/gamefaqs-slots-context.setup';
-import { GamefaqsDynamicSlotsSetup } from './setup/dynamic-slots/gamefaqs-dynamic-slots.setup';
 import { NewsAndRatingsTargetingSetup } from '../shared';
 import { GamefaqsPrebidConfigSetup } from './setup/context/prebid/gamefaqs-prebid-config.setup';
 import { NewsAndRatingsBaseContextSetup } from '../shared';
+import { NewsAndRatingsDynamicSlotsSetup } from '../shared/setup/dynamic-slots/news-and-ratings-dynamic-slots.setup';
 
 @Injectable()
 export class GamefaqsPlatform {
@@ -26,7 +26,7 @@ export class GamefaqsPlatform {
 			() => bootstrapAndGetConsent(),
 			NewsAndRatingsTargetingSetup,
 			GamefaqsSlotsContextSetup,
-			GamefaqsDynamicSlotsSetup,
+			NewsAndRatingsDynamicSlotsSetup,
 			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
 			GamefaqsPrebidConfigSetup,
 			() =>
