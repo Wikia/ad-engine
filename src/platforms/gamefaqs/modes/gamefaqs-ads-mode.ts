@@ -14,7 +14,12 @@ export class GamefaqsAdsMode implements DiProcess {
 
 	execute(): void {
 		this.pipeline
-			.add(bidders, gptSetup)
+			.add(
+				bidders,
+				gptSetup.setOptions({
+					dependencies: [bidders.initialized],
+				}),
+			)
 			.execute()
 			.then(() => {
 				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);
