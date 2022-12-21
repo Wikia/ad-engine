@@ -13,11 +13,8 @@ export class MetacriticDynamicSlotsSetup implements DiProcess {
 		}
 
 		adPlaceholders.forEach((placeholder) => {
-			const adSlotDiv = document.createElement('div');
 			const adSlotName = placeholder.id;
-			adSlotDiv.id = adSlotName;
 
-			placeholder.appendChild(adSlotDiv);
 			context.push('state.adStack', { id: adSlotName });
 		});
 	}
