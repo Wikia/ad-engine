@@ -1,9 +1,9 @@
 const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const webpack = require('webpack');
 const { merge } = require('webpack-merge');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const platformsConfig = require('./src/platforms/platforms.json');
 const common = require('./webpack.common.js');
-const webpack = require('webpack');
 
 const platforms = ({ entry }) => ({
 	entry,

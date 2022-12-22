@@ -1,17 +1,9 @@
 const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
-const { getTypeScriptLoader } = require('./configs/webpack-app.config');
-const { mergeCompilerOptionsPaths } = require('./configs/merge-compiler-options-paths');
 const pkg = require('./package.json');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const include = [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'spec')];
-
-const paths = mergeCompilerOptionsPaths([
-	path.resolve(__dirname, 'src/tsconfig.json'),
-	path.resolve(__dirname, 'src/platforms/tsconfig.json'),
-	path.resolve(__dirname, 'spec/tsconfig.json'),
-]);
 
 module.exports = () => ({
 	mode: 'development',
@@ -21,18 +13,40 @@ module.exports = () => ({
 	resolve: {
 		extensions: ['.ts', '.js', '.json'],
 		modules: [...include, 'node_modules'],
-		plugins: [new TsConfigPathsPlugin({ paths })],
+		plugins: [new TsConfigPathsPlugin()],
 		fallback: {
-			util: require.resolve('util/'),
+			util: require.resolve('util/'), // todo: remove?
 		},
 	},
 
 	module: {
 		rules: [
-			getTypeScriptLoader({
+			{
+				test: /\.(js|ts)$/,
 				include,
-				paths,
-			}),
+				exclude: /node_modules/,
+				use: [
+					{
+						loader: 'babel-loader',
+						options: {
+							presets: [['@babel/preset-typescript', { targets: 'defaults' }]],
+							plugins: [
+								[
+									'@babel/plugin-transform-runtime',
+									{ helpers: true, corejs: 2, regenerator: true },
+								],
+							],
+						},
+					},
+					{
+						loader: 'ts-loader',
+						options: {
+							configFile: 'tsconfig.json',
+							transpileOnly: true, // todo: remove to enable types
+						},
+					},
+				],
+			},
 			{
 				test: /\.s?css$/,
 				include,

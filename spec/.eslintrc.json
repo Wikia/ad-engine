@@ -4,6 +4,13 @@
 	"rules": {
 		"no-console": "error",
 		"@typescript-eslint/no-empty-function": "off",
-		"no-only-tests/no-only-tests": "error"
+		"no-only-tests/no-only-tests": "error",
+		"no-restricted-imports": [
+			"error",
+			{
+				"paths": ["@ad-engine/**", "@platforms/**"],
+				"patterns": ["**/src/**"]
+			}
+		]
 	}
 }
