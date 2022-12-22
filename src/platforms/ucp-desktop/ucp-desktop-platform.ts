@@ -16,6 +16,7 @@ import {
 	conditional,
 	context,
 	eventsRepository,
+	GlobalIdentityProvider,
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
@@ -37,6 +38,7 @@ export class UcpDesktopPlatform {
 			() => context.extend(basicContext),
 			PlatformContextSetup,
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
+			GlobalIdentityProvider,
 			TrackingParametersSetup,
 			LoadTimesSetup,
 			UcpDesktopIocSetup,
