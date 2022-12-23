@@ -20,18 +20,6 @@ export function getWikiaContext(): object {
 			'mobile-banner': {
 				sizes: [[320, 50]],
 			},
-			'mobile-incontent-ad-plus': {
-				sizes: [
-					[300, 250],
-					[320, 50],
-				],
-			},
-			'mobile-mpu-banner-bottom': {
-				sizes: [
-					[300, 250],
-					[320, 50],
-				],
-			},
 		},
 	};
 }

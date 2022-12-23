@@ -1,10 +1,13 @@
 import { Injectable } from '@wikia/dependency-injection';
-import { communicationService, context, eventsRepository, ProcessPipeline } from '@wikia/ad-engine';
-import { bootstrapAndGetConsent, gptSetup } from '@platforms/shared';
+
+import { context, ProcessPipeline } from '@wikia/ad-engine';
+import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
 
 import { basicContext } from './ad-context';
 import { MetacriticSlotsContextSetup } from './setup/context/slots/metacritic-slots-context.setup';
 import { MetacriticDynamicSlotsSetup } from './setup/dynamic-slots/metacritic-dynamic-slots.setup';
+import { MetacriticPrebidConfigSetup } from './setup/context/prebid/metacritic-prebid-config.setup';
+import { MetacriticAdsMode } from './modes/metacritic-ads-mode';
 import { NewsAndRatingsBaseContextSetup } from '../shared';
 
 @Injectable()
@@ -16,12 +19,12 @@ export class MetacriticPlatform {
 			() => context.extend(basicContext),
 			NewsAndRatingsBaseContextSetup,
 			() => bootstrapAndGetConsent(),
-			// TODO: to decide if we want to call instant-config service for the first releases?
+			InstantConfigSetup,
 			MetacriticDynamicSlotsSetup,
 			MetacriticSlotsContextSetup,
-			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
-			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
-			gptSetup.call,
+			BiddersStateSetup,
+			MetacriticPrebidConfigSetup,
+			MetacriticAdsMode,
 		);
 
 		this.pipeline.execute();

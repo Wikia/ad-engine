@@ -24,6 +24,11 @@ export const basicContext = {
 			bidder: 1000,
 		},
 	},
+	services: {
+		instantConfig: {
+			appName: 'gamefaqs',
+		},
+	},
 	slots: {},
 	src: ['gamefaqs'],
 };

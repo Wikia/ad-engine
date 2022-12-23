@@ -3,13 +3,13 @@ export const basicContext = {
 	custom: {
 		dfpId: '5441',
 		region: 'aw',
-		property: 'metacritic',
+		property: 'tvguide',
 	},
 	services: {
 		instantConfig: {
-			appName: 'metacritic',
+			appName: 'tvguide',
 		},
 	},
 	slots: {},
-	src: ['metacritic'],
+	src: ['tvguide'],
 };
