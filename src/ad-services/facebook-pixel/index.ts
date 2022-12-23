@@ -1,4 +1,4 @@
-import { BaseServiceSetup,  utils } from '@ad-engine/core';
+import { BaseServiceSetup, utils } from '@ad-engine/core';
 import { insertFacebookPixel } from './facebook-pixel-script';
 
 const logGroup = 'facebook-pixel';
