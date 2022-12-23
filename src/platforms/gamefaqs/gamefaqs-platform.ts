@@ -1,4 +1,5 @@
 import { Injectable } from '@wikia/dependency-injection';
+
 import {
 	bidders,
 	communicationService,
@@ -7,7 +8,12 @@ import {
 	utils,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
-import { bootstrapAndGetConsent, gptSetup } from '@platforms/shared';
+import {
+	bootstrapAndGetConsent,
+	gptSetup,
+	BiddersStateSetup,
+	InstantConfigSetup,
+} from '@platforms/shared';
 
 import { basicContext } from './ad-context';
 import { GamefaqsSlotsContextSetup } from './setup/context/slots/gamefaqs-slots-context.setup';
@@ -25,13 +31,14 @@ export class GamefaqsPlatform {
 			() => context.extend(basicContext),
 			() => context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441),
 			() => context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src')),
-			// TODO: to decide if we want to call instant-config service for the first releases?
+			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
+			InstantConfigSetup,
 			NewsAndRatingsTargetingSetup,
 			GamefaqsTargetingSetup,
 			GamefaqsSlotsContextSetup,
 			GamefaqsDynamicSlotsSetup,
-			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
+			BiddersStateSetup,
 			GamefaqsPrebidConfigSetup,
 			() =>
 				bidders
