@@ -9,7 +9,7 @@ import {
 import { gptSetup } from '@platforms/shared';
 
 @Injectable()
-export class ComicvineAdsMode implements DiProcess {
+export class NewsAndRatingsAdsMode implements DiProcess {
 	constructor(private pipeline: PartnerPipeline) {}
 
 	execute(): void {
