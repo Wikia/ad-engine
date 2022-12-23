@@ -1,12 +1,14 @@
 import { Injectable } from '@wikia/dependency-injection';
+
 import {
 	communicationService,
 	context,
 	eventsRepository,
-	ProcessPipeline,
 	utils,
+	ProcessPipeline,
 } from '@wikia/ad-engine';
-import { bootstrapAndGetConsent, gptSetup } from '@platforms/shared';
+import { bootstrapAndGetConsent, gptSetup, InstantConfigSetup } from '@platforms/shared';
+
 import { basicContext } from './ad-context';
 
 import { ComicvineSlotsContextSetup } from './setup/context/slots/comicvine-slots-context.setup';
@@ -22,8 +24,9 @@ export class ComicvinePlatform {
 			() => context.extend(basicContext),
 			() => context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441),
 			() => context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src')),
+			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
-			// TODO: to decide if we want to call instant-config service for the first releases?
+			InstantConfigSetup,
 			NewsAndRatingsTargetingSetup,
 			ComicvineDynamicSlotsSetup,
 			ComicvineSlotsContextSetup,
