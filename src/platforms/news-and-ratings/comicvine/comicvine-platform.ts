@@ -1,16 +1,15 @@
 import { Injectable } from '@wikia/dependency-injection';
-
 import { context, ProcessPipeline } from '@wikia/ad-engine';
 import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
-
 import { basicContext } from './ad-context';
-
 import { ComicvineSlotsContextSetup } from './setup/context/slots/comicvine-slots-context.setup';
 import { ComicvinePrebidConfigSetup } from './setup/context/prebid/comicvine-prebid-config.setup';
-import { ComicvineAdsMode } from './modes/comicvine-ads-mode';
-import { NewsAndRatingsTargetingSetup } from '../shared';
-import { NewsAndRatingsBaseContextSetup } from '../shared';
-import { NewsAndRatingsDynamicSlotsSetup } from '../shared/setup/dynamic-slots/news-and-ratings-dynamic-slots.setup';
+import {
+	NewsAndRatingsBaseContextSetup,
+	NewsAndRatingsDynamicSlotsSetup,
+	NewsAndRatingsTargetingSetup,
+	NewsAndRatingsAdsMode,
+} from '../shared';
 
 @Injectable()
 export class ComicvinePlatform {
@@ -27,7 +26,7 @@ export class ComicvinePlatform {
 			ComicvineSlotsContextSetup,
 			BiddersStateSetup,
 			ComicvinePrebidConfigSetup,
-			ComicvineAdsMode,
+			NewsAndRatingsAdsMode,
 		);
 
 		this.pipeline.execute();

@@ -1,15 +1,15 @@
 import { Injectable } from '@wikia/dependency-injection';
-
 import { context, ProcessPipeline } from '@wikia/ad-engine';
 import { bootstrapAndGetConsent, BiddersStateSetup, InstantConfigSetup } from '@platforms/shared';
-
 import { basicContext } from './ad-context';
 import { GamefaqsSlotsContextSetup } from './setup/context/slots/gamefaqs-slots-context.setup';
-import { NewsAndRatingsTargetingSetup } from '../shared';
 import { GamefaqsPrebidConfigSetup } from './setup/context/prebid/gamefaqs-prebid-config.setup';
-import { GamefaqsAdsMode } from './modes/gamefaqs-ads-mode';
-import { NewsAndRatingsBaseContextSetup } from '../shared';
-import { NewsAndRatingsDynamicSlotsSetup } from '../shared/setup/dynamic-slots/news-and-ratings-dynamic-slots.setup';
+import {
+	NewsAndRatingsAdsMode,
+	NewsAndRatingsBaseContextSetup,
+	NewsAndRatingsDynamicSlotsSetup,
+	NewsAndRatingsTargetingSetup,
+} from '../shared';
 
 @Injectable()
 export class GamefaqsPlatform {
@@ -27,7 +27,7 @@ export class GamefaqsPlatform {
 			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
 			BiddersStateSetup,
 			GamefaqsPrebidConfigSetup,
-			GamefaqsAdsMode,
+			NewsAndRatingsAdsMode,
 		);
 
 		this.pipeline.execute();
