@@ -1,18 +1,14 @@
 import { Injectable } from '@wikia/dependency-injection';
 
-import {
-	communicationService,
-	context,
-	eventsRepository,
-	utils,
-	ProcessPipeline,
-} from '@wikia/ad-engine';
-import { bootstrapAndGetConsent, gptSetup, InstantConfigSetup } from '@platforms/shared';
+import { context, utils, ProcessPipeline } from '@wikia/ad-engine';
+import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
 
 import { basicContext } from './ad-context';
 
 import { MetacriticSlotsContextSetup } from './setup/context/slots/metacritic-slots-context.setup';
 import { MetacriticDynamicSlotsSetup } from './setup/dynamic-slots/metacritic-dynamic-slots.setup';
+import { MetacriticPrebidConfigSetup } from './setup/context/prebid/metacritic-prebid-config.setup';
+import { MetacriticAdsMode } from './modes/metacritic-ads-mode';
 
 @Injectable()
 export class MetacriticPlatform {
@@ -28,9 +24,9 @@ export class MetacriticPlatform {
 			InstantConfigSetup,
 			MetacriticDynamicSlotsSetup,
 			MetacriticSlotsContextSetup,
-			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
-			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
-			gptSetup.call,
+			BiddersStateSetup,
+			MetacriticPrebidConfigSetup,
+			MetacriticAdsMode,
 		);
 
 		this.pipeline.execute();
