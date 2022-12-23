@@ -1,17 +1,14 @@
 import { Injectable } from '@wikia/dependency-injection';
-import {
-	communicationService,
-	context,
-	eventsRepository,
-	ProcessPipeline,
-	utils,
-} from '@wikia/ad-engine';
-import { bootstrapAndGetConsent, gptSetup } from '@platforms/shared';
+
+import { context, utils, ProcessPipeline } from '@wikia/ad-engine';
+import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
 
 import { basicContext } from './ad-context';
 import { GamespotSlotsContextSetup } from './setup/context/slots/gamespot-slots-context.setup';
 import { GamespotDynamicSlotsSetup } from './setup/dynamic-slots/gamespot-dynamic-slots.setup';
+import { GamespotPrebidConfigSetup } from './setup/context/prebid/gamespot-prebid-config.setup';
 import { NewsAndRatingsTargetingSetup } from '../shared-news-and-ratings/context/targeting/news-and-ratings-targeting.setup';
+import { GamespotAdsMode } from './modes/gamespot-ads-mode';
 
 @Injectable()
 export class GameSpotPlatform {
@@ -22,14 +19,15 @@ export class GameSpotPlatform {
 			() => context.extend(basicContext),
 			() => context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441),
 			() => context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src')),
+			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
-			// TODO: to decide if we want to call instant-config service for the first releases?
+			InstantConfigSetup,
 			NewsAndRatingsTargetingSetup,
 			GamespotSlotsContextSetup,
 			GamespotDynamicSlotsSetup,
-			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
-			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
-			gptSetup.call,
+			BiddersStateSetup,
+			GamespotPrebidConfigSetup,
+			GamespotAdsMode,
 		);
 
 		this.pipeline.execute();

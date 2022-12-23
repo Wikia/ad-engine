@@ -91,7 +91,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					[300, 250],
 					[300, 50],
 				],
-				defaultTemplates: [],
 				targeting: {
 					loc: 'middle',
 					pos: ['incontent_boxad'],
