@@ -44,7 +44,7 @@ class InstantConfigLoader {
 		});
 	}
 
-	private async fetchInstantConfig(): Promise<InstantConfigResponse> {
+	private async fetchInstantConfig(): Promise<InstantConfigResponse | void> {
 		const request = new XMLHttpRequest();
 		const baseUrl = context.get('services.instantConfig.endpoint') || 'https://services.fandom.com';
 		const variant = context.get('wiki.services_instantConfig_variant') || 'icbm';

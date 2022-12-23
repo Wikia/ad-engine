@@ -3,9 +3,9 @@ import {
 	blockUAP,
 	getUnitNameToDisable,
 	NoAdsExperimentSetup,
-} from '../../../../src/platforms/shared/setup/noads-experiment.setup';
+} from '@wikia/platforms/shared/setup/noads-experiment.setup';
 import { expect } from 'chai';
-import { slotsContext } from '../../../../src/platforms/shared';
+import { slotsContext } from '@wikia/platforms/shared';
 import { context } from '../../../../src';
 
 describe('NoAdsExperimentSetup', () => {

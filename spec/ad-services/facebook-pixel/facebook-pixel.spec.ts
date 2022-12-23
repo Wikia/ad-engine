@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { context } from '../../../src/core';
-import { facebookPixel } from '../../../src/ad-services';
+import { context } from '@wikia/core';
+import { facebookPixel } from '@wikia/ad-services';
 
 describe('Facebook pixel', () => {
 	const sandbox = createSandbox();

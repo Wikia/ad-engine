@@ -8,7 +8,7 @@
 		"no-restricted-imports": [
 			"error",
 			{
-				"paths": ["@ad-engine/**", "@platforms/**"],
+				"paths": ["@wikia/ad-engine", "@ad-engine/**", "@platforms/**"],
 				"patterns": ["**/src/**"]
 			}
 		]

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { createSandbox, SinonSpy } from 'sinon';
-import { context, utils } from '../../../src/core';
+import { context, utils } from '@wikia/core';
 import { liveConnect } from '@wikia/ad-services';
 import { communicationService, eventsRepository } from '@wikia/communication';
 

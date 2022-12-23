@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { adSlotFake } from '../../ad-slot-fake';
-import { NativoProvider } from '../../../../src/core/providers/nativo/nativo-provider';
+import { NativoProvider } from '@wikia/core/providers/nativo/nativo-provider';
 
 describe('Nativo Provider', () => {
 	const originalWindowNtv = window.ntv;

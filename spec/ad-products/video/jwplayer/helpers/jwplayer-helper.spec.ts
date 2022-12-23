@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 
-import { context } from '@wikia/ad-engine';
+import { context } from '@wikia/core';
 import { JWPlayerHelper } from '@wikia/ad-products/video/jwplayer/helpers/jwplayer-helper';
 
 type shouldPrerollAppear = boolean;

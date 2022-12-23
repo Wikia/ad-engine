@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { context } from '../../../src/core/services/context-service';
-import { stringBuilder } from '../../../src/core/utils/string-builder';
+import { context } from '@wikia/core/services/context-service';
+import { stringBuilder } from '@wikia/core/utils/string-builder';
 
 describe('string-builder', () => {
 	beforeEach(() => {

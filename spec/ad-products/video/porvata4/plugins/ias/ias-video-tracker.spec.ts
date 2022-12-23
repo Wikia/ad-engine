@@ -2,7 +2,7 @@ import { PorvataPlayer, PorvataSettings } from '@wikia/ad-products';
 import { iasVideoTracker } from '@wikia/ad-products/video/porvata/plugins/ias/ias-video-tracker';
 import { assert } from 'chai';
 import * as sinon from 'sinon';
-import { AdSlot, context, slotService, utils } from '../../../../../../src/core';
+import { AdSlot, context, slotService, utils } from '@wikia/core';
 
 describe('IAS video tracker', () => {
 	const sandbox = sinon.createSandbox();

@@ -116,7 +116,7 @@ class Bidders extends BaseServiceSetup {
 		this.getBiddersProviders().forEach((provider) => {
 			provider.addResponseListener(() => {
 				if (this.hasAllResponses()) {
-					promise.resolve();
+					promise.resolve(null);
 				}
 			});
 

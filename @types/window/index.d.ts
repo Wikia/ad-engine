@@ -1,9 +1,4 @@
 interface Window {
-	ga?: (
-		command: string,
-		eventType: 'pageview' | 'event' | 'social' | 'timing',
-		...opts: string[]
-	) => void;
 	__iasPET?: IasPet;
 	__tcfapi: WindowTCF;
 	__uspapi?: WindowUSP;
@@ -20,11 +15,14 @@ interface Window {
 	canPlayVideo?: any;
 	cnx?: any;
 	confiant?: Confiant;
-	DOMParser: typeof DOMParser;
+	DOMParser: DOMParser;
 	fandomContext: WindowFandomContext;
-	google: {
-		ima: typeof google.ima;
-	};
+	ga?: (
+		command: string,
+		eventType: 'pageview' | 'event' | 'social' | 'timing',
+		...opts: string[]
+	) => void;
+	google: google;
 	googleImaVansAdapter?: any;
 	googletag: googletag.Googletag;
 	headertag?: any;

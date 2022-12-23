@@ -18,7 +18,7 @@ export const SLOT_STICKY_STATE_SKIPPED = 'sticky-skipped';
 export const SLOT_STICKINESS_DISABLED = 'stickiness-disabled';
 export const SLOT_VIDEO_DONE = 'video-done';
 
-interface UapAdditionalSizes {
+export interface UapAdditionalSizes {
 	bfaSize: {
 		desktop: [number, number];
 		mobile: [number, number];

@@ -2,7 +2,7 @@ import { resolvedState } from '@wikia/ad-products';
 import { resolvedStateSwitch } from '@wikia/ad-products/templates/uap/resolved-state-switch';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { utils } from '../../../../src/core';
+import { utils } from '@wikia/core';
 
 interface ImageParams {
 	element: {

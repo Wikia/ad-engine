@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { context } from '../../../src/core/index';
-import { nielsen } from '../../../src/ad-services/nielsen';
+import { context } from '@wikia/core/index';
+import { nielsen } from '@wikia/ad-services/nielsen';
 
 describe('Nielsen service', () => {
 	it('is disabled if context variable is set to false', () => {

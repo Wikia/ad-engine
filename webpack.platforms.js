@@ -8,12 +8,6 @@ const common = require('./webpack.common.js');
 const platforms = ({ entry }) => ({
 	entry,
 
-	resolve: {
-		fallback: {
-			util: require.resolve('util/'),
-		},
-	},
-
 	output: {
 		filename: '[name]/main.bundle.js',
 		path: path.resolve(__dirname, `dist/platforms`),
@@ -21,9 +15,7 @@ const platforms = ({ entry }) => ({
 
 	plugins: [
 		new MiniCssExtractPlugin({ filename: '[name]/styles.css' }),
-		new webpack.ProvidePlugin({
-			process: 'process/browser',
-		}),
+		new webpack.ProvidePlugin({ process: 'process/browser' }),
 	],
 
 	performance: {

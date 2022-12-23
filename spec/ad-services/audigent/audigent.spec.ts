@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { context, externalLogger, utils } from '../../../src/core';
+import { context, externalLogger, utils } from '@wikia/core';
 import { audigent } from '@wikia/ad-services';
 
 describe('Audigent', () => {

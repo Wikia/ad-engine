@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 
-import { onVideoOverlayClick } from '../../../../../src/ad-products/templates/interface/listeners/player-overlay-click-listener';
+import { onVideoOverlayClick } from '@wikia//ad-products/templates/interface/listeners/player-overlay-click-listener';
 
 describe('Player click listener', () => {
 	const sandbox = createSandbox();

@@ -1,10 +1,10 @@
 import { assert } from 'sinon';
-import { SequenceStartHandler } from '../../../../../src/platforms/shared/sequential-messaging/domain/sequence-start-handler';
+import { SequenceStartHandler } from '@wikia/platforms/shared/sequential-messaging/domain/sequence-start-handler';
 import { makeUserStateStoreSpy } from '../test_doubles/state-store.spy';
 import {
 	SequenceState,
 	UserSequentialMessageState,
-} from '../../../../../src/platforms/shared/sequential-messaging/domain/data-structures/user-sequential-message-state';
+} from '@wikia/platforms/shared/sequential-messaging/domain/data-structures/user-sequential-message-state';
 
 const sequenceId = '5928558921';
 const sampleWidth = 970;

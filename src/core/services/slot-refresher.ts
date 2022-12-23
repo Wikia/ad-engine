@@ -2,7 +2,7 @@ import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engin
 import { AdSlot } from '../models';
 import { logger } from '../utils';
 import { GptProvider } from '../providers';
-import { context } from '@wikia/ad-engine';
+import { context } from './context-service';
 
 const logGroup = 'slot-refresher';
 

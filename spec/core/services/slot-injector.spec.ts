@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { context, slotInjector } from '../../../src/core/services';
+import { context, slotInjector } from '@wikia/core/services';
 
 describe('slot-injector', () => {
 	const sandbox = createSandbox();

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { context, externalLogger } from '../../../src/core';
+import { context, externalLogger } from '@wikia/core';
 
 describe('External logger', () => {
 	beforeEach(() => {

@@ -2,8 +2,8 @@ import { selectTemplate } from '@wikia/ad-products';
 import { UapVideoSettings } from '@wikia/ad-products/templates/uap/uap-video-settings';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { CloseButton } from '../../../../../src/ad-products/templates/interface/video/close-button';
-import { PlayerOverlay } from '../../../../../src/ad-products/templates/interface/video/player-overlay';
+import { CloseButton } from '@wikia//ad-products/templates/interface/video/close-button';
+import { PlayerOverlay } from '@wikia/ad-products/templates/interface/video/player-overlay';
 
 function getContainer(): HTMLDivElement {
 	return document.createElement('div');

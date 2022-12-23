@@ -27,7 +27,7 @@ import { PlayerRegistry } from '../../helpers/player-registry';
 @Injectable({ autobind: false })
 export class VideoBootstrapHandler implements TemplateStateHandler {
 	static DEBOUNCE_TIME = 10;
-	private destroy$ = new Subject();
+	private destroy$ = new Subject<void>();
 
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,

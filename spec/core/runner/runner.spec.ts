@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { Runner, utils } from '../../../src/core';
+import { Runner, utils } from '@wikia/core';
 
 describe('runner', () => {
 	const defaultTimeout = 2000;

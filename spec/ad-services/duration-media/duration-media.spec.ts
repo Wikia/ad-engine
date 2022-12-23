@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { context, utils } from '../../../src/core';
-import { durationMedia } from '../../../src/ad-services';
+import { context, utils } from '@wikia/core';
+import { durationMedia } from '@wikia/ad-services';
 
 describe('Duration media service', () => {
 	const sandbox = createSandbox();

@@ -1,4 +1,14 @@
 {
 	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		"paths": {
+			"@ad-engine/core": ["src/core/index.ts"],
+			"@ad-engine/communication": ["src/communication/index.ts"],
+			"@ad-engine/bidders": ["src/ad-bidders/index.ts"],
+			"@ad-engine/products": ["src/ad-products/index.ts"],
+			"@ad-engine/services": ["src/ad-services/index.ts"],
+			"@ad-engine/tracking": ["src/ad-tracking/index.ts"]
+		}
+	},
 	"include": ["."]
 }

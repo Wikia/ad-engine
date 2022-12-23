@@ -13,15 +13,15 @@
 		"declaration": true,
 		"declarationDir": "dist/types",
 		"baseUrl": ".",
+		"module": "ESNext",
 		"moduleResolution": "node",
-		"module": "ES2020",
 		"target": "es5",
-		"lib": ["es2021", "dom"],
+		"lib": ["ESNext", "dom"],
 		"outDir": "dist",
-		"typeRoots": ["node_modules/@types", "@types"],
+		"typeRoots": ["node_modules/@types", "node_modules/@alugha/ima", "@types"],
 		"paths": {
 			// Unit tests
-			"@source/*": ["src/*"],
+			"@wikia/*": ["src/*"],
 			// Core
 			"@ad-engine/core": ["src/core/index.ts"],
 			"@ad-engine/communication": ["src/communication/index.ts"],

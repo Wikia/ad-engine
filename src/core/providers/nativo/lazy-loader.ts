@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/dist/types';
+import { Observable } from 'rxjs';
 import { filter, take, tap } from 'rxjs/operators';
 
 import { getTopOffset, getViewportHeight, logger } from '../../utils';

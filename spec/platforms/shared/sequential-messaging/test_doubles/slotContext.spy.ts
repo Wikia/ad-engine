@@ -1,5 +1,5 @@
 import { createStubInstance, SinonStubbedInstance } from 'sinon';
-import { SlotsContextInterface } from '../../../../../src/platforms/shared';
+import { SlotsContextInterface } from '@wikia/platforms/shared';
 import { AdSlot } from '@wikia/core';
 import { PorvataParams } from '@wikia/ad-products';
 

@@ -2,7 +2,7 @@ import { geoService } from '@wikia/core/utils';
 import { assert } from 'chai';
 import Cookies from 'js-cookie';
 import * as sinon from 'sinon';
-import { context, InstantConfigCacheStorage, SessionCookie } from '../../../src/core/services';
+import { context, InstantConfigCacheStorage, SessionCookie } from '@wikia/core/services';
 
 describe('Geo', () => {
 	const sessionCookie = SessionCookie.make();
