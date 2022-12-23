@@ -6,7 +6,7 @@ import {
 	eventsRepository,
 	PartnerPipeline,
 } from '@wikia/ad-engine';
-import { gptSetup } from '@platforms/shared';
+import { gptSetup, wadRunner } from '@platforms/shared';
 
 @Injectable()
 export class GamefaqsAdsMode implements DiProcess {
@@ -16,8 +16,9 @@ export class GamefaqsAdsMode implements DiProcess {
 		this.pipeline
 			.add(
 				bidders,
+				wadRunner,
 				gptSetup.setOptions({
-					dependencies: [bidders.initialized],
+					dependencies: [wadRunner.initialized, bidders.initialized],
 				}),
 			)
 			.execute()

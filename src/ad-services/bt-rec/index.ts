@@ -36,7 +36,8 @@ class BTRec {
 	 * Injects BT script
 	 */
 	private loadScript(): Promise<Event> {
-		const btLibraryUrl = '//btloader.com/tag?h=wikia-inc-com&upapi=true';
+		// const btLibraryUrl = '//btloader.com/tag?h=wikia-inc-com&upapi=true';
+		const btLibraryUrl = '//btloader.com/tag?o=6209001497821184&upapi=true';
 
 		return utils.scriptLoader.loadScript(
 			btLibraryUrl,

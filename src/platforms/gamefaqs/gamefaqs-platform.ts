@@ -10,6 +10,7 @@ import { NewsAndRatingsTargetingSetup } from '../shared-news-and-ratings/context
 import { GamefaqsPrebidConfigSetup } from './setup/context/prebid/gamefaqs-prebid-config.setup';
 import { GamefaqsTargetingSetup } from './setup/context/targeting/gamefaqs-targeting.setup';
 import { GamefaqsAdsMode } from './modes/gamefaqs-ads-mode';
+import { GameFaqsWadSetup } from './setup/context/wad/gamefaqs-wad.setup';
 
 @Injectable()
 export class GamefaqsPlatform {
@@ -23,6 +24,7 @@ export class GamefaqsPlatform {
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
+			GameFaqsWadSetup,
 			NewsAndRatingsTargetingSetup,
 			GamefaqsTargetingSetup,
 			GamefaqsSlotsContextSetup,

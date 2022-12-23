@@ -1,4 +1,4 @@
-import { babDetection, BaseServiceSetup, btfBlockerService, btRec } from '@wikia/ad-engine';
+import { babDetection, BaseServiceSetup, btRec, context } from '@wikia/ad-engine';
 import { trackBab } from '../tracking/bab-tracker';
 
 class WadRunner extends BaseServiceSetup {
@@ -7,12 +7,14 @@ class WadRunner extends BaseServiceSetup {
 			return Promise.resolve();
 		}
 
-		const isBabDetected = await babDetection.run();
+		// const isBabDetected = await babDetection.run();
+		const isBabDetected = true;
+		context.set('options.wad.blocking', isBabDetected);
 
 		trackBab(isBabDetected);
 
 		if (isBabDetected) {
-			btfBlockerService.finishFirstCall();
+			// btfBlockerService.finishFirstCall();
 			btRec.run();
 		}
 	}
