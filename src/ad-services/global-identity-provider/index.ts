@@ -1,12 +1,13 @@
 import { Injectable } from '@wikia/dependency-injection';
 import { DiProcess, utils } from '@ad-engine/core';
-import { IframeMessage } from './types';
+import { MessageType } from './messages';
+import { iframeMessageFactory, protocolVersion } from './cross-domain-host';
+import { CrossDomainClient } from './cross-domain-client/cross-domain-client';
 
 @Injectable({ scope: 'Singleton' })
 export class GlobalIdentityProvider implements DiProcess {
 	private logGroup = 'GlobalIdentityProvider';
-	private fandomIframe: HTMLIFrameElement;
-	private origin: string;
+	private client: CrossDomainClient;
 
 	private isFandomUrl(): boolean {
 		return window.location.href.includes('.fandom.com');
@@ -17,38 +18,17 @@ export class GlobalIdentityProvider implements DiProcess {
 	}
 
 	private _onMessage(ev: MessageEvent) {
-		utils.logger(this.logGroup, ev);
-	}
-
-	private onIframeLoaded() {
-		const channel = new MessageChannel();
-		channel.port1.onmessage = this._onMessage;
-	}
-
-	private createIframe(url): Promise<void> {
-		return new Promise((res, rej) => {
-			this.origin = 'https://harrypotter.fandom.com';
-			const iframe = document.createElement('iframe');
-			iframe.id = 'fandom-iframe';
-			iframe.style.display = 'none';
-			iframe.addEventListener('load', () => {
-				this.onIframeLoaded();
-				utils.logger(this.logGroup, 'IFrame loaded');
-				res();
-			});
-			iframe.addEventListener('error', () => {
-				utils.logger(this.logGroup, 'IFrame loaded');
-				rej();
-			});
-			iframe.src = url;
-			this.fandomIframe = iframe;
-			document.body.appendChild(iframe);
-		});
-	}
-
-	private sendMessage(message: IframeMessage) {
-		utils.logger(this.logGroup, 'Sending message ' + message.type);
-		this.fandomIframe.contentWindow.postMessage(message, this.origin);
+		utils.logger(this.logGroup, 'got answer', ev);
+		if (ev?.data.xv === protocolVersion) {
+			switch (ev.data.type) {
+				case MessageType.PPID_RESPONSE:
+					utils.logger(this.logGroup, 'Received PPID', ev.data);
+					break;
+				default:
+					utils.logger(this.logGroup, 'Invalid event: ', ev.data.type);
+					break;
+			}
+		}
 	}
 
 	async execute(): Promise<void> {
@@ -56,16 +36,15 @@ export class GlobalIdentityProvider implements DiProcess {
 			utils.logger(this.logGroup, 'disabled');
 			return;
 		}
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
 
 		utils.logger(this.logGroup, 'Initializing Global Identity Provider');
-		await this.createIframe('https://www.fandom.com/silver-surfer.html');
-		this.sendMessage({
-			type: 'CrossDomain::Register::Request',
-			timestamp: Date.now(),
-			payload: undefined,
-			xv: '6af7f62fe',
-		});
+
+		this.client = new CrossDomainClient(
+			'https://www.fandom.com/silver-surfer.html',
+			this._onMessage,
+			this,
+		);
+		await this.client.createIframe();
+		this.client.sendMessage(iframeMessageFactory(MessageType.PPID_REQUEST, protocolVersion));
 	}
 }
