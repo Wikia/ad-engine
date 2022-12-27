@@ -24,9 +24,14 @@ class BabDetection {
 	}
 
 	async run(): Promise<boolean> {
-		const isBabDetected: boolean = await this.checkBlocking();
+		let isBabDetected: boolean = await this.checkBlocking();
 
 		utils.logger(logGroup, 'BAB detection, AB detected:', isBabDetected);
+
+		if (!isBabDetected) {
+			isBabDetected = await this.checkDomainBlocking();
+			utils.logger(logGroup, 'GAM domain blocking detection - detected:', isBabDetected);
+		}
 
 		this.setBodyClass(isBabDetected);
 		this.setRuntimeParams(isBabDetected);
@@ -67,6 +72,22 @@ class BabDetection {
 
 			return detected;
 		});
+	}
+
+	private async checkDomainBlocking() {
+		let adblockDetected = false;
+		const url = 'https://www.doubleclick.net';
+		try {
+			await fetch(url, {
+				method: 'HEAD',
+				mode: 'no-cors',
+				cache: 'no-store',
+			});
+		} catch {
+			adblockDetected = true;
+		}
+
+		return adblockDetected;
 	}
 
 	private setupBab(): void {
