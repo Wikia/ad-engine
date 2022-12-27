@@ -175,12 +175,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 				insertMethod: 'before',
 			},
 			activator: () => {
-				if (
-					context.get('services.distroScale.enabled') ||
-					context.get('services.exCo.enabled') ||
-					context.get('services.anyclip.enabled') ||
-					context.get('services.connatix.enabled')
-				) {
+				if (context.get('services.anyclip.enabled')) {
 					context.push('state.adStack', { id: slotName });
 				} else {
 					context.push('events.pushOnScroll.ids', slotName);
