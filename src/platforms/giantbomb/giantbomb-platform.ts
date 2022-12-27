@@ -1,7 +1,12 @@
 import { Injectable } from '@wikia/dependency-injection';
 
 import { context, utils, ProcessPipeline } from '@wikia/ad-engine';
-import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
+import {
+	BaseContextSetup,
+	BiddersStateSetup,
+	bootstrapAndGetConsent,
+	InstantConfigSetup,
+} from '@platforms/shared';
 
 import { basicContext } from './ad-context';
 import { GiantbombSlotsContextSetup } from './setup/context/slots/giantbomb-slots-context.setup';
@@ -22,6 +27,7 @@ export class GiantbombPlatform {
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
+			BaseContextSetup,
 			NewsAndRatingsTargetingSetup,
 			GiantbombSlotsContextSetup,
 			GiantbombDynamicSlotsSetup,

@@ -22,7 +22,7 @@ import {
 	jwPlayerInhibitor,
 	liveRampPixel,
 } from '@wikia/ad-engine';
-import { wadRunner, playerSetup, gptSetup, playerExperimentSetup } from '@platforms/shared';
+import { wadRunner, playerSetup, gptSetup, anyclipPlayerSetup } from '@platforms/shared';
 
 @Injectable()
 export class UcpDesktopAdsMode implements DiProcess {
@@ -33,7 +33,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 			.add(
 				userIdentity,
 				liveRampPixel.setOptions({ dependencies: [userIdentity.initialized] }),
-				playerExperimentSetup,
+				anyclipPlayerSetup,
 				ats,
 				audigent,
 				bidders,

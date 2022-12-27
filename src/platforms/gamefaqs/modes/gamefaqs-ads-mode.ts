@@ -4,7 +4,10 @@ import {
 	communicationService,
 	DiProcess,
 	eventsRepository,
+	liveConnect,
+	liveRampPixel,
 	PartnerPipeline,
+	userIdentity,
 } from '@wikia/ad-engine';
 import { gptSetup, wadRunner } from '@platforms/shared';
 
@@ -17,6 +20,9 @@ export class GamefaqsAdsMode implements DiProcess {
 			.add(
 				bidders,
 				wadRunner,
+				userIdentity,
+				liveRampPixel.setOptions({ dependencies: [userIdentity.initialized] }),
+				liveConnect,
 				gptSetup.setOptions({
 					dependencies: [wadRunner.initialized, bidders.initialized],
 				}),
