@@ -46,11 +46,9 @@ class InstantConfigLoader {
 
 	private async fetchInstantConfig(): Promise<InstantConfigResponse> {
 		const request = new XMLHttpRequest();
-		const baseUrl = context.get('services.instantConfig.endpoint') || 'https://services.fandom.com';
-		const variant = context.get('wiki.services_instantConfig_variant') || 'icbm';
-		const appName = context.get('services.instantConfig.appName');
+		const url = this.getConfigUrl();
 
-		request.open('GET', `${baseUrl}/${variant}/api/config?app=${appName}`, true);
+		request.open('GET', url, true);
 		request.responseType = 'json';
 
 		return new Promise((resolve) => {
@@ -75,6 +73,20 @@ class InstantConfigLoader {
 			};
 			request.send();
 		});
+	}
+
+	getConfigUrl() {
+		const baseUrl = context.get('services.instantConfig.endpoint') || 'https://services.fandom.com';
+		const variant = context.get('wiki.services_instantConfig_variant') || 'icbm';
+		const appName = context.get('services.instantConfig.appName');
+		const country = context.get('geo.country');
+		let url = `${baseUrl}/${variant}/api/config?app=${appName}`;
+
+		if (country) {
+			url = url.concat(`&country=${country}`);
+		}
+
+		return url;
 	}
 }
 

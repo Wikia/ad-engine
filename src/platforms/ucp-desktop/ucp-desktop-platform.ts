@@ -16,7 +16,6 @@ import {
 	conditional,
 	context,
 	eventsRepository,
-	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -36,7 +35,8 @@ export class UcpDesktopPlatform {
 		this.pipeline.add(
 			() => context.extend(basicContext),
 			PlatformContextSetup,
-			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
+			() => bootstrapAndGetConsent(),
+			InstantConfigSetup,
 			TrackingParametersSetup,
 			LoadTimesSetup,
 			UcpDesktopIocSetup,
