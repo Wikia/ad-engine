@@ -1,4 +1,10 @@
-import { babDetection, BaseServiceSetup, btRec, context } from '@wikia/ad-engine';
+import {
+	babDetection,
+	BaseServiceSetup,
+	btfBlockerService,
+	btRec,
+	context,
+} from '@wikia/ad-engine';
 import { trackBab } from '../tracking/bab-tracker';
 
 class WadRunner extends BaseServiceSetup {
@@ -13,7 +19,7 @@ class WadRunner extends BaseServiceSetup {
 		trackBab(isBabDetected);
 
 		if (isBabDetected) {
-			// btfBlockerService.finishFirstCall();
+			btfBlockerService.finishFirstCall();
 			btRec.run();
 		}
 	}
