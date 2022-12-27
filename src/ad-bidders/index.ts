@@ -110,12 +110,14 @@ class Bidders extends BaseServiceSetup {
 		}
 
 		if (!this.getBiddersProviders().length) {
+			utils.logger(logGroup, 'resolving call() promise because of no bidder providers');
 			return Promise.resolve();
 		}
 
 		this.getBiddersProviders().forEach((provider) => {
 			provider.addResponseListener(() => {
 				if (this.hasAllResponses()) {
+					utils.logger(logGroup, 'resolving call() promise because of having all responses');
 					promise.resolve(null);
 				}
 			});
@@ -123,6 +125,7 @@ class Bidders extends BaseServiceSetup {
 			provider.call();
 		});
 
+		utils.logger(logGroup, 'returning call() promise');
 		return promise;
 	}
 

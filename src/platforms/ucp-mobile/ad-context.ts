@@ -65,10 +65,6 @@ export const basicContext = {
 			boxadSlotNames: ['top_boxad', 'mobile_prefooter'],
 			boxadSize: [300, 251],
 		},
-		stickyIcb: {
-			enabled: false,
-			topPadding: 65,
-		},
 	},
 	services: {
 		confiant: {
