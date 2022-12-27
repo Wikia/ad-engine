@@ -18,6 +18,7 @@ import {
 	eventsRepository,
 	parallel,
 	ProcessPipeline,
+	TargetingService,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
@@ -29,12 +30,13 @@ import { UcpDesktopLegacySetup } from './ucp-desktop-legacy-setup';
 
 @Injectable()
 export class UcpDesktopPlatform {
-	constructor(private pipeline: ProcessPipeline) {}
+	constructor(private pipeline: ProcessPipeline, private targetingService: TargetingService) {}
 
 	execute(): void {
 		// Config
 		this.pipeline.add(
 			() => context.extend(basicContext),
+			() => this.targetingService.get('das'),
 			PlatformContextSetup,
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
 			TrackingParametersSetup,

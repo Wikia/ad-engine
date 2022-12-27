@@ -18,3 +18,4 @@ export * from './nielsen';
 export * from './sailthru';
 export * from './stroer';
 export * from './connatix/connatix-player';
+export * from './connatix/connatix-player';
