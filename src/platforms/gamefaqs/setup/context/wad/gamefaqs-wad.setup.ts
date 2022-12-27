@@ -1,6 +1,6 @@
 import { Injectable } from '@wikia/dependency-injection';
 
-import { context, DiProcess, InstantConfigService } from '@wikia/ad-engine';
+import { context, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
 
 @Injectable()
 export class GameFaqsWadSetup implements DiProcess {
@@ -14,6 +14,13 @@ export class GameFaqsWadSetup implements DiProcess {
 
 		if (babEnabled) {
 			context.set('options.wad.btRec.enabled', this.instantConfig.get('icBTRec'));
+		}
+
+		if (utils.queryString.get('switch_bt_loader')) {
+			context.set(
+				'options.wad.btRec.loaderUrl',
+				'//btloader.com/tag?o=6209001497821184&upapi=true',
+			);
 		}
 	}
 }
