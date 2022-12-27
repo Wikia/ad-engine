@@ -4,7 +4,10 @@ import {
 	communicationService,
 	DiProcess,
 	eventsRepository,
+	liveConnect,
+	liveRampPixel,
 	PartnerPipeline,
+	userIdentity,
 } from '@wikia/ad-engine';
 import { gptSetup } from '@platforms/shared';
 
@@ -16,6 +19,9 @@ export class GamespotAdsMode implements DiProcess {
 		this.pipeline
 			.add(
 				bidders,
+				userIdentity,
+				liveRampPixel.setOptions({ dependencies: [userIdentity.initialized] }),
+				liveConnect,
 				gptSetup.setOptions({
 					dependencies: [bidders.initialized],
 				}),

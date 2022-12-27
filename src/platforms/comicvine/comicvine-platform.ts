@@ -1,7 +1,12 @@
 import { Injectable } from '@wikia/dependency-injection';
 
 import { context, utils, ProcessPipeline } from '@wikia/ad-engine';
-import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
+import {
+	BaseContextSetup,
+	BiddersStateSetup,
+	bootstrapAndGetConsent,
+	InstantConfigSetup,
+} from '@platforms/shared';
 
 import { basicContext } from './ad-context';
 
@@ -23,6 +28,7 @@ export class ComicvinePlatform {
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
+			BaseContextSetup,
 			NewsAndRatingsTargetingSetup,
 			ComicvineDynamicSlotsSetup,
 			ComicvineSlotsContextSetup,
