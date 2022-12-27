@@ -13,8 +13,8 @@ interface TemplateMachinePayload<
 > {
 	StateHandlerTypesDict: T;
 	initialStateKey: keyof T;
-	templateDependencies: TemplateDependency[];
 	emitter$: Subject<TemplateAction>;
+	templateDependencies: TemplateDependency[];
 }
 
 type TemplateDependencies = (TemplateDependency | TemplateDependencies)[];
@@ -37,7 +37,7 @@ export class TemplateRegistry {
 		templateName: string,
 		StateHandlerTypesDict: T,
 		initialStateKey: keyof T,
-		templateDependencies: TemplateDependencies = [],
+		templateDependencies: (TemplateDependency | TemplateDependencies)[] = [],
 	): Observable<TemplateAction> {
 		const emitter$ = new Subject<TemplateAction>();
 
@@ -45,6 +45,7 @@ export class TemplateRegistry {
 			StateHandlerTypesDict,
 			initialStateKey,
 			emitter$,
+			// @ts-ignore "this context fix"
 			templateDependencies: templateDependencies.flat<TemplateDependency>(Infinity),
 		});
 
