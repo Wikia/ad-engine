@@ -3,15 +3,12 @@
 	"version": "126.8.6",
 	"description": "Wikia AdEngine",
 	"license": "Apache-2.0",
-	"sideEffects": [
-		"*.scss"
-	],
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/Wikia/AdEngine"
 	},
 	"dependencies": {
-		"@babel/runtime-corejs2": "7.20.6",
+		"@babel/runtime-corejs2": "7.20.7",
 		"@wikia/dependency-injection": "2.2.3",
 		"@wikia/post-quecast": "2.0.1",
 		"blockadblock": "3.2.1",
@@ -30,10 +27,10 @@
 		"@types/doubleclick-gpt": "2019111201.0.2",
 		"@types/js-cookie": "3.0.2",
 		"@types/mocha": "10.0.1",
-		"@types/node": "18.11.17",
+		"@types/node": "18.11.18",
 		"@types/sinon": "10.0.13",
-		"@typescript-eslint/eslint-plugin": "5.47.0",
-		"@typescript-eslint/parser": "5.47.0",
+		"@typescript-eslint/eslint-plugin": "5.47.1",
+		"@typescript-eslint/parser": "5.47.1",
 		"chai": "4.3.7",
 		"css-loader": "6.7.3",
 		"eslint": "8.30.0",
@@ -63,16 +60,6 @@
 		"webpack-dev-server": "4.11.1",
 		"webpack-merge": "5.8.0"
 	},
-	"files": [
-		"configs/",
-		"dist/",
-		"maintenance/",
-		"src/",
-		".babelrc",
-		".eslintrc.json",
-		"package.json",
-		"webpack.config.js"
-	],
 	"nyc": {
 		"report-dir": "./spec/build/"
 	},
@@ -87,7 +74,7 @@
 		"prepare": "husky install",
 		"prebuild": "rm -rf dist",
 		"preversion": "./maintenance/preversion.sh",
-		"test": "instant-mocha --full-trace './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.js",
+		"test": "instant-mocha './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.js",
 		"test:watch": "npm run test -- -w",
 		"test-coverage": "nyc instant-mocha './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.coverage.js"
 	},
@@ -99,5 +86,8 @@
 		"*.{js,json,css,scss,html}": [
 			"prettier --write"
 		]
-	}
+	},
+	"sideEffects": [
+		"*.scss"
+	]
 }
