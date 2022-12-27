@@ -84,9 +84,6 @@ export class NoAdsExperimentSetup implements DiProcess {
 			case 'incontent_player':
 				context.set(`slots.${unitName}.disabled`, true);
 				context.set('services.anyclip.enabled', false);
-				context.set('services.connatix.enabled', false);
-				context.set('services.exCo.enabled', false);
-				context.set('services.distroScale.enabled', false);
 				return;
 			default:
 				context.set(`slots.${unitName}.disabled`, true);

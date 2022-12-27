@@ -1,12 +1,6 @@
 import { Injectable } from '@wikia/dependency-injection';
 
-import {
-	communicationService,
-	context,
-	eventsRepository,
-	utils,
-	ProcessPipeline,
-} from '@wikia/ad-engine';
+import { context, utils, ProcessPipeline } from '@wikia/ad-engine';
 import {
 	BaseContextSetup,
 	BiddersStateSetup,
@@ -17,8 +11,9 @@ import {
 import { basicContext } from './ad-context';
 import { GiantbombSlotsContextSetup } from './setup/context/slots/giantbomb-slots-context.setup';
 import { GiantbombDynamicSlotsSetup } from './setup/dynamic-slots/giantbomb-dynamic-slots.setup';
+import { GiantbombPrebidConfigSetup } from './setup/context/prebid/giantbomb-prebid-config.setup';
 import { NewsAndRatingsTargetingSetup } from '../shared-news-and-ratings/context/targeting/news-and-ratings-targeting.setup';
-import { GiantbombAdsMode } from './modes/giantbomb-ads-mode.service';
+import { GiantbombAdsMode } from './modes/giantbomb-ads-mode';
 
 @Injectable()
 export class GiantbombPlatform {
@@ -35,10 +30,10 @@ export class GiantbombPlatform {
 			BaseContextSetup,
 			NewsAndRatingsTargetingSetup,
 			GiantbombSlotsContextSetup,
-			BiddersStateSetup,
 			GiantbombDynamicSlotsSetup,
+			BiddersStateSetup,
+			GiantbombPrebidConfigSetup,
 			GiantbombAdsMode,
-			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 		);
 
 		this.pipeline.execute();

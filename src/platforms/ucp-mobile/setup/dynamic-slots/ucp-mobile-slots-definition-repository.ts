@@ -110,10 +110,6 @@ export class UcpMobileSlotsDefinitionRepository {
 		const wrapperClassList = ['ad-slot-placeholder', 'incontent-boxad', 'is-loading'];
 		const placeholderConfig = context.get(`slots.${slotName}.placeholder`);
 
-		if (!context.get('custom.hasFeaturedVideo') && context.get('templates.stickyIcb.enabled')) {
-			context.push(`slots.${slotName}.defaultTemplates`, 'stickyIcb');
-		}
-
 		return {
 			slotCreatorConfig: {
 				slotName,
