@@ -7,8 +7,7 @@ class WadRunner extends BaseServiceSetup {
 			return Promise.resolve();
 		}
 
-		// const isBabDetected = await babDetection.run();
-		const isBabDetected = true;
+		const isBabDetected = await babDetection.run();
 		context.set('options.wad.blocking', isBabDetected);
 
 		trackBab(isBabDetected);

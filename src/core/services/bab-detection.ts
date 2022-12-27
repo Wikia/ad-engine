@@ -75,6 +75,7 @@ class BabDetection {
 			resetOnEnd: true,
 			loopCheckTime: 50,
 			loopMaxNumber: 5,
+			debug: !!utils.queryString.get('bt_rec_debug') || false,
 		});
 		isBabInitialised = true;
 	}
