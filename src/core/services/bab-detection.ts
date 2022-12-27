@@ -10,7 +10,7 @@ const logGroup = 'bab-detection';
 let bab: BlockAdBlock;
 let isBabInitialised = false;
 
-class BabDetection {
+export class BabDetection {
 	getName(): string {
 		return logGroup;
 	}

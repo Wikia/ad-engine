@@ -7,20 +7,34 @@ import {
 } from '@wikia/ad-engine';
 import { trackBab } from '../tracking/bab-tracker';
 
-class WadRunner extends BaseServiceSetup {
+const defaultOnDetect = () => {
+	btfBlockerService.finishFirstCall();
+	btRec.run();
+};
+
+export class WadRunner extends BaseServiceSetup {
+	protected detector;
+	protected onDetected: () => void;
+
+	constructor(detector = babDetection, onDetected = defaultOnDetect) {
+		super();
+
+		this.detector = detector;
+		this.onDetected = onDetected;
+	}
+
 	async call(): Promise<void> {
-		if (!babDetection.isEnabled()) {
+		if (!this.detector.isEnabled()) {
 			return Promise.resolve();
 		}
 
-		const isBabDetected = await babDetection.run();
+		const isBabDetected = await this.detector.run();
 		context.set('options.wad.blocking', isBabDetected);
 
 		trackBab(isBabDetected);
 
 		if (isBabDetected) {
-			btfBlockerService.finishFirstCall();
-			btRec.run();
+			this.onDetected();
 		}
 	}
 }
