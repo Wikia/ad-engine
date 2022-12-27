@@ -3,29 +3,20 @@ import {
 	AnyclipTracker,
 	BaseServiceSetup,
 	communicationService,
-	connatix,
-	distroScale,
 	eventsRepository,
-	exCo,
 	slotDataParamsUpdater,
 	slotService,
 	UapLoadStatus,
 } from '@wikia/ad-engine';
 
-class PlayerExperimentSetup extends BaseServiceSetup {
+class AnyclipPlayerSetup extends BaseServiceSetup {
 	private initIncontentPlayer(incontentPlayer) {
 		const anyclip = new Anyclip(new AnyclipTracker(Anyclip.SUBSCRIBE_FUNC_NAME));
 
 		if (!incontentPlayer) return;
 		slotDataParamsUpdater.updateOnCreate(incontentPlayer);
-		if (distroScale.isEnabled()) {
-			distroScale.call();
-		} else if (exCo.isEnabled()) {
-			exCo.call();
-		} else if (anyclip.isEnabled()) {
+		if (anyclip.isEnabled()) {
 			anyclip.call();
-		} else if (connatix.isEnabled()) {
-			connatix.call();
 		}
 	}
 
@@ -41,4 +32,4 @@ class PlayerExperimentSetup extends BaseServiceSetup {
 	}
 }
 
-export const playerExperimentSetup = new PlayerExperimentSetup();
+export const anyclipPlayerSetup = new AnyclipPlayerSetup();
