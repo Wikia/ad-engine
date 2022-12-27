@@ -27,7 +27,12 @@ export const geoService = {
 };
 
 function setUpGeoData(): GeoData {
-	const jsonData = decodeURIComponent(Cookies.get('Geo'));
+	const geoCookie = Cookies.get('Geo');
+
+	if (!geoCookie) {
+		return;
+	}
+	const jsonData = decodeURIComponent(geoCookie);
 
 	try {
 		const geoData: GeoData = JSON.parse(jsonData) || {};
