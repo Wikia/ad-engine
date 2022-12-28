@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { context } from '@wikia/core/index';
+import { context } from '@wikia/core';
 import { nielsen } from '@wikia/ad-services/nielsen';
 
 describe('Nielsen service', () => {

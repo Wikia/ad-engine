@@ -6,7 +6,7 @@ import {
 } from '@wikia/platforms/shared/setup/noads-experiment.setup';
 import { expect } from 'chai';
 import { slotsContext } from '@wikia/platforms/shared';
-import { context } from '../../../../src';
+import { context } from '@wikia/index';
 
 describe('NoAdsExperimentSetup', () => {
 	const instantConfig = {

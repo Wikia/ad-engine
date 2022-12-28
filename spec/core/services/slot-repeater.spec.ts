@@ -1,5 +1,5 @@
-import { AdSlot } from '@wikia/core/index';
-import { communicationService } from '@wikia/communication/index';
+import { AdSlot } from '@wikia/core';
+import { communicationService } from '@wikia/communication';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { context, slotInjector, slotRepeater } from '@wikia/core/services';

@@ -3,7 +3,7 @@ import {
 	InstantConfigCacheStorage,
 } from '@wikia/core/services/instant-config-cache-storage';
 import { SessionCookie } from '@wikia/core/services/session-cookie';
-import { communicationService, eventsRepository } from '@wikia/communication/index';
+import { communicationService, eventsRepository } from '@wikia/communication';
 import { expect } from 'chai';
 import { createSandbox, SinonSpy, SinonStub } from 'sinon';
 

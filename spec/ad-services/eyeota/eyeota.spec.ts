@@ -5,7 +5,7 @@ import {
 } from '@wikia/platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { context, tcf, utils } from '@wikia/core/index';
+import { context, tcf, utils } from '@wikia/core';
 
 describe('Eyeota', () => {
 	const sandbox = createSandbox();

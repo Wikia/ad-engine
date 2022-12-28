@@ -1,13 +1,12 @@
-import { parallel, ProcessPipeline } from '@wikia/core';
+import { ProcessPipeline, sequential } from '@wikia/core';
 import { wait } from '@wikia/core/utils';
 import { Container } from '@wikia/dependency-injection';
 import { expect } from 'chai';
-import { createSandbox, SinonFakeTimers, SinonSpy } from 'sinon';
+import { createSandbox, SinonSpy } from 'sinon';
 
-describe('ParallelProcess', () => {
+describe('SequentialProcess', () => {
 	const sandbox = createSandbox();
 	let spy: SinonSpy;
-	let clock: SinonFakeTimers;
 	let pipeline: ProcessPipeline;
 
 	const funcProcess = () => spy('func');
@@ -22,7 +21,6 @@ describe('ParallelProcess', () => {
 		const container = new Container();
 
 		spy = sandbox.spy();
-		clock = sandbox.useFakeTimers();
 		pipeline = container.get(ProcessPipeline);
 	});
 
@@ -33,20 +31,22 @@ describe('ParallelProcess', () => {
 	it('should work', async () => {
 		const promise = pipeline
 			.add(
-				parallel(
+				sequential(
 					funcProcess,
 					ClassProcess,
 					async () => {
-						await wait(200);
+						await wait(20);
 						spy('async');
 					},
-					parallel(() => spy('other')),
+					sequential(() => spy('other')),
 				),
 				() => spy('end'),
 			)
 			.execute();
 
-		await progress(200);
+		await progress(0);
+		expect(spy.getCalls().map((call) => call.args[0])).to.deep.equal(['func', 'class']);
+		await progress(20);
 		assertResults();
 		await promise;
 		assertResults();
@@ -56,16 +56,13 @@ describe('ParallelProcess', () => {
 		expect(spy.getCalls().map((call) => call.args[0])).to.deep.equal([
 			'func',
 			'class',
-			'other',
 			'async',
+			'other',
 			'end',
 		]);
 	}
 
-	async function progress(ms?: number): Promise<void> {
-		if (ms) {
-			clock.tick(ms);
-		}
-		await new Promise((resolve) => setImmediate(resolve));
+	async function progress(ms: number): Promise<void> {
+		await new Promise((resolve) => setTimeout(resolve, ms));
 	}
 });

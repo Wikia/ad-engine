@@ -5,13 +5,7 @@
 		"es2021": true
 	},
 	"extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
-	"ignorePatterns": [
-		"dist/",
-		"lib/",
-		"node_modules/",
-		"src/**/*.js",
-		"spec.back/" // todo: remove
-	],
+	"ignorePatterns": ["dist/", "lib/", "node_modules/", "src/**/*.js"],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
 		"ecmaVersion": 2021,
