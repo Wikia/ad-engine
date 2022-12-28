@@ -51,11 +51,11 @@ export class BabDetection {
 	): Promise<boolean> {
 		return new Promise((resolve) => {
 			if (!isBabInitialised) {
-				if (typeof BlockAdBlock === 'undefined') {
+				if (!this.doesBlockAdBlockExist()) {
 					resolve(true);
-
 					return;
 				}
+
 				this.setupBab();
 			}
 
@@ -74,7 +74,11 @@ export class BabDetection {
 		});
 	}
 
-	private async checkDomainBlocking() {
+	public doesBlockAdBlockExist() {
+		return typeof BlockAdBlock !== 'undefined';
+	}
+
+	public async checkDomainBlocking() {
 		let adblockDetected = false;
 		const url = 'https://www.doubleclick.net';
 		try {
@@ -91,14 +95,18 @@ export class BabDetection {
 	}
 
 	private setupBab(): void {
-		bab = new BlockAdBlock({
+		bab = this.createBlockAdBlock();
+		isBabInitialised = true;
+	}
+
+	public createBlockAdBlock(): BlockAdBlock {
+		return new BlockAdBlock({
 			checkOnLoad: false,
 			resetOnEnd: true,
 			loopCheckTime: 50,
 			loopMaxNumber: 5,
 			debug: !!utils.queryString.get('bt_rec_debug') || false,
 		});
-		isBabInitialised = true;
 	}
 
 	private setRuntimeParams(isBabDetected: boolean): void {
