@@ -76,7 +76,7 @@
 		"preversion": "./maintenance/preversion.sh",
 		"test": "instant-mocha './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.js",
 		"test:watch": "npm run test -- -w",
-		"test-coverage": "nyc instant-mocha './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.coverage.js"
+		"test-coverage": "nyc instant-mocha './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.coverage.js"
 	},
 	"lint-staged": {
 		"*.ts": [

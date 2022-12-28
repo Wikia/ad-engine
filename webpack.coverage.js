@@ -7,9 +7,9 @@ const config = () => ({
 		rules: [
 			{
 				test: /\.ts$/,
-				enforce: 'post',
-				include: [path.resolve(`src/`)], // instrument only sources with Istanbul
+				include: [path.resolve(`src/`)],
 				exclude: [/node_modules/],
+				enforce: 'post',
 				loader: 'istanbul-instrumenter-loader',
 				options: {
 					esModules: true,
