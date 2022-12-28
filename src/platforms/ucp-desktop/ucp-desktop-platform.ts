@@ -16,7 +16,9 @@ import {
 	conditional,
 	context,
 	eventsRepository,
+	parallel,
 	ProcessPipeline,
+	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
@@ -34,9 +36,9 @@ export class UcpDesktopPlatform {
 		// Config
 		this.pipeline.add(
 			() => context.extend(basicContext),
+			() => utils.geoService.setUpGeoData(),
 			PlatformContextSetup,
-			() => bootstrapAndGetConsent(),
-			InstantConfigSetup,
+			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
 			TrackingParametersSetup,
 			LoadTimesSetup,
 			UcpDesktopIocSetup,

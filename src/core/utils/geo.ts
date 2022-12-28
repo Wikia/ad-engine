@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 import { context } from '../services/context-service';
 import { CacheData, InstantConfigCacheStorage } from '../services/instant-config-cache-storage';
+import { ensureGeoCookie } from '../../platforms/shared';
 
 const cacheMarker = '-cached';
 const earth = 'XX';
@@ -26,11 +27,11 @@ export const geoService = {
 	isProperGeo,
 };
 
-function setUpGeoData(): GeoData {
+function setUpGeoData(): void {
 	const geoCookie = Cookies.get('Geo');
 
 	if (!geoCookie) {
-		return;
+		ensureGeoCookie();
 	}
 	const jsonData = decodeURIComponent(geoCookie);
 
@@ -42,8 +43,6 @@ function setUpGeoData(): GeoData {
 	} catch (e) {
 		throw new Error('Invalid JSON in the cookie');
 	}
-
-	return context.get('geo') || {};
 }
 
 function hasCache(countryList: string[]): boolean {
