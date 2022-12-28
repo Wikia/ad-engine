@@ -113,10 +113,10 @@ export class CommonTags implements TargetingProvider<Partial<Targeting>> {
 			}
 		});
 
-		if (this.fandomContext.site.tags.esrb || this.fandomContext.site.tags.mpa) {
+		if (this.fandomContext.site?.tags?.esrb || this.fandomContext.site?.tags?.mpa) {
 			keyVals.rating = this.createRatingTag(
-				this.fandomContext.site.tags.esrb,
-				this.fandomContext.site.tags.mpa,
+				this.fandomContext.site?.tags?.esrb,
+				this.fandomContext.site?.tags?.mpa,
 			);
 		}
 
