@@ -21,6 +21,7 @@ describe('BlockThrough recovery', () => {
 
 		context.remove('options.wad.btRec.enabled');
 		context.remove('options.wad.blocking');
+		context.remove('options.wad.btRec.loaderUrl');
 	});
 
 	it('BlockThrough loads assets when enabled', async () => {
@@ -28,6 +29,16 @@ describe('BlockThrough recovery', () => {
 
 		return await btRec.run().then(() => {
 			expect(loadScriptStub.called).to.equal(true);
+		});
+	});
+
+	it('BlockThrough loads assets from given URL', async () => {
+		context.set('options.wad.btRec.loaderUrl', '//mock-loader-url');
+		loadScriptStub.returns(Promise.resolve());
+
+		return await btRec.run().then(() => {
+			expect(loadScriptStub.called).to.equal(true);
+			expect(loadScriptStub.calledWith('//mock-loader-url')).to.equal(true);
 		});
 	});
 
