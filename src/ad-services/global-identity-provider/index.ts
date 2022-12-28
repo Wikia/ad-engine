@@ -1,8 +1,7 @@
 import { Injectable } from '@wikia/dependency-injection';
 import { DiProcess, utils } from '@ad-engine/core';
 import { MessageType } from './messages';
-import { iframeMessageFactory, protocolVersion } from './cross-domain-host';
-import { CrossDomainClient } from './cross-domain-client/cross-domain-client';
+import { IframeMessage, CrossDomainClient } from '@fandom-frontend/cross-domain-storage/dist/main';
 
 @Injectable({ scope: 'Singleton' })
 export class GlobalIdentityProvider implements DiProcess {
@@ -19,15 +18,13 @@ export class GlobalIdentityProvider implements DiProcess {
 
 	private _onMessage(ev: MessageEvent) {
 		utils.logger(this.logGroup, 'got answer', ev);
-		if (ev?.data.xv === protocolVersion) {
-			switch (ev.data.type) {
-				case MessageType.PPID_RESPONSE:
-					utils.logger(this.logGroup, 'Received PPID', ev.data);
-					break;
-				default:
-					utils.logger(this.logGroup, 'Invalid event: ', ev.data.type);
-					break;
-			}
+		switch (ev.data.type) {
+			case MessageType.PPID_RESPONSE:
+				utils.logger(this.logGroup, 'Received PPID', ev.data);
+				break;
+			default:
+				utils.logger(this.logGroup, 'Invalid event: ', ev.data.type);
+				break;
 		}
 	}
 
@@ -42,9 +39,8 @@ export class GlobalIdentityProvider implements DiProcess {
 		this.client = new CrossDomainClient(
 			'https://www.fandom.com/silver-surfer.html',
 			this._onMessage,
-			this,
 		);
 		await this.client.createIframe();
-		this.client.sendMessage(iframeMessageFactory(MessageType.PPID_REQUEST, protocolVersion));
+		this.client.sendMessage(new IframeMessage(MessageType.PPID_REQUEST));
 	}
 }

@@ -12,6 +12,7 @@
 	},
 	"dependencies": {
 		"@babel/runtime-corejs2": "7.18.9",
+		"@fandom-frontend/cross-domain-storage": "0.0.2-ADEN-12232.12",
 		"@wikia/dependency-injection": "2.2.3",
 		"@wikia/post-quecast": "2.0.1",
 		"blockadblock": "3.2.1",
