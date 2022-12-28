@@ -155,3 +155,9 @@ export const basicContext = {
 		},
 	},
 };
+
+export const targetingData = {
+	skin: 'ucp_desktop',
+	uap: 'none',
+	uap_c: 'none',
+};
