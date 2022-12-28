@@ -156,4 +156,15 @@ describe('CommonTags', () => {
 
 		expect(commonTags.getCommonParams().rating).to.be.undefined;
 	});
+
+	it('should create rating tag when tag object is null', function () {
+		const mockedContext: FandomContext = new FandomContext(
+			new Site([], true, 'test', false, null, []),
+			new Page(666, 'pl', 666, 'test', 'article-test', {}, 546),
+		);
+
+		const commonTags = new CommonTags(mockedSkin, mockedContext);
+
+		expect(commonTags.getCommonParams().rating).to.be.undefined;
+	});
 });
