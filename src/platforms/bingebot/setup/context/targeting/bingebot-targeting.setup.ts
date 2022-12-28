@@ -7,6 +7,7 @@ import {
 	eventsRepository,
 	ofType,
 	Targeting,
+	targetingService,
 	utils,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
@@ -27,6 +28,7 @@ export class BingeBotTargetingSetup implements DiProcess {
 
 	execute(): void {
 		context.set('targeting', { ...context.get('targeting'), ...this.getPageLevelTargeting() });
+		targetingService.changeAll({ ...targetingService.getAll(), ...this.getPageLevelTargeting() });
 
 		communicationService.action$
 			.pipe(
@@ -35,6 +37,7 @@ export class BingeBotTargetingSetup implements DiProcess {
 			)
 			.subscribe((action) => {
 				context.set('targeting.s2', action.viewType);
+				targetingService.set('s2', action.viewType);
 			});
 	}
 

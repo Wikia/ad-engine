@@ -4,6 +4,7 @@ import {
 	InstantConfigCacheStorage,
 	InstantConfigService,
 	Targeting,
+	targetingService,
 	utils,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
@@ -24,6 +25,10 @@ export class F2TargetingSetup implements DiProcess {
 	execute(): void {
 		context.set('targeting', {
 			...context.get('targeting'),
+			...this.getPageLevelTargeting(),
+		});
+		targetingService.changeAll({
+			...targetingService.getAll(),
 			...this.getPageLevelTargeting(),
 		});
 	}

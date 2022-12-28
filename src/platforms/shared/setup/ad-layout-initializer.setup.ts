@@ -5,6 +5,7 @@ import {
 	DiProcess,
 	eventsRepository,
 	Targeting,
+	targetingService,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -109,5 +110,7 @@ export class AdLayoutInitializerSetup implements DiProcess {
 	private setFanTakeoverTargeting(lineItemId: string, creativeId: string): void {
 		context.set('targeting.uap', lineItemId);
 		context.set('targeting.uap_c', creativeId);
+		targetingService.set('uap', lineItemId);
+		targetingService.set('uap_c', creativeId);
 	}
 }

@@ -1,4 +1,11 @@
-import { BaseServiceSetup, context, Dictionary, SlotConfig, utils } from '@ad-engine/core';
+import {
+	BaseServiceSetup,
+	context,
+	Dictionary,
+	SlotConfig,
+	targetingService,
+	utils,
+} from '@ad-engine/core';
 
 const logGroup = 'ias-publisher-optimization';
 const scriptUrl = '//cdn.adsafeprotected.com/iasPET.1.js';
@@ -103,6 +110,10 @@ class IasPublisherOptimization extends BaseServiceSetup {
 		context.set('targeting.b_ias', '-1');
 		context.set('targeting.ias-kw', '-1');
 
+		targetingService.set('fr', '-1');
+		targetingService.set('b_ias', '-1');
+		targetingService.set('ias-kw', '-1');
+
 		brandSafetyKeys.forEach((key) => {
 			context.set(`targeting.${key}`, '-1');
 		});
@@ -118,6 +129,7 @@ class IasPublisherOptimization extends BaseServiceSetup {
 		const iasTargetingData: IasTargetingData = JSON.parse(adSlotData);
 
 		context.set('targeting.fr', iasTargetingData.fr);
+		targetingService.set('fr', iasTargetingData.fr);
 
 		IasPublisherOptimization.setBrandSafetyKeyValuesInTargeting(iasTargetingData.brandSafety);
 		IasPublisherOptimization.setCustomKeyValuesInTargeting(iasTargetingData.custom);
@@ -140,6 +152,7 @@ class IasPublisherOptimization extends BaseServiceSetup {
 		brandSafetyKeys.forEach((key) => {
 			if (brandSafetyData[key]) {
 				context.set(`targeting.${key}`, brandSafetyData[key]);
+				targetingService.set(key, brandSafetyData[key]);
 
 				if (
 					maxValue === '-1' ||
@@ -151,6 +164,7 @@ class IasPublisherOptimization extends BaseServiceSetup {
 		});
 
 		context.set('targeting.b_ias', maxValue);
+		targetingService.set('b_ias', maxValue);
 	}
 
 	private static setCustomKeyValuesInTargeting(customData): void {
@@ -160,6 +174,7 @@ class IasPublisherOptimization extends BaseServiceSetup {
 		}
 
 		context.set('targeting.ias-kw', customData['ias-kw']);
+		targetingService.set('ias-kw', customData['ias-kw']);
 	}
 }
 

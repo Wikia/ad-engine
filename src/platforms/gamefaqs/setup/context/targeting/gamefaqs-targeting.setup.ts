@@ -4,6 +4,7 @@ import {
 	CookieStorageAdapter,
 	DiProcess,
 	eventsRepository,
+	targetingService,
 } from '@wikia/ad-engine';
 import isMatch from 'lodash/isMatch.js';
 
@@ -43,6 +44,11 @@ export class GamefaqsTargetingSetup implements DiProcess {
 
 		context.set('targeting', {
 			...context.get('targeting'),
+			...targeting,
+		});
+
+		targetingService.changeAll({
+			...targetingService.getAll(),
 			...targeting,
 		});
 	}

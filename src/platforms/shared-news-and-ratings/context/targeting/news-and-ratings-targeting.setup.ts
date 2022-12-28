@@ -4,6 +4,7 @@ import {
 	CookieStorageAdapter,
 	DiProcess,
 	eventsRepository,
+	targetingService,
 } from '@wikia/ad-engine';
 import { TargetingParams, CookieBasedTargetingParams } from './interfaces/targeting-params';
 import isMatch from 'lodash/isMatch.js';
@@ -21,6 +22,11 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 
 		context.set('targeting', {
 			...context.get('targeting'),
+			...targeting,
+		});
+
+		targetingService.changeAll({
+			...targetingService.getAll(),
 			...targeting,
 		});
 	}

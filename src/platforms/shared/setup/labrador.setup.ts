@@ -3,6 +3,7 @@ import {
 	DiProcess,
 	InstantConfigCacheStorage,
 	InstantConfigService,
+	targetingService,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -14,7 +15,13 @@ export class LabradorSetup implements DiProcess {
 		const cacheStorage = InstantConfigCacheStorage.make();
 		// Need to be placed always after all lABrador icVars checks
 		context.set(
+			//todo remove
 			'targeting.labrador',
+			cacheStorage.mapSamplingResults(this.instantConfig.get('icLABradorGamKeyValues')),
+		);
+
+		targetingService.set(
+			'labrador',
 			cacheStorage.mapSamplingResults(this.instantConfig.get('icLABradorGamKeyValues')),
 		);
 	}

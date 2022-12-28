@@ -1,5 +1,4 @@
 import { debug } from './debug';
-import { Injectable } from '@wikia/dependency-injection';
 
 type ChangeCallback = (key: string, value: any) => void;
 
@@ -7,9 +6,55 @@ interface TargetingObject {
 	[key: string]: any;
 }
 
-@Injectable({ scope: 'Singleton' })
+export interface GlobalTargeting {
+	AU_SEG?: string[];
+	adt?: string;
+	age?: string[];
+	alc?: string;
+	ar?: string;
+	artid?: string;
+	b_ias?: string;
+	bundles?: string[];
+	dlm?: string;
+	dmn?: string;
+	drg?: string;
+	fr?: string;
+	geo?: string;
+	gnre?: string[];
+	hat?: string;
+	hostpre?: string;
+	'ias-kw'?: string[];
+	is_mobile?: string;
+	kid_wiki?: string;
+	labrador?: string[];
+	lang?: string;
+	media?: string[];
+	npa?: string;
+	off?: string;
+	original_host?: string;
+	ppid?: string;
+	pv?: string;
+	pvg?: string;
+	rating?: string;
+	rdp?: string;
+	s0?: string;
+	s0c?: string[];
+	s0v?: string;
+	s1?: string;
+	s2?: string;
+	skin?: string;
+	theme?: string[];
+	top?: string;
+	tv?: string[];
+	uap?: string;
+	uap_c?: string;
+	vio?: string;
+	word_count?: number;
+	wpage?: string;
+}
+
 export class TargetingService {
-	private adTargeting: TargetingObject = { ds: 'das' };
+	private adTargeting: TargetingObject = {};
 	private onChangeCallbacks: ChangeCallback[] = [];
 
 	constructor() {
@@ -23,6 +68,10 @@ export class TargetingService {
 	changeAll(newTargeting: TargetingObject): void {
 		this.adTargeting = newTargeting;
 		this.triggerOnChange(null, this.adTargeting);
+	}
+
+	getAll<T = TargetingObject>(): T {
+		return this.adTargeting as T;
 	}
 
 	get(key: string): any {
@@ -62,3 +111,5 @@ export class TargetingService {
 		console.log('TargetingService: ' + text);
 	}
 }
+
+export const targetingService = new TargetingService();

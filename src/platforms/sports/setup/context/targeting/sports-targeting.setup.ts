@@ -1,5 +1,5 @@
 import { getDomain } from '@platforms/shared';
-import { context, DiProcess, Targeting, utils } from '@wikia/ad-engine';
+import { context, DiProcess, Targeting, targetingService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { selectApplication } from '../../../utils/application-helper';
 
@@ -7,6 +7,11 @@ import { selectApplication } from '../../../utils/application-helper';
 export class SportsTargetingSetup implements DiProcess {
 	execute(): void {
 		context.set('targeting', { ...context.get('targeting'), ...this.getPageLevelTargeting() });
+
+		targetingService.changeAll({
+			...targetingService.getAll(),
+			...this.getPageLevelTargeting(),
+		});
 	}
 
 	private getPageLevelTargeting(): Partial<Targeting> {

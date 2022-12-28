@@ -1,4 +1,10 @@
-import { context, utils, externalLogger, BaseServiceSetup } from '@ad-engine/core';
+import {
+	context,
+	utils,
+	externalLogger,
+	BaseServiceSetup,
+	targetingService,
+} from '@ad-engine/core';
 import { InstantConfigService } from '../instant-config';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 
@@ -56,6 +62,7 @@ class Audigent extends BaseServiceSetup {
 		}
 
 		context.set('targeting.AU_SEG', '-1');
+		targetingService.set('AU_SEG', -1);
 
 		const newIntegrationEnabled = context.get('services.audigent.newIntegrationEnabled');
 		!this.segmentsScriptLoader && this.loadSegmentLibrary();
@@ -130,6 +137,7 @@ class Audigent extends BaseServiceSetup {
 	private static setSegmentsInTargeting(segments) {
 		utils.logger(logGroup, 'Setting segments in the targeting', segments);
 		context.set('targeting.AU_SEG', segments);
+		targetingService.set('AU_SEG', segments);
 	}
 
 	private static canSliceSegments(segments: string | [], limit: number): boolean {

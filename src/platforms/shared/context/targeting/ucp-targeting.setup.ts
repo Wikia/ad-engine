@@ -5,6 +5,7 @@ import {
 	DiProcess,
 	eventsRepository,
 	InstantConfigService,
+	targetingService,
 	UapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
@@ -28,7 +29,13 @@ export class UcpTargetingSetup implements DiProcess {
 
 	execute(): void {
 		context.set('targeting', {
+			//todo remove
 			...context.get('targeting'),
+			...this.getPageLevelTargeting(),
+		});
+
+		targetingService.changeAll({
+			...targetingService.getAll(),
 			...this.getPageLevelTargeting(),
 		});
 
@@ -55,7 +62,13 @@ export class UcpTargetingSetup implements DiProcess {
 		}
 
 		context.set(
+			//todo remove
 			'targeting.bundles',
+			utils.targeting.getTargetingBundles(this.instantConfig.get('icTargetingBundles')),
+		);
+
+		targetingService.set(
+			'bundles',
 			utils.targeting.getTargetingBundles(this.instantConfig.get('icTargetingBundles')),
 		);
 	}

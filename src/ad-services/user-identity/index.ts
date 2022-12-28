@@ -1,4 +1,4 @@
-import { BaseServiceSetup, context, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, targetingService, utils } from '@ad-engine/core';
 import { IdentityRepositories, IdentityRepositoryInterface } from './identity-repositories';
 import { localStorageRepository } from './local-storage-repository';
 import { admsIdentityRepository } from './adms-identity-repository';
@@ -30,6 +30,7 @@ export class UserIdentity extends BaseServiceSetup {
 				partnerIdentityId: ppid,
 			});
 			context.set('targeting.ppid', ppid);
+			targetingService.set('ppid', ppid);
 			utils.logger(UserIdentity.logGroup, 'Passed PPID to page-level targeting');
 		} catch (e) {
 			utils.logger(UserIdentity.logGroup, 'Setting up PPID has failed!', e);
