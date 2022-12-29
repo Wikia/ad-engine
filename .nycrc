@@ -1,26 +1,28 @@
 {
   "check-coverage": true,
-  "lines": 50,
-  "functions": 50,
-  "branches": 50,
-  "statements": 50,
+  "lines": 45,
+  "functions": 40,
+  "branches": 30,
+  "statements": 45,
   "include": [
     "src/**/*"
   ],
   "exclude": [
     "build/",
-    "spec/**/*"
+    "spec/**/*",
+    "src/platforms/!(shared)*/**/*"
+  ],
+  "extension": [
+    ".ts"
   ],
   "reporter": [
     "html",
     "text",
     "clover"
   ],
-  "extension": [
-    ".ts"
-  ],
-  "cache": true,
+  "report-dir": "spec/build/",
   "all": true,
+  "cache": true,
   "sourceMap": false,
   "instrument": false
 }

@@ -60,9 +60,6 @@
 		"webpack-dev-server": "4.11.1",
 		"webpack-merge": "5.8.0"
 	},
-	"nyc": {
-		"report-dir": "./spec/build/"
-	},
 	"scripts": {
 		"setup": "npm ci && npm run prepare",
 		"build:platforms": "webpack --config webpack.platforms.js --mode=production",
@@ -76,7 +73,7 @@
 		"preversion": "./maintenance/preversion.sh",
 		"test": "instant-mocha './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.js",
 		"test:watch": "npm run test -- -w",
-		"test-coverage": "nyc instant-mocha './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.coverage.js"
+		"test-coverage": "nyc instant-mocha './src/**/*.ts' './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.coverage.js"
 	},
 	"lint-staged": {
 		"*.ts": [
