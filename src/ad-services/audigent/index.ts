@@ -61,7 +61,6 @@ class Audigent extends BaseServiceSetup {
 			return;
 		}
 
-		context.set('targeting.AU_SEG', '-1');
 		targetingService.set('AU_SEG', -1);
 
 		const newIntegrationEnabled = context.get('services.audigent.newIntegrationEnabled');
@@ -136,7 +135,6 @@ class Audigent extends BaseServiceSetup {
 
 	private static setSegmentsInTargeting(segments) {
 		utils.logger(logGroup, 'Setting segments in the targeting', segments);
-		context.set('targeting.AU_SEG', segments);
 		targetingService.set('AU_SEG', segments);
 	}
 

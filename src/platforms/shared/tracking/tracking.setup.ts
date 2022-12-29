@@ -14,6 +14,7 @@ import {
 	porvataTracker,
 	PostmessageTracker,
 	slotTracker,
+	targetingService,
 	TrackingMessage,
 	TrackingTarget,
 	viewabilityTracker,
@@ -179,7 +180,7 @@ export class TrackingSetup {
 	}
 
 	private keyValsTracker(): void {
-		const keyVals = { ...context.get('targeting') };
+		const keyVals = { ...targetingService.getAll() };
 
 		// Remove Audigent segments
 		delete keyVals.AU_SEG;

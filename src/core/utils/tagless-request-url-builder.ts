@@ -1,6 +1,13 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { AdSlot, Dictionary, Targeting } from '../models';
-import { config, context, slotService, trackingOptIn } from '../services';
+import {
+	config,
+	context,
+	GlobalTargeting,
+	slotService,
+	targetingService,
+	trackingOptIn,
+} from '../services';
 import { targeting } from './targeting';
 
 export interface TaglessSlotOptions {
@@ -27,7 +34,7 @@ const vastBaseUrl = 'https://pubads.g.doubleclick.net/gampad/ads?';
 const correlator: number = Math.round(Math.random() * 10000000000);
 
 function getCustomParameters(slot: AdSlot, extraTargeting: Dictionary = {}): string {
-	const contextTargeting = context.get('targeting') || {};
+	const contextTargeting = targetingService.getAll() || {};
 	const targeting = {};
 
 	function setTargetingValue(
@@ -130,7 +137,7 @@ export function buildVastUrl(
 }
 
 export function buildTaglessRequestUrl(options: Partial<TaglessSlotOptions> = {}): string {
-	const ppid = context.get('targeting.ppid');
+	const ppid = targetingService.getAll<GlobalTargeting>().ppid;
 	const params: string[] = [`c=${correlator}`, 'tile=1', 'd_imp=1'];
 
 	params.push(`iu=${options.adUnit}`);

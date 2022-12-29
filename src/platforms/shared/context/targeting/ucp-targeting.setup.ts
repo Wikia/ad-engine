@@ -4,6 +4,7 @@ import {
 	context,
 	DiProcess,
 	eventsRepository,
+	GlobalTargeting,
 	InstantConfigService,
 	targetingService,
 	UapLoadStatus,
@@ -28,12 +29,6 @@ export class UcpTargetingSetup implements DiProcess {
 	constructor(@Inject(SKIN) private skin: string, protected instantConfig: InstantConfigService) {}
 
 	execute(): void {
-		context.set('targeting', {
-			//todo remove
-			...context.get('targeting'),
-			...this.getPageLevelTargeting(),
-		});
-
 		targetingService.changeAll({
 			...targetingService.getAll(),
 			...this.getPageLevelTargeting(),
@@ -58,14 +53,8 @@ export class UcpTargetingSetup implements DiProcess {
 
 		if (context.get('wiki.targeting.wikiIsTop1000')) {
 			context.set('custom.wikiIdentifier', '_top1k_wiki');
-			context.set('custom.dbNameForAdUnit', context.get('targeting.s1'));
+			context.set('custom.dbNameForAdUnit', targetingService.getAll<GlobalTargeting>().s1);
 		}
-
-		context.set(
-			//todo remove
-			'targeting.bundles',
-			utils.targeting.getTargetingBundles(this.instantConfig.get('icTargetingBundles')),
-		);
 
 		targetingService.set(
 			'bundles',

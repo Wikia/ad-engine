@@ -1,7 +1,6 @@
 import {
 	Binder,
 	communicationService,
-	context,
 	Dictionary,
 	DiProcess,
 	eventsRepository,
@@ -27,7 +26,6 @@ export class BingeBotTargetingSetup implements DiProcess {
 	constructor(@Inject(SKIN) private skin: string) {}
 
 	execute(): void {
-		context.set('targeting', { ...context.get('targeting'), ...this.getPageLevelTargeting() });
 		targetingService.changeAll({ ...targetingService.getAll(), ...this.getPageLevelTargeting() });
 
 		communicationService.action$
@@ -36,7 +34,6 @@ export class BingeBotTargetingSetup implements DiProcess {
 				shareReplay(1), // take only the newest value
 			)
 			.subscribe((action) => {
-				context.set('targeting.s2', action.viewType);
 				targetingService.set('s2', action.viewType);
 			});
 	}

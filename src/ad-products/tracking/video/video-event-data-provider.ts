@@ -1,4 +1,13 @@
-import { AdSlot, context, slotService, utils, VideoData, VideoEventData } from '@ad-engine/core';
+import {
+	AdSlot,
+	context,
+	GlobalTargeting,
+	slotService,
+	targetingService,
+	utils,
+	VideoData,
+	VideoEventData,
+} from '@ad-engine/core';
 
 export class VideoEventDataProvider {
 	/**
@@ -27,7 +36,7 @@ export class VideoEventDataProvider {
 			position: slot.getSlotName().toLowerCase(),
 			pv_number: context.get('wiki.pvNumber'),
 			rv: slot.getConfigProperty('targeting.rv') || '',
-			skin: context.get('targeting.skin') || '',
+			skin: targetingService.getAll<GlobalTargeting>().skin || '',
 			timestamp: now.getTime(),
 			tz_offset: now.getTimezoneOffset(),
 			user_block_autoplay: videoData.user_block_autoplay,

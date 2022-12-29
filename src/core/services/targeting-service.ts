@@ -22,16 +22,19 @@ export interface GlobalTargeting {
 	geo?: string;
 	gnre?: string[];
 	hat?: string;
+	host?: string;
 	hostpre?: string;
 	'ias-kw'?: string[];
 	is_mobile?: string;
 	kid_wiki?: string;
 	labrador?: string[];
 	lang?: string;
+	mappedVerticalName?: string;
 	media?: string[];
 	npa?: string;
 	off?: string;
 	original_host?: string;
+	post_id?: string;
 	ppid?: string;
 	pv?: string;
 	pvg?: string;
@@ -50,6 +53,7 @@ export interface GlobalTargeting {
 	uap_c?: string;
 	vio?: string;
 	word_count?: number;
+	wikiLanguage?: string;
 	wpage?: string;
 }
 

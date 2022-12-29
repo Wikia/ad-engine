@@ -1,4 +1,4 @@
-import { context, Dictionary } from '@ad-engine/core';
+import { context, Dictionary, GlobalTargeting, targetingService } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
 
@@ -17,10 +17,14 @@ export class RubiconDisplay extends PrebidAdapter {
 		this.customTargeting = {
 			s1: [
 				context.get('wiki.targeting.wikiIsTop1000')
-					? context.get('targeting.s1') || ''
+					? targetingService.getAll<GlobalTargeting>().s1 || ''
 					: 'not a top1k wiki',
 			],
-			lang: [context.get('targeting.wikiLanguage') || context.get('targeting.lang') || 'en'],
+			lang: [
+				targetingService.getAll<GlobalTargeting>().wikiLanguage ||
+					targetingService.getAll<GlobalTargeting>().lang ||
+					'en',
+			],
 		};
 	}
 

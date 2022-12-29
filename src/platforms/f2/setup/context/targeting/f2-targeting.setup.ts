@@ -23,10 +23,6 @@ export class F2TargetingSetup implements DiProcess {
 	) {}
 
 	execute(): void {
-		context.set('targeting', {
-			...context.get('targeting'),
-			...this.getPageLevelTargeting(),
-		});
 		targetingService.changeAll({
 			...targetingService.getAll(),
 			...this.getPageLevelTargeting(),

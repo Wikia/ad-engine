@@ -42,11 +42,6 @@ export class GamefaqsTargetingSetup implements DiProcess {
 
 		this.setSlotLevelTargeting(targeting, customConfig);
 
-		context.set('targeting', {
-			...context.get('targeting'),
-			...targeting,
-		});
-
 		targetingService.changeAll({
 			...targetingService.getAll(),
 			...targeting,

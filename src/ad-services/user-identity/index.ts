@@ -29,7 +29,6 @@ export class UserIdentity extends BaseServiceSetup {
 				partnerName: 'Google',
 				partnerIdentityId: ppid,
 			});
-			context.set('targeting.ppid', ppid);
 			targetingService.set('ppid', ppid);
 			utils.logger(UserIdentity.logGroup, 'Passed PPID to page-level targeting');
 		} catch (e) {

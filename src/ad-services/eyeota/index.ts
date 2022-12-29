@@ -1,4 +1,4 @@
-import { BaseServiceSetup, context, tcf, utils } from '@ad-engine/core';
+import { BaseServiceSetup, GlobalTargeting, targetingService, tcf, utils } from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 
 const logGroup = 'eyeota';
@@ -39,7 +39,7 @@ class Eyeota extends BaseServiceSetup {
 
 	async createScriptSource(): Promise<string> {
 		const tcfData = await tcf.getTCData();
-		const s0v = context.get('targeting.s0v');
+		const s0v = targetingService.getAll<GlobalTargeting>().s0v;
 
 		const url = new URL('https://ps.eyeota.net/pixel');
 		url.searchParams.append('pid', pid);

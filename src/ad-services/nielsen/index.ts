@@ -1,4 +1,11 @@
-import { BaseServiceSetup, context, Dictionary, utils } from '@ad-engine/core';
+import {
+	BaseServiceSetup,
+	context,
+	Dictionary,
+	GlobalTargeting,
+	targetingService,
+	utils,
+} from '@ad-engine/core';
 import { initNielsenStaticQueue } from './static-queue-script';
 const logGroup = 'nielsen-dcr';
 const nlsnConfig: Dictionary = {};
@@ -36,7 +43,7 @@ class Nielsen extends BaseServiceSetup {
 	 */
 	call(): void {
 		const nielsenKey = context.get('services.nielsen.appId');
-		const targeting = context.get('targeting');
+		const targeting = targetingService.getAll<GlobalTargeting>();
 		const section = context.get('services.nielsen.customSection') || targeting.s0v;
 		const articleId = targeting.post_id || targeting.artid;
 

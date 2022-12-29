@@ -1,5 +1,4 @@
 import {
-	context,
 	DiProcess,
 	InstantConfigCacheStorage,
 	InstantConfigService,
@@ -14,12 +13,6 @@ export class LabradorSetup implements DiProcess {
 	execute(): void {
 		const cacheStorage = InstantConfigCacheStorage.make();
 		// Need to be placed always after all lABrador icVars checks
-		context.set(
-			//todo remove
-			'targeting.labrador',
-			cacheStorage.mapSamplingResults(this.instantConfig.get('icLABradorGamKeyValues')),
-		);
-
 		targetingService.set(
 			'labrador',
 			cacheStorage.mapSamplingResults(this.instantConfig.get('icLABradorGamKeyValues')),

@@ -6,8 +6,10 @@ import {
 	btfBlockerService,
 	config,
 	context,
+	GlobalTargeting,
 	slotDataParamsUpdater,
 	slotService,
+	targetingService,
 	trackingOptIn,
 } from '../services';
 import { defer, logger } from '../utils';
@@ -218,7 +220,7 @@ export class GptProvider implements Provider {
 	}
 
 	setPPID() {
-		const ppid = context.get('targeting.ppid');
+		const ppid = targetingService.getAll<GlobalTargeting>().ppid;
 		if (ppid) {
 			const tag = window.googletag.pubads();
 			tag.setPublisherProvidedId(ppid);

@@ -54,7 +54,7 @@ export class AdLayoutInitializerSetup implements DiProcess {
 			adUnit: this.lisAdUnit,
 			size: this.lisSize,
 			targeting: {
-				...context.get('targeting'),
+				...targetingService.getAll(),
 				...this.lisTargeting,
 				src: context.get('src'),
 			},
@@ -108,8 +108,6 @@ export class AdLayoutInitializerSetup implements DiProcess {
 	}
 
 	private setFanTakeoverTargeting(lineItemId: string, creativeId: string): void {
-		context.set('targeting.uap', lineItemId);
-		context.set('targeting.uap_c', creativeId);
 		targetingService.set('uap', lineItemId);
 		targetingService.set('uap_c', creativeId);
 	}

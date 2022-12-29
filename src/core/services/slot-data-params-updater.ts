@@ -1,6 +1,6 @@
 import { AdSlot } from '../models';
-import { context } from './context-service';
 import { slotTweaker } from './slot-tweaker';
+import { targetingService } from './targeting-service';
 
 function logRenderedAd(adSlot: AdSlot) {
 	const isTlb = adSlot.getSlotName() == 'top_leaderboard';
@@ -22,7 +22,7 @@ function logRenderedAd(adSlot: AdSlot) {
  */
 class SlotDataParamsUpdater {
 	updateOnCreate(adSlot: AdSlot): void {
-		slotTweaker.setDataParam(adSlot, 'gptPageParams', context.get('targeting'));
+		slotTweaker.setDataParam(adSlot, 'gptPageParams', targetingService.getAll());
 		slotTweaker.setDataParam(adSlot, 'gptSlotParams', adSlot.getTargeting());
 	}
 

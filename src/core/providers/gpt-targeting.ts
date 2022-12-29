@@ -1,4 +1,4 @@
-import { context } from '../services';
+import { context, targetingService } from '../services';
 
 export function setupGptTargeting(): void {
 	const tag = window.googletag.pubads();
@@ -17,7 +17,7 @@ export function setupGptTargeting(): void {
 	}
 
 	function setTargetingFromContext(): void {
-		const targeting = context.get('targeting') || {};
+		const targeting = targetingService.getAll() || {};
 
 		Object.keys(targeting).forEach((key) => {
 			setTargetingValue(key, targeting[key]);

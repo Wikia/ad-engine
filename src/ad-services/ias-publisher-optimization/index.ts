@@ -106,10 +106,6 @@ class IasPublisherOptimization extends BaseServiceSetup {
 	private setInitialTargeting(): void {
 		utils.logger(logGroup, 'setting initial targeting...');
 
-		context.set('targeting.fr', '-1');
-		context.set('targeting.b_ias', '-1');
-		context.set('targeting.ias-kw', '-1');
-
 		targetingService.set('fr', '-1');
 		targetingService.set('b_ias', '-1');
 		targetingService.set('ias-kw', '-1');
@@ -128,7 +124,6 @@ class IasPublisherOptimization extends BaseServiceSetup {
 
 		const iasTargetingData: IasTargetingData = JSON.parse(adSlotData);
 
-		context.set('targeting.fr', iasTargetingData.fr);
 		targetingService.set('fr', iasTargetingData.fr);
 
 		IasPublisherOptimization.setBrandSafetyKeyValuesInTargeting(iasTargetingData.brandSafety);
@@ -151,7 +146,6 @@ class IasPublisherOptimization extends BaseServiceSetup {
 
 		brandSafetyKeys.forEach((key) => {
 			if (brandSafetyData[key]) {
-				context.set(`targeting.${key}`, brandSafetyData[key]);
 				targetingService.set(key, brandSafetyData[key]);
 
 				if (
@@ -163,7 +157,6 @@ class IasPublisherOptimization extends BaseServiceSetup {
 			}
 		});
 
-		context.set('targeting.b_ias', maxValue);
 		targetingService.set('b_ias', maxValue);
 	}
 
@@ -173,7 +166,6 @@ class IasPublisherOptimization extends BaseServiceSetup {
 			return;
 		}
 
-		context.set('targeting.ias-kw', customData['ias-kw']);
 		targetingService.set('ias-kw', customData['ias-kw']);
 	}
 }

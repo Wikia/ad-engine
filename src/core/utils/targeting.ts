@@ -1,7 +1,7 @@
 import { Dictionary } from '../models';
 import { context } from '../services/context-service';
 import { logger } from './logger';
-import { CookieStorageAdapter } from '../services/';
+import { CookieStorageAdapter, GlobalTargeting, targetingService } from '../services/';
 
 /*
  *  ToDo: Development improvement refactor
@@ -37,7 +37,7 @@ class Targeting {
 	}
 
 	getTargetingBundles(bundles: Dictionary<Dictionary<string[]>>): string[] {
-		const targetingBundles = context.get('targeting.bundles') || [];
+		const targetingBundles = targetingService.getAll<GlobalTargeting>().bundles || [];
 
 		try {
 			const selectedBundles = [];
@@ -71,7 +71,7 @@ class Targeting {
 		if (cookieAdapter.getItem('_ae_intrsttl_imp')) {
 			bundles.push('interstitial_disabled');
 		}
-		const skin = context.get('targeting.skin');
+		const skin = targetingService.getAll<GlobalTargeting>().skin;
 
 		if (
 			skin &&
@@ -81,7 +81,7 @@ class Targeting {
 			bundles.push('VIDEO_TIER_3_BUNDLE');
 		}
 
-		const wordCount = context.get('targeting.word_count') || -1;
+		const wordCount = targetingService.getAll<GlobalTargeting>().word_count || -1;
 
 		if (wordCount > -1 && wordCount <= shortPageWordsLimit) {
 			bundles.push('short_page');
