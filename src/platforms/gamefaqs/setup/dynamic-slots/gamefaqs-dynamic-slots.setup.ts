@@ -1,4 +1,4 @@
-import { context, DiProcess } from '@wikia/ad-engine';
+import { context, DiProcess, utils } from '@wikia/ad-engine';
 
 export class GamefaqsDynamicSlotsSetup implements DiProcess {
 	execute(): void {
@@ -12,9 +12,9 @@ export class GamefaqsDynamicSlotsSetup implements DiProcess {
 			return;
 		}
 
-		adPlaceholders.forEach((placeholder) => {
+		adPlaceholders.forEach((placeholder: Element) => {
 			const adSlotName = placeholder.getAttribute('data-ad-type');
-			const adWrapper = placeholder.firstElementChild;
+			const adWrapper = utils.Document.getFirstElementChild(placeholder);
 
 			if (!adWrapper) {
 				return;
