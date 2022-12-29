@@ -37,7 +37,7 @@ export class TemplateRegistry {
 		templateName: string,
 		StateHandlerTypesDict: T,
 		initialStateKey: keyof T,
-		templateDependencies: (TemplateDependency | TemplateDependencies)[] = [],
+		templateDependencies: TemplateDependencies = [],
 	): Observable<TemplateAction> {
 		const emitter$ = new Subject<TemplateAction>();
 
