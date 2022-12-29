@@ -12,11 +12,15 @@ describe('Inserting dynamic slots on GameFAQs', () => {
 	beforeEach(() => {
 		querySelectorAllStub = sandbox.stub(document, 'querySelectorAll');
 		context.set('state.adStack', []);
+		context.set('events.pushOnScroll.ids', []);
+		context.set('slots', {});
 	});
 
 	afterEach(() => {
 		sandbox.restore();
-		context.set('state.adStack', []);
+		context.remove('state.adStack');
+		context.remove('events.pushOnScroll.ids');
+		context.remove('slots');
 	});
 
 	it('works as expected for no slots found on the page', () => {
@@ -26,6 +30,7 @@ describe('Inserting dynamic slots on GameFAQs', () => {
 		dynamicSlotsSetup.execute();
 
 		expect(context.get('state.adStack').length).to.eq(0);
+		expect(context.get('events.pushOnScroll.ids').length).to.eq(0);
 	});
 
 	it('works as expected for slots found on the page but without a wrapper', () => {
@@ -36,6 +41,7 @@ describe('Inserting dynamic slots on GameFAQs', () => {
 		dynamicSlotsSetup.execute();
 
 		expect(context.get('state.adStack').length).to.eq(0);
+		expect(context.get('events.pushOnScroll.ids').length).to.eq(0);
 	});
 
 	it('works as expected for slots found on the page', () => {
@@ -50,5 +56,23 @@ describe('Inserting dynamic slots on GameFAQs', () => {
 		dynamicSlotsSetup.execute();
 
 		expect(context.get('state.adStack').length).to.eq(1);
+		expect(context.get('events.pushOnScroll.ids').length).to.eq(0);
+	});
+
+	it('works as expected for a lazy-load slot found on the page', () => {
+		const slotElementStub = createHtmlElementStub(sandbox, 'div');
+		slotElementStub.getAttribute.returns('test-ad-lazy-slot');
+		sandbox
+			.stub(utils.Document, 'getFirstElementChild')
+			.returns(createHtmlElementStub(sandbox, 'div'));
+		querySelectorAllStub.returns([slotElementStub] as any);
+
+		context.set('slots.test-ad-lazy-slot.lazyLoad', true);
+
+		const dynamicSlotsSetup = new GamefaqsDynamicSlotsSetup();
+		dynamicSlotsSetup.execute();
+
+		expect(context.get('state.adStack').length).to.eq(0);
+		expect(context.get('events.pushOnScroll.ids').length).to.eq(1);
 	});
 });

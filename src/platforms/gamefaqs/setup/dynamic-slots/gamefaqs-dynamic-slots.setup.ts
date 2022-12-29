@@ -22,7 +22,15 @@ export class GamefaqsDynamicSlotsSetup implements DiProcess {
 
 			adWrapper.id = adSlotName;
 
-			context.push('state.adStack', { id: adSlotName });
+			if (this.isSlotLazyLoaded(adSlotName)) {
+				context.push('events.pushOnScroll.ids', adSlotName);
+			} else {
+				context.push('state.adStack', { id: adSlotName });
+			}
 		});
+	}
+
+	private isSlotLazyLoaded(slotName: string): boolean {
+		return context.get(`slots.${slotName}.lazyLoad`);
 	}
 }

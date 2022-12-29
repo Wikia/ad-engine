@@ -9,12 +9,13 @@ import {
 } from '@platforms/shared';
 
 import { basicContext } from './ad-context';
+import { GamefaqsAdsMode } from './modes/gamefaqs-ads-mode';
 import { GamefaqsSlotsContextSetup } from './setup/context/slots/gamefaqs-slots-context.setup';
 import { GamefaqsDynamicSlotsSetup } from './setup/dynamic-slots/gamefaqs-dynamic-slots.setup';
-import { NewsAndRatingsTargetingSetup } from '../shared-news-and-ratings/context/targeting/news-and-ratings-targeting.setup';
 import { GamefaqsPrebidConfigSetup } from './setup/context/prebid/gamefaqs-prebid-config.setup';
 import { GamefaqsTargetingSetup } from './setup/context/targeting/gamefaqs-targeting.setup';
-import { GamefaqsAdsMode } from './modes/gamefaqs-ads-mode';
+import { NewsAndRatingsTargetingSetup } from '../shared-news-and-ratings/context/targeting/news-and-ratings-targeting.setup';
+import { LazyLoadedSlotsContextSetup } from '../shared-news-and-ratings/context/lazy-loaded-slots-context.setup';
 
 @Injectable()
 export class GamefaqsPlatform {
@@ -32,6 +33,7 @@ export class GamefaqsPlatform {
 			NewsAndRatingsTargetingSetup,
 			GamefaqsTargetingSetup,
 			GamefaqsSlotsContextSetup,
+			LazyLoadedSlotsContextSetup,
 			GamefaqsDynamicSlotsSetup,
 			BiddersStateSetup,
 			GamefaqsPrebidConfigSetup,
