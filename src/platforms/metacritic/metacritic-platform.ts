@@ -20,7 +20,7 @@ export class MetacriticPlatform {
 			() => context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441),
 			() => context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src')),
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
-			() => Bootstrap.setupConsent(),
+			Bootstrap.setupConsent,
 			InstantConfigSetup,
 			BaseContextSetup,
 			MetacriticDynamicSlotsSetup,
