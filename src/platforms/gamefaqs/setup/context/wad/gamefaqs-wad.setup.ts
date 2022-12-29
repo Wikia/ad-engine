@@ -3,7 +3,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { context, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
 
 @Injectable()
-export class GameFaqsWadSetup implements DiProcess {
+export class GamefaqsWadSetup implements DiProcess {
 	constructor(protected instantConfig: InstantConfigService) {}
 
 	execute(): Promise<void> | void {
