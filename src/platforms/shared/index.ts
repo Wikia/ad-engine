@@ -1,4 +1,3 @@
-export * from './bootstrap';
 export * from './slots/slots-context';
 export * from './bidders/wikia-adapter';
 export * from './models/device-mode';
