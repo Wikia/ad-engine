@@ -22,7 +22,6 @@ export * from './dynamic-slots/quiz-slots-definition-repository';
 export * from './dynamic-slots/sticked-boxad-helper';
 export * from './tracking/tracking.setup';
 export * from './modes/no-ads/no-ads.mode';
-export * from './modes/start-ad-engine';
 export * from './services/wad-runner';
 export * from './services/no-ads-detector';
 export * from './ensure-geo-cookie';
