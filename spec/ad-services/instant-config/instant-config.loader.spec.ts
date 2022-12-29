@@ -114,7 +114,7 @@ describe('Instant Config Loader', () => {
 	it('should get endpoint from context', async () => {
 		instantConfigLoader.getConfig();
 
-		expect(contextGetStub.getCalls().length).to.equal(3);
+		expect(contextGetStub.getCalls().length).to.equal(4);
 		expect(contextGetStub.firstCall.args[0]).to.equal('services.instantConfig.endpoint');
 		expect(contextGetStub.secondCall.args[0]).to.equal('wiki.services_instantConfig_variant');
 		expect(contextGetStub.thirdCall.args[0]).to.equal('services.instantConfig.appName');
@@ -126,7 +126,7 @@ describe('Instant Config Loader', () => {
 
 		instantConfigLoader.getConfig();
 
-		expect(contextGetStub.getCalls().length).to.equal(3);
+		expect(contextGetStub.getCalls().length).to.equal(4);
 		expect(request.url).to.equal('http://endpoint.com/test-variant/api/config?app=testApp');
 
 		contextRepo['wiki.services_instantConfig_variant'] = undefined;
