@@ -18,12 +18,6 @@ jobs:
         with:
           node-version-file: '.nvmrc'
 
-      - uses: actions/checkout@v2
-      - name: Install dependencies
-        shell: bash -l {0}
-        run: |
-          npm ci
-
       - name: Package size report for ucp-desktop
         uses: pkg-size/action@v1
         env:
