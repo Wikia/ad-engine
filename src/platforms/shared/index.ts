@@ -24,7 +24,6 @@ export * from './modes/no-ads/no-ads.mode';
 export * from './modes/start-ad-engine';
 export * from './services/wad-runner';
 export * from './services/no-ads-detector';
-export * from './ensure-geo-cookie';
 export * from './context/targeting/ucp-targeting.setup';
 export * from './templates/interstitial-template';
 export * from './templates/configs/uap-dom-elements';

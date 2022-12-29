@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import { context } from '../services/context-service';
 import { CacheData, InstantConfigCacheStorage } from '../services/instant-config-cache-storage';
-import { ensureGeoCookie } from '../../platforms/shared';
+import { ensureGeoCookie } from './ensure-geo-cookie';
 
 const cacheMarker = '-cached';
 const earth = 'XX';
