@@ -37,6 +37,7 @@ describe('tagless-request-url-builder', () => {
 			},
 		});
 
+		targetingService.clear();
 		targetingService.extend({
 			s0: '000',
 			uno: 'foo',

@@ -34,12 +34,6 @@ export function setupGptTargeting(): void {
 	targetingService.onChange((trigger, value) => {
 		// trigger=null means that whole targeting
 		// dictionary was replaced in the context
-		console.log('####');
-		console.log(trigger);
-		console.log(value);
-		console.log('####');
-		console.log('');
-		console.log('');
 		if (trigger === null) {
 			Object.keys(value).forEach((dictionaryKey) => {
 				setTargetingValue(dictionaryKey, value[dictionaryKey]);
