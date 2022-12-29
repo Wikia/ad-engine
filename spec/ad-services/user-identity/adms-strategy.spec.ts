@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { context } from '@wikia/core';
+import { context, targetingService } from '@wikia/core';
 import { userIdentity } from '@wikia/ad-services';
 import { createSandbox, SinonStub } from 'sinon';
 import { IdentityRepositories } from '@wikia/ad-services/user-identity/identity-repositories';
@@ -48,7 +48,7 @@ describe('User Identity', () => {
 
 		await userIdentity.call();
 
-		expect(context.get('targeting.ppid')).to.eq('11111111-1111-1111-1111-111111111111');
+		expect(targetingService.get('ppid')).to.eq('11111111-1111-1111-1111-111111111111');
 	});
 
 	it("use ADMS strategy and don't have PPID in store or API", async () => {
@@ -58,7 +58,7 @@ describe('User Identity', () => {
 
 		await userIdentity.call();
 
-		expect(context.get('targeting.ppid')).to.eq(mockId);
+		expect(targetingService.get('ppid')).to.eq(mockId);
 	});
 
 	it('use ADMS strategy and gets PPID from storage', async () => {
@@ -81,6 +81,6 @@ describe('User Identity', () => {
 
 		await userIdentity.call();
 
-		expect(context.get('targeting.ppid')).to.eq('11111111-1111-1111-1111-111111111111');
+		expect(targetingService.get('ppid')).to.eq('11111111-1111-1111-1111-111111111111');
 	});
 });

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { context } from '@wikia/core';
+import { context, targetingService } from '@wikia/core';
 import { userIdentity } from '@wikia/ad-services';
 import { createSandbox, SinonStub } from 'sinon';
 import { IdentityRepositories } from '@wikia/ad-services/user-identity/identity-repositories';
@@ -29,7 +29,7 @@ describe('User Identity', () => {
 		sandbox.stub(localStorageRepository.storage, 'getItem').callsFake(() => null);
 		await userIdentity.call();
 
-		expect(context.get('targeting.ppid')).to.eq(mockId);
+		expect(targetingService.get('ppid')).to.eq(mockId);
 	});
 
 	it('use LocalStore strategy and have PPID stored', async () => {
@@ -39,6 +39,6 @@ describe('User Identity', () => {
 
 		await userIdentity.call();
 
-		expect(context.get('targeting.ppid')).to.eq('11111111-1111-1111-1111-111111111111');
+		expect(targetingService.get('ppid')).to.eq('11111111-1111-1111-1111-111111111111');
 	});
 });

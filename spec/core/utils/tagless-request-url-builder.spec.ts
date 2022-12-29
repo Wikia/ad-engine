@@ -6,6 +6,7 @@ import {
 	buildVastUrl,
 	buildTaglessRequestUrl,
 } from '@wikia/core/utils/tagless-request-url-builder';
+import { targetingService } from '@wikia/core';
 
 describe('tagless-request-url-builder', () => {
 	let lisAdSlot;
@@ -31,16 +32,17 @@ describe('tagless-request-url-builder', () => {
 				},
 				top_leaderboard: {},
 			},
-			targeting: {
-				s0: '000',
-				uno: 'foo',
-				due: 15,
-				tre: ['bar', 'zero'],
-				quattro: null,
-			},
 			options: {
 				trackingOptIn: false,
 			},
+		});
+
+		targetingService.changeAll({
+			s0: '000',
+			uno: 'foo',
+			due: 15,
+			tre: ['bar', 'zero'],
+			quattro: null,
 		});
 
 		lisAdSlot = new AdSlot({ id: 'layout_initializer' });

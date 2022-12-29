@@ -1,6 +1,6 @@
 import { RubiconDisplay } from '@wikia/ad-bidders/prebid/adapters/rubicon-display';
-import { context } from '@wikia/core/services/context-service';
 import { expect } from 'chai';
+import { targetingService } from '@wikia/core';
 
 describe('RubiconDisplay bidder adapter', () => {
 	it('can be enabled', () => {
@@ -68,7 +68,7 @@ describe('RubiconDisplay bidder adapter', () => {
 	});
 
 	it('prepareAdUnits returns data in correct shape with additional key-vals', () => {
-		context.set('targeting.testKeyval', 'yes');
+		targetingService.set('testKeyval', 'yes');
 
 		const rubiconDisplay = new RubiconDisplay({
 			enabled: true,

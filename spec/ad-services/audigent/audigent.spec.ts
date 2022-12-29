@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { context, externalLogger, utils } from '../../../src/core';
+import { context, externalLogger, utils, targetingService } from '../../../src/core';
 import { audigent } from '@wikia/ad-services';
 
 describe('Audigent', () => {
@@ -93,7 +93,7 @@ describe('Audigent', () => {
 	it('Audigent key-val is set to -1 when API is too slow', () => {
 		audigent.setup();
 
-		expect(context.get('targeting.AU_SEG')).to.equal('-1');
+		expect(targetingService.get('AU_SEG')).to.equal('-1');
 	});
 
 	it('Audigent key-val is set to no_segments when no segments from API', () => {
@@ -102,7 +102,7 @@ describe('Audigent', () => {
 		audigent.setup();
 		executeMockedCustomEvent([]);
 
-		expect(context.get('targeting.AU_SEG')).to.equal('no_segments');
+		expect(targetingService.get('AU_SEG')).to.equal('no_segments');
 	});
 
 	it('Audigent key-val is set to given segments when API response with some', () => {
@@ -112,7 +112,7 @@ describe('Audigent', () => {
 		audigent.setup();
 		executeMockedCustomEvent(mockedSegments);
 
-		expect(context.get('targeting.AU_SEG')).to.equal(mockedSegments);
+		expect(targetingService.get('AU_SEG')).to.equal(mockedSegments);
 	});
 
 	it('Audigent key-val length keeps the limit', () => {
@@ -142,7 +142,7 @@ describe('Audigent', () => {
 		audigent.setup();
 		executeMockedCustomEvent(mockedSegments);
 
-		expect(context.get('targeting.AU_SEG')).to.deep.equal(expectedSegements);
+		expect(targetingService.get('AU_SEG')).to.deep.equal(expectedSegements);
 	});
 
 	it('Audigent key-val length ignores limit if it is higher than returned segments', () => {
@@ -164,7 +164,7 @@ describe('Audigent', () => {
 		audigent.setup();
 		executeMockedCustomEvent(mockedSegments);
 
-		expect(context.get('targeting.AU_SEG')).to.deep.equal(mockedSegments);
+		expect(targetingService.get('AU_SEG')).to.deep.equal(mockedSegments);
 	});
 
 	it('Audigent does not send data to Kibana when no segments', () => {

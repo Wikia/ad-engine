@@ -93,7 +93,7 @@ class Targeting {
 
 	private matchesTargetingBundle(bundle: Dictionary<string[]>): boolean {
 		return !Object.keys(bundle).some((key) => {
-			const acceptedValues = context.get(`targeting.${key}`);
+			const acceptedValues = targetingService.get(key);
 
 			if (!acceptedValues) {
 				return true;

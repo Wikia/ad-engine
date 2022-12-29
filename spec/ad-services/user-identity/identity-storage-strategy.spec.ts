@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { context } from '@wikia/core';
+import { context, targetingService } from '@wikia/core';
 import { userIdentity } from '@wikia/ad-services';
 import { createSandbox } from 'sinon';
 import { IdentityRepositories } from '@wikia/ad-services/user-identity/identity-repositories';
@@ -33,7 +33,7 @@ describe('User Identity', () => {
 
 		await userIdentity.call();
 
-		expect(context.get('targeting.ppid')).to.eq(mockId);
+		expect(targetingService.get('ppid')).to.eq(mockId);
 	});
 
 	it('use Identity Storage strategy and gets not synced PPID from API', async () => {
@@ -46,7 +46,7 @@ describe('User Identity', () => {
 
 		await userIdentity.call();
 
-		expect(context.get('targeting.ppid')).to.eq(mockId);
+		expect(targetingService.get('ppid')).to.eq(mockId);
 	});
 
 	it('use Identity Storage strategy and gets synced PPID from Cache', async () => {
@@ -57,7 +57,7 @@ describe('User Identity', () => {
 
 		await userIdentity.call();
 
-		expect(context.get('targeting.ppid')).to.eq(mockId);
+		expect(targetingService.get('ppid')).to.eq(mockId);
 		expect(clientSpy.called).to.eq(false);
 	});
 
@@ -68,7 +68,7 @@ describe('User Identity', () => {
 		}));
 		await userIdentity.call();
 
-		expect(context.get('targeting.ppid')).to.eq(mockId);
+		expect(targetingService.get('ppid')).to.eq(mockId);
 		expect(clientSpy.called).to.eq(true);
 	});
 });

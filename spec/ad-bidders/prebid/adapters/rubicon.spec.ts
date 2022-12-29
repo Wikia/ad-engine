@@ -1,5 +1,5 @@
 import { Rubicon } from '@wikia/ad-bidders/prebid/adapters/rubicon';
-import { context } from '@wikia/core';
+import { targetingService } from '@wikia/core';
 import { expect } from 'chai';
 
 describe('Rubicon bidder adapter', () => {
@@ -128,7 +128,7 @@ describe('Rubicon bidder adapter', () => {
 	});
 
 	it('prepareAdUnits returns data in correct shape with additional key-vals', () => {
-		context.set('targeting.testKeyval', 'yes');
+		targetingService.set('testKeyval', 'yes');
 
 		const rubicon = new Rubicon({
 			enabled: true,

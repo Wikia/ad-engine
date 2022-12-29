@@ -88,7 +88,7 @@ export class TargetingService {
 	}
 
 	remove(key: string): void {
-		if (!this.adTargeting[key]) {
+		if (this.adTargeting[key]) {
 			delete this.adTargeting[key];
 			this.triggerOnChange(key, null);
 		}

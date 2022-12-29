@@ -61,7 +61,7 @@ class Audigent extends BaseServiceSetup {
 			return;
 		}
 
-		targetingService.set('AU_SEG', -1);
+		targetingService.set('AU_SEG', '-1');
 
 		const newIntegrationEnabled = context.get('services.audigent.newIntegrationEnabled');
 		!this.segmentsScriptLoader && this.loadSegmentLibrary();

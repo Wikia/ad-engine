@@ -5,7 +5,7 @@ import {
 } from '@wikia/platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { context, tcf, utils } from '../../../src/core/index';
+import { context, tcf, utils, targetingService } from '../../../src/core/index';
 
 describe('Eyeota', () => {
 	const sandbox = createSandbox();
@@ -75,12 +75,12 @@ describe('Eyeota', () => {
 	});
 
 	it('constructs proper src', async () => {
-		context.set('targeting.s0v', 'lifestyle');
+		targetingService.set('s0v', 'lifestyle');
 		const src = await eyeota.createScriptSource();
 
 		expect(src).to.equal('https://ps.eyeota.net/pixel?pid=r8rcb20&sid=fandom&t=ajs&s0v=lifestyle');
 
-		context.remove('targeting.s0v');
+		targetingService.remove('s0v');
 	});
 
 	it('constructs proper url with context', async () => {
@@ -104,7 +104,7 @@ describe('Eyeota', () => {
 		sandbox
 			.stub(tcf, 'getTCData')
 			.returns(Promise.resolve({ tcString: 'test', gdprApplies: true }) as any);
-		context.set('targeting.s0v', 'lifestyle');
+		targetingService.set('s0v', 'lifestyle');
 
 		const src = await eyeota.createScriptSource();
 
@@ -112,7 +112,7 @@ describe('Eyeota', () => {
 			'https://ps.eyeota.net/pixel?pid=r8rcb20&sid=fandom&t=ajs&s0v=lifestyle&gdpr=1&gdpr_consent=test',
 		);
 
-		context.remove('targeting.s0v');
+		targetingService.remove('s0v');
 	});
 
 	describe('parseContextTags', () => {
