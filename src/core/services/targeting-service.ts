@@ -1,6 +1,6 @@
 import { debug } from './debug';
 
-type ChangeCallback = (key: string, value: any) => void;
+type ChangeCallback = (key: string | null, value: any) => void;
 
 interface TargetingObject {
 	[key: string]: any;
@@ -63,10 +63,6 @@ export class TargetingService {
 
 	constructor() {
 		window.ads.adTargeting = debug.isDebugMode() ? this.adTargeting : {};
-
-		if (debug.isDebugMode()) {
-			this.log('constructor ' + new Date().getTime());
-		}
 	}
 
 	changeAll(newTargeting: TargetingObject): void {
@@ -109,10 +105,6 @@ export class TargetingService {
 		this.onChangeCallbacks.forEach((callback) => {
 			callback(key, newValue);
 		});
-	}
-
-	private log(text: string): void {
-		console.log('TargetingService: ' + text);
 	}
 }
 

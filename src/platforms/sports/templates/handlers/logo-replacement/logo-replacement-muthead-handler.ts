@@ -1,5 +1,10 @@
 import { LogoReplacementParams } from '@platforms/shared';
-import { context, TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
+import {
+	targetingService,
+	GlobalTargeting,
+	TEMPLATE,
+	TemplateStateHandler,
+} from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })
@@ -9,7 +14,7 @@ export class LogoReplacementMutheadHandler implements TemplateStateHandler {
 	async onEnter(): Promise<void> {
 		const parentElement = document.querySelector('.header__container');
 		const logo = document.querySelector('.header__home-link');
-		const isDesktop = context.get('targeting.skin').includes('desktop');
+		const isDesktop = targetingService.getAll<GlobalTargeting>().skin.includes('desktop');
 
 		setTimeout(() => {
 			if (isDesktop && parentElement && logo) {
