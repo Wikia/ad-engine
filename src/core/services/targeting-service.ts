@@ -65,9 +65,9 @@ export class TargetingService {
 		window.ads.adTargeting = debug.isDebugMode() ? this.adTargeting : {};
 	}
 
-	changeAll(newTargeting: TargetingObject): void {
-		this.adTargeting = newTargeting;
-		this.triggerOnChange(null, this.adTargeting);
+	extend(newTargeting: TargetingObject): void {
+		this.adTargeting = Object.assign(this.adTargeting, newTargeting);
+		window.ads.adTargeting = debug.isDebugMode() ? this.adTargeting : {};
 	}
 
 	getAll<T = TargetingObject>(): T {

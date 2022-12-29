@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { context } from '../../../src/core/services/context-service';
 import { vastParser } from '../../../src/core/video/vast-parser';
+import { targetingService } from '@wikia/core';
 
 const dummyVast =
 	'dummy.vast?sz=640x480&foo=bar&cust_params=foo1%3Dbar1%26foo2%3Dbar2' +
@@ -27,12 +28,13 @@ describe('vast-parser', () => {
 			vast: {
 				adUnitId: '/5441/wka.fandom/{src}/{pos}',
 			},
-			targeting: {
-				uno: 'foo',
-				due: 15,
-				tre: ['bar', 'zero'],
-				quattro: null,
-			},
+		});
+
+		targetingService.extend({
+			uno: 'foo',
+			due: 15,
+			tre: ['bar', 'zero'],
+			quattro: null,
 		});
 	});
 

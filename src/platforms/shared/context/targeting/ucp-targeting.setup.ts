@@ -29,7 +29,7 @@ export class UcpTargetingSetup implements DiProcess {
 	constructor(@Inject(SKIN) private skin: string, protected instantConfig: InstantConfigService) {}
 
 	execute(): void {
-		targetingService.changeAll({
+		targetingService.extend({
 			...targetingService.getAll(),
 			...this.getPageLevelTargeting(),
 		});

@@ -6,7 +6,7 @@ import { selectApplication } from '../../../utils/application-helper';
 @Injectable()
 export class SportsTargetingSetup implements DiProcess {
 	execute(): void {
-		targetingService.changeAll({
+		targetingService.extend({
 			...targetingService.getAll(),
 			...this.getPageLevelTargeting(),
 		});

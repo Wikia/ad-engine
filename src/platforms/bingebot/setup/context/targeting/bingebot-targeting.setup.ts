@@ -26,7 +26,7 @@ export class BingeBotTargetingSetup implements DiProcess {
 	constructor(@Inject(SKIN) private skin: string) {}
 
 	execute(): void {
-		targetingService.changeAll({ ...targetingService.getAll(), ...this.getPageLevelTargeting() });
+		targetingService.extend({ ...targetingService.getAll(), ...this.getPageLevelTargeting() });
 
 		communicationService.action$
 			.pipe(

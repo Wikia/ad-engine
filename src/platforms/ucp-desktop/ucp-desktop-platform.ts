@@ -36,7 +36,7 @@ export class UcpDesktopPlatform {
 		// Config
 		this.pipeline.add(
 			() => context.extend(basicContext),
-			() => targetingService.changeAll(targetingData),
+			() => targetingService.extend(targetingData),
 			PlatformContextSetup,
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
 			TrackingParametersSetup,
