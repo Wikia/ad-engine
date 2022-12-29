@@ -18,8 +18,8 @@ jobs:
         with:
           node-version-file: '.nvmrc'
 
+      - uses: actions/checkout@v2
       - name: Install dependencies
-        uses: actions/checkout@v2
         shell: bash -l {0}
         run: |
           npm ci
