@@ -1,9 +1,9 @@
 {
   "check-coverage": true,
-  "lines": 45,
-  "functions": 40,
-  "branches": 30,
-  "statements": 45,
+  "lines": 55,
+  "functions": 45,
+  "branches": 40,
+  "statements": 55,
   "include": [
     "src/**/*"
   ],
