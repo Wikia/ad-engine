@@ -35,7 +35,7 @@ export class UcpMobilePlatform {
 		this.pipeline.add(
 			() => Bootstrap.setupContextAndGeo(basicContext, true),
 			PlatformContextSetup,
-			parallel(InstantConfigSetup, () => Bootstrap.setupConsent()),
+			parallel(InstantConfigSetup, Bootstrap.setupConsent),
 			TrackingParametersSetup,
 			LoadTimesSetup,
 			UcpMobileIocSetup,

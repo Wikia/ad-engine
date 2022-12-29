@@ -39,7 +39,7 @@ export class F2Platform {
 		this.pipeline.add(
 			() => Bootstrap.setupContextAndGeo(basicContext, f2env.isPageMobile),
 			PlatformContextSetup,
-			parallel(InstantConfigSetup, () => Bootstrap.setupConsent()),
+			parallel(InstantConfigSetup, Bootstrap.setupConsent),
 			F2IocSetup,
 			TrackingParametersSetup,
 			F2TargetingSetup,

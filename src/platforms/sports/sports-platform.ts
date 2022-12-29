@@ -43,7 +43,7 @@ export class SportsPlatform {
 			() => Bootstrap.setupContextAndGeo(getBasicContext(), getDeviceMode() === 'mobile'),
 			() => document.body.classList.add(`ae-${selectApplication('futhead', 'muthead')}`),
 			PlatformContextSetup,
-			parallel(InstantConfigSetup, () => Bootstrap.setupConsent()),
+			parallel(InstantConfigSetup, Bootstrap.setupConsent),
 			SportsIocSetup,
 			TrackingParametersSetup,
 			SportsTargetingSetup,

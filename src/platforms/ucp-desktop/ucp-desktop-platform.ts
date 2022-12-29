@@ -35,7 +35,7 @@ export class UcpDesktopPlatform {
 		this.pipeline.add(
 			() => Bootstrap.setupContextAndGeo(basicContext),
 			PlatformContextSetup,
-			parallel(InstantConfigSetup, () => Bootstrap.setupConsent()),
+			parallel(InstantConfigSetup, Bootstrap.setupConsent),
 			TrackingParametersSetup,
 			LoadTimesSetup,
 			UcpDesktopIocSetup,
