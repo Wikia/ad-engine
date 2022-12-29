@@ -1,7 +1,7 @@
 import { Injectable } from '@wikia/dependency-injection';
 import {
 	audigent,
-	captify,
+	Captify,
 	communicationService,
 	context,
 	DiProcess,
@@ -18,7 +18,7 @@ import { wadRunner, playerSetup, gptSetup } from '@platforms/shared';
 
 @Injectable()
 export class F2AdsMode implements DiProcess {
-	constructor(private pipeline: PartnerPipeline) {}
+	constructor(private pipeline: PartnerPipeline, private captify: Captify) {}
 
 	execute(): void {
 		this.pipeline
@@ -28,7 +28,7 @@ export class F2AdsMode implements DiProcess {
 					dependencies: [userIdentity.initialized],
 				}),
 				audigent,
-				captify,
+				this.captify,
 				liveConnect,
 				iasPublisherOptimization,
 				nielsen,

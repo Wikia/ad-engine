@@ -2,7 +2,7 @@ import { gptSetup, wadRunner } from '@platforms/shared';
 import {
 	audigent,
 	bidders,
-	captify,
+	Captify,
 	communicationService,
 	confiant,
 	DiProcess,
@@ -18,7 +18,7 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class SportsAdsMode implements DiProcess {
-	constructor(private pipeline: PartnerPipeline) {}
+	constructor(private pipeline: PartnerPipeline, private captify: Captify) {}
 
 	execute(): void {
 		this.pipeline
@@ -29,7 +29,7 @@ export class SportsAdsMode implements DiProcess {
 				}),
 				liveConnect,
 				bidders,
-				captify,
+				this.captify,
 				wadRunner,
 				audigent,
 				iasPublisherOptimization,

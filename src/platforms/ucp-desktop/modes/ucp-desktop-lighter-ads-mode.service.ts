@@ -1,6 +1,6 @@
 import { Injectable } from '@wikia/dependency-injection';
 import {
-	captify,
+	Captify,
 	communicationService,
 	context,
 	DiProcess,
@@ -22,7 +22,7 @@ import { gptSetup, playerSetup } from '@platforms/shared';
 
 @Injectable()
 export class UcpDesktopLighterAdsMode implements DiProcess {
-	constructor(private pipeline: PartnerPipeline) {}
+	constructor(private pipeline: PartnerPipeline, private captify: Captify) {}
 
 	execute(): void {
 		this.pipeline
@@ -34,7 +34,7 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 				audigent,
 				iasPublisherOptimization,
 				confiant,
-				captify,
+				this.captify,
 				stroer,
 				nielsen,
 				identityHub,

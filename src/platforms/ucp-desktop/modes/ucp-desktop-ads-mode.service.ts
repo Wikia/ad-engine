@@ -2,7 +2,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import {
 	audigent,
 	bidders,
-	captify,
+	Captify,
 	communicationService,
 	confiant,
 	DiProcess,
@@ -26,7 +26,7 @@ import { wadRunner, playerSetup, gptSetup, anyclipPlayerSetup } from '@platforms
 
 @Injectable()
 export class UcpDesktopAdsMode implements DiProcess {
-	constructor(private pipeline: PartnerPipeline) {}
+	constructor(private pipeline: PartnerPipeline, private captify: Captify) {}
 
 	execute(): void {
 		this.pipeline
@@ -46,7 +46,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 				durationMedia,
 				stroer,
 				identityHub,
-				captify,
+				this.captify,
 				nielsen,
 				prebidNativeProvider,
 				playerSetup.setOptions({

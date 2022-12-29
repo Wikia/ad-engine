@@ -2,7 +2,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import {
 	audigent,
 	bidders,
-	captify,
+	Captify,
 	communicationService,
 	confiant,
 	context,
@@ -27,7 +27,7 @@ import { playerSetup, gptSetup, wadRunner } from '@platforms/shared';
 
 @Injectable()
 export class UcpMobileAdsMode implements DiProcess {
-	constructor(private pipeline: PartnerPipeline) {}
+	constructor(private pipeline: PartnerPipeline, private captify: Captify) {}
 
 	execute(): void {
 		this.pipeline
@@ -37,7 +37,7 @@ export class UcpMobileAdsMode implements DiProcess {
 				ats,
 				audigent,
 				bidders,
-				captify,
+				this.captify,
 				liveConnect,
 				facebookPixel,
 				wadRunner,

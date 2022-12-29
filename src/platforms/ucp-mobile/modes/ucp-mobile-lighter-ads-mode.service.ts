@@ -3,7 +3,7 @@ import {
 	ats,
 	audigent,
 	bidders,
-	captify,
+	Captify,
 	communicationService,
 	confiant,
 	context,
@@ -25,7 +25,7 @@ import { gptSetup, playerSetup } from '@platforms/shared';
 
 @Injectable()
 export class UcpMobileLighterAds implements DiProcess {
-	constructor(private pipeline: PartnerPipeline) {}
+	constructor(private pipeline: PartnerPipeline, private captify: Captify) {}
 
 	execute(): void {
 		this.pipeline
@@ -36,7 +36,7 @@ export class UcpMobileLighterAds implements DiProcess {
 				facebookPixel,
 				audigent,
 				iasPublisherOptimization,
-				captify,
+				this.captify,
 				confiant,
 				durationMedia,
 				liveConnect,
