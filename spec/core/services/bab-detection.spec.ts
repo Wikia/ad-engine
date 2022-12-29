@@ -26,7 +26,7 @@ describe('AdBlock detector', () => {
 	it('returns false when there is no ad block', async () => {
 		const detector = new BabDetection();
 
-		sinon.stub(detector, 'doesBlockAdBlockExist').returns(true);
+		sinon.stub(detector, 'blockAdBlockExists').returns(true);
 		makeBlockAdBlockStubNotDetectAdBlock();
 		createCreateBlockAdBlockStub(detector);
 		sinon.stub(detector, 'checkDomainBlocking').returns(createCheckDomainBlockingStub(false));
@@ -39,7 +39,7 @@ describe('AdBlock detector', () => {
 	it('returns true when there is ad block found by BlockAdBlock', async () => {
 		const detector = new BabDetection();
 
-		sinon.stub(detector, 'doesBlockAdBlockExist').returns(true);
+		sinon.stub(detector, 'blockAdBlockExists').returns(true);
 		makeBlockAdBlockStubDetectAdBlock();
 		createCreateBlockAdBlockStub(detector);
 		sinon.stub(detector, 'checkDomainBlocking').returns(createCheckDomainBlockingStub(false));
@@ -52,7 +52,7 @@ describe('AdBlock detector', () => {
 	it('returns true when there is ad block not found by BlockAdBlock but found by domain block check', async () => {
 		const detector = new BabDetection();
 
-		sinon.stub(detector, 'doesBlockAdBlockExist').returns(true);
+		sinon.stub(detector, 'blockAdBlockExists').returns(true);
 		makeBlockAdBlockStubNotDetectAdBlock();
 		createCreateBlockAdBlockStub(detector);
 		sinon.stub(detector, 'checkDomainBlocking').returns(createCheckDomainBlockingStub(true));
@@ -65,7 +65,7 @@ describe('AdBlock detector', () => {
 	it('returns true when there is ad block found by BlockAdBlock and found by domain block check', async () => {
 		const detector = new BabDetection();
 
-		sinon.stub(detector, 'doesBlockAdBlockExist').returns(true);
+		sinon.stub(detector, 'blockAdBlockExists').returns(true);
 		makeBlockAdBlockStubDetectAdBlock();
 		createCreateBlockAdBlockStub(detector);
 		sinon.stub(detector, 'checkDomainBlocking').returns(createCheckDomainBlockingStub(true));

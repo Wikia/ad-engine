@@ -51,7 +51,7 @@ export class BabDetection {
 	): Promise<boolean> {
 		return new Promise((resolve) => {
 			if (!isBabInitialised) {
-				if (!this.doesBlockAdBlockExist()) {
+				if (!this.blockAdBlockExists()) {
 					resolve(true);
 					return;
 				}
@@ -74,7 +74,7 @@ export class BabDetection {
 		});
 	}
 
-	public doesBlockAdBlockExist() {
+	public blockAdBlockExists() {
 		return typeof BlockAdBlock !== 'undefined';
 	}
 
