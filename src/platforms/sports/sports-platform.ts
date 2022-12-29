@@ -40,10 +40,10 @@ export class SportsPlatform {
 	execute(): void {
 		// Config
 		this.pipeline.add(
-			() => Bootstrap.setUpContextAndGeo(getBasicContext(), getDeviceMode() === 'mobile'),
+			() => Bootstrap.setupContextAndGeo(getBasicContext(), getDeviceMode() === 'mobile'),
 			() => document.body.classList.add(`ae-${selectApplication('futhead', 'muthead')}`),
 			PlatformContextSetup,
-			parallel(InstantConfigSetup, () => Bootstrap.getConsent()),
+			parallel(InstantConfigSetup, () => Bootstrap.setupConsent()),
 			SportsIocSetup,
 			TrackingParametersSetup,
 			SportsTargetingSetup,

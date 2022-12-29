@@ -18,7 +18,7 @@ export class UcpNoAdsPlatform {
 	execute(): void {
 		this.pipeline.add(
 			UcpNoAdsWikiContextSetup,
-			parallel(InstantConfigSetup, () => Bootstrap.getConsent()),
+			parallel(InstantConfigSetup, () => Bootstrap.setupConsent()),
 			TrackingParametersSetup,
 			BaseContextSetup,
 			TrackingSetup,
