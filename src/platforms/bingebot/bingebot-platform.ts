@@ -1,13 +1,8 @@
+import { BaseContextSetup, InstantConfigSetup, NoAdsDetector } from '@platforms/shared';
 import {
-	BaseContextSetup,
-	bootstrapAndGetConsent,
-	InstantConfigSetup,
-	NoAdsDetector,
-} from '@platforms/shared';
-import {
+	Bootstrap,
 	communicationService,
 	conditional,
-	context,
 	eventsRepository,
 	parallel,
 	ProcessPipeline,
@@ -29,8 +24,8 @@ export class BingeBotPlatform {
 
 	execute(): void {
 		this.pipeline.add(
-			() => context.extend(basicContext),
-			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
+			() => Bootstrap.setUpContextAndGeo(basicContext),
+			parallel(InstantConfigSetup, () => Bootstrap.getConsent()),
 			BingeBotIocSetup,
 			BaseContextSetup,
 			BingeBotSlotsContextSetup,

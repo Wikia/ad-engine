@@ -1,6 +1,5 @@
 import {
 	AdEngineRunnerSetup,
-	bootstrapAndGetConsent,
 	InstantConfigSetup,
 	NoAdsExperimentSetup,
 	LabradorSetup,
@@ -12,13 +11,12 @@ import {
 	PlatformContextSetup,
 } from '@platforms/shared';
 import {
+	Bootstrap,
 	communicationService,
 	conditional,
-	context,
 	eventsRepository,
 	parallel,
 	ProcessPipeline,
-	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
@@ -35,10 +33,9 @@ export class UcpDesktopPlatform {
 	execute(): void {
 		// Config
 		this.pipeline.add(
-			() => context.extend(basicContext),
-			() => utils.geoService.setUpGeoData(),
+			() => Bootstrap.setUpContextAndGeo(basicContext),
 			PlatformContextSetup,
-			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
+			parallel(InstantConfigSetup, () => Bootstrap.getConsent()),
 			TrackingParametersSetup,
 			LoadTimesSetup,
 			UcpDesktopIocSetup,

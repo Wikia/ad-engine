@@ -2,8 +2,6 @@ import {
 	AdEngineRunnerSetup,
 	BaseContextSetup,
 	BiddersStateSetup,
-	bootstrapAndGetConsent,
-	ensureGeoCookie,
 	getDeviceMode,
 	InstantConfigSetup,
 	LabradorSetup,
@@ -14,6 +12,7 @@ import {
 	PlatformContextSetup,
 } from '@platforms/shared';
 import {
+	Bootstrap,
 	communicationService,
 	conditional,
 	context,
@@ -41,14 +40,12 @@ export class SportsPlatform {
 	execute(): void {
 		// Config
 		this.pipeline.add(
-			() => context.extend(getBasicContext()),
+			() => Bootstrap.setUpContextAndGeo(getBasicContext(), getDeviceMode() === 'mobile'),
 			() => document.body.classList.add(`ae-${selectApplication('futhead', 'muthead')}`),
-			() => ensureGeoCookie(),
 			PlatformContextSetup,
-			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
+			parallel(InstantConfigSetup, () => Bootstrap.getConsent()),
 			SportsIocSetup,
 			TrackingParametersSetup,
-			() => context.set('state.isMobile', getDeviceMode() === 'mobile'),
 			SportsTargetingSetup,
 			LoadTimesSetup,
 			BaseContextSetup,

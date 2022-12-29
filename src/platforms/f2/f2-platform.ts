@@ -1,6 +1,5 @@
 import {
 	AdEngineRunnerSetup,
-	bootstrapAndGetConsent,
 	InstantConfigSetup,
 	LabradorSetup,
 	LoadTimesSetup,
@@ -11,6 +10,7 @@ import {
 	PlatformContextSetup,
 } from '@platforms/shared';
 import {
+	Bootstrap,
 	communicationService,
 	conditional,
 	context,
@@ -37,12 +37,11 @@ export class F2Platform {
 	execute(f2env: F2Environment): void {
 		// Config
 		this.pipeline.add(
-			() => context.extend(basicContext),
+			() => Bootstrap.setUpContextAndGeo(basicContext, f2env.isPageMobile),
 			PlatformContextSetup,
-			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
+			parallel(InstantConfigSetup, () => Bootstrap.getConsent()),
 			F2IocSetup,
 			TrackingParametersSetup,
-			() => context.set('state.isMobile', f2env.isPageMobile),
 			F2TargetingSetup,
 			LoadTimesSetup,
 			F2BaseContextSetup,

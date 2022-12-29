@@ -1,6 +1,5 @@
 import {
 	AdEngineRunnerSetup,
-	bootstrapAndGetConsent,
 	InstantConfigSetup,
 	NoAdsExperimentSetup,
 	LabradorSetup,
@@ -12,9 +11,9 @@ import {
 	LoadTimesSetup,
 } from '@platforms/shared';
 import {
+	Bootstrap,
 	communicationService,
 	conditional,
-	context,
 	eventsRepository,
 	parallel,
 	ProcessPipeline,
@@ -34,13 +33,12 @@ export class UcpMobilePlatform {
 	execute(): void {
 		// Config
 		this.pipeline.add(
-			() => context.extend(basicContext),
+			() => Bootstrap.setUpContextAndGeo(basicContext, true),
 			PlatformContextSetup,
-			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
+			parallel(InstantConfigSetup, () => Bootstrap.getConsent()),
 			TrackingParametersSetup,
 			LoadTimesSetup,
 			UcpMobileIocSetup,
-			() => context.set('state.isMobile', true),
 			UcpMobileBaseContextSetup,
 			UcpMobileSlotsContextSetup,
 			UcpTargetingSetup,

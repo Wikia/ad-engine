@@ -1,5 +1,4 @@
 import { context, logVersion, utils, trackingOptInWrapper } from '../index';
-import {} from './tracking-opt-in-wrapper';
 
 export class Bootstrap {
 	static async getConsent(): Promise<void> {
