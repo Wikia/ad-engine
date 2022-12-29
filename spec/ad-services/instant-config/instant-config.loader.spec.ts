@@ -131,4 +131,35 @@ describe('Instant Config Loader', () => {
 
 		contextRepo['wiki.services_instantConfig_variant'] = undefined;
 	});
+
+	it('getConfigUrl() - url is constructed properly with country defined', () => {
+		const contextVariables = {
+			'services.instantConfig.endpoint': 'http://endpoint.com',
+			'services.instantConfig.appName': 'testApp',
+			'wiki.services_instantConfig_variant': 'testVariant',
+			'geo.country': 'PL',
+		};
+
+		contextGetStub.callsFake((key) => contextVariables[key]);
+
+		const url = instantConfigLoader.getConfigUrl();
+
+		expect(contextGetStub.getCalls().length).to.equal(4); // TODO: remove??
+		expect(url).to.equal('http://endpoint.com/testVariant/api/config?app=testApp&country=PL');
+	});
+
+	it('getConfigUrl() - url is constructed properly without country defined', () => {
+		const contextVariables = {
+			'services.instantConfig.endpoint': 'http://endpoint.com',
+			'services.instantConfig.appName': 'testApp',
+			'wiki.services_instantConfig_variant': 'testVariant',
+		};
+
+		contextGetStub.callsFake((key) => contextVariables[key]);
+
+		const url = instantConfigLoader.getConfigUrl();
+
+		expect(contextGetStub.getCalls().length).to.equal(4); // TODO: remove??
+		expect(url).to.equal('http://endpoint.com/testVariant/api/config?app=testApp');
+	});
 });
