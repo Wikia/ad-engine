@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { spy, stub } from 'sinon';
 import { context, GptProvider } from '@wikia/core';
+import { targetingService } from '../../../src/core/services/targeting-service';
 
 let provider;
 let pubads;
@@ -13,7 +14,7 @@ describe('gpt-provider', () => {
 
 	after(() => {
 		isInitializedCb.reset();
-		context.removeListeners('targeting');
+		targetingService.removeListeners();
 	});
 
 	beforeEach(() => {

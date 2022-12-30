@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 import { GptSizeMap } from '../../../src/core/providers/gpt-size-map';
-import { context } from '../../../src/core/services/context-service';
+import { targetingService } from '../../../src/core/services/targeting-service';
 
 describe('gpt-size-map', () => {
 	after(() => {
-		context.removeListeners('targeting');
+		targetingService.removeListeners();
 	});
 
 	it('provides information about emptiness', () => {

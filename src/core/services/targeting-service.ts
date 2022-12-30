@@ -105,8 +105,6 @@ export class TargetingService {
 	}
 
 	private triggerOnChange(key: string, newValue: any): void {
-		console.log('trigger: ' + key);
-		console.log(newValue);
 		window.ads.adTargeting = debug.isDebugMode() ? this.adTargeting : {};
 
 		this.onChangeCallbacks.forEach((callback) => {

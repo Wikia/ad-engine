@@ -8,11 +8,6 @@ export function setupGptTargeting(): void {
 		value: string | string[] | (() => string | string[]),
 	): void {
 		if (typeof value === 'undefined' || value === null) {
-			console.log('111');
-			console.log('111');
-			console.log(key + ' - ' + value);
-			console.log('111');
-			console.log('111');
 			tag.clearTargeting(key);
 		} else if (typeof value === 'function') {
 			tag.setTargeting(key, value());
