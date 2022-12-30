@@ -10,7 +10,7 @@ import {
 	jwPlayerInhibitor,
 	liveConnect,
 	liveRampPixel,
-	nielsen,
+	Nielsen,
 	PartnerPipeline,
 	userIdentity,
 } from '@wikia/ad-engine';
@@ -18,7 +18,11 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class F2AdsMode implements DiProcess {
-	constructor(private pipeline: PartnerPipeline, private captify: Captify) {}
+	constructor(
+		private pipeline: PartnerPipeline,
+		private captify: Captify,
+		private nielsen: Nielsen,
+	) {}
 
 	execute(): void {
 		this.pipeline
@@ -31,7 +35,7 @@ export class F2AdsMode implements DiProcess {
 				this.captify,
 				liveConnect,
 				iasPublisherOptimization,
-				nielsen,
+				this.nielsen,
 				wadRunner,
 				playerSetup.setOptions({
 					dependencies: [wadRunner.initialized],

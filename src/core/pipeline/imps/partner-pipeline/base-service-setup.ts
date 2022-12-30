@@ -1,9 +1,11 @@
+import { Injectable } from '@wikia/dependency-injection';
 import { context } from '../../../services';
 import {
 	PartnerInitializationProcess,
 	PartnerInitializationProcessOptions,
 } from './partner-pipeline-types';
 
+@Injectable()
 export class BaseServiceSetup implements PartnerInitializationProcess {
 	options: PartnerInitializationProcessOptions;
 	initializationTimeout;

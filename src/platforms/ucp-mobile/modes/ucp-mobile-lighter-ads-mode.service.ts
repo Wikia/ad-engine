@@ -16,16 +16,21 @@ import {
 	jwPlayerInhibitor,
 	liveConnect,
 	liveRampPixel,
-	nielsen,
+	Nielsen,
 	PartnerPipeline,
-	stroer,
+	Stroer,
 	userIdentity,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpMobileLighterAds implements DiProcess {
-	constructor(private pipeline: PartnerPipeline, private captify: Captify) {}
+	constructor(
+		private pipeline: PartnerPipeline,
+		private captify: Captify,
+		private nielsen: Nielsen,
+		private stroer: Stroer,
+	) {}
 
 	execute(): void {
 		this.pipeline
@@ -40,9 +45,9 @@ export class UcpMobileLighterAds implements DiProcess {
 				confiant,
 				durationMedia,
 				liveConnect,
-				stroer,
+				this.stroer,
 				bidders,
-				nielsen,
+				this.nielsen,
 				identityHub,
 				playerSetup.setOptions({
 					dependencies: [bidders.initialized],

@@ -17,7 +17,7 @@ function createInstance(nielsenKey): any {
 /**
  * Nielsen service handler
  */
-class Nielsen extends BaseServiceSetup {
+export class Nielsen extends BaseServiceSetup {
 	nlsnInstance: any = null;
 	/**
 	 * Class constructor
@@ -64,5 +64,3 @@ class Nielsen extends BaseServiceSetup {
 		return this.nlsnInstance;
 	}
 }
-
-export const nielsen = new Nielsen();

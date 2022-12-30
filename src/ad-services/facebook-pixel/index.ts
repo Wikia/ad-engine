@@ -2,6 +2,7 @@ import { BaseServiceSetup, utils } from '@ad-engine/core';
 import { insertFacebookPixel } from './facebook-pixel-script';
 
 const logGroup = 'facebook-pixel';
+
 class FacebookPixel extends BaseServiceSetup {
 	isSetUp = false;
 

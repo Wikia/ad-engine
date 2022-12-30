@@ -16,17 +16,22 @@ import {
 	jwPlayerInhibitor,
 	liveConnect,
 	liveRampPixel,
-	nielsen,
+	Nielsen,
 	PartnerPipeline,
 	prebidNativeProvider,
-	stroer,
+	Stroer,
 	userIdentity,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpDesktopAdsMode implements DiProcess {
-	constructor(private pipeline: PartnerPipeline, private captify: Captify) {}
+	constructor(
+		private pipeline: PartnerPipeline,
+		private captify: Captify,
+		private nielsen: Nielsen,
+		private stroer: Stroer,
+	) {}
 
 	execute(): void {
 		this.pipeline
@@ -44,10 +49,10 @@ export class UcpDesktopAdsMode implements DiProcess {
 				iasPublisherOptimization,
 				confiant,
 				durationMedia,
-				stroer,
+				this.stroer,
 				identityHub,
 				this.captify,
-				nielsen,
+				this.nielsen,
 				prebidNativeProvider,
 				playerSetup.setOptions({
 					dependencies: [bidders.initialized, wadRunner.initialized],

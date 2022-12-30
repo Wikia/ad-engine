@@ -1,15 +1,14 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { BaseServiceSetup, utils } from '@ad-engine/core';
-import { Injectable } from '@wikia/dependency-injection';
 
-@Injectable()
+const logGroup = 'captify';
+
 export class Captify extends BaseServiceSetup {
 	PIXEL_URL = 'https://p.cpx.to/p/12974/px.js';
-	LOG_GROUP = 'captify';
 
 	async call(): Promise<void> {
 		if (!this.isEnabled('services.captify.enabled')) {
-			utils.logger(this.LOG_GROUP, 'disabled');
+			utils.logger(logGroup, 'disabled');
 
 			return Promise.resolve();
 		}

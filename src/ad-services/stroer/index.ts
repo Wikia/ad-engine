@@ -2,7 +2,7 @@ import { BaseServiceSetup, context, utils } from '@ad-engine/core';
 
 const logGroup = 'stroer';
 
-class Stroer extends BaseServiceSetup {
+export class Stroer extends BaseServiceSetup {
 	call(): Promise<void> {
 		if (!context.get('services.stroer.enabled')) {
 			utils.logger(logGroup, 'disabled');
