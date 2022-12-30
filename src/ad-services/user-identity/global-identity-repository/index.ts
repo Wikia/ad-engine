@@ -1,11 +1,11 @@
 import { IdentityRepositoryInterface } from '../identity-repositories';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { GlobalIdentityProvider } from '../../';
 import { Messages } from '@fandom-frontend/cross-domain-storage/dist';
 import { UniversalStorage, utils } from '@ad-engine/core';
+import { GlobalIdentityProvider } from './global-identity-provider';
 
-class GlobalIdentityStorage implements IdentityRepositoryInterface {
-	logGroup = 'GlobalIdentityStorage';
+class GlobalIdentityRepository implements IdentityRepositoryInterface {
+	logGroup = 'GlobalIdentityRepository';
 	storage = new UniversalStorage();
 	client = new GlobalIdentityProvider();
 
@@ -40,4 +40,4 @@ class GlobalIdentityStorage implements IdentityRepositoryInterface {
 	}
 }
 
-export const globalIdentityStorage = new GlobalIdentityStorage();
+export const globalIdentityStorage = new GlobalIdentityRepository();

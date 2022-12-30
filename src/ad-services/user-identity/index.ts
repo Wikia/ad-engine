@@ -4,7 +4,7 @@ import { localStorageRepository } from './local-storage-repository';
 import { admsIdentityRepository } from './adms-identity-repository';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { identityStorageRepository } from './identity-storage-repository';
-import { globalIdentityStorage } from './global-identity-storage';
+import { globalIdentityStorage } from './global-identity-repository';
 
 export class UserIdentity extends BaseServiceSetup {
 	public static logGroup = 'user-identity';
