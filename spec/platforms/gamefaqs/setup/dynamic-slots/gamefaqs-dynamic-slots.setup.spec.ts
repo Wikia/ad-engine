@@ -1,8 +1,9 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { GamefaqsDynamicSlotsSetup } from '../../../../../src/platforms/gamefaqs/setup/dynamic-slots/gamefaqs-dynamic-slots.setup';
-import { context, utils } from '../../../../../src/core';
+import { GamefaqsDynamicSlotsSetup } from '@wikia/platforms/gamefaqs/setup/dynamic-slots/gamefaqs-dynamic-slots.setup';
+import { context, utils } from '@wikia/core';
+
 import { createHtmlElementStub } from '../../../../spec-utils/html-element.stub';
 
 describe('Inserting dynamic slots on GameFAQs', () => {
