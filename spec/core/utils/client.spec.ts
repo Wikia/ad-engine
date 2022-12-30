@@ -1,5 +1,5 @@
-import { expect } from 'chai';
 import { client } from '@wikia/core/utils/client';
+import { expect } from 'chai';
 
 describe('client', () => {
 	it('checkBlocking works correctly', async () => {

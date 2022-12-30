@@ -1,8 +1,8 @@
-import { expect } from 'chai';
-import { createSandbox, SinonSpy } from 'sinon';
-import { context, utils } from '@wikia/core';
 import { liveConnect } from '@wikia/ad-services';
 import { communicationService, eventsRepository } from '@wikia/communication';
+import { context, utils } from '@wikia/core';
+import { expect } from 'chai';
+import { createSandbox, SinonSpy } from 'sinon';
 
 const mockedStorageStrategyVariable = {
 	ttl: 300000,

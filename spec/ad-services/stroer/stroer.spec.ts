@@ -1,7 +1,7 @@
 import { stroer } from '@wikia/ad-services';
+import { context, utils } from '@wikia/core';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { context, utils } from '@wikia/core';
 
 describe('Stroer', () => {
 	const sandbox = createSandbox();

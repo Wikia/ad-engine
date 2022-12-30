@@ -1,6 +1,6 @@
-import { expect } from 'chai';
-import { context } from '@wikia/core';
 import { userIdentity } from '@wikia/ad-services';
+import { context } from '@wikia/core';
+import { expect } from 'chai';
 import { spy } from 'sinon';
 
 describe('User Identity', () => {

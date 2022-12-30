@@ -19,10 +19,10 @@ import {
 	viewabilityTracker,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { DataWarehouseTracker } from './data-warehouse';
-import { AdSizeTracker } from './ad-size-tracker';
-import { LabradorTracker } from './labrador-tracker';
 import { props } from 'ts-action';
+import { AdSizeTracker } from './ad-size-tracker';
+import { DataWarehouseTracker } from './data-warehouse';
+import { LabradorTracker } from './labrador-tracker';
 
 const bidderTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengbidders';
 const slotTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengadinfo';

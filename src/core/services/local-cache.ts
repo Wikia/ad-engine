@@ -1,5 +1,5 @@
-import { Storage, UniversalStorage } from './universal-storage';
 import { Dictionary } from '../models';
+import { Storage, UniversalStorage } from './universal-storage';
 
 interface CacheItem<T = any> {
 	expires?: number;

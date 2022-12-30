@@ -1,5 +1,5 @@
-import { BaseServiceSetup, utils } from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { BaseServiceSetup, utils } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -25,5 +25,3 @@ export class Captify extends BaseServiceSetup {
 		return Promise.resolve();
 	}
 }
-
-export const captify = new Captify();

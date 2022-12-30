@@ -8,10 +8,10 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 
 import { getAppnexusContext } from '../../../bidders/appnexus';
-import { getWikiaContext } from '../../../bidders/wikia';
 import { getIndexExchangeContext } from '../../../bidders/index-exchange';
-import { getRubiconDisplayContext } from '../../../bidders/rubicon-display';
 import { getMedianetContext } from '../../../bidders/medianet';
+import { getRubiconDisplayContext } from '../../../bidders/rubicon-display';
+import { getWikiaContext } from '../../../bidders/wikia';
 
 @Injectable()
 export class GamefaqsPrebidConfigSetup implements DiProcess {

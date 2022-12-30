@@ -1,7 +1,7 @@
+import { durationMedia } from '@wikia/ad-services';
+import { context, utils } from '@wikia/core';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { context, utils } from '@wikia/core';
-import { durationMedia } from '@wikia/ad-services';
 
 describe('Duration media service', () => {
 	const sandbox = createSandbox();

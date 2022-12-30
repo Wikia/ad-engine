@@ -1,8 +1,8 @@
 import { ProcessPipeline } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { UcpMobileLighterAds } from './modes/ucp-mobile-lighter-ads-mode.service';
 import { UcpMobileDynamicSlotsSetup } from './setup/dynamic-slots/ucp-mobile-dynamic-slots.setup';
 import { UcpMobileTemplatesSetup } from './templates/ucp-mobile-templates.setup';
-import { UcpMobileLighterAds } from './modes/ucp-mobile-lighter-ads-mode.service';
 
 @Injectable()
 export class UcpMobileAdLayoutSetup {

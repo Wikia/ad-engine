@@ -1,4 +1,4 @@
-import { Injectable } from '@wikia/dependency-injection';
+import { bootstrapAndGetConsent, gptSetup, InstantConfigSetup } from '@platforms/shared';
 import {
 	communicationService,
 	context,
@@ -6,7 +6,7 @@ import {
 	ProcessPipeline,
 	utils,
 } from '@wikia/ad-engine';
-import { bootstrapAndGetConsent, gptSetup, InstantConfigSetup } from '@platforms/shared';
+import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
 
 import { TvGuideSlotsContextSetup } from './setup/context/slots/tvguide-slots-context.setup';

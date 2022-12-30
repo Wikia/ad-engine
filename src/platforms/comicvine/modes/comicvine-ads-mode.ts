@@ -1,4 +1,4 @@
-import { Injectable } from '@wikia/dependency-injection';
+import { gptSetup } from '@platforms/shared';
 import {
 	bidders,
 	communicationService,
@@ -9,7 +9,7 @@ import {
 	PartnerPipeline,
 	userIdentity,
 } from '@wikia/ad-engine';
-import { gptSetup } from '@platforms/shared';
+import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class ComicvineAdsMode implements DiProcess {

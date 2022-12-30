@@ -48,6 +48,7 @@
 		"node-sass": "8.0.0",
 		"nyc": "15.1.0",
 		"prettier": "2.8.1",
+		"prettier-plugin-organize-imports": "3.2.1",
 		"process": "0.11.10",
 		"sass-loader": "13.2.0",
 		"sinon": "15.0.1",

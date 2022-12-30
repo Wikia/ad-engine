@@ -1,8 +1,8 @@
-import sinon from 'sinon';
+import { SequenceState } from '@wikia/platforms/shared/sequential-messaging/domain/data-structures/user-sequential-message-state';
 import { GamTargetingManager } from '@wikia/platforms/shared/sequential-messaging/infrastructure/gam-targeting-manager';
+import sinon from 'sinon';
 import { makeContextSpy } from '../../test_doubles/context.spy';
 import { makeSlotsContextSpy } from '../test_doubles/slotContext.spy';
-import { SequenceState } from '@wikia/platforms/shared/sequential-messaging/domain/data-structures/user-sequential-message-state';
 
 const baseTargetingSize = 10;
 let contextSpy;

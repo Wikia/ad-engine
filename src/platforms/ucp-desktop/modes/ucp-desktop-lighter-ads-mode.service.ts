@@ -1,24 +1,24 @@
-import { Injectable } from '@wikia/dependency-injection';
+import { gptSetup, playerSetup } from '@platforms/shared';
 import {
+	ats,
+	audigent,
 	Captify,
 	communicationService,
+	confiant,
 	context,
 	DiProcess,
-	PartnerPipeline,
 	eventsRepository,
 	facebookPixel,
 	iasPublisherOptimization,
 	identityHub,
-	nielsen,
-	stroer,
-	audigent,
-	confiant,
-	userIdentity,
-	ats,
 	jwPlayerInhibitor,
 	liveRampPixel,
+	nielsen,
+	PartnerPipeline,
+	stroer,
+	userIdentity,
 } from '@wikia/ad-engine';
-import { gptSetup, playerSetup } from '@platforms/shared';
+import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpDesktopLighterAdsMode implements DiProcess {

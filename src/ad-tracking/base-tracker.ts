@@ -1,5 +1,5 @@
-import { AdSlot, Dictionary } from '@ad-engine/core';
 import { TrackingBidDefinition } from '@ad-engine/communication';
+import { AdSlot, Dictionary } from '@ad-engine/core';
 
 export interface BaseTrackerInterface {
 	isEnabled?: () => boolean;

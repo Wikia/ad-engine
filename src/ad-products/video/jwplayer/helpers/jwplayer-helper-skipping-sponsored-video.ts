@@ -1,8 +1,8 @@
 import { AdSlot, context, externalLogger, utils } from '@ad-engine/core';
 
-import { JWPlayerHelper } from './jwplayer-helper';
 import { JWPlayer } from '../external-types/jwplayer';
 import { VideoTargeting } from '../jwplayer-actions';
+import { JWPlayerHelper } from './jwplayer-helper';
 
 export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 	constructor(

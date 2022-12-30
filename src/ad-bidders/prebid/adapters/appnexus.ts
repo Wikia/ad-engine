@@ -1,7 +1,7 @@
 import { context, Dictionary } from '@ad-engine/core';
+import { PrebidNativeConfig, PrebidNativeProvider } from '../native';
 import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
-import { PrebidNativeProvider, PrebidNativeConfig } from '../native';
 
 export class Appnexus extends PrebidAdapter {
 	static bidderName = 'appnexus';

@@ -1,4 +1,3 @@
-import { Injectable } from '@wikia/dependency-injection';
 import {
 	AdSlot,
 	communicationService,
@@ -6,6 +5,7 @@ import {
 	eventsRepository,
 	universalAdPackage,
 } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
 
 interface StickedBoxadHelperConfiguration {
 	slotName: string;

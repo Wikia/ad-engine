@@ -1,9 +1,9 @@
-import { expect } from 'chai';
-import { context } from '@wikia/core';
 import { userIdentity } from '@wikia/ad-services';
-import { createSandbox } from 'sinon';
 import { IdentityRepositories } from '@wikia/ad-services/user-identity/identity-repositories';
 import { identityStorageClient } from '@wikia/ad-services/user-identity/identity-storage-repository/identity-storage-client';
+import { context } from '@wikia/core';
+import { expect } from 'chai';
+import { createSandbox } from 'sinon';
 
 describe('User Identity', () => {
 	let sandbox;

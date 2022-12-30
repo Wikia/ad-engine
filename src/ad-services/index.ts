@@ -1,6 +1,5 @@
 export * from './anyclip';
 export * from './audigent';
-export * from './user-identity';
 export * from './bt-rec';
 export * from './captify';
 export * from './confiant';
@@ -14,3 +13,4 @@ export * from './liveramp-pixel';
 export * from './nielsen';
 export * from './sailthru';
 export * from './stroer';
+export * from './user-identity';

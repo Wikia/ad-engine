@@ -1,4 +1,4 @@
-import { Injectable } from '@wikia/dependency-injection';
+import { gptSetup, playerSetup, wadRunner } from '@platforms/shared';
 import {
 	audigent,
 	Captify,
@@ -7,14 +7,14 @@ import {
 	DiProcess,
 	eventsRepository,
 	iasPublisherOptimization,
-	liveConnect,
 	jwPlayerInhibitor,
+	liveConnect,
 	liveRampPixel,
 	nielsen,
 	PartnerPipeline,
 	userIdentity,
 } from '@wikia/ad-engine';
-import { wadRunner, playerSetup, gptSetup } from '@platforms/shared';
+import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class F2AdsMode implements DiProcess {

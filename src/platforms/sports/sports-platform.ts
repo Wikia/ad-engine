@@ -9,10 +9,10 @@ import {
 	LabradorSetup,
 	LoadTimesSetup,
 	NoAdsDetector,
+	NoAdsMode,
+	PlatformContextSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
-	PlatformContextSetup,
-	NoAdsMode,
 } from '@platforms/shared';
 import {
 	communicationService,

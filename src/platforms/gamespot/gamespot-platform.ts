@@ -1,19 +1,19 @@
 import { Injectable } from '@wikia/dependency-injection';
 
-import { context, utils, ProcessPipeline } from '@wikia/ad-engine';
 import {
 	BaseContextSetup,
 	BiddersStateSetup,
 	bootstrapAndGetConsent,
 	InstantConfigSetup,
 } from '@platforms/shared';
+import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
 
+import { NewsAndRatingsTargetingSetup } from '../shared-news-and-ratings/context/targeting/news-and-ratings-targeting.setup';
 import { basicContext } from './ad-context';
+import { GamespotAdsMode } from './modes/gamespot-ads-mode';
+import { GamespotPrebidConfigSetup } from './setup/context/prebid/gamespot-prebid-config.setup';
 import { GamespotSlotsContextSetup } from './setup/context/slots/gamespot-slots-context.setup';
 import { GamespotDynamicSlotsSetup } from './setup/dynamic-slots/gamespot-dynamic-slots.setup';
-import { GamespotPrebidConfigSetup } from './setup/context/prebid/gamespot-prebid-config.setup';
-import { NewsAndRatingsTargetingSetup } from '../shared-news-and-ratings/context/targeting/news-and-ratings-targeting.setup';
-import { GamespotAdsMode } from './modes/gamespot-ads-mode';
 
 @Injectable()
 export class GameSpotPlatform {

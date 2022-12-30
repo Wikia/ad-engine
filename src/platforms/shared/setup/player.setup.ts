@@ -1,8 +1,8 @@
 import {
 	BaseServiceSetup,
-	jwpSetup,
 	communicationService,
 	JWPlayerManager,
+	jwpSetup,
 } from '@wikia/ad-engine';
 
 class PlayerSetup extends BaseServiceSetup {

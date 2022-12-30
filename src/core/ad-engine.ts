@@ -12,8 +12,8 @@ import {
 	slotTweaker,
 	templateService,
 } from './services';
-import { LazyQueue, makeLazyQueue, OldLazyQueue, logger } from './utils';
 import { slotRefresher } from './services/slot-refresher';
+import { LazyQueue, logger, makeLazyQueue, OldLazyQueue } from './utils';
 
 const logGroup = 'ad-engine';
 

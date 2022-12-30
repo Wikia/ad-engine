@@ -1,4 +1,4 @@
-import { Injectable } from '@wikia/dependency-injection';
+import { gptSetup, playerSetup } from '@platforms/shared';
 import {
 	ats,
 	audigent,
@@ -21,7 +21,7 @@ import {
 	stroer,
 	userIdentity,
 } from '@wikia/ad-engine';
-import { gptSetup, playerSetup } from '@platforms/shared';
+import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpMobileLighterAds implements DiProcess {

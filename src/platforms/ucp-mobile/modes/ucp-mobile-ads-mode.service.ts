@@ -1,5 +1,6 @@
-import { Injectable } from '@wikia/dependency-injection';
+import { gptSetup, playerSetup, wadRunner } from '@platforms/shared';
 import {
+	ats,
 	audigent,
 	bidders,
 	Captify,
@@ -13,17 +14,16 @@ import {
 	facebookPixel,
 	iasPublisherOptimization,
 	identityHub,
+	jwPlayerInhibitor,
 	liveConnect,
+	liveRampPixel,
 	nielsen,
 	PartnerPipeline,
 	prebidNativeProvider,
 	stroer,
 	userIdentity,
-	ats,
-	jwPlayerInhibitor,
-	liveRampPixel,
 } from '@wikia/ad-engine';
-import { playerSetup, gptSetup, wadRunner } from '@platforms/shared';
+import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpMobileAdsMode implements DiProcess {

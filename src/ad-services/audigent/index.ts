@@ -1,6 +1,6 @@
-import { context, utils, externalLogger, BaseServiceSetup } from '@ad-engine/core';
-import { InstantConfigService } from '../instant-config';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { BaseServiceSetup, context, externalLogger, utils } from '@ad-engine/core';
+import { InstantConfigService } from '../instant-config';
 
 const logGroup = 'audigent';
 const DEFAULT_MATCHES_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';

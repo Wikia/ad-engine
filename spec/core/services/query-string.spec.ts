@@ -1,5 +1,5 @@
-import { expect } from 'chai';
 import { queryString } from '@wikia/core/utils';
+import { expect } from 'chai';
 
 describe('query-string', () => {
 	it('parse truthy boolean value from string', () => {

@@ -1,10 +1,10 @@
 import { context, Targeting, utils } from '@wikia/ad-engine';
 import { getDomain } from '../../../../utils/get-domain';
 import { getMediaWikiVariable } from '../../../../utils/get-media-wiki-variable';
-import { FandomContext } from '../models/fandom-context';
 import { CommonTargetingParams } from '../interfaces/common-targeting-params';
 import { OptionalTargetingParams } from '../interfaces/optional-targeting-params';
 import { TargetingProvider } from '../interfaces/targeting-provider';
+import { FandomContext } from '../models/fandom-context';
 
 export class CommonTags implements TargetingProvider<Partial<Targeting>> {
 	constructor(private skin: string, private fandomContext: FandomContext) {}

@@ -1,20 +1,20 @@
 import { Injectable } from '@wikia/dependency-injection';
 
-import { context, utils, ProcessPipeline } from '@wikia/ad-engine';
 import {
-	bootstrapAndGetConsent,
-	BiddersStateSetup,
-	InstantConfigSetup,
 	BaseContextSetup,
+	BiddersStateSetup,
+	bootstrapAndGetConsent,
+	InstantConfigSetup,
 } from '@platforms/shared';
+import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
 
-import { basicContext } from './ad-context';
-import { GamefaqsSlotsContextSetup } from './setup/context/slots/gamefaqs-slots-context.setup';
-import { GamefaqsDynamicSlotsSetup } from './setup/dynamic-slots/gamefaqs-dynamic-slots.setup';
 import { NewsAndRatingsTargetingSetup } from '../shared-news-and-ratings/context/targeting/news-and-ratings-targeting.setup';
-import { GamefaqsPrebidConfigSetup } from './setup/context/prebid/gamefaqs-prebid-config.setup';
-import { GamefaqsTargetingSetup } from './setup/context/targeting/gamefaqs-targeting.setup';
+import { basicContext } from './ad-context';
 import { GamefaqsAdsMode } from './modes/gamefaqs-ads-mode';
+import { GamefaqsPrebidConfigSetup } from './setup/context/prebid/gamefaqs-prebid-config.setup';
+import { GamefaqsSlotsContextSetup } from './setup/context/slots/gamefaqs-slots-context.setup';
+import { GamefaqsTargetingSetup } from './setup/context/targeting/gamefaqs-targeting.setup';
+import { GamefaqsDynamicSlotsSetup } from './setup/dynamic-slots/gamefaqs-dynamic-slots.setup';
 
 @Injectable()
 export class GamefaqsPlatform {

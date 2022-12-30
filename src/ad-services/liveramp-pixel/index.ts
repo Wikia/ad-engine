@@ -1,5 +1,5 @@
-import { BaseServiceSetup, utils } from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { BaseServiceSetup, utils } from '@ad-engine/core';
 
 class LiveRampPixel extends BaseServiceSetup {
 	private PIXEL_ID = 712315;

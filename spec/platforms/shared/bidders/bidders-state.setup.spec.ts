@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { context } from '@wikia/core';
 import { InstantConfigService } from '@wikia/ad-services';
+import { context } from '@wikia/core';
 import { BiddersStateSetup } from '@wikia/platforms/shared/bidders/bidders-state.setup';
 
 describe('BiddersStateSetup', () => {

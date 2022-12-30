@@ -1,6 +1,6 @@
-import { getMediaWikiVariable } from '../utils/get-media-wiki-variable';
-import Cookies from 'js-cookie';
 import { AdSlot, externalLogger } from '@wikia/ad-engine';
+import Cookies from 'js-cookie';
+import { getMediaWikiVariable } from '../utils/get-media-wiki-variable';
 
 const cookies = Cookies.get();
 

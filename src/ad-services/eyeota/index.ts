@@ -1,5 +1,5 @@
-import { BaseServiceSetup, context, tcf, utils } from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { BaseServiceSetup, context, tcf, utils } from '@ad-engine/core';
 
 const logGroup = 'eyeota';
 const pid = 'r8rcb20';

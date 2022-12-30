@@ -1,13 +1,13 @@
 import { expect } from 'chai';
 
 import { context } from '@wikia/core';
-import {
-	FandomContext,
-	Site,
-	Page,
-} from '@wikia/platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
 import { createSelectedStrategy } from '@wikia/platforms/shared/context/targeting/targeting-strategies/factories/create-selected-strategy';
 import { TargetingStrategy } from '@wikia/platforms/shared/context/targeting/targeting-strategies/interfaces/targeting-strategy';
+import {
+	FandomContext,
+	Page,
+	Site,
+} from '@wikia/platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
 
 describe('CombinedStrategy', () => {
 	const mockedSkin = 'test';

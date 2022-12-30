@@ -1,7 +1,7 @@
+import { audigent } from '@wikia/ad-services';
+import { context, externalLogger, utils } from '@wikia/core';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { context, externalLogger, utils } from '@wikia/core';
-import { audigent } from '@wikia/ad-services';
 
 describe('Audigent', () => {
 	const sandbox = createSandbox();

@@ -1,11 +1,11 @@
-import { parseContextTags, eyeota } from '@wikia/ad-services';
+import { eyeota, parseContextTags } from '@wikia/ad-services';
+import { context, tcf, utils } from '@wikia/core';
 import {
 	FandomContext,
 	Site,
 } from '@wikia/platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { context, tcf, utils } from '@wikia/core';
 
 describe('Eyeota', () => {
 	const sandbox = createSandbox();

@@ -1,7 +1,7 @@
-import { expect } from 'chai';
-import { createSandbox } from 'sinon';
 import { context } from '@wikia/core';
 import { targeting } from '@wikia/core/utils/targeting';
+import { expect } from 'chai';
+import { createSandbox } from 'sinon';
 
 let sandbox;
 

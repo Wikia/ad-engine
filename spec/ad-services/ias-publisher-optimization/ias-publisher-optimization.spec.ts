@@ -1,7 +1,7 @@
+import { iasPublisherOptimization } from '@wikia/ad-services';
+import { context, utils } from '@wikia/core';
 import { expect } from 'chai';
 import { createSandbox, spy } from 'sinon';
-import { context, utils } from '@wikia/core';
-import { iasPublisherOptimization } from '@wikia/ad-services';
 
 describe('IAS Publisher Optimization', () => {
 	const sandbox = createSandbox();
