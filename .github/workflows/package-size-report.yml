@@ -22,6 +22,7 @@ jobs:
         uses: pkg-size/action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ARTIFACTORY_NPM_TOKEN: ${{ secrets.ARTIFACTORY_NPM_TOKEN }}
         with:
           display-size: gzip
           build-command: npm run build:platforms -- --env platform=ucp-desktop
@@ -32,6 +33,7 @@ jobs:
         uses: pkg-size/action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ARTIFACTORY_NPM_TOKEN: ${{ secrets.ARTIFACTORY_NPM_TOKEN }}
         with:
           display-size: gzip
           build-command: npm run build:platforms -- --env platform=ucp-mobile
@@ -42,6 +44,7 @@ jobs:
         uses: pkg-size/action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ARTIFACTORY_NPM_TOKEN: ${{ secrets.ARTIFACTORY_NPM_TOKEN }}
         with:
           display-size: gzip
           build-command: npm run build:platforms -- --env platform=f2
@@ -52,6 +55,7 @@ jobs:
         uses: pkg-size/action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ARTIFACTORY_NPM_TOKEN: ${{ secrets.ARTIFACTORY_NPM_TOKEN }}
         with:
           display-size: gzip
           build-command: npm run build:platforms -- --env platform=ucp-no-ads

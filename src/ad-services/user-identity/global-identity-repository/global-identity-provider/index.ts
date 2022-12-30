@@ -5,10 +5,12 @@ import {
 	Messages,
 } from '@fandom-frontend/cross-domain-storage/dist';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { GlobalIdentityProviderStatus } from './GlobalIdentityProviderStatus';
 
 export class GlobalIdentityProvider {
 	public client: CrossDomainClient;
 	private logGroup = 'GlobalIdentityProvider';
+	public status = GlobalIdentityProviderStatus.INITIALIZING;
 
 	private isFandomUrl(): boolean {
 		return window.location.href.includes('.fandom.com');
@@ -26,17 +28,19 @@ export class GlobalIdentityProvider {
 	}
 
 	public sendMessage(messageType: Messages, payload?): void {
-		this.client.sendMessage(new IframeMessage(messageType, payload));
+		this.client?.sendMessage(new IframeMessage(messageType, payload));
 	}
 
 	public async initialize(): Promise<void> {
 		if (this.isFandomUrl()) {
 			utils.logger(this.logGroup, 'disabled');
+			this.status = GlobalIdentityProviderStatus.NOT_LOADED;
 			return;
 		}
 
 		utils.logger(this.logGroup, 'Initializing Global Identity Provider');
 		this.client = new CrossDomainClient(this._onMessage.bind(this));
 		await this.client.createIframe();
+		this.status = GlobalIdentityProviderStatus.READY;
 	}
 }

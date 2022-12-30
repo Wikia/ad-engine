@@ -3,6 +3,7 @@ import { communicationService, eventsRepository } from '@ad-engine/communication
 import { Messages } from '@fandom-frontend/cross-domain-storage/dist';
 import { UniversalStorage, utils } from '@ad-engine/core';
 import { GlobalIdentityProvider } from './global-identity-provider';
+import { GlobalIdentityProviderStatus } from './global-identity-provider/GlobalIdentityProviderStatus';
 
 class GlobalIdentityRepository implements IdentityRepositoryInterface {
 	logGroup = 'GlobalIdentityRepository';
@@ -12,16 +13,19 @@ class GlobalIdentityRepository implements IdentityRepositoryInterface {
 	async get(): Promise<string> {
 		await this.client.initialize();
 		let identity = await this.getGlobalIdentity();
-
+		const localIdentity = this.getLocalIdentity();
 		if (!identity) {
-			identity = utils.uuid.v4();
+			identity = localIdentity || utils.uuid.v4();
 			this.setIdentity(identity);
 		}
 		this.setLocalIdentity(identity);
 		return identity;
 	}
 
-	private getGlobalIdentity(): Promise<string> {
+	private getGlobalIdentity(): Promise<string | undefined> {
+		if (this.client.status === GlobalIdentityProviderStatus.NOT_LOADED) {
+			return Promise.resolve(undefined);
+		}
 		this.client.sendMessage(Messages.PPID_REQUEST);
 		return new Promise((res) => {
 			communicationService.on(eventsRepository.GLOBAL_IDENTITY_RECEIVED, (identity) => {
@@ -30,6 +34,11 @@ class GlobalIdentityRepository implements IdentityRepositoryInterface {
 			});
 		});
 	}
+
+	private getLocalIdentity(): string | undefined {
+		return this.storage.getItem('ppid');
+	}
+
 	private setLocalIdentity(ppid: string): void {
 		this.storage.setItem('ppid', ppid);
 	}
