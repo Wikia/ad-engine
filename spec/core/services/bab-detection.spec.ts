@@ -1,18 +1,40 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { BabDetection } from '../../../src/core/services/bab-detection';
+import { BabDetection } from '@wikia/core';
+
+function createCreateBlockAdBlockStub(detector, createBlockAdBlockStub) {
+	return sinon.stub(detector, 'createBlockAdBlock').returns(createBlockAdBlockStub);
+}
+
+function createCheckDomainBlockingStub(returnValue: boolean) {
+	return new Promise((resolve) => {
+		resolve();
+	}).then(() => {
+		return returnValue;
+	});
+}
+
+function makeBlockAdBlockStubDetectAdBlock(blockAdBlockStub) {
+	// @ts-ignore just for tests
+	blockAdBlockStub.onDetected = (cb) => cb();
+}
+
+function makeBlockAdBlockStubNotDetectAdBlock(blockAdBlockStub) {
+	// @ts-ignore just for tests
+	blockAdBlockStub.onNotDetected = (cb) => cb();
+}
 
 describe('AdBlock detector', () => {
-	const blockAdBlockStub = {
+	const createBlockAdBlockStub = {
 		onDetected: () => {},
 		onNotDetected: () => {},
 		check: () => {},
 	};
 
 	afterEach(() => {
-		blockAdBlockStub.onNotDetected = () => {};
-		blockAdBlockStub.onDetected = () => {};
+		createBlockAdBlockStub.onNotDetected = () => {};
+		createBlockAdBlockStub.onDetected = () => {};
 	});
 
 	it('returns true when there is no BlockAdBlock', async () => {
@@ -27,8 +49,8 @@ describe('AdBlock detector', () => {
 		const detector = new BabDetection();
 
 		sinon.stub(detector, 'blockAdBlockExists').returns(true);
-		makeBlockAdBlockStubNotDetectAdBlock();
-		createCreateBlockAdBlockStub(detector);
+		makeBlockAdBlockStubNotDetectAdBlock(createBlockAdBlockStub);
+		createCreateBlockAdBlockStub(detector, createBlockAdBlockStub);
 		sinon.stub(detector, 'checkDomainBlocking').returns(createCheckDomainBlockingStub(false));
 
 		return await detector.run().then((detected) => {
@@ -40,8 +62,8 @@ describe('AdBlock detector', () => {
 		const detector = new BabDetection();
 
 		sinon.stub(detector, 'blockAdBlockExists').returns(true);
-		makeBlockAdBlockStubDetectAdBlock();
-		createCreateBlockAdBlockStub(detector);
+		makeBlockAdBlockStubDetectAdBlock(createBlockAdBlockStub);
+		createCreateBlockAdBlockStub(detector, createBlockAdBlockStub);
 		sinon.stub(detector, 'checkDomainBlocking').returns(createCheckDomainBlockingStub(false));
 
 		return await detector.run().then((detected) => {
@@ -53,8 +75,8 @@ describe('AdBlock detector', () => {
 		const detector = new BabDetection();
 
 		sinon.stub(detector, 'blockAdBlockExists').returns(true);
-		makeBlockAdBlockStubNotDetectAdBlock();
-		createCreateBlockAdBlockStub(detector);
+		makeBlockAdBlockStubNotDetectAdBlock(createBlockAdBlockStub);
+		createCreateBlockAdBlockStub(detector, createBlockAdBlockStub);
 		sinon.stub(detector, 'checkDomainBlocking').returns(createCheckDomainBlockingStub(true));
 
 		return await detector.run().then((detected) => {
@@ -66,35 +88,12 @@ describe('AdBlock detector', () => {
 		const detector = new BabDetection();
 
 		sinon.stub(detector, 'blockAdBlockExists').returns(true);
-		makeBlockAdBlockStubDetectAdBlock();
-		createCreateBlockAdBlockStub(detector);
+		makeBlockAdBlockStubDetectAdBlock(createBlockAdBlockStub);
+		createCreateBlockAdBlockStub(detector, createBlockAdBlockStub);
 		sinon.stub(detector, 'checkDomainBlocking').returns(createCheckDomainBlockingStub(true));
 
 		return await detector.run().then((detected) => {
 			expect(detected).to.be.true;
 		});
 	});
-
-	function createCreateBlockAdBlockStub(detector) {
-		// @ts-ignore just for tests
-		sinon.stub(detector, 'createBlockAdBlock').returns(blockAdBlockStub);
-	}
-
-	function createCheckDomainBlockingStub(returnValue: boolean) {
-		return new Promise((resolve) => {
-			resolve();
-		}).then(() => {
-			return returnValue;
-		});
-	}
-
-	function makeBlockAdBlockStubDetectAdBlock() {
-		// @ts-ignore just for tests
-		blockAdBlockStub.onDetected = (cb) => cb();
-	}
-
-	function makeBlockAdBlockStubNotDetectAdBlock() {
-		// @ts-ignore just for tests
-		blockAdBlockStub.onNotDetected = (cb) => cb();
-	}
 });

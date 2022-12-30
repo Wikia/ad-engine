@@ -1,8 +1,16 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { BabDetection } from '../../../../src/core/services/bab-detection';
-import { WadRunner } from '../../../../src/platforms/shared/services/wad-runner';
+import { BabDetection } from '@wikia/core';
+import { WadRunner } from '@wikia/platforms/shared';
+
+function createDetectionRunStub(returnValue: boolean) {
+	return new Promise((resolve) => {
+		resolve();
+	}).then(() => {
+		return returnValue;
+	});
+}
 
 describe('Wikia AdBlock Detector runner', () => {
 	const babDetectionStub = sinon.createStubInstance(BabDetection);
@@ -38,12 +46,4 @@ describe('Wikia AdBlock Detector runner', () => {
 
 		expect(onDetected.called).to.equal(true);
 	});
-
-	function createDetectionRunStub(returnValue: boolean) {
-		return new Promise((resolve) => {
-			resolve();
-		}).then(() => {
-			return returnValue;
-		});
-	}
 });
