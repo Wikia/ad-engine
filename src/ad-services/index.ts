@@ -18,4 +18,4 @@ export * from './nielsen';
 export * from './sailthru';
 export * from './stroer';
 export * from './connatix/connatix-player';
-export * from './global-identity-provider';
+export * from './user-identity/global-identity-storage/global-identity-provider';

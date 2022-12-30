@@ -1,4 +1,4 @@
-import { BaseServiceSetup, utils } from '@ad-engine/core';
+import { utils } from '@ad-engine/core';
 import {
 	CrossDomainClient,
 	IframeMessage,
@@ -6,7 +6,7 @@ import {
 } from '@fandom-frontend/cross-domain-storage/dist';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 
-export class GlobalIdentityProvider extends BaseServiceSetup {
+export class GlobalIdentityProvider {
 	public client: CrossDomainClient;
 	private logGroup = 'GlobalIdentityProvider';
 
@@ -29,7 +29,7 @@ export class GlobalIdentityProvider extends BaseServiceSetup {
 		this.client.sendMessage(new IframeMessage(messageType, payload));
 	}
 
-	public async call(): Promise<void> {
+	public async initialize(): Promise<void> {
 		if (this.isFandomUrl()) {
 			utils.logger(this.logGroup, 'disabled');
 			return;
@@ -40,5 +40,3 @@ export class GlobalIdentityProvider extends BaseServiceSetup {
 		await this.client.createIframe();
 	}
 }
-
-export const globalIdentity = new GlobalIdentityProvider();
