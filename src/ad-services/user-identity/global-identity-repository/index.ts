@@ -7,8 +7,9 @@ import { GlobalIdentityProviderStatus } from './global-identity-provider/GlobalI
 
 class GlobalIdentityRepository implements IdentityRepositoryInterface {
 	logGroup = 'GlobalIdentityRepository';
-	storage = new UniversalStorage();
 	identityProvider = new GlobalIdentityProvider();
+
+	constructor(private storage: UniversalStorage) {}
 
 	async get(): Promise<string> {
 		await this.identityProvider.initialize();
@@ -49,4 +50,4 @@ class GlobalIdentityRepository implements IdentityRepositoryInterface {
 	}
 }
 
-export const globalIdentityStorage = new GlobalIdentityRepository();
+export const globalIdentityStorage = new GlobalIdentityRepository(new UniversalStorage());
