@@ -16,6 +16,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
+          registry-url: https://artifactory.wikia-inc.com/artifactory/api/npm/wikia-npm/
+          NODE_AUTH_TOKEN: ${{ secrets.IDENTITY_TOKEN }}
           node-version-file: '.nvmrc'
 
       - name: Package size report for ucp-desktop
