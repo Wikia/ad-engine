@@ -15,17 +15,13 @@ export class Site {
 	constructor(
 		categories: [],
 		directedAtChildren: boolean,
-		esrbRating: string,
 		siteName: string,
 		top1000: boolean,
 		tags: object,
 		taxonomy: string[],
-		mpaRating: string,
 	) {
 		this.categories = typeof categories === 'object' ? categories : null;
 		this.directedAtChildren = typeof directedAtChildren === 'boolean' ? directedAtChildren : null;
-		this.esrbRating = typeof esrbRating === 'string' ? esrbRating : null;
-		this.mpaRating = typeof mpaRating === 'string' ? mpaRating : null;
 		this.siteName = typeof siteName === 'string' ? siteName : null;
 		this.top1000 = typeof top1000 === 'boolean' ? top1000 : null;
 		this.tags = typeof tags === 'object' ? tags : null;
