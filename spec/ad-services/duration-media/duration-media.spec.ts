@@ -1,10 +1,11 @@
-import { durationMedia } from '@wikia/ad-services';
+import { DurationMedia } from '@wikia/ad-services';
 import { context, utils } from '@wikia/core';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 
 describe('Duration media service', () => {
 	const sandbox = createSandbox();
+	const durationMedia = new DurationMedia();
 	let loadScriptStub;
 
 	beforeEach(() => {

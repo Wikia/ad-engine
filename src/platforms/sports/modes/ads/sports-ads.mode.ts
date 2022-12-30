@@ -4,9 +4,9 @@ import {
 	bidders,
 	Captify,
 	communicationService,
-	confiant,
+	Confiant,
 	DiProcess,
-	durationMedia,
+	DurationMedia,
 	eventsRepository,
 	iasPublisherOptimization,
 	liveConnect,
@@ -18,7 +18,12 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class SportsAdsMode implements DiProcess {
-	constructor(private pipeline: PartnerPipeline, private captify: Captify) {}
+	constructor(
+		private pipeline: PartnerPipeline,
+		private captify: Captify,
+		private confiant: Confiant,
+		private durationMedia: DurationMedia,
+	) {}
 
 	execute(): void {
 		this.pipeline
@@ -33,8 +38,8 @@ export class SportsAdsMode implements DiProcess {
 				wadRunner,
 				audigent,
 				iasPublisherOptimization,
-				confiant,
-				durationMedia,
+				this.confiant,
+				this.durationMedia,
 				gptSetup.setOptions({
 					dependencies: [userIdentity.initialized, iasPublisherOptimization.IASReady],
 				}),

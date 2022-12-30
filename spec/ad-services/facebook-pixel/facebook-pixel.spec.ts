@@ -1,10 +1,11 @@
-import { facebookPixel } from '@wikia/ad-services';
+import { FacebookPixel } from '@wikia/ad-services';
 import { context } from '@wikia/core';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 
 describe('Facebook pixel', () => {
 	const sandbox = createSandbox();
+	const facebookPixel = new FacebookPixel();
 	let loadScriptStub;
 
 	beforeEach(() => {

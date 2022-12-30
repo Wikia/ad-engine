@@ -2,7 +2,7 @@ import { BaseServiceSetup, context, utils } from '@ad-engine/core';
 
 const logGroup = 'duration-media';
 
-class DurationMedia extends BaseServiceSetup {
+export class DurationMedia extends BaseServiceSetup {
 	call(): Promise<void> {
 		const libraryUrl: string = context.get('services.durationMedia.libraryUrl');
 
@@ -23,5 +23,3 @@ class DurationMedia extends BaseServiceSetup {
 			});
 	}
 }
-
-export const durationMedia = new DurationMedia();

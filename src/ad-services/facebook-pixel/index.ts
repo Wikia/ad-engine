@@ -3,7 +3,7 @@ import { insertFacebookPixel } from './facebook-pixel-script';
 
 const logGroup = 'facebook-pixel';
 
-class FacebookPixel extends BaseServiceSetup {
+export class FacebookPixel extends BaseServiceSetup {
 	isSetUp = false;
 
 	setup(): void {
@@ -22,5 +22,3 @@ class FacebookPixel extends BaseServiceSetup {
 		}
 	}
 }
-
-export const facebookPixel = new FacebookPixel();

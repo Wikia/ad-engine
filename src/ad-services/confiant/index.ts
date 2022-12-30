@@ -30,7 +30,7 @@ function trackBlock(blockingType, blockingId, isBlocked, wrapperId, tagId, impre
 /**
  * Confiant service handler
  */
-class Confiant extends BaseServiceSetup {
+export class Confiant extends BaseServiceSetup {
 	/**
 	 * Requests service and injects script tag
 	 * @returns {Promise}
@@ -54,5 +54,3 @@ class Confiant extends BaseServiceSetup {
 		});
 	}
 }
-
-export const confiant = new Confiant();
