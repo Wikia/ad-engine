@@ -7,13 +7,10 @@ import {
 	bidders,
 	communicationService,
 	confiant,
-	connatix,
 	context,
 	DiProcess,
-	distroScale,
 	durationMedia,
 	eventsRepository,
-	exCo,
 	eyeota,
 	facebookPixel,
 	iasPublisherOptimization,
@@ -70,14 +67,8 @@ export class UcpDesktopAdsModeDeprecated implements DiProcess {
 
 		if (!incontentPlayer) return;
 		slotDataParamsUpdater.updateOnCreate(incontentPlayer);
-		if (distroScale.isEnabled()) {
-			distroScale.call();
-		} else if (exCo.isEnabled()) {
-			exCo.call();
-		} else if (anyclip.isEnabled()) {
+		if (anyclip.isEnabled()) {
 			anyclip.call();
-		} else if (connatix.isEnabled()) {
-			connatix.call();
 		}
 	}
 

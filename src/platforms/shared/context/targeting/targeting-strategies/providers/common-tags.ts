@@ -113,10 +113,10 @@ export class CommonTags implements TargetingProvider<Partial<Targeting>> {
 			}
 		});
 
-		if (this.fandomContext.site.esrbRating || this.fandomContext.site.mpaRating) {
+		if (this.fandomContext.site?.tags?.esrb || this.fandomContext.site?.tags?.mpa) {
 			keyVals.rating = this.createRatingTag(
-				this.fandomContext.site.esrbRating,
-				this.fandomContext.site.mpaRating,
+				this.fandomContext.site?.tags?.esrb,
+				this.fandomContext.site?.tags?.mpa,
 			);
 		}
 
@@ -127,11 +127,11 @@ export class CommonTags implements TargetingProvider<Partial<Targeting>> {
 		return keyVals;
 	}
 
-	private createRatingTag(esrbRating: string, mpaRating: string): string {
+	private createRatingTag(esrbRating: string[], mpaRating: string[]): string {
 		const ratingTags = [];
 
-		esrbRating ? ratingTags.push('esrb:' + esrbRating) : null;
-		mpaRating ? ratingTags.push('mpa:' + mpaRating) : null;
+		esrbRating ? ratingTags.push(...esrbRating.map((rating) => 'esrb:' + rating)) : null;
+		mpaRating ? ratingTags.push(...mpaRating.map((rating) => 'mpa:' + rating)) : null;
 		return ratingTags.join(',');
 	}
 }

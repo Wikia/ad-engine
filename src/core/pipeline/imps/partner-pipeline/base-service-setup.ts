@@ -13,22 +13,28 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 	});
 
 	private getContextVariablesValue(contextVariables: string | string[]): boolean {
-		if (typeof contextVariables === "string") {
+		if (typeof contextVariables === 'string') {
 			return context.get(contextVariables);
 		} else {
 			return contextVariables
-				.map(contextVariable => context.get(contextVariable))
-				.reduce((previousValue, currentValue) => previousValue && currentValue, true );
+				.map((contextVariable) => context.get(contextVariable))
+				.reduce((previousValue, currentValue) => previousValue && currentValue, true);
 		}
 	}
 
 	public isEnabled(contextVariables: string | string[], trackingRequired = true): boolean {
 		const contextVariablesValue = this.getContextVariablesValue(contextVariables);
-		return (
-			contextVariablesValue &&
-			(trackingRequired ? ( context.get('options.trackingOptIn') && !context.get('options.optOutSale') &&
-				!context.get('wiki.targeting.directedAtChildren') ) : true
-			));
+
+		if (trackingRequired) {
+			return (
+				contextVariablesValue &&
+				context.get('options.trackingOptIn') &&
+				!context.get('options.optOutSale') &&
+				!context.get('wiki.targeting.directedAtChildren')
+			);
+		}
+
+		return contextVariablesValue;
 	}
 
 	setOptions(opt: PartnerInitializationProcessOptions): PartnerInitializationProcess {

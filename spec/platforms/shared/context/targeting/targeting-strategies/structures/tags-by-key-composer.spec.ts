@@ -98,7 +98,7 @@ describe('Tags By Key Composer', () => {
 		expect(combinedTags).to.deep.eq(tagsToCombine1);
 	});
 
-	it('tags not included in array "taxonomyTags" are not combined', () => {
+	it('Rating tags are not combined', () => {
 		const tagsToCombine1 = {
 			age: ['age1', 'age2'],
 			gnre: ['gnre1'],
