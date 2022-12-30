@@ -144,7 +144,7 @@ describe('Instant Config Loader', () => {
 
 		const url = instantConfigLoader.getConfigUrl();
 
-		expect(contextGetStub.getCalls().length).to.equal(4); // TODO: remove??
+		expect(contextGetStub.getCalls().length).to.equal(4);
 		expect(url).to.equal('http://endpoint.com/testVariant/api/config?app=testApp&country=PL');
 	});
 
@@ -159,7 +159,7 @@ describe('Instant Config Loader', () => {
 
 		const url = instantConfigLoader.getConfigUrl();
 
-		expect(contextGetStub.getCalls().length).to.equal(4); // TODO: remove??
+		expect(contextGetStub.getCalls().length).to.equal(4);
 		expect(url).to.equal('http://endpoint.com/testVariant/api/config?app=testApp');
 	});
 });
