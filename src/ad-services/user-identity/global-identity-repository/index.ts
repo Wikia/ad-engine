@@ -8,10 +8,10 @@ import { GlobalIdentityProviderStatus } from './global-identity-provider/GlobalI
 class GlobalIdentityRepository implements IdentityRepositoryInterface {
 	logGroup = 'GlobalIdentityRepository';
 	storage = new UniversalStorage();
-	client = new GlobalIdentityProvider();
+	identityProvider = new GlobalIdentityProvider();
 
 	async get(): Promise<string> {
-		await this.client.initialize();
+		await this.identityProvider.initialize();
 		let identity = await this.getGlobalIdentity();
 		const localIdentity = this.getLocalIdentity();
 		if (!identity) {
@@ -23,10 +23,10 @@ class GlobalIdentityRepository implements IdentityRepositoryInterface {
 	}
 
 	private getGlobalIdentity(): Promise<string | undefined> {
-		if (this.client.status === GlobalIdentityProviderStatus.NOT_LOADED) {
+		if (this.identityProvider.status === GlobalIdentityProviderStatus.NOT_LOADED) {
 			return Promise.resolve(undefined);
 		}
-		this.client.sendMessage(Messages.PPID_REQUEST);
+		this.identityProvider.sendMessage(Messages.PPID_REQUEST);
 		return new Promise((res) => {
 			communicationService.on(eventsRepository.GLOBAL_IDENTITY_RECEIVED, (identity) => {
 				utils.logger(this.logGroup, 'Received identity', identity.ppid);
@@ -44,7 +44,7 @@ class GlobalIdentityRepository implements IdentityRepositoryInterface {
 	}
 
 	private setIdentity(ppid: string) {
-		this.client.sendMessage(Messages.SET_PPID_REQUEST, ppid);
+		this.identityProvider.sendMessage(Messages.SET_PPID_REQUEST, ppid);
 		this.setLocalIdentity(ppid);
 	}
 }

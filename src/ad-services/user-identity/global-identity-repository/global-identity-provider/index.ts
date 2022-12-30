@@ -13,7 +13,7 @@ export class GlobalIdentityProvider {
 	public status = GlobalIdentityProviderStatus.INITIALIZING;
 
 	private isFandomUrl(): boolean {
-		return window.location.href.includes('.fandom.com');
+		return window.location.host.includes('.fandom.com');
 	}
 
 	private _onMessage(ev: IframeMessage) {
@@ -28,7 +28,7 @@ export class GlobalIdentityProvider {
 	}
 
 	public sendMessage(messageType: Messages, payload?): void {
-		this.client?.sendMessage(new IframeMessage(messageType, payload));
+		this.client?.sendMessage(messageType, payload);
 	}
 
 	public async initialize(): Promise<void> {
