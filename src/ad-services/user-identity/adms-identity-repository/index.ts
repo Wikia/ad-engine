@@ -1,13 +1,18 @@
 import { admsService } from './adms-service';
 import { ActionType, IdentityAction } from './adms-actions';
 import { IdentityRepositoryInterface } from '../identity-repositories';
-import { utils } from '@ad-engine/core';
+import { UniversalStorage, utils } from '@ad-engine/core';
 import { UserIdentity } from '../';
 
 class AdmsIdentityRepository implements IdentityRepositoryInterface {
+	storage = new UniversalStorage();
+
 	async get(): Promise<string> {
+		const ppid = this.getLocalIdentityToken();
+		if (ppid) {
+			return ppid;
+		}
 		const userData = await admsService.get();
-		utils.logger(UserIdentity.logGroup, userData);
 		let identity: IdentityAction = userData?.IDENTITY?.find(
 			(id) => id.payload.identityType === 'ppid',
 		);
@@ -31,7 +36,16 @@ class AdmsIdentityRepository implements IdentityRepositoryInterface {
 			});
 		}
 
+		this.setLocalIdentityToken(identity.payload.identityToken);
 		return identity.payload.identityToken;
+	}
+
+	getLocalIdentityToken(): string | null {
+		return this.storage.getItem('ppid');
+	}
+
+	setLocalIdentityToken(ppid: string) {
+		this.storage.setItem('ppid', ppid);
 	}
 }
 

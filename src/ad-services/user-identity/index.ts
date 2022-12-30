@@ -4,6 +4,7 @@ import { localStorageRepository } from './local-storage-repository';
 import { admsIdentityRepository } from './adms-identity-repository';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { identityStorageRepository } from './identity-storage-repository';
+import { globalIdentityStorage } from './global-identity-storage';
 
 export class UserIdentity extends BaseServiceSetup {
 	public static logGroup = 'user-identity';
@@ -15,6 +16,8 @@ export class UserIdentity extends BaseServiceSetup {
 				return admsIdentityRepository;
 			case IdentityRepositories.IDENTITY_STORAGE:
 				return identityStorageRepository;
+			case IdentityRepositories.GLOBAL_IDENTITY:
+				return globalIdentityStorage;
 			case IdentityRepositories.LOCAL:
 			default:
 				return localStorageRepository;

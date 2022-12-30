@@ -186,6 +186,10 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Identity partner data obtained',
 		payload: payload<IdentityDataPayload>(),
 	},
+	GLOBAL_IDENTITY_RECEIVED: {
+		name: 'Global identity received',
+		payload: props<{ ppid: string }>(),
+	},
 	LIVE_CONNECT_STARTED: {
 		name: 'LiveConnect started',
 	},

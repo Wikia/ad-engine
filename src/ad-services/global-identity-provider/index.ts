@@ -1,26 +1,23 @@
-import { Injectable } from '@wikia/dependency-injection';
-import { DiProcess, utils } from '@ad-engine/core';
-import { MessageType } from './messages';
-import { IframeMessage, CrossDomainClient } from '@fandom-frontend/cross-domain-storage/dist';
+import { BaseServiceSetup, utils } from '@ad-engine/core';
+import {
+	CrossDomainClient,
+	IframeMessage,
+	Messages,
+} from '@fandom-frontend/cross-domain-storage/dist';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 
-@Injectable({ scope: 'Singleton' })
-export class GlobalIdentityProvider implements DiProcess {
+export class GlobalIdentityProvider extends BaseServiceSetup {
+	public client: CrossDomainClient;
 	private logGroup = 'GlobalIdentityProvider';
-	private client: CrossDomainClient;
 
 	private isFandomUrl(): boolean {
 		return window.location.href.includes('.fandom.com');
 	}
 
-	private isEnabled(): boolean {
-		return !this.isFandomUrl();
-	}
-
-	private _onMessage(ev: MessageEvent) {
-		utils.logger(this.logGroup, 'got answer', ev);
+	private _onMessage(ev: IframeMessage) {
 		switch (ev.type) {
-			case MessageType.PPID_RESPONSE:
-				utils.logger(this.logGroup, 'Received PPID', ev);
+			case Messages.PPID_RESPONSE:
+				communicationService.emit(eventsRepository.GLOBAL_IDENTITY_RECEIVED, { ppid: ev.payload });
 				break;
 			default:
 				utils.logger(this.logGroup, 'Invalid event: ', ev.type);
@@ -28,16 +25,20 @@ export class GlobalIdentityProvider implements DiProcess {
 		}
 	}
 
-	async execute(): Promise<void> {
-		if (!this.isEnabled()) {
+	public sendMessage(messageType: Messages, payload?): void {
+		this.client.sendMessage(new IframeMessage(messageType, payload));
+	}
+
+	public async call(): Promise<void> {
+		if (this.isFandomUrl()) {
 			utils.logger(this.logGroup, 'disabled');
 			return;
 		}
 
 		utils.logger(this.logGroup, 'Initializing Global Identity Provider');
-
 		this.client = new CrossDomainClient(this._onMessage.bind(this));
 		await this.client.createIframe();
-		this.client.sendMessage(new IframeMessage(MessageType.PPID_REQUEST));
 	}
 }
+
+export const globalIdentity = new GlobalIdentityProvider();

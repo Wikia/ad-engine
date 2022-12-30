@@ -18,7 +18,6 @@ import {
 	conditional,
 	context,
 	eventsRepository,
-	GlobalIdentityProvider,
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
@@ -47,7 +46,6 @@ export class SportsPlatform {
 			() => ensureGeoCookie(),
 			PlatformContextSetup,
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
-			GlobalIdentityProvider,
 			SportsIocSetup,
 			TrackingParametersSetup,
 			() => context.set('state.isMobile', getDeviceMode() === 'mobile'),

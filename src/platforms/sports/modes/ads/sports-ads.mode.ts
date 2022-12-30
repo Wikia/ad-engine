@@ -8,6 +8,7 @@ import {
 	DiProcess,
 	durationMedia,
 	eventsRepository,
+	globalIdentity,
 	iasPublisherOptimization,
 	liveConnect,
 	liveRampPixel,
@@ -23,7 +24,10 @@ export class SportsAdsMode implements DiProcess {
 	execute(): void {
 		this.pipeline
 			.add(
-				userIdentity,
+				globalIdentity,
+				userIdentity.setOptions({
+					dependencies: [globalIdentity.initialized],
+				}),
 				liveRampPixel.setOptions({
 					dependencies: [userIdentity.initialized],
 				}),
