@@ -38,7 +38,7 @@ export interface GlobalTargeting {
 	ppid?: string;
 	pv?: string;
 	pvg?: string;
-	rating?: string;
+	rating?: any;
 	rdp?: string;
 	s0?: string;
 	s0c?: string[];
@@ -105,6 +105,8 @@ export class TargetingService {
 	}
 
 	private triggerOnChange(key: string, newValue: any): void {
+		console.log('trigger: ' + key);
+		console.log(newValue);
 		window.ads.adTargeting = debug.isDebugMode() ? this.adTargeting : {};
 
 		this.onChangeCallbacks.forEach((callback) => {
