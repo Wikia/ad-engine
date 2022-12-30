@@ -1,4 +1,4 @@
-import { eyeota, parseContextTags } from '@wikia/ad-services';
+import { Eyeota, parseContextTags } from '@wikia/ad-services';
 import { context, tcf, utils } from '@wikia/core';
 import {
 	FandomContext,
@@ -9,6 +9,7 @@ import { createSandbox } from 'sinon';
 
 describe('Eyeota', () => {
 	const sandbox = createSandbox();
+	const eyeota = new Eyeota();
 	let loadScriptStub;
 
 	beforeEach(() => {

@@ -19,5 +19,3 @@ export class Stroer extends BaseServiceSetup {
 		});
 	}
 }
-
-export const stroer = new Stroer();

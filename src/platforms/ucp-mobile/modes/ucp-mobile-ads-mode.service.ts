@@ -1,6 +1,6 @@
 import { gptSetup, playerSetup, wadRunner } from '@platforms/shared';
 import {
-	ats,
+	Ats,
 	audigent,
 	bidders,
 	Captify,
@@ -10,7 +10,7 @@ import {
 	DiProcess,
 	durationMedia,
 	eventsRepository,
-	eyeota,
+	Eyeota,
 	facebookPixel,
 	iasPublisherOptimization,
 	identityHub,
@@ -29,7 +29,9 @@ import { Injectable } from '@wikia/dependency-injection';
 export class UcpMobileAdsMode implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,
+		private ats: Ats,
 		private captify: Captify,
+		private eyeota: Eyeota,
 		private nielsen: Nielsen,
 		private stroer: Stroer,
 	) {}
@@ -39,14 +41,14 @@ export class UcpMobileAdsMode implements DiProcess {
 			.add(
 				userIdentity,
 				liveRampPixel.setOptions({ dependencies: [userIdentity.initialized] }),
-				ats,
+				this.ats,
 				audigent,
 				bidders,
 				this.captify,
 				liveConnect,
 				facebookPixel,
 				wadRunner,
-				eyeota,
+				this.eyeota,
 				iasPublisherOptimization,
 				confiant,
 				durationMedia,

@@ -1,10 +1,11 @@
-import { stroer } from '@wikia/ad-services';
+import { Stroer } from '@wikia/ad-services';
 import { context, utils } from '@wikia/core';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 
 describe('Stroer', () => {
 	const sandbox = createSandbox();
+	const stroer = new Stroer();
 	let loadScriptStub;
 
 	beforeEach(() => {
@@ -19,6 +20,7 @@ describe('Stroer', () => {
 
 	it('Stroer is created', async () => {
 		context.set('services.stroer.enabled', true);
+
 		await stroer.call();
 
 		expect(loadScriptStub.called).to.equal(true);

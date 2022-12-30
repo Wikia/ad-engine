@@ -1,5 +1,5 @@
 import {
-	ats,
+	Ats,
 	audigent,
 	communicationService,
 	DiProcess,
@@ -16,7 +16,11 @@ import { NoAdsDetector } from '../../services/no-ads-detector';
 
 @Injectable()
 export class NoAdsMode implements DiProcess {
-	constructor(private pipeline: PartnerPipeline, private noAdsDetector: NoAdsDetector) {}
+	constructor(
+		private pipeline: PartnerPipeline,
+		private noAdsDetector: NoAdsDetector,
+		private ats: Ats,
+	) {}
 
 	execute(): void {
 		this.removeAdSlotsPlaceholders();
@@ -27,7 +31,7 @@ export class NoAdsMode implements DiProcess {
 			.add(
 				userIdentity,
 				liveRampPixel.setOptions({ dependencies: [userIdentity.initialized] }),
-				ats,
+				this.ats,
 				audigent,
 				liveConnect,
 				identityHub,

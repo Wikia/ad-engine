@@ -1,6 +1,6 @@
 import { gptSetup, playerSetup } from '@platforms/shared';
 import {
-	ats,
+	Ats,
 	audigent,
 	bidders,
 	Captify,
@@ -27,6 +27,7 @@ import { Injectable } from '@wikia/dependency-injection';
 export class UcpMobileLighterAds implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,
+		private ats: Ats,
 		private captify: Captify,
 		private nielsen: Nielsen,
 		private stroer: Stroer,
@@ -37,7 +38,7 @@ export class UcpMobileLighterAds implements DiProcess {
 			.add(
 				userIdentity,
 				liveRampPixel.setOptions({ dependencies: [userIdentity.initialized] }),
-				ats,
+				this.ats,
 				facebookPixel,
 				audigent,
 				iasPublisherOptimization,
