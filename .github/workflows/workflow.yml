@@ -6,6 +6,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@master
+      - env:
+        ARTIFACTORY_NPM_TOKEN: ${{ secrets.ARTIFACTORY_NPM_TOKEN }}
       - name: Install dependencies
         shell: bash -l {0}
         run: |
