@@ -18,7 +18,7 @@ export class TvGuidePlatform {
 	execute(): void {
 		this.pipeline.add(
 			() => Bootstrap.setupContextAndGeo(basicContext),
-			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
+			// once we have Geo cookie set on varnishes we can parallel InstantConfigSetup and Bootstrap.setupConsent
 			InstantConfigSetup,
 			Bootstrap.setupConsent,
 			NewsAndRatingsBaseContextSetup,

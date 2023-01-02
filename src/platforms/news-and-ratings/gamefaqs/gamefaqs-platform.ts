@@ -1,6 +1,6 @@
 import { Injectable } from '@wikia/dependency-injection';
-import { context, ProcessPipeline } from '@wikia/ad-engine';
-import { bootstrapAndGetConsent, BiddersStateSetup, InstantConfigSetup } from '@platforms/shared';
+import { Bootstrap, ProcessPipeline } from '@wikia/ad-engine';
+import { BiddersStateSetup, InstantConfigSetup } from '@platforms/shared';
 import { basicContext } from './ad-context';
 import { GamefaqsSlotsContextSetup } from './setup/context/slots/gamefaqs-slots-context.setup';
 import { GamefaqsPrebidConfigSetup } from './setup/context/prebid/gamefaqs-prebid-config.setup';
@@ -17,11 +17,11 @@ export class GamefaqsPlatform {
 
 	execute(): void {
 		this.pipeline.add(
-			() => context.extend(basicContext),
+			() => Bootstrap.setupContextAndGeo(basicContext),
 			NewsAndRatingsBaseContextSetup,
-			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
-			() => bootstrapAndGetConsent(),
+			// once we have Geo cookie set on varnishes we can parallel InstantConfigSetup and Bootstrap.setupConsent
 			InstantConfigSetup,
+			Bootstrap.setupConsent,
 			NewsAndRatingsTargetingSetup,
 			GamefaqsSlotsContextSetup,
 			NewsAndRatingsDynamicSlotsSetup,
