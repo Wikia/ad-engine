@@ -58,7 +58,7 @@ export default customContext = {
 			moatTracking: {
 				enabled: false,
 				partnerCode: 'foo',
-				sampling: 1,
+				sampling: 1
 			},
 		},
 		customAdLoader: {
