@@ -1,0 +1,18 @@
+{
+	"extends": ["../.eslintrc.json"],
+	"rules": {
+		"no-restricted-imports": [
+			"error",
+			{
+				"patterns": [
+					"**/comicvine/**",
+					"**/gamefaqs/**",
+					"**/gamespot/**",
+					"**/giantbomb/**",
+					"**/metacritic/**",
+					"**/tvguide/**"
+				]
+			}
+		]
+	}
+}
