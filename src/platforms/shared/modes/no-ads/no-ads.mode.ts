@@ -1,15 +1,15 @@
 import {
 	Ats,
-	audigent,
+	Audigent,
 	communicationService,
 	DiProcess,
 	eventsRepository,
-	identityHub,
+	IdentityHub,
 	jwpSetup,
-	liveConnect,
-	liveRampPixel,
+	LiveConnect,
+	LiveRampPixel,
 	PartnerPipeline,
-	userIdentity,
+	UserIdentity,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { NoAdsDetector } from '../../services/no-ads-detector';
@@ -20,6 +20,11 @@ export class NoAdsMode implements DiProcess {
 		private pipeline: PartnerPipeline,
 		private noAdsDetector: NoAdsDetector,
 		private ats: Ats,
+		private audigent: Audigent,
+		private identityHub: IdentityHub,
+		private liveConnect: LiveConnect,
+		private liveRampPixel: LiveRampPixel,
+		private userIdentity: UserIdentity,
 	) {}
 
 	execute(): void {
@@ -29,12 +34,12 @@ export class NoAdsMode implements DiProcess {
 
 		this.pipeline
 			.add(
-				userIdentity,
-				liveRampPixel.setOptions({ dependencies: [userIdentity.initialized] }),
+				this.userIdentity,
+				this.liveRampPixel.setOptions({ dependencies: [this.userIdentity.initialized] }),
 				this.ats,
-				audigent,
-				liveConnect,
-				identityHub,
+				this.audigent,
+				this.liveConnect,
+				this.identityHub,
 			)
 			.execute()
 			.then(() => {

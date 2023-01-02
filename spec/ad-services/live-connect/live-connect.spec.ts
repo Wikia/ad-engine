@@ -1,4 +1,4 @@
-import { liveConnect } from '@wikia/ad-services';
+import { LiveConnect } from '@wikia/ad-services';
 import { communicationService, eventsRepository } from '@wikia/communication';
 import { context, utils } from '@wikia/core';
 import { expect } from 'chai';
@@ -12,6 +12,7 @@ const mockedStorageStrategyVariable = {
 
 describe('LiveConnect', () => {
 	const sandbox = createSandbox();
+	const liveConnect = new LiveConnect();
 	let loadScriptStub;
 
 	before(() => {

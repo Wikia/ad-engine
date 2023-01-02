@@ -1,4 +1,4 @@
-import { gptSetup } from '@platforms/shared';
+import { GptSetup } from '@platforms/shared';
 import {
 	communicationService,
 	DiProcess,
@@ -9,11 +9,11 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class BingeBotAdsMode implements DiProcess {
-	constructor(private pipeline: PartnerPipeline) {}
+	constructor(private pipeline: PartnerPipeline, private gptSetup: GptSetup) {}
 
 	execute(): void {
 		this.pipeline
-			.add(gptSetup)
+			.add(this.gptSetup)
 			.execute()
 			.then(() => {
 				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);

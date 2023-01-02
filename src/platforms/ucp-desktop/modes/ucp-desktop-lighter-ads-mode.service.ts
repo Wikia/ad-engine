@@ -1,7 +1,7 @@
-import { gptSetup, playerSetup } from '@platforms/shared';
+import { GptSetup, PlayerSetup } from '@platforms/shared';
 import {
 	Ats,
-	audigent,
+	Audigent,
 	Captify,
 	communicationService,
 	Confiant,
@@ -9,14 +9,15 @@ import {
 	DiProcess,
 	eventsRepository,
 	FacebookPixel,
-	iasPublisherOptimization,
-	identityHub,
+	IasPublisherOptimization,
+	IdentityHub,
 	jwPlayerInhibitor,
-	liveRampPixel,
+	LiveConnect,
+	LiveRampPixel,
 	Nielsen,
 	PartnerPipeline,
 	Stroer,
-	userIdentity,
+	UserIdentity,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -25,37 +26,46 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,
 		private ats: Ats,
+		private audigent: Audigent,
 		private captify: Captify,
 		private confiant: Confiant,
 		private facebookPixel: FacebookPixel,
+		private gptSetup: GptSetup,
+		private iasPublisherOptimization: IasPublisherOptimization,
+		private identityHub: IdentityHub,
+		private liveConnect: LiveConnect,
+		private liveRampPixel: LiveRampPixel,
 		private nielsen: Nielsen,
+		private playerSetup: PlayerSetup,
 		private stroer: Stroer,
+		private userIdentity: UserIdentity,
 	) {}
 
 	execute(): void {
 		this.pipeline
 			.add(
-				userIdentity,
-				liveRampPixel,
+				this.userIdentity,
+				this.liveRampPixel,
 				this.ats,
 				this.facebookPixel,
-				audigent,
-				iasPublisherOptimization,
+				this.audigent,
+				this.iasPublisherOptimization,
 				this.confiant,
+				this.liveConnect,
 				this.captify,
 				this.stroer,
 				this.nielsen,
-				identityHub,
-				playerSetup.setOptions({
+				this.identityHub,
+				this.playerSetup.setOptions({
 					dependencies: [],
 					timeout: context.get('options.maxDelayTimeout'),
 				}),
-				gptSetup.setOptions({
+				this.gptSetup.setOptions({
 					dependencies: [
-						userIdentity.initialized,
-						playerSetup.initialized,
+						this.userIdentity.initialized,
+						this.playerSetup.initialized,
 						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
-						iasPublisherOptimization.IASReady,
+						this.iasPublisherOptimization.IASReady,
 					],
 				}),
 			)

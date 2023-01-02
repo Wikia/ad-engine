@@ -24,7 +24,7 @@ const idConfigMapping: IdConfig[] = [
 	{ id: 'sha1', name: `${partnerName}-sha1`, params: { qf: '0.3', resolve: 'sha1' } },
 ];
 
-class LiveConnect extends BaseServiceSetup {
+export class LiveConnect extends BaseServiceSetup {
 	private storage;
 	private storageConfig: CachingStrategyConfig;
 
@@ -130,5 +130,3 @@ class LiveConnect extends BaseServiceSetup {
 		return !!this.storage.getItem(key);
 	}
 }
-
-export const liveConnect = new LiveConnect();

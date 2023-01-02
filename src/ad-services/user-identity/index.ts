@@ -45,5 +45,3 @@ export class UserIdentity extends BaseServiceSetup {
 		}
 	}
 }
-
-export const userIdentity = new UserIdentity();

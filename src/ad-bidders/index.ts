@@ -10,7 +10,7 @@ interface BiddersProviders {
 
 const logGroup = 'bidders';
 
-class Bidders extends BaseServiceSetup {
+export class Bidders extends BaseServiceSetup {
 	private biddersProviders: BiddersProviders = {};
 	private realSlotPrices = {};
 
@@ -160,8 +160,6 @@ class Bidders extends BaseServiceSetup {
 		return missingProviders.length === 0;
 	}
 }
-
-export const bidders = new Bidders();
 
 export * from './prebid/ats';
 export * from './prebid/identity-hub';

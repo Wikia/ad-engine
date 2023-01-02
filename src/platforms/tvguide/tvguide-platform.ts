@@ -1,4 +1,4 @@
-import { bootstrapAndGetConsent, gptSetup, InstantConfigSetup } from '@platforms/shared';
+import { bootstrapAndGetConsent, GptSetup, InstantConfigSetup } from '@platforms/shared';
 import {
 	communicationService,
 	context,
@@ -14,7 +14,7 @@ import { TvGuideDynamicSlotsSetup } from './setup/dynamic-slots/tvguide-dynamic-
 
 @Injectable()
 export class TvGuidePlatform {
-	constructor(private pipeline: ProcessPipeline) {}
+	constructor(private pipeline: ProcessPipeline, private gptSetup: GptSetup) {}
 
 	execute(): void {
 		this.pipeline.add(
@@ -28,7 +28,7 @@ export class TvGuidePlatform {
 			TvGuideSlotsContextSetup,
 			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
-			gptSetup.call,
+			this.gptSetup.call,
 		);
 
 		this.pipeline.execute();

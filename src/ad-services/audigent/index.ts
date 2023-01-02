@@ -8,7 +8,9 @@ const DEFAULT_SEGMENTS_SCRIPT_URL = 'https://seg.ad.gt/api/v1/segments.js';
 const DEFAULT_NUMBER_OF_TRIES = 5;
 const isAuSegGlobalSet = () => typeof window['au_seg'] !== 'undefined';
 
-class Audigent extends BaseServiceSetup {
+window.au = window.au || [];
+
+export class Audigent extends BaseServiceSetup {
 	private isLoaded = false;
 	private matchesTagScriptLoader: Promise<void>;
 	private segmentsScriptLoader: Promise<void>;
@@ -157,7 +159,5 @@ class Audigent extends BaseServiceSetup {
 		return new utils.WaitFor(isAuSegGlobalSet, numberOfTriesWhenWaiting, 250).until();
 	}
 }
-
-window.au = window.au || [];
 
 export const audigent = new Audigent();

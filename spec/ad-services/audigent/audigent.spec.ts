@@ -1,10 +1,11 @@
-import { audigent } from '@wikia/ad-services';
+import { Audigent } from '@wikia/ad-services';
 import { context, externalLogger, utils } from '@wikia/core';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 
 describe('Audigent', () => {
 	const sandbox = createSandbox();
+	const audigent = new Audigent();
 	let loadScriptStub, externalLoggerLogStub;
 	function executeMockedCustomEvent(segments) {
 		const auSegEvent = new CustomEvent('auSegReady', { detail: segments });

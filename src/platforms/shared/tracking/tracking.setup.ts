@@ -1,6 +1,6 @@
 import {
 	adClickTracker,
-	bidders,
+	Bidders,
 	bidderTracker,
 	communicationService,
 	context,
@@ -39,6 +39,7 @@ export class TrackingSetup {
 		private labradorTracker: LabradorTracker,
 		private adSizeTracker: AdSizeTracker,
 		private dwTracker: DataWarehouseTracker,
+		private bidders: Bidders,
 	) {}
 
 	execute(): void {
@@ -72,7 +73,7 @@ export class TrackingSetup {
 		let withBidders = null;
 
 		if (context.get('bidders.prebid.enabled') || context.get('bidders.a9.enabled')) {
-			withBidders = bidders;
+			withBidders = this.bidders;
 		}
 
 		slotTracker.onChangeStatusToTrack.push('top-conflict');

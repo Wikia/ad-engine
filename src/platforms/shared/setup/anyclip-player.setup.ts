@@ -9,7 +9,7 @@ import {
 	UapLoadStatus,
 } from '@wikia/ad-engine';
 
-class AnyclipPlayerSetup extends BaseServiceSetup {
+export class AnyclipPlayerSetup extends BaseServiceSetup {
 	private initIncontentPlayer(incontentPlayer) {
 		const anyclip = new Anyclip(new AnyclipTracker(Anyclip.SUBSCRIBE_FUNC_NAME));
 
@@ -31,5 +31,3 @@ class AnyclipPlayerSetup extends BaseServiceSetup {
 		);
 	}
 }
-
-export const anyclipPlayerSetup = new AnyclipPlayerSetup();
