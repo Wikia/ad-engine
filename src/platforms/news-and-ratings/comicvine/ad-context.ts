@@ -32,6 +32,10 @@ export const basicContext = {
 			enabled: false,
 			propertyId: 'd-aIf3ibf0cYxCLB1HTWfBQOFEA',
 		},
+		iasPublisherOptimization: {
+			pubId: '930616',
+			slots: ['mpu_top'],
+		},
 	},
 	slots: {},
 	src: ['comicvine'],

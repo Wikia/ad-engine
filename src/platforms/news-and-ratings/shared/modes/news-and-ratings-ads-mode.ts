@@ -5,6 +5,7 @@ import {
 	confiant,
 	DiProcess,
 	eventsRepository,
+	iasPublisherOptimization,
 	liveConnect,
 	liveRampPixel,
 	PartnerPipeline,
@@ -24,6 +25,7 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 				liveRampPixel.setOptions({ dependencies: [userIdentity.initialized] }),
 				liveConnect,
 				confiant,
+				iasPublisherOptimization,
 				gptSetup.setOptions({
 					dependencies: [bidders.initialized],
 				}),
