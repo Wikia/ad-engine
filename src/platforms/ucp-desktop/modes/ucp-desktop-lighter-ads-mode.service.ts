@@ -8,7 +8,6 @@ import {
 	context,
 	DiProcess,
 	eventsRepository,
-	FacebookPixel,
 	iasPublisherOptimization,
 	identityHub,
 	jwPlayerInhibitor,
@@ -27,7 +26,6 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 		private ats: Ats,
 		private captify: Captify,
 		private confiant: Confiant,
-		private facebookPixel: FacebookPixel,
 		private nielsen: Nielsen,
 		private stroer: Stroer,
 	) {}
@@ -38,7 +36,6 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 				userIdentity,
 				liveRampPixel,
 				this.ats,
-				this.facebookPixel,
 				audigent,
 				iasPublisherOptimization,
 				this.confiant,

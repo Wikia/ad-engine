@@ -5,7 +5,6 @@ export * from './captify';
 export * from './confiant';
 export * from './duration-media';
 export * from './eyeota';
-export * from './facebook-pixel';
 export * from './ias-publisher-optimization';
 export * from './instant-config';
 export * from './live-connect';

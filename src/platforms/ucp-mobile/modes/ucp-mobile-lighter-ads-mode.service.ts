@@ -8,7 +8,6 @@ import {
 	context,
 	DiProcess,
 	eventsRepository,
-	FacebookPixel,
 	iasPublisherOptimization,
 	identityHub,
 	jwPlayerInhibitor,
@@ -28,7 +27,6 @@ export class UcpMobileLighterAds implements DiProcess {
 		private ats: Ats,
 		private captify: Captify,
 		private confiant: Confiant,
-		private facebookPixel: FacebookPixel,
 		private nielsen: Nielsen,
 		private stroer: Stroer,
 	) {}
@@ -39,7 +37,6 @@ export class UcpMobileLighterAds implements DiProcess {
 				userIdentity,
 				liveRampPixel.setOptions({ dependencies: [userIdentity.initialized] }),
 				this.ats,
-				this.facebookPixel,
 				audigent,
 				iasPublisherOptimization,
 				this.captify,
