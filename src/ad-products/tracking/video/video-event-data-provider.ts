@@ -1,8 +1,8 @@
 import {
 	AdSlot,
 	context,
-	GlobalTargeting,
 	slotService,
+	TargetingData,
 	targetingService,
 	utils,
 	VideoData,
@@ -36,7 +36,7 @@ export class VideoEventDataProvider {
 			position: slot.getSlotName().toLowerCase(),
 			pv_number: context.get('wiki.pvNumber'),
 			rv: slot.getConfigProperty('targeting.rv') || '',
-			skin: targetingService.getAll<GlobalTargeting>().skin || '',
+			skin: targetingService.getAll<TargetingData>().skin || '',
 			timestamp: now.getTime(),
 			tz_offset: now.getTimezoneOffset(),
 			user_block_autoplay: videoData.user_block_autoplay,

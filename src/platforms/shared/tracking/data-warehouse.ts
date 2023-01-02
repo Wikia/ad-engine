@@ -1,4 +1,4 @@
-import { context, GlobalTargeting, targetingService, trackingOptIn, utils } from '@wikia/ad-engine';
+import { context, TargetingData, targetingService, trackingOptIn, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { TrackingParams } from './models/tracking-params';
 
@@ -47,11 +47,11 @@ export class DataWarehouseTracker {
 			c: context.get('wiki.wgCityId') || 'unknown',
 			ck: context.get('wiki.dsSiteKey') || 'unknown',
 			lc: context.get('wiki.wgUserLanguage') || 'unknown',
-			s: targetingService.getAll<GlobalTargeting>().skin || 'unknown',
+			s: targetingService.getAll<TargetingData>().skin || 'unknown',
 			ua: window.navigator.userAgent,
 			u: trackingOptIn.isOptedIn() ? context.get('userId') || 0 : -1,
-			a: targetingService.getAll<GlobalTargeting>().artid
-				? parseInt(targetingService.getAll<GlobalTargeting>().artid)
+			a: targetingService.getAll<TargetingData>().artid
+				? parseInt(targetingService.getAll<TargetingData>().artid)
 				: -1,
 			x: context.get('wiki.wgDBname') || 'unknown',
 			n: context.get('wiki.wgNamespaceNumber') || -1,

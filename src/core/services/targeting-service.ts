@@ -6,7 +6,7 @@ interface TargetingObject {
 	[key: string]: any;
 }
 
-export interface GlobalTargeting {
+export interface TargetingData {
 	AU_SEG?: string[];
 	adt?: string;
 	age?: string[];
@@ -65,7 +65,7 @@ export class TargetingService {
 		window.ads.adTargeting = debug.isDebugMode() ? this.adTargeting : {};
 	}
 
-	clear(): void {
+	removeTargeting(): void {
 		this.adTargeting = {};
 		window.ads.adTargeting = debug.isDebugMode() ? this.adTargeting : {};
 	}

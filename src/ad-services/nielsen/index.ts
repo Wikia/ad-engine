@@ -2,7 +2,7 @@ import {
 	BaseServiceSetup,
 	context,
 	Dictionary,
-	GlobalTargeting,
+	TargetingData,
 	targetingService,
 	utils,
 } from '@ad-engine/core';
@@ -43,7 +43,7 @@ class Nielsen extends BaseServiceSetup {
 	 */
 	call(): void {
 		const nielsenKey = context.get('services.nielsen.appId');
-		const targeting = targetingService.getAll<GlobalTargeting>();
+		const targeting = targetingService.getAll<TargetingData>();
 		const section = context.get('services.nielsen.customSection') || targeting.s0v;
 		const articleId = targeting.post_id || targeting.artid;
 

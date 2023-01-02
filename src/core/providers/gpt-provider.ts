@@ -1,14 +1,15 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { decorate } from 'core-decorators';
 import { getAdStack } from '../ad-engine';
+import { utils } from '../index';
 import { AdSlot, Dictionary, Targeting } from '../models';
 import {
 	btfBlockerService,
 	config,
 	context,
-	GlobalTargeting,
 	slotDataParamsUpdater,
 	slotService,
+	TargetingData,
 	targetingService,
 	trackingOptIn,
 } from '../services';
@@ -16,7 +17,6 @@ import { defer, logger } from '../utils';
 import { GptSizeMap } from './gpt-size-map';
 import { setupGptTargeting } from './gpt-targeting';
 import { Provider } from './provider';
-import { utils } from '../index';
 
 const logGroup = 'gpt-provider';
 
@@ -220,7 +220,7 @@ export class GptProvider implements Provider {
 	}
 
 	setPPID() {
-		const ppid = targetingService.getAll<GlobalTargeting>().ppid;
+		const ppid = targetingService.getAll<TargetingData>().ppid;
 		if (ppid) {
 			const tag = window.googletag.pubads();
 			tag.setPublisherProvidedId(ppid);

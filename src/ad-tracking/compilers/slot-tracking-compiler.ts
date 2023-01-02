@@ -1,7 +1,7 @@
 import {
 	context,
-	GlobalTargeting,
 	InstantConfigCacheStorage,
+	TargetingData,
 	targetingService,
 	utils,
 } from '@ad-engine/core';
@@ -30,7 +30,7 @@ export const slotTrackingCompiler = ({ data, slot }: CompilerPartial): CompilerP
 	const isUap =
 		slot.getConfigProperty('targeting.uap') && slot.getConfigProperty('targeting.uap') !== 'none';
 
-	const targetingData: GlobalTargeting = targetingService.getAll<GlobalTargeting>();
+	const targetingData: TargetingData = targetingService.getAll<TargetingData>();
 
 	return {
 		slot,

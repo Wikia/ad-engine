@@ -1,8 +1,8 @@
 import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
 
 import { AdSlot } from '../../models';
-import { Context, GlobalTargeting, slotService, targetingService } from '../../services';
-import { scriptLoader, logger } from '../../utils';
+import { Context, slotService, TargetingData, targetingService } from '../../services';
+import { logger, scriptLoader } from '../../utils';
 
 const logGroup = 'nativo';
 const NATIVO_LIBRARY_URL = '//s.ntv.io/serve/load.js';
@@ -62,7 +62,7 @@ export class Nativo {
 
 			// the Nativo ad server responses with a JS that searches for specific IDs that's why the removal here
 			if (
-				targetingService.getAll<GlobalTargeting>().skin !== 'ucp_mobile' &&
+				targetingService.getAll<TargetingData>().skin !== 'ucp_mobile' &&
 				document.getElementById(slotName)
 			) {
 				document.getElementById(slotName).id = '';

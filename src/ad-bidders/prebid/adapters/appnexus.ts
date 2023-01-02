@@ -1,7 +1,7 @@
-import { context, Dictionary, GlobalTargeting, targetingService } from '@ad-engine/core';
+import { context, Dictionary, TargetingData, targetingService } from '@ad-engine/core';
+import { PrebidNativeConfig, PrebidNativeProvider } from '../native';
 import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
-import { PrebidNativeProvider, PrebidNativeConfig } from '../native';
 
 export class Appnexus extends PrebidAdapter {
 	static bidderName = 'appnexus';
@@ -78,7 +78,7 @@ export class Appnexus extends PrebidAdapter {
 		let placement = position;
 
 		if (position === 'mobile') {
-			const vertical = targetingService.getAll<GlobalTargeting>().mappedVerticalName;
+			const vertical = targetingService.getAll<TargetingData>().mappedVerticalName;
 
 			placement = vertical && this.placements[vertical] ? vertical : 'other';
 		}

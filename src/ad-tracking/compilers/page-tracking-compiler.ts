@@ -1,4 +1,4 @@
-import { context, GlobalTargeting, targetingService } from '@ad-engine/core';
+import { context, TargetingData, targetingService } from '@ad-engine/core';
 
 import { CompilerPartial } from '../base-tracker';
 
@@ -7,7 +7,7 @@ export const pageTrackingCompiler = ({ data, slot }: CompilerPartial): CompilerP
 		slot,
 		data: {
 			...data,
-			word_count: targetingService.getAll<GlobalTargeting>().word_count || -1,
+			word_count: targetingService.getAll<TargetingData>().word_count || -1,
 			short_page: context.get('custom.short_page') ?? false,
 		},
 	};

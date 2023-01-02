@@ -4,15 +4,15 @@ import {
 	context,
 	DiProcess,
 	eventsRepository,
-	GlobalTargeting,
 	InstantConfigService,
+	TargetingData,
 	targetingService,
 	UapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { createSelectedStrategy } from './targeting-strategies/factories/create-selected-strategy';
 import { createFandomContext } from './targeting-strategies/factories/create-fandom-context';
+import { createSelectedStrategy } from './targeting-strategies/factories/create-selected-strategy';
 import { TargetingTags } from './targeting-strategies/interfaces/taxonomy-tags';
 
 const SKIN = Symbol('targeting skin');
@@ -53,7 +53,7 @@ export class UcpTargetingSetup implements DiProcess {
 
 		if (context.get('wiki.targeting.wikiIsTop1000')) {
 			context.set('custom.wikiIdentifier', '_top1k_wiki');
-			context.set('custom.dbNameForAdUnit', targetingService.getAll<GlobalTargeting>().s1);
+			context.set('custom.dbNameForAdUnit', targetingService.getAll<TargetingData>().s1);
 		}
 
 		targetingService.set(

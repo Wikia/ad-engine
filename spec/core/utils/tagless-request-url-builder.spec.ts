@@ -1,12 +1,12 @@
-import { expect } from 'chai';
+import { targetingService } from '@wikia/core';
 import { AdSlot } from '@wikia/core/models/ad-slot';
 import { context } from '@wikia/core/services/context-service';
 import { slotService } from '@wikia/core/services/slot-service';
 import {
-	buildVastUrl,
 	buildTaglessRequestUrl,
+	buildVastUrl,
 } from '@wikia/core/utils/tagless-request-url-builder';
-import { targetingService } from '@wikia/core';
+import { expect } from 'chai';
 
 describe('tagless-request-url-builder', () => {
 	let lisAdSlot;
@@ -37,7 +37,7 @@ describe('tagless-request-url-builder', () => {
 			},
 		});
 
-		targetingService.clear();
+		targetingService.removeTargeting();
 		targetingService.extend({
 			s0: '000',
 			uno: 'foo',
