@@ -28,6 +28,10 @@ export const basicContext = {
 		instantConfig: {
 			appName: 'gamespot',
 		},
+		confiant: {
+			enabled: false,
+			propertyId: 'd-aIf3ibf0cYxCLB1HTWfBQOFEA',
+		},
 	},
 	slots: {},
 	targeting: {

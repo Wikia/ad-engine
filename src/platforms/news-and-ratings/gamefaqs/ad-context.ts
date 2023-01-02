@@ -28,6 +28,10 @@ export const basicContext = {
 		instantConfig: {
 			appName: 'gamefaqs',
 		},
+		confiant: {
+			enabled: false,
+			propertyId: 'd-aIf3ibf0cYxCLB1HTWfBQOFEA',
+		},
 	},
 	slots: {},
 	src: ['gamefaqs'],

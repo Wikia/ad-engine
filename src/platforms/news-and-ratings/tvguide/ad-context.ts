@@ -9,6 +9,10 @@ export const basicContext = {
 		instantConfig: {
 			appName: 'tvguide',
 		},
+		confiant: {
+			enabled: false,
+			propertyId: 'd-aIf3ibf0cYxCLB1HTWfBQOFEA',
+		},
 	},
 	slots: {},
 	src: ['tvguide'],
