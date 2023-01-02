@@ -1,5 +1,5 @@
 import {
-	bidders,
+	Bidders,
 	communicationService,
 	context,
 	DiProcess,
@@ -15,6 +15,8 @@ import { getWikiaContext } from '../../../bidders/wikia';
 
 @Injectable()
 export class GamefaqsPrebidConfigSetup implements DiProcess {
+	constructor(private bidders: Bidders) {}
+
 	execute(): void {
 		if (!this.isPrebidEnabled()) {
 			return;
@@ -33,7 +35,7 @@ export class GamefaqsPrebidConfigSetup implements DiProcess {
 		communicationService.on(
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
 			({ slot }) => {
-				bidders.updateSlotTargeting(slot.getSlotName());
+				this.bidders.updateSlotTargeting(slot.getSlotName());
 			},
 			false,
 		);

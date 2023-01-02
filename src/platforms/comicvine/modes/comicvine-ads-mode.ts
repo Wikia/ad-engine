@@ -1,29 +1,36 @@
-import { gptSetup } from '@platforms/shared';
+import { GptSetup } from '@platforms/shared';
 import {
-	bidders,
+	Bidders,
 	communicationService,
 	DiProcess,
 	eventsRepository,
-	liveConnect,
-	liveRampPixel,
+	LiveConnect,
+	LiveRampPixel,
 	PartnerPipeline,
-	userIdentity,
+	UserIdentity,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class ComicvineAdsMode implements DiProcess {
-	constructor(private pipeline: PartnerPipeline) {}
+	constructor(
+		private pipeline: PartnerPipeline,
+		private bidders: Bidders,
+		private gptSetup: GptSetup,
+		private liveConnect: LiveConnect,
+		private liveRampPixel: LiveRampPixel,
+		private userIdentity: UserIdentity,
+	) {}
 
 	execute(): void {
 		this.pipeline
 			.add(
-				bidders,
-				userIdentity,
-				liveRampPixel.setOptions({ dependencies: [userIdentity.initialized] }),
-				liveConnect,
-				gptSetup.setOptions({
-					dependencies: [bidders.initialized],
+				this.bidders,
+				this.userIdentity,
+				this.liveRampPixel.setOptions({ dependencies: [this.userIdentity.initialized] }),
+				this.liveConnect,
+				this.gptSetup.setOptions({
+					dependencies: [this.bidders.initialized],
 				}),
 			)
 			.execute()

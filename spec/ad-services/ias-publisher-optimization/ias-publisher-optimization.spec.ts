@@ -1,10 +1,11 @@
-import { iasPublisherOptimization } from '@wikia/ad-services';
+import { IasPublisherOptimization } from '@wikia/ad-services';
 import { context, utils } from '@wikia/core';
 import { expect } from 'chai';
 import { createSandbox, spy } from 'sinon';
 
 describe('IAS Publisher Optimization', () => {
 	const sandbox = createSandbox();
+	const iasPublisherOptimization = new IasPublisherOptimization();
 	const iasData =
 		'{"brandSafety":' +
 		'{"adt":"veryLow",' +

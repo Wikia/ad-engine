@@ -1,7 +1,7 @@
 import { babDetection, BaseServiceSetup, btfBlockerService, btRec } from '@wikia/ad-engine';
 import { trackBab } from '../tracking/bab-tracker';
 
-class WadRunner extends BaseServiceSetup {
+export class WadRunner extends BaseServiceSetup {
 	async call(): Promise<void> {
 		if (!babDetection.isEnabled()) {
 			return Promise.resolve();
@@ -17,5 +17,3 @@ class WadRunner extends BaseServiceSetup {
 		}
 	}
 }
-
-export const wadRunner = new WadRunner();

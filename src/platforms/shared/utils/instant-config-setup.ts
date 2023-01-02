@@ -1,5 +1,5 @@
 import {
-	audigent,
+	Audigent,
 	communicationService,
 	context,
 	DiProcess,
@@ -18,7 +18,7 @@ const setInstantConfig = globalAction(
 
 @Injectable()
 export class InstantConfigSetup implements DiProcess {
-	constructor(private container: Container) {}
+	constructor(private container: Container, private audigent: Audigent) {}
 
 	async execute(): Promise<void> {
 		const instantConfig = await InstantConfigService.init();
@@ -37,7 +37,7 @@ export class InstantConfigSetup implements DiProcess {
 		}
 
 		if (instantConfig.get('icAudigent')) {
-			audigent.init(instantConfig);
+			this.audigent.init(instantConfig);
 		}
 	}
 }

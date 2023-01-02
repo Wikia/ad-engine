@@ -1,4 +1,4 @@
-import { userIdentity } from '@wikia/ad-services';
+import { UserIdentity } from '@wikia/ad-services';
 import { IdentityRepositories } from '@wikia/ad-services/user-identity/identity-repositories';
 import { identityStorageClient } from '@wikia/ad-services/user-identity/identity-storage-repository/identity-storage-client';
 import { context } from '@wikia/core';
@@ -9,6 +9,7 @@ describe('User Identity', () => {
 	let sandbox;
 	let clientSpy;
 	const mockId = '00000000-0000-0000-0000-000000000000';
+	const userIdentity = new UserIdentity();
 
 	beforeEach(() => {
 		context.set('services.ppid.enabled', true);

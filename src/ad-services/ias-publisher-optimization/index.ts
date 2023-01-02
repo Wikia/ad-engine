@@ -31,7 +31,7 @@ interface IasTargetingData {
 	slots?: IasTargetingSlotData[];
 }
 
-class IasPublisherOptimization extends BaseServiceSetup {
+export class IasPublisherOptimization extends BaseServiceSetup {
 	private isLoaded = false;
 	private slotList: string[] = [];
 
@@ -162,5 +162,3 @@ class IasPublisherOptimization extends BaseServiceSetup {
 		context.set('targeting.ias-kw', customData['ias-kw']);
 	}
 }
-
-export const iasPublisherOptimization = new IasPublisherOptimization();
