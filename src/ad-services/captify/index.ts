@@ -7,7 +7,7 @@ export class Captify extends BaseServiceSetup {
 	PIXEL_URL = 'https://p.cpx.to/p/12974/px.js';
 
 	async call(): Promise<void> {
-		if (!this.isEnabled('services.captify.enabled')) {
+		if (!this.isEnabled('icCaptify')) {
 			utils.logger(logGroup, 'disabled');
 
 			return Promise.resolve();

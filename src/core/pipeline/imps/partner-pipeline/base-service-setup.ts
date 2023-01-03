@@ -14,7 +14,7 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 		this.resolve = resolve;
 	});
 
-	constructor(private instantConfig: InstantConfigService = null) {}
+	constructor(protected instantConfig: InstantConfigService = null) {}
 
 	private getContextVariablesValue(contextVariables: string | string[]): boolean {
 		if (typeof contextVariables === 'string') {

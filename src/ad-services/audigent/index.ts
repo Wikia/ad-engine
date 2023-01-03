@@ -31,12 +31,17 @@ export class Audigent extends BaseServiceSetup {
 	}
 
 	async call(): Promise<void> {
-		if (!this.isEnabled('services.audigent.enabled')) {
+		if (!this.isEnabled('icAudigent')) {
 			utils.logger(logGroup, 'disabled');
 			return;
 		}
 
 		context.set('targeting.AU_SEG', '-1');
+		context.set(
+			'services.audigent.tracking.sampling',
+			this.instantConfig.get('icAudigentTrackingSampling'),
+		);
+		context.set('services.audigent.segmentLimit', this.instantConfig.get('icAudigentSegmentLimit'));
 
 		!Audigent.segmentsScriptLoader && Audigent.loadSegmentLibrary();
 		!this.matchesTagScriptLoader && this.loadMatchesLibrary();
