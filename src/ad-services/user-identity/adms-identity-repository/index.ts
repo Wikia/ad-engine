@@ -5,7 +5,7 @@ import { UniversalStorage, utils } from '@ad-engine/core';
 import { UserIdentity } from '../';
 
 class AdmsIdentityRepository implements IdentityRepositoryInterface {
-	storage = new UniversalStorage();
+	constructor(private storage: UniversalStorage) {}
 
 	async get(): Promise<string> {
 		const ppid = this.getLocalIdentityToken();
@@ -49,4 +49,4 @@ class AdmsIdentityRepository implements IdentityRepositoryInterface {
 	}
 }
 
-export const admsIdentityRepository = new AdmsIdentityRepository();
+export const admsIdentityRepository = new AdmsIdentityRepository(new UniversalStorage());

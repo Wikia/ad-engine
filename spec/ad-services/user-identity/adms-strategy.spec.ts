@@ -6,6 +6,7 @@ import { IdentityRepositories } from '@wikia/ad-services/user-identity/identity-
 import { admsClient } from '@wikia/ad-services/user-identity/adms-identity-repository/adms-client';
 import { ActionType } from '@wikia/ad-services/user-identity/adms-identity-repository/adms-actions';
 import { uuid } from '@wikia/core/utils/uuid';
+import { admsIdentityRepository } from '@wikia/ad-services/user-identity/adms-identity-repository';
 
 describe('User Identity', () => {
 	let v4Stub: SinonStub;
@@ -28,6 +29,8 @@ describe('User Identity', () => {
 	it('use ADMS strategy and gets PPID from API', async () => {
 		context.set('services.ppid.enabled', true);
 		context.set('services.ppidRepository', IdentityRepositories.ADMS);
+		sandbox.stub(admsIdentityRepository, 'getLocalIdentityToken').returns(null);
+
 		sandbox.stub(admsClient, 'fetchData').returns(
 			Promise.resolve({
 				IDENTITY: [
@@ -56,12 +59,16 @@ describe('User Identity', () => {
 
 		sandbox.stub(admsClient, 'postData').returns(Promise.resolve());
 
+		sandbox.stub(admsIdentityRepository, 'getLocalIdentityToken').returns(null);
+
 		await userIdentity.call();
 
 		expect(context.get('targeting.ppid')).to.eq(mockId);
 	});
 
 	it('use ADMS strategy and gets PPID from storage', async () => {
+		sandbox.stub(admsIdentityRepository, 'getLocalIdentityToken').returns(null);
+
 		sandbox.stub(admsClient.storage, 'getItem').callsFake(() => ({
 			IDENTITY: [
 				{
