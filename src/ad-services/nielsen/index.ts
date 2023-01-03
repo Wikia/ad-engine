@@ -11,6 +11,10 @@ function createInstance(nielsenKey): any {
 
 	initNielsenStaticQueue();
 
+	if (utils.queryString.get('nielsen-dcr-debug') === '1') {
+		nlsnConfig.nol_sdkDebug = 'debug';
+	}
+
 	return window.NOLBUNDLE.nlsQ(nielsenKey, 'nlsnInstance', nlsnConfig);
 }
 
@@ -19,16 +23,6 @@ function createInstance(nielsenKey): any {
  */
 export class Nielsen extends BaseServiceSetup {
 	nlsnInstance: any = null;
-	/**
-	 * Class constructor
-	 */
-
-	constructor() {
-		super();
-		if (utils.queryString.get('nielsen-dcr-debug') === '1') {
-			nlsnConfig.nol_sdkDebug = 'debug';
-		}
-	}
 
 	/**
 	 * Create Nielsen Static Queue and make a call

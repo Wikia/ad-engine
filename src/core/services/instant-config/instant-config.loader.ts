@@ -1,5 +1,5 @@
-import { InstantConfigResponse } from './instant-config.models';
 import { context, utils } from '../../index';
+import { InstantConfigResponse } from './instant-config.models';
 
 const logGroup = 'instant-config-loader';
 

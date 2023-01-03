@@ -18,5 +18,3 @@ export class GptSetup extends BaseServiceSetup {
 		});
 	}
 }
-
-export const gptSetup = new GptSetup();

@@ -16,6 +16,7 @@ export class Bidders extends BaseServiceSetup {
 
 	constructor() {
 		super();
+
 		communicationService.onSlotEvent(AdSlot.VIDEO_AD_REQUESTED, ({ slot }) => {
 			slot.updateWinningPbBidderDetails();
 		});

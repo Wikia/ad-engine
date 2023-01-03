@@ -1,10 +1,10 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { utils } from '../../index';
+import { Dictionary } from '../../models';
 import { InstantConfigInterpreter } from './instant-config.interpreter';
 import { instantConfigLoader } from './instant-config.loader';
 import { InstantConfigValue } from './instant-config.models';
 import { InstantConfigOverrider } from './instant-config.overrider';
-import { Dictionary } from '../../models';
-import { utils } from '../../index';
 
 const logGroup = 'instant-config-service';
 

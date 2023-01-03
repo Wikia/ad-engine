@@ -18,7 +18,7 @@ const setInstantConfig = globalAction(
 
 @Injectable()
 export class InstantConfigSetup implements DiProcess {
-	constructor(private container: Container, private audigent: Audigent) {}
+	constructor(private container: Container) {}
 
 	async execute(): Promise<void> {
 		const instantConfig = await InstantConfigService.init();
@@ -37,7 +37,7 @@ export class InstantConfigSetup implements DiProcess {
 		}
 
 		if (instantConfig.get('icAudigent')) {
-			this.audigent.init(instantConfig);
+			Audigent.loadSegmentLibrary();
 		}
 	}
 }

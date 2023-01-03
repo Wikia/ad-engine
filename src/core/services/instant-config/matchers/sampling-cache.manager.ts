@@ -1,5 +1,5 @@
-import { InstantConfigSamplingCache } from '../instant-config.models';
 import { CacheData, InstantConfigCacheStorage } from '../../instant-config-cache-storage';
+import { InstantConfigSamplingCache } from '../instant-config.models';
 
 export class SamplingCacheManager {
 	private readonly cacheStorage = InstantConfigCacheStorage.make();

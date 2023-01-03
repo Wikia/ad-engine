@@ -1,11 +1,11 @@
-import { Injectable } from '@wikia/dependency-injection';
-import { communicationService, context, eventsRepository, ProcessPipeline } from '@wikia/ad-engine';
 import { bootstrapAndGetConsent, GptSetup, InstantConfigSetup } from '@platforms/shared';
+import { communicationService, context, eventsRepository, ProcessPipeline } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
 
+import { NewsAndRatingsBaseContextSetup } from '../shared';
 import { basicContext } from './ad-context';
 import { TvGuideSlotsContextSetup } from './setup/context/slots/tvguide-slots-context.setup';
 import { TvGuideDynamicSlotsSetup } from './setup/dynamic-slots/tvguide-dynamic-slots.setup';
-import { NewsAndRatingsBaseContextSetup } from '../shared';
 
 @Injectable()
 export class TvGuidePlatform {

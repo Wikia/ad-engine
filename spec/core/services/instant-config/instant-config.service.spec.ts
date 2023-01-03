@@ -1,8 +1,8 @@
+import { communicationService, eventsRepository } from '@wikia/communication';
 import { InstantConfigInterpreter } from '@wikia/core/services/instant-config/instant-config.interpreter';
 import { instantConfigLoader } from '@wikia/core/services/instant-config/instant-config.loader';
 import { InstantConfigOverrider } from '@wikia/core/services/instant-config/instant-config.overrider';
 import { InstantConfigService } from '@wikia/core/services/instant-config/instant-config.service';
-import { communicationService, eventsRepository } from '@wikia/communication';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 

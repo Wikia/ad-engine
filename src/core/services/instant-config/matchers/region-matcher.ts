@@ -1,5 +1,5 @@
-import { cacheSuffix, InstantConfigGroup, samplingSeparator } from '../instant-config.models';
 import { utils } from '../../../index';
+import { cacheSuffix, InstantConfigGroup, samplingSeparator } from '../instant-config.models';
 
 export class RegionMatcher {
 	isValid(regions: InstantConfigGroup['regions'] = []): boolean {

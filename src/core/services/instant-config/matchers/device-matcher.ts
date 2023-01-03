@@ -1,6 +1,6 @@
+import { utils } from '../../../index';
 import { InstantConfigGroup } from '../instant-config.models';
 import { extractNegation, NegationObject } from './negation-extractor';
-import { utils } from '../../../index';
 
 export class DeviceMatcher {
 	private currentDevice: utils.DeviceType = utils.client.getDeviceType();

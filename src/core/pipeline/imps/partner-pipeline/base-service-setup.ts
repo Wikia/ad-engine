@@ -1,5 +1,5 @@
 import { Injectable } from '@wikia/dependency-injection';
-import { context } from '../../../services';
+import { context, InstantConfigService } from '../../../services';
 import {
 	PartnerInitializationProcess,
 	PartnerInitializationProcessOptions,
@@ -14,6 +14,8 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 		this.resolve = resolve;
 	});
 
+	constructor(private instantConfig: InstantConfigService = null) {}
+
 	private getContextVariablesValue(contextVariables: string | string[]): boolean {
 		if (typeof contextVariables === 'string') {
 			return context.get(contextVariables);
@@ -25,6 +27,10 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 	}
 
 	public isEnabled(contextVariables: string | string[], trackingRequired = true): boolean {
+		if (typeof contextVariables === 'string' && contextVariables.startsWith('ic')) {
+			return this.instantConfig.get(contextVariables);
+		}
+
 		const contextVariablesValue = this.getContextVariablesValue(contextVariables);
 
 		if (trackingRequired) {

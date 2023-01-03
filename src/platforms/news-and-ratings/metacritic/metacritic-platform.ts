@@ -1,13 +1,13 @@
 import { Injectable } from '@wikia/dependency-injection';
 
-import { context, ProcessPipeline } from '@wikia/ad-engine';
 import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
+import { context, ProcessPipeline } from '@wikia/ad-engine';
 
+import { NewsAndRatingsAdsMode, NewsAndRatingsBaseContextSetup } from '../shared';
 import { basicContext } from './ad-context';
+import { MetacriticPrebidConfigSetup } from './setup/context/prebid/metacritic-prebid-config.setup';
 import { MetacriticSlotsContextSetup } from './setup/context/slots/metacritic-slots-context.setup';
 import { MetacriticDynamicSlotsSetup } from './setup/dynamic-slots/metacritic-dynamic-slots.setup';
-import { MetacriticPrebidConfigSetup } from './setup/context/prebid/metacritic-prebid-config.setup';
-import { NewsAndRatingsAdsMode, NewsAndRatingsBaseContextSetup } from '../shared';
 
 @Injectable()
 export class MetacriticPlatform {

@@ -1,9 +1,9 @@
+import { utils } from '../../index';
 import {
 	InstantConfigGroup,
 	InstantConfigResponse,
 	InstantConfigValue,
 } from './instant-config.models';
-import { utils } from '../../index';
 
 const queryParamPrefixes = ['InstantGlobals', 'icbm'];
 
