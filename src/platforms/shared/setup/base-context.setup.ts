@@ -159,7 +159,6 @@ export class BaseContextSetup implements DiProcess {
 			context.set('services.slotRefresher.config', this.instantConfig.get('icSlotRefresher'));
 		}
 		context.set('services.eyeota.enabled', this.instantConfig.get('icEyeota'));
-		context.set('services.facebookPixel.enabled', this.instantConfig.get('icFacebookPixel'));
 		context.set(
 			'services.iasPublisherOptimization.enabled',
 			this.instantConfig.get('icIASPublisherOptimization'),
