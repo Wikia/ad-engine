@@ -45,7 +45,7 @@ export class TemplateRegistry {
 			StateHandlerTypesDict,
 			initialStateKey,
 			emitter$,
-			// @ts-ignore "this context fix"
+			// @ts-ignore TypeScript don't understand which overload we want to retype in Parameters<Container['bind']>[0]
 			templateDependencies: templateDependencies.flat<TemplateDependency>(Infinity),
 		});
 
