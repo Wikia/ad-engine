@@ -9,6 +9,7 @@ import {
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsDynamicSlotsSetup,
 	NewsAndRatingsTargetingSetup,
+	NewsAndRatingsWadSetup,
 } from '../shared';
 
 @Injectable()
@@ -22,6 +23,7 @@ export class GamefaqsPlatform {
 			// once we have Geo cookie set on varnishes we can parallel InstantConfigSetup and Bootstrap.setupConsent
 			InstantConfigSetup,
 			Bootstrap.setupConsent,
+			NewsAndRatingsWadSetup,
 			NewsAndRatingsTargetingSetup,
 			GamefaqsSlotsContextSetup,
 			NewsAndRatingsDynamicSlotsSetup,
