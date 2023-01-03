@@ -1,14 +1,14 @@
 {
 	"list": [
 		"bingebot",
-		"comicvine",
 		"f2",
-		"gamefaqs",
-		"gamespot",
-		"giantbomb",
-		"metacritic",
+		"news-and-ratings/comicvine",
+		"news-and-ratings/gamefaqs",
+		"news-and-ratings/gamespot",
+		"news-and-ratings/giantbomb",
+		"news-and-ratings/metacritic",
+		"news-and-ratings/tvguide",
 		"sports",
-		"tvguide",
 		"ucp-desktop",
 		"ucp-mobile",
 		"ucp-no-ads"
