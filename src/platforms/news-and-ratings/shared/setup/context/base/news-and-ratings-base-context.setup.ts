@@ -24,6 +24,7 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 	}
 
 	private setServicesContext(): void {
+		context.set('services.captify.enabled', this.instantConfig.get('icCaptify'));
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
 		context.set(
 			'services.iasPublisherOptimization.enabled',

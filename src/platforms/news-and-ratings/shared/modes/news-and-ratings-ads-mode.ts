@@ -1,6 +1,7 @@
 import { Injectable } from '@wikia/dependency-injection';
 import {
 	bidders,
+	captify,
 	communicationService,
 	confiant,
 	DiProcess,
@@ -27,6 +28,7 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 				liveConnect,
 				confiant,
 				iasPublisherOptimization,
+				captify,
 				gptSetup.setOptions({
 					dependencies: [wadRunner.initialized, bidders.initialized],
 				}),
