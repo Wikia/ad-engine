@@ -4,6 +4,7 @@ import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@
 import { basicContext } from './ad-context';
 import { ComicvineSlotsContextSetup } from './setup/context/slots/comicvine-slots-context.setup';
 import { ComicvinePrebidConfigSetup } from './setup/context/prebid/comicvine-prebid-config.setup';
+import { ComicvineTargetingSetup } from './setup/context/targeting/comicvine-targeting.setup';
 import {
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsDynamicSlotsSetup,
@@ -22,6 +23,7 @@ export class ComicvinePlatform {
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
+			ComicvineTargetingSetup,
 			NewsAndRatingsTargetingSetup,
 			NewsAndRatingsDynamicSlotsSetup,
 			ComicvineSlotsContextSetup,

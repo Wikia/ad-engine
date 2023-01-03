@@ -4,6 +4,7 @@ import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@
 import { basicContext } from './ad-context';
 import { GiantbombSlotsContextSetup } from './setup/context/slots/giantbomb-slots-context.setup';
 import { GiantbombPrebidConfigSetup } from './setup/context/prebid/giantbomb-prebid-config.setup';
+import { GiantbombTargetingSetup } from './setup/context/targeting/giantbomb-targeting.setup';
 import {
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
@@ -22,6 +23,7 @@ export class GiantbombPlatform {
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
+			GiantbombTargetingSetup,
 			NewsAndRatingsTargetingSetup,
 			GiantbombSlotsContextSetup,
 			NewsAndRatingsDynamicSlotsSetup,
