@@ -5,6 +5,7 @@ import {
 	communicationService,
 	confiant,
 	DiProcess,
+	durationMedia,
 	eventsRepository,
 	iasPublisherOptimization,
 	liveConnect,
@@ -29,6 +30,7 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 				confiant,
 				iasPublisherOptimization,
 				captify,
+				durationMedia,
 				gptSetup.setOptions({
 					dependencies: [wadRunner.initialized, bidders.initialized],
 				}),
