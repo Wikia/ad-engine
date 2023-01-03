@@ -17,6 +17,8 @@ describe('Audigent', () => {
 
 		externalLoggerLogStub = sandbox.stub(externalLogger, 'log').returns({} as any);
 
+		window['au_seg'] = [];
+
 		context.set('services.audigent.enabled', true);
 		context.set('services.audigent.tracking.sampling', 0);
 
@@ -90,6 +92,10 @@ describe('Audigent', () => {
 	});
 
 	it('Audigent key-val is set to -1 when API is too slow', () => {
+		context.set('targeting.AU_SEG', '-1');
+
+		window['au_seg'] = undefined;
+
 		audigent.setup();
 
 		expect(context.get('targeting.AU_SEG')).to.equal('-1');
