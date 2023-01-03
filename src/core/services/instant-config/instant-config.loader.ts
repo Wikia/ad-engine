@@ -1,5 +1,5 @@
-import { context, utils } from '@ad-engine/core';
 import { InstantConfigResponse } from './instant-config.models';
+import { context, utils } from '../../index';
 
 const logGroup = 'instant-config-loader';
 

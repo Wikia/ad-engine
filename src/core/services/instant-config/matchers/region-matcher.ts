@@ -1,5 +1,5 @@
-import { utils } from '@ad-engine/core';
 import { cacheSuffix, InstantConfigGroup, samplingSeparator } from '../instant-config.models';
+import { utils } from '../../../index';
 
 export class RegionMatcher {
 	isValid(regions: InstantConfigGroup['regions'] = []): boolean {

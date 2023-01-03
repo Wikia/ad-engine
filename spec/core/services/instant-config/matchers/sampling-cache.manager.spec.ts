@@ -1,4 +1,4 @@
-import { SamplingCacheManager } from '@wikia/ad-services/instant-config/matchers/sampling-cache.manager';
+import { SamplingCacheManager } from '@wikia/core/services/instant-config/matchers/sampling-cache.manager';
 import { InstantConfigCacheStorage } from '@wikia/core/services/instant-config-cache-storage';
 import { expect } from 'chai';
 import { createSandbox, SinonExpectation, SinonStub } from 'sinon';

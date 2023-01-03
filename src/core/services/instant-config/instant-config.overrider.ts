@@ -1,9 +1,9 @@
-import { utils } from '@ad-engine/core';
 import {
 	InstantConfigGroup,
 	InstantConfigResponse,
 	InstantConfigValue,
 } from './instant-config.models';
+import { utils } from '../../index';
 
 const queryParamPrefixes = ['InstantGlobals', 'icbm'];
 

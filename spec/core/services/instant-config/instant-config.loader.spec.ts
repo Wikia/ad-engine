@@ -1,4 +1,4 @@
-import { instantConfigLoader } from '@wikia/ad-services/instant-config/instant-config.loader';
+import { instantConfigLoader } from '@wikia/core/services/instant-config/instant-config.loader';
 import { context, Dictionary } from '@wikia/core';
 import { wait } from '@wikia/core/utils';
 import { expect } from 'chai';

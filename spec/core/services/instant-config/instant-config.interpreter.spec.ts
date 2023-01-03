@@ -1,9 +1,9 @@
-import { InstantConfigInterpreter } from '@wikia/ad-services/instant-config/instant-config.interpreter';
-import { BrowserMatcher } from '@wikia/ad-services/instant-config/matchers/browser-matcher';
-import { DeviceMatcher } from '@wikia/ad-services/instant-config/matchers/device-matcher';
-import { DomainMatcher } from '@wikia/ad-services/instant-config/matchers/domain-matcher';
-import { RegionMatcher } from '@wikia/ad-services/instant-config/matchers/region-matcher';
-import { SamplingCacheManager } from '@wikia/ad-services/instant-config/matchers/sampling-cache.manager';
+import { InstantConfigInterpreter } from '@wikia/core/services/instant-config/instant-config.interpreter';
+import { BrowserMatcher } from '@wikia/core/services/instant-config/matchers/browser-matcher';
+import { DeviceMatcher } from '@wikia/core/services/instant-config/matchers/device-matcher';
+import { DomainMatcher } from '@wikia/core/services/instant-config/matchers/domain-matcher';
+import { RegionMatcher } from '@wikia/core/services/instant-config/matchers/region-matcher';
+import { SamplingCacheManager } from '@wikia/core/services/instant-config/matchers/sampling-cache.manager';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 

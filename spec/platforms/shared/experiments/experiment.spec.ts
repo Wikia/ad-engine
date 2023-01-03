@@ -1,4 +1,4 @@
-import { InstantConfigService, InstantConfigServiceInterface } from '@wikia/ad-services';
+import { InstantConfigService, InstantConfigServiceInterface } from '@wikia/core';
 import { MultivariantExperiment } from '@wikia/platforms/shared';
 import { expect } from 'chai';
 import sinon from 'sinon';

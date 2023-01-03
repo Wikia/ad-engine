@@ -1,6 +1,6 @@
-import { utils } from '@ad-engine/core';
 import { InstantConfigGroup } from '../instant-config.models';
 import { extractNegation, NegationObject } from './negation-extractor';
+import { utils } from '../../../index';
 
 export class BrowserMatcher {
 	private currentBrowser: string = utils.client.getBrowser().toLowerCase();

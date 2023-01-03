@@ -1,5 +1,5 @@
-import { CacheData, InstantConfigCacheStorage } from '@ad-engine/core';
 import { InstantConfigSamplingCache } from '../instant-config.models';
+import { CacheData, InstantConfigCacheStorage } from '../../instant-config-cache-storage';
 
 export class SamplingCacheManager {
 	private readonly cacheStorage = InstantConfigCacheStorage.make();

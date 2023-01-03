@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { SessionCookie } from '../services/session-cookie';
+import { SessionCookie } from './session-cookie';
 import { deserializeCache, serializeCache } from './instant-config-cache-storage-serializer';
 
 export interface CacheDictionary {

@@ -1,4 +1,3 @@
-import { Dictionary, utils } from '@ad-engine/core';
 import {
 	InstantConfigGroup,
 	InstantConfigResponse,
@@ -9,6 +8,8 @@ import { DeviceMatcher } from './matchers/device-matcher';
 import { DomainMatcher } from './matchers/domain-matcher';
 import { RegionMatcher } from './matchers/region-matcher';
 import { SamplingCacheManager } from './matchers/sampling-cache.manager';
+import { Dictionary } from '../../models';
+import { utils } from '../../index';
 
 const logGroup = 'instant-config-interpreter';
 

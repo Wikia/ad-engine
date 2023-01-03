@@ -20,6 +20,7 @@ export * from './slot-tweaker';
 export * from './template-service';
 export * from './templates-registry/template-action';
 export { TemplateDependency } from './templates-registry/template-dependencies-manager';
+export * from './instant-config/instant-config.service';
 export * from './templates-registry/template-logger';
 export * from './templates-registry/template-registry';
 export * from './templates-registry/template-state-handler';

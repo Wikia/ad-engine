@@ -6,7 +6,6 @@ export * from './confiant';
 export * from './duration-media';
 export * from './eyeota';
 export * from './ias-publisher-optimization';
-export * from './instant-config';
 export * from './live-connect';
 export * from './liveramp-pixel';
 export * from './nielsen';
