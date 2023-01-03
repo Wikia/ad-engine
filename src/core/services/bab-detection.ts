@@ -10,7 +10,7 @@ const logGroup = 'bab-detection';
 let bab: BlockAdBlock;
 let isBabInitialised = false;
 
-class BabDetection {
+export class BabDetection {
 	getName(): string {
 		return logGroup;
 	}
@@ -24,9 +24,14 @@ class BabDetection {
 	}
 
 	async run(): Promise<boolean> {
-		const isBabDetected: boolean = await this.checkBlocking();
+		let isBabDetected: boolean = await this.checkBlocking();
 
 		utils.logger(logGroup, 'BAB detection, AB detected:', isBabDetected);
+
+		if (!isBabDetected) {
+			isBabDetected = await this.checkDomainBlocking();
+			utils.logger(logGroup, 'GAM domain blocking detection - detected:', isBabDetected);
+		}
 
 		this.setBodyClass(isBabDetected);
 		this.setRuntimeParams(isBabDetected);
@@ -46,11 +51,11 @@ class BabDetection {
 	): Promise<boolean> {
 		return new Promise((resolve) => {
 			if (!isBabInitialised) {
-				if (typeof BlockAdBlock === 'undefined') {
+				if (!this.blockAdBlockExists()) {
 					resolve(true);
-
 					return;
 				}
+
 				this.setupBab();
 			}
 
@@ -69,14 +74,39 @@ class BabDetection {
 		});
 	}
 
+	public blockAdBlockExists() {
+		return typeof BlockAdBlock !== 'undefined';
+	}
+
+	public async checkDomainBlocking() {
+		let adblockDetected = false;
+		const url = 'https://www.doubleclick.net';
+		try {
+			await fetch(url, {
+				method: 'HEAD',
+				mode: 'no-cors',
+				cache: 'no-store',
+			});
+		} catch {
+			adblockDetected = true;
+		}
+
+		return adblockDetected;
+	}
+
 	private setupBab(): void {
-		bab = new BlockAdBlock({
+		bab = this.createBlockAdBlock();
+		isBabInitialised = true;
+	}
+
+	public createBlockAdBlock(): BlockAdBlock {
+		return new BlockAdBlock({
 			checkOnLoad: false,
 			resetOnEnd: true,
 			loopCheckTime: 50,
 			loopMaxNumber: 5,
+			debug: !!utils.queryString.get('bt_rec_debug') || false,
 		});
-		isBabInitialised = true;
 	}
 
 	private setRuntimeParams(isBabDetected: boolean): void {
