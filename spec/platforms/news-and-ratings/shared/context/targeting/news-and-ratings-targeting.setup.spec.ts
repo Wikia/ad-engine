@@ -1,4 +1,4 @@
-import { NewsAndRatingsTargetingSetup } from '@wikia/platforms/shared-news-and-ratings/context/targeting/news-and-ratings-targeting.setup';
+import { NewsAndRatingsTargetingSetup } from '@wikia/platforms/news-and-ratings/shared/setup/context/targeting/news-and-ratings-targeting.setup';
 import { expect } from 'chai';
 
 describe('News and Ratings Targeting Setup', () => {

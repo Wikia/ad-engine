@@ -9,13 +9,21 @@ const platforms = ({ entry }) => ({
 	entry,
 
 	output: {
-		filename: '[name]/main.bundle.js',
+		filename: ({ chunk: { name } }) => {
+			return `${name.includes('/') ? name.split('/')[1] : name}/main.bundle.js`;
+		},
 		path: path.resolve(__dirname, `dist/platforms`),
 	},
 
 	plugins: [
-		new MiniCssExtractPlugin({ filename: '[name]/styles.css' }),
-		new webpack.ProvidePlugin({ process: 'process/browser' }),
+		new MiniCssExtractPlugin({
+			filename: ({ chunk: { name } }) => {
+				return `${name.includes('/') ? name.split('/')[1] : name}/styles.css`;
+			},
+		}),
+		new webpack.ProvidePlugin({
+			process: 'process/browser',
+		}),
 	],
 
 	performance: {
