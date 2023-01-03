@@ -1,5 +1,5 @@
 import { getDomain } from '@platforms/shared';
-import { context, DiProcess, Targeting, targetingService, utils } from '@wikia/ad-engine';
+import { context, DiProcess, SlotTargeting, targetingService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { selectApplication } from '../../../utils/application-helper';
 
@@ -12,10 +12,10 @@ export class SportsTargetingSetup implements DiProcess {
 		});
 	}
 
-	private getPageLevelTargeting(): Partial<Targeting> {
+	private getPageLevelTargeting(): Partial<SlotTargeting> {
 		const domain = getDomain();
 		const cid = utils.queryString.get('cid');
-		const targeting: Partial<Targeting> = {
+		const targeting: Partial<SlotTargeting> = {
 			kid_wiki: '0',
 			skin: `turf_${context.get('state.isMobile') ? 'mobile' : 'desktop'}`,
 			uap: 'none',

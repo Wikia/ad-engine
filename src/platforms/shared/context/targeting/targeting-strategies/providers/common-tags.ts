@@ -1,4 +1,4 @@
-import { context, Targeting, utils } from '@wikia/ad-engine';
+import { context, SlotTargeting, utils } from '@wikia/ad-engine';
 import { getDomain } from '../../../../utils/get-domain';
 import { getMediaWikiVariable } from '../../../../utils/get-media-wiki-variable';
 import { FandomContext } from '../models/fandom-context';
@@ -6,18 +6,18 @@ import { CommonTargetingParams } from '../interfaces/common-targeting-params';
 import { OptionalTargetingParams } from '../interfaces/optional-targeting-params';
 import { TargetingProvider } from '../interfaces/targeting-provider';
 
-export class CommonTags implements TargetingProvider<Partial<Targeting>> {
+export class CommonTags implements TargetingProvider<Partial<SlotTargeting>> {
 	constructor(private skin: string, private fandomContext: FandomContext) {}
 
-	get(): Partial<Targeting> {
+	get(): Partial<SlotTargeting> {
 		return this.getCommonParams();
 	}
 
-	public getCommonParams(): Partial<Targeting> {
+	public getCommonParams(): Partial<SlotTargeting> {
 		const domain = getDomain();
 		const wiki: MediaWikiAdsContext = context.get('wiki');
 
-		const commonParams: Partial<Targeting> = {
+		const commonParams: Partial<SlotTargeting> = {
 			ar: window.innerWidth > window.innerHeight ? '4:3' : '3:4',
 			dmn: domain.base,
 			geo: utils.geoService.getCountryCode() || 'none',

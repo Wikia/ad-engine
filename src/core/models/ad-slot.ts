@@ -3,6 +3,8 @@ import {
 	AdStackPayload,
 	insertMethodType,
 	SlotPlaceholderContextConfig,
+	SlotTargeting,
+	slotTargetingService,
 	slotTweaker,
 	utils,
 } from '../';
@@ -10,17 +12,6 @@ import { ADX, GptSizeMapping } from '../providers';
 import { context, slotDataParamsUpdater, templateService } from '../services';
 import { AD_LABEL_CLASS, getTopOffset, logger, stringBuilder } from '../utils';
 import { Dictionary } from './dictionary';
-
-export interface Targeting {
-	amznbid?: string;
-	hb_bidder?: string;
-	hb_pb?: string;
-	src?: string;
-	pos?: string;
-	loc?: string;
-	rv?: string | string[];
-	[key: string]: googletag.NamedSize | number;
-}
 
 export interface RepeatConfig {
 	index: number;
@@ -47,7 +38,7 @@ export interface SlotConfig {
 	parentContainerSelector?: string;
 	insertIntoParentContainerMethod?: insertMethodType;
 
-	targeting: Targeting;
+	targeting: SlotTargeting;
 	videoAdUnit?: string;
 	repeat?: RepeatConfig;
 	adUnit?: string;
@@ -150,9 +141,12 @@ export class AdSlot {
 
 		this.config.slotName = this.config.slotName || ad.id;
 		this.config.slotNameSuffix = this.config.slotNameSuffix || '';
-		this.config.targeting = this.config.targeting || ({} as Targeting);
-		this.config.targeting.src = this.config.targeting.src || context.get('src');
-		this.config.targeting.pos = this.config.targeting.pos || this.getSlotName();
+
+		const targetingData = this.config.targeting || ({} as SlotTargeting);
+		targetingData.src = targetingData.src || context.get('src');
+		targetingData.pos = targetingData.pos || this.getSlotName();
+		slotTargetingService.extend(this.getSlotName(), targetingData);
+		delete this.config.targeting;
 
 		this.requested = new Promise<void>((resolve) => {
 			communicationService.onSlotEvent(
@@ -330,15 +324,15 @@ export class AdSlot {
 	 * Convenient property to get targeting.
 	 * @returns {Object}
 	 */
-	get targeting(): Targeting {
-		return this.config.targeting;
+	get targeting(): SlotTargeting {
+		return slotTargetingService.getAll(this.getSlotName());
 	}
 
-	getTargeting(): Targeting {
-		return this.parseTargetingParams(this.config.targeting);
+	getTargeting(): SlotTargeting {
+		return this.parseTargetingParams(slotTargetingService.getAll(this.getSlotName()));
 	}
 
-	private parseTargetingParams(targetingParams: Dictionary): Targeting {
+	private parseTargetingParams(targetingParams: Dictionary): SlotTargeting {
 		const result: Dictionary = {};
 
 		Object.keys(targetingParams).forEach((key) => {
@@ -353,7 +347,7 @@ export class AdSlot {
 			}
 		});
 
-		return result as Targeting;
+		return result as SlotTargeting;
 	}
 
 	getDefaultSizes(): number[][] {

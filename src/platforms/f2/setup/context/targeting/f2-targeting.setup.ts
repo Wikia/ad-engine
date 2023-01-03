@@ -3,7 +3,7 @@ import {
 	DiProcess,
 	InstantConfigCacheStorage,
 	InstantConfigService,
-	Targeting,
+	SlotTargeting,
 	targetingService,
 	utils,
 } from '@wikia/ad-engine';
@@ -29,8 +29,8 @@ export class F2TargetingSetup implements DiProcess {
 		});
 	}
 
-	private getPageLevelTargeting(): Partial<Targeting> {
-		const targeting: Partial<Targeting> = {
+	private getPageLevelTargeting(): Partial<SlotTargeting> {
+		const targeting: Partial<SlotTargeting> = {
 			host: window.location.hostname,
 			lang: 'en',
 			post_id: '-1',
@@ -66,7 +66,7 @@ export class F2TargetingSetup implements DiProcess {
 		return targeting;
 	}
 
-	private setArticleTargeting(targeting: Partial<Targeting>): void {
+	private setArticleTargeting(targeting: Partial<SlotTargeting>): void {
 		targeting.post_id = this.f2State.article?.id.toString() ?? '-1';
 		// note tags and verticals send the same data for consistency with legacy ad targeting
 		targeting.tags = this.undefinedIfEmpty(this.f2State.article?.tags);
@@ -79,18 +79,18 @@ export class F2TargetingSetup implements DiProcess {
 		targeting.s2 = `${this.f2State.hasFeaturedVideo ? 'fv-' : ''}${targeting.s2}`;
 	}
 
-	private setHomeTargeting(targeting: Partial<Targeting>): void {
+	private setHomeTargeting(targeting: Partial<SlotTargeting>): void {
 		targeting.vertical = 'home';
 		targeting.s0v = 'home';
 	}
 
-	private setTopicTargeting(targeting: Partial<Targeting>): void {
+	private setTopicTargeting(targeting: Partial<SlotTargeting>): void {
 		targeting.topic = this.f2State.topic?.slug;
 		targeting.hub = this.f2State.topic?.slug;
 		targeting.s0v = this.f2State.topic?.slug;
 	}
 
-	private setCid(targeting: Partial<Targeting>): void {
+	private setCid(targeting: Partial<SlotTargeting>): void {
 		const cid = utils.queryString.get('cid');
 
 		if (cid !== undefined) {

@@ -1,18 +1,25 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, Dictionary, Targeting } from '../models';
-import { config, slotService, TargetingData, targetingService, trackingOptIn } from '../services';
+import { AdSlot, Dictionary } from '../models';
+import {
+	config,
+	slotService,
+	SlotTargeting,
+	TargetingData,
+	targetingService,
+	trackingOptIn,
+} from '../services';
 import { targeting } from './targeting';
 
 export interface TaglessSlotOptions {
 	correlator: number;
-	targeting: Targeting;
+	targeting: SlotTargeting;
 	adUnit: string;
 	size: string;
 }
 
 export interface VastOptions {
 	correlator: number;
-	targeting: Targeting;
+	targeting: SlotTargeting;
 	videoAdUnitId: string;
 	contentSourceId: string;
 	customParams: string;

@@ -1,5 +1,12 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, BaseServiceSetup, context, Dictionary, utils } from '@ad-engine/core';
+import {
+	AdSlot,
+	BaseServiceSetup,
+	context,
+	Dictionary,
+	slotTargetingService,
+	utils,
+} from '@ad-engine/core';
 import { A9Provider } from './a9';
 import { PrebidProvider } from './prebid';
 
@@ -41,7 +48,7 @@ class Bidders extends BaseServiceSetup {
 
 	applyTargetingParams(slotName, targeting): void {
 		Object.keys(targeting).forEach((key) =>
-			context.set(`slots.${slotName}.targeting.${key}`, targeting[key]),
+			slotTargetingService.set(slotName, key, targeting[key]),
 		);
 	}
 
@@ -90,7 +97,7 @@ class Bidders extends BaseServiceSetup {
 	resetTargetingKeys(slotName): void {
 		this.getBiddersProviders().forEach((provider) => {
 			provider.getTargetingKeys(slotName).forEach((key) => {
-				context.remove(`slots.${slotName}.targeting.${key}`);
+				slotTargetingService.remove(slotName, key);
 			});
 		});
 

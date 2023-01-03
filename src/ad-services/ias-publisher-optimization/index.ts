@@ -3,6 +3,7 @@ import {
 	context,
 	Dictionary,
 	SlotConfig,
+	slotTargetingService,
 	targetingService,
 	utils,
 } from '@ad-engine/core';
@@ -115,7 +116,7 @@ class IasPublisherOptimization extends BaseServiceSetup {
 		});
 
 		this.slotList.forEach((slotName) => {
-			context.set(`slots.${slotName}.targeting.vw`, '-1');
+			slotTargetingService.set(slotName, 'vw', '-1');
 		});
 	}
 
@@ -130,7 +131,7 @@ class IasPublisherOptimization extends BaseServiceSetup {
 		IasPublisherOptimization.setCustomKeyValuesInTargeting(iasTargetingData.custom);
 
 		for (const [slotName, slotTargeting] of Object.entries(iasTargetingData.slots)) {
-			context.set(`slots.${slotName}.targeting.vw`, slotTargeting.vw || slotTargeting.vw_vv);
+			slotTargetingService.set(slotName, 'vw', slotTargeting.vw || slotTargeting.vw_vv);
 		}
 		utils.logger(logGroup, 'Done.', this);
 		this.resolveIASReady();

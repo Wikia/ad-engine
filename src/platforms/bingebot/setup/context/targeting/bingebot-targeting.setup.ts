@@ -5,7 +5,7 @@ import {
 	DiProcess,
 	eventsRepository,
 	ofType,
-	Targeting,
+	SlotTargeting,
 	targetingService,
 	utils,
 } from '@wikia/ad-engine';
@@ -38,7 +38,7 @@ export class BingeBotTargetingSetup implements DiProcess {
 			});
 	}
 
-	getPageLevelTargeting(): Partial<Targeting> {
+	getPageLevelTargeting(): Partial<SlotTargeting> {
 		const pageTargeting: Dictionary<string> = {
 			geo: utils.geoService.getCountryCode() || 'none',
 			s0: 'ent',

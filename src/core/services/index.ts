@@ -28,3 +28,4 @@ export * from './templates-registry/template-symbols';
 export * from './templates-registry/template-action';
 export * from './templates-registry/template-logger';
 export * from './targeting-service';
+export * from './slot-targeting-service';

@@ -10,6 +10,7 @@ import {
 	DEFAULT_MAX_DELAY,
 	Dictionary,
 	pbjsFactory,
+	slotTargetingService,
 	Tcf,
 	tcf,
 	utils,
@@ -37,7 +38,7 @@ communicationService.onSlotEvent(AdSlot.VIDEO_AD_ERROR, ({ slot }) =>
 
 async function markWinningVideoBidAsUsed(adSlot: AdSlot): Promise<void> {
 	// Mark ad as rendered
-	const adId: string = context.get(`slots.${adSlot.getSlotName()}.targeting.hb_adid`);
+	const adId: string = slotTargetingService.get(adSlot.getSlotName(), 'hb_adid');
 
 	if (adId) {
 		const pbjs: Pbjs = await pbjsFactory.init();
@@ -214,9 +215,7 @@ export class PrebidProvider extends BidderProvider {
 	}
 
 	getTargetingKeys(slotName: string): string[] {
-		const allTargetingKeys: string[] = Object.keys(
-			context.get(`slots.${slotName}.targeting`) || {},
-		);
+		const allTargetingKeys: string[] = Object.keys(slotTargetingService.getAll(slotName) || {});
 
 		return allTargetingKeys.filter((key) => key.indexOf('hb_') === 0);
 	}

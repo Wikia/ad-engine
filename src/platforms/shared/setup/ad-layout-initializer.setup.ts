@@ -4,7 +4,7 @@ import {
 	context,
 	DiProcess,
 	eventsRepository,
-	Targeting,
+	SlotTargeting,
 	targetingService,
 	utils,
 } from '@wikia/ad-engine';
@@ -38,7 +38,7 @@ export function shouldUseAdLayouts(): Promise<boolean> {
 export class AdLayoutInitializerSetup implements DiProcess {
 	private lisAdUnit = '/5441/wka1b.LIS/layout_initializer/';
 	private lisSize = '1x1';
-	private lisTargeting: Targeting = {
+	private lisTargeting: SlotTargeting = {
 		loc: 'pre',
 		pos: 'layout_initializer',
 	};
