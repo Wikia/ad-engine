@@ -13,6 +13,8 @@ export class Audigent extends BaseServiceSetup {
 	private isLoaded = false;
 	private matchesTagScriptLoader: Promise<void>;
 	private static segmentsScriptLoader: Promise<void>;
+	private static sampling;
+	private static segmentLimit;
 
 	static loadSegmentLibrary(): void {
 		Audigent.segmentsScriptLoader = utils.scriptLoader
@@ -37,11 +39,9 @@ export class Audigent extends BaseServiceSetup {
 		}
 
 		context.set('targeting.AU_SEG', '-1');
-		context.set(
-			'services.audigent.tracking.sampling',
-			this.instantConfig.get('icAudigentTrackingSampling'),
-		);
-		context.set('services.audigent.segmentLimit', this.instantConfig.get('icAudigentSegmentLimit'));
+
+		Audigent.sampling = this.instantConfig.get('icAudigentTrackingSampling');
+		Audigent.segmentLimit = this.instantConfig.get('icAudigentSegmentLimit');
 
 		!Audigent.segmentsScriptLoader && Audigent.loadSegmentLibrary();
 		!this.matchesTagScriptLoader && this.loadMatchesLibrary();
@@ -95,7 +95,7 @@ export class Audigent extends BaseServiceSetup {
 
 	private static sliceSegments() {
 		const au_segments = window['au_seg'].segments || [];
-		const limit = context.get('services.audigent.segmentLimit') || 0;
+		const limit = Audigent.segmentLimit || 0;
 
 		let segments = au_segments.length ? au_segments : 'no_segments';
 
@@ -119,11 +119,9 @@ export class Audigent extends BaseServiceSetup {
 
 	private static trackWithExternalLoggerIfEnabled(segments: string | []) {
 		const randomNumber = Math.random() * 100;
+		const sampling = Audigent.sampling || 0;
 
-		if (
-			externalLogger.isEnabled('services.audigent.tracking.sampling', randomNumber) &&
-			typeof segments !== 'string'
-		) {
+		if (sampling > 0 && randomNumber <= sampling && typeof segments !== 'string') {
 			externalLogger.log('Audigent segments', {
 				segmentsNo: segments.length,
 				segments,
