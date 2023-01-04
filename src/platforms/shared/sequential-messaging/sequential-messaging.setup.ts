@@ -1,4 +1,10 @@
-import { communicationService, context, resolvedState, utils } from '@wikia/ad-engine';
+import {
+	communicationService,
+	context,
+	resolvedState,
+	slotTargetingService,
+	utils,
+} from '@wikia/ad-engine';
 import Cookies from 'js-cookie';
 import { SequenceContinuationHandler } from './domain/sequence-continuation-handler';
 import { SequenceStartHandler } from './domain/sequence-start-handler';
@@ -75,6 +81,7 @@ export class SequentialMessagingSetup {
 		const targetingManager = new GamTargetingManager(
 			context,
 			slotsContext,
+			slotTargetingService,
 			SequentialMessagingSetup.baseTargetingSize,
 			resolvedState.forceUapResolveState,
 		);

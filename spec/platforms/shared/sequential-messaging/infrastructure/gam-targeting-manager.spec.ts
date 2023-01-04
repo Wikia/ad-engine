@@ -3,16 +3,19 @@ import { GamTargetingManager } from '../../../../../src/platforms/shared/sequent
 import { makeContextSpy } from '../../test_doubles/context.spy';
 import { makeSlotsContextSpy } from '../test_doubles/slotContext.spy';
 import { SequenceState } from '../../../../../src/platforms/shared/sequential-messaging/domain/data-structures/user-sequential-message-state';
+import { makeSlotsTargetingServiceSpy } from '../test_doubles/slotTargetingService.spy';
 
 const baseTargetingSize = 10;
 let contextSpy;
 let slotsContextSpy;
 let uapHandlerSpy;
+let slotTargetingServiceSpy;
 
 describe('Gam Targeting manager', () => {
 	beforeEach(() => {
 		contextSpy = makeContextSpy();
 		slotsContextSpy = makeSlotsContextSpy();
+		slotTargetingServiceSpy = makeSlotsTargetingServiceSpy();
 		uapHandlerSpy = sinon.spy();
 	});
 
@@ -23,6 +26,7 @@ describe('Gam Targeting manager', () => {
 		const tm = new GamTargetingManager(
 			contextSpy,
 			slotsContextSpy,
+			slotTargetingServiceSpy,
 			baseTargetingSize,
 			uapHandlerSpy,
 		);
@@ -39,6 +43,7 @@ describe('Gam Targeting manager', () => {
 		const tm = new GamTargetingManager(
 			contextSpy,
 			slotsContextSpy,
+			slotTargetingServiceSpy,
 			baseTargetingSize,
 			uapHandlerSpy,
 		);
@@ -51,8 +56,9 @@ describe('Gam Targeting manager', () => {
 	function assertContextCalls(sequenceId: string, sequenceState: SequenceState) {
 		sinon.assert.calledWith(slotsContextSpy.setSlotSize, 'top_leaderboard', [12, 12]);
 		sinon.assert.calledWith(
-			contextSpy.set,
-			'slots.top_leaderboard.targeting.sequential',
+			slotTargetingServiceSpy.set,
+			'top_leaderboard',
+			'sequential',
 			sequenceId,
 		);
 		sinon.assert.calledWith(contextSpy.set, 'templates.sizeOverwritingMap', {

@@ -303,7 +303,7 @@ export class AdSlot {
 
 	// Main position is the first value defined in the "pos" key-value (targeting)
 	getMainPositionName(): string {
-		const { pos = '' } = this.targeting;
+		const { pos = '' } = slotTargetingService.getSlotTargeting(this.getSlotName());
 
 		return (Array.isArray(pos) ? pos : pos.split(','))[0].toLowerCase();
 	}
@@ -325,11 +325,11 @@ export class AdSlot {
 	 * @returns {Object}
 	 */
 	get targeting(): SlotTargeting {
-		return slotTargetingService.getAll(this.getSlotName());
+		return slotTargetingService.getSlotTargeting(this.getSlotName());
 	}
 
 	getTargeting(): SlotTargeting {
-		return this.parseTargetingParams(slotTargetingService.getAll(this.getSlotName()));
+		return this.parseTargetingParams(slotTargetingService.getSlotTargeting(this.getSlotName()));
 	}
 
 	private parseTargetingParams(targetingParams: Dictionary): SlotTargeting {
@@ -442,8 +442,16 @@ export class AdSlot {
 		return context.get(`slots.${this.config.slotName}.${key}`);
 	}
 
+	getTargetingConfigProperty(key: string): any {
+		return slotTargetingService.get(this.getSlotName(), key);
+	}
+
 	setConfigProperty(key: string, value: any): void {
 		context.set(`slots.${this.config.slotName}.${key}`, value);
+	}
+
+	setTargetingConfigProperty(key: string, value: any): void {
+		slotTargetingService.set(this.config.slotName, key, value);
 	}
 
 	success(status: string = AdSlot.STATUS_SUCCESS): void {
@@ -479,10 +487,10 @@ export class AdSlot {
 	}
 
 	updateWinningPbBidderDetails(): void {
-		if (this.targeting.hb_bidder && this.targeting.hb_pb) {
+		if (this.getTargetingConfigProperty('hb_bidder') && this.getTargetingConfigProperty('hb_pb')) {
 			this.winningBidderDetails = {
-				name: this.targeting.hb_bidder,
-				price: this.targeting.hb_pb,
+				name: this.getTargetingConfigProperty('hb_bidder'),
+				price: this.getTargetingConfigProperty('hb_pb'),
 			};
 		} else {
 			this.winningBidderDetails = null;
@@ -490,10 +498,10 @@ export class AdSlot {
 	}
 
 	updateWinningA9BidderDetails(): void {
-		if (this.targeting.amznbid) {
+		if (this.getTargetingConfigProperty('amznbid')) {
 			this.winningBidderDetails = {
 				name: 'a9',
-				price: this.targeting.amznbid,
+				price: this.getTargetingConfigProperty('amznbid'),
 			};
 		} else {
 			this.winningBidderDetails = null;

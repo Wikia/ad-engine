@@ -1,4 +1,4 @@
-import { AdSlot, context, Dictionary } from '@wikia/core';
+import { AdSlot, context, Dictionary, slotTargetingService } from '@wikia/core';
 import { communicationService, eventsRepository } from '@wikia/communication';
 import { assert, expect } from 'chai';
 import { createSandbox, SinonSandbox, SinonSpy } from 'sinon';
@@ -98,7 +98,7 @@ describe('ad-slot', () => {
 		beforeEach(() => {
 			adSlot = createAdSlot('top_leaderboard');
 			targeting = {};
-			adSlot.config.targeting = targeting;
+			slotTargetingService.clear('top_leaderboard');
 		});
 
 		it('should have winningBidderDetails set to null initially', () => {
@@ -108,6 +108,8 @@ describe('ad-slot', () => {
 		it('should set winningBidderDetails if both bidder and bidder price are available', () => {
 			targeting.hb_bidder = 'bidder';
 			targeting.hb_pb = 20;
+			slotTargetingService.set('top_leaderboard', 'hb_bidder', targeting.hb_bidder);
+			slotTargetingService.set('top_leaderboard', 'hb_pb', targeting.hb_pb);
 
 			adSlot.updateWinningPbBidderDetails();
 
@@ -141,7 +143,8 @@ describe('ad-slot', () => {
 		beforeEach(() => {
 			adSlot = createAdSlot('top_leaderboard');
 			targeting = {};
-			adSlot.config.targeting = targeting;
+			slotTargetingService.clear('top_leaderboard');
+			slotTargetingService.extend('top_leaderboard', targeting);
 		});
 
 		it('should have winningBidderDetails set to null initially', () => {
@@ -150,6 +153,7 @@ describe('ad-slot', () => {
 
 		it('should set winningBidderDetails if a9 price is available', () => {
 			targeting.amznbid = 'foobar';
+			slotTargetingService.set('top_leaderboard', 'amznbid', targeting.amznbid);
 
 			adSlot.updateWinningA9BidderDetails();
 

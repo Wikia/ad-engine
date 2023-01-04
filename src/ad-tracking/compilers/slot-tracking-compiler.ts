@@ -28,7 +28,7 @@ export const slotTrackingCompiler = ({ data, slot }: CompilerPartial): CompilerP
 	const now = new Date();
 	const timestamp: number = now.getTime();
 	const isUap =
-		slot.getConfigProperty('targeting.uap') && slot.getConfigProperty('targeting.uap') !== 'none';
+		slot.getTargetingConfigProperty('uap') && slot.getTargetingConfigProperty('uap') !== 'none';
 
 	const targetingData: TargetingData = targetingService.getAll<TargetingData>();
 

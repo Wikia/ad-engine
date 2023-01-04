@@ -1,5 +1,5 @@
 import { TargetingManagerInterface } from '../domain/interfaces/targeting-manager.interface';
-import { ContextInterface, slotTargetingService } from '@wikia/ad-engine';
+import { ContextInterface, SlotTargetingServiceInterface } from '@wikia/ad-engine';
 import { SlotsContextInterface } from '../../slots/slots-context';
 import { SequenceState } from '../domain/data-structures/user-sequential-message-state';
 
@@ -7,6 +7,7 @@ export class GamTargetingManager implements TargetingManagerInterface {
 	constructor(
 		private context: ContextInterface,
 		private slotsContext: SlotsContextInterface,
+		private slotTargetingService: SlotTargetingServiceInterface,
 		private baseTargetingSize: number,
 		private forceUapResolveState: () => void,
 	) {}
@@ -18,7 +19,7 @@ export class GamTargetingManager implements TargetingManagerInterface {
 			'templates.sizeOverwritingMap',
 			this.generateSizeMapping(sequenceState.width, sequenceState.height),
 		);
-		slotTargetingService.set('top_leaderboard', 'sequential', sequenceId);
+		this.slotTargetingService.set('top_leaderboard', 'sequential', sequenceId);
 
 		if (sequenceState.isUap()) {
 			this.forceUapResolveState();

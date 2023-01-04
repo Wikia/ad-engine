@@ -10,7 +10,7 @@ export const viewabilityPropertiesTrackingCompiler = ({
 			...data,
 			creative_id: slot.creativeId || '',
 			line_item_id: slot.lineItemId || '',
-			rv: slot.getConfigProperty('targeting.rv') || '',
+			rv: slot.getTargetingConfigProperty('rv') || '',
 			slot_id: slot.getUid() || '',
 		},
 	};

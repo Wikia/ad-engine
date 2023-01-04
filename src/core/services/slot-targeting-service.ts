@@ -8,11 +8,26 @@ export interface SlotTargeting {
 	pos?: string;
 	loc?: string;
 	rv?: string | string[];
+
 	[key: string]: googletag.NamedSize | number;
 }
 
-interface TargetingObject {
+export interface TargetingObject {
 	[key: string]: SlotTargeting;
+}
+
+export interface SlotTargetingServiceInterface {
+	extend(slotName: string, newTargeting: SlotTargeting): void;
+
+	getAll(): TargetingObject;
+
+	getSlotTargeting(slotName: string): SlotTargeting;
+
+	get(slotName: string, key: string): any;
+
+	set(slotName: string, key: string, value: any): void;
+
+	remove(slotName: string, key: string): void;
 }
 
 export class SlotTargetingService {
@@ -29,12 +44,20 @@ export class SlotTargetingService {
 		window.ads.slotTargeting = debug.isDebugMode() ? this.slotTargeting : {};
 	}
 
-	getAll(slotName: string): SlotTargeting {
+	getAll(): TargetingObject {
+		return this.slotTargeting;
+	}
+
+	getSlotTargeting(slotName: string): SlotTargeting {
 		return this.slotTargeting[slotName] || ({} as SlotTargeting);
 	}
 
 	get(slotName: string, key: string): any {
-		return this.slotTargeting[slotName][key];
+		if (this.slotTargeting[slotName]) {
+			return this.slotTargeting[slotName][key];
+		}
+
+		return undefined;
 	}
 
 	set(slotName: string, key: string, value: any): void {
@@ -46,6 +69,10 @@ export class SlotTargetingService {
 		if (this.slotTargeting[slotName][key]) {
 			delete this.slotTargeting[slotName][key];
 		}
+	}
+
+	clear(slotName: string): void {
+		this.slotTargeting[slotName] = {} as SlotTargeting;
 	}
 }
 

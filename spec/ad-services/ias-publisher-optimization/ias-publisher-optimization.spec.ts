@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { createSandbox, spy } from 'sinon';
-import { context, utils, targetingService } from '../../../src/core';
+import { context, utils, targetingService, slotTargetingService } from '../../../src/core';
 import { iasPublisherOptimization } from '@wikia/ad-services';
 
 describe('IAS Publisher Optimization', () => {
@@ -107,6 +107,6 @@ describe('IAS Publisher Optimization', () => {
 		expect(targetingService.get('vio')).to.equal('veryLow');
 		expect(targetingService.get('b_ias')).to.equal('high');
 		expect(targetingService.get('ias-kw')).to.deep.equal(['IAS_12345', 'IAS_67890']);
-		expect(context.get('slots.top_leaderboard.targeting.vw')).to.equal('false');
+		expect(slotTargetingService.get('top_leaderboard', 'vw')).to.equal('false');
 	});
 });

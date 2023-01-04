@@ -1,8 +1,8 @@
 import { PrebidProvider } from '@wikia/ad-bidders/prebid';
-import { context } from '@wikia/core/services/context-service';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 import { stubPbjs } from '../../core/services/pbjs.stub';
+import { slotTargetingService } from '@wikia/core';
 
 const bidderConfig = {
 	enabled: false,
@@ -45,7 +45,7 @@ describe('PrebidProvider bidder', () => {
 		it('returns all pbjs keys to reset', () => {
 			const prebid = new PrebidProvider(bidderConfig);
 
-			context.set('slots.top_leaderboard.targeting', {
+			slotTargetingService.extend('top_leaderboard', {
 				src: 'foo',
 				loc: 'top',
 				hb_bidder: 'wikia',

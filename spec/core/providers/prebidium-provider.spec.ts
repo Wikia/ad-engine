@@ -1,4 +1,4 @@
-import { context, PrebidiumProvider } from '@wikia/core';
+import { PrebidiumProvider, slotTargetingService } from '@wikia/core';
 import { IframeBuilder } from '@wikia/core/utils';
 import { communicationService, eventsRepository } from '@wikia/communication';
 import { assert } from 'chai';
@@ -25,7 +25,7 @@ describe('PrebidiumProvider', () => {
 		prebidiumProvider = new PrebidiumProvider();
 
 		stubIframeBuilder();
-		contextStub.get = sandbox.stub(context, 'get').returns(mock.adId);
+		contextStub.get = sandbox.stub(slotTargetingService, 'get').returns(mock.adId);
 		pbjsStub = stubPbjs(sandbox).pbjsStub;
 	});
 
@@ -68,10 +68,11 @@ describe('PrebidiumProvider', () => {
 		});
 
 		it('should call context get with correct argument', () => {
-			const argument = contextStub.get.getCall(0).args[0];
+			const callArguments = contextStub.get.getCall(0).args;
 
 			assert(contextStub.get.calledOnce);
-			assert.equal(argument, `slots.${mock.slotName}.targeting.hb_adid`);
+			assert.equal(callArguments[0], mock.slotName);
+			assert.equal(callArguments[1], 'hb_adid');
 		});
 	});
 

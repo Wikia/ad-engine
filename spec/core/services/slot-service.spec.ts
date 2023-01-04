@@ -1,4 +1,4 @@
-import { context, Dictionary, SlotConfig, slotService } from '@wikia/core';
+import { context, Dictionary, SlotConfig, slotService, slotTargetingService } from '@wikia/core';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 import { adSlotFake } from '../ad-slot-fake';
@@ -72,14 +72,14 @@ describe('slot-service', () => {
 	});
 
 	it('getter for slot with different single targeting.pos', () => {
-		adSlot.config.targeting.pos = 'bar3';
+		slotTargetingService.set('FAKE_AD', 'pos', 'bar3');
 		slotService.add(adSlot);
 
 		expect(slotService.get('bar3')).to.equal(adSlot);
 	});
 
 	it('getter for slot with different multiple targeting.pos', () => {
-		adSlot.config.targeting.pos = ['foo1', 'bar2'];
+		slotTargetingService.set('FAKE_AD', 'pos', ['foo1', 'bar2']);
 		slotService.add(adSlot);
 
 		expect(slotService.get('foo1')).to.equal(adSlot);

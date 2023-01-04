@@ -215,7 +215,9 @@ export class PrebidProvider extends BidderProvider {
 	}
 
 	getTargetingKeys(slotName: string): string[] {
-		const allTargetingKeys: string[] = Object.keys(slotTargetingService.getAll(slotName) || {});
+		const allTargetingKeys: string[] = Object.keys(
+			slotTargetingService.getSlotTargeting(slotName) || {},
+		);
 
 		return allTargetingKeys.filter((key) => key.indexOf('hb_') === 0);
 	}
