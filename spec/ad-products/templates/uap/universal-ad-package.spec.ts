@@ -2,7 +2,7 @@ import { communicationService, eventsRepository } from '@wikia/communication';
 import { expect } from 'chai';
 import { BehaviorSubject } from 'rxjs';
 import { createSandbox, SinonSandbox, SinonSpy, SinonStubbedInstance } from 'sinon';
-import { AdSlot, slotTargetingService, SlotTargetingService } from '@wikia/core';
+import { AdSlot, slotTargetingService, SlotTargetingService, Context, context } from '@wikia/core';
 import { registerUapListener, universalAdPackage } from '@wikia/ad-products';
 
 describe('UniversalAdPackage', () => {
@@ -10,6 +10,7 @@ describe('UniversalAdPackage', () => {
 	const UAP_CREATIVE_ID = 333;
 	const UAP_STANDARD_AD_PRODUCT = 'uap';
 	const sandbox: SinonSandbox = createSandbox();
+	let contextStub: SinonStubbedInstance<Context>;
 	let slotTargetingServiceStub: SinonStubbedInstance<SlotTargetingService>;
 	const uapLoadStatus = communicationService.getGlobalAction(
 		eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
@@ -22,6 +23,9 @@ describe('UniversalAdPackage', () => {
 	beforeEach(() => {
 		slotTargetingServiceStub = sandbox.stub(slotTargetingService);
 		slotTargetingServiceStub.getAll.returns({ top_leaderboard: {}, top_boxad: {} });
+
+		contextStub = sandbox.stub(context);
+		contextStub.get.withArgs('slots').returns({ top_leaderboard: {}, top_boxad: {} });
 	});
 
 	it('should update every slots context when uap is updated', () => {
@@ -81,7 +85,7 @@ describe('UniversalAdPackage', () => {
 
 		beforeEach(() => {
 			dispatch = sandbox.spy(communicationService, 'dispatch');
-			slotTargetingServiceStub.get.withArgs('Slot1', 'firstCall').returns(true);
+			contextStub.get.withArgs('slots.Slot1.firstCall').returns(true);
 			sandbox.stub(universalAdPackage, 'isFanTakeoverLoaded').returns(isFanTakeoverLoaded);
 		});
 
