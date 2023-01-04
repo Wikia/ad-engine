@@ -6,6 +6,9 @@ export class TvGuideTargetingSetup implements DiProcess {
 			s0: 'ent',
 		};
 
-		context.set('targeting', targeting);
+		context.set('targeting', {
+			...context.get('targeting'),
+			...targeting,
+		});
 	}
 }

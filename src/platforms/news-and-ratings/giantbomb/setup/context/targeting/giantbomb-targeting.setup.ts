@@ -6,6 +6,9 @@ export class GiantbombTargetingSetup implements DiProcess {
 			s0: 'gaming',
 		};
 
-		context.set('targeting', targeting);
+		context.set('targeting', {
+			...context.get('targeting'),
+			...targeting,
+		});
 	}
 }

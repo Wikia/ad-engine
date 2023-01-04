@@ -6,7 +6,10 @@ export class MetacriticTargetingSetup implements DiProcess {
 			s0: this.getVerticalName(),
 		};
 
-		context.set('targeting', targeting);
+		context.set('targeting', {
+			...context.get('targeting'),
+			...targeting,
+		});
 	}
 
 	getVerticalName(): 'gaming' | 'ent' {
