@@ -67,10 +67,6 @@ export const basicContext = {
 		},
 	},
 	services: {
-		confiant: {
-			enabled: false,
-			propertyId: 'd-aIf3ibf0cYxCLB1HTWfBQOFEA',
-		},
 		durationMedia: {
 			enabled: false,
 			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',

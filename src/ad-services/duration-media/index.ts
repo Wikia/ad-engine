@@ -6,7 +6,7 @@ export class DurationMedia extends BaseServiceSetup {
 	call(): Promise<void> {
 		const libraryUrl: string = context.get('services.durationMedia.libraryUrl');
 
-		if (!context.get('services.durationMedia.enabled') || !libraryUrl) {
+		if (!this.isEnabled('icDurationMedia', false) || !libraryUrl) {
 			utils.logger(logGroup, 'disabled');
 
 			return Promise.resolve();

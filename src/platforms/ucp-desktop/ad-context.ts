@@ -67,15 +67,6 @@ export const basicContext = {
 		},
 	},
 	services: {
-		anyclip: {
-			enabled: false,
-			pubname: 'fandomcom',
-			widgetname: '001w000001Y8ud2_19593',
-		},
-		confiant: {
-			enabled: false,
-			propertyId: 'd-aIf3ibf0cYxCLB1HTWfBQOFEA',
-		},
 		durationMedia: {
 			enabled: false,
 			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',

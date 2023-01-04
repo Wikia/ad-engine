@@ -15,8 +15,8 @@ export class AnyclipPlayerSetup extends BaseServiceSetup {
 
 		if (!incontentPlayer) return;
 		slotDataParamsUpdater.updateOnCreate(incontentPlayer);
-		if (anyclip.isEnabled()) {
-			anyclip.call();
+		if (this.isEnabled('services.anyclip.enabled', false)) {
+			anyclip.loadPlayerAsset();
 		}
 	}
 

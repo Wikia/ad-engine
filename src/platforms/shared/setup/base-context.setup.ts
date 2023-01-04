@@ -146,12 +146,7 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setServicesContext(): void {
-		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
-		context.set('services.durationMedia.enabled', this.instantConfig.get('icDurationMedia'));
-		if (!this.instantConfig.get('icDurationMedia')) {
-			context.set('services.slotRefresher.config', this.instantConfig.get('icSlotRefresher'));
-		}
-		context.set('services.eyeota.enabled', this.instantConfig.get('icEyeota'));
+		context.set('services.anyclip.enabled', this.instantConfig.get('icAnyclipPlayer'));
 		context.set(
 			'services.iasPublisherOptimization.enabled',
 			this.instantConfig.get('icIASPublisherOptimization'),
@@ -172,12 +167,15 @@ export class BaseContextSetup implements DiProcess {
 		context.set('services.liveRampPixel.enabled', this.instantConfig.get('icLiveRampPixel'));
 		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
 		context.set('services.ppidRepository', this.instantConfig.get('icPpidRepository'));
+
 		context.set(
 			'services.messageBox.enabled',
 			this.instantConfig.get('icAdCollapsedMessageBox', false),
 		);
-
-		this.setupOutstreamPlayers();
+		context.set(
+			'services.slotRefresher.config',
+			!this.instantConfig.get('icDurationMedia') && this.instantConfig.get('icSlotRefresher'),
+		);
 	}
 
 	private setMiscContext(): void {
@@ -208,12 +206,6 @@ export class BaseContextSetup implements DiProcess {
 			'templates.sizeOverwritingMap',
 			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes,
 		);
-	}
-
-	private setupOutstreamPlayers(): void {
-		if (this.instantConfig.get('icAnyclipPlayer')) {
-			context.set('services.anyclip.enabled', true);
-		}
 	}
 
 	private setupStickySlotContext(): void {

@@ -1,7 +1,8 @@
-import { BaseServiceSetup, context, slotService, utils } from '@ad-engine/core';
+import { BaseServiceSetup, slotService, utils } from '@ad-engine/core';
 
 const logGroup = 'confiant';
 const scriptDomain = 'cdn.confiant-integrations.net';
+const propertyId = 'd-aIf3ibf0cYxCLB1HTWfBQOFEA';
 
 /**
  * Injects Confiant script
@@ -36,9 +37,7 @@ export class Confiant extends BaseServiceSetup {
 	 * @returns {Promise}
 	 */
 	call(): Promise<void> {
-		const propertyId: string = context.get('services.confiant.propertyId');
-
-		if (!context.get('services.confiant.enabled') || !propertyId) {
+		if (!this.isEnabled('icConfiant', false) || !propertyId) {
 			utils.logger(logGroup, 'disabled');
 
 			return Promise.resolve();
