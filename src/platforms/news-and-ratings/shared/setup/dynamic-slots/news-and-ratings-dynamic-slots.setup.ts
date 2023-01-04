@@ -6,9 +6,10 @@ export class NewsAndRatingsDynamicSlotsSetup implements DiProcess {
 	}
 
 	private injectSlots(): void {
-		const adPlaceholders = document.querySelectorAll('.ad');
+		const adPlaceholders = document.querySelectorAll('.mapped-ad,.ad');
 
-		if (!adPlaceholders) {
+		if (!adPlaceholders || adPlaceholders.length === 0) {
+			console.warn('AdEngine did not find any ad placeholders');
 			return;
 		}
 
