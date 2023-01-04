@@ -1,13 +1,12 @@
 import { Audigent } from '@wikia/ad-services';
 import { context, externalLogger, InstantConfigService, utils } from '@wikia/core';
 import { expect } from 'chai';
-import sinon, { createSandbox } from 'sinon';
+import { createSandbox } from 'sinon';
 
 describe('Audigent', () => {
 	const sandbox = createSandbox();
-	const instantConfigStub = sinon.createStubInstance(InstantConfigService);
 	let audigent: Audigent;
-	let loadScriptStub, externalLoggerLogStub;
+	let loadScriptStub, externalLoggerLogStub, instantConfigStub;
 	function executeMockedCustomEvent(segments) {
 		const auSegEvent = new CustomEvent('auSegReady', { detail: segments });
 		document.dispatchEvent(auSegEvent);
@@ -16,12 +15,13 @@ describe('Audigent', () => {
 	beforeEach(() => {
 		loadScriptStub = sandbox.spy(utils.scriptLoader, 'loadScript');
 		externalLoggerLogStub = sandbox.stub(externalLogger, 'log').returns({} as any);
+		instantConfigStub = sandbox.createStubInstance(InstantConfigService);
+		instantConfigStub.get.withArgs('icAudigent').returns(true);
+		instantConfigStub.get.withArgs('icAudigentTrackingSampling').returns(0);
+
 		audigent = new Audigent(instantConfigStub);
 
 		window['au_seg'] = [];
-
-		instantConfigStub.get.withArgs('icAudigent').returns(true);
-		instantConfigStub.get.withArgs('icAudigentTrackingSampling').returns(0);
 
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);
@@ -30,15 +30,15 @@ describe('Audigent', () => {
 	});
 
 	afterEach(() => {
+		instantConfigStub.get.withArgs('icAudigent').returns(undefined);
+		instantConfigStub.get.withArgs('icAudigentSegmentLimit').returns(undefined);
+		instantConfigStub.get.withArgs('icAudigentTrackingSampling').returns(undefined);
+
 		sandbox.restore();
 		loadScriptStub.resetHistory();
 		audigent.resetLoadedState();
 
 		window['au_seg'] = undefined;
-
-		instantConfigStub.get.withArgs('icAudigent').returns(undefined);
-		instantConfigStub.get.withArgs('icAudigentSegmentLimit').returns(undefined);
-		instantConfigStub.get.withArgs('icAudigentTrackingSampling').returns(undefined);
 
 		context.set('options.trackingOptIn', undefined);
 		context.set('options.optOutSale', undefined);
