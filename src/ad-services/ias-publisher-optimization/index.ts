@@ -2,6 +2,7 @@ import { BaseServiceSetup, context, Dictionary, SlotConfig, utils } from '@ad-en
 
 const logGroup = 'ias-publisher-optimization';
 const scriptUrl = '//cdn.adsafeprotected.com/iasPET.1.js';
+const pubId = '930616';
 const brandSafetyKeys = ['adt', 'alc', 'dlm', 'drg', 'hat', 'off', 'vio'] as const;
 const brandSafetyValuesLevel: Dictionary<number> = {
 	veryLow: 1,
@@ -41,7 +42,7 @@ export class IasPublisherOptimization extends BaseServiceSetup {
 	});
 
 	call(): Promise<void> {
-		if (!this.isEnabled('services.iasPublisherOptimization.enabled')) {
+		if (!this.isEnabled('icIASPublisherOptimization')) {
 			utils.logger(logGroup, 'disabled');
 			return Promise.resolve();
 		}
@@ -81,7 +82,7 @@ export class IasPublisherOptimization extends BaseServiceSetup {
 
 		window.__iasPET = window.__iasPET || {};
 		window.__iasPET.queue = window.__iasPET.queue || [];
-		window.__iasPET.pubId = context.get('services.iasPublisherOptimization.pubId');
+		window.__iasPET.pubId = pubId;
 		window.__iasPET.queue.push({
 			adSlots: iasPETSlots,
 			dataHandler: this.iasDataHandler.bind(this),

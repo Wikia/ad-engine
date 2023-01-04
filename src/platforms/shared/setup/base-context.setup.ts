@@ -148,10 +148,6 @@ export class BaseContextSetup implements DiProcess {
 	private setServicesContext(): void {
 		context.set('services.anyclip.enabled', this.instantConfig.get('icAnyclipPlayer'));
 		context.set(
-			'services.iasPublisherOptimization.enabled',
-			this.instantConfig.get('icIASPublisherOptimization'),
-		);
-		context.set(
 			'services.interventionTracker.enabled',
 			this.instantConfig.get('icInterventionTracking'),
 		);
@@ -161,10 +157,7 @@ export class BaseContextSetup implements DiProcess {
 			this.instantConfig.get('icLiveConnectCachingStrategy'),
 		);
 		context.set('services.nativo.enabled', this.instantConfig.get('icNativo'));
-		context.set('services.nielsen.enabled', this.instantConfig.get('icNielsen'));
 		context.set('services.sailthru.enabled', this.instantConfig.get('icSailthru'));
-		context.set('services.stroer.enabled', this.instantConfig.get('icStroer'));
-		context.set('services.liveRampPixel.enabled', this.instantConfig.get('icLiveRampPixel'));
 		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
 		context.set('services.ppidRepository', this.instantConfig.get('icPpidRepository'));
 

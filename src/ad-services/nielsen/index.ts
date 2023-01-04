@@ -1,7 +1,9 @@
 import { BaseServiceSetup, context, Dictionary, utils } from '@ad-engine/core';
 import { initNielsenStaticQueue } from './static-queue-script';
+
 const logGroup = 'nielsen-dcr';
 const nlsnConfig: Dictionary = {};
+const nielsenKey = 'P26086A07-C7FB-4124-A679-8AC404198BA7';
 
 /**
  * Creates Nielsen Static Queue Snippet
@@ -29,12 +31,11 @@ export class Nielsen extends BaseServiceSetup {
 	 * @returns {Object}
 	 */
 	call(): void {
-		const nielsenKey = context.get('services.nielsen.appId');
 		const targeting = context.get('targeting');
 		const section = context.get('services.nielsen.customSection') || targeting.s0v;
 		const articleId = targeting.post_id || targeting.artid;
 
-		if (!context.get('services.nielsen.enabled') || !nielsenKey) {
+		if (!this.isEnabled('icNielsen', false) || !nielsenKey) {
 			utils.logger(logGroup, 'disabled');
 
 			return null;

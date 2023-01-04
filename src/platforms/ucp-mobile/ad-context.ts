@@ -68,14 +68,10 @@ export const basicContext = {
 	},
 	services: {
 		durationMedia: {
-			enabled: false,
 			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',
 		},
 		externalLogger: {
 			endpoint: '/wikia.php?controller=AdEngine&method=postLog',
-		},
-		eyeota: {
-			enabled: false,
 		},
 		instantConfig: {
 			endpoint: 'https://services.fandom.com',
@@ -84,7 +80,6 @@ export const basicContext = {
 				'https://script.wikia.nocookie.net/fandom-ae-assets/icbm/prod/icbm_state_fandommobile.json',
 		},
 		iasPublisherOptimization: {
-			pubId: '930616',
 			slots: [
 				'top_leaderboard',
 				'top_boxad',
@@ -93,10 +88,6 @@ export const basicContext = {
 				'featured',
 				'incontent_player',
 			],
-		},
-		nielsen: {
-			enabled: false,
-			appId: 'P26086A07-C7FB-4124-A679-8AC404198BA7',
 		},
 	},
 	slotGroups: {

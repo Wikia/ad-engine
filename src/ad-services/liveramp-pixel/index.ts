@@ -13,10 +13,11 @@ export class LiveRampPixel extends BaseServiceSetup {
 	}
 
 	async call(): Promise<void> {
-		if (!this.isEnabled('services.liveRampPixel.enabled')) {
+		if (!this.isEnabled('icLiveRampPixel')) {
 			utils.logger(this.logGroup, 'pixel disabled');
 			return;
 		}
+
 		communicationService.on(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, (event) => {
 			if (event.payload.partnerName === 'Google') {
 				this.insertLiveRampPixel(event.payload.partnerIdentityId);

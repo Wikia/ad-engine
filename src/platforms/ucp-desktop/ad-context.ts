@@ -68,14 +68,9 @@ export const basicContext = {
 	},
 	services: {
 		durationMedia: {
-			enabled: false,
 			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',
 		},
-		eyeota: {
-			enabled: false,
-		},
 		iasPublisherOptimization: {
-			pubId: '930616',
 			slots: [
 				'top_leaderboard',
 				'top_boxad',
@@ -93,10 +88,6 @@ export const basicContext = {
 			appName: 'fandomdesktop',
 			fallback:
 				'https://script.wikia.nocookie.net/fandom-ae-assets/icbm/prod/icbm_state_fandomdesktop.json',
-		},
-		nielsen: {
-			enabled: false,
-			appId: 'P26086A07-C7FB-4124-A679-8AC404198BA7',
 		},
 	},
 	slotGroups: {

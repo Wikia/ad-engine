@@ -43,11 +43,9 @@ const futheadContext = {
 	application: 'futhead',
 	services: {
 		durationMedia: {
-			enabled: false,
 			libraryUrl: '//tag.durationmedia.net/sites/10654/dm.js',
 		},
 		iasPublisherOptimization: {
-			pubId: '930616',
 			slots: ['cdm-zone-01', 'cdm-zone-02', 'cdm-zone-03', 'cdm-zone-04', 'cdm-zone-06'],
 		},
 		instantConfig: {
@@ -63,11 +61,9 @@ const mutheadContext = {
 	application: 'muthead',
 	services: {
 		durationMedia: {
-			enabled: false,
 			libraryUrl: '//tag.durationmedia.net/sites/10655/dm.js',
 		},
 		iasPublisherOptimization: {
-			pubId: '930616',
 			slots: ['cdm-zone-01', 'cdm-zone-02', 'cdm-zone-03', 'cdm-zone-04', 'cdm-zone-06'],
 		},
 		instantConfig: {

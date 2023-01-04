@@ -1,18 +1,15 @@
 import { Nielsen } from '@wikia/ad-services/nielsen';
-import { context } from '@wikia/core';
+import { InstantConfigService } from '@wikia/core';
 import { expect } from 'chai';
+import { createSandbox } from 'sinon';
 
 describe('Nielsen service', () => {
-	it('is disabled if context variable is set to false', () => {
-		const nielsen = new Nielsen();
+	it('is disabled if ICBM variable is set to false', () => {
+		const sandbox = createSandbox();
+		const instantConfigStub = sandbox.createStubInstance(InstantConfigService);
+		const nielsen = new Nielsen(instantConfigStub);
 
-		context.set('services.nielsen.enabled', false);
-
-		expect(nielsen.call()).to.equal(null);
-		expect(window.NOLBUNDLE).to.equal(undefined);
-
-		context.set('services.nielsen.enabled', true);
-		context.set('services.nielsen.appId', '');
+		instantConfigStub.get.withArgs('icNielsen').returns(false);
 
 		expect(nielsen.call()).to.equal(null);
 		expect(window.NOLBUNDLE).to.equal(undefined);
