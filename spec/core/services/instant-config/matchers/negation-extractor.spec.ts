@@ -1,4 +1,4 @@
-import { extractNegation } from '@wikia/ad-services/instant-config/matchers/negation-extractor';
+import { extractNegation } from '@wikia/core/services/instant-config/matchers/negation-extractor';
 import { expect } from 'chai';
 
 describe('Negation Extractor', () => {

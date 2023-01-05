@@ -1,5 +1,5 @@
 import { utils } from '@wikia/core';
-import { RegionMatcher } from '@wikia/ad-services/instant-config/matchers/region-matcher';
+import { RegionMatcher } from '@wikia/core/services/instant-config/matchers/region-matcher';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 

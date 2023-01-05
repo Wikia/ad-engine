@@ -1,7 +1,7 @@
+import { InstantConfigService, InstantConfigServiceInterface } from '@wikia/core';
 import { MultivariantExperiment } from '@wikia/platforms/shared';
-import { InstantConfigService, InstantConfigServiceInterface } from '@wikia/ad-services';
-import sinon from 'sinon';
 import { expect } from 'chai';
+import sinon from 'sinon';
 
 const firstVariant = 'variant1';
 const defaultVariant = 'defaultVariant';

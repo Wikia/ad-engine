@@ -1,10 +1,10 @@
-import { expect } from 'chai';
 import {
 	FandomContext,
-	Site,
 	Page,
+	Site,
 } from '@wikia/platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
 import { PageLevelTaxonomyTags } from '@wikia/platforms/shared/context/targeting/targeting-strategies/providers/page-level-taxonomy-tags';
+import { expect } from 'chai';
 
 describe('PageLevelTaxonomyTags execution', () => {
 	it('Page Level Tags are extracted correctly from fandomContext object', function () {

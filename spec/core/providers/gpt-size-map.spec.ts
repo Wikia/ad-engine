@@ -1,6 +1,6 @@
-import { expect } from 'chai';
 import { GptSizeMap } from '@wikia/core/providers/gpt-size-map';
 import { context } from '@wikia/core/services/context-service';
+import { expect } from 'chai';
 
 describe('gpt-size-map', () => {
 	after(() => {

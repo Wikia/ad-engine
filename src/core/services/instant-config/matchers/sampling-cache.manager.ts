@@ -1,4 +1,4 @@
-import { CacheData, InstantConfigCacheStorage } from '@ad-engine/core';
+import { CacheData, InstantConfigCacheStorage } from '../../instant-config-cache-storage';
 import { InstantConfigSamplingCache } from '../instant-config.models';
 
 export class SamplingCacheManager {

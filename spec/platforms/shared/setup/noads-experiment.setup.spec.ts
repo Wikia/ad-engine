@@ -1,12 +1,12 @@
-import sinon, { assert } from 'sinon';
+import { context } from '@wikia/index';
+import { slotsContext } from '@wikia/platforms/shared';
 import {
 	blockUAP,
 	getUnitNameToDisable,
 	NoAdsExperimentSetup,
 } from '@wikia/platforms/shared/setup/noads-experiment.setup';
 import { expect } from 'chai';
-import { slotsContext } from '@wikia/platforms/shared';
-import { context } from '@wikia/index';
+import sinon, { assert } from 'sinon';
 
 describe('NoAdsExperimentSetup', () => {
 	const instantConfig = {

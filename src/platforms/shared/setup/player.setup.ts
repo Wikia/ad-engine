@@ -1,11 +1,11 @@
 import {
 	BaseServiceSetup,
-	jwpSetup,
 	communicationService,
 	JWPlayerManager,
+	jwpSetup,
 } from '@wikia/ad-engine';
 
-class PlayerSetup extends BaseServiceSetup {
+export class PlayerSetup extends BaseServiceSetup {
 	async execute(): Promise<void> {
 		new JWPlayerManager().manage();
 
@@ -24,5 +24,3 @@ class PlayerSetup extends BaseServiceSetup {
 		communicationService.dispatch(jwpSetup({ showAds: true, autoplayDisabled: false }));
 	}
 }
-
-export const playerSetup = new PlayerSetup();

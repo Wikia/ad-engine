@@ -1,4 +1,4 @@
-import { utils } from '@ad-engine/core';
+import { utils } from '../../index';
 import {
 	InstantConfigGroup,
 	InstantConfigResponse,

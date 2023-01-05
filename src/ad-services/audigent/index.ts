@@ -1,26 +1,24 @@
-import { context, utils, externalLogger, BaseServiceSetup } from '@ad-engine/core';
-import { InstantConfigService } from '../instant-config';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { BaseServiceSetup, context, externalLogger, utils } from '@ad-engine/core';
 
 const logGroup = 'audigent';
 const DEFAULT_MATCHES_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
-const DEFAULT_SEGMENTS_SCRIPT_URL = 'https://seg.ad.gt/api/v1/segments.js';
+const DEFAULT_SEGMENTS_SCRIPT_URL = 'https://seg.ad.gt/api/v1/s/158';
 const DEFAULT_NUMBER_OF_TRIES = 5;
 const isAuSegGlobalSet = () => typeof window['au_seg'] !== 'undefined';
 
-class Audigent extends BaseServiceSetup {
+window.au = window.au || [];
+
+export class Audigent extends BaseServiceSetup {
 	private isLoaded = false;
 	private matchesTagScriptLoader: Promise<void>;
-	private segmentsScriptLoader: Promise<void>;
+	private static segmentsScriptLoader: Promise<void>;
+	private static sampling;
+	private static segmentLimit;
 
-	loadSegmentLibrary(): void {
-		this.segmentsScriptLoader = utils.scriptLoader
-			.loadScript(
-				context.get('services.audigent.segmentsScriptUrl') || DEFAULT_SEGMENTS_SCRIPT_URL,
-				'text/javascript',
-				true,
-				'first',
-			)
+	static loadSegmentLibrary(): void {
+		Audigent.segmentsScriptLoader = utils.scriptLoader
+			.loadScript(DEFAULT_SEGMENTS_SCRIPT_URL, 'text/javascript', true, 'first')
 			.then(() => {
 				communicationService.emit(eventsRepository.AUDIGENT_SEGMENT_LIBRARY_LOADED);
 			});
@@ -34,54 +32,37 @@ class Audigent extends BaseServiceSetup {
 			});
 	}
 
-	init(instantConfig: InstantConfigService): void {
-		const newIntegrationEnabled = instantConfig.get('icAudigentNewIntegrationEnabled');
-
-		if (newIntegrationEnabled) {
-			context.set(
-				'services.audigent.segmentsScriptUrl',
-				instantConfig.get('icAudigentSegmentsScriptUrl'),
-			);
-			context.set('services.audigent.newIntegrationEnabled', newIntegrationEnabled);
-			this.loadSegmentLibrary();
-		} else {
-			this.setupSegmentsListener();
-		}
-	}
-
 	async call(): Promise<void> {
-		if (!this.isEnabled('services.audigent.enabled')) {
+		if (!this.isEnabled('icAudigent')) {
 			utils.logger(logGroup, 'disabled');
 			return;
 		}
 
 		context.set('targeting.AU_SEG', '-1');
 
-		const newIntegrationEnabled = context.get('services.audigent.newIntegrationEnabled');
-		!this.segmentsScriptLoader && this.loadSegmentLibrary();
+		Audigent.sampling = this.instantConfig.get('icAudigentTrackingSampling');
+		Audigent.segmentLimit = this.instantConfig.get('icAudigentSegmentLimit');
+
+		!Audigent.segmentsScriptLoader && Audigent.loadSegmentLibrary();
 		!this.matchesTagScriptLoader && this.loadMatchesLibrary();
-		if (newIntegrationEnabled) {
-			this.setupSegmentsListener();
-		}
+		this.setupSegmentsListener();
 
 		if (!this.isLoaded) {
 			utils.logger(logGroup, 'loading...');
 			this.matchesTagScriptLoader.then(() => {
 				utils.logger(logGroup, 'audience tag script loaded');
 			});
-			this.segmentsScriptLoader.then(() => {
+			Audigent.segmentsScriptLoader.then(() => {
 				utils.logger(logGroup, 'segment tag script loaded');
 				this.setup();
 			});
 			this.isLoaded = true;
 		}
 
-		if (newIntegrationEnabled) {
-			await this.waitForAuSegGlobalSet().then((isGlobalSet) => {
-				utils.logger(logGroup, 'Audigent global variable set', isGlobalSet, window['au_seg']);
-				this.setup();
-			});
-		}
+		await this.waitForAuSegGlobalSet().then((isGlobalSet) => {
+			utils.logger(logGroup, 'Audigent global variable set', isGlobalSet, window['au_seg']);
+			this.setup();
+		});
 	}
 
 	setup(): void {
@@ -108,13 +89,13 @@ class Audigent extends BaseServiceSetup {
 
 	resetLoadedState(): void {
 		this.isLoaded = false;
-		this.segmentsScriptLoader = null;
 		this.matchesTagScriptLoader = null;
+		Audigent.segmentsScriptLoader = null;
 	}
 
 	private static sliceSegments() {
 		const au_segments = window['au_seg'].segments || [];
-		const limit = context.get('services.audigent.segmentLimit') || 0;
+		const limit = Audigent.segmentLimit || 0;
 
 		let segments = au_segments.length ? au_segments : 'no_segments';
 
@@ -138,11 +119,9 @@ class Audigent extends BaseServiceSetup {
 
 	private static trackWithExternalLoggerIfEnabled(segments: string | []) {
 		const randomNumber = Math.random() * 100;
+		const sampling = Audigent.sampling || 0;
 
-		if (
-			externalLogger.isEnabled('services.audigent.tracking.sampling', randomNumber) &&
-			typeof segments !== 'string'
-		) {
+		if (sampling > 0 && randomNumber <= sampling && typeof segments !== 'string') {
 			externalLogger.log('Audigent segments', {
 				segmentsNo: segments.length,
 				segments,
@@ -157,7 +136,3 @@ class Audigent extends BaseServiceSetup {
 		return new utils.WaitFor(isAuSegGlobalSet, numberOfTriesWhenWaiting, 250).until();
 	}
 }
-
-window.au = window.au || [];
-
-export const audigent = new Audigent();

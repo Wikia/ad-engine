@@ -5,8 +5,8 @@ import {
 	DiProcess,
 	eventsRepository,
 } from '@wikia/ad-engine';
-import { TargetingParams, CookieBasedTargetingParams } from './interfaces/targeting-params';
 import isMatch from 'lodash/isMatch.js';
+import { CookieBasedTargetingParams, TargetingParams } from './interfaces/targeting-params';
 
 export class NewsAndRatingsTargetingSetup implements DiProcess {
 	execute(): void {

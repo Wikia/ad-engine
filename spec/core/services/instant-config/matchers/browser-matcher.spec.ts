@@ -1,5 +1,5 @@
 import { utils } from '@wikia/core';
-import { BrowserMatcher } from '@wikia/ad-services/instant-config/matchers/browser-matcher';
+import { BrowserMatcher } from '@wikia/core/services/instant-config/matchers/browser-matcher';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 

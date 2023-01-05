@@ -1,5 +1,5 @@
 import {
-	bidders,
+	Bidders,
 	communicationService,
 	context,
 	DiProcess,
@@ -8,13 +8,15 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 
 import { getAppnexusContext } from '../../../bidders/appnexus';
-import { getWikiaContext } from '../../../bidders/wikia';
 import { getIndexExchangeContext } from '../../../bidders/index-exchange';
-import { getRubiconDisplayContext } from '../../../bidders/rubicon-display';
 import { getMedianetContext } from '../../../bidders/medianet';
+import { getRubiconDisplayContext } from '../../../bidders/rubicon-display';
+import { getWikiaContext } from '../../../bidders/wikia';
 
 @Injectable()
 export class GamefaqsPrebidConfigSetup implements DiProcess {
+	constructor(private bidders: Bidders) {}
+
 	execute(): void {
 		if (!this.isPrebidEnabled()) {
 			return;
@@ -33,7 +35,7 @@ export class GamefaqsPrebidConfigSetup implements DiProcess {
 		communicationService.on(
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
 			({ slot }) => {
-				bidders.updateSlotTargeting(slot.getSlotName());
+				this.bidders.updateSlotTargeting(slot.getSlotName());
 			},
 			false,
 		);

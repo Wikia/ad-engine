@@ -1,5 +1,6 @@
 import { context, Dictionary } from '@wikia/core';
-import { instantConfigLoader } from '@wikia/ad-services/instant-config/instant-config.loader';
+import { instantConfigLoader } from '@wikia/core/services/instant-config/instant-config.loader';
+import { wait } from '@wikia/core/utils';
 import { expect } from 'chai';
 import {
 	createSandbox,
@@ -7,7 +8,6 @@ import {
 	SinonFakeXMLHttpRequestStatic,
 	SinonStub,
 } from 'sinon';
-import { wait } from '@wikia/core/utils';
 
 describe('Instant Config Loader', () => {
 	const sandbox = createSandbox();

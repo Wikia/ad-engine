@@ -13,7 +13,7 @@ module.exports = () => ({
 	resolve: {
 		extensions: ['.ts', '.js', '.json'],
 		modules: [...include, 'node_modules'],
-		plugins: [new TsConfigPathsPlugin()], // ToDo: split paths to separate tsconfig files
+		plugins: [new TsConfigPathsPlugin()],
 	},
 
 	module: {

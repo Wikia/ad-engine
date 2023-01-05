@@ -1,7 +1,7 @@
+import { setupNpaContext } from '@wikia/ad-products/utils/npa';
+import { context, trackingOptIn } from '@wikia/core';
 import { assert } from 'chai';
 import { createSandbox, SinonStub } from 'sinon';
-import { context, trackingOptIn } from '@wikia/core';
-import { setupNpaContext } from '@wikia/ad-products/utils/npa';
 
 describe('NPA - setup context ', () => {
 	const sandbox = createSandbox();

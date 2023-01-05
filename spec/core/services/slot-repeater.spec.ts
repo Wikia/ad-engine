@@ -1,8 +1,8 @@
-import { AdSlot } from '@wikia/core';
 import { communicationService } from '@wikia/communication';
+import { AdSlot } from '@wikia/core';
+import { context, slotInjector, slotRepeater } from '@wikia/core/services';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { context, slotInjector, slotRepeater } from '@wikia/core/services';
 import { adSlotFake } from '../ad-slot-fake';
 
 describe('slot-repeater', () => {

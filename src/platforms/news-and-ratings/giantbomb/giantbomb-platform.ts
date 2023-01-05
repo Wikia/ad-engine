@@ -1,15 +1,15 @@
-import { Injectable } from '@wikia/dependency-injection';
-import { context, ProcessPipeline } from '@wikia/ad-engine';
 import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
-import { basicContext } from './ad-context';
-import { GiantbombSlotsContextSetup } from './setup/context/slots/giantbomb-slots-context.setup';
-import { GiantbombPrebidConfigSetup } from './setup/context/prebid/giantbomb-prebid-config.setup';
+import { context, ProcessPipeline } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
 import {
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsDynamicSlotsSetup,
 	NewsAndRatingsTargetingSetup,
 } from '../shared';
+import { basicContext } from './ad-context';
+import { GiantbombPrebidConfigSetup } from './setup/context/prebid/giantbomb-prebid-config.setup';
+import { GiantbombSlotsContextSetup } from './setup/context/slots/giantbomb-slots-context.setup';
 
 @Injectable()
 export class GiantbombPlatform {

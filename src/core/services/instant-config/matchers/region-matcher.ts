@@ -1,4 +1,4 @@
-import { utils } from '@ad-engine/core';
+import { utils } from '../../../index';
 import { cacheSuffix, InstantConfigGroup, samplingSeparator } from '../instant-config.models';
 
 export class RegionMatcher {

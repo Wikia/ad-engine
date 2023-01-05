@@ -1,6 +1,6 @@
 import { context, DiProcess } from '@wikia/ad-engine';
-import { getMediaWikiVariable } from '../utils/get-media-wiki-variable';
 import Cookies from 'js-cookie';
+import { getMediaWikiVariable } from '../utils/get-media-wiki-variable';
 
 export class TrackingParametersSetup implements DiProcess {
 	execute(): void {

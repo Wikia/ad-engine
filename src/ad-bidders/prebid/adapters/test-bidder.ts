@@ -1,6 +1,6 @@
+import { context } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
-import { context } from '@ad-engine/core';
 
 export class TestBidder extends PrebidAdapter {
 	static bidderName = 'testBidder';

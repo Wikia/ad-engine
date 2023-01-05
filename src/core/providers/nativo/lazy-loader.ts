@@ -1,8 +1,8 @@
 import { Observable } from 'rxjs';
 import { filter, take, tap } from 'rxjs/operators';
 
-import { getTopOffset, getViewportHeight, logger } from '../../utils';
 import { DomListener } from '../../listeners';
+import { getTopOffset, getViewportHeight, logger } from '../../utils';
 
 const logGroup = 'nativo-lazy-loader';
 

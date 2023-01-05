@@ -1,8 +1,8 @@
-import { context, slotService, VideoData, VideoEventListener } from '@wikia/core';
 import {
 	PorvataListener,
 	PorvataListenerParams,
 } from '@wikia/ad-products/video/porvata/porvata-listener';
+import { context, slotService, VideoData, VideoEventListener } from '@wikia/core';
 import { expect } from 'chai';
 import { createSandbox, spy } from 'sinon';
 

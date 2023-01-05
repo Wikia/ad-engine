@@ -1,4 +1,5 @@
-import { Dictionary, utils } from '@ad-engine/core';
+import { utils } from '../../index';
+import { Dictionary } from '../../models';
 import {
 	InstantConfigGroup,
 	InstantConfigResponse,

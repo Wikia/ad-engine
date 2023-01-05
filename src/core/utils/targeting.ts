@@ -1,7 +1,7 @@
 import { Dictionary } from '../models';
+import { CookieStorageAdapter } from '../services/';
 import { context } from '../services/context-service';
 import { logger } from './logger';
-import { CookieStorageAdapter } from '../services/';
 
 /*
  *  ToDo: Development improvement refactor

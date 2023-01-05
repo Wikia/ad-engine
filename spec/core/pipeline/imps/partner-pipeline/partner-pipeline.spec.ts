@@ -1,8 +1,8 @@
-import { Container } from '@wikia/dependency-injection';
 import { BaseServiceSetup, PartnerPipeline } from '@wikia/core';
-import { createSandbox, SinonSpy } from 'sinon';
-import { expect } from 'chai';
 import { wait } from '@wikia/core/utils';
+import { Container } from '@wikia/dependency-injection';
+import { expect } from 'chai';
+import { createSandbox, SinonSpy } from 'sinon';
 
 describe('PartnerPipeline', () => {
 	const sandbox = createSandbox();

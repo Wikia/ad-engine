@@ -1,6 +1,7 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { decorate } from 'core-decorators';
 import { getAdStack } from '../ad-engine';
+import { utils } from '../index';
 import { AdSlot, Dictionary, Targeting } from '../models';
 import {
 	btfBlockerService,
@@ -14,7 +15,6 @@ import { defer, logger } from '../utils';
 import { GptSizeMap } from './gpt-size-map';
 import { setupGptTargeting } from './gpt-targeting';
 import { Provider } from './provider';
-import { utils } from '../index';
 
 const logGroup = 'gpt-provider';
 
