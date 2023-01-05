@@ -13,24 +13,16 @@ export interface InstantConfigServiceInterface {
 }
 
 export class InstantConfigService implements InstantConfigServiceInterface {
-	private static instancePromise: Promise<InstantConfigService>;
-
-	static async init(globals: Dictionary = {}): Promise<InstantConfigService> {
-		if (!InstantConfigService.instancePromise) {
-			InstantConfigService.instancePromise = instantConfigLoader
-				.getConfig()
-				.then((config) => new InstantConfigOverrider().override(config))
-				.then((config) => new InstantConfigInterpreter().init(config, globals))
-				.then((interpreter) => new InstantConfigService(interpreter));
-		}
-
-		return InstantConfigService.instancePromise;
-	}
-
+	private interpreter: InstantConfigInterpreter;
 	private repository: Dictionary<InstantConfigValue>;
 
-	private constructor(private interpreter: InstantConfigInterpreter) {
+	async init(globals: Dictionary = {}): Promise<InstantConfigService> {
+		this.interpreter = await instantConfigLoader
+			.getConfig()
+			.then((config) => new InstantConfigOverrider().override(config))
+			.then((config) => new InstantConfigInterpreter().init(config, globals));
 		this.repository = this.interpreter.getValues();
+
 		utils.logger(logGroup, 'instantiated with', this.repository);
 
 		communicationService.on(
@@ -40,6 +32,8 @@ export class InstantConfigService implements InstantConfigServiceInterface {
 			},
 			false,
 		);
+
+		return this;
 	}
 
 	get<T extends InstantConfigValue>(key: string, defaultValue?: T): T {
