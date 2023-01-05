@@ -13,6 +13,18 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 	private setBaseState(): void {
 		context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441);
 		context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src'));
+
+		// identity
+		context.set('services.liveConnect.enabled', this.instantConfig.get('icLiveConnect'));
+		context.set(
+			'services.liveConnect.cachingStrategy',
+			this.instantConfig.get('icLiveConnectCachingStrategy'),
+		);
+
+		context.set('services.liveRampPixel.enabled', this.instantConfig.get('icLiveRampPixel'));
+
+		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
+		context.set('services.ppidRepository', this.instantConfig.get('icPpidRepository'));
 	}
 
 	private shouldSwitchGamToRV() {
