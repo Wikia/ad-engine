@@ -12,3 +12,9 @@ export function pageInIframe(): boolean {
 		return true;
 	}
 }
+
+export class Document {
+	static getFirstElementChild(element: Element): Element | null {
+		return element.firstElementChild;
+	}
+}

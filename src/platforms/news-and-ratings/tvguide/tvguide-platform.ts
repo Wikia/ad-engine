@@ -15,10 +15,10 @@ export class TvGuidePlatform {
 	execute(): void {
 		this.pipeline.add(
 			() => context.extend(basicContext),
-			NewsAndRatingsBaseContextSetup,
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
+			NewsAndRatingsBaseContextSetup,
 			TvGuideTargetingSetup,
 			TvGuideDynamicSlotsSetup,
 			TvGuideSlotsContextSetup,
