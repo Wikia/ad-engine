@@ -46,9 +46,9 @@ class InstantConfigLoader {
 
 	private async fetchInstantConfig(): Promise<InstantConfigResponse> {
 		const request = new XMLHttpRequest();
-		const url = this.getConfigUrl();
+		const configUrl = this.getConfigUrl();
 
-		request.open('GET', url, true);
+		request.open('GET', configUrl, true);
 		request.responseType = 'json';
 
 		return new Promise((resolve) => {
@@ -75,7 +75,7 @@ class InstantConfigLoader {
 		});
 	}
 
-	getConfigUrl() {
+	getConfigUrl(): string {
 		const baseUrl = context.get('services.instantConfig.endpoint') || 'https://services.fandom.com';
 		const variant = context.get('wiki.services_instantConfig_variant') || 'icbm';
 		const appName = context.get('services.instantConfig.appName');
