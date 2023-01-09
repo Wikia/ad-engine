@@ -5,7 +5,7 @@ import { BabDetection } from '@wikia/core';
 import { WadRunner } from '@wikia/platforms/shared';
 
 function createDetectionRunStub(returnValue: boolean) {
-	return new Promise((resolve) => {
+	return new Promise<void>((resolve) => {
 		resolve();
 	}).then(() => {
 		return returnValue;

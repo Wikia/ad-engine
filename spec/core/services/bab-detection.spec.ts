@@ -8,8 +8,8 @@ function createCreateBlockAdBlockStub(detector, createBlockAdBlockStub) {
 }
 
 function createCheckDomainBlockingStub(returnValue: boolean) {
-	return new Promise((resolve) => {
-		resolve(null);
+	return new Promise<void>((resolve) => {
+		resolve();
 	}).then(() => {
 		return returnValue;
 	});
@@ -29,7 +29,6 @@ describe('AdBlock detector', () => {
 	const createBlockAdBlockStub = {
 		onDetected: () => {},
 		onNotDetected: () => {},
-		check: () => {},
 	};
 
 	afterEach(() => {
