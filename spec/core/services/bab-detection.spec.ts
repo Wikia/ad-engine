@@ -9,7 +9,7 @@ function createCreateBlockAdBlockStub(detector, createBlockAdBlockStub) {
 
 function createCheckDomainBlockingStub(returnValue: boolean) {
 	return new Promise((resolve) => {
-		resolve();
+		resolve(null);
 	}).then(() => {
 		return returnValue;
 	});
