@@ -1,4 +1,4 @@
-import { GptSetup } from '@platforms/shared';
+import { GptSetup, WadRunner } from '@platforms/shared';
 import {
 	Bidders,
 	communicationService,
@@ -20,17 +20,19 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 		private liveConnect: LiveConnect,
 		private liveRampPixel: LiveRampPixel,
 		private userIdentity: UserIdentity,
+		private wadRunner: WadRunner,
 	) {}
 
 	execute(): void {
 		this.pipeline
 			.add(
 				this.bidders,
+				this.wadRunner,
 				this.userIdentity,
 				this.liveRampPixel.setOptions({ dependencies: [this.userIdentity.initialized] }),
 				this.liveConnect,
 				this.gptSetup.setOptions({
-					dependencies: [this.bidders.initialized],
+					dependencies: [this.wadRunner.initialized, this.bidders.initialized],
 				}),
 			)
 			.execute()

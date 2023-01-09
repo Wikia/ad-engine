@@ -10,6 +10,7 @@ import {
 import { basicContext } from './ad-context';
 import { ComicvinePrebidConfigSetup } from './setup/context/prebid/comicvine-prebid-config.setup';
 import { ComicvineSlotsContextSetup } from './setup/context/slots/comicvine-slots-context.setup';
+import { ComicvineTargetingSetup } from './setup/context/targeting/comicvine-targeting.setup';
 
 @Injectable()
 export class ComicvinePlatform {
@@ -18,10 +19,11 @@ export class ComicvinePlatform {
 	execute(): void {
 		this.pipeline.add(
 			() => context.extend(basicContext),
-			NewsAndRatingsBaseContextSetup,
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
+			NewsAndRatingsBaseContextSetup,
+			ComicvineTargetingSetup,
 			NewsAndRatingsTargetingSetup,
 			NewsAndRatingsDynamicSlotsSetup,
 			ComicvineSlotsContextSetup,

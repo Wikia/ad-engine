@@ -10,6 +10,7 @@ import {
 import { basicContext } from './ad-context';
 import { GiantbombPrebidConfigSetup } from './setup/context/prebid/giantbomb-prebid-config.setup';
 import { GiantbombSlotsContextSetup } from './setup/context/slots/giantbomb-slots-context.setup';
+import { GiantbombTargetingSetup } from './setup/context/targeting/giantbomb-targeting.setup';
 
 @Injectable()
 export class GiantbombPlatform {
@@ -18,10 +19,11 @@ export class GiantbombPlatform {
 	execute(): void {
 		this.pipeline.add(
 			() => context.extend(basicContext),
-			NewsAndRatingsBaseContextSetup,
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
+			NewsAndRatingsBaseContextSetup,
+			GiantbombTargetingSetup,
 			NewsAndRatingsTargetingSetup,
 			GiantbombSlotsContextSetup,
 			NewsAndRatingsDynamicSlotsSetup,

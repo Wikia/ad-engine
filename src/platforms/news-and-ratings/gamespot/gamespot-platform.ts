@@ -10,6 +10,7 @@ import {
 import { basicContext } from './ad-context';
 import { GamespotPrebidConfigSetup } from './setup/context/prebid/gamespot-prebid-config.setup';
 import { GamespotSlotsContextSetup } from './setup/context/slots/gamespot-slots-context.setup';
+import { GamespotTargetingSetup } from './setup/context/targeting/gamespot-targeting.setup';
 
 @Injectable()
 export class GameSpotPlatform {
@@ -18,10 +19,11 @@ export class GameSpotPlatform {
 	execute(): void {
 		this.pipeline.add(
 			() => context.extend(basicContext),
-			NewsAndRatingsBaseContextSetup,
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
+			NewsAndRatingsBaseContextSetup,
+			GamespotTargetingSetup,
 			NewsAndRatingsTargetingSetup,
 			GamespotSlotsContextSetup,
 			NewsAndRatingsDynamicSlotsSetup,
