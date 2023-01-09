@@ -11,7 +11,9 @@ import {
 	NewsAndRatingsDynamicSlotsSetup,
 	NewsAndRatingsTargetingSetup,
 	NewsAndRatingsWadSetup,
+	LazyLoadedSlotsContextSetup,
 } from '../shared';
+import { GamefaqsTargetingSetup } from './setup/context/targeting/gamefaqs-targeting.setup';
 
 @Injectable()
 export class GamefaqsPlatform {
@@ -20,15 +22,16 @@ export class GamefaqsPlatform {
 	execute(): void {
 		this.pipeline.add(
 			() => context.extend(basicContext),
-			NewsAndRatingsBaseContextSetup,
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
+			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
+			GamefaqsTargetingSetup,
 			NewsAndRatingsTargetingSetup,
 			GamefaqsSlotsContextSetup,
+			LazyLoadedSlotsContextSetup,
 			NewsAndRatingsDynamicSlotsSetup,
-			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
 			BiddersStateSetup,
 			GamefaqsPrebidConfigSetup,
 			NewsAndRatingsAdsMode,
