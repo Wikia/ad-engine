@@ -24,7 +24,8 @@ export class BingeBotPlatform {
 
 	execute(): void {
 		this.pipeline.add(
-			() => Bootstrap.setupContextAndGeo(basicContext),
+			() => Bootstrap.setupContext(basicContext),
+			Bootstrap.setupGeo,
 			parallel(InstantConfigSetup, Bootstrap.setupConsent),
 			BingeBotIocSetup,
 			BaseContextSetup,

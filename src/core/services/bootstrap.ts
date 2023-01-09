@@ -7,9 +7,12 @@ export class Bootstrap {
 		await trackingOptInWrapper.init();
 	}
 
-	static setupContextAndGeo(basicContext: any, isMobile = false): void {
+	static setupContext(basicContext: any, isMobile = false): void {
 		context.extend(basicContext);
-		utils.geoService.setUpGeoData();
 		context.set('state.isMobile', isMobile);
+	}
+
+	static setupGeo() {
+		utils.geoService.setUpGeoData();
 	}
 }

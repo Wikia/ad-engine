@@ -17,7 +17,8 @@ export class GiantbombPlatform {
 
 	execute(): void {
 		this.pipeline.add(
-			() => Bootstrap.setupContextAndGeo(basicContext),
+			() => Bootstrap.setupContext(basicContext),
+			Bootstrap.setupGeo,
 			NewsAndRatingsBaseContextSetup,
 			// once we have Geo cookie set on varnishes we can parallel InstantConfigSetup and Bootstrap.setupConsent
 			InstantConfigSetup,

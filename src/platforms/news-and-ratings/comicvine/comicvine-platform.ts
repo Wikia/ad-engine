@@ -17,11 +17,12 @@ export class ComicvinePlatform {
 
 	execute(): void {
 		this.pipeline.add(
-			() => Bootstrap.setupContextAndGeo(basicContext),
-			NewsAndRatingsBaseContextSetup,
+			() => Bootstrap.setupContext(basicContext),
+			Bootstrap.setupGeo,
 			// once we have Geo cookie set on varnishes we can parallel InstantConfigSetup and Bootstrap.setupConsent
 			InstantConfigSetup,
 			Bootstrap.setupConsent,
+			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsTargetingSetup,
 			NewsAndRatingsDynamicSlotsSetup,
 			ComicvineSlotsContextSetup,

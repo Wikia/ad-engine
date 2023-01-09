@@ -33,7 +33,8 @@ export class UcpDesktopPlatform {
 	execute(): void {
 		// Config
 		this.pipeline.add(
-			() => Bootstrap.setupContextAndGeo(basicContext),
+			() => Bootstrap.setupContext(basicContext),
+			Bootstrap.setupGeo,
 			PlatformContextSetup,
 			parallel(InstantConfigSetup, Bootstrap.setupConsent),
 			TrackingParametersSetup,
