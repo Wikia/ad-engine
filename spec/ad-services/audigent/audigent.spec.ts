@@ -98,6 +98,7 @@ describe('Audigent', () => {
 	});
 
 	it('Audigent key-val is set to -1 when API is too slow', () => {
+		targetingService.set('AU_SEG', '-1');
 		window['au_seg'] = undefined;
 
 		audigent.setup();

@@ -3,6 +3,7 @@ import { GamTargetingManager } from '@wikia/platforms/shared/sequential-messagin
 import sinon from 'sinon';
 import { makeContextSpy } from '../../test_doubles/context.spy';
 import { makeSlotsContextSpy } from '../test_doubles/slotContext.spy';
+import { makeSlotsTargetingServiceSpy } from '../test_doubles/slotTargetingService.spy';
 
 const baseTargetingSize = 10;
 let contextSpy;
