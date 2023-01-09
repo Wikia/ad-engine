@@ -13,6 +13,7 @@ import {
 	NewsAndRatingsWadSetup,
 	LazyLoadedSlotsContextSetup,
 } from '../shared';
+import { GamefaqsTargetingSetup } from './setup/context/targeting/gamefaqs-targeting.setup';
 
 @Injectable()
 export class GamefaqsPlatform {
@@ -26,6 +27,7 @@ export class GamefaqsPlatform {
 			InstantConfigSetup,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
+			GamefaqsTargetingSetup,
 			NewsAndRatingsTargetingSetup,
 			GamefaqsSlotsContextSetup,
 			LazyLoadedSlotsContextSetup,
