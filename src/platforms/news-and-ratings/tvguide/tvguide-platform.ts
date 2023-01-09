@@ -3,6 +3,7 @@ import {
 	Bootstrap,
 	communicationService,
 	eventsRepository,
+	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
 import { gptSetup, InstantConfigSetup } from '@platforms/shared';
@@ -19,13 +20,10 @@ export class TvGuidePlatform {
 		this.pipeline.add(
 			() => Bootstrap.setupContext(basicContext),
 			Bootstrap.setupGeo,
-			// once we have Geo cookie set on varnishes we can parallel InstantConfigSetup and Bootstrap.setupConsent
-			InstantConfigSetup,
-			Bootstrap.setupConsent,
+			parallel(InstantConfigSetup, Bootstrap.setupConsent),
 			NewsAndRatingsBaseContextSetup,
 			TvGuideDynamicSlotsSetup,
 			TvGuideSlotsContextSetup,
-			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 			gptSetup.call,
 		);

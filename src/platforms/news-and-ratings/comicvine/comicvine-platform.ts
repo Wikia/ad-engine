@@ -1,5 +1,5 @@
 import { Injectable } from '@wikia/dependency-injection';
-import { Bootstrap, ProcessPipeline } from '@wikia/ad-engine';
+import { Bootstrap, parallel, ProcessPipeline } from '@wikia/ad-engine';
 import { BiddersStateSetup, InstantConfigSetup } from '@platforms/shared';
 import { basicContext } from './ad-context';
 import { ComicvineSlotsContextSetup } from './setup/context/slots/comicvine-slots-context.setup';
@@ -19,9 +19,7 @@ export class ComicvinePlatform {
 		this.pipeline.add(
 			() => Bootstrap.setupContext(basicContext),
 			Bootstrap.setupGeo,
-			// once we have Geo cookie set on varnishes we can parallel InstantConfigSetup and Bootstrap.setupConsent
-			InstantConfigSetup,
-			Bootstrap.setupConsent,
+			parallel(InstantConfigSetup, Bootstrap.setupConsent),
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsTargetingSetup,
 			NewsAndRatingsDynamicSlotsSetup,
