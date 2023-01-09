@@ -1,7 +1,7 @@
 import { PrebidNativeProvider } from '@wikia/ad-bidders';
-import { createSandbox } from 'sinon';
 import { context } from '@wikia/core';
 import { expect } from 'chai';
+import { createSandbox } from 'sinon';
 
 describe('Prebid native provider', () => {
 	const sandbox = createSandbox();

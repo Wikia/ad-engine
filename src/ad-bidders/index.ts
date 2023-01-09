@@ -17,12 +17,13 @@ interface BiddersProviders {
 
 const logGroup = 'bidders';
 
-class Bidders extends BaseServiceSetup {
+export class Bidders extends BaseServiceSetup {
 	private biddersProviders: BiddersProviders = {};
 	private realSlotPrices = {};
 
 	constructor() {
 		super();
+
 		communicationService.onSlotEvent(AdSlot.VIDEO_AD_REQUESTED, ({ slot }) => {
 			slot.updateWinningPbBidderDetails();
 		});
@@ -117,19 +118,22 @@ class Bidders extends BaseServiceSetup {
 		}
 
 		if (!this.getBiddersProviders().length) {
+			utils.logger(logGroup, 'resolving call() promise because of no bidder providers');
 			return Promise.resolve();
 		}
 
 		this.getBiddersProviders().forEach((provider) => {
 			provider.addResponseListener(() => {
 				if (this.hasAllResponses()) {
-					promise.resolve();
+					utils.logger(logGroup, 'resolving call() promise because of having all responses');
+					promise.resolve(null);
 				}
 			});
 
 			provider.call();
 		});
 
+		utils.logger(logGroup, 'returning call() promise');
 		return promise;
 	}
 
@@ -165,10 +169,8 @@ class Bidders extends BaseServiceSetup {
 	}
 }
 
-export const bidders = new Bidders();
-
-export * from './wrappers';
 export * from './prebid/ats';
-export * from './prebid/live-ramp';
 export * from './prebid/identity-hub';
+export * from './prebid/live-ramp';
 export * from './prebid/native';
+export * from './wrappers';

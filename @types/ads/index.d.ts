@@ -76,9 +76,6 @@ interface Runtime {
 	};
 	disableBtf?: boolean;
 	disableSecondCall?: boolean;
-	distroscale?: {
-		adUnit?: string;
-	};
 	interstitial?: {
 		available?: boolean;
 		visible?: boolean;

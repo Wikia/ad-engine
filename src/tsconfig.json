@@ -1,15 +1,13 @@
 {
 	"extends": "../tsconfig.json",
 	"compilerOptions": {
-		"declaration": true,
-		"declarationDir": "../dist/types",
 		"paths": {
-			"@ad-engine/core": ["src/core"],
-			"@ad-engine/communication": ["src/communication"],
-			"@ad-engine/bidders": ["src/ad-bidders"],
-			"@ad-engine/products": ["src/ad-products"],
-			"@ad-engine/services": ["src/ad-services"],
-			"@ad-engine/tracking": ["src/ad-tracking"]
+			"@ad-engine/core": ["src/core/index.ts"],
+			"@ad-engine/communication": ["src/communication/index.ts"],
+			"@ad-engine/bidders": ["src/ad-bidders/index.ts"],
+			"@ad-engine/products": ["src/ad-products/index.ts"],
+			"@ad-engine/services": ["src/ad-services/index.ts"],
+			"@ad-engine/tracking": ["src/ad-tracking/index.ts"]
 		}
 	},
 	"include": ["."]

@@ -1,7 +1,13 @@
+import { IasPublisherOptimization } from '@wikia/ad-services';
+import {
+	context,
+	InstantConfigService,
+	slotTargetingService,
+	targetingService,
+	utils,
+} from '@wikia/core';
 import { expect } from 'chai';
 import { createSandbox, spy } from 'sinon';
-import { context, utils, targetingService, slotTargetingService } from '../../../src/core';
-import { iasPublisherOptimization } from '@wikia/ad-services';
 
 describe('IAS Publisher Optimization', () => {
 	const sandbox = createSandbox();
@@ -19,15 +25,20 @@ describe('IAS Publisher Optimization', () => {
 		'},' +
 		'"fr":"false",' +
 		'"slots":{"top_leaderboard":{"id":"68f5088c-9c44-11eb-b40e","grm":["40"],"vw":"false"}}}';
-	let loadScriptStub;
+	let iasPublisherOptimization: IasPublisherOptimization;
+	let loadScriptStub, instantConfigStub;
 	let clock;
 
 	beforeEach(() => {
 		loadScriptStub = sandbox
 			.stub(utils.scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
+		instantConfigStub = sandbox.createStubInstance(InstantConfigService);
+		instantConfigStub.get.withArgs('icIASPublisherOptimization').returns(true);
+
 		clock = sandbox.useFakeTimers();
-		context.set('services.iasPublisherOptimization.enabled', true);
+		iasPublisherOptimization = new IasPublisherOptimization(instantConfigStub);
+
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);
 		context.set('wiki.targeting.directedAtChildren', false);
@@ -48,7 +59,7 @@ describe('IAS Publisher Optimization', () => {
 	});
 
 	it('IAS Publisher Optimization can be disabled', async () => {
-		context.set('services.iasPublisherOptimization.enabled', false);
+		instantConfigStub.get.withArgs('icIASPublisherOptimization').returns(false);
 
 		await iasPublisherOptimization.call();
 
@@ -80,7 +91,6 @@ describe('IAS Publisher Optimization', () => {
 	});
 
 	it('IAS Publisher Optimization is called', async () => {
-		context.set('services.iasPublisherOptimization.enabled', true);
 		context.set('services.iasPublisherOptimization.slots', ['top_leaderboard']);
 		await iasPublisherOptimization.call();
 
@@ -91,7 +101,6 @@ describe('IAS Publisher Optimization', () => {
 	});
 
 	it('IAS Publisher Optimization properly updates a targeting', async () => {
-		context.set('services.iasPublisherOptimization.enabled', true);
 		context.set('services.iasPublisherOptimization.slots', ['top_leaderboard']);
 		await iasPublisherOptimization.call();
 

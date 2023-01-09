@@ -657,7 +657,6 @@ export class AdSlot {
 		const adFrame = this.getIframe();
 
 		if (adFrame && adType.includes('success') && window['ResizeObserver']) {
-			//@ts-ignore ResizeObserver is a native module in most of the modern browsers
 			const resizeObserver = new ResizeObserver((entries) => {
 				for (const entry of entries) {
 					const width = Math.floor(entry.target.clientWidth);

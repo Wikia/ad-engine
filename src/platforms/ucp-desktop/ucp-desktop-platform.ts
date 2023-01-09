@@ -2,14 +2,14 @@ import {
 	AdEngineRunnerSetup,
 	bootstrapAndGetConsent,
 	InstantConfigSetup,
-	NoAdsExperimentSetup,
 	LabradorSetup,
 	LoadTimesSetup,
+	NoAdsExperimentSetup,
+	PlatformContextSetup,
 	shouldUseAdLayouts,
 	TrackingParametersSetup,
 	TrackingSetup,
 	UcpTargetingSetup,
-	PlatformContextSetup,
 } from '@platforms/shared';
 import {
 	communicationService,
@@ -24,8 +24,8 @@ import { Injectable } from '@wikia/dependency-injection';
 import { basicContext, targetingData } from './ad-context';
 import { UcpDesktopBaseContextSetup } from './setup/context/base/ucp-desktop-base-context.setup';
 import { UcpDesktopSlotsContextSetup } from './setup/context/slots/ucp-desktop-slots-context.setup';
-import { UcpDesktopIocSetup } from './ucp-desktop-ioc-setup';
 import { UcpDesktopAdLayoutSetup } from './ucp-desktop-ad-layout-setup';
+import { UcpDesktopIocSetup } from './ucp-desktop-ioc-setup';
 import { UcpDesktopLegacySetup } from './ucp-desktop-legacy-setup';
 
 @Injectable()

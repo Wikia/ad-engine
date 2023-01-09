@@ -1,9 +1,12 @@
+.nyc_output
+
 **/dist/**/*
 **/allure-results/**/*
+
 lib/**/*
-maintenance/tslint-rules/tests/**/*
 node_modules/**/*
-jspm_packages/
+spec/build/**/*
+
 src/ad-products/video/player/porvata/moat/moat-video-tracker-script.ts
 src/ad-products/video/porvata4/plugins/moat/moat-video-tracker-script.ts
 src/ad-services/facebook-pixel/facebook-pixel-script.ts

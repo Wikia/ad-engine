@@ -105,5 +105,3 @@ export class PrebidNativeProvider extends BaseServiceSetup {
 		});
 	}
 }
-
-export const prebidNativeProvider = new PrebidNativeProvider();

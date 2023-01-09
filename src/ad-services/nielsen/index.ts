@@ -7,8 +7,10 @@ import {
 	utils,
 } from '@ad-engine/core';
 import { initNielsenStaticQueue } from './static-queue-script';
+
 const logGroup = 'nielsen-dcr';
 const nlsnConfig: Dictionary = {};
+const nielsenKey = 'P26086A07-C7FB-4124-A679-8AC404198BA7';
 
 /**
  * Creates Nielsen Static Queue Snippet
@@ -18,36 +20,29 @@ function createInstance(nielsenKey): any {
 
 	initNielsenStaticQueue();
 
+	if (utils.queryString.get('nielsen-dcr-debug') === '1') {
+		nlsnConfig.nol_sdkDebug = 'debug';
+	}
+
 	return window.NOLBUNDLE.nlsQ(nielsenKey, 'nlsnInstance', nlsnConfig);
 }
 
 /**
  * Nielsen service handler
  */
-class Nielsen extends BaseServiceSetup {
+export class Nielsen extends BaseServiceSetup {
 	nlsnInstance: any = null;
-	/**
-	 * Class constructor
-	 */
-
-	constructor() {
-		super();
-		if (utils.queryString.get('nielsen-dcr-debug') === '1') {
-			nlsnConfig.nol_sdkDebug = 'debug';
-		}
-	}
 
 	/**
 	 * Create Nielsen Static Queue and make a call
 	 * @returns {Object}
 	 */
 	call(): void {
-		const nielsenKey = context.get('services.nielsen.appId');
 		const targeting = targetingService.getAll<TargetingData>();
 		const section = context.get('services.nielsen.customSection') || targeting.s0v;
 		const articleId = targeting.post_id || targeting.artid;
 
-		if (!context.get('services.nielsen.enabled') || !nielsenKey) {
+		if (!this.isEnabled('icNielsen', false) || !nielsenKey) {
 			utils.logger(logGroup, 'disabled');
 
 			return null;
@@ -71,5 +66,3 @@ class Nielsen extends BaseServiceSetup {
 		return this.nlsnInstance;
 	}
 }
-
-export const nielsen = new Nielsen();

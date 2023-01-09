@@ -1,7 +1,7 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { decorate } from 'core-decorators';
 import { getAdStack } from '../ad-engine';
-import { SlotTargeting, utils } from '../index';
+import { utils } from '../index';
 import { AdSlot, Dictionary } from '../models';
 import {
 	btfBlockerService,
@@ -9,6 +9,7 @@ import {
 	context,
 	slotDataParamsUpdater,
 	slotService,
+	SlotTargeting,
 	TargetingData,
 	targetingService,
 	trackingOptIn,

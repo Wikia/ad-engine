@@ -3,6 +3,7 @@ import {
 	bootstrapAndGetConsent,
 	InstantConfigSetup,
 	NoAdsDetector,
+	NoAdsMode,
 } from '@platforms/shared';
 import {
 	communicationService,
@@ -45,6 +46,7 @@ export class BingeBotPlatform {
 		this.pipeline.add(
 			conditional(() => this.noAdsDetector.isAdsMode(), {
 				yes: BingeBotAdsMode,
+				no: NoAdsMode,
 			}),
 		);
 

@@ -1,6 +1,6 @@
+import { targetingService } from '@wikia/core';
+import { GptSizeMap } from '@wikia/core/providers/gpt-size-map';
 import { expect } from 'chai';
-import { GptSizeMap } from '../../../src/core/providers/gpt-size-map';
-import { targetingService } from '../../../src/core/services/targeting-service';
 
 describe('gpt-size-map', () => {
 	after(() => {

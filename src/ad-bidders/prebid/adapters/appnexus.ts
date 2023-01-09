@@ -1,5 +1,5 @@
 import { context, Dictionary, TargetingData, targetingService } from '@ad-engine/core';
-import { PrebidNativeConfig, PrebidNativeProvider } from '../native';
+import { PrebidNativeConfig } from '../native';
 import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
 
@@ -26,11 +26,7 @@ export class Appnexus extends PrebidAdapter {
 		{ sizes, placementId, position = 'mobile' }: PrebidAdSlotConfig,
 	): PrebidAdUnit {
 		if (context.get(`slots.${code}.isNative`)) {
-			const prebidNativeProvider = new PrebidNativeProvider();
-			if (
-				prebidNativeProvider.isEnabled('bidders.prebid.native.enabled', false) &&
-				this.isNativeModeOn()
-			) {
+			if (context.get('bidders.prebid.native.enabled') && this.isNativeModeOn()) {
 				return this.prepareNativeConfig(code, { sizes, placementId, position });
 			}
 		}

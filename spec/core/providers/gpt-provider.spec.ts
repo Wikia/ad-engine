@@ -1,7 +1,6 @@
+import { context, GptProvider, targetingService } from '@wikia/core';
 import { expect } from 'chai';
 import { spy, stub } from 'sinon';
-import { context, GptProvider } from '@wikia/core';
-import { targetingService } from '../../../src/core/services/targeting-service';
 
 let provider;
 let pubads;

@@ -1,7 +1,7 @@
 import { communicationService } from '@ad-engine/communication';
 import { AdSlot, context } from '@ad-engine/core';
-import { viewabilityTrackingCompiler, viewabilityPropertiesTrackingCompiler } from './compilers';
 import { BaseTracker, BaseTrackerInterface } from './base-tracker';
+import { viewabilityPropertiesTrackingCompiler, viewabilityTrackingCompiler } from './compilers';
 
 class ViewabilityTracker extends BaseTracker implements BaseTrackerInterface {
 	compilers = [viewabilityTrackingCompiler, viewabilityPropertiesTrackingCompiler];

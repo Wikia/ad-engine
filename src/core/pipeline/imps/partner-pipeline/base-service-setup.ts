@@ -1,9 +1,11 @@
+import { Injectable } from '@wikia/dependency-injection';
+import { context, InstantConfigService } from '../../../services';
 import {
 	PartnerInitializationProcess,
 	PartnerInitializationProcessOptions,
 } from './partner-pipeline-types';
-import { context } from '../../../services';
 
+@Injectable()
 export class BaseServiceSetup implements PartnerInitializationProcess {
 	options: PartnerInitializationProcessOptions;
 	initializationTimeout;
@@ -12,23 +14,34 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 		this.resolve = resolve;
 	});
 
+	constructor(protected instantConfig: InstantConfigService = null) {}
+
 	private getContextVariablesValue(contextVariables: string | string[]): boolean {
-		if (typeof contextVariables === "string") {
+		if (typeof contextVariables === 'string') {
 			return context.get(contextVariables);
 		} else {
 			return contextVariables
-				.map(contextVariable => context.get(contextVariable))
-				.reduce((previousValue, currentValue) => previousValue && currentValue, true );
+				.map((contextVariable) => context.get(contextVariable))
+				.reduce((previousValue, currentValue) => previousValue && currentValue, true);
 		}
 	}
 
-	public isEnabled(contextVariables: string | string[], trackingRequired = true): boolean {
-		const contextVariablesValue = this.getContextVariablesValue(contextVariables);
-		return (
-			contextVariablesValue &&
-			(trackingRequired ? ( context.get('options.trackingOptIn') && !context.get('options.optOutSale') &&
-				!context.get('wiki.targeting.directedAtChildren') ) : true
-			));
+	public isEnabled(configVariable: string | string[], trackingRequired = true): boolean {
+		const variableValue =
+			typeof configVariable === 'string' && configVariable.startsWith('ic')
+				? (this.instantConfig.get(configVariable) as boolean)
+				: this.getContextVariablesValue(configVariable);
+
+		if (trackingRequired) {
+			return (
+				variableValue &&
+				context.get('options.trackingOptIn') &&
+				!context.get('options.optOutSale') &&
+				!context.get('wiki.targeting.directedAtChildren')
+			);
+		}
+
+		return variableValue;
 	}
 
 	setOptions(opt: PartnerInitializationProcessOptions): PartnerInitializationProcess {

@@ -1,8 +1,8 @@
+import { LiveConnect } from '@wikia/ad-services';
+import { communicationService, eventsRepository } from '@wikia/communication';
+import { context, utils } from '@wikia/core';
 import { expect } from 'chai';
 import { createSandbox, SinonSpy } from 'sinon';
-import { context, utils } from '../../../src/core';
-import { liveConnect } from '@wikia/ad-services';
-import { communicationService, eventsRepository } from '@wikia/communication';
 
 const mockedStorageStrategyVariable = {
 	ttl: 300000,
@@ -12,6 +12,7 @@ const mockedStorageStrategyVariable = {
 
 describe('LiveConnect', () => {
 	const sandbox = createSandbox();
+	const liveConnect = new LiveConnect();
 	let loadScriptStub;
 
 	before(() => {

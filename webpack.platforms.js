@@ -1,26 +1,26 @@
 const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const webpack = require('webpack');
 const { merge } = require('webpack-merge');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const platformsConfig = require('./src/platforms/platforms.json');
 const common = require('./webpack.common.js');
-const webpack = require('webpack');
 
 const platforms = ({ entry }) => ({
 	entry,
 
-	resolve: {
-		fallback: {
-			util: require.resolve('util/'),
-		},
-	},
-
 	output: {
-		filename: '[name]/main.bundle.js',
+		filename: ({ chunk: { name } }) => {
+			return `${name.includes('/') ? name.split('/')[1] : name}/main.bundle.js`;
+		},
 		path: path.resolve(__dirname, `dist/platforms`),
 	},
 
 	plugins: [
-		new MiniCssExtractPlugin({ filename: '[name]/styles.css' }),
+		new MiniCssExtractPlugin({
+			filename: ({ chunk: { name } }) => {
+				return `${name.includes('/') ? name.split('/')[1] : name}/styles.css`;
+			},
+		}),
 		new webpack.ProvidePlugin({
 			process: 'process/browser',
 		}),

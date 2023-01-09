@@ -16,9 +16,9 @@ export function parseContextTags(tags: TaxonomyTags): string {
 	return urlParams;
 }
 
-class Eyeota extends BaseServiceSetup {
+export class Eyeota extends BaseServiceSetup {
 	async call(): Promise<void> {
-		if (!this.isEnabled('services.eyeota.enabled')) {
+		if (!this.isEnabled('icEyeota')) {
 			utils.logger(logGroup, 'disabled');
 
 			return Promise.resolve();
@@ -61,5 +61,3 @@ class Eyeota extends BaseServiceSetup {
 		return url.toString() + contextTags;
 	}
 }
-
-export const eyeota = new Eyeota();

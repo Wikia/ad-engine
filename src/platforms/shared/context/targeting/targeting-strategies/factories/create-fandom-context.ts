@@ -11,12 +11,10 @@ function buildFandomContext(windowContext: WindowFandomContext): FandomContext {
 		new Site(
 			windowContext?.site?.categories,
 			windowContext?.site?.directedAtChildren,
-			windowContext?.site?.esrbRating,
 			windowContext?.site?.siteName,
 			windowContext?.site?.top1000,
 			windowContext?.site?.tags,
 			windowContext?.site?.taxonomy,
-			windowContext?.site?.mpaRating,
 		),
 		new Page(
 			windowContext?.page?.articleId,

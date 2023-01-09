@@ -1,13 +1,13 @@
-import { BaseServiceSetup, utils } from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { BaseServiceSetup, utils } from '@ad-engine/core';
 
 const logGroup = 'captify';
 
-class Captify extends BaseServiceSetup {
+export class Captify extends BaseServiceSetup {
 	PIXEL_URL = 'https://p.cpx.to/p/12974/px.js';
 
 	async call(): Promise<void> {
-		if (!this.isEnabled('services.captify.enabled')) {
+		if (!this.isEnabled('icCaptify')) {
 			utils.logger(logGroup, 'disabled');
 
 			return Promise.resolve();
@@ -19,10 +19,9 @@ class Captify extends BaseServiceSetup {
 
 		elem.onload = () => {
 			communicationService.emit(eventsRepository.CAPTIFY_LOADED);
+			utils.logger(logGroup, 'loaded');
 		};
 
 		return Promise.resolve();
 	}
 }
-
-export const captify = new Captify();

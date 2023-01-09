@@ -47,11 +47,6 @@ export interface UapImage {
 	background?: string;
 }
 
-export interface VideoSize {
-	height: number;
-	width: number;
-}
-
 export interface UapParams {
 	adContainer: HTMLElement;
 	adProduct: string;

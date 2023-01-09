@@ -1,7 +1,7 @@
+import { targetingService } from '@wikia/core';
+import { targeting } from '@wikia/core/utils/targeting';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { targetingService } from '../../../src/core';
-import { targeting } from '../../../src/core/utils/targeting';
 
 let sandbox;
 

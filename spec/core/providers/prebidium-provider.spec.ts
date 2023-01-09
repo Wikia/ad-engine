@@ -1,6 +1,6 @@
+import { communicationService, eventsRepository } from '@wikia/communication';
 import { PrebidiumProvider, slotTargetingService } from '@wikia/core';
 import { IframeBuilder } from '@wikia/core/utils';
-import { communicationService, eventsRepository } from '@wikia/communication';
 import { assert } from 'chai';
 import { BehaviorSubject } from 'rxjs';
 import { createSandbox, SinonSandbox } from 'sinon';

@@ -1,15 +1,16 @@
-import { expect } from 'chai';
-import { context, targetingService } from '@wikia/core';
-import { userIdentity } from '@wikia/ad-services';
-import { createSandbox, SinonStub } from 'sinon';
+import { UserIdentity } from '@wikia/ad-services';
 import { IdentityRepositories } from '@wikia/ad-services/user-identity/identity-repositories';
-import { uuid } from '@wikia/core/utils/uuid';
 import { localStorageRepository } from '@wikia/ad-services/user-identity/local-storage-repository';
+import { context, targetingService } from '@wikia/core';
+import { uuid } from '@wikia/core/utils/uuid';
+import { expect } from 'chai';
+import { createSandbox, SinonStub } from 'sinon';
 
 describe('User Identity', () => {
 	let v4Stub: SinonStub;
 	let sandbox;
 	const mockId = '00000000-0000-0000-0000-000000000000';
+	const userIdentity = new UserIdentity();
 
 	beforeEach(() => {
 		context.set('services.ppid.enabled', true);

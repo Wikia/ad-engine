@@ -9,7 +9,8 @@
 					"@ad-engine/products",
 					"@ad-engine/services",
 					"@ad-engine/tracking",
-					"@platforms/shared"
+					"@platforms/shared",
+					"@wikia/ad-engine"
 				],
 				"patterns": [
 					"**/ad-bidders/**",
@@ -17,6 +18,7 @@
 					"**/ad-services/**",
 					"**/ad-tracking/**",
 					"**/core/**",
+					"**/src/**",
 					"**/shared/**"
 				]
 			}

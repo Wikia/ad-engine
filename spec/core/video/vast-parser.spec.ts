@@ -1,7 +1,7 @@
-import { expect } from 'chai';
-import { context } from '../../../src/core/services/context-service';
-import { vastParser } from '../../../src/core/video/vast-parser';
 import { targetingService } from '@wikia/core';
+import { context } from '@wikia/core/services/context-service';
+import { vastParser } from '@wikia/core/video/vast-parser';
+import { expect } from 'chai';
 
 const dummyVast =
 	'dummy.vast?sz=640x480&foo=bar&cust_params=foo1%3Dbar1%26foo2%3Dbar2' +

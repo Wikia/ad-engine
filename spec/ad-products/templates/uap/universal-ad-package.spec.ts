@@ -1,9 +1,9 @@
+import { registerUapListener, universalAdPackage } from '@wikia/ad-products';
 import { communicationService, eventsRepository } from '@wikia/communication';
+import { AdSlot, Context, context, SlotTargetingService, slotTargetingService } from '@wikia/core';
 import { expect } from 'chai';
 import { BehaviorSubject } from 'rxjs';
 import { createSandbox, SinonSandbox, SinonSpy, SinonStubbedInstance } from 'sinon';
-import { AdSlot, slotTargetingService, SlotTargetingService, Context, context } from '@wikia/core';
-import { registerUapListener, universalAdPackage } from '@wikia/ad-products';
 
 describe('UniversalAdPackage', () => {
 	const UAP_ID = 666;

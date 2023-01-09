@@ -1,13 +1,13 @@
 import { expect } from 'chai';
 
 import { context } from '@wikia/core';
-import {
-	FandomContext,
-	Site,
-	Page,
-} from '@wikia/platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
 import { createSelectedStrategy } from '@wikia/platforms/shared/context/targeting/targeting-strategies/factories/create-selected-strategy';
 import { TargetingStrategy } from '@wikia/platforms/shared/context/targeting/targeting-strategies/interfaces/targeting-strategy';
+import {
+	FandomContext,
+	Page,
+	Site,
+} from '@wikia/platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
 
 describe('CombinedStrategy', () => {
 	const mockedSkin = 'test';
@@ -16,7 +16,6 @@ describe('CombinedStrategy', () => {
 		ar: '4:3',
 		artid: '666',
 		dmn: '',
-		rating: 'esrb:ec,mpa:general',
 		geo: 'PL',
 		hostpre: '',
 		is_mobile: '0',
@@ -45,7 +44,17 @@ describe('CombinedStrategy', () => {
 
 	it('sets up targeting correctly when taxonomy tags are empty', function () {
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, {}, mockedTaxonomy, 'general'),
+			new Site(
+				[],
+				true,
+				'test',
+				false,
+				{
+					mpa: ['general'],
+					esrb: ['ec'],
+				},
+				mockedTaxonomy,
+			),
 			new Page(666, 'pl', 666, 'test', 'article-test', {}, 546),
 		);
 
@@ -55,12 +64,25 @@ describe('CombinedStrategy', () => {
 			mockedSkin,
 		);
 
-		const expectedResult = { ...mockedCommonParams };
+		const expectedResult = {
+			rating: 'esrb:ec,mpa:general',
+			...mockedCommonParams,
+		};
 
 		expect(combinedStrategy.get()).to.deep.eq(expectedResult);
 		expect(mockedContext).to.deep.eq(
 			new FandomContext(
-				new Site([], true, 'ec', 'test', false, {}, mockedTaxonomy, 'general'),
+				new Site(
+					[],
+					true,
+					'test',
+					false,
+					{
+						mpa: ['general'],
+						esrb: ['ec'],
+					},
+					mockedTaxonomy,
+				),
 				new Page(666, 'pl', 666, 'test', 'article-test', {}, 546),
 			),
 		);
@@ -71,10 +93,12 @@ describe('CombinedStrategy', () => {
 			gnre: ['test1', 'drama', 'comedy', 'horror'],
 			theme: ['test2', 'superheroes'],
 			tv: ['test1', 'movie'],
+			mpa: ['general'],
+			esrb: ['ec'],
 		};
 
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, mockedSiteTags, mockedTaxonomy, 'general'),
+			new Site([], true, 'test', false, mockedSiteTags, mockedTaxonomy),
 			new Page(666, 'pl', 666, 'test', 'article-test', {}, 546),
 		);
 
@@ -84,7 +108,11 @@ describe('CombinedStrategy', () => {
 			tv: ['test1', 'movie'],
 		};
 
-		const expectedResult = { ...mockedCommonParams, ...expectedTaxonomyTags };
+		const expectedResult = {
+			rating: 'esrb:ec,mpa:general',
+			...mockedCommonParams,
+			...expectedTaxonomyTags,
+		};
 
 		const combinedStrategy = createSelectedStrategy(
 			TargetingStrategy.COMBINED,
@@ -95,7 +123,7 @@ describe('CombinedStrategy', () => {
 		expect(combinedStrategy.get()).to.deep.eq(expectedResult);
 		expect(mockedContext).to.deep.eq(
 			new FandomContext(
-				new Site([], true, 'ec', 'test', false, mockedSiteTags, mockedTaxonomy, 'general'),
+				new Site([], true, 'test', false, mockedSiteTags, mockedTaxonomy),
 				new Page(666, 'pl', 666, 'test', 'article-test', {}, 546),
 			),
 		);
@@ -108,7 +136,7 @@ describe('CombinedStrategy', () => {
 		};
 
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, {}, mockedTaxonomy, 'general'),
+			new Site([], true, 'test', false, {}, mockedTaxonomy),
 			new Page(666, 'pl', 666, 'test', 'article-test', mockedPageTags, 546),
 		);
 
@@ -128,7 +156,7 @@ describe('CombinedStrategy', () => {
 		expect(combinedStrategy.get()).to.deep.eq(expectedResult);
 		expect(mockedContext).to.deep.eq(
 			new FandomContext(
-				new Site([], true, 'ec', 'test', false, {}, ['life', 'lifestyle'], 'general'),
+				new Site([], true, 'test', false, {}, ['life', 'lifestyle']),
 				new Page(
 					666,
 					'pl',
@@ -149,6 +177,8 @@ describe('CombinedStrategy', () => {
 		const mockedSiteTags = {
 			gnre: ['test1', 'drama', 'comedy', 'horror'],
 			theme: ['test3', 'superheroes'],
+			mpa: ['general'],
+			esrb: ['ec'],
 		};
 		const mockedPageTags = {
 			gnre: ['test2', 'drama', 'comedy', 'horror'],
@@ -156,11 +186,12 @@ describe('CombinedStrategy', () => {
 		};
 
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, mockedSiteTags, mockedTaxonomy, 'general'),
+			new Site([], true, 'test', false, mockedSiteTags, mockedTaxonomy),
 			new Page(666, 'pl', 666, 'test', 'article-test', mockedPageTags, 546),
 		);
 
 		const expectedTaxonomyTags = {
+			rating: 'esrb:ec,mpa:general',
 			gnre: ['test1', 'drama', 'comedy', 'horror', 'p_test2', 'p_drama', 'p_comedy', 'p_horror'],
 			theme: ['test3', 'superheroes', 'p_test4', 'p_superheroes'],
 		};
@@ -179,15 +210,15 @@ describe('CombinedStrategy', () => {
 				new Site(
 					[],
 					true,
-					'ec',
 					'test',
 					false,
 					{
 						gnre: ['test1', 'drama', 'comedy', 'horror'],
 						theme: ['test3', 'superheroes'],
+						mpa: ['general'],
+						esrb: ['ec'],
 					},
 					['life', 'lifestyle'],
-					'general',
 				),
 				new Page(
 					666,

@@ -28,7 +28,7 @@ function getPlugins(settings: PorvataSettings): PorvataPlugin[] {
 }
 
 export class PorvataFactory {
-	private static loadSdkPromise: Promise<Event>;
+	private static loadSdkPromise: Promise<Event | void>;
 
 	static async create(settings: PorvataSettings): Promise<PorvataPlayer> {
 		settings.getPlayerContainer().style.opacity = '0';
@@ -58,11 +58,11 @@ export class PorvataFactory {
 		return player;
 	}
 
-	private static async load(): Promise<Event> {
+	private static async load(): Promise<Event | void> {
 		if (!PorvataFactory.loadSdkPromise) {
 			PorvataFactory.loadSdkPromise = !(window.google && window.google.ima)
 				? utils.scriptLoader.loadScript('//imasdk.googleapis.com/js/sdkloader/ima3.js')
-				: new Promise((resolve) => resolve());
+				: new Promise<void>((resolve) => resolve());
 		}
 
 		return PorvataFactory.loadSdkPromise;

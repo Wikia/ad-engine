@@ -1,5 +1,5 @@
-import { AdSlot, context, Dictionary, slotTargetingService } from '@wikia/core';
 import { communicationService, eventsRepository } from '@wikia/communication';
+import { AdSlot, context, Dictionary, slotTargetingService } from '@wikia/core';
 import { assert, expect } from 'chai';
 import { createSandbox, SinonSandbox, SinonSpy } from 'sinon';
 import { configMock } from '../config-mock';

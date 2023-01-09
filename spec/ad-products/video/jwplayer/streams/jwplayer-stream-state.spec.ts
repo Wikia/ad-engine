@@ -1,10 +1,10 @@
-import { context, vastParser } from '@wikia/core';
 import { jwpEvents } from '@wikia/ad-products/video/jwplayer/streams/jwplayer-events';
 import {
 	createJwpStateStream,
 	JwpState,
 } from '@wikia/ad-products/video/jwplayer/streams/jwplayer-stream-state';
 import { JwpStatelessEvent } from '@wikia/ad-products/video/jwplayer/streams/jwplayer-stream-stateless';
+import { context, vastParser } from '@wikia/core';
 import { expect } from 'chai';
 import { Observable, Subject } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';

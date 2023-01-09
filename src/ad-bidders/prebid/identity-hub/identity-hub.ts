@@ -5,7 +5,7 @@ const pubId = '156260';
 
 const logGroup = 'IdentityHub';
 
-class IdentityHub extends BaseServiceSetup {
+export class IdentityHub extends BaseServiceSetup {
 	private isLoaded = false;
 	private identityHubScriptSrc = `https://ads.pubmatic.com/AdServer/js/pwt/${pubId}/${profileId}/pwt.js`;
 
@@ -33,5 +33,3 @@ class IdentityHub extends BaseServiceSetup {
 		}
 	}
 }
-
-export const identityHub = new IdentityHub();

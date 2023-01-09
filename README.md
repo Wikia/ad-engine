@@ -19,8 +19,6 @@ Import everything from `@wikia/ad-engine`. Dead code should be eliminated during
 
 After running `npm run buid:platforms` a set of packages for each platform will be available in `dist/platforms/`.
 
-To compile it in your desired application import `getAdEngineLoader` from `configs/webpack-app.config.js` and add to your webpack loaders array.
-
 ## Context
 
 Context is the ad-engine's store of custom global configuration. To get to know how to set and use it see `src/ad-engine/services/context-service.ts`.
@@ -60,7 +58,7 @@ export default customContext = {
 			moatTracking: {
 				enabled: false,
 				partnerCode: 'foo',
-				sampling: 1,
+				sampling: 1
 			},
 		},
 		customAdLoader: {

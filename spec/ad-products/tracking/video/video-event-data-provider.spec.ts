@@ -1,7 +1,7 @@
+import { VideoEventDataProvider } from '@wikia/ad-products/tracking/video/video-event-data-provider';
+import { AdSlot, context, slotService, targetingService } from '@wikia/core';
 import { assert } from 'chai';
 import * as sinon from 'sinon';
-import { AdSlot, context, slotService, targetingService } from '@wikia/core';
-import { VideoEventDataProvider } from '@wikia/ad-products/tracking/video/video-event-data-provider';
 import { configMock } from '../../../core/config-mock';
 
 describe('Video event data provider', () => {

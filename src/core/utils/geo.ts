@@ -1,6 +1,5 @@
 import Cookies from 'js-cookie';
-import { context } from '../services/context-service';
-import { CacheData, InstantConfigCacheStorage } from '../services/instant-config-cache-storage';
+import { CacheData, context, InstantConfigCacheStorage } from '../services';
 
 const cacheMarker = '-cached';
 const earth = 'XX';
@@ -27,7 +26,12 @@ export const geoService = {
 };
 
 function setUpGeoData(): GeoData {
-	const jsonData = decodeURIComponent(Cookies.get('Geo'));
+	const geoCookie = Cookies.get('Geo');
+
+	if (!geoCookie) {
+		return;
+	}
+	const jsonData = decodeURIComponent(geoCookie);
 
 	try {
 		const geoData: GeoData = JSON.parse(jsonData) || {};
