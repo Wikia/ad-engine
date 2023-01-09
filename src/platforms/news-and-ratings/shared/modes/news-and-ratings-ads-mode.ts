@@ -1,9 +1,13 @@
 import { GptSetup, WadRunner } from '@platforms/shared';
 import {
 	Bidders,
+	Captify,
 	communicationService,
+	Confiant,
 	DiProcess,
+	DurationMedia,
 	eventsRepository,
+	IasPublisherOptimization,
 	LiveConnect,
 	LiveRampPixel,
 	PartnerPipeline,
@@ -16,7 +20,11 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,
 		private bidders: Bidders,
+		private captify: Captify,
+		private confiant: Confiant,
+		private durationMedia: DurationMedia,
 		private gptSetup: GptSetup,
+		private iasPublisherOptimization: IasPublisherOptimization,
 		private liveConnect: LiveConnect,
 		private liveRampPixel: LiveRampPixel,
 		private userIdentity: UserIdentity,
@@ -31,6 +39,10 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 				this.userIdentity,
 				this.liveRampPixel.setOptions({ dependencies: [this.userIdentity.initialized] }),
 				this.liveConnect,
+				this.confiant,
+				this.iasPublisherOptimization,
+				this.captify,
+				this.durationMedia,
 				this.gptSetup.setOptions({
 					dependencies: [this.wadRunner.initialized, this.bidders.initialized],
 				}),

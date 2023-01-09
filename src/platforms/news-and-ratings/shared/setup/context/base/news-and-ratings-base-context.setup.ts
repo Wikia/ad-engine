@@ -6,6 +6,10 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 	constructor(protected instantConfig: InstantConfigService) {}
 
 	execute(): void {
+		this.setBaseState();
+	}
+
+	private setBaseState(): void {
 		context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441);
 		context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src'));
 

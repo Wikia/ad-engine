@@ -6,6 +6,12 @@ export const basicContext = {
 		property: 'tvguide',
 	},
 	services: {
+		durationMedia: {
+			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',
+		},
+		iasPublisherOptimization: {
+			slots: ['mpu-plus-top'],
+		},
 		instantConfig: {
 			appName: 'tvguide',
 		},

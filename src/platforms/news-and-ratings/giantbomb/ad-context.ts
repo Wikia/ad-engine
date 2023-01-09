@@ -25,6 +25,12 @@ export const basicContext = {
 		},
 	},
 	services: {
+		durationMedia: {
+			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',
+		},
+		iasPublisherOptimization: {
+			slots: ['mpu_top'],
+		},
 		instantConfig: {
 			appName: 'giantbomb',
 		},

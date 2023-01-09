@@ -6,6 +6,12 @@ export const basicContext = {
 		property: 'metacritic',
 	},
 	services: {
+		durationMedia: {
+			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',
+		},
+		iasPublisherOptimization: {
+			slots: ['mpu_plus_top'],
+		},
 		instantConfig: {
 			appName: 'metacritic',
 		},

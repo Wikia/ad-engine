@@ -19,6 +19,7 @@ export class Captify extends BaseServiceSetup {
 
 		elem.onload = () => {
 			communicationService.emit(eventsRepository.CAPTIFY_LOADED);
+			utils.logger(logGroup, 'loaded');
 		};
 
 		return Promise.resolve();
