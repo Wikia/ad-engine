@@ -6,6 +6,7 @@ import { basicContext } from './ad-context';
 import { TvGuideSlotsContextSetup } from './setup/context/slots/tvguide-slots-context.setup';
 import { TvGuideDynamicSlotsSetup } from './setup/dynamic-slots/tvguide-dynamic-slots.setup';
 import { NewsAndRatingsAdsMode, NewsAndRatingsBaseContextSetup } from '../shared';
+import { TvGuideTargetingSetup } from './setup/context/targeting/tvguide-targeting.setup';
 
 @Injectable()
 export class TvGuidePlatform {
@@ -18,6 +19,7 @@ export class TvGuidePlatform {
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
 			NewsAndRatingsBaseContextSetup,
+			TvGuideTargetingSetup,
 			TvGuideDynamicSlotsSetup,
 			TvGuideSlotsContextSetup,
 			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
