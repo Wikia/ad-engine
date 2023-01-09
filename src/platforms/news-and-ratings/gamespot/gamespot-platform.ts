@@ -4,6 +4,7 @@ import { BiddersStateSetup, InstantConfigSetup } from '@platforms/shared';
 import { basicContext } from './ad-context';
 import { GamespotSlotsContextSetup } from './setup/context/slots/gamespot-slots-context.setup';
 import { GamespotPrebidConfigSetup } from './setup/context/prebid/gamespot-prebid-config.setup';
+import { GamespotTargetingSetup } from './setup/context/targeting/gamespot-targeting.setup';
 import {
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
@@ -21,6 +22,7 @@ export class GameSpotPlatform {
 			Bootstrap.setupGeo,
 			parallel(InstantConfigSetup, Bootstrap.setupConsent),
 			NewsAndRatingsBaseContextSetup,
+			GamespotTargetingSetup,
 			NewsAndRatingsTargetingSetup,
 			GamespotSlotsContextSetup,
 			NewsAndRatingsDynamicSlotsSetup,

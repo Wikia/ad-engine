@@ -4,6 +4,7 @@ import { BiddersStateSetup, InstantConfigSetup } from '@platforms/shared';
 import { basicContext } from './ad-context';
 import { GiantbombSlotsContextSetup } from './setup/context/slots/giantbomb-slots-context.setup';
 import { GiantbombPrebidConfigSetup } from './setup/context/prebid/giantbomb-prebid-config.setup';
+import { GiantbombTargetingSetup } from './setup/context/targeting/giantbomb-targeting.setup';
 import {
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
@@ -21,6 +22,7 @@ export class GiantbombPlatform {
 			Bootstrap.setupGeo,
 			parallel(InstantConfigSetup, Bootstrap.setupConsent),
 			NewsAndRatingsBaseContextSetup,
+			GiantbombTargetingSetup,
 			NewsAndRatingsTargetingSetup,
 			GiantbombSlotsContextSetup,
 			NewsAndRatingsDynamicSlotsSetup,

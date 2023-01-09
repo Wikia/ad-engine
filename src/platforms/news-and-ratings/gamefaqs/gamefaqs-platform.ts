@@ -10,7 +10,9 @@ import {
 	NewsAndRatingsDynamicSlotsSetup,
 	NewsAndRatingsTargetingSetup,
 	NewsAndRatingsWadSetup,
+	LazyLoadedSlotsContextSetup,
 } from '../shared';
+import { GamefaqsTargetingSetup } from './setup/context/targeting/gamefaqs-targeting.setup';
 
 @Injectable()
 export class GamefaqsPlatform {
@@ -23,10 +25,11 @@ export class GamefaqsPlatform {
 			parallel(InstantConfigSetup, Bootstrap.setupConsent),
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
+			GamefaqsTargetingSetup,
 			NewsAndRatingsTargetingSetup,
 			GamefaqsSlotsContextSetup,
+			LazyLoadedSlotsContextSetup,
 			NewsAndRatingsDynamicSlotsSetup,
-			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
 			BiddersStateSetup,
 			GamefaqsPrebidConfigSetup,
 			NewsAndRatingsAdsMode,

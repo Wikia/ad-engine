@@ -4,6 +4,7 @@ import { BiddersStateSetup, InstantConfigSetup } from '@platforms/shared';
 import { basicContext } from './ad-context';
 import { ComicvineSlotsContextSetup } from './setup/context/slots/comicvine-slots-context.setup';
 import { ComicvinePrebidConfigSetup } from './setup/context/prebid/comicvine-prebid-config.setup';
+import { ComicvineTargetingSetup } from './setup/context/targeting/comicvine-targeting.setup';
 import {
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsDynamicSlotsSetup,
@@ -21,6 +22,7 @@ export class ComicvinePlatform {
 			Bootstrap.setupGeo,
 			parallel(InstantConfigSetup, Bootstrap.setupConsent),
 			NewsAndRatingsBaseContextSetup,
+      ComicvineTargetingSetup,
 			NewsAndRatingsTargetingSetup,
 			NewsAndRatingsDynamicSlotsSetup,
 			ComicvineSlotsContextSetup,

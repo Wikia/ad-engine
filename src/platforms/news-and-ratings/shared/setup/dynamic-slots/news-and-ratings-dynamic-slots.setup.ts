@@ -1,4 +1,4 @@
-import { context, DiProcess } from '@wikia/ad-engine';
+import { context, DiProcess, utils } from '@wikia/ad-engine';
 
 export class NewsAndRatingsDynamicSlotsSetup implements DiProcess {
 	execute(): void {
@@ -6,15 +6,16 @@ export class NewsAndRatingsDynamicSlotsSetup implements DiProcess {
 	}
 
 	private injectSlots(): void {
-		const adPlaceholders = document.querySelectorAll('.ad');
+		const adPlaceholders = document.querySelectorAll('.mapped-ad,.ad');
 
-		if (!adPlaceholders) {
+		if (!adPlaceholders || adPlaceholders.length === 0) {
+			console.warn('AdEngine did not find any ad placeholders');
 			return;
 		}
 
-		adPlaceholders.forEach((placeholder) => {
+		adPlaceholders.forEach((placeholder: Element) => {
 			const adSlotName = placeholder.getAttribute('data-ad-type');
-			const adWrapper = placeholder.firstElementChild;
+			const adWrapper = utils.Document.getFirstElementChild(placeholder);
 
 			if (!adWrapper) {
 				return;
@@ -22,7 +23,15 @@ export class NewsAndRatingsDynamicSlotsSetup implements DiProcess {
 
 			adWrapper.id = adSlotName;
 
-			context.push('state.adStack', { id: adSlotName });
+			if (this.isSlotLazyLoaded(adSlotName)) {
+				context.push('events.pushOnScroll.ids', adSlotName);
+			} else {
+				context.push('state.adStack', { id: adSlotName });
+			}
 		});
+	}
+
+	private isSlotLazyLoaded(slotName: string): boolean {
+		return context.get(`slots.${slotName}.lazyLoad`);
 	}
 }
