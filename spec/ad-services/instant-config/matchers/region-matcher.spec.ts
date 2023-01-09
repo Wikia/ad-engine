@@ -17,13 +17,13 @@ describe('Region Matcher', () => {
 	});
 
 	it('should work for empty', () => {
-		regionMatcher.isValid();
-		expect(isProperGeoStub.getCall(0).args[0]).to.deep.equal([]);
+		const isValid = regionMatcher.isValid();
+		expect(isValid).to.be.true;
 	});
 
 	it('should work for empty array', () => {
-		regionMatcher.isValid([]);
-		expect(isProperGeoStub.getCall(0).args[0]).to.deep.equal([]);
+		const isValid = regionMatcher.isValid([]);
+		expect(isValid).to.be.true;
 	});
 
 	it('should filter out invalid', () => {
