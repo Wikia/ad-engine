@@ -28,7 +28,6 @@ export class GamefaqsPlatform {
 			NewsAndRatingsTargetingSetup,
 			GamefaqsSlotsContextSetup,
 			NewsAndRatingsDynamicSlotsSetup,
-			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
 			BiddersStateSetup,
 			GamefaqsPrebidConfigSetup,
 			NewsAndRatingsAdsMode,
