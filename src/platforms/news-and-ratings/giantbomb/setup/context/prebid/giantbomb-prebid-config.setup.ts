@@ -8,6 +8,7 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 
 import { getWikiaContext } from '../../../bidders/wikia';
+import { getPubmaticContext } from '../../../bidders/pubmatic';
 
 @Injectable()
 export class GiantbombPrebidConfigSetup implements DiProcess {
@@ -16,6 +17,7 @@ export class GiantbombPrebidConfigSetup implements DiProcess {
 			return;
 		}
 
+		context.set('bidders.prebid.pubmatic', getPubmaticContext());
 		context.set('bidders.prebid.wikia', getWikiaContext());
 
 		this.registerListeners();
