@@ -1,12 +1,13 @@
 import { Injectable } from '@wikia/dependency-injection';
 import { context, ProcessPipeline } from '@wikia/ad-engine';
-import { bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
+import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
 
 import { basicContext } from './ad-context';
 import { TvGuideSlotsContextSetup } from './setup/context/slots/tvguide-slots-context.setup';
 import { TvGuideDynamicSlotsSetup } from './setup/dynamic-slots/tvguide-dynamic-slots.setup';
 import { NewsAndRatingsAdsMode, NewsAndRatingsBaseContextSetup } from '../shared';
 import { TvGuideTargetingSetup } from './setup/context/targeting/tvguide-targeting.setup';
+import { TvGuidePrebidConfigSetup } from './setup/context/prebid/tvguide-prebid-config-setup.service';
 
 @Injectable()
 export class TvGuidePlatform {
@@ -22,7 +23,8 @@ export class TvGuidePlatform {
 			TvGuideTargetingSetup,
 			TvGuideDynamicSlotsSetup,
 			TvGuideSlotsContextSetup,
-			// TODO: add targeting setup once we have idea of page-level and slot-level targeting
+			TvGuidePrebidConfigSetup,
+			BiddersStateSetup,
 			NewsAndRatingsAdsMode,
 		);
 
