@@ -1,9 +1,13 @@
 import { Injectable } from '@wikia/dependency-injection';
 import {
 	bidders,
+	captify,
 	communicationService,
+	confiant,
 	DiProcess,
+	durationMedia,
 	eventsRepository,
+	iasPublisherOptimization,
 	liveConnect,
 	liveRampPixel,
 	PartnerPipeline,
@@ -23,6 +27,10 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 				userIdentity,
 				liveRampPixel.setOptions({ dependencies: [userIdentity.initialized] }),
 				liveConnect,
+				confiant,
+				iasPublisherOptimization,
+				captify,
+				durationMedia,
 				gptSetup.setOptions({
 					dependencies: [wadRunner.initialized, bidders.initialized],
 				}),
