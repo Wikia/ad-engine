@@ -13,15 +13,8 @@ const defaultOnDetect = () => {
 };
 
 export class WadRunner extends BaseServiceSetup {
-	protected detector;
-	protected onDetected: () => void;
-
-	constructor(detector = babDetection, onDetected = defaultOnDetect) {
-		super();
-
-		this.detector = detector;
-		this.onDetected = onDetected;
-	}
+	public detector = babDetection;
+	public onDetected: () => void = defaultOnDetect;
 
 	async call(): Promise<void> {
 		if (!this.detector.isEnabled()) {
