@@ -27,8 +27,8 @@ export class ComicvinePlatform {
 			NewsAndRatingsTargetingSetup,
 			NewsAndRatingsDynamicSlotsSetup,
 			ComicvineSlotsContextSetup,
-			BiddersStateSetup,
 			ComicvinePrebidConfigSetup,
+			BiddersStateSetup,
 			NewsAndRatingsAdsMode,
 		);
 
