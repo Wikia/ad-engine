@@ -4,6 +4,7 @@ import {
 	context,
 	DiProcess,
 	eventsRepository,
+	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -17,7 +18,7 @@ export class MetacriticPrebidConfigSetup implements DiProcess {
 			return;
 		}
 
-		context.set('bidders.prebid.pubmatic', getPubmaticContext());
+		context.set('bidders.prebid.pubmatic', getPubmaticContext(utils.client.isDesktop()));
 		context.set('bidders.prebid.wikia', getWikiaContext());
 
 		this.registerListeners();
