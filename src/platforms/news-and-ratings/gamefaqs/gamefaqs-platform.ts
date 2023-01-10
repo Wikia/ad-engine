@@ -28,8 +28,8 @@ export class GamefaqsPlatform {
 			NewsAndRatingsTargetingSetup,
 			GamefaqsSlotsContextSetup,
 			NewsAndRatingsDynamicSlotsSetup,
-			BiddersStateSetup,
 			GamefaqsPrebidConfigSetup,
+			BiddersStateSetup,
 			NewsAndRatingsAdsMode,
 		);
 
