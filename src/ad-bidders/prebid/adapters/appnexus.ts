@@ -61,6 +61,18 @@ export class Appnexus extends PrebidAdapter {
 	}
 
 	getBids(code, { placementId, position = 'mobile' }: PrebidAdSlotConfig): PrebidBid[] {
+		if (Array.isArray(placementId) && placementId.length > 0) {
+			return placementId.map((id) => ({
+				bidder: this.bidderName,
+				params: {
+					placementId: id,
+					keywords: {
+						...this.getTargeting(code),
+					},
+				},
+			}));
+		}
+
 		return [
 			{
 				bidder: this.bidderName,
