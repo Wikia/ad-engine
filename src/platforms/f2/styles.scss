@@ -241,9 +241,6 @@ body:not(.uap-sticked) {
 	}
 }
 
-// ToDo: fix styli na F2
-// ToDo: collapsowanie na F2
-
 @include f2-uap-styles();
 @include logo-replacement(56px, 0, 0, 93px, 27px);
 @include out-of-page-styles();
