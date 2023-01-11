@@ -14,6 +14,7 @@ import {
 	userIdentity,
 } from '@wikia/ad-engine';
 import { gptSetup, wadRunner } from '@platforms/shared';
+import { playerSetup } from '../../../shared';
 
 @Injectable()
 export class NewsAndRatingsAdsMode implements DiProcess {
@@ -31,6 +32,7 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 				iasPublisherOptimization,
 				captify,
 				durationMedia,
+				playerSetup,
 				gptSetup.setOptions({
 					dependencies: [wadRunner.initialized, bidders.initialized],
 				}),
