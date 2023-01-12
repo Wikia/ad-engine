@@ -38,7 +38,7 @@ export class Nielsen extends BaseServiceSetup {
 	 * @returns {Object}
 	 */
 	call(): void {
-		const targeting = targetingService.getAll<TargetingData>();
+		const targeting = targetingService.dumpTargeting<TargetingData>();
 		const section = context.get('services.nielsen.customSection') || targeting.s0v;
 		const articleId = targeting.post_id || targeting.artid;
 

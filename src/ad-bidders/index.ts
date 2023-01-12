@@ -4,7 +4,7 @@ import {
 	BaseServiceSetup,
 	context,
 	Dictionary,
-	slotTargetingService,
+	targetingService,
 	utils,
 } from '@ad-engine/core';
 import { A9Provider } from './a9';
@@ -48,9 +48,7 @@ export class Bidders extends BaseServiceSetup {
 	}
 
 	applyTargetingParams(slotName, targeting): void {
-		Object.keys(targeting).forEach((key) =>
-			slotTargetingService.set(slotName, key, targeting[key]),
-		);
+		Object.keys(targeting).forEach((key) => targetingService.set(key, targeting[key], slotName));
 	}
 
 	getBiddersProviders(): (A9Provider | PrebidProvider)[] {
@@ -98,7 +96,7 @@ export class Bidders extends BaseServiceSetup {
 	resetTargetingKeys(slotName): void {
 		this.getBiddersProviders().forEach((provider) => {
 			provider.getTargetingKeys(slotName).forEach((key) => {
-				slotTargetingService.remove(slotName, key);
+				targetingService.remove(key, slotName);
 			});
 		});
 

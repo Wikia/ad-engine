@@ -3,7 +3,6 @@ import {
 	context,
 	Dictionary,
 	SlotConfig,
-	slotTargetingService,
 	targetingService,
 	utils,
 } from '@ad-engine/core';
@@ -113,11 +112,11 @@ export class IasPublisherOptimization extends BaseServiceSetup {
 		targetingService.set('ias-kw', '-1');
 
 		brandSafetyKeys.forEach((key) => {
-			context.set(`targeting.${key}`, '-1');
+			targetingService.set(key, '-1');
 		});
 
 		this.slotList.forEach((slotName) => {
-			slotTargetingService.set(slotName, 'vw', '-1');
+			targetingService.set('vw', '-1', slotName);
 		});
 	}
 
@@ -132,7 +131,7 @@ export class IasPublisherOptimization extends BaseServiceSetup {
 		IasPublisherOptimization.setCustomKeyValuesInTargeting(iasTargetingData.custom);
 
 		for (const [slotName, slotTargeting] of Object.entries(iasTargetingData.slots)) {
-			slotTargetingService.set(slotName, 'vw', slotTargeting.vw || slotTargeting.vw_vv);
+			targetingService.set('vw', slotTargeting.vw || slotTargeting.vw_vv, slotName);
 		}
 		utils.logger(logGroup, 'Done.', this);
 		this.resolveIASReady();

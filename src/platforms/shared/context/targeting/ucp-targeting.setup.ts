@@ -30,7 +30,7 @@ export class UcpTargetingSetup implements DiProcess {
 
 	execute(): void {
 		targetingService.extend({
-			...targetingService.getAll(),
+			...targetingService.dumpTargeting(),
 			...this.getPageLevelTargeting(),
 		});
 
@@ -53,7 +53,7 @@ export class UcpTargetingSetup implements DiProcess {
 
 		if (context.get('wiki.targeting.wikiIsTop1000')) {
 			context.set('custom.wikiIdentifier', '_top1k_wiki');
-			context.set('custom.dbNameForAdUnit', targetingService.getAll<TargetingData>().s1);
+			context.set('custom.dbNameForAdUnit', targetingService.dumpTargeting<TargetingData>().s1);
 		}
 
 		targetingService.set(

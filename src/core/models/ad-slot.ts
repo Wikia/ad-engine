@@ -4,8 +4,8 @@ import {
 	insertMethodType,
 	SlotPlaceholderContextConfig,
 	SlotTargeting,
-	slotTargetingService,
 	slotTweaker,
+	targetingService,
 	utils,
 } from '../';
 import { ADX, GptSizeMapping } from '../providers';
@@ -145,7 +145,7 @@ export class AdSlot {
 		const targetingData = this.config.targeting || ({} as SlotTargeting);
 		targetingData.src = targetingData.src || context.get('src');
 		targetingData.pos = targetingData.pos || this.getSlotName();
-		slotTargetingService.extend(this.getSlotName(), targetingData);
+		targetingService.extend(targetingData, this.getSlotName());
 		delete this.config.targeting;
 
 		this.requested = new Promise<void>((resolve) => {
@@ -303,7 +303,7 @@ export class AdSlot {
 
 	// Main position is the first value defined in the "pos" key-value (targeting)
 	getMainPositionName(): string {
-		const { pos = '' } = slotTargetingService.getSlotTargeting(this.getSlotName());
+		const { pos = '' } = targetingService.dumpTargeting(this.getSlotName());
 
 		return (Array.isArray(pos) ? pos : pos.split(','))[0].toLowerCase();
 	}
@@ -325,11 +325,13 @@ export class AdSlot {
 	 * @returns {Object}
 	 */
 	get targeting(): SlotTargeting {
-		return slotTargetingService.getSlotTargeting(this.getSlotName());
+		return targetingService.dumpTargeting<SlotTargeting>(this.getSlotName());
 	}
 
 	getTargeting(): SlotTargeting {
-		return this.parseTargetingParams(slotTargetingService.getSlotTargeting(this.getSlotName()));
+		return this.parseTargetingParams(
+			targetingService.dumpTargeting<SlotTargeting>(this.getSlotName()),
+		);
 	}
 
 	private parseTargetingParams(targetingParams: Dictionary): SlotTargeting {
@@ -443,7 +445,7 @@ export class AdSlot {
 	}
 
 	getTargetingConfigProperty(key: string): any {
-		return slotTargetingService.get(this.getSlotName(), key);
+		return targetingService.get(key, this.getSlotName());
 	}
 
 	setConfigProperty(key: string, value: any): void {
@@ -451,7 +453,7 @@ export class AdSlot {
 	}
 
 	setTargetingConfigProperty(key: string, value: any): void {
-		slotTargetingService.set(this.config.slotName, key, value);
+		targetingService.set(key, value, this.config.slotName);
 	}
 
 	success(status: string = AdSlot.STATUS_SUCCESS): void {

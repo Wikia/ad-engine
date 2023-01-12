@@ -10,7 +10,7 @@ import {
 	context,
 	slotService,
 	SlotTargeting,
-	slotTargetingService,
+	targetingService,
 	utils,
 } from '@ad-engine/core';
 import { filter, take } from 'rxjs/operators';
@@ -122,11 +122,11 @@ function setType(type): void {
 }
 
 function updateSlotsTargeting(lineItemId, creativeId): void {
-	const slots = slotTargetingService.getAll() || {};
+	const slots = targetingService.getAllSlots() || {};
 
 	Object.keys(slots).forEach((slotId) => {
-		slotTargetingService.set(slotId, 'uap', lineItemId);
-		slotTargetingService.set(slotId, 'uap_c', creativeId);
+		targetingService.set('uap', lineItemId, slotId);
+		targetingService.set('uap_c', creativeId, slotId);
 	});
 }
 

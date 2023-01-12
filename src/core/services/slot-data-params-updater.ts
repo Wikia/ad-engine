@@ -22,7 +22,7 @@ function logRenderedAd(adSlot: AdSlot) {
  */
 class SlotDataParamsUpdater {
 	updateOnCreate(adSlot: AdSlot): void {
-		slotTweaker.setDataParam(adSlot, 'gptPageParams', targetingService.getAll());
+		slotTweaker.setDataParam(adSlot, 'gptPageParams', targetingService.dumpTargeting());
 		slotTweaker.setDataParam(adSlot, 'gptSlotParams', adSlot.getTargeting());
 	}
 

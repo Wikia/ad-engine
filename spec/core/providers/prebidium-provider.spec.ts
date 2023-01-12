@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@wikia/communication';
-import { PrebidiumProvider, slotTargetingService } from '@wikia/core';
+import { PrebidiumProvider, targetingService } from '@wikia/core';
 import { IframeBuilder } from '@wikia/core/utils';
 import { assert } from 'chai';
 import { BehaviorSubject } from 'rxjs';
@@ -25,7 +25,7 @@ describe('PrebidiumProvider', () => {
 		prebidiumProvider = new PrebidiumProvider();
 
 		stubIframeBuilder();
-		contextStub.get = sandbox.stub(slotTargetingService, 'get').returns(mock.adId);
+		contextStub.get = sandbox.stub(targetingService, 'get').returns(mock.adId);
 		pbjsStub = stubPbjs(sandbox).pbjsStub;
 	});
 
@@ -71,8 +71,8 @@ describe('PrebidiumProvider', () => {
 			const callArguments = contextStub.get.getCall(0).args;
 
 			assert(contextStub.get.calledOnce);
-			assert.equal(callArguments[0], mock.slotName);
-			assert.equal(callArguments[1], 'hb_adid');
+			assert.equal(callArguments[0], 'hb_adid');
+			assert.equal(callArguments[1], mock.slotName);
 		});
 	});
 

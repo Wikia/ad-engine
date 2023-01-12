@@ -6,7 +6,7 @@ import {
 } from '@ad-engine/communication';
 import { filter, take } from 'rxjs/operators';
 import { AdSlot } from '../models';
-import { pbjsFactory, slotTargetingService } from '../services';
+import { pbjsFactory, targetingService } from '../services';
 import { IframeBuilder, logger } from '../utils';
 import { Provider } from './provider';
 
@@ -47,6 +47,6 @@ export class PrebidiumProvider implements Provider {
 	}
 
 	private getAdId(adSlot: AdSlot): string {
-		return slotTargetingService.get(adSlot.getSlotName(), 'hb_adid');
+		return targetingService.get('hb_adid', adSlot.getSlotName());
 	}
 }

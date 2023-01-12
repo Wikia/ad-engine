@@ -4,7 +4,7 @@ import { generateUniqueId, logger } from '../utils';
 import { stringBuilder } from '../utils/string-builder';
 import { context } from './context-service';
 import { slotInjector } from './slot-injector';
-import { slotTargetingService } from './slot-targeting-service';
+import { targetingService } from './targeting-service';
 
 const logGroup = 'slot-repeater';
 
@@ -44,7 +44,7 @@ function repeatSlot(adSlot: AdSlot): boolean {
 					: repeatConfig.updateProperties[key];
 
 			if (key.startsWith('targeting.')) {
-				slotTargetingService.set(slotName, key.replace('targeting.', ''), value);
+				targetingService.set(key.replace('targeting.', ''), value, slotName);
 			} else {
 				context.set(`slots.${slotName}.${key}`, value);
 			}

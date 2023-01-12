@@ -17,12 +17,12 @@ export class RubiconDisplay extends PrebidAdapter {
 		this.customTargeting = {
 			s1: [
 				context.get('wiki.targeting.wikiIsTop1000')
-					? targetingService.getAll<TargetingData>().s1 || ''
+					? targetingService.dumpTargeting<TargetingData>().s1 || ''
 					: 'not a top1k wiki',
 			],
 			lang: [
-				targetingService.getAll<TargetingData>().wikiLanguage ||
-					targetingService.getAll<TargetingData>().lang ||
+				targetingService.dumpTargeting<TargetingData>().wikiLanguage ||
+					targetingService.dumpTargeting<TargetingData>().lang ||
 					'en',
 			],
 		};

@@ -37,7 +37,7 @@ class Targeting {
 	}
 
 	getTargetingBundles(bundles: Dictionary<Dictionary<string[]>>): string[] {
-		const targetingBundles = targetingService.getAll<TargetingData>().bundles || [];
+		const targetingBundles = targetingService.dumpTargeting<TargetingData>().bundles || [];
 
 		try {
 			const selectedBundles = [];
@@ -71,7 +71,7 @@ class Targeting {
 		if (cookieAdapter.getItem('_ae_intrsttl_imp')) {
 			bundles.push('interstitial_disabled');
 		}
-		const skin = targetingService.getAll<TargetingData>().skin;
+		const skin = targetingService.dumpTargeting<TargetingData>().skin;
 
 		if (
 			skin &&
@@ -81,7 +81,7 @@ class Targeting {
 			bundles.push('VIDEO_TIER_3_BUNDLE');
 		}
 
-		const wordCount = targetingService.getAll<TargetingData>().word_count || -1;
+		const wordCount = targetingService.dumpTargeting<TargetingData>().word_count || -1;
 
 		if (wordCount > -1 && wordCount <= shortPageWordsLimit) {
 			bundles.push('short_page');

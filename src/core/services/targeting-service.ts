@@ -1,9 +1,21 @@
 import { debug } from './debug';
 
-type ChangeCallback = (key: string | null, value: any) => void;
+export type ChangeCallback = (key: string | null, value: any) => void;
 
-interface TargetingObject {
+export interface TargetingObject {
 	[key: string]: any;
+}
+
+export interface SlotTargeting {
+	amznbid?: string;
+	hb_bidder?: string;
+	hb_pb?: string;
+	src?: string;
+	pos?: string;
+	loc?: string;
+	rv?: string | string[];
+
+	[key: string]: googletag.NamedSize | number;
 }
 
 export interface TargetingData {
@@ -57,41 +69,100 @@ export interface TargetingData {
 	wpage?: string;
 }
 
-export class TargetingService {
+export interface TargetingServiceInterface {
+	clear(slotName: string | null): void;
+
+	extend(newTargeting: TargetingObject, slotName: string | null): void;
+
+	dumpTargeting<T = TargetingObject>(slotName: string | null): T;
+
+	getAllSlots(): TargetingObject;
+
+	get(key: string, slotName: string | null): any;
+
+	set(key: string, value: any, slotName: string | null): void;
+
+	remove(key: string, slotName: string | null): void;
+
+	onChange(callback: ChangeCallback): void;
+
+	removeListeners(): void;
+}
+
+export class TargetingService implements TargetingServiceInterface {
 	private adTargeting: TargetingObject = {};
 	private onChangeCallbacks: ChangeCallback[] = [];
+	private pageTargetingGroupName = 'PAGE_TARGETING';
 
 	constructor() {
-		window.ads.adTargeting = debug.isDebugMode() ? this.adTargeting : {};
+		if (debug.isDebugMode()) {
+			window.ads.adTargeting = this.adTargeting;
+		}
 	}
 
-	removeTargeting(): void {
-		this.adTargeting = {};
-		window.ads.adTargeting = debug.isDebugMode() ? this.adTargeting : {};
+	clear(slotName: string | null = null): void {
+		const targetingGroupName = slotName || this.pageTargetingGroupName;
+		this.adTargeting[targetingGroupName] = {} as TargetingObject;
 	}
 
-	extend(newTargeting: TargetingObject): void {
-		this.adTargeting = Object.assign(this.adTargeting, newTargeting);
-		window.ads.adTargeting = debug.isDebugMode() ? this.adTargeting : {};
+	extend(newTargeting: TargetingObject, slotName: string | null = null): void {
+		const targetingGroupName = slotName || this.pageTargetingGroupName;
+		this.adTargeting[targetingGroupName] =
+			this.adTargeting[targetingGroupName] || ({} as TargetingObject);
+		this.adTargeting[targetingGroupName] = Object.assign(
+			this.adTargeting[targetingGroupName],
+			newTargeting,
+		);
 	}
 
-	getAll<T = TargetingObject>(): T {
-		return this.adTargeting as T;
+	dumpTargeting<T = TargetingObject>(slotName: string | null = null): T {
+		const targetingGroupName = slotName || this.pageTargetingGroupName;
+		this.adTargeting[targetingGroupName] =
+			this.adTargeting[targetingGroupName] || ({} as TargetingObject);
+
+		return this.adTargeting[targetingGroupName] as T;
 	}
 
-	get(key: string): any {
-		return this.adTargeting[key];
+	getAllSlots(): TargetingObject {
+		const tmp = { ...this.adTargeting };
+
+		if (tmp[this.pageTargetingGroupName]) {
+			delete tmp[this.pageTargetingGroupName];
+		}
+
+		return tmp;
 	}
 
-	set(key: string, value: any): void {
-		this.adTargeting[key] = value;
-		this.triggerOnChange(key, value);
+	get(key: string, slotName: string | null = null): any {
+		const targetingGroupName = slotName || this.pageTargetingGroupName;
+
+		if (this.adTargeting[targetingGroupName]) {
+			return this.adTargeting[targetingGroupName][key];
+		}
+
+		return undefined;
 	}
 
-	remove(key: string): void {
-		if (this.adTargeting[key]) {
-			delete this.adTargeting[key];
-			this.triggerOnChange(key, null);
+	set(key: string, value: any, slotName: string | null = null): void {
+		const targetingGroupName = slotName || this.pageTargetingGroupName;
+		this.adTargeting[targetingGroupName] =
+			this.adTargeting[targetingGroupName] || ({} as TargetingObject);
+		this.adTargeting[targetingGroupName][key] = value;
+
+		if (targetingGroupName === this.pageTargetingGroupName) {
+			this.triggerOnChange(key, value);
+		}
+	}
+
+	remove(key: string, slotName: string | null = null): void {
+		const targetingGroupName = slotName || this.pageTargetingGroupName;
+
+		if (this.adTargeting[targetingGroupName][key]) {
+			delete this.adTargeting[targetingGroupName][key];
+
+			if (targetingGroupName === this.pageTargetingGroupName) {
+				this.triggerOnChange(key, null);
+			}
 		}
 	}
 
@@ -105,8 +176,6 @@ export class TargetingService {
 	}
 
 	private triggerOnChange(key: string, newValue: any): void {
-		window.ads.adTargeting = debug.isDebugMode() ? this.adTargeting : {};
-
 		this.onChangeCallbacks.forEach((callback) => {
 			callback(key, newValue);
 		});

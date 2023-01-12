@@ -24,7 +24,7 @@ export class F2TargetingSetup implements DiProcess {
 
 	execute(): void {
 		targetingService.extend({
-			...targetingService.getAll(),
+			...targetingService.dumpTargeting(),
 			...this.getPageLevelTargeting(),
 		});
 	}

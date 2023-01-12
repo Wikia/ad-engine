@@ -10,7 +10,7 @@ import {
 	Dictionary,
 	SlotConfig,
 	slotService,
-	slotTargetingService,
+	targetingService,
 	Usp,
 	usp,
 	utils,
@@ -134,7 +134,7 @@ export class A9Provider extends BidderProvider {
 
 	private invalidateSlotTargeting(adSlot: AdSlot): void {
 		const expirationDate = Date.parse(
-			slotTargetingService.get(adSlot.getSlotName(), 'amznExpirationDate'),
+			targetingService.get('amznExpirationDate', adSlot.getSlotName()),
 		);
 		const currentDate = new Date().getTime();
 
@@ -142,7 +142,7 @@ export class A9Provider extends BidderProvider {
 			const slotAlias = this.getSlotAlias(adSlot.getSlotName());
 			delete this.bids[slotAlias];
 			this.targetingKeys.forEach((key: string) => {
-				slotTargetingService.remove(adSlot.getSlotName(), key);
+				targetingService.remove(key, adSlot.getSlotName());
 			});
 		}
 	}

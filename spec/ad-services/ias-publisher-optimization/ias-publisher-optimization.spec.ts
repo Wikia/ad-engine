@@ -1,11 +1,5 @@
 import { IasPublisherOptimization } from '@wikia/ad-services';
-import {
-	context,
-	InstantConfigService,
-	slotTargetingService,
-	targetingService,
-	utils,
-} from '@wikia/core';
+import { context, InstantConfigService, targetingService, utils } from '@wikia/core';
 import { expect } from 'chai';
 import { createSandbox, spy } from 'sinon';
 
@@ -116,6 +110,6 @@ describe('IAS Publisher Optimization', () => {
 		expect(targetingService.get('vio')).to.equal('veryLow');
 		expect(targetingService.get('b_ias')).to.equal('high');
 		expect(targetingService.get('ias-kw')).to.deep.equal(['IAS_12345', 'IAS_67890']);
-		expect(slotTargetingService.get('top_leaderboard', 'vw')).to.equal('false');
+		expect(targetingService.get('vw', 'top_leaderboard')).to.equal('false');
 	});
 });

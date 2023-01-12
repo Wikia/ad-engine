@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@wikia/communication';
-import { AdSlot, context, Dictionary, slotTargetingService } from '@wikia/core';
+import { AdSlot, context, Dictionary, targetingService } from '@wikia/core';
 import { assert, expect } from 'chai';
 import { createSandbox, SinonSandbox, SinonSpy } from 'sinon';
 import { configMock } from '../config-mock';
@@ -98,7 +98,7 @@ describe('ad-slot', () => {
 		beforeEach(() => {
 			adSlot = createAdSlot('top_leaderboard');
 			targeting = {};
-			slotTargetingService.clear('top_leaderboard');
+			targetingService.clear('top_leaderboard');
 		});
 
 		it('should have winningBidderDetails set to null initially', () => {
@@ -108,8 +108,8 @@ describe('ad-slot', () => {
 		it('should set winningBidderDetails if both bidder and bidder price are available', () => {
 			targeting.hb_bidder = 'bidder';
 			targeting.hb_pb = 20;
-			slotTargetingService.set('top_leaderboard', 'hb_bidder', targeting.hb_bidder);
-			slotTargetingService.set('top_leaderboard', 'hb_pb', targeting.hb_pb);
+			targetingService.set('hb_bidder', targeting.hb_bidder, 'top_leaderboard');
+			targetingService.set('hb_pb', targeting.hb_pb, 'top_leaderboard');
 
 			adSlot.updateWinningPbBidderDetails();
 
@@ -143,8 +143,8 @@ describe('ad-slot', () => {
 		beforeEach(() => {
 			adSlot = createAdSlot('top_leaderboard');
 			targeting = {};
-			slotTargetingService.clear('top_leaderboard');
-			slotTargetingService.extend('top_leaderboard', targeting);
+			targetingService.clear('top_leaderboard');
+			targetingService.extend(targeting, 'top_leaderboard');
 		});
 
 		it('should have winningBidderDetails set to null initially', () => {
@@ -153,7 +153,7 @@ describe('ad-slot', () => {
 
 		it('should set winningBidderDetails if a9 price is available', () => {
 			targeting.amznbid = 'foobar';
-			slotTargetingService.set('top_leaderboard', 'amznbid', targeting.amznbid);
+			targetingService.set('amznbid', targeting.amznbid, 'top_leaderboard');
 
 			adSlot.updateWinningA9BidderDetails();
 

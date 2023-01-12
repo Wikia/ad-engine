@@ -181,7 +181,7 @@ export class TrackingSetup {
 	}
 
 	private keyValsTracker(): void {
-		const keyVals = { ...targetingService.getAll() };
+		const keyVals = { ...targetingService.dumpTargeting() };
 
 		// Remove Audigent segments
 		delete keyVals.AU_SEG;

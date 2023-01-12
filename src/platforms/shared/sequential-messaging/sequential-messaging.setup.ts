@@ -2,7 +2,7 @@ import {
 	communicationService,
 	context,
 	resolvedState,
-	slotTargetingService,
+	targetingService,
 	utils,
 } from '@wikia/ad-engine';
 import Cookies from 'js-cookie';
@@ -81,7 +81,7 @@ export class SequentialMessagingSetup {
 		const targetingManager = new GamTargetingManager(
 			context,
 			slotsContext,
-			slotTargetingService,
+			targetingService,
 			SequentialMessagingSetup.baseTargetingSize,
 			resolvedState.forceUapResolveState,
 		);

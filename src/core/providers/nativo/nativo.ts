@@ -62,7 +62,7 @@ export class Nativo {
 
 			// the Nativo ad server responses with a JS that searches for specific IDs that's why the removal here
 			if (
-				targetingService.getAll<TargetingData>().skin !== 'ucp_mobile' &&
+				targetingService.dumpTargeting<TargetingData>().skin !== 'ucp_mobile' &&
 				document.getElementById(slotName)
 			) {
 				document.getElementById(slotName).id = '';

@@ -34,7 +34,7 @@ const vastBaseUrl = 'https://pubads.g.doubleclick.net/gampad/ads?';
 const correlator: number = Math.round(Math.random() * 10000000000);
 
 function getCustomParameters(slot: AdSlot, extraTargeting: Dictionary = {}): string {
-	const contextTargeting = targetingService.getAll() || {};
+	const contextTargeting = targetingService.dumpTargeting() || {};
 	const targeting = {};
 
 	function setTargetingValue(
@@ -94,7 +94,7 @@ export function buildVastUrl(
 		`correlator=${correlator}`,
 	];
 	const slot: AdSlot = slotService.get(slotName);
-	const ppid = targetingService.getAll<TargetingData>().ppid;
+	const ppid = targetingService.dumpTargeting<TargetingData>().ppid;
 
 	if (ppid) {
 		params.push(`ppid=${ppid}`);
@@ -137,7 +137,7 @@ export function buildVastUrl(
 }
 
 export function buildTaglessRequestUrl(options: Partial<TaglessSlotOptions> = {}): string {
-	const ppid = targetingService.getAll<TargetingData>().ppid;
+	const ppid = targetingService.dumpTargeting<TargetingData>().ppid;
 	const params: string[] = [`c=${correlator}`, 'tile=1', 'd_imp=1'];
 
 	params.push(`iu=${options.adUnit}`);

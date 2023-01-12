@@ -9,7 +9,7 @@ export class LogoReplacementMutheadHandler implements TemplateStateHandler {
 	async onEnter(): Promise<void> {
 		const parentElement = document.querySelector('.header__container');
 		const logo = document.querySelector('.header__home-link');
-		const isDesktop = targetingService.getAll<TargetingData>().skin.includes('desktop');
+		const isDesktop = targetingService.dumpTargeting<TargetingData>().skin.includes('desktop');
 
 		setTimeout(() => {
 			if (isDesktop && parentElement && logo) {

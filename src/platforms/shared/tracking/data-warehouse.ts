@@ -47,11 +47,11 @@ export class DataWarehouseTracker {
 			c: context.get('wiki.wgCityId') || 'unknown',
 			ck: context.get('wiki.dsSiteKey') || 'unknown',
 			lc: context.get('wiki.wgUserLanguage') || 'unknown',
-			s: targetingService.getAll<TargetingData>().skin || 'unknown',
+			s: targetingService.dumpTargeting<TargetingData>().skin || 'unknown',
 			ua: window.navigator.userAgent,
 			u: trackingOptIn.isOptedIn() ? context.get('userId') || 0 : -1,
-			a: targetingService.getAll<TargetingData>().artid
-				? parseInt(targetingService.getAll<TargetingData>().artid)
+			a: targetingService.dumpTargeting<TargetingData>().artid
+				? parseInt(targetingService.dumpTargeting<TargetingData>().artid)
 				: -1,
 			x: context.get('wiki.wgDBname') || 'unknown',
 			n: context.get('wiki.wgNamespaceNumber') || -1,

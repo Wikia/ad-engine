@@ -39,7 +39,7 @@ export class Eyeota extends BaseServiceSetup {
 
 	async createScriptSource(): Promise<string> {
 		const tcfData = await tcf.getTCData();
-		const s0v = targetingService.getAll<TargetingData>().s0v;
+		const s0v = targetingService.dumpTargeting<TargetingData>().s0v;
 
 		const url = new URL('https://ps.eyeota.net/pixel');
 		url.searchParams.append('pid', pid);

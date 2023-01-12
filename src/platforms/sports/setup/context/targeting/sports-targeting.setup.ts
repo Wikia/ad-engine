@@ -7,7 +7,7 @@ import { selectApplication } from '../../../utils/application-helper';
 export class SportsTargetingSetup implements DiProcess {
 	execute(): void {
 		targetingService.extend({
-			...targetingService.getAll(),
+			...targetingService.dumpTargeting(),
 			...this.getPageLevelTargeting(),
 		});
 	}

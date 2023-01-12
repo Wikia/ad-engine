@@ -3,7 +3,7 @@ import {
 	btfBlockerService,
 	context,
 	slotService,
-	slotTargetingService,
+	targetingService,
 	templateService,
 	utils,
 } from '@ad-engine/core';
@@ -32,7 +32,7 @@ export class SafeBigFancyAdProxy {
 
 		if (isFirstCall) {
 			slotService.getNonFirstCallSlotNames().forEach((slotName) => {
-				slotTargetingService.set(slotName, 'src', 'uap');
+				targetingService.set('src', 'uap', slotName);
 			});
 
 			const boxadSlotNames = context.get('templates.safeFanTakeoverElement.boxadSlotNames');

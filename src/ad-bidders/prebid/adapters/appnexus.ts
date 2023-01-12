@@ -74,7 +74,7 @@ export class Appnexus extends PrebidAdapter {
 		let placement = position;
 
 		if (position === 'mobile') {
-			const vertical = targetingService.getAll<TargetingData>().mappedVerticalName;
+			const vertical = targetingService.dumpTargeting<TargetingData>().mappedVerticalName;
 
 			placement = vertical && this.placements[vertical] ? vertical : 'other';
 		}

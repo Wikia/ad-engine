@@ -1,6 +1,6 @@
 import { registerUapListener, universalAdPackage } from '@wikia/ad-products';
 import { communicationService, eventsRepository } from '@wikia/communication';
-import { AdSlot, Context, context, SlotTargetingService, slotTargetingService } from '@wikia/core';
+import { AdSlot, Context, context, TargetingService, targetingService } from '@wikia/core';
 import { expect } from 'chai';
 import { BehaviorSubject } from 'rxjs';
 import { createSandbox, SinonSandbox, SinonSpy, SinonStubbedInstance } from 'sinon';
@@ -11,7 +11,7 @@ describe('UniversalAdPackage', () => {
 	const UAP_STANDARD_AD_PRODUCT = 'uap';
 	const sandbox: SinonSandbox = createSandbox();
 	let contextStub: SinonStubbedInstance<Context>;
-	let slotTargetingServiceStub: SinonStubbedInstance<SlotTargetingService>;
+	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 	const uapLoadStatus = communicationService.getGlobalAction(
 		eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
 	);
@@ -21,8 +21,8 @@ describe('UniversalAdPackage', () => {
 	});
 
 	beforeEach(() => {
-		slotTargetingServiceStub = sandbox.stub(slotTargetingService);
-		slotTargetingServiceStub.getAll.returns({ top_leaderboard: {}, top_boxad: {} });
+		targetingServiceStub = sandbox.stub(targetingService);
+		targetingServiceStub.getAllSlots.returns({ top_leaderboard: {}, top_boxad: {} });
 
 		contextStub = sandbox.stub(context);
 		contextStub.get.withArgs('slots').returns({ top_leaderboard: {}, top_boxad: {} });
@@ -34,17 +34,15 @@ describe('UniversalAdPackage', () => {
 			creativeId: UAP_CREATIVE_ID,
 		} as any);
 
-		expect(slotTargetingServiceStub.set.calledWith('top_leaderboard', 'uap', UAP_ID)).to.equal(
-			true,
-		);
+		expect(targetingServiceStub.set.calledWith('uap', UAP_ID, 'top_leaderboard')).to.equal(true);
 		expect(
-			slotTargetingServiceStub.set.calledWith('top_leaderboard', 'uap_c', UAP_CREATIVE_ID),
+			targetingServiceStub.set.calledWith('uap_c', UAP_CREATIVE_ID, 'top_leaderboard'),
 		).to.equal(true);
-		expect(slotTargetingServiceStub.set.calledWith('top_boxad', 'uap', UAP_ID)).to.equal(true);
-		expect(slotTargetingServiceStub.set.calledWith('top_boxad', 'uap_c', UAP_CREATIVE_ID)).to.equal(
+		expect(targetingServiceStub.set.calledWith('uap', UAP_ID, 'top_boxad')).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('uap_c', UAP_CREATIVE_ID, 'top_boxad')).to.equal(
 			true,
 		);
-		expect(slotTargetingServiceStub.set.callCount).to.equal(4);
+		expect(targetingServiceStub.set.callCount).to.equal(4);
 	});
 
 	it.skip("should use slot's default video ad unit with default settings from GAM", () => {
@@ -57,10 +55,7 @@ describe('UniversalAdPackage', () => {
 		} as any);
 
 		expect(
-			slotTargetingServiceStub.set.calledWith(
-				'slots.top_leaderboard.videoAdUnit',
-				'special_ad_unit',
-			),
+			targetingServiceStub.set.calledWith('special_ad_unit', 'slots.top_leaderboard.videoAdUnit'),
 		).to.equal(false);
 	});
 
@@ -74,7 +69,7 @@ describe('UniversalAdPackage', () => {
 		} as any);
 
 		expect(
-			slotTargetingServiceStub.set.calledWith('top_leaderboard', 'videoAdUnit', '/5441/uap'),
+			targetingServiceStub.set.calledWith('videoAdUnit', '/5441/uap', 'top_leaderboard'),
 		).to.equal(true);
 	});
 

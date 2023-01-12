@@ -30,7 +30,7 @@ export const slotTrackingCompiler = ({ data, slot }: CompilerPartial): CompilerP
 	const isUap =
 		slot.getTargetingConfigProperty('uap') && slot.getTargetingConfigProperty('uap') !== 'none';
 
-	const targetingData: TargetingData = targetingService.getAll<TargetingData>();
+	const targetingData: TargetingData = targetingService.dumpTargeting<TargetingData>();
 
 	return {
 		slot,

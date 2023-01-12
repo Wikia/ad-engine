@@ -54,7 +54,7 @@ export class AdLayoutInitializerSetup implements DiProcess {
 			adUnit: this.lisAdUnit,
 			size: this.lisSize,
 			targeting: {
-				...targetingService.getAll(),
+				...targetingService.dumpTargeting(),
 				...this.lisTargeting,
 				src: context.get('src'),
 			},
