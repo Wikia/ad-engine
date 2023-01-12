@@ -1,5 +1,5 @@
 import {
-	Bidders,
+	bidders,
 	communicationService,
 	context,
 	DiProcess,
@@ -12,9 +12,7 @@ import { getPubmaticContext } from '../../../bidders/pubmatic';
 import { getWikiaContext } from '../../../bidders/wikia';
 
 @Injectable()
-export class GamespotPrebidConfigSetup implements DiProcess {
-	constructor(private bidders: Bidders) {}
-
+export class TvGuidePrebidConfigSetup implements DiProcess {
 	execute(): void {
 		if (!this.isPrebidEnabled()) {
 			return;
@@ -30,7 +28,7 @@ export class GamespotPrebidConfigSetup implements DiProcess {
 		communicationService.on(
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
 			({ slot }) => {
-				this.bidders.updateSlotTargeting(slot.getSlotName());
+				bidders.updateSlotTargeting(slot.getSlotName());
 			},
 			false,
 		);
