@@ -62,7 +62,11 @@ export class JWPlayerManager {
 	}
 
 	private loadMoatPlugin(): void {
-		utils.scriptLoader.loadScript(context.get('options.video.moatTracking.jwplayerPluginUrl'));
+		const moatTrackingUrl = context.get('options.video.moatTracking.jwplayerPluginUrl');
+
+		if (moatTrackingUrl) {
+			utils.scriptLoader.loadScript(context.get('options.video.moatTracking.jwplayerPluginUrl'));
+		}
 	}
 
 	private loadIasTrackerIfEnabled(): void {
