@@ -15,6 +15,7 @@ export class CommonTags implements TargetingProvider<Partial<Targeting>> {
 
 	public getCommonParams(): Partial<Targeting> {
 		const domain = getDomain();
+		const wordCount = this.fandomContext.page.wordCount;
 		const wiki: MediaWikiAdsContext = context.get('wiki');
 
 		const commonParams: Partial<Targeting> = {
@@ -38,9 +39,9 @@ export class CommonTags implements TargetingProvider<Partial<Targeting>> {
 			// Remove 'wiki.targeting.wikiVertical' after ADEN-12118 is done
 			s0v: this.fandomContext.site.taxonomy?.[1] || wiki.targeting.wikiVertical,
 			s1: utils.targeting.getRawDbName(this.fandomContext.site.siteName),
-			s2: this.getAdLayout(this.fandomContext.page.pageType || 'article'),
+			s2: this.getAdLayout(this.fandomContext.page.pageType || 'article', wordCount),
 			wpage: this.fandomContext.page.pageName && this.fandomContext.page.pageName.toLowerCase(),
-			word_count: this.fandomContext.page.wordCount,
+			word_count: wordCount,
 		};
 
 		return {
@@ -50,10 +51,12 @@ export class CommonTags implements TargetingProvider<Partial<Targeting>> {
 		};
 	}
 
-	private getAdLayout(pageType: string): string {
+	private getAdLayout(pageType: string, wordCount: number): string {
 		const videoStatus = this.getVideoStatus();
-		const hasFeaturedVideo = !!videoStatus.hasVideoOnPage;
+		const longEnoughForVideo = wordCount > 100;
+		const hasFeaturedVideo = longEnoughForVideo && !!videoStatus.hasVideoOnPage;
 		const hasIncontentPlayer =
+			longEnoughForVideo &&
 			!hasFeaturedVideo &&
 			!!document.querySelector(context.get('slots.incontent_player.insertBeforeSelector'));
 

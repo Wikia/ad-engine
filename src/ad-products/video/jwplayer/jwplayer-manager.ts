@@ -15,6 +15,10 @@ import { createJwpStream } from './streams/jwplayer-stream';
 @Injectable()
 export class JWPlayerManager {
 	manage(): void {
+		if (!context.get('custom.hasFeaturedVideo')) {
+			return;
+		}
+
 		this.onPlayerReady()
 			.pipe(
 				mergeMap((result: PlayerReadyResult) =>
