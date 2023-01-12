@@ -444,7 +444,7 @@ export class AdSlot {
 		return context.get(`slots.${this.config.slotName}.${key}`);
 	}
 
-	getTargetingConfigProperty(key: string): any {
+	getTargetingProperty(key: string): any {
 		return targetingService.get(key, this.getSlotName());
 	}
 
@@ -489,10 +489,10 @@ export class AdSlot {
 	}
 
 	updateWinningPbBidderDetails(): void {
-		if (this.getTargetingConfigProperty('hb_bidder') && this.getTargetingConfigProperty('hb_pb')) {
+		if (this.getTargetingProperty('hb_bidder') && this.getTargetingProperty('hb_pb')) {
 			this.winningBidderDetails = {
-				name: this.getTargetingConfigProperty('hb_bidder'),
-				price: this.getTargetingConfigProperty('hb_pb'),
+				name: this.getTargetingProperty('hb_bidder'),
+				price: this.getTargetingProperty('hb_pb'),
 			};
 		} else {
 			this.winningBidderDetails = null;
@@ -500,10 +500,10 @@ export class AdSlot {
 	}
 
 	updateWinningA9BidderDetails(): void {
-		if (this.getTargetingConfigProperty('amznbid')) {
+		if (this.getTargetingProperty('amznbid')) {
 			this.winningBidderDetails = {
 				name: 'a9',
-				price: this.getTargetingConfigProperty('amznbid'),
+				price: this.getTargetingProperty('amznbid'),
 			};
 		} else {
 			this.winningBidderDetails = null;

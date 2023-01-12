@@ -16,7 +16,7 @@ export function setupGptTargeting(): void {
 		}
 	}
 
-	function setTargetingFromContext(): void {
+	function setTargeting(): void {
 		const targeting = targetingService.dumpTargeting() || {};
 
 		Object.keys(targeting).forEach((key) => {
@@ -24,7 +24,7 @@ export function setupGptTargeting(): void {
 		});
 	}
 
-	setTargetingFromContext();
+	setTargeting();
 
 	targetingService.onChange((trigger, value) => {
 		// trigger=null means that whole targeting

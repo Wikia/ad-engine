@@ -27,8 +27,7 @@ export const slotTrackingCompiler = ({ data, slot }: CompilerPartial): CompilerP
 	const cacheStorage = InstantConfigCacheStorage.make();
 	const now = new Date();
 	const timestamp: number = now.getTime();
-	const isUap =
-		slot.getTargetingConfigProperty('uap') && slot.getTargetingConfigProperty('uap') !== 'none';
+	const isUap = slot.getTargetingProperty('uap') && slot.getTargetingProperty('uap') !== 'none';
 
 	const targetingData: TargetingData = targetingService.dumpTargeting<TargetingData>();
 

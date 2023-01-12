@@ -36,7 +36,7 @@ export class PrebidNativeProvider extends BaseServiceSetup {
 		this.fireNativeTrackers(PrebidNativeProvider.ACTION_IMPRESSION, data);
 		this.addClickTrackers(data);
 
-		const currentRv = ntvAdSlot.getTargetingConfigProperty('rv') || 1;
+		const currentRv = ntvAdSlot.getTargetingProperty('rv') || 1;
 		ntvAdSlot.setTargetingConfigProperty('rv', currentRv + 1);
 		ntvAdSlot.setStatus(AdSlot.STATUS_SUCCESS);
 	}
