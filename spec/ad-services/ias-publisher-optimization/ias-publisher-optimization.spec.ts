@@ -1,7 +1,13 @@
 import { IasPublisherOptimization } from '@wikia/ad-services';
-import { context, InstantConfigService, targetingService, utils } from '@wikia/core';
+import {
+	context,
+	InstantConfigService,
+	TargetingService,
+	targetingService,
+	utils,
+} from '@wikia/core';
 import { expect } from 'chai';
-import { createSandbox, spy } from 'sinon';
+import { createSandbox, SinonStubbedInstance, spy } from 'sinon';
 
 describe('IAS Publisher Optimization', () => {
 	const sandbox = createSandbox();
@@ -22,6 +28,7 @@ describe('IAS Publisher Optimization', () => {
 	let iasPublisherOptimization: IasPublisherOptimization;
 	let loadScriptStub, instantConfigStub;
 	let clock;
+	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 
 	beforeEach(() => {
 		loadScriptStub = sandbox
@@ -32,6 +39,8 @@ describe('IAS Publisher Optimization', () => {
 
 		clock = sandbox.useFakeTimers();
 		iasPublisherOptimization = new IasPublisherOptimization(instantConfigStub);
+
+		targetingServiceStub = sandbox.stub(targetingService);
 
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);
@@ -100,16 +109,18 @@ describe('IAS Publisher Optimization', () => {
 
 		window.__iasPET.queue[0].dataHandler(iasData);
 
-		expect(targetingService.get('fr')).to.equal('false');
-		expect(targetingService.get('adt')).to.equal('veryLow');
-		expect(targetingService.get('alc')).to.equal('medium');
-		expect(targetingService.get('dlm')).to.equal('veryLow');
-		expect(targetingService.get('drg')).to.equal('high');
-		expect(targetingService.get('hat')).to.equal('veryLow');
-		expect(targetingService.get('off')).to.equal('medium');
-		expect(targetingService.get('vio')).to.equal('veryLow');
-		expect(targetingService.get('b_ias')).to.equal('high');
-		expect(targetingService.get('ias-kw')).to.deep.equal(['IAS_12345', 'IAS_67890']);
-		expect(targetingService.get('vw', 'top_leaderboard')).to.equal('false');
+		expect(targetingServiceStub.set.calledWith('fr', 'false')).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('adt', 'veryLow')).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('alc', 'medium')).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('dlm', 'veryLow')).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('drg', 'high')).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('hat', 'veryLow')).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('off', 'medium')).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('vio', 'veryLow')).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('b_ias', 'high')).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('ias-kw', ['IAS_12345', 'IAS_67890'])).to.equal(
+			true,
+		);
+		expect(targetingServiceStub.set.calledWith('vw', 'false', 'top_leaderboard')).to.equal(true);
 	});
 });

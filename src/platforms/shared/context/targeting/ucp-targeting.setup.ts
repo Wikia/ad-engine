@@ -4,7 +4,6 @@ import {
 	DiProcess,
 	eventsRepository,
 	InstantConfigService,
-	TargetingData,
 	targetingService,
 	UapLoadStatus,
 	utils,
@@ -43,7 +42,7 @@ export class UcpTargetingSetup implements DiProcess {
 
 		if (context.get('wiki.targeting.wikiIsTop1000')) {
 			context.set('custom.wikiIdentifier', '_top1k_wiki');
-			context.set('custom.dbNameForAdUnit', targetingService.dump<TargetingData>().s1);
+			context.set('custom.dbNameForAdUnit', targetingService.get('s1'));
 		}
 
 		targetingService.set(

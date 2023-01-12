@@ -10,7 +10,6 @@ import {
 	slotDataParamsUpdater,
 	slotService,
 	SlotTargeting,
-	TargetingData,
 	targetingService,
 	trackingOptIn,
 } from '../services';
@@ -221,7 +220,7 @@ export class GptProvider implements Provider {
 	}
 
 	setPPID() {
-		const ppid = targetingService.dump<TargetingData>().ppid;
+		const ppid = targetingService.get('ppid');
 		if (ppid) {
 			const tag = window.googletag.pubads();
 			tag.setPublisherProvidedId(ppid);

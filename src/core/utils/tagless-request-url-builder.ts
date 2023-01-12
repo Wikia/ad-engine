@@ -1,13 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { AdSlot, Dictionary } from '../models';
-import {
-	config,
-	slotService,
-	SlotTargeting,
-	TargetingData,
-	targetingService,
-	trackingOptIn,
-} from '../services';
+import { config, slotService, SlotTargeting, targetingService, trackingOptIn } from '../services';
 import { targeting } from './targeting';
 
 export interface TaglessSlotOptions {
@@ -94,7 +87,7 @@ export function buildVastUrl(
 		`correlator=${correlator}`,
 	];
 	const slot: AdSlot = slotService.get(slotName);
-	const ppid = targetingService.dump<TargetingData>().ppid;
+	const ppid = targetingService.get('ppid');
 
 	if (ppid) {
 		params.push(`ppid=${ppid}`);
@@ -137,7 +130,7 @@ export function buildVastUrl(
 }
 
 export function buildTaglessRequestUrl(options: Partial<TaglessSlotOptions> = {}): string {
-	const ppid = targetingService.dump<TargetingData>().ppid;
+	const ppid = targetingService.get('ppid');
 	const params: string[] = [`c=${correlator}`, 'tile=1', 'd_imp=1'];
 
 	params.push(`iu=${options.adUnit}`);
