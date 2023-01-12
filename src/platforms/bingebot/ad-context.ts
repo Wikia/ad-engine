@@ -8,9 +8,6 @@ export const basicContext = {
 	},
 	slots: {},
 	src: ['bingebot'],
-	targeting: {
-		skin: 'bingebot',
-	},
 	wiki: {
 		targeting: {
 			directedAtChildren: false,

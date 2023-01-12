@@ -35,6 +35,8 @@ export class F2TargetingSetup implements DiProcess {
 			lang: 'en',
 			post_id: '-1',
 			skin: this.f2Env.skinName,
+			uap: 'none',
+			uap_c: 'none',
 			s0: 'fandom',
 			s1: '_fandom',
 			s2: this.f2State.pageType === 'topic' ? 'vertical' : this.f2State.pageType,
@@ -42,7 +44,7 @@ export class F2TargetingSetup implements DiProcess {
 			labrador: this.cacheStorage.mapSamplingResults(
 				this.instantConfig.get('icLABradorGamKeyValues'),
 			),
-			is_mobile: utils.client.isMobileSkin(this.f2Env.skinName) ? '1' : '0',
+			is_mobile: context.get('state.isMobile') ? '1' : '0',
 		};
 
 		if (this.f2State.pageType === 'article' || this.f2State.pageType === 'app-article') {

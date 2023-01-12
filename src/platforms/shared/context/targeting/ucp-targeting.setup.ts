@@ -1,5 +1,4 @@
 import {
-	Binder,
 	communicationService,
 	context,
 	DiProcess,
@@ -10,23 +9,14 @@ import {
 	UapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
+import { Injectable } from '@wikia/dependency-injection';
 import { createFandomContext } from './targeting-strategies/factories/create-fandom-context';
 import { createSelectedStrategy } from './targeting-strategies/factories/create-selected-strategy';
 import { TargetingTags } from './targeting-strategies/interfaces/taxonomy-tags';
 
-const SKIN = Symbol('targeting skin');
-
 @Injectable()
 export class UcpTargetingSetup implements DiProcess {
-	static skin(skin: string): Binder {
-		return {
-			bind: SKIN,
-			value: skin,
-		};
-	}
-
-	constructor(@Inject(SKIN) private skin: string, protected instantConfig: InstantConfigService) {}
+	constructor(protected instantConfig: InstantConfigService) {}
 
 	execute(): void {
 		targetingService.extend({
@@ -67,6 +57,6 @@ export class UcpTargetingSetup implements DiProcess {
 
 		utils.logger('Targeting', `Selected targeting priority strategy: ${selectedStrategy}`);
 
-		return createSelectedStrategy(selectedStrategy, createFandomContext(), this.skin).get();
+		return createSelectedStrategy(selectedStrategy, createFandomContext()).get();
 	}
 }

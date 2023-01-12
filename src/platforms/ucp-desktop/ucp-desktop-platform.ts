@@ -18,14 +18,12 @@ import {
 	eventsRepository,
 	parallel,
 	ProcessPipeline,
-	targetingService,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { basicContext, targetingData } from './ad-context';
+import { basicContext } from './ad-context';
 import { UcpDesktopBaseContextSetup } from './setup/context/base/ucp-desktop-base-context.setup';
 import { UcpDesktopSlotsContextSetup } from './setup/context/slots/ucp-desktop-slots-context.setup';
 import { UcpDesktopAdLayoutSetup } from './ucp-desktop-ad-layout-setup';
-import { UcpDesktopIocSetup } from './ucp-desktop-ioc-setup';
 import { UcpDesktopLegacySetup } from './ucp-desktop-legacy-setup';
 
 @Injectable()
@@ -36,12 +34,10 @@ export class UcpDesktopPlatform {
 		// Config
 		this.pipeline.add(
 			() => context.extend(basicContext),
-			() => targetingService.extend(targetingData),
 			PlatformContextSetup,
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
 			TrackingParametersSetup,
 			LoadTimesSetup,
-			UcpDesktopIocSetup,
 			UcpDesktopBaseContextSetup,
 			UcpDesktopSlotsContextSetup,
 			UcpTargetingSetup,

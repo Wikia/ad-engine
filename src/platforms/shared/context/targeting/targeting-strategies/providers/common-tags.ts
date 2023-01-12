@@ -7,7 +7,7 @@ import { TargetingProvider } from '../interfaces/targeting-provider';
 import { FandomContext } from '../models/fandom-context';
 
 export class CommonTags implements TargetingProvider<Partial<SlotTargeting>> {
-	constructor(private skin: string, private fandomContext: FandomContext) {}
+	constructor(private fandomContext: FandomContext) {}
 
 	get(): Partial<SlotTargeting> {
 		return this.getCommonParams();
@@ -16,6 +16,7 @@ export class CommonTags implements TargetingProvider<Partial<SlotTargeting>> {
 	public getCommonParams(): Partial<SlotTargeting> {
 		const domain = getDomain();
 		const wiki: MediaWikiAdsContext = context.get('wiki');
+		const isMobile = context.get('state.isMobile');
 
 		const commonParams: Partial<SlotTargeting> = {
 			ar: window.innerWidth > window.innerHeight ? '4:3' : '3:4',
@@ -23,10 +24,11 @@ export class CommonTags implements TargetingProvider<Partial<SlotTargeting>> {
 			geo: utils.geoService.getCountryCode() || 'none',
 			hostpre: utils.targeting.getHostnamePrefix(),
 			original_host: wiki.opts?.isGamepedia ? 'gamepedia' : 'fandom',
-			skin: this.skin,
+			// Make more general after rolling out strategies outside UCP
+			skin: isMobile ? 'ucp_mobile' : 'ucp_desktop',
 			uap: 'none',
 			uap_c: 'none',
-			is_mobile: utils.client.isMobileSkin(this.skin) ? '1' : '0',
+			is_mobile: isMobile ? '1' : '0',
 		};
 
 		const commonContextParams: CommonTargetingParams = {

@@ -144,12 +144,6 @@ class Client {
 
 		return userAgent.toLowerCase().indexOf('steam') > -1;
 	}
-
-	isMobileSkin(skin: string): boolean {
-		const mobileSkins = ['fandom_mobile', 'fc_mobile', 'turf_mobile', 'fandommobile', 'ucp_mobile'];
-
-		return mobileSkins.includes(skin);
-	}
 }
 
 export const client = new Client();

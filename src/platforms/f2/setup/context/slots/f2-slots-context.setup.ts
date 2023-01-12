@@ -63,7 +63,6 @@ export class F2SlotsContextSetup implements DiProcess {
 				defaultTemplates: [],
 				targeting: {
 					loc: 'top',
-					uap: 'none',
 					rv: 1,
 				},
 			},
@@ -98,7 +97,6 @@ export class F2SlotsContextSetup implements DiProcess {
 				],
 				targeting: {
 					loc: 'top',
-					uap: 'none',
 					rv: 1,
 				},
 			},
@@ -126,7 +124,6 @@ export class F2SlotsContextSetup implements DiProcess {
 					loc(): string {
 						return context.get('state.isMobile') ? 'footer' : 'hivi';
 					},
-					uap: 'none',
 					rv: 1,
 				},
 			},
@@ -184,14 +181,12 @@ export class F2SlotsContextSetup implements DiProcess {
 				defaultSizes: [],
 				targeting: {
 					loc: 'footer',
-					uap: 'none',
 					rv: 1,
 				},
 			},
 			featured: {
 				group: 'VIDEO',
 				targeting: {
-					uap: 'none',
 					rv: 1,
 				},
 				trackingKey: 'featured-video',
@@ -200,7 +195,6 @@ export class F2SlotsContextSetup implements DiProcess {
 			video: {
 				group: 'VIDEO',
 				targeting: {
-					uap: 'none',
 					rv: 1,
 				},
 				trackingKey: 'video',
