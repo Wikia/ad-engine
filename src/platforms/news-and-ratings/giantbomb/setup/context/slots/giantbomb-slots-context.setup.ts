@@ -184,6 +184,15 @@ export class GiantbombSlotsContextSetup implements DiProcess {
 					pos: '1',
 				},
 			},
+			video: {
+				group: 'VIDEO',
+				targeting: {
+					uap: 'none',
+					rv: 1,
+				},
+				trackingKey: 'video',
+				isVideo: true,
+			},
 		};
 
 		context.set('slots', slots);
