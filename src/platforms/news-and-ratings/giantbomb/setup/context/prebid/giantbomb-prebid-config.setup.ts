@@ -4,10 +4,12 @@ import {
 	context,
 	DiProcess,
 	eventsRepository,
+	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 import { getWikiaContext } from '../../../bidders/wikia';
+import { getPubmaticContext } from '../../../bidders/pubmatic';
 
 @Injectable()
 export class GiantbombPrebidConfigSetup implements DiProcess {
@@ -16,6 +18,7 @@ export class GiantbombPrebidConfigSetup implements DiProcess {
 			return;
 		}
 
+		context.set('bidders.prebid.pubmatic', getPubmaticContext(utils.client.isDesktop()));
 		context.set('bidders.prebid.wikia', getWikiaContext());
 
 		this.registerListeners();

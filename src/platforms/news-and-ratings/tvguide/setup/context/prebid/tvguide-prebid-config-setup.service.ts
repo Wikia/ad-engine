@@ -8,11 +8,11 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
-import { getPubmaticContext } from '../../../bidders/pubmatic';
 import { getWikiaContext } from '../../../bidders/wikia';
+import { getPubmaticContext } from '../../../bidders/pubmatic';
 
 @Injectable()
-export class GamefaqsPrebidConfigSetup implements DiProcess {
+export class TvGuidePrebidConfigSetup implements DiProcess {
 	execute(): void {
 		if (!this.isPrebidEnabled()) {
 			return;
