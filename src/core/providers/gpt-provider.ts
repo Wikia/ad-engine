@@ -221,7 +221,7 @@ export class GptProvider implements Provider {
 	}
 
 	setPPID() {
-		const ppid = targetingService.dumpTargeting<TargetingData>().ppid;
+		const ppid = targetingService.dump<TargetingData>().ppid;
 		if (ppid) {
 			const tag = window.googletag.pubads();
 			tag.setPublisherProvidedId(ppid);

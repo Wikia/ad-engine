@@ -15,7 +15,7 @@ import { shareReplay } from 'rxjs/operators';
 export class BingeBotTargetingSetup implements DiProcess {
 	execute(): void {
 		targetingService.extend({
-			...targetingService.dumpTargeting(),
+			...targetingService.dump(),
 			...this.getPageLevelTargeting(),
 		});
 

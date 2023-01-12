@@ -74,9 +74,7 @@ export interface TargetingServiceInterface {
 
 	extend(newTargeting: TargetingObject, slotName: string | null): void;
 
-	dumpTargeting<T = TargetingObject>(slotName: string | null): T;
-
-	getAllSlots(): TargetingObject;
+	dump<T = TargetingObject>(slotName: string | null): T;
 
 	get(key: string, slotName: string | null): any;
 
@@ -115,22 +113,12 @@ export class TargetingService implements TargetingServiceInterface {
 		);
 	}
 
-	dumpTargeting<T = TargetingObject>(slotName: string | null = null): T {
+	dump<T = TargetingObject>(slotName: string | null = null): T {
 		const targetingGroupName = slotName || this.pageTargetingGroupName;
 		this.adTargeting[targetingGroupName] =
 			this.adTargeting[targetingGroupName] || ({} as TargetingObject);
 
 		return this.adTargeting[targetingGroupName] as T;
-	}
-
-	getAllSlots(): TargetingObject {
-		const tmp = { ...this.adTargeting };
-
-		if (tmp[this.pageTargetingGroupName]) {
-			delete tmp[this.pageTargetingGroupName];
-		}
-
-		return tmp;
 	}
 
 	get(key: string, slotName: string | null = null): any {

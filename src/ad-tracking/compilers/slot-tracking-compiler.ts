@@ -29,7 +29,7 @@ export const slotTrackingCompiler = ({ data, slot }: CompilerPartial): CompilerP
 	const timestamp: number = now.getTime();
 	const isUap = slot.getTargetingProperty('uap') && slot.getTargetingProperty('uap') !== 'none';
 
-	const targetingData: TargetingData = targetingService.dumpTargeting<TargetingData>();
+	const targetingData: TargetingData = targetingService.dump<TargetingData>();
 
 	return {
 		slot,

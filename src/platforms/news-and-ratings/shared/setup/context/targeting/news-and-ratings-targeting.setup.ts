@@ -21,7 +21,7 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 		this.setSlotLevelTargeting(targeting, customConfig);
 
 		targetingService.extend({
-			...targetingService.dumpTargeting(),
+			...targetingService.dump(),
 			...targeting,
 		});
 	}

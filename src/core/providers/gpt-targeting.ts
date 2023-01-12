@@ -17,7 +17,7 @@ export function setupGptTargeting(): void {
 	}
 
 	function setTargeting(): void {
-		const targeting = targetingService.dumpTargeting() || {};
+		const targeting = targetingService.dump() || {};
 
 		Object.keys(targeting).forEach((key) => {
 			setTargetingValue(key, targeting[key]);

@@ -122,7 +122,7 @@ function setType(type): void {
 }
 
 function updateSlotsTargeting(lineItemId, creativeId): void {
-	const slots = targetingService.getAllSlots() || {};
+	const slots = context.get('slots') || {};
 
 	Object.keys(slots).forEach((slotId) => {
 		targetingService.set('uap', lineItemId, slotId);

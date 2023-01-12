@@ -36,7 +36,7 @@ export class VideoEventDataProvider {
 			position: slot.getSlotName().toLowerCase(),
 			pv_number: context.get('wiki.pvNumber'),
 			rv: slot.getTargetingProperty('rv') || '',
-			skin: targetingService.dumpTargeting<TargetingData>().skin || '',
+			skin: targetingService.dump<TargetingData>().skin || '',
 			timestamp: now.getTime(),
 			tz_offset: now.getTimezoneOffset(),
 			user_block_autoplay: videoData.user_block_autoplay,

@@ -6,7 +6,7 @@ class TargetingServiceSpy implements TargetingServiceInterface {
 	clear(slotName: string | null): void {}
 
 	/* eslint-disable @typescript-eslint/no-unused-vars */
-	dumpTargeting<T = TargetingObject>(slotName: string | null): T {
+	dump<T = TargetingObject>(slotName: string | null): T {
 		return undefined;
 	}
 
@@ -15,9 +15,6 @@ class TargetingServiceSpy implements TargetingServiceInterface {
 
 	/* eslint-disable @typescript-eslint/no-unused-vars */
 	get(key: string, slotName: string | null): any {}
-
-	/* eslint-disable @typescript-eslint/no-unused-vars */
-	getAllSlots(): any {}
 
 	/* eslint-disable @typescript-eslint/no-unused-vars */
 	onChange(callback: ChangeCallback): void {}

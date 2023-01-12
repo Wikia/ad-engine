@@ -22,7 +22,6 @@ describe('UniversalAdPackage', () => {
 
 	beforeEach(() => {
 		targetingServiceStub = sandbox.stub(targetingService);
-		targetingServiceStub.getAllSlots.returns({ top_leaderboard: {}, top_boxad: {} });
 
 		contextStub = sandbox.stub(context);
 		contextStub.get.withArgs('slots').returns({ top_leaderboard: {}, top_boxad: {} });

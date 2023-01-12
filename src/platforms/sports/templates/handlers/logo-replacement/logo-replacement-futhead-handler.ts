@@ -9,7 +9,7 @@ export class LogoReplacementFutheadHandler implements TemplateStateHandler {
 	async onEnter(): Promise<void> {
 		const parentElement = document.querySelector('.dropdown.dropdown-hover');
 		const logo = document.querySelector('.navbar-brand.navbar-brand-lg');
-		const isDesktop = targetingService.dumpTargeting<TargetingData>().skin.includes('desktop');
+		const isDesktop = targetingService.dump<TargetingData>().skin.includes('desktop');
 
 		setTimeout(() => {
 			if (isDesktop && parentElement && logo) {

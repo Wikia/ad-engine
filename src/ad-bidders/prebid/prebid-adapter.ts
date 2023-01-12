@@ -18,7 +18,7 @@ export abstract class PrebidAdapter {
 		this.enabled = enabled;
 		this.slots = slots;
 		this.pageTargeting = {
-			...(targetingService.dumpTargeting() || {}),
+			...(targetingService.dump() || {}),
 		};
 
 		Object.keys(this.pageTargeting).forEach((key) => {

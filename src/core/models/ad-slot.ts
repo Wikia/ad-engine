@@ -303,7 +303,7 @@ export class AdSlot {
 
 	// Main position is the first value defined in the "pos" key-value (targeting)
 	getMainPositionName(): string {
-		const { pos = '' } = targetingService.dumpTargeting(this.getSlotName());
+		const { pos = '' } = targetingService.dump(this.getSlotName());
 
 		return (Array.isArray(pos) ? pos : pos.split(','))[0].toLowerCase();
 	}
@@ -325,13 +325,11 @@ export class AdSlot {
 	 * @returns {Object}
 	 */
 	get targeting(): SlotTargeting {
-		return targetingService.dumpTargeting<SlotTargeting>(this.getSlotName());
+		return targetingService.dump<SlotTargeting>(this.getSlotName());
 	}
 
 	getTargeting(): SlotTargeting {
-		return this.parseTargetingParams(
-			targetingService.dumpTargeting<SlotTargeting>(this.getSlotName()),
-		);
+		return this.parseTargetingParams(targetingService.dump<SlotTargeting>(this.getSlotName()));
 	}
 
 	private parseTargetingParams(targetingParams: Dictionary): SlotTargeting {
