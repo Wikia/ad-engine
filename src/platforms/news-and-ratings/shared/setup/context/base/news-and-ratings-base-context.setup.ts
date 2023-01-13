@@ -8,14 +8,13 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 	execute(): void {
 		this.setBaseState();
 		this.setServicesContext();
+		this.setupIdentityOptions();
+		this.setupVideoOptions();
 	}
 
 	private setBaseState(): void {
 		context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441);
 		context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src'));
-
-		this.setupIdentityOptions();
-		this.setupVideoOptions();
 	}
 
 	private setupIdentityOptions() {
