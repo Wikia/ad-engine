@@ -145,6 +145,7 @@ export class AdSlot {
 		const targetingData = this.config.targeting || ({} as SlotTargeting);
 		targetingData.src = targetingData.src || context.get('src');
 		targetingData.pos = targetingData.pos || this.getSlotName();
+		targetingData.rv = targetingData.rv || '1';
 		targetingService.extend(targetingData, this.getSlotName());
 		delete this.config.targeting;
 

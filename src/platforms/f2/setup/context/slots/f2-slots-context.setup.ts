@@ -63,7 +63,6 @@ export class F2SlotsContextSetup implements DiProcess {
 				defaultTemplates: [],
 				targeting: {
 					loc: 'top',
-					rv: 1,
 				},
 			},
 			top_boxad: {
@@ -97,7 +96,6 @@ export class F2SlotsContextSetup implements DiProcess {
 				],
 				targeting: {
 					loc: 'top',
-					rv: 1,
 				},
 			},
 			incontent_boxad: {
@@ -124,7 +122,6 @@ export class F2SlotsContextSetup implements DiProcess {
 					loc(): string {
 						return context.get('state.isMobile') ? 'footer' : 'hivi';
 					},
-					rv: 1,
 				},
 			},
 			floor_adhesion: {
@@ -135,7 +132,6 @@ export class F2SlotsContextSetup implements DiProcess {
 				outOfPage: false,
 				targeting: {
 					loc: 'footer',
-					rv: 1,
 				},
 				defaultTemplates: ['floorAdhesion'],
 				defaultSizes: [
@@ -181,22 +177,15 @@ export class F2SlotsContextSetup implements DiProcess {
 				defaultSizes: [],
 				targeting: {
 					loc: 'footer',
-					rv: 1,
 				},
 			},
 			featured: {
 				group: 'VIDEO',
-				targeting: {
-					rv: 1,
-				},
 				trackingKey: 'featured-video',
 				isVideo: true,
 			},
 			video: {
 				group: 'VIDEO',
-				targeting: {
-					rv: 1,
-				},
 				trackingKey: 'video',
 				isVideo: true,
 			},
