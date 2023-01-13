@@ -16,7 +16,7 @@ export const basicContext = {
 		},
 		iasPublisherOptimization: {
 			pubId: '930616',
-			slots: ['mpu_plus_top'], // TODO: CHANGE
+			slots: ['mpu-plus-top'],
 		},
 		instantConfig: {
 			appName: 'metacritic-neutron',
