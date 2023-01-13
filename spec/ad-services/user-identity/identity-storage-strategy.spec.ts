@@ -7,17 +7,19 @@ import { createSandbox, SinonStubbedInstance } from 'sinon';
 
 describe('User Identity', () => {
 	let sandbox;
-	let clientSpy;
-	const mockId = '00000000-0000-0000-0000-000000000000';
-	const userIdentity = new UserIdentity();
+	let mockId;
+	let userIdentity;
 	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
+	let identityStorageClientPostDataStub;
 
 	beforeEach(() => {
+		mockId = `${Math.random()}-${Math.random()}-${Math.random()}-${Math.random()}`;
 		context.set('services.ppid.enabled', true);
 		context.set('services.ppidRepository', IdentityRepositories.IDENTITY_STORAGE);
 		sandbox = createSandbox();
 		targetingServiceStub = sandbox.stub(targetingService);
-		clientSpy = sandbox.spy(identityStorageClient, 'postData');
+		userIdentity = new UserIdentity();
+		identityStorageClientPostDataStub = sandbox.stub(identityStorageClient, 'postData');
 	});
 
 	afterEach(() => {
@@ -34,6 +36,8 @@ describe('User Identity', () => {
 			}),
 		);
 
+		sandbox.stub(identityStorageClient, 'getLocalData').callsFake(() => undefined);
+
 		await userIdentity.call();
 
 		expect(targetingServiceStub.set.calledWith('ppid', mockId)).to.equal(true);
@@ -47,9 +51,10 @@ describe('User Identity', () => {
 			}),
 		);
 
+		sandbox.stub(identityStorageClient, 'getLocalData').callsFake(() => undefined);
+
 		await userIdentity.call();
 
-		//expect(targetingService.get('ppid')).to.eq(mockId);
 		expect(targetingServiceStub.set.calledWith('ppid', mockId)).to.equal(true);
 	});
 
@@ -62,18 +67,25 @@ describe('User Identity', () => {
 		await userIdentity.call();
 
 		expect(targetingServiceStub.set.calledWith('ppid', mockId)).to.equal(true);
-		expect(clientSpy.called).to.eq(false);
+		expect(identityStorageClientPostDataStub.called).to.eq(false);
 	});
 
 	it('use Identity Storage strategy and gets not synced PPID from Cache', async () => {
+		identityStorageClientPostDataStub.returns(
+			Promise.resolve({
+				ppid: mockId,
+				synced: true,
+			}),
+		);
+
 		sandbox.stub(identityStorageClient.storage, 'getItem').callsFake(() => ({
 			ppid: mockId,
 			synced: false,
 		}));
+
 		await userIdentity.call();
 
-		//expect(targetingService.get('ppid')).to.eq(mockId);
 		expect(targetingServiceStub.set.calledWith('ppid', mockId)).to.equal(true);
-		expect(clientSpy.called).to.eq(true);
+		expect(identityStorageClientPostDataStub.called).to.eq(true);
 	});
 });
