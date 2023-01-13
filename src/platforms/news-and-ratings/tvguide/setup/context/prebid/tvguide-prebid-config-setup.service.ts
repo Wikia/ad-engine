@@ -13,7 +13,7 @@ import { getPubmaticContext } from '../../../bidders/pubmatic';
 import { getWikiaContext } from '../../../bidders/wikia';
 
 @Injectable()
-export class ComicvinePrebidConfigSetup implements DiProcess {
+export class TvGuidePrebidConfigSetup implements DiProcess {
 	constructor(private bidders: Bidders) {}
 
 	execute(): void {
