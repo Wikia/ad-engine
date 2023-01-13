@@ -26,8 +26,8 @@ export class GameSpotPlatform {
 			NewsAndRatingsTargetingSetup,
 			GamespotSlotsContextSetup,
 			NewsAndRatingsDynamicSlotsSetup,
-			BiddersStateSetup,
 			GamespotPrebidConfigSetup,
+			BiddersStateSetup,
 			NewsAndRatingsAdsMode,
 		);
 

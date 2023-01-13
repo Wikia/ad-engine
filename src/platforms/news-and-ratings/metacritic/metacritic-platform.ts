@@ -24,8 +24,8 @@ export class MetacriticPlatform {
 			MetacriticTargetingSetup,
 			MetacriticDynamicSlotsSetup,
 			MetacriticSlotsContextSetup,
-			BiddersStateSetup,
 			MetacriticPrebidConfigSetup,
+			BiddersStateSetup,
 			NewsAndRatingsAdsMode,
 		);
 

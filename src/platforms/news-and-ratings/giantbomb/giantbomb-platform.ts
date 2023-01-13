@@ -26,8 +26,8 @@ export class GiantbombPlatform {
 			NewsAndRatingsTargetingSetup,
 			GiantbombSlotsContextSetup,
 			NewsAndRatingsDynamicSlotsSetup,
-			BiddersStateSetup,
 			GiantbombPrebidConfigSetup,
+			BiddersStateSetup,
 			NewsAndRatingsAdsMode,
 		);
 

@@ -22,12 +22,12 @@ export class ComicvinePlatform {
 			Bootstrap.setupGeo,
 			parallel(InstantConfigSetup, Bootstrap.setupConsent),
 			NewsAndRatingsBaseContextSetup,
-      ComicvineTargetingSetup,
+			ComicvineTargetingSetup,
 			NewsAndRatingsTargetingSetup,
 			NewsAndRatingsDynamicSlotsSetup,
 			ComicvineSlotsContextSetup,
-			BiddersStateSetup,
 			ComicvinePrebidConfigSetup,
+			BiddersStateSetup,
 			NewsAndRatingsAdsMode,
 		);
 
