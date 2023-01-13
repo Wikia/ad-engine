@@ -1,4 +1,4 @@
-import { targetingService } from '@wikia/core';
+import { TargetingObject, TargetingService, targetingService } from '@wikia/core';
 import { AdSlot } from '@wikia/core/models/ad-slot';
 import { context } from '@wikia/core/services/context-service';
 import { slotService } from '@wikia/core/services/slot-service';
@@ -7,9 +7,19 @@ import {
 	buildVastUrl,
 } from '@wikia/core/utils/tagless-request-url-builder';
 import { expect } from 'chai';
+import { createSandbox, SinonSandbox, SinonStubbedInstance } from 'sinon';
 
 describe('tagless-request-url-builder', () => {
 	let lisAdSlot;
+	const sandbox: SinonSandbox = createSandbox();
+	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
+	const targetingData = {
+		s0: '000',
+		uno: 'foo',
+		due: 15,
+		tre: ['bar', 'zero'],
+		quattro: null,
+	};
 
 	beforeEach(() => {
 		context.extend({
@@ -37,18 +47,19 @@ describe('tagless-request-url-builder', () => {
 			},
 		});
 
-		targetingService.clear();
-		targetingService.extend({
-			s0: '000',
-			uno: 'foo',
-			due: 15,
-			tre: ['bar', 'zero'],
-			quattro: null,
+		targetingServiceStub = sandbox.stub(targetingService);
+		targetingServiceStub.dump.returns(targetingData);
+		targetingServiceStub.extend.callsFake((newTargeting: TargetingObject) => {
+			Object.assign(targetingData, newTargeting);
 		});
 
 		lisAdSlot = new AdSlot({ id: 'layout_initializer' });
 		slotService.add(new AdSlot({ id: 'top_leaderboard' }));
 		slotService.add(lisAdSlot);
+	});
+
+	afterEach(() => {
+		sandbox.restore();
 	});
 
 	it('build VAST URL with DFP domain', () => {

@@ -1,8 +1,21 @@
 import { Rubicon } from '@wikia/ad-bidders/prebid/adapters/rubicon';
-import { targetingService } from '@wikia/core';
+import { TargetingService, targetingService } from '@wikia/core';
 import { expect } from 'chai';
+import { createSandbox, SinonStubbedInstance } from 'sinon';
 
 describe('Rubicon bidder adapter', () => {
+	let sandbox;
+	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
+
+	beforeEach(() => {
+		sandbox = createSandbox();
+		targetingServiceStub = sandbox.stub(targetingService);
+	});
+
+	afterEach(() => {
+		sandbox.restore();
+	});
+
 	it('can be enabled', () => {
 		const rubicon = new Rubicon({
 			enabled: true,
@@ -12,6 +25,11 @@ describe('Rubicon bidder adapter', () => {
 	});
 
 	it('prepareAdUnits returns data in correct shape', () => {
+		targetingServiceStub.dump.returns({
+			testKeyval: 'yes',
+			mappedVerticalName: 'gaming',
+		});
+
 		const rubicon = new Rubicon({
 			enabled: true,
 			accountId: 1234,
@@ -70,6 +88,11 @@ describe('Rubicon bidder adapter', () => {
 	});
 
 	it('prepareAdUnits returns data in correct shape', () => {
+		targetingServiceStub.dump.returns({
+			testKeyval: 'yes',
+			mappedVerticalName: 'gaming',
+		});
+
 		const rubicon = new Rubicon({
 			enabled: true,
 			accountId: 1234,
@@ -128,7 +151,10 @@ describe('Rubicon bidder adapter', () => {
 	});
 
 	it('prepareAdUnits returns data in correct shape with additional key-vals', () => {
-		targetingService.set('testKeyval', 'yes');
+		targetingServiceStub.dump.returns({
+			testKeyval: 'yes',
+			mappedVerticalName: 'gaming',
+		});
 
 		const rubicon = new Rubicon({
 			enabled: true,

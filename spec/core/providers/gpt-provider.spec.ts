@@ -1,19 +1,27 @@
 import { context, GptProvider, targetingService } from '@wikia/core';
 import { expect } from 'chai';
-import { spy, stub } from 'sinon';
+import { createSandbox, spy, stub } from 'sinon';
 
 let provider;
 let pubads;
 let isInitializedCb;
+let sandbox;
 
 describe('gpt-provider', () => {
+	beforeEach(() => {
+		sandbox = createSandbox();
+		sandbox.stub(targetingService);
+	});
+	afterEach(() => {
+		sandbox.restore();
+	});
+
 	before(() => {
 		isInitializedCb = stub(GptProvider.prototype, 'isInitialized');
 	});
 
 	after(() => {
 		isInitializedCb.reset();
-		targetingService.removeListeners();
 	});
 
 	beforeEach(() => {

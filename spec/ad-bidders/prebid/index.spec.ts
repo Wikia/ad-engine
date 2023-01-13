@@ -1,7 +1,7 @@
 import { PrebidProvider } from '@wikia/ad-bidders/prebid';
-import { targetingService } from '@wikia/core';
+import { TargetingService, targetingService } from '@wikia/core';
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
+import { createSandbox, SinonStubbedInstance } from 'sinon';
 import { stubPbjs } from '../../core/services/pbjs.stub';
 
 const bidderConfig = {
@@ -10,9 +10,11 @@ const bidderConfig = {
 
 describe('PrebidProvider bidder', () => {
 	const sandbox = createSandbox();
+	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 
 	beforeEach(() => {
 		stubPbjs(sandbox);
+		targetingServiceStub = sandbox.stub(targetingService);
 	});
 
 	afterEach(() => {
@@ -45,15 +47,13 @@ describe('PrebidProvider bidder', () => {
 		it('returns all pbjs keys to reset', () => {
 			const prebid = new PrebidProvider(bidderConfig);
 
-			targetingService.extend(
-				{
-					src: 'foo',
-					loc: 'top',
-					hb_bidder: 'wikia',
-					hb_pb: '20.0',
-				},
-				'top_leaderboard',
-			);
+			targetingServiceStub.dump.returns({
+				src: 'foo',
+				loc: 'top',
+				hb_bidder: 'wikia',
+				hb_pb: '20.0',
+			});
+
 			const keys = prebid.getTargetingKeys('top_leaderboard');
 
 			expect(keys.length).to.equal(2);

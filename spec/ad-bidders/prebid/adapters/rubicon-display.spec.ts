@@ -1,8 +1,20 @@
 import { RubiconDisplay } from '@wikia/ad-bidders/prebid/adapters/rubicon-display';
+import { TargetingService, targetingService } from '@wikia/core';
 import { expect } from 'chai';
-import { targetingService } from '@wikia/core';
+import { createSandbox, SinonStubbedInstance } from 'sinon';
 
 describe('RubiconDisplay bidder adapter', () => {
+	let sandbox;
+	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
+
+	beforeEach(() => {
+		sandbox = createSandbox();
+		targetingServiceStub = sandbox.stub(targetingService);
+	});
+	afterEach(() => {
+		sandbox.restore();
+	});
+
 	it('can be enabled', () => {
 		const rubiconDisplay = new RubiconDisplay({
 			enabled: true,
@@ -12,6 +24,10 @@ describe('RubiconDisplay bidder adapter', () => {
 	});
 
 	it('prepareAdUnits returns data in correct shape', () => {
+		targetingServiceStub.dump.returns({
+			mappedVerticalName: 'gaming',
+		});
+
 		const rubiconDisplay = new RubiconDisplay({
 			enabled: true,
 			accountId: 1234,
@@ -68,7 +84,10 @@ describe('RubiconDisplay bidder adapter', () => {
 	});
 
 	it('prepareAdUnits returns data in correct shape with additional key-vals', () => {
-		targetingService.set('testKeyval', 'yes');
+		targetingServiceStub.dump.returns({
+			testKeyval: 'yes',
+			mappedVerticalName: 'gaming',
+		});
 
 		const rubiconDisplay = new RubiconDisplay({
 			enabled: true,

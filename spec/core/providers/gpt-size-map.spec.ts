@@ -1,10 +1,17 @@
 import { targetingService } from '@wikia/core';
 import { GptSizeMap } from '@wikia/core/providers/gpt-size-map';
 import { expect } from 'chai';
+import { createSandbox } from 'sinon';
 
 describe('gpt-size-map', () => {
-	after(() => {
-		targetingService.removeListeners();
+	let sandbox;
+
+	beforeEach(() => {
+		sandbox = createSandbox();
+		sandbox.stub(targetingService);
+	});
+	afterEach(() => {
+		sandbox.restore();
 	});
 
 	it('provides information about emptiness', () => {

@@ -1,7 +1,7 @@
 import { communicationService, eventsRepository } from '@wikia/communication';
-import { AdSlot, context, Dictionary, targetingService } from '@wikia/core';
+import { AdSlot, context, Dictionary, TargetingService, targetingService } from '@wikia/core';
 import { assert, expect } from 'chai';
-import { createSandbox, SinonSandbox, SinonSpy } from 'sinon';
+import { createSandbox, SinonSandbox, SinonSpy, SinonStubbedInstance } from 'sinon';
 import { configMock } from '../config-mock';
 
 /**
@@ -16,9 +16,11 @@ function createAdSlot(id): AdSlot {
 
 describe('ad-slot', () => {
 	const sandbox: SinonSandbox = createSandbox();
+	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 
 	beforeEach(() => {
 		context.extend(configMock);
+		targetingServiceStub = sandbox.stub(targetingService);
 	});
 
 	afterEach(() => {
@@ -98,7 +100,6 @@ describe('ad-slot', () => {
 		beforeEach(() => {
 			adSlot = createAdSlot('top_leaderboard');
 			targeting = {};
-			targetingService.clear('top_leaderboard');
 		});
 
 		it('should have winningBidderDetails set to null initially', () => {
@@ -108,8 +109,11 @@ describe('ad-slot', () => {
 		it('should set winningBidderDetails if both bidder and bidder price are available', () => {
 			targeting.hb_bidder = 'bidder';
 			targeting.hb_pb = 20;
-			targetingService.set('hb_bidder', targeting.hb_bidder, 'top_leaderboard');
-			targetingService.set('hb_pb', targeting.hb_pb, 'top_leaderboard');
+
+			targetingServiceStub.get
+				.withArgs('hb_bidder', 'top_leaderboard')
+				.returns(targeting.hb_bidder);
+			targetingServiceStub.get.withArgs('hb_pb', 'top_leaderboard').returns(targeting.hb_pb);
 
 			adSlot.updateWinningPbBidderDetails();
 
@@ -143,8 +147,6 @@ describe('ad-slot', () => {
 		beforeEach(() => {
 			adSlot = createAdSlot('top_leaderboard');
 			targeting = {};
-			targetingService.clear('top_leaderboard');
-			targetingService.extend(targeting, 'top_leaderboard');
 		});
 
 		it('should have winningBidderDetails set to null initially', () => {
@@ -153,7 +155,7 @@ describe('ad-slot', () => {
 
 		it('should set winningBidderDetails if a9 price is available', () => {
 			targeting.amznbid = 'foobar';
-			targetingService.set('amznbid', targeting.amznbid, 'top_leaderboard');
+			targetingServiceStub.get.withArgs('amznbid', 'top_leaderboard').returns(targeting.amznbid);
 
 			adSlot.updateWinningA9BidderDetails();
 

@@ -1,16 +1,24 @@
 import { Eyeota, parseContextTags } from '@wikia/ad-services';
-import { context, InstantConfigService, targetingService, tcf, utils } from '@wikia/core';
+import {
+	context,
+	InstantConfigService,
+	TargetingService,
+	targetingService,
+	tcf,
+	utils,
+} from '@wikia/core';
 import {
 	FandomContext,
 	Site,
 } from '@wikia/platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
+import { createSandbox, SinonStubbedInstance } from 'sinon';
 
 describe('Eyeota', () => {
 	const sandbox = createSandbox();
 	let eyeota: Eyeota;
 	let loadScriptStub, instantConfigStub, tcfStub;
+	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 
 	beforeEach(() => {
 		window.__tcfapi = window.__tcfapi as WindowTCF;
@@ -25,6 +33,8 @@ describe('Eyeota', () => {
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);
 		context.set('wiki.targeting.directedAtChildren', false);
+
+		targetingServiceStub = sandbox.stub(targetingService);
 
 		eyeota = new Eyeota(instantConfigStub);
 	});
@@ -78,12 +88,10 @@ describe('Eyeota', () => {
 	});
 
 	it('constructs proper src', async () => {
-		targetingService.set('s0v', 'lifestyle');
+		targetingServiceStub.get.withArgs('s0v').returns('lifestyle');
 		const src = await eyeota.createScriptSource();
 
 		expect(src).to.equal('https://ps.eyeota.net/pixel?pid=r8rcb20&sid=fandom&t=ajs&s0v=lifestyle');
-
-		targetingService.remove('s0v');
 	});
 
 	it('constructs proper url with context', async () => {
@@ -113,15 +121,13 @@ describe('Eyeota', () => {
 		tcfStub = sandbox
 			.stub(tcf, 'getTCData')
 			.returns(Promise.resolve({ tcString: 'test', gdprApplies: true }) as any);
-		targetingService.set('s0v', 'lifestyle');
+		targetingServiceStub.get.withArgs('s0v').returns('lifestyle');
 
 		const src = await eyeota.createScriptSource();
 
 		expect(src).to.equal(
 			'https://ps.eyeota.net/pixel?pid=r8rcb20&sid=fandom&t=ajs&s0v=lifestyle&gdpr=1&gdpr_consent=test',
 		);
-
-		targetingService.remove('s0v');
 	});
 
 	describe('parseContextTags', () => {
