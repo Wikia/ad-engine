@@ -124,10 +124,7 @@ export class TargetingService implements TargetingServiceInterface {
 	get(key: string, slotName: string | null = null): any {
 		const targetingGroupName = slotName || this.pageTargetingGroupName;
 
-		console.log(this.adTargeting);
-
 		if (this.adTargeting[targetingGroupName]) {
-			console.log('SPRAWDZAM');
 			return this.adTargeting[targetingGroupName][key];
 		}
 

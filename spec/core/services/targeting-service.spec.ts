@@ -1,5 +1,6 @@
 import { TargetingService } from '@wikia/core';
 import { expect } from 'chai';
+import { createSandbox } from 'sinon';
 
 describe('slot-service', () => {
 	let targetingService: TargetingService;
@@ -291,32 +292,75 @@ describe('slot-service', () => {
 		});
 	});
 
-	// describe('onchange', () => {
-	// 	let sandbox;
-	//
-	// 	beforeEach(() => {
-	// 		targetingService = new TargetingService();
-	// 		sandbox = createSandbox();
-	// 	});
-	//
-	// 	const callbacks = {
-	// 		first: sandbox.spy(),
-	// 		second: sandbox.spy(),
-	// 	};
-	//
-	// 	it('should run callbacks after change', () => {
-	// 		extendWithExampleData();
-	// 		targetingService.onChange(callbacks.first);
-	// 		targetingService.onChange(callbacks.second);
-	//
-	// 		const key = 'bundles';
-	// 		const newData = ['bundle#1'];
-	// 		targetingService.set(key, newData);
-	//
-	// 		expect(callbacks.first.calledWith(key, newData)).to.be.ok;
-	// 		expect(callbacks.second.calledWith(key, newData)).to.be.ok;
-	// 	});
-	// });
+	describe('onchange', () => {
+		let sandbox;
+
+		beforeEach(() => {
+			targetingService = new TargetingService();
+			sandbox = createSandbox();
+		});
+
+		it('should run callbacks after the change', () => {
+			const callbacks = {
+				first: sandbox.spy(),
+				second: sandbox.spy(),
+			};
+
+			extendWithExampleData();
+			targetingService.onChange(callbacks.first);
+			targetingService.onChange(callbacks.second);
+
+			const key = 'bundles';
+			const newData = ['bundle#1'];
+			targetingService.set(key, newData);
+
+			expect(callbacks.first.calledWith(key, newData)).to.be.ok;
+			expect(callbacks.first.calledOnce).to.be.true;
+			expect(callbacks.second.calledWith(key, newData)).to.be.ok;
+			expect(callbacks.second.calledOnce).to.be.true;
+		});
+
+		it('should not run callbacks after slot removeListeners', () => {
+			const callbacks = {
+				first: sandbox.spy(),
+				second: sandbox.spy(),
+			};
+
+			extendWithExampleData();
+			targetingService.onChange(callbacks.first);
+			targetingService.onChange(callbacks.second);
+
+			const key = 'bundles';
+			targetingService.set(key, ['bundle#1']);
+
+			expect(callbacks.first.calledOnce).to.be.true;
+			expect(callbacks.second.calledOnce).to.be.true;
+
+			targetingService.removeListeners();
+			targetingService.set(key, []);
+
+			expect(callbacks.first.calledTwice).to.be.false;
+			expect(callbacks.second.calledTwice).to.be.false;
+		});
+
+		it('should not run callbacks after slot change', () => {
+			const callbacks = {
+				first: sandbox.spy(),
+				second: sandbox.spy(),
+			};
+
+			extendWithExampleData();
+			targetingService.onChange(callbacks.first);
+			targetingService.onChange(callbacks.second);
+
+			const key = 'bundles';
+			const newData = ['bundle#1'];
+			targetingService.set(key, newData, firstSlotName);
+
+			expect(callbacks.first.calledOnce).to.be.false;
+			expect(callbacks.second.calledOnce).to.be.false;
+		});
+	});
 
 	function extendWithExampleData() {
 		targetingService.extend(pageTargetingData);
