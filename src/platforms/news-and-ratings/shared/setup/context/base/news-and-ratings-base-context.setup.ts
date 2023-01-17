@@ -65,6 +65,8 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 	}
 
 	getDataSettingsFromMetaTag(): string {
-		return document.head.querySelector(`[id='ad-settings']`)?.getAttribute('data-settings');
+		const adSettings = document.getElementById('ad-settings')?.getAttribute('data-settings');
+		utils.logger('setup', 'Ad settings: ', adSettings);
+		return adSettings;
 	}
 }
