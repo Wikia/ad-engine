@@ -11,7 +11,11 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 	}
 
 	private setBaseState(): void {
+		const isDesktop = utils.client.isDesktop();
+
+		context.set('custom.device', isDesktop ? '' : 'm');
 		context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441);
+		context.set('custom.pagePath', this.getPagePathFromMetatags());
 		context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src'));
 
 		// identity
@@ -43,5 +47,24 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 			'services.iasPublisherOptimization.enabled',
 			this.instantConfig.get('icIASPublisherOptimization'),
 		);
+	}
+
+	private getPagePathFromMetatags(): string {
+		const dataSettingsJson = this.getDataSettingsFromMetaTag();
+
+		if (!dataSettingsJson) {
+			return '';
+		}
+
+		const pagePath = JSON.parse(dataSettingsJson)?.unit_name?.split('/').pop();
+		if (!pagePath) {
+			return '';
+		}
+
+		return '/' + pagePath;
+	}
+
+	getDataSettingsFromMetaTag(): string {
+		return document.head.querySelector(`[id='ad-settings']`)?.getAttribute('data-settings');
 	}
 }
