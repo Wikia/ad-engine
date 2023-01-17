@@ -32,8 +32,8 @@ export class GamefaqsPlatform {
 			GamefaqsSlotsContextSetup,
 			LazyLoadedSlotsContextSetup,
 			NewsAndRatingsDynamicSlotsSetup,
-			BiddersStateSetup,
 			GamefaqsPrebidConfigSetup,
+			BiddersStateSetup,
 			NewsAndRatingsAdsMode,
 		);
 

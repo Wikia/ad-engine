@@ -1,16 +1,16 @@
 import { Injectable } from '@wikia/dependency-injection';
+
 import { context, ProcessPipeline } from '@wikia/ad-engine';
-import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
+import { bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
 
 import { basicContext } from './ad-context';
-import { TvGuideSlotsContextSetup } from './setup/context/slots/tvguide-slots-context.setup';
-import { TvGuideDynamicSlotsSetup } from './setup/dynamic-slots/tvguide-dynamic-slots.setup';
+import { MetacriticNeutronSlotsContextSetup } from './setup/context/slots/metacritic-neutron-slots-context.setup';
+import { MetacriticNeutronDynamicSlotsSetup } from './setup/dynamic-slots/metacritic-neutron-dynamic-slots.setup';
+import { MetacriticNeutronTargetingSetup } from './setup/context/targeting/metacritic-neutron-targeting.setup';
 import { NewsAndRatingsAdsMode, NewsAndRatingsBaseContextSetup } from '../shared';
-import { TvGuideTargetingSetup } from './setup/context/targeting/tvguide-targeting.setup';
-import { TvGuidePrebidConfigSetup } from './setup/context/prebid/tvguide-prebid-config-setup.service';
 
 @Injectable()
-export class TvGuidePlatform {
+export class MetacriticNeutronPlatform {
 	constructor(private pipeline: ProcessPipeline) {}
 
 	execute(): void {
@@ -20,11 +20,9 @@ export class TvGuidePlatform {
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
 			NewsAndRatingsBaseContextSetup,
-			TvGuideTargetingSetup,
-			TvGuideDynamicSlotsSetup,
-			TvGuideSlotsContextSetup,
-			TvGuidePrebidConfigSetup,
-			BiddersStateSetup,
+			MetacriticNeutronTargetingSetup,
+			MetacriticNeutronDynamicSlotsSetup,
+			MetacriticNeutronSlotsContextSetup,
 			NewsAndRatingsAdsMode,
 		);
 

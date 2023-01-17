@@ -13,7 +13,7 @@ import { getWikiaContext } from '../../../bidders/wikia';
 import { getPubmaticContext } from '../../../bidders/pubmatic';
 
 @Injectable()
-export class GamespotPrebidConfigSetup implements DiProcess {
+export class TvGuidePrebidConfigSetup implements DiProcess {
 	execute(): void {
 		const isDesktop = utils.client.isDesktop();
 

@@ -3,7 +3,7 @@ export const basicContext = {
 	custom: {
 		dfpId: '5441',
 		region: 'aw',
-		property: 'tvguide',
+		property: 'metacritic',
 	},
 	services: {
 		confiant: {
@@ -19,9 +19,9 @@ export const basicContext = {
 			slots: ['mpu-plus-top'],
 		},
 		instantConfig: {
-			appName: 'tvguide',
+			appName: 'metacritic-neutron',
 		},
 	},
 	slots: {},
-	src: ['tvguide'],
+	src: ['metacritic'],
 };
