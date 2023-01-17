@@ -3,10 +3,8 @@ export const basicContext = {
 	adUnitId: '/{custom.dfpId}/{custom.device}{custom.region}-{custom.property}{custom.pagePath}',
 	custom: {
 		dfpId: '5441',
-		device: '',
 		region: 'aw',
 		property: 'gamefaqs',
-		pagePath: '',
 		targeting: {
 			seats: {
 				session: 16,
