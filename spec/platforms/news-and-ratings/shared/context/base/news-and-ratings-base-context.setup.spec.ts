@@ -40,11 +40,8 @@ describe('News and Ratings base context setup', () => {
 
 		it('sets proper page path based - happy path', () => {
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
-			const getDataSettingsFromMetaTagStub = sandbox.stub(
-				baseContextSetup,
-				'getDataSettingsFromMetaTag',
-			);
-			getDataSettingsFromMetaTagStub.returns(`{"unit_name": "/123/aw-test/home"}`);
+			const getDataSettingsFromMetaTagStub = sandbox.stub(baseContextSetup, 'getUtagData');
+			getDataSettingsFromMetaTagStub.returns({ siteSection: 'home' });
 
 			baseContextSetup.execute();
 
@@ -53,10 +50,7 @@ describe('News and Ratings base context setup', () => {
 
 		it('sets proper page path based - no unit_name in ad-settings meta tag', () => {
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
-			const getDataSettingsFromMetaTagStub = sandbox.stub(
-				baseContextSetup,
-				'getDataSettingsFromMetaTag',
-			);
+			const getDataSettingsFromMetaTagStub = sandbox.stub(baseContextSetup, 'getUtagData');
 			getDataSettingsFromMetaTagStub.returns(`{}`);
 
 			baseContextSetup.execute();
@@ -66,10 +60,7 @@ describe('News and Ratings base context setup', () => {
 
 		it('sets proper page path based - no ad-settings meta tag', () => {
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
-			const getDataSettingsFromMetaTagStub = sandbox.stub(
-				baseContextSetup,
-				'getDataSettingsFromMetaTag',
-			);
+			const getDataSettingsFromMetaTagStub = sandbox.stub(baseContextSetup, 'getUtagData');
 			getDataSettingsFromMetaTagStub.returns('');
 
 			baseContextSetup.execute();
