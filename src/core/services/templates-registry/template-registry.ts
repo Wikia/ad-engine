@@ -13,8 +13,8 @@ interface TemplateMachinePayload<
 > {
 	StateHandlerTypesDict: T;
 	initialStateKey: keyof T;
-	templateDependencies: TemplateDependency[];
 	emitter$: Subject<TemplateAction>;
+	templateDependencies: TemplateDependency[];
 }
 
 type TemplateDependencies = (TemplateDependency | TemplateDependencies)[];
@@ -45,6 +45,7 @@ export class TemplateRegistry {
 			StateHandlerTypesDict,
 			initialStateKey,
 			emitter$,
+			// @ts-ignore TypeScript don't understand which overload we want to retype in Parameters<Container['bind']>[0]
 			templateDependencies: templateDependencies.flat<TemplateDependency>(Infinity),
 		});
 

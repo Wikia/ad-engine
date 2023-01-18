@@ -1,6 +1,6 @@
 import { Medianet } from '@wikia/ad-bidders/prebid/adapters/medianet';
-import { expect } from 'chai';
 import { context } from '@wikia/core';
+import { expect } from 'chai';
 
 describe('Medianet bidder adapter', () => {
 	it('can be enabled', () => {

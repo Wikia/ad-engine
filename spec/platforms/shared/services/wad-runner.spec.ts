@@ -5,7 +5,7 @@ import { BabDetection } from '@wikia/core';
 import { WadRunner } from '@wikia/platforms/shared';
 
 function createDetectionRunStub(returnValue: boolean) {
-	return new Promise((resolve) => {
+	return new Promise<void>((resolve) => {
 		resolve();
 	}).then(() => {
 		return returnValue;
@@ -15,11 +15,17 @@ function createDetectionRunStub(returnValue: boolean) {
 describe('Wikia AdBlock Detector runner', () => {
 	const babDetectionStub = sinon.createStubInstance(BabDetection);
 	const onDetected = sinon.spy();
+	let wadRunner: WadRunner;
+
+	beforeEach(() => {
+		wadRunner = new WadRunner();
+		wadRunner.detector = babDetectionStub;
+		wadRunner.onDetected = onDetected;
+	});
 
 	it('does not call onDetect callback when ad detection is disabled', async () => {
 		babDetectionStub.isEnabled.returns(false);
 
-		const wadRunner = new WadRunner(babDetectionStub, onDetected);
 		await wadRunner.call();
 
 		expect(onDetected.called).to.equal(false);
@@ -30,7 +36,6 @@ describe('Wikia AdBlock Detector runner', () => {
 		babDetectionStub.isEnabled.returns(true);
 		babDetectionStub.run.returns(babDetectionRunStub);
 
-		const wadRunner = new WadRunner(babDetectionStub, onDetected);
 		await wadRunner.call();
 
 		expect(onDetected.called).to.equal(false);
@@ -41,7 +46,6 @@ describe('Wikia AdBlock Detector runner', () => {
 		babDetectionStub.isEnabled.returns(true);
 		babDetectionStub.run.returns(babDetectionRunStub);
 
-		const wadRunner = new WadRunner(babDetectionStub, onDetected);
 		await wadRunner.call();
 
 		expect(onDetected.called).to.equal(true);

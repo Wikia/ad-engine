@@ -1,6 +1,6 @@
+import { getTopOffset } from '@wikia/core/utils';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { getTopOffset } from '../../../src/core/utils';
 
 function getMockElement(top: number, left = 0, hidden = false): HTMLElement {
 	return {

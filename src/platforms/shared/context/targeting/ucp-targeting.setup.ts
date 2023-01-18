@@ -9,8 +9,8 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { createSelectedStrategy } from './targeting-strategies/factories/create-selected-strategy';
 import { createFandomContext } from './targeting-strategies/factories/create-fandom-context';
+import { createSelectedStrategy } from './targeting-strategies/factories/create-selected-strategy';
 import { TargetingTags } from './targeting-strategies/interfaces/taxonomy-tags';
 
 const SKIN = Symbol('targeting skin');

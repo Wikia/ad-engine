@@ -1,38 +1,36 @@
 const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
-const { getTypeScriptLoader } = require('./configs/webpack-app.config');
-const { mergeCompilerOptionsPaths } = require('./configs/merge-compiler-options-paths');
 const pkg = require('./package.json');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const include = [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'spec')];
 
-const paths = mergeCompilerOptionsPaths([
-	path.resolve(__dirname, 'src/tsconfig.json'),
-	path.resolve(__dirname, 'src/platforms/tsconfig.json'),
-	path.resolve(__dirname, 'spec/tsconfig.json'),
-]);
-
 module.exports = () => ({
 	mode: 'development',
-
 	context: __dirname,
 
 	resolve: {
 		extensions: ['.ts', '.js', '.json'],
 		modules: [...include, 'node_modules'],
-		plugins: [new TsConfigPathsPlugin({ paths })],
-		fallback: {
-			util: require.resolve('util/'),
-		},
+		plugins: [new TsConfigPathsPlugin()],
 	},
 
 	module: {
 		rules: [
-			getTypeScriptLoader({
+			{
+				test: /\.(js|ts)$/,
 				include,
-				paths,
-			}),
+				exclude: /node_modules/,
+				use: [
+					{
+						loader: 'ts-loader',
+						options: {
+							configFile: 'tsconfig.json',
+						},
+					},
+				],
+			},
 			{
 				test: /\.s?css$/,
 				include,
@@ -48,4 +46,10 @@ module.exports = () => ({
 			},
 		],
 	},
+
+	plugins: [new ForkTsCheckerWebpackPlugin()],
+	watchOptions: {
+		ignored: /node_modules/,
+	},
+	ignoreWarnings: [/export .* \((reexported|imported) as .*\) was not found in/],
 });

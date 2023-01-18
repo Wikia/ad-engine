@@ -1,5 +1,5 @@
 import {
-	bidders,
+	Bidders,
 	communicationService,
 	context,
 	DiProcess,
@@ -15,6 +15,8 @@ import { getWikiaContext } from '../../../bidders/wikia';
 
 @Injectable()
 export class TvGuidePrebidConfigSetup implements DiProcess {
+	constructor(private bidders: Bidders) {}
+
 	execute(): void {
 		const isDesktop = utils.client.isDesktop();
 
@@ -34,7 +36,7 @@ export class TvGuidePrebidConfigSetup implements DiProcess {
 		communicationService.on(
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
 			({ slot }) => {
-				bidders.updateSlotTargeting(slot.getSlotName());
+				this.bidders.updateSlotTargeting(slot.getSlotName());
 			},
 			false,
 		);

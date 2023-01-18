@@ -1,4 +1,4 @@
-import { context, utils, VideoTracker } from '@ad-engine/core';
+import { utils, VideoTracker } from '@ad-engine/core';
 
 const logGroup = 'Anyclip';
 const isSubscribeReady = () => typeof window[Anyclip.SUBSCRIBE_FUNC_NAME] !== 'undefined';
@@ -14,26 +14,12 @@ export class Anyclip {
 
 	get params(): Record<string, string> {
 		return {
-			pubname: context.get('services.anyclip.pubname'),
-			widgetname: context.get('services.anyclip.widgetname'),
+			pubname: 'fandomcom',
+			widgetname: '001w000001Y8ud2_19593',
 		};
 	}
 
-	isEnabled(): boolean {
-		return context.get('services.anyclip.enabled');
-	}
-
-	call(): Promise<void> {
-		if (!this.isEnabled()) {
-			utils.logger(logGroup, 'Anyclip player is disabled');
-
-			return Promise.resolve();
-		}
-
-		this.loadPlayerAsset();
-	}
-
-	private loadPlayerAsset() {
+	loadPlayerAsset() {
 		const libraryUrl = 'https://player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/lre.js';
 		const incontentPlayerContainer = document.getElementById('incontent_player');
 

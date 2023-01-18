@@ -1,17 +1,17 @@
 import { context, Dictionary, FuncPipeline, FuncPipelineStep, messageBus } from '@ad-engine/core';
 
-export enum TrackingTarget {
-	DataWarehouse = 'DW',
-	GoogleAnalytics = 'GA',
-}
+export const TrackingTarget = {
+	DataWarehouse: 'DW',
+	GoogleAnalytics: 'GA',
+};
 
 export interface DataWarehouseMessage {
-	target: TrackingTarget.DataWarehouse;
+	target: string;
 	payload: Dictionary<string | number>;
 }
 
 export interface GoogleAnalyticsMessage {
-	target: TrackingTarget.GoogleAnalytics;
+	target: string;
 	payload: GoogleAnalyticsPayload;
 }
 

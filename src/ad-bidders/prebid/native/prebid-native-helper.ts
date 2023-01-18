@@ -12,7 +12,7 @@ export class PrebidNativeHelper {
 		return toString.call(object) === "[object 'Function']";
 	}
 
-	private static waitForElementToLoad(element: HTMLElement, timeout: number): Promise<boolean> {
+	private static waitForElementToLoad(element: HTMLElement, timeout: number): Promise<void> {
 		let timer = null;
 		return new Promise((resolve) => {
 			const onLoad = () => {

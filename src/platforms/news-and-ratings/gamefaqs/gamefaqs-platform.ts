@@ -1,18 +1,17 @@
-import { Injectable } from '@wikia/dependency-injection';
+import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
 import { context, ProcessPipeline } from '@wikia/ad-engine';
-import { bootstrapAndGetConsent, BiddersStateSetup, InstantConfigSetup } from '@platforms/shared';
-
-import { basicContext } from './ad-context';
-import { GamefaqsSlotsContextSetup } from './setup/context/slots/gamefaqs-slots-context.setup';
-import { GamefaqsPrebidConfigSetup } from './setup/context/prebid/gamefaqs-prebid-config.setup';
+import { Injectable } from '@wikia/dependency-injection';
 import {
+	LazyLoadedSlotsContextSetup,
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsDynamicSlotsSetup,
 	NewsAndRatingsTargetingSetup,
 	NewsAndRatingsWadSetup,
-	LazyLoadedSlotsContextSetup,
 } from '../shared';
+import { basicContext } from './ad-context';
+import { GamefaqsPrebidConfigSetup } from './setup/context/prebid/gamefaqs-prebid-config.setup';
+import { GamefaqsSlotsContextSetup } from './setup/context/slots/gamefaqs-slots-context.setup';
 import { GamefaqsTargetingSetup } from './setup/context/targeting/gamefaqs-targeting.setup';
 
 @Injectable()

@@ -1,8 +1,8 @@
+import { SequenceState } from '@wikia/platforms/shared/sequential-messaging/domain/data-structures/user-sequential-message-state';
+import { UserSequentialMessageStateStore } from '@wikia/platforms/shared/sequential-messaging/infrastructure/user-sequential-message-state-store';
+import { expect } from 'chai';
 import Cookies from 'js-cookie';
 import sinon from 'sinon';
-import { UserSequentialMessageStateStore } from '../../../../../src/platforms/shared/sequential-messaging/infrastructure/user-sequential-message-state-store';
-import { SequenceState } from '../../../../../src/platforms/shared/sequential-messaging/domain/data-structures/user-sequential-message-state';
-import { expect } from 'chai';
 
 const sampleState = { 5928558921: new SequenceState(1, 970, 250, true) };
 const sampleCookie = { 5928558921: { stepNo: 1, width: 970, height: 250, uap: true } };

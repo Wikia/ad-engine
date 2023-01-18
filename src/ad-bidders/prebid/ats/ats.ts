@@ -2,7 +2,7 @@ import { BaseServiceSetup, context, utils } from '@ad-engine/core';
 
 const logGroup = 'ATS';
 
-class Ats extends BaseServiceSetup {
+export class Ats extends BaseServiceSetup {
 	private isLoaded = false;
 	private atsScriptSrc = 'https://ats.rlcdn.com/ats.js';
 
@@ -36,5 +36,3 @@ class Ats extends BaseServiceSetup {
 		}
 	}
 }
-
-export const ats = new Ats();

@@ -1,5 +1,5 @@
-import { context, slotService } from '@wikia/core';
 import { PorvataSettings } from '@wikia/ad-products';
+import { context, slotService } from '@wikia/core';
 import { assert } from 'chai';
 import * as sinon from 'sinon';
 

@@ -9,7 +9,7 @@ import { PlayerRegistry } from '../../helpers/player-registry';
  */
 @Injectable({ autobind: false })
 export class VideoRestartHandler implements TemplateStateHandler {
-	private destroy$ = new Subject();
+	private destroy$ = new Subject<void>();
 
 	constructor(private playerRegistry: PlayerRegistry) {}
 

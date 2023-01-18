@@ -127,7 +127,6 @@ export class BaseContextSetup implements DiProcess {
 			'options.video.comscoreJwpTracking',
 			this.instantConfig.get('icComscoreJwpTracking'),
 		);
-		context.set('options.adsInitializeV2', this.instantConfig.get('icAdsInitializeV2'));
 		context.set('options.coppaGam', this.instantConfig.get('icCoppaGam'));
 		context.set('options.coppaPrebid', this.instantConfig.get('icCoppaPrebid'));
 
@@ -147,24 +146,7 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setServicesContext(): void {
-		context.set('services.audigent.enabled', this.instantConfig.get('icAudigent'));
-		context.set(
-			'services.audigent.tracking.sampling',
-			this.instantConfig.get('icAudigentTrackingSampling'),
-		);
-		context.set('services.audigent.segmentLimit', this.instantConfig.get('icAudigentSegmentLimit'));
-		context.set('services.captify.enabled', this.instantConfig.get('icCaptify'));
-		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
-		context.set('services.durationMedia.enabled', this.instantConfig.get('icDurationMedia'));
-		if (!this.instantConfig.get('icDurationMedia')) {
-			context.set('services.slotRefresher.config', this.instantConfig.get('icSlotRefresher'));
-		}
-		context.set('services.eyeota.enabled', this.instantConfig.get('icEyeota'));
-		context.set('services.facebookPixel.enabled', this.instantConfig.get('icFacebookPixel'));
-		context.set(
-			'services.iasPublisherOptimization.enabled',
-			this.instantConfig.get('icIASPublisherOptimization'),
-		);
+		context.set('services.anyclip.enabled', this.instantConfig.get('icAnyclipPlayer'));
 		context.set(
 			'services.interventionTracker.enabled',
 			this.instantConfig.get('icInterventionTracking'),
@@ -175,18 +157,18 @@ export class BaseContextSetup implements DiProcess {
 			this.instantConfig.get('icLiveConnectCachingStrategy'),
 		);
 		context.set('services.nativo.enabled', this.instantConfig.get('icNativo'));
-		context.set('services.nielsen.enabled', this.instantConfig.get('icNielsen'));
 		context.set('services.sailthru.enabled', this.instantConfig.get('icSailthru'));
-		context.set('services.stroer.enabled', this.instantConfig.get('icStroer'));
-		context.set('services.liveRampPixel.enabled', this.instantConfig.get('icLiveRampPixel'));
 		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
 		context.set('services.ppidRepository', this.instantConfig.get('icPpidRepository'));
+
 		context.set(
 			'services.messageBox.enabled',
 			this.instantConfig.get('icAdCollapsedMessageBox', false),
 		);
-
-		this.setupOutstreamPlayers();
+		context.set(
+			'services.slotRefresher.config',
+			!this.instantConfig.get('icDurationMedia') && this.instantConfig.get('icSlotRefresher'),
+		);
 	}
 
 	private setMiscContext(): void {
@@ -217,12 +199,6 @@ export class BaseContextSetup implements DiProcess {
 			'templates.sizeOverwritingMap',
 			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes,
 		);
-	}
-
-	private setupOutstreamPlayers(): void {
-		if (this.instantConfig.get('icAnyclipPlayer')) {
-			context.set('services.anyclip.enabled', true);
-		}
 	}
 
 	private setupStickySlotContext(): void {

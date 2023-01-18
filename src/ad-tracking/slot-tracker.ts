@@ -1,12 +1,12 @@
 import { communicationService } from '@ad-engine/communication';
 import { AdSlot, context } from '@ad-engine/core';
-import {
-	slotTrackingCompiler,
-	pageTrackingCompiler,
-	slotPropertiesTrackingCompiler,
-	slotBiddersTrackingCompiler,
-} from './compilers';
 import { BaseTracker, BaseTrackerInterface } from './base-tracker';
+import {
+	pageTrackingCompiler,
+	slotBiddersTrackingCompiler,
+	slotPropertiesTrackingCompiler,
+	slotTrackingCompiler,
+} from './compilers';
 
 class SlotTracker extends BaseTracker implements BaseTrackerInterface {
 	onRenderEndedStatusToTrack = [

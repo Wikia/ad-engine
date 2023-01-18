@@ -1,7 +1,7 @@
 import { LogoReplacementParams } from '@platforms/shared';
 import { TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { F2_ENV, F2Environment } from '../../../setup-f2';
+import { F2Environment, F2_ENV } from '../../../setup-f2';
 
 @Injectable({ autobind: false })
 export class LogoReplacementF2Handler implements TemplateStateHandler {

@@ -1,42 +1,60 @@
-import { gptSetup, wadRunner } from '@platforms/shared';
+import { GptSetup, WadRunner } from '@platforms/shared';
 import {
-	audigent,
-	bidders,
-	captify,
+	Audigent,
+	Bidders,
+	Captify,
 	communicationService,
-	confiant,
+	Confiant,
 	DiProcess,
-	durationMedia,
+	DurationMedia,
 	eventsRepository,
-	iasPublisherOptimization,
-	liveConnect,
-	liveRampPixel,
+	IasPublisherOptimization,
+	LiveConnect,
+	LiveRampPixel,
 	PartnerPipeline,
-	userIdentity,
+	UserIdentity,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class SportsAdsMode implements DiProcess {
-	constructor(private pipeline: PartnerPipeline) {}
+	constructor(
+		private pipeline: PartnerPipeline,
+		private audigent: Audigent,
+		private bidders: Bidders,
+		private captify: Captify,
+		private confiant: Confiant,
+		private durationMedia: DurationMedia,
+		private gptSetup: GptSetup,
+		private iasPublisherOptimization: IasPublisherOptimization,
+		private liveConnect: LiveConnect,
+		private liveRampPixel: LiveRampPixel,
+		private userIdentity: UserIdentity,
+		private wadRunner: WadRunner,
+	) {}
 
 	execute(): void {
 		this.pipeline
 			.add(
-				userIdentity,
-				liveRampPixel.setOptions({
-					dependencies: [userIdentity.initialized],
+				this.userIdentity,
+				this.liveRampPixel.setOptions({
+					dependencies: [this.userIdentity.initialized],
 				}),
-				liveConnect,
-				bidders,
-				captify,
-				wadRunner,
-				audigent,
-				iasPublisherOptimization,
-				confiant,
-				durationMedia,
-				gptSetup.setOptions({
-					dependencies: [userIdentity.initialized, iasPublisherOptimization.IASReady],
+				this.liveConnect,
+				this.bidders,
+				this.captify,
+				this.wadRunner,
+				this.audigent,
+				this.iasPublisherOptimization,
+				this.confiant,
+				this.durationMedia,
+				this.gptSetup.setOptions({
+					dependencies: [
+						this.bidders.initialized,
+						this.userIdentity.initialized,
+						this.wadRunner.initialized,
+						this.iasPublisherOptimization.IASReady,
+					],
 				}),
 			)
 			.execute()
