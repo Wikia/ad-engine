@@ -1,9 +1,8 @@
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 
-import { context, utils } from '@wikia/core';
+import { context, InstantConfigService, utils } from '@wikia/core';
 import { NewsAndRatingsBaseContextSetup } from '@wikia/platforms/news-and-ratings/shared';
-import { InstantConfigService } from '@wikia/ad-services';
 
 describe('News and Ratings base context setup', () => {
 	const sandbox = createSandbox();
