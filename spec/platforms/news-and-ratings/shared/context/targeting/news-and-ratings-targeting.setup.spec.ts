@@ -1,5 +1,5 @@
-import { NewsAndRatingsTargetingSetup } from '@wikia/platforms/news-and-ratings/shared/setup/context/targeting/news-and-ratings-targeting.setup';
 import { utils } from '@wikia/core';
+import { NewsAndRatingsTargetingSetup } from '@wikia/platforms/news-and-ratings/shared/setup/context/targeting/news-and-ratings-targeting.setup';
 
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';

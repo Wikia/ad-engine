@@ -26,7 +26,7 @@ export class JWPlayerInhibitor {
 
 	get(): Promise<void> {
 		if (!this.isEnabled()) {
-			this.initialized.resolve();
+			this.initialized.resolve(null);
 		}
 
 		return this.initialized;
@@ -57,7 +57,7 @@ export class JWPlayerInhibitor {
 			utils.logger(this.logGroup, 'video ad is not from UAP:JWP campaign');
 		}
 
-		this.initialized.resolve();
+		this.initialized.resolve(null);
 	}
 }
 

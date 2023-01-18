@@ -67,24 +67,10 @@ export const basicContext = {
 		},
 	},
 	services: {
-		anyclip: {
-			enabled: false,
-			pubname: 'fandomcom',
-			widgetname: '001w000001Y8ud2_19593',
-		},
-		confiant: {
-			enabled: false,
-			propertyId: 'd-aIf3ibf0cYxCLB1HTWfBQOFEA',
-		},
 		durationMedia: {
-			enabled: false,
 			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',
 		},
-		eyeota: {
-			enabled: false,
-		},
 		iasPublisherOptimization: {
-			pubId: '930616',
 			slots: [
 				'top_leaderboard',
 				'top_boxad',
@@ -102,10 +88,6 @@ export const basicContext = {
 			appName: 'fandomdesktop',
 			fallback:
 				'https://script.wikia.nocookie.net/fandom-ae-assets/icbm/prod/icbm_state_fandomdesktop.json',
-		},
-		nielsen: {
-			enabled: false,
-			appId: 'P26086A07-C7FB-4124-A679-8AC404198BA7',
 		},
 	},
 	slotGroups: {

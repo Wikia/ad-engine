@@ -1,11 +1,12 @@
+import { Audigent } from '@wikia/ad-services';
+import { context, externalLogger, InstantConfigService, utils } from '@wikia/core';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { context, externalLogger, utils } from '../../../src/core';
-import { audigent } from '@wikia/ad-services';
 
 describe('Audigent', () => {
 	const sandbox = createSandbox();
-	let loadScriptStub, externalLoggerLogStub;
+	let audigent: Audigent;
+	let loadScriptStub, externalLoggerLogStub, instantConfigStub;
 	function executeMockedCustomEvent(segments) {
 		const auSegEvent = new CustomEvent('auSegReady', { detail: segments });
 		document.dispatchEvent(auSegEvent);
@@ -13,12 +14,14 @@ describe('Audigent', () => {
 
 	beforeEach(() => {
 		loadScriptStub = sandbox.spy(utils.scriptLoader, 'loadScript');
-
 		externalLoggerLogStub = sandbox.stub(externalLogger, 'log').returns({} as any);
+		instantConfigStub = sandbox.createStubInstance(InstantConfigService);
+		instantConfigStub.get.withArgs('icAudigent').returns(true);
+		instantConfigStub.get.withArgs('icAudigentTrackingSampling').returns(0);
 
-		context.set('services.audigent.enabled', true);
-		context.set('services.audigent.tracking.sampling', 0);
-		context.set('services.audigent.newIntegrationEnabled', false);
+		audigent = new Audigent(instantConfigStub);
+
+		window['au_seg'] = [];
 
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);
@@ -27,17 +30,15 @@ describe('Audigent', () => {
 	});
 
 	afterEach(() => {
+		instantConfigStub.get.withArgs('icAudigent').returns(undefined);
+		instantConfigStub.get.withArgs('icAudigentSegmentLimit').returns(undefined);
+		instantConfigStub.get.withArgs('icAudigentTrackingSampling').returns(undefined);
+
 		sandbox.restore();
 		loadScriptStub.resetHistory();
 		audigent.resetLoadedState();
 
 		window['au_seg'] = undefined;
-
-		context.set('services.audigent.enabled', undefined);
-		context.set('services.audigent.tracking.sampling', undefined);
-		context.set('services.audigent.newIntegrationEnabled', undefined);
-		context.set('services.audigent.numberOfTries', undefined);
-		context.set('services.audigent.limit', undefined);
 
 		context.set('options.trackingOptIn', undefined);
 		context.set('options.optOutSale', undefined);
@@ -52,7 +53,7 @@ describe('Audigent', () => {
 	});
 
 	it('Audigent can be disabled', async () => {
-		context.set('services.audigent.enabled', false);
+		instantConfigStub.get.withArgs('icAudigent').returns(false);
 
 		await audigent.call();
 
@@ -84,13 +85,17 @@ describe('Audigent', () => {
 	});
 
 	it('Audigent requests for two assets when integration is enabled', async () => {
-		audigent.loadSegmentLibrary();
+		Audigent.loadSegmentLibrary();
 		await audigent.call();
 
 		expect(loadScriptStub.callCount).to.equal(2);
 	});
 
 	it('Audigent key-val is set to -1 when API is too slow', () => {
+		context.set('targeting.AU_SEG', '-1');
+
+		window['au_seg'] = undefined;
+
 		audigent.setup();
 
 		expect(context.get('targeting.AU_SEG')).to.equal('-1');
@@ -115,8 +120,9 @@ describe('Audigent', () => {
 		expect(context.get('targeting.AU_SEG')).to.equal(mockedSegments);
 	});
 
-	it('Audigent key-val length keeps the limit', () => {
-		context.set('services.audigent.segmentLimit', 6);
+	it('Audigent key-val length keeps the limit', async () => {
+		instantConfigStub.get.withArgs('icAudigentSegmentLimit').returns(6);
+
 		const mockedSegments = [
 			'AUG_SEG_TEST_1',
 			'AUG_SEG_TEST_2',
@@ -139,14 +145,16 @@ describe('Audigent', () => {
 		];
 		window['au_seg'] = { segments: mockedSegments };
 
+		await audigent.call();
 		audigent.setup();
 		executeMockedCustomEvent(mockedSegments);
 
 		expect(context.get('targeting.AU_SEG')).to.deep.equal(expectedSegements);
 	});
 
-	it('Audigent key-val length ignores limit if it is higher than returned segments', () => {
-		context.set('services.audigent.segmentLimit', 20);
+	it('Audigent key-val length ignores limit if it is higher than returned segments', async () => {
+		instantConfigStub.get.withArgs('icAudigentSegmentLimit').returns(20);
+
 		const mockedSegments = [
 			'AUG_SEG_TEST_1',
 			'AUG_SEG_TEST_2',
@@ -161,6 +169,7 @@ describe('Audigent', () => {
 		];
 		window['au_seg'] = { segments: mockedSegments };
 
+		await audigent.call();
 		audigent.setup();
 		executeMockedCustomEvent(mockedSegments);
 
@@ -173,21 +182,23 @@ describe('Audigent', () => {
 		expect(externalLoggerLogStub.called).to.equal(false);
 	});
 
-	it('Audigent does not send data to Kibana when sampled set to 0', () => {
-		context.set('services.audigent.tracking.sampling', 0);
+	it('Audigent does not send data to Kibana when sampled set to 0', async () => {
+		instantConfigStub.get.withArgs('icAudigentTrackingSampling').returns(0);
 
 		const mockedSegments = ['AUG_SEG_TEST_1'];
 		window['au_seg'] = { segments: mockedSegments };
+		await audigent.call();
 		audigent.setup();
 
 		expect(externalLoggerLogStub.called).to.equal(false);
 	});
 
-	it('Audigent sends data to Kibana when sampled correctly', () => {
-		context.set('services.audigent.tracking.sampling', 100);
+	it('Audigent sends data to Kibana when sampled correctly', async () => {
+		instantConfigStub.get.withArgs('icAudigentTrackingSampling').returns(100);
 
 		const mockedSegments = ['AUG_SEG_TEST_1'];
 		window['au_seg'] = { segments: mockedSegments };
+		await audigent.call();
 		audigent.setup();
 		executeMockedCustomEvent(mockedSegments);
 

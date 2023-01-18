@@ -1,11 +1,11 @@
-import { expect } from 'chai';
 import { context } from '@wikia/core';
 import {
 	FandomContext,
-	Site,
 	Page,
+	Site,
 } from '@wikia/platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
 import { CommonTags } from '@wikia/platforms/shared/context/targeting/targeting-strategies/providers/common-tags';
+import { expect } from 'chai';
 
 describe('CommonTags', () => {
 	beforeEach(() => {

@@ -1,6 +1,6 @@
+import { AdSlot, communicationService, eventsRepository } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { DataWarehouseTracker } from './data-warehouse';
-import { AdSlot, communicationService, eventsRepository } from '@wikia/ad-engine';
 
 /**
  * Wrapper for ad size tracking

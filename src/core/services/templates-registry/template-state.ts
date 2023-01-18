@@ -10,7 +10,7 @@ export class TemplateState<T extends string> {
 		const stateTransition = this.useTransition(templateTransition, transitionCompleted);
 
 		await Promise.all(this.handlers.map(async (handler) => handler.onEnter(stateTransition)));
-		transitionCompleted.resolve();
+		transitionCompleted.resolve(null);
 	}
 
 	async leave(): Promise<void> {

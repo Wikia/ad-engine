@@ -1,13 +1,13 @@
 import { Injectable } from '@wikia/dependency-injection';
 
-import { context, ProcessPipeline } from '@wikia/ad-engine';
 import { bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
+import { context, ProcessPipeline } from '@wikia/ad-engine';
 
+import { NewsAndRatingsAdsMode, NewsAndRatingsBaseContextSetup } from '../shared';
 import { basicContext } from './ad-context';
 import { MetacriticNeutronSlotsContextSetup } from './setup/context/slots/metacritic-neutron-slots-context.setup';
-import { MetacriticNeutronDynamicSlotsSetup } from './setup/dynamic-slots/metacritic-neutron-dynamic-slots.setup';
 import { MetacriticNeutronTargetingSetup } from './setup/context/targeting/metacritic-neutron-targeting.setup';
-import { NewsAndRatingsAdsMode, NewsAndRatingsBaseContextSetup } from '../shared';
+import { MetacriticNeutronDynamicSlotsSetup } from './setup/dynamic-slots/metacritic-neutron-dynamic-slots.setup';
 
 @Injectable()
 export class MetacriticNeutronPlatform {

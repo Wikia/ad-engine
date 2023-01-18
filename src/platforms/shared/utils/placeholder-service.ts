@@ -1,4 +1,5 @@
 import {
+	AdSlotEventPayload,
 	communicationService,
 	context,
 	eventsRepository,
@@ -27,7 +28,7 @@ export class PlaceholderService {
 		communicationService.action$
 			.pipe(
 				ofType(communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
-				filter((action: object) => this.placeholderHelper.isLoadingOrCollapsed(action)),
+				filter((action: AdSlotEventPayload) => this.placeholderHelper.isLoadingOrCollapsed(action)),
 			)
 			.subscribe((action) => {
 				const adSlot = slotService.get(action.adSlotName);

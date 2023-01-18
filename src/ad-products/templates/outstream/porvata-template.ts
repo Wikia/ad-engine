@@ -114,14 +114,14 @@ export class PorvataTemplate {
 	}
 
 	handleSlotStatus(video: PorvataPlayer): void {
-		let resolveStatus: () => void = null;
+		let resolveStatus: (unknown) => void = null;
 		const statusPromise = new Promise((resolve) => {
 			resolveStatus = resolve;
 		});
 
 		video.addEventListener('wikiaAdsManagerLoaded', () => {
 			this.adSlot.success();
-			resolveStatus();
+			resolveStatus(null);
 		});
 
 		video.addEventListener('wikiaFirstTimeInViewport', () => {
@@ -135,7 +135,7 @@ export class PorvataTemplate {
 
 		video.addEventListener('wikiaEmptyAd', () => {
 			this.adSlot.collapse();
-			resolveStatus();
+			resolveStatus(null);
 		});
 	}
 

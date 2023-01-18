@@ -1,7 +1,7 @@
 import { context, Dictionary, pbjsFactory, utils } from '@ad-engine/core';
+import { PrebidNativeConfig } from '../native';
 import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
-import { PrebidNativeConfig } from '../native';
 
 const price = utils.queryString.get('wikia_adapter');
 const limit = parseInt(utils.queryString.get('wikia_adapter_limit'), 10) || 99;

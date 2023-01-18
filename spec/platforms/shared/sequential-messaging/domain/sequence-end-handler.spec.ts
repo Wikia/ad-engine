@@ -1,6 +1,6 @@
+import { SequenceEndHandler } from '@wikia/platforms/shared/sequential-messaging/domain/sequence-end-handler';
 import { assert } from 'sinon';
 import { makeUserStateStoreSpy } from '../test_doubles/state-store.spy';
-import { SequenceEndHandler } from '../../../../../src/platforms/shared/sequential-messaging/domain/sequence-end-handler';
 
 describe('Sequence End Handler', () => {
 	it('Handle sequence end', () => {
