@@ -1,7 +1,7 @@
 interface MediaWikiAds {
 	adEngineVersion: string;
 	adContext: any;
-	pageTargeting: any;
+	adTargeting: any;
 	consentQueue: any;
 	context: MediaWikiAdsContext;
 	debug: (groups: string | null) => void;

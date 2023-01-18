@@ -94,7 +94,7 @@ export class TargetingService implements TargetingServiceInterface {
 
 	constructor() {
 		if (debug.isDebugMode()) {
-			window.ads.pageTargeting = this.adTargeting;
+			window.ads.adTargeting = this.adTargeting;
 		}
 	}
 
