@@ -15,7 +15,7 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 
 		context.set('custom.device', isDesktop ? '' : 'm');
 		context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441);
-		context.set('custom.pagePath', this.getPagePathFromUtagData());
+		context.set('custom.pagePath', this.getPagePath());
 		context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src'));
 
 		// identity
@@ -49,18 +49,38 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		);
 	}
 
-	private getPagePathFromUtagData(): string {
-		const utagData = this.getUtagData();
+	private getPagePath(): string {
+		let pagePath,
+			dataWithPagePath = this.getDataSettingsFromMetaTag();
 
-		if (!utagData) {
+		if (dataWithPagePath?.unit_name) {
+			pagePath = dataWithPagePath?.unit_name?.split('/').pop();
+		} else {
+			dataWithPagePath = this.getUtagData();
+			pagePath = dataWithPagePath?.siteSection;
+		}
+
+		if (!pagePath) {
 			return '';
 		}
 
-		if (!utagData.siteSection) {
-			return '';
+		return '/' + pagePath;
+	}
+
+	getDataSettingsFromMetaTag() {
+		const adSettingsJson = document.getElementById('ad-settings')?.getAttribute('data-settings');
+		utils.logger('setup', 'Ad settings: ', adSettingsJson);
+
+		if (!adSettingsJson) {
+			return null;
 		}
 
-		return '/' + utagData.siteSection;
+		try {
+			return JSON.parse(adSettingsJson);
+		} catch (e) {
+			utils.logger('setup', 'Could not parse JSON');
+			return null;
+		}
 	}
 
 	getUtagData() {

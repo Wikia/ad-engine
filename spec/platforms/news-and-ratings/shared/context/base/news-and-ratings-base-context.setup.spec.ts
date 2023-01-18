@@ -40,8 +40,26 @@ describe('News and Ratings base context setup', () => {
 
 		it('sets proper page path based - happy path', () => {
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
-			const getDataSettingsFromMetaTagStub = sandbox.stub(baseContextSetup, 'getUtagData');
-			getDataSettingsFromMetaTagStub.returns({ siteSection: 'home' });
+			const getDataSettingsFromMetaTagStub = sandbox.stub(
+				baseContextSetup,
+				'getDataSettingsFromMetaTag',
+			);
+			getDataSettingsFromMetaTagStub.returns({ unit_name: '/123/aw-test/home' });
+
+			baseContextSetup.execute();
+
+			expect(context.get('custom.pagePath')).to.eq('/home');
+		});
+
+		it('sets proper page path based - incorrect ad-settings meta tag', () => {
+			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
+			const getDataSettingsFromMetaTagStub = sandbox.stub(
+				baseContextSetup,
+				'getDataSettingsFromMetaTag',
+			);
+			getDataSettingsFromMetaTagStub.returns(null);
+			const getUtagDataStub = sandbox.stub(baseContextSetup, 'getUtagData');
+			getUtagDataStub.returns({ siteSection: 'home' });
 
 			baseContextSetup.execute();
 
@@ -50,18 +68,43 @@ describe('News and Ratings base context setup', () => {
 
 		it('sets proper page path based - no unit_name in ad-settings meta tag', () => {
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
-			const getDataSettingsFromMetaTagStub = sandbox.stub(baseContextSetup, 'getUtagData');
-			getDataSettingsFromMetaTagStub.returns(`{}`);
+			const getDataSettingsFromMetaTagStub = sandbox.stub(
+				baseContextSetup,
+				'getDataSettingsFromMetaTag',
+			);
+			getDataSettingsFromMetaTagStub.returns({ foo: 'bar' });
+			const getUtagDataStub = sandbox.stub(baseContextSetup, 'getUtagData');
+			getUtagDataStub.returns({ siteSection: 'home' });
+
+			baseContextSetup.execute();
+
+			expect(context.get('custom.pagePath')).to.eq('/home');
+		});
+
+		it('sets proper page path based - incorrect ad-settings meta tag and no data from utag data', () => {
+			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
+			const getDataSettingsFromMetaTagStub = sandbox.stub(
+				baseContextSetup,
+				'getDataSettingsFromMetaTag',
+			);
+			getDataSettingsFromMetaTagStub.returns(null);
+			const getUtagDataStub = sandbox.stub(baseContextSetup, 'getUtagData');
+			getUtagDataStub.returns({});
 
 			baseContextSetup.execute();
 
 			expect(context.get('custom.pagePath')).to.eq('');
 		});
 
-		it('sets proper page path based - no ad-settings meta tag', () => {
+		it('sets proper page path based - incorrect ad-settings meta tag and no utag', () => {
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
-			const getDataSettingsFromMetaTagStub = sandbox.stub(baseContextSetup, 'getUtagData');
-			getDataSettingsFromMetaTagStub.returns('');
+			const getDataSettingsFromMetaTagStub = sandbox.stub(
+				baseContextSetup,
+				'getDataSettingsFromMetaTag',
+			);
+			getDataSettingsFromMetaTagStub.returns(null);
+			const getUtagDataStub = sandbox.stub(baseContextSetup, 'getUtagData');
+			getUtagDataStub.returns(undefined);
 
 			baseContextSetup.execute();
 
