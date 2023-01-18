@@ -11,6 +11,7 @@ import {
 	NewsAndRatingsDynamicSlotsSetup,
 	NewsAndRatingsTargetingSetup,
 } from '../shared';
+import { GamespotTemplatesSetup } from './templates/gamespot-templates.setup';
 
 @Injectable()
 export class GameSpotPlatform {
@@ -29,6 +30,7 @@ export class GameSpotPlatform {
 			NewsAndRatingsDynamicSlotsSetup,
 			GamespotPrebidConfigSetup,
 			BiddersStateSetup,
+			GamespotTemplatesSetup,
 			NewsAndRatingsAdsMode,
 		);
 

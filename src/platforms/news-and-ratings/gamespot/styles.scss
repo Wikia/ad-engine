@@ -1,0 +1,46 @@
+@import '../../shared/styles/index';
+@import '../../shared/styles/mixin';
+@import '../../shared/styles/uap-porvata/porvata';
+
+@mixin uap-styles() {
+	&.has-uap {
+		.header {
+			z-index: 203;
+		}
+
+		#cdm-zone-01 {
+			@include bfaa-slot();
+			@include sticky-tlb-slot();
+
+			top: 51px;
+			margin: 0;
+
+			.video-player,
+			.player-overlay {
+				top: 0;
+			}
+		}
+
+		#cdm-zone-04 {
+			@include bfab-slot();
+		}
+
+		#cdm-zone-01,
+		#cdm-zone-04 {
+			@include uap-porvata();
+
+			@include uap-advertisement-label();
+			@include uap-button-close();
+
+			&.is-dark {
+				@include uap-dark-theme();
+			}
+		}
+	}
+
+	@include expanded-slot();
+}
+
+body {
+	@include uap-styles();
+}
