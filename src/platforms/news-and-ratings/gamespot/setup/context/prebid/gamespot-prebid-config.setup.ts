@@ -9,8 +9,9 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 
 import { getAppnexusContext } from '../../../bidders/appnexus';
-import { getWikiaContext } from '../../../bidders/wikia';
 import { getPubmaticContext } from '../../../bidders/pubmatic';
+import { getRubiconDisplayContext } from '../../../bidders/rubicon-display';
+import { getWikiaContext } from '../../../bidders/wikia';
 
 @Injectable()
 export class GamespotPrebidConfigSetup implements DiProcess {
@@ -23,6 +24,7 @@ export class GamespotPrebidConfigSetup implements DiProcess {
 
 		context.set('bidders.prebid.appnexus', getAppnexusContext(isDesktop));
 		context.set('bidders.prebid.pubmatic', getPubmaticContext(isDesktop));
+		context.set('bidders.prebid.rubicon_display', getRubiconDisplayContext(isDesktop));
 		context.set('bidders.prebid.wikia', getWikiaContext());
 
 		this.registerListeners();
