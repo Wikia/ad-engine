@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 
-import { context } from '@wikia/ad-engine';
 import { JWPlayerHelperSkippingSecondVideo } from '@wikia/ad-products/video/jwplayer/helpers';
+import { context } from '@wikia/core';
 
 type shouldPrerollAppear = boolean;
 type shouldMidrollAppear = boolean;

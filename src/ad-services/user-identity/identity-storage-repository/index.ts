@@ -1,6 +1,6 @@
-import { IdentityRepositoryInterface } from '../identity-repositories';
 import { utils } from '@ad-engine/core';
 import { UserIdentity } from '../';
+import { IdentityRepositoryInterface } from '../identity-repositories';
 import { identityStorageService } from './identity-storage-service';
 
 class IdentityStorageRepository implements IdentityRepositoryInterface {

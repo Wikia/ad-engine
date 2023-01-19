@@ -1,6 +1,6 @@
 import { Roundel } from '@wikia/ad-bidders/prebid/adapters/roundel';
-import { expect } from 'chai';
 import { context } from '@wikia/core';
+import { expect } from 'chai';
 
 describe('Roundel bidder adapter', () => {
 	it('can be enabled', () => {

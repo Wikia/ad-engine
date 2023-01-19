@@ -1,6 +1,6 @@
 import { AdSlot } from '../../models';
-import { Provider } from '../provider';
 import { logger } from '../../utils';
+import { Provider } from '../provider';
 
 const logGroup = 'nativo';
 

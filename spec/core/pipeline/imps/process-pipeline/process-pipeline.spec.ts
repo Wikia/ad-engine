@@ -2,12 +2,11 @@ import { conditional, DiProcess, parallel, ProcessPipeline, sequential } from '@
 import { wait } from '@wikia/core/utils';
 import { Container } from '@wikia/dependency-injection';
 import { expect } from 'chai';
-import { createSandbox, SinonFakeTimers, SinonSpy } from 'sinon';
+import { createSandbox, SinonSpy } from 'sinon';
 
 describe('ProcessPipeline', () => {
 	const sandbox = createSandbox();
 	let spy: SinonSpy;
-	let clock: SinonFakeTimers;
 
 	class ClassProcess implements DiProcess {
 		execute(): void {
@@ -17,7 +16,6 @@ describe('ProcessPipeline', () => {
 
 	beforeEach(() => {
 		spy = sandbox.spy();
-		clock = sandbox.useFakeTimers();
 	});
 
 	afterEach(() => {
@@ -34,16 +32,16 @@ describe('ProcessPipeline', () => {
 					ClassProcess,
 					() => spy(1),
 					async () => {
-						await wait(100);
+						await wait(10);
 						spy(2);
 					},
 					parallel(
 						async () => {
-							await wait(200);
+							await wait(20);
 							spy(4);
 						},
 						async () => {
-							await wait(100);
+							await wait(10);
 							spy(3);
 						},
 					),
@@ -54,13 +52,13 @@ describe('ProcessPipeline', () => {
 			.execute();
 
 		expect(getSpyValues()).to.deep.equal([0]);
-		await progress();
+		await progress(0);
 		expect(getSpyValues()).to.deep.equal([0, 1]);
-		await progress(100);
+		await progress(10);
 		expect(getSpyValues()).to.deep.equal([0, 1, 2]);
-		await progress(100);
+		await progress(10);
 		expect(getSpyValues()).to.deep.equal([0, 1, 2, 3]);
-		await progress(100);
+		await progress(10);
 		expect(getSpyValues()).to.deep.equal([0, 1, 2, 3, 4, 5, 6]);
 		await promise;
 		expect(getSpyValues()).to.deep.equal([0, 1, 2, 3, 4, 5, 6]);
@@ -70,10 +68,7 @@ describe('ProcessPipeline', () => {
 		return spy.getCalls().map((call) => call.args[0]);
 	}
 
-	async function progress(ms?: number): Promise<void> {
-		if (ms) {
-			clock.tick(ms);
-		}
-		await new Promise((resolve) => setImmediate(resolve));
+	async function progress(ms: number): Promise<void> {
+		await new Promise((resolve) => setTimeout(resolve, ms));
 	}
 });

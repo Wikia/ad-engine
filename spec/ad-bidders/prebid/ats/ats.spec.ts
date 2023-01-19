@@ -1,10 +1,11 @@
-import { ats } from '@wikia/ad-bidders';
+import { Ats } from '@wikia/ad-bidders';
 import { context, utils } from '@wikia/core';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 
 describe('ATS', () => {
 	const sandbox = createSandbox();
+	const ats = new Ats();
 	let loadScriptStub;
 
 	beforeEach(() => {

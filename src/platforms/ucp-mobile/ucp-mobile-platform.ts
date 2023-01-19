@@ -2,14 +2,14 @@ import {
 	AdEngineRunnerSetup,
 	bootstrapAndGetConsent,
 	InstantConfigSetup,
-	NoAdsExperimentSetup,
 	LabradorSetup,
+	LoadTimesSetup,
+	NoAdsExperimentSetup,
+	PlatformContextSetup,
+	shouldUseAdLayouts,
 	TrackingParametersSetup,
 	TrackingSetup,
 	UcpTargetingSetup,
-	PlatformContextSetup,
-	shouldUseAdLayouts,
-	LoadTimesSetup,
 } from '@platforms/shared';
 import {
 	communicationService,
@@ -23,8 +23,8 @@ import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
 import { UcpMobileBaseContextSetup } from './setup/context/base/ucp-mobile-base-context.setup';
 import { UcpMobileSlotsContextSetup } from './setup/context/slots/ucp-mobile-slots-context.setup';
-import { UcpMobileIocSetup } from './ucp-mobile-ioc-setup';
 import { UcpMobileAdLayoutSetup } from './ucp-mobile-ad-layout-setup';
+import { UcpMobileIocSetup } from './ucp-mobile-ioc-setup';
 import { UcpMobileLegacySetup } from './ucp-mobile-legacy-setup';
 
 @Injectable()

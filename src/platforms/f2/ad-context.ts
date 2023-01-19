@@ -43,7 +43,6 @@ export const basicContext = {
 	},
 	services: {
 		iasPublisherOptimization: {
-			pubId: '930616',
 			slots: ['top_leaderboard', 'top_boxad', 'incontent_boxad', 'bottom_leaderboard', 'featured'],
 		},
 		instantConfig: {
@@ -55,7 +54,6 @@ export const basicContext = {
 			partnerCode: 'wikiaprebidheader490634422386',
 		},
 		nielsen: {
-			appId: 'P26086A07-C7FB-4124-A679-8AC404198BA7',
 			customSection: 'news_and_stories',
 		},
 	},

@@ -1,9 +1,9 @@
-import { UserSequentialMessageStateStoreInterface } from './interfaces/user-sequential-message-state-store.interface';
 import {
 	SequenceState,
 	UserSequentialMessageState,
 } from './data-structures/user-sequential-message-state';
 import { TargetingManagerInterface } from './interfaces/targeting-manager.interface';
+import { UserSequentialMessageStateStoreInterface } from './interfaces/user-sequential-message-state-store.interface';
 
 export class SequenceContinuationHandler {
 	constructor(

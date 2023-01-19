@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { spy } from 'sinon';
 
-import { Context, context, Nativo, UapLoadStatus } from '../../../../src';
+import { Context, context, Nativo, UapLoadStatus } from '@wikia/index';
 
 describe('Nativo', () => {
 	describe('module', () => {

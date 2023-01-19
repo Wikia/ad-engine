@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 
-import { context, utils } from '@wikia/core';
 import { btRec } from '@wikia/ad-services';
+import { context, utils } from '@wikia/core';
 
 describe('BlockThrough recovery', () => {
 	const sandbox = createSandbox();

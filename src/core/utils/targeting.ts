@@ -1,7 +1,7 @@
 import { Dictionary } from '../models';
+import { CookieStorageAdapter } from '../services/';
 import { context } from '../services/context-service';
 import { logger } from './logger';
-import { CookieStorageAdapter } from '../services/';
 
 /*
  *  ToDo: Development improvement refactor
@@ -100,7 +100,6 @@ class Targeting {
 			}
 
 			if (Array.isArray(acceptedValues)) {
-				// @ts-ignore we check if it's an array so using .some() is OK here
 				if (!bundle[key].some((find) => acceptedValues.includes(find))) {
 					return true;
 				}

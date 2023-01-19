@@ -2,7 +2,7 @@ import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engin
 
 import { AdSlot } from '../../models';
 import { Context, slotService } from '../../services';
-import { scriptLoader, logger } from '../../utils';
+import { logger, scriptLoader } from '../../utils';
 
 const logGroup = 'nativo';
 const NATIVO_LIBRARY_URL = '//s.ntv.io/serve/load.js';

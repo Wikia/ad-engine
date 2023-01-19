@@ -1,6 +1,6 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { createIcon, icons } from '../icons';
 import { onVideoOverlayClick } from '../listeners/player-overlay-click-listener';
-import { communicationService, eventsRepository } from '@ad-engine/communication';
 
 // @TODO Clean up this P1 ADEN-10294 hack
 // It forces Safari to repaint the thumbnail

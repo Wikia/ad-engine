@@ -1,6 +1,6 @@
-import { RxJsOperator } from '../../rxjs';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { RxJsOperator } from '../../rxjs';
 
 export interface TemplateAction {
 	templateName: string;

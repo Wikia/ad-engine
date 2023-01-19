@@ -1,9 +1,10 @@
-import { identityHub } from '@wikia/ad-bidders';
+import { IdentityHub } from '@wikia/ad-bidders';
 import { context, utils } from '@wikia/core';
 import { assert, createSandbox, SinonSandbox } from 'sinon';
 
 describe('Pubmatic IdentityHub', () => {
 	const sandbox: SinonSandbox = createSandbox();
+	const identityHub = new IdentityHub();
 	let loadScriptSpy;
 	let contextStub;
 

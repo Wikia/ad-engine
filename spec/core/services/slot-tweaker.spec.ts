@@ -1,5 +1,5 @@
+import { SlotTweaker } from '@wikia/core/services/slot-tweaker';
 import { expect } from 'chai';
-import { SlotTweaker } from '../../../src/core/services/slot-tweaker';
 import { adSlotFake } from '../ad-slot-fake';
 
 let slotTweaker: SlotTweaker;

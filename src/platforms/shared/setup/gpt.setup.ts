@@ -2,7 +2,7 @@ import { AdEngine, AdSlot, BaseServiceSetup, communicationService, utils } from 
 
 let adEngineInstance: AdEngine;
 
-class GptSetup extends BaseServiceSetup {
+export class GptSetup extends BaseServiceSetup {
 	call() {
 		utils.logger('GPT Setup', 'Called');
 		const GPT_LIBRARY_URL = '//www.googletagservices.com/tag/js/gpt.js';
@@ -18,5 +18,3 @@ class GptSetup extends BaseServiceSetup {
 		});
 	}
 }
-
-export const gptSetup = new GptSetup();

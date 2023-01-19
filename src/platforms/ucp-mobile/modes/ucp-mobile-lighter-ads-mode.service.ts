@@ -1,59 +1,68 @@
-import { Injectable } from '@wikia/dependency-injection';
+import { GptSetup, PlayerSetup } from '@platforms/shared';
 import {
-	ats,
-	audigent,
-	bidders,
-	captify,
+	Ats,
+	Audigent,
+	Captify,
 	communicationService,
-	confiant,
+	Confiant,
 	context,
 	DiProcess,
-	durationMedia,
 	eventsRepository,
-	facebookPixel,
-	iasPublisherOptimization,
-	identityHub,
+	IasPublisherOptimization,
+	IdentityHub,
 	jwPlayerInhibitor,
-	liveConnect,
-	liveRampPixel,
-	nielsen,
+	LiveConnect,
+	LiveRampPixel,
+	Nielsen,
 	PartnerPipeline,
-	stroer,
-	userIdentity,
+	Stroer,
+	UserIdentity,
 } from '@wikia/ad-engine';
-import { gptSetup, playerSetup } from '@platforms/shared';
+import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpMobileLighterAds implements DiProcess {
-	constructor(private pipeline: PartnerPipeline) {}
+	constructor(
+		private pipeline: PartnerPipeline,
+		private ats: Ats,
+		private audigent: Audigent,
+		private captify: Captify,
+		private confiant: Confiant,
+		private gptSetup: GptSetup,
+		private iasPublisherOptimization: IasPublisherOptimization,
+		private identityHub: IdentityHub,
+		private liveConnect: LiveConnect,
+		private liveRampPixel: LiveRampPixel,
+		private nielsen: Nielsen,
+		private playerSetup: PlayerSetup,
+		private stroer: Stroer,
+		private userIdentity: UserIdentity,
+	) {}
 
 	execute(): void {
 		this.pipeline
 			.add(
-				userIdentity,
-				liveRampPixel.setOptions({ dependencies: [userIdentity.initialized] }),
-				ats,
-				facebookPixel,
-				audigent,
-				iasPublisherOptimization,
-				captify,
-				confiant,
-				durationMedia,
-				liveConnect,
-				stroer,
-				bidders,
-				nielsen,
-				identityHub,
-				playerSetup.setOptions({
-					dependencies: [bidders.initialized],
+				this.userIdentity,
+				this.liveRampPixel.setOptions({ dependencies: [this.userIdentity.initialized] }),
+				this.ats,
+				this.audigent,
+				this.iasPublisherOptimization,
+				this.captify,
+				this.confiant,
+				this.liveConnect,
+				this.stroer,
+				this.nielsen,
+				this.identityHub,
+				this.playerSetup.setOptions({
+					dependencies: [],
 					timeout: context.get('options.maxDelayTimeout'),
 				}),
-				gptSetup.setOptions({
+				this.gptSetup.setOptions({
 					dependencies: [
-						userIdentity.initialized,
-						playerSetup.initialized,
+						this.userIdentity.initialized,
+						this.playerSetup.initialized,
 						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
-						iasPublisherOptimization.IASReady,
+						this.iasPublisherOptimization.IASReady,
 					],
 				}),
 			)
