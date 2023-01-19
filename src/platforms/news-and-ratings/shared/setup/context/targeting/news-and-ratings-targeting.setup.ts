@@ -155,8 +155,8 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 		const dailySessionData = this.isJsonString(bbCookies[1]) ? JSON.parse(bbCookies[1]) : {};
 
 		const result: CookieBasedTargetingParams = {
-			ttag: dailySessionData.ttag || existingCookies.ttag,
-			ftag: dailySessionData.ftag || existingCookies.ftag,
+			ttag: dailySessionData.ttag || existingCookies.ttag || '',
+			ftag: dailySessionData.ftag || existingCookies.ftag || '',
 			session: browserSessionData.session || existingCookies.session,
 			subses: browserSessionData.subses || existingCookies.subses,
 			pv: dailySessionData.pv || existingCookies.pv || '0',
