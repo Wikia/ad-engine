@@ -87,13 +87,31 @@ export class IndexExchange extends PrebidAdapter {
 					gpid: this.getGPIDValue(code),
 				},
 			},
-			bids: sizes.map((size) => ({
-				bidder: this.bidderName,
-				params: {
-					siteId,
-					size,
-				},
-			})),
+			bids: this.getBids(sizes, siteId),
 		};
+	}
+
+	private getBids(sizes, siteId): PrebidBid[] {
+		if (Array.isArray(siteId) && siteId.length > 0) {
+			return this.getBidsForMultipleSiteIds(sizes, siteId);
+		}
+
+		return sizes.map((size) => ({
+			bidder: this.bidderName,
+			params: {
+				siteId,
+				size,
+			},
+		}));
+	}
+
+	private getBidsForMultipleSiteIds(sizes, siteId): PrebidBid[] {
+		return siteId.map((id, idx) => ({
+			bidder: this.bidderName,
+			params: {
+				size: sizes[idx],
+				siteId: id,
+			},
+		}));
 	}
 }
