@@ -478,10 +478,10 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 					pos: 'top',
 				},
 			},
-			'video-rectangle': {
-				defaultSizes: [[640, 480]],
-				lazyLoad: false,
-				incremental: false,
+			video: {
+				targeting: {
+					rv: 1,
+				},
 				isVideo: true,
 			},
 		};

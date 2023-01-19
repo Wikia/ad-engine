@@ -311,6 +311,12 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					pos: 'nav',
 				},
 			},
+			video: {
+				targeting: {
+					rv: 1,
+				},
+				isVideo: true,
+			},
 		};
 
 		context.set('slots', slots);
