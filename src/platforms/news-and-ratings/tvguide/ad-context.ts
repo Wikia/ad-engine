@@ -19,4 +19,7 @@ export const basicContext = {
 	},
 	slots: {},
 	src: ['tvguide'],
+	vast: {
+		adUnitId: '/{custom.dfpId}/{custom.region}-{custom.property}/video',
+	},
 };

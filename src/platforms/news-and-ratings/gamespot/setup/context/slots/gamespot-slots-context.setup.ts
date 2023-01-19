@@ -505,8 +505,10 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					pos: 'top',
 				},
 			},
-			'video-rectangle': {
-				videoSizes: [[640, 480]],
+			video: {
+				targeting: {
+					rv: 1,
+				},
 				isVideo: true,
 			},
 		};

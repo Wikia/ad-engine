@@ -42,4 +42,7 @@ export const basicContext = {
 		aamid: '',
 	},
 	src: ['giantbomb'],
+	vast: {
+		adUnitId: '/{custom.dfpId}/{custom.region}-{custom.property}/video',
+	},
 };
