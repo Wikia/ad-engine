@@ -4,6 +4,7 @@ import {
 	CookieStorageAdapter,
 	DiProcess,
 	eventsRepository,
+	utils,
 } from '@wikia/ad-engine';
 import isMatch from 'lodash/isMatch.js';
 import { CookieBasedTargetingParams, TargetingParams } from './interfaces/targeting-params';
@@ -15,6 +16,7 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 		const targeting = {
 			...this.getPageLevelTargeting(),
 			...this.getCookieBasedTargeting(customConfig),
+			...this.getForcedCampaignsTargeting(),
 		};
 
 		this.setSlotLevelTargeting(targeting, customConfig);
@@ -202,6 +204,22 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 		}
 
 		return result;
+	}
+
+	getForcedCampaignsTargeting() {
+		if (utils.queryString.get('cid')) {
+			return {
+				cid: utils.queryString.get('cid'),
+			};
+		}
+
+		if (utils.queryString.get('adTargeting_campaign')) {
+			return {
+				campaign: utils.queryString.get('adTargeting_campaign'),
+			};
+		}
+
+		return {};
 	}
 
 	// Transfered from: https://github.com/Wikia/player1-ads-adlibrary/blob/0df200c535adf3599c7de9e99b719953af2784e1/configs/global-config.js

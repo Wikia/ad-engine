@@ -14,7 +14,7 @@ import { getRubiconDisplayContext } from '../../../bidders/rubicon-display';
 import { getWikiaContext } from '../../../bidders/wikia';
 
 @Injectable()
-export class GiantbombPrebidConfigSetup implements DiProcess {
+export class TvGuidePrebidConfigSetup implements DiProcess {
 	constructor(private bidders: Bidders) {}
 
 	execute(): void {
