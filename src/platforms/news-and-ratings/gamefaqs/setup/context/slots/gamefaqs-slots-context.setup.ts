@@ -297,18 +297,10 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					pos: 'inc',
 				},
 			},
-			'video-rectangle': {
-				code: 'video-rectangle',
-				defaultSizes: [[640, 480]],
-				lazyLoad: false,
-				incremental: false,
-				isVideo: true,
-			},
-			'video-rectangle2': {
-				code: 'video-rectangle2',
-				defaultSizes: [[640, 480]],
-				lazyLoad: false,
-				incremental: false,
+			video: {
+				targeting: {
+					rv: 1,
+				},
 				isVideo: true,
 			},
 		};

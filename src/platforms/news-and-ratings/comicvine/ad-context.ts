@@ -37,4 +37,7 @@ export const basicContext = {
 	},
 	slots: {},
 	src: ['comicvine'],
+	vast: {
+		adUnitId: '/{custom.dfpId}/{custom.region}-{custom.property}/video',
+	},
 };
