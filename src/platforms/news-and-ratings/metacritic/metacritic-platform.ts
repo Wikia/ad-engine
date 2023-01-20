@@ -3,7 +3,11 @@ import { Injectable } from '@wikia/dependency-injection';
 import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
 import { context, ProcessPipeline } from '@wikia/ad-engine';
 
-import { NewsAndRatingsAdsMode, NewsAndRatingsBaseContextSetup } from '../shared';
+import {
+	NewsAndRatingsAdsMode,
+	NewsAndRatingsBaseContextSetup,
+	NewsAndRatingsWadSetup,
+} from '../shared';
 import { basicContext } from './ad-context';
 import { MetacriticPrebidConfigSetup } from './setup/context/prebid/metacritic-prebid-config.setup';
 import { MetacriticSlotsContextSetup } from './setup/context/slots/metacritic-slots-context.setup';
@@ -21,6 +25,7 @@ export class MetacriticPlatform {
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
 			NewsAndRatingsBaseContextSetup,
+			NewsAndRatingsWadSetup,
 			MetacriticTargetingSetup,
 			MetacriticDynamicSlotsSetup,
 			MetacriticSlotsContextSetup,

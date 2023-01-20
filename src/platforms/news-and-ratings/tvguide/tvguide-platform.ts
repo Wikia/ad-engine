@@ -2,7 +2,11 @@ import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@
 import { context, ProcessPipeline } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
-import { NewsAndRatingsAdsMode, NewsAndRatingsBaseContextSetup } from '../shared';
+import {
+	NewsAndRatingsAdsMode,
+	NewsAndRatingsBaseContextSetup,
+	NewsAndRatingsWadSetup,
+} from '../shared';
 import { basicContext } from './ad-context';
 import { TvGuidePrebidConfigSetup } from './setup/context/prebid/tvguide-prebid-config-setup.service';
 import { TvGuideSlotsContextSetup } from './setup/context/slots/tvguide-slots-context.setup';
@@ -20,6 +24,7 @@ export class TvGuidePlatform {
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
 			NewsAndRatingsBaseContextSetup,
+			NewsAndRatingsWadSetup,
 			TvGuideTargetingSetup,
 			TvGuideDynamicSlotsSetup,
 			TvGuideSlotsContextSetup,
