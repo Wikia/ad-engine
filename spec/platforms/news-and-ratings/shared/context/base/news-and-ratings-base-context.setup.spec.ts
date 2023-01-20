@@ -37,7 +37,7 @@ describe('News and Ratings base context setup', () => {
 			expect(context.get('custom.device')).to.eq('m');
 		});
 
-		it('sets proper page path based - happy path', () => {
+		it('sets proper page path based on meta tag - happy path', () => {
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
 			const getDataSettingsFromMetaTagStub = sandbox.stub(
 				baseContextSetup,
@@ -48,6 +48,32 @@ describe('News and Ratings base context setup', () => {
 			baseContextSetup.execute();
 
 			expect(context.get('custom.pagePath')).to.eq('/home');
+		});
+
+		it('sets proper page path when it is empty based on meta tag', () => {
+			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
+			const getDataSettingsFromMetaTagStub = sandbox.stub(
+				baseContextSetup,
+				'getDataSettingsFromMetaTag',
+			);
+			getDataSettingsFromMetaTagStub.returns({ unit_name: '/123/aw-test' });
+
+			baseContextSetup.execute();
+
+			expect(context.get('custom.pagePath')).to.eq('');
+		});
+
+		it('sets proper page path when it is complex based on meta tag', () => {
+			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
+			const getDataSettingsFromMetaTagStub = sandbox.stub(
+				baseContextSetup,
+				'getDataSettingsFromMetaTag',
+			);
+			getDataSettingsFromMetaTagStub.returns({ unit_name: '/123/aw-test/playstation/home' });
+
+			baseContextSetup.execute();
+
+			expect(context.get('custom.pagePath')).to.eq('/playstation/home');
 		});
 
 		it('sets proper page path based - incorrect ad-settings meta tag', () => {
