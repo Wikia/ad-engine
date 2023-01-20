@@ -11,13 +11,16 @@ describe('News and Ratings base context setup', () => {
 	beforeEach(() => {
 		utilsClientIsDesktopStub = sandbox.stub(utils.client, 'isDesktop');
 		instantConfigStub = sandbox.createStubInstance(InstantConfigService);
+		context.set('custom.property', 'test');
 		context.set('custom.device', undefined);
 	});
 
 	afterEach(() => {
 		sandbox.restore();
 		utilsClientIsDesktopStub.resetHistory();
+		context.remove('custom.property');
 		context.remove('custom.device');
+		context.remove('custom.pagePath');
 	});
 
 	describe('setBaseState()', () => {

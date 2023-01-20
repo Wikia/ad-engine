@@ -76,21 +76,29 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 	}
 
 	private getPagePath(): string {
-		let pagePath,
-			dataWithPagePath = this.getDataSettingsFromMetaTag();
-
-		if (dataWithPagePath?.unit_name) {
-			pagePath = dataWithPagePath?.unit_name?.split('/').pop();
-		} else {
-			dataWithPagePath = this.getUtagData();
-			pagePath = dataWithPagePath?.siteSection;
-		}
+		const dataWithPagePath = this.getDataSettingsFromMetaTag();
+		const pagePath = dataWithPagePath?.unit_name
+			? this.getPagePathFromMetaTagData(dataWithPagePath)
+			: this.getPagePathFromUtagData();
 
 		if (!pagePath) {
 			return '';
 		}
 
-		return '/' + pagePath;
+		return pagePath[0] === '/' ? pagePath : '/' + pagePath;
+	}
+
+	private getPagePathFromMetaTagData(dataWithPagePath) {
+		const adUnitPropertyPart = context.get('custom.property');
+		const propertyIndex = dataWithPagePath?.unit_name?.indexOf(adUnitPropertyPart);
+		const slicedUnitName = dataWithPagePath?.unit_name?.slice(propertyIndex);
+
+		return slicedUnitName.replace(adUnitPropertyPart, '');
+	}
+
+	private getPagePathFromUtagData() {
+		const dataWithPagePath = this.getUtagData();
+		return dataWithPagePath?.siteSection;
 	}
 
 	getDataSettingsFromMetaTag() {
