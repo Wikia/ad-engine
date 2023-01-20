@@ -6,6 +6,7 @@ import {
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsDynamicSlotsSetup,
 	NewsAndRatingsTargetingSetup,
+	NewsAndRatingsWadSetup,
 } from '../shared';
 import { basicContext } from './ad-context';
 import { GiantbombPrebidConfigSetup } from './setup/context/prebid/giantbomb-prebid-config.setup';
@@ -23,6 +24,7 @@ export class GiantbombPlatform {
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
 			NewsAndRatingsBaseContextSetup,
+			NewsAndRatingsWadSetup,
 			GiantbombTargetingSetup,
 			NewsAndRatingsTargetingSetup,
 			GiantbombSlotsContextSetup,

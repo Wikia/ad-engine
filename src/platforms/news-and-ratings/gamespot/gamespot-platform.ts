@@ -6,6 +6,7 @@ import {
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsDynamicSlotsSetup,
 	NewsAndRatingsTargetingSetup,
+	NewsAndRatingsWadSetup,
 } from '../shared';
 import { basicContext } from './ad-context';
 import { GamespotPrebidConfigSetup } from './setup/context/prebid/gamespot-prebid-config.setup';
@@ -23,6 +24,7 @@ export class GameSpotPlatform {
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
 			NewsAndRatingsBaseContextSetup,
+			NewsAndRatingsWadSetup,
 			GamespotTargetingSetup,
 			NewsAndRatingsTargetingSetup,
 			GamespotSlotsContextSetup,
