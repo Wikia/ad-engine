@@ -475,6 +475,20 @@ export class AdSlot {
 			name: this.getSlotName(),
 			state: AdSlot.STATUS_SUCCESS,
 		});
+
+		this.setupDelayedCollapse();
+	}
+
+	private setupDelayedCollapse() {
+		communicationService.on(
+			eventsRepository.GAM_AD_DELAYED_COLLAPSE,
+			(payload) => {
+				if (payload.source.includes(this.getSlotName())) {
+					this.collapse();
+				}
+			},
+			false,
+		);
 	}
 
 	collapse(status: string = AdSlot.STATUS_COLLAPSE): void {

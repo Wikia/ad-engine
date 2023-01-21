@@ -1,4 +1,4 @@
-import { GptSetup, WadRunner } from '@platforms/shared';
+import { GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
 	Bidders,
 	Captify,
@@ -28,6 +28,7 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 		private liveConnect: LiveConnect,
 		private liveRampPixel: LiveRampPixel,
 		private userIdentity: UserIdentity,
+		private playerSetup: PlayerSetup,
 		private wadRunner: WadRunner,
 	) {}
 
@@ -43,6 +44,7 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 				this.iasPublisherOptimization,
 				this.captify,
 				this.durationMedia,
+				this.playerSetup,
 				this.gptSetup.setOptions({
 					dependencies: [this.wadRunner.initialized, this.bidders.initialized],
 				}),
