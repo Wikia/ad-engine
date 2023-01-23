@@ -8,6 +8,7 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { getAppnexusContext } from '../../../bidders/appnexus';
+import { getMedianetContext } from '../../../bidders/medianet';
 import { getPubmaticContext } from '../../../bidders/pubmatic';
 import { getRubiconDisplayContext } from '../../../bidders/rubicon-display';
 import { getWikiaContext } from '../../../bidders/wikia';
@@ -24,6 +25,7 @@ export class GamefaqsPrebidConfigSetup implements DiProcess {
 		}
 
 		context.set('bidders.prebid.appnexus', getAppnexusContext(isDesktop));
+		context.set('bidders.prebid.medianet', getMedianetContext(isDesktop));
 		context.set('bidders.prebid.pubmatic', getPubmaticContext(isDesktop));
 		context.set('bidders.prebid.rubicon_display', getRubiconDisplayContext(isDesktop));
 		context.set('bidders.prebid.wikia', getWikiaContext());
