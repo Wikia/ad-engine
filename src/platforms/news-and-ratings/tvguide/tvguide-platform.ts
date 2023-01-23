@@ -5,6 +5,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import {
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
+	NewsAndRatingsTargetingSetup,
 	NewsAndRatingsWadSetup,
 } from '../shared';
 import { basicContext } from './ad-context';
@@ -26,6 +27,7 @@ export class TvGuidePlatform {
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			TvGuideTargetingSetup,
+			NewsAndRatingsTargetingSetup,
 			TvGuideDynamicSlotsSetup,
 			TvGuideSlotsContextSetup,
 			TvGuidePrebidConfigSetup,
