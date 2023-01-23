@@ -6,6 +6,7 @@ import { context, ProcessPipeline } from '@wikia/ad-engine';
 import {
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
+	NewsAndRatingsTargetingSetup,
 	NewsAndRatingsWadSetup,
 } from '../shared';
 import { basicContext } from './ad-context';
@@ -27,6 +28,7 @@ export class MetacriticPlatform {
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			MetacriticTargetingSetup,
+			NewsAndRatingsTargetingSetup,
 			MetacriticDynamicSlotsSetup,
 			MetacriticSlotsContextSetup,
 			MetacriticPrebidConfigSetup,
