@@ -17,17 +17,17 @@ export class PhoenixBasedSitesTargetingSetup implements DiProcess {
 			for (const [key, value] of Object.entries(targetParams)) {
 				if (key === 'cid') {
 					targeting['contentid_nr'] = value;
-					break;
+					continue;
 				}
 
 				if (key === 'con') {
 					targeting['pform'] = value;
-					break;
+					continue;
 				}
 
 				if (key === 'genre') {
 					targeting['gnre'] = value;
-					break;
+					continue;
 				}
 
 				targeting[key] = value;
