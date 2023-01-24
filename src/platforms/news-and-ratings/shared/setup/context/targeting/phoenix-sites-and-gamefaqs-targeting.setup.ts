@@ -1,4 +1,4 @@
-import { context, DiProcess } from '@wikia/ad-engine';
+import { context, DiProcess, utils } from '@wikia/ad-engine';
 import { TargetingParams } from './interfaces/targeting-params';
 
 export class PhoenixSitesAndGamefaqsTargetingSetup implements DiProcess {
@@ -42,10 +42,18 @@ export class PhoenixSitesAndGamefaqsTargetingSetup implements DiProcess {
 			.querySelector('[id=ad-settings]')
 			?.getAttribute('data-settings');
 
-		if (dataSettingsElement) {
-			return JSON.parse(dataSettingsElement)?.target_params;
+		if (!dataSettingsElement) {
+			return;
 		}
 
-		return null;
+		try {
+			return JSON.parse(dataSettingsElement).target_params;
+		} catch (e) {
+			utils.logger(
+				'Targeting',
+				'Getting targeting params from "ad-settings" metadata object failed',
+			);
+			return;
+		}
 	}
 }
