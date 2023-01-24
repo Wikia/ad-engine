@@ -8,7 +8,7 @@ import {
 	NewsAndRatingsTargetingSetup,
 	NewsAndRatingsWadSetup,
 } from '../shared';
-import { PhoenixSitesAndGamefaqsTargetingSetup } from '../shared/setup/context/targeting/phoenix-sites-and-gamefaqs-targeting.setup';
+import { PhoenixBasedSitesTargetingSetup } from '../shared/setup/context/targeting/phoenix-based-sites-targeting.setup';
 import { basicContext } from './ad-context';
 import { ComicvinePrebidConfigSetup } from './setup/context/prebid/comicvine-prebid-config.setup';
 import { ComicvineSlotsContextSetup } from './setup/context/slots/comicvine-slots-context.setup';
@@ -27,7 +27,7 @@ export class ComicvinePlatform {
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			NewsAndRatingsTargetingSetup,
-			PhoenixSitesAndGamefaqsTargetingSetup,
+			PhoenixBasedSitesTargetingSetup,
 			ComicvineTargetingSetup,
 			NewsAndRatingsDynamicSlotsSetup,
 			ComicvineSlotsContextSetup,

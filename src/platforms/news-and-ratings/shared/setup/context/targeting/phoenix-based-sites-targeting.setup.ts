@@ -1,7 +1,7 @@
 import { context, DiProcess, utils } from '@wikia/ad-engine';
 import { TargetingParams } from './interfaces/targeting-params';
 
-export class PhoenixSitesAndGamefaqsTargetingSetup implements DiProcess {
+export class PhoenixBasedSitesTargetingSetup implements DiProcess {
 	execute(): void {
 		context.set('targeting', {
 			...context.get('targeting'),
