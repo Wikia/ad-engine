@@ -28,37 +28,13 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 	}
 
 	getPageLevelTargeting(): TargetingParams {
-		const targetParams = this.getMetadataTargetingParams();
 		const utagData = window.utag_data;
 
-		let targeting: TargetingParams = {};
-
-		if (targetParams) {
-			for (const [key, value] of Object.entries(targetParams)) {
-				targeting[key] = value;
-			}
-		}
-
-		targeting = {
-			...targeting,
+		return {
 			ptype: utagData?.pageType,
 			user: utagData?.userType,
 			vguid: this.getViewGuid(),
 		};
-
-		return targeting;
-	}
-
-	getMetadataTargetingParams(): TargetingParams {
-		const dataSettingsElement = document.head
-			.querySelector('[id=ad-settings]')
-			?.getAttribute('data-settings');
-
-		if (dataSettingsElement) {
-			return JSON.parse(dataSettingsElement)?.target_params;
-		}
-
-		return null;
 	}
 
 	getViewGuid() {
