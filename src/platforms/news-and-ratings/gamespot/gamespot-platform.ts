@@ -8,6 +8,7 @@ import {
 	NewsAndRatingsTargetingSetup,
 	NewsAndRatingsWadSetup,
 } from '../shared';
+import { PhoenixSitesAndGamefaqsTargetingSetup } from '../shared/setup/context/targeting/phoenix-sites-and-gamefaqs-targeting.setup';
 import { basicContext } from './ad-context';
 import { GamespotPrebidConfigSetup } from './setup/context/prebid/gamespot-prebid-config.setup';
 import { GamespotSlotsContextSetup } from './setup/context/slots/gamespot-slots-context.setup';
@@ -25,8 +26,9 @@ export class GameSpotPlatform {
 			InstantConfigSetup,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
-			GamespotTargetingSetup,
 			NewsAndRatingsTargetingSetup,
+			PhoenixSitesAndGamefaqsTargetingSetup,
+			GamespotTargetingSetup,
 			GamespotSlotsContextSetup,
 			NewsAndRatingsDynamicSlotsSetup,
 			GamespotPrebidConfigSetup,
