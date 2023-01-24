@@ -12,7 +12,7 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 			'skybox-nav': {
 				defaultSizes: [[5, 5]],
 				targeting: {
-					pos: 'nav',
+					pos_nr: 'nav',
 				},
 			},
 			leader_plus_top: {
@@ -23,7 +23,7 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 					[970, 90],
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'sky-leader-plus-top': {
@@ -34,7 +34,7 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			leader_top: {
@@ -43,19 +43,19 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 					[970, 66],
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			mpu_top: {
 				defaultSizes: [[300, 250]],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			mpu_bottom: {
 				defaultSizes: [[300, 250]],
 				targeting: {
-					pos: 'bottom',
+					pos_nr: 'bottom',
 				},
 			},
 			leader_bottom: {
@@ -64,7 +64,7 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 					[970, 66],
 				],
 				targeting: {
-					pos: 'bottom',
+					pos_nr: 'bottom',
 				},
 			},
 			overlay_leader_top: {
@@ -73,13 +73,13 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 					[970, 66],
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			overlay_mpu_top: {
 				defaultSizes: [[300, 250]],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'native-top': {
@@ -88,7 +88,7 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 					// 'fluid'
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'mobile-skybox-nav': {
@@ -97,7 +97,7 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					pos: 'nav',
+					pos_nr: 'nav',
 				},
 			},
 			'mobile-native': {
@@ -107,7 +107,7 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 					// 'fluid'
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'mobile-mpu-banner-bottom': {
@@ -116,7 +116,7 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 					[320, 50],
 				],
 				targeting: {
-					pos: 'bottom',
+					pos_nr: 'bottom',
 				},
 			},
 			'mobile-native-plus-top': {
@@ -126,7 +126,7 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 					// 'fluid'
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'mobile-highimpact-plus': {
@@ -136,7 +136,7 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					pos: 'plus',
+					pos_nr: 'plus',
 				},
 			},
 			'incontent-mobile-flex': {
@@ -146,14 +146,14 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 				],
 				incremental: true,
 				targeting: {
-					pos: '1',
+					pos_nr: '1',
 				},
 			},
 			'mobile-banner': {
 				defaultSizes: [[320, 50]],
 				incremental: true,
 				targeting: {
-					pos: '1',
+					pos_nr: '1',
 				},
 			},
 			video: {
