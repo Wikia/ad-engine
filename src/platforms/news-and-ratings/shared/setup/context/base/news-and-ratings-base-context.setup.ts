@@ -12,7 +12,11 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 	}
 
 	private setBaseState(): void {
+		const isDesktop = utils.client.isDesktop();
+
+		context.set('custom.device', isDesktop ? '' : 'm');
 		context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441);
+		context.set('custom.pagePath', this.getPagePath());
 		context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src'));
 	}
 
@@ -69,5 +73,53 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 
 	private shouldSwitchSrcToTest() {
 		return utils.queryString.get('switch_src_to_test') === '1';
+	}
+
+	private getPagePath(): string {
+		const dataWithPagePath = this.getDataSettingsFromMetaTag();
+		const pagePath = dataWithPagePath?.unit_name
+			? this.getPagePathFromMetaTagData(dataWithPagePath)
+			: this.getPagePathFromUtagData();
+
+		if (!pagePath) {
+			return '';
+		}
+
+		return pagePath[0] === '/' ? pagePath : '/' + pagePath;
+	}
+
+	private getPagePathFromMetaTagData(dataWithPagePath) {
+		const adUnitPropertyPart = context.get('custom.property');
+		const propertyIndex = dataWithPagePath?.unit_name?.indexOf(adUnitPropertyPart);
+		const slicedUnitName = dataWithPagePath?.unit_name?.slice(propertyIndex);
+
+		return slicedUnitName.replace(adUnitPropertyPart, '');
+	}
+
+	private getPagePathFromUtagData() {
+		const dataWithPagePath = this.getUtagData();
+		return dataWithPagePath?.siteSection;
+	}
+
+	getDataSettingsFromMetaTag() {
+		const adSettingsJson = document.getElementById('ad-settings')?.getAttribute('data-settings');
+		utils.logger('setup', 'Ad settings: ', adSettingsJson);
+
+		if (!adSettingsJson) {
+			return null;
+		}
+
+		try {
+			return JSON.parse(adSettingsJson);
+		} catch (e) {
+			utils.logger('setup', 'Could not parse JSON');
+			return null;
+		}
+	}
+
+	getUtagData() {
+		const utagData = window.utag_data;
+		utils.logger('setup', 'utag data: ', utagData);
+		return utagData;
 	}
 }
