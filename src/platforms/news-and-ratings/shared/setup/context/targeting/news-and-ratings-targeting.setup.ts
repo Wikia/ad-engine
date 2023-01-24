@@ -14,7 +14,7 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 		const customConfig = context.get('custom');
 
 		const targeting = {
-			...this.getPageLevelTargeting(),
+			...this.getUtagDataTargeting(),
 			...this.getCookieBasedTargeting(customConfig),
 			...this.getForcedCampaignsTargeting(),
 		};
@@ -27,7 +27,7 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 		});
 	}
 
-	getPageLevelTargeting(): TargetingParams {
+	getUtagDataTargeting(): TargetingParams {
 		const utagData = window.utag_data;
 
 		return {
