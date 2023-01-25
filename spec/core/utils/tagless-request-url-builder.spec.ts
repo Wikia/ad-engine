@@ -7,11 +7,10 @@ import {
 	buildVastUrl,
 } from '@wikia/core/utils/tagless-request-url-builder';
 import { expect } from 'chai';
-import { createSandbox, SinonSandbox, SinonStubbedInstance } from 'sinon';
+import { SinonStubbedInstance } from 'sinon';
 
 describe('tagless-request-url-builder', () => {
 	let lisAdSlot;
-	const sandbox: SinonSandbox = createSandbox();
 	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 	const targetingData = {
 		s0: '000',
@@ -47,7 +46,7 @@ describe('tagless-request-url-builder', () => {
 			},
 		});
 
-		targetingServiceStub = sandbox.stub(targetingService);
+		targetingServiceStub = global.sandbox.stub(targetingService);
 		targetingServiceStub.dump.returns(targetingData);
 		targetingServiceStub.extend.callsFake((newTargeting: TargetingObject) => {
 			Object.assign(targetingData, newTargeting);
@@ -56,10 +55,6 @@ describe('tagless-request-url-builder', () => {
 		lisAdSlot = new AdSlot({ id: 'layout_initializer' });
 		slotService.add(new AdSlot({ id: 'top_leaderboard' }));
 		slotService.add(lisAdSlot);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
 	});
 
 	it('build VAST URL with DFP domain', () => {

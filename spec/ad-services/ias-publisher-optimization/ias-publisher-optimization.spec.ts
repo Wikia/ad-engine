@@ -7,10 +7,9 @@ import {
 	utils,
 } from '@wikia/core';
 import { expect } from 'chai';
-import { createSandbox, SinonStubbedInstance, spy } from 'sinon';
+import { SinonStubbedInstance, spy } from 'sinon';
 
 describe('IAS Publisher Optimization', () => {
-	const sandbox = createSandbox();
 	const iasData =
 		'{"brandSafety":' +
 		'{"adt":"veryLow",' +
@@ -31,16 +30,16 @@ describe('IAS Publisher Optimization', () => {
 	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 
 	beforeEach(() => {
-		loadScriptStub = sandbox
+		loadScriptStub = global.sandbox
 			.stub(utils.scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
-		instantConfigStub = sandbox.createStubInstance(InstantConfigService);
+		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		instantConfigStub.get.withArgs('icIASPublisherOptimization').returns(true);
 
-		clock = sandbox.useFakeTimers();
+		clock = global.sandbox.useFakeTimers();
 		iasPublisherOptimization = new IasPublisherOptimization(instantConfigStub);
 
-		targetingServiceStub = sandbox.stub(targetingService);
+		targetingServiceStub = global.sandbox.stub(targetingService);
 
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);
@@ -58,7 +57,6 @@ describe('IAS Publisher Optimization', () => {
 
 	afterEach(() => {
 		clock.tick(5);
-		sandbox.restore();
 	});
 
 	it('IAS Publisher Optimization can be disabled', async () => {

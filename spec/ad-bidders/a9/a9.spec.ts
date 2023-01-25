@@ -1,10 +1,8 @@
 import { Apstag } from '@wikia/ad-bidders';
 import { A9Provider } from '@wikia/ad-bidders/a9';
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
 
 describe('A9Provider', () => {
-	const sandbox = createSandbox();
 	let bidderConfig;
 
 	beforeEach(() => {
@@ -19,11 +17,7 @@ describe('A9Provider', () => {
 			},
 		};
 
-		sandbox.stub(Apstag, 'make').returns({} as Apstag);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
+		global.sandbox.stub(Apstag, 'make').returns({} as Apstag);
 	});
 
 	it('configure display slot', () => {

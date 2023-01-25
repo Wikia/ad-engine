@@ -1,24 +1,17 @@
 import { TargetingService, targetingService } from '@wikia/core';
 import { targeting } from '@wikia/core/utils/targeting';
 import { expect } from 'chai';
-import { createSandbox, SinonStubbedInstance } from 'sinon';
-
-let sandbox;
+import { SinonStubbedInstance } from 'sinon';
 
 describe('targeting', () => {
 	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 
 	beforeEach(() => {
-		sandbox = createSandbox();
-		targetingServiceStub = sandbox.stub(targetingService);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
+		targetingServiceStub = global.sandbox.stub(targetingService);
 	});
 
 	it('getHostnamePrefix properly detects current environment', () => {
-		sandbox.stub(window, 'location').value({
+		global.sandbox.stub(window, 'location').value({
 			hostname: 'project43.preview.fandom.com',
 		});
 

@@ -1,7 +1,7 @@
 import { communicationService, eventsRepository } from '@wikia/communication';
 import { AdSlot, context, Dictionary, TargetingService, targetingService } from '@wikia/core';
 import { assert, expect } from 'chai';
-import { createSandbox, SinonSandbox, SinonSpy, SinonStubbedInstance } from 'sinon';
+import { SinonSpy, SinonStubbedInstance } from 'sinon';
 import { configMock } from '../config-mock';
 
 /**
@@ -15,17 +15,11 @@ function createAdSlot(id): AdSlot {
 }
 
 describe('ad-slot', () => {
-	const sandbox: SinonSandbox = createSandbox();
 	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 
 	beforeEach(() => {
 		context.extend(configMock);
-		targetingServiceStub = sandbox.stub(targetingService);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
-		sandbox.reset();
+		targetingServiceStub = global.sandbox.stub(targetingService);
 	});
 
 	it('base properties', () => {
@@ -252,11 +246,11 @@ describe('ad-slot', () => {
 
 		beforeEach(() => {
 			adSlot = createAdSlot(slotName);
-			dispatchSpy = sandbox.spy(communicationService, 'dispatch');
+			dispatchSpy = global.sandbox.spy(communicationService, 'dispatch');
 		});
 
 		afterEach(() => {
-			sandbox.restore();
+			global.sandbox.restore();
 		});
 
 		it('should call communicationService.dispatch with string event', () => {

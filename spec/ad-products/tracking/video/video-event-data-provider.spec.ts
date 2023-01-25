@@ -1,26 +1,23 @@
 import { VideoEventDataProvider } from '@wikia/ad-products/tracking/video/video-event-data-provider';
 import { AdSlot, context, slotService, TargetingService, targetingService } from '@wikia/core';
 import { assert } from 'chai';
-import * as sinon from 'sinon';
 import { SinonStubbedInstance } from 'sinon';
 import { configMock } from '../../../core/config-mock';
 
 describe('Video event data provider', () => {
-	const sandbox = sinon.createSandbox();
 	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 
 	beforeEach(() => {
-		sandbox.stub(document, 'hidden').get(() => undefined);
+		global.sandbox.stub(document, 'hidden').get(() => undefined);
 		context.extend(configMock);
 		context.set('geo.country', 'PL');
-		targetingServiceStub = sandbox.stub(targetingService);
+		targetingServiceStub = global.sandbox.stub(targetingService);
 		targetingServiceStub.get.withArgs('skin').returns('ae3');
 		context.set('wiki.pvNumber', 5);
 		slotService.add(new AdSlot({ id: 'incontent_player' }));
 	});
 
 	afterEach(() => {
-		sandbox.restore();
 		context.remove('geo.country');
 		context.remove('wiki.pvNumber');
 	});

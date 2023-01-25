@@ -1,10 +1,9 @@
 import { InstantConfigCacheStorage } from '@wikia/core/services/instant-config-cache-storage';
 import { SamplingCacheManager } from '@wikia/core/services/instant-config/matchers/sampling-cache.manager';
 import { expect } from 'chai';
-import { createSandbox, SinonExpectation, SinonStub } from 'sinon';
+import { SinonExpectation, SinonStub } from 'sinon';
 
 describe('Sampling Cache Manager', () => {
-	const sandbox = createSandbox();
 	const manager = new SamplingCacheManager();
 	let randomStub: SinonStub;
 	let storageSetStub: SinonStub;
@@ -12,14 +11,10 @@ describe('Sampling Cache Manager', () => {
 	let predicate: SinonExpectation;
 
 	beforeEach(() => {
-		randomStub = sandbox.stub(Math, 'random');
-		storageGetStub = sandbox.stub(InstantConfigCacheStorage.prototype, 'get');
-		storageSetStub = sandbox.stub(InstantConfigCacheStorage.prototype, 'set');
-		predicate = sandbox.mock();
-	});
-
-	afterEach(() => {
-		sandbox.restore();
+		randomStub = global.sandbox.stub(Math, 'random');
+		storageGetStub = global.sandbox.stub(InstantConfigCacheStorage.prototype, 'get');
+		storageSetStub = global.sandbox.stub(InstantConfigCacheStorage.prototype, 'set');
+		predicate = global.sandbox.mock();
 	});
 
 	it('should return value from storage', () => {

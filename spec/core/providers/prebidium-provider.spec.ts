@@ -3,11 +3,9 @@ import { PrebidiumProvider, targetingService } from '@wikia/core';
 import { IframeBuilder } from '@wikia/core/utils';
 import { assert } from 'chai';
 import { BehaviorSubject } from 'rxjs';
-import { createSandbox, SinonSandbox } from 'sinon';
 import { PbjsStub, stubPbjs } from '../services/pbjs.stub';
 
 describe('PrebidiumProvider', () => {
-	let sandbox: SinonSandbox;
 	let prebidiumProvider: PrebidiumProvider;
 	const contextStub = {
 		get: undefined,
@@ -21,16 +19,11 @@ describe('PrebidiumProvider', () => {
 	};
 
 	beforeEach(() => {
-		sandbox = createSandbox();
 		prebidiumProvider = new PrebidiumProvider();
 
 		stubIframeBuilder();
-		contextStub.get = sandbox.stub(targetingService, 'get').returns(mock.adId);
-		pbjsStub = stubPbjs(sandbox).pbjsStub;
-	});
-
-	afterEach(() => {
-		sandbox.restore();
+		contextStub.get = global.sandbox.stub(targetingService, 'get').returns(mock.adId);
+		pbjsStub = stubPbjs(global.sandbox).pbjsStub;
 	});
 
 	describe('fillIn', () => {
@@ -46,7 +39,7 @@ describe('PrebidiumProvider', () => {
 				},
 			};
 
-			sandbox.stub(communicationService, 'action$').value(
+			global.sandbox.stub(communicationService, 'action$').value(
 				new BehaviorSubject(
 					communicationService.getGlobalAction(eventsRepository.BIDDERS_BIDDING_DONE)({
 						slotName: mock.slotName,
@@ -77,7 +70,7 @@ describe('PrebidiumProvider', () => {
 	});
 
 	function stubIframeBuilder(): void {
-		sandbox.stub(IframeBuilder.prototype, 'create').returns({
+		global.sandbox.stub(IframeBuilder.prototype, 'create').returns({
 			contentWindow: {
 				document: mock.doc,
 			},

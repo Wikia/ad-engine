@@ -2,7 +2,7 @@ import { TargetingObject, TargetingService, targetingService } from '@wikia/core
 import { context } from '@wikia/core/services/context-service';
 import { vastParser } from '@wikia/core/video/vast-parser';
 import { expect } from 'chai';
-import { createSandbox, SinonSandbox, SinonStubbedInstance } from 'sinon';
+import { SinonStubbedInstance } from 'sinon';
 
 const dummyVast =
 	'dummy.vast?sz=640x480&foo=bar&cust_params=foo1%3Dbar1%26foo2%3Dbar2' +
@@ -31,7 +31,6 @@ describe('vast-parser', () => {
 		tre: ['bar', 'zero'],
 		quattro: null,
 	};
-	const sandbox: SinonSandbox = createSandbox();
 
 	beforeEach(() => {
 		context.extend({
@@ -40,15 +39,11 @@ describe('vast-parser', () => {
 			},
 		});
 
-		targetingServiceStub = sandbox.stub(targetingService);
+		targetingServiceStub = global.sandbox.stub(targetingService);
 		targetingServiceStub.dump.returns(targetingData);
 		targetingServiceStub.extend.callsFake((newTargeting: TargetingObject) => {
 			Object.assign(targetingData, newTargeting);
 		});
-	});
-
-	afterEach(() => {
-		sandbox.restore();
 	});
 
 	it('parse custom parameters from VAST url', () => {

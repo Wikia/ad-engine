@@ -1,6 +1,5 @@
 import { TargetingService } from '@wikia/core';
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
 
 describe('slot-service', () => {
 	let targetingService: TargetingService;
@@ -293,17 +292,14 @@ describe('slot-service', () => {
 	});
 
 	describe('onchange', () => {
-		let sandbox;
-
 		beforeEach(() => {
 			targetingService = new TargetingService();
-			sandbox = createSandbox();
 		});
 
 		it('should run callbacks after the change', () => {
 			const callbacks = {
-				first: sandbox.spy(),
-				second: sandbox.spy(),
+				first: global.sandbox.spy(),
+				second: global.sandbox.spy(),
 			};
 
 			extendWithExampleData();
@@ -322,8 +318,8 @@ describe('slot-service', () => {
 
 		it('should not run callbacks after slot removeListeners', () => {
 			const callbacks = {
-				first: sandbox.spy(),
-				second: sandbox.spy(),
+				first: global.sandbox.spy(),
+				second: global.sandbox.spy(),
 			};
 
 			extendWithExampleData();
@@ -345,8 +341,8 @@ describe('slot-service', () => {
 
 		it('should not run callbacks after slot change', () => {
 			const callbacks = {
-				first: sandbox.spy(),
-				second: sandbox.spy(),
+				first: global.sandbox.spy(),
+				second: global.sandbox.spy(),
 			};
 
 			extendWithExampleData();

@@ -3,27 +3,22 @@ import { communicationService, eventsRepository } from '@wikia/communication';
 import { AdSlot, Context, context, TargetingService, targetingService } from '@wikia/core';
 import { expect } from 'chai';
 import { BehaviorSubject } from 'rxjs';
-import { createSandbox, SinonSandbox, SinonSpy, SinonStubbedInstance } from 'sinon';
+import { SinonSpy, SinonStubbedInstance } from 'sinon';
 
 describe('UniversalAdPackage', () => {
 	const UAP_ID = 666;
 	const UAP_CREATIVE_ID = 333;
 	const UAP_STANDARD_AD_PRODUCT = 'uap';
-	const sandbox: SinonSandbox = createSandbox();
 	let contextStub: SinonStubbedInstance<Context>;
 	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 	const uapLoadStatus = communicationService.getGlobalAction(
 		eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
 	);
 
-	afterEach(() => {
-		sandbox.restore();
-	});
-
 	beforeEach(() => {
-		targetingServiceStub = sandbox.stub(targetingService);
+		targetingServiceStub = global.sandbox.stub(targetingService);
 
-		contextStub = sandbox.stub(context);
+		contextStub = global.sandbox.stub(context);
 		contextStub.get.withArgs('slots').returns({ top_leaderboard: {}, top_boxad: {} });
 	});
 
@@ -78,17 +73,17 @@ describe('UniversalAdPackage', () => {
 		let dispatch: SinonSpy;
 
 		beforeEach(() => {
-			dispatch = sandbox.spy(communicationService, 'dispatch');
+			dispatch = global.sandbox.spy(communicationService, 'dispatch');
 			contextStub.get.withArgs('slots.Slot1.firstCall').returns(true);
-			sandbox.stub(universalAdPackage, 'isFanTakeoverLoaded').returns(isFanTakeoverLoaded);
+			global.sandbox.stub(universalAdPackage, 'isFanTakeoverLoaded').returns(isFanTakeoverLoaded);
 		});
 
 		afterEach(() => {
-			sandbox.reset();
+			global.sandbox.reset();
 		});
 
 		it('should emit event with load status if slot collapsed', () => {
-			sandbox.stub(communicationService, 'action$').value(
+			global.sandbox.stub(communicationService, 'action$').value(
 				new BehaviorSubject(
 					communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
 						adSlotName,
@@ -109,7 +104,7 @@ describe('UniversalAdPackage', () => {
 		});
 
 		it('should emit event with load status if slot forcibly collapsed', () => {
-			sandbox.stub(communicationService, 'action$').value(
+			global.sandbox.stub(communicationService, 'action$').value(
 				new BehaviorSubject(
 					communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
 						adSlotName,
@@ -130,7 +125,7 @@ describe('UniversalAdPackage', () => {
 		});
 
 		it('should emit event with load status when templates are loaded', () => {
-			sandbox.stub(communicationService, 'action$').value(
+			global.sandbox.stub(communicationService, 'action$').value(
 				new BehaviorSubject(
 					communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
 						adSlotName,

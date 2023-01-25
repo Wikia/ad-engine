@@ -1,18 +1,13 @@
 import { Appnexus } from '@wikia/ad-bidders/prebid/adapters/appnexus';
 import { TargetingService, targetingService } from '@wikia/core';
 import { expect } from 'chai';
-import { createSandbox, SinonStubbedInstance } from 'sinon';
+import { SinonStubbedInstance } from 'sinon';
 
 describe('Appnexus bidder adapter', () => {
-	let sandbox;
 	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 
 	beforeEach(() => {
-		sandbox = createSandbox();
-		targetingServiceStub = sandbox.stub(targetingService);
-	});
-	afterEach(() => {
-		sandbox.restore();
+		targetingServiceStub = global.sandbox.stub(targetingService);
 	});
 
 	it('can be enabled', () => {

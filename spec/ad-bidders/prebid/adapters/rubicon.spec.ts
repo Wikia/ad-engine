@@ -1,19 +1,13 @@
 import { Rubicon } from '@wikia/ad-bidders/prebid/adapters/rubicon';
 import { TargetingService, targetingService } from '@wikia/core';
 import { expect } from 'chai';
-import { createSandbox, SinonStubbedInstance } from 'sinon';
+import { SinonStubbedInstance } from 'sinon';
 
 describe('Rubicon bidder adapter', () => {
-	let sandbox;
 	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 
 	beforeEach(() => {
-		sandbox = createSandbox();
-		targetingServiceStub = sandbox.stub(targetingService);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
+		targetingServiceStub = global.sandbox.stub(targetingService);
 	});
 
 	it('can be enabled', () => {

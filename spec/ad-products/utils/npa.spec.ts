@@ -1,20 +1,15 @@
 import { setupNpaContext } from '@wikia/ad-products/utils/npa';
 import { TargetingService, targetingService, trackingOptIn } from '@wikia/core';
 import { expect } from 'chai';
-import { createSandbox, SinonStub, SinonStubbedInstance } from 'sinon';
+import { SinonStub, SinonStubbedInstance } from 'sinon';
 
 describe('NPA - setup context ', () => {
-	const sandbox = createSandbox();
 	let isOptedInStub: SinonStub;
 	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 
 	beforeEach(() => {
-		isOptedInStub = sandbox.stub(trackingOptIn, 'isOptedIn');
-		targetingServiceStub = sandbox.stub(targetingService);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
+		isOptedInStub = global.sandbox.stub(trackingOptIn, 'isOptedIn');
+		targetingServiceStub = global.sandbox.stub(targetingService);
 	});
 
 	it('sets npa targeting for turned off tracking opt-in', () => {

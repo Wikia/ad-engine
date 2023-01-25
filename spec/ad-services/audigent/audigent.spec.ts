@@ -8,10 +8,9 @@ import {
 	utils,
 } from '@wikia/core';
 import { expect } from 'chai';
-import { createSandbox, SinonStubbedInstance } from 'sinon';
+import { SinonStubbedInstance } from 'sinon';
 
 describe('Audigent', () => {
-	const sandbox = createSandbox();
 	let audigent: Audigent;
 	let loadScriptStub, externalLoggerLogStub, instantConfigStub;
 	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
@@ -22,13 +21,13 @@ describe('Audigent', () => {
 	}
 
 	beforeEach(() => {
-		loadScriptStub = sandbox.spy(utils.scriptLoader, 'loadScript');
-		externalLoggerLogStub = sandbox.stub(externalLogger, 'log').returns({} as any);
-		instantConfigStub = sandbox.createStubInstance(InstantConfigService);
+		loadScriptStub = global.sandbox.spy(utils.scriptLoader, 'loadScript');
+		externalLoggerLogStub = global.sandbox.stub(externalLogger, 'log').returns({} as any);
+		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		instantConfigStub.get.withArgs('icAudigent').returns(true);
 		instantConfigStub.get.withArgs('icAudigentTrackingSampling').returns(0);
 
-		targetingServiceStub = sandbox.stub(targetingService);
+		targetingServiceStub = global.sandbox.stub(targetingService);
 
 		audigent = new Audigent(instantConfigStub);
 
@@ -45,7 +44,6 @@ describe('Audigent', () => {
 		instantConfigStub.get.withArgs('icAudigentSegmentLimit').returns(undefined);
 		instantConfigStub.get.withArgs('icAudigentTrackingSampling').returns(undefined);
 
-		sandbox.restore();
 		loadScriptStub.resetHistory();
 		audigent.resetLoadedState();
 

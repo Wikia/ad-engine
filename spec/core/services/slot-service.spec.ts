@@ -7,7 +7,7 @@ import {
 	targetingService,
 } from '@wikia/core';
 import { expect } from 'chai';
-import { createSandbox, SinonStubbedInstance } from 'sinon';
+import { SinonStubbedInstance } from 'sinon';
 import { adSlotFake } from '../ad-slot-fake';
 
 let adSlot;
@@ -21,13 +21,12 @@ function clearSlotServiceState(): void {
 }
 
 describe('slot-service', () => {
-	const sandbox = createSandbox();
 	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 
 	beforeEach(() => {
 		const originalGet = context.get;
 
-		sandbox.stub(context, 'get').callsFake((key) => {
+		global.sandbox.stub(context, 'get').callsFake((key) => {
 			if (key === 'slots') {
 				return slotConfigs;
 			}
@@ -35,11 +34,7 @@ describe('slot-service', () => {
 			return originalGet(key);
 		});
 
-		targetingServiceStub = sandbox.stub(targetingService);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
+		targetingServiceStub = global.sandbox.stub(targetingService);
 	});
 
 	beforeEach(() => {
@@ -51,7 +46,7 @@ describe('slot-service', () => {
 		};
 		slotConfigs = {};
 
-		sandbox
+		global.sandbox
 			.stub(document, 'getElementById')
 			.withArgs('foo-container')
 			.returns({

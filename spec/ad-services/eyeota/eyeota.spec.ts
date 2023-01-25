@@ -12,10 +12,9 @@ import {
 	Site,
 } from '@wikia/platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
 import { expect } from 'chai';
-import { createSandbox, SinonStubbedInstance } from 'sinon';
+import { SinonStubbedInstance } from 'sinon';
 
 describe('Eyeota', () => {
-	const sandbox = createSandbox();
 	let eyeota: Eyeota;
 	let loadScriptStub, instantConfigStub, tcfStub;
 	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
@@ -23,25 +22,26 @@ describe('Eyeota', () => {
 	beforeEach(() => {
 		window.__tcfapi = window.__tcfapi as WindowTCF;
 
-		loadScriptStub = sandbox
+		loadScriptStub = global.sandbox
 			.stub(utils.scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
-		instantConfigStub = sandbox.createStubInstance(InstantConfigService);
+		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		instantConfigStub.get.withArgs('icEyeota').returns(true);
-		tcfStub = sandbox.stub(tcf, 'getTCData').returns(Promise.resolve({ tcString: 'test' }) as any);
+		tcfStub = global.sandbox
+			.stub(tcf, 'getTCData')
+			.returns(Promise.resolve({ tcString: 'test' }) as any);
 
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);
 		context.set('wiki.targeting.directedAtChildren', false);
 
-		targetingServiceStub = sandbox.stub(targetingService);
+		targetingServiceStub = global.sandbox.stub(targetingService);
 
 		eyeota = new Eyeota(instantConfigStub);
 	});
 
 	afterEach(() => {
 		instantConfigStub.get.withArgs('icEyeota').returns(undefined);
-		sandbox.restore();
 		delete window.__tcfapi;
 
 		context.remove('options.trackingOptIn');
@@ -107,7 +107,7 @@ describe('Eyeota', () => {
 			new Site([], true, 'test', false, mockedTags, null),
 			null,
 		);
-		sandbox.stub(window.fandomContext, 'site').value(mockedContext.site);
+		global.sandbox.stub(window.fandomContext, 'site').value(mockedContext.site);
 		const src = await eyeota.createScriptSource();
 		delete window.fandomContext;
 
@@ -118,7 +118,7 @@ describe('Eyeota', () => {
 
 	it('constructs proper params on GPDR-related geo', async () => {
 		tcfStub.restore();
-		tcfStub = sandbox
+		tcfStub = global.sandbox
 			.stub(tcf, 'getTCData')
 			.returns(Promise.resolve({ tcString: 'test', gdprApplies: true }) as any);
 		targetingServiceStub.get.withArgs('s0v').returns('lifestyle');

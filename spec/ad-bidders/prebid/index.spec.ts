@@ -1,7 +1,7 @@
 import { PrebidProvider } from '@wikia/ad-bidders/prebid';
 import { TargetingService, targetingService } from '@wikia/core';
 import { expect } from 'chai';
-import { createSandbox, SinonStubbedInstance } from 'sinon';
+import { SinonStubbedInstance } from 'sinon';
 import { stubPbjs } from '../../core/services/pbjs.stub';
 
 const bidderConfig = {
@@ -9,16 +9,11 @@ const bidderConfig = {
 };
 
 describe('PrebidProvider bidder', () => {
-	const sandbox = createSandbox();
 	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 
 	beforeEach(() => {
-		stubPbjs(sandbox);
-		targetingServiceStub = sandbox.stub(targetingService);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
+		stubPbjs(global.sandbox);
+		targetingServiceStub = global.sandbox.stub(targetingService);
 	});
 
 	it('can be initialized', () => {
