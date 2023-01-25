@@ -34,6 +34,20 @@ body {
 	@include uap-styles();
 }
 
+.gpt-ad {
+	text-align: center;
+
+	&.hide,
+	& .hide {
+		display: none !important;
+	}
+
+	& > div > iframe {
+		display: block;
+		margin: 0 auto;
+	}
+}
+
 .mapped-skybox-nav,
 .mapped-mobile-skybox-nav {
 	min-height: 0;
