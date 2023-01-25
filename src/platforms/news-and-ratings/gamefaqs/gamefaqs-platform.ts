@@ -9,7 +9,6 @@ import {
 	NewsAndRatingsTargetingSetup,
 	NewsAndRatingsWadSetup,
 } from '../shared';
-import { PhoenixBasedSitesTargetingSetup } from '../shared/setup/context/targeting/phoenix-based-sites-targeting.setup';
 import { basicContext } from './ad-context';
 import { GamefaqsPrebidConfigSetup } from './setup/context/prebid/gamefaqs-prebid-config.setup';
 import { GamefaqsSlotsContextSetup } from './setup/context/slots/gamefaqs-slots-context.setup';
@@ -28,7 +27,6 @@ export class GamefaqsPlatform {
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			NewsAndRatingsTargetingSetup,
-			PhoenixBasedSitesTargetingSetup,
 			GamefaqsTargetingSetup,
 			GamefaqsSlotsContextSetup,
 			LazyLoadedSlotsContextSetup,

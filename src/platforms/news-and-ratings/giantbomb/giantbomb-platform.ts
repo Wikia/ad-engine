@@ -8,7 +8,6 @@ import {
 	NewsAndRatingsTargetingSetup,
 	NewsAndRatingsWadSetup,
 } from '../shared';
-import { PhoenixBasedSitesTargetingSetup } from '../shared/setup/context/targeting/phoenix-based-sites-targeting.setup';
 import { basicContext } from './ad-context';
 import { GiantbombPrebidConfigSetup } from './setup/context/prebid/giantbomb-prebid-config.setup';
 import { GiantbombSlotsContextSetup } from './setup/context/slots/giantbomb-slots-context.setup';
@@ -27,7 +26,6 @@ export class GiantbombPlatform {
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			NewsAndRatingsTargetingSetup,
-			PhoenixBasedSitesTargetingSetup,
 			GiantbombTargetingSetup,
 			GiantbombSlotsContextSetup,
 			NewsAndRatingsDynamicSlotsSetup,
