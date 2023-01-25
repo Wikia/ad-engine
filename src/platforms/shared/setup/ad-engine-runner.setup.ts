@@ -1,5 +1,5 @@
 import {
-	bidders,
+	Bidders,
 	communicationService,
 	DiProcess,
 	eventsRepository,
@@ -11,12 +11,14 @@ const logGroup = 'ad-engine';
 
 @Injectable()
 export class AdEngineRunnerSetup implements DiProcess {
+	constructor(private bidders: Bidders) {}
+
 	execute(): void {
 		communicationService.on(
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
 			({ slot }) => {
 				utils.logger(logGroup, `Added ad slot ${slot.getSlotName()}`);
-				bidders.updateSlotTargeting(slot.getSlotName());
+				this.bidders.updateSlotTargeting(slot.getSlotName());
 			},
 			false,
 		);

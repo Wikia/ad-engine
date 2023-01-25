@@ -1,13 +1,18 @@
-import { Injectable } from '@wikia/dependency-injection';
-import { context, ProcessPipeline } from '@wikia/ad-engine';
 import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
+import { context, ProcessPipeline } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
 
+import {
+	NewsAndRatingsAdsMode,
+	NewsAndRatingsBaseContextSetup,
+	NewsAndRatingsTargetingSetup,
+	NewsAndRatingsWadSetup,
+} from '../shared';
 import { basicContext } from './ad-context';
-import { TvGuideSlotsContextSetup } from './setup/context/slots/tvguide-slots-context.setup';
-import { TvGuideDynamicSlotsSetup } from './setup/dynamic-slots/tvguide-dynamic-slots.setup';
-import { NewsAndRatingsAdsMode, NewsAndRatingsBaseContextSetup } from '../shared';
-import { TvGuideTargetingSetup } from './setup/context/targeting/tvguide-targeting.setup';
 import { TvGuidePrebidConfigSetup } from './setup/context/prebid/tvguide-prebid-config-setup.service';
+import { TvGuideSlotsContextSetup } from './setup/context/slots/tvguide-slots-context.setup';
+import { TvGuideTargetingSetup } from './setup/context/targeting/tvguide-targeting.setup';
+import { TvGuideDynamicSlotsSetup } from './setup/dynamic-slots/tvguide-dynamic-slots.setup';
 
 @Injectable()
 export class TvGuidePlatform {
@@ -20,7 +25,9 @@ export class TvGuidePlatform {
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
 			NewsAndRatingsBaseContextSetup,
+			NewsAndRatingsWadSetup,
 			TvGuideTargetingSetup,
+			NewsAndRatingsTargetingSetup,
 			TvGuideDynamicSlotsSetup,
 			TvGuideSlotsContextSetup,
 			TvGuidePrebidConfigSetup,

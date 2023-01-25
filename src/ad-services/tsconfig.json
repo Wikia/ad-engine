@@ -1,0 +1,10 @@
+{
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		"paths": {
+			"@ad-engine/core": ["src/core/index.ts"],
+			"@ad-engine/communication": ["src/communication/index.ts"]
+		}
+	},
+	"include": ["."]
+}

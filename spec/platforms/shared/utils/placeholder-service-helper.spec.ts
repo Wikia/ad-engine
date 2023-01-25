@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { PlaceholderServiceHelper } from '../../../../src/platforms/shared/utils/placeholder-service-helper';
+import { PlaceholderServiceHelper } from '@wikia/platforms/shared/utils/placeholder-service-helper';
 
 describe('placeholder service helper', () => {
 	function getMockElement(containsClass = false): HTMLElement {

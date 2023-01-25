@@ -1,38 +1,52 @@
-import { Injectable } from '@wikia/dependency-injection';
+import { GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
-	bidders,
-	captify,
+	Bidders,
+	Captify,
 	communicationService,
-	confiant,
+	Confiant,
 	DiProcess,
-	durationMedia,
+	DurationMedia,
 	eventsRepository,
-	iasPublisherOptimization,
-	liveConnect,
-	liveRampPixel,
+	IasPublisherOptimization,
+	LiveConnect,
+	LiveRampPixel,
 	PartnerPipeline,
-	userIdentity,
+	UserIdentity,
 } from '@wikia/ad-engine';
-import { gptSetup, wadRunner } from '@platforms/shared';
+import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class NewsAndRatingsAdsMode implements DiProcess {
-	constructor(private pipeline: PartnerPipeline) {}
+	constructor(
+		private pipeline: PartnerPipeline,
+		private bidders: Bidders,
+		private captify: Captify,
+		private confiant: Confiant,
+		private durationMedia: DurationMedia,
+		private gptSetup: GptSetup,
+		private iasPublisherOptimization: IasPublisherOptimization,
+		private liveConnect: LiveConnect,
+		private liveRampPixel: LiveRampPixel,
+		private userIdentity: UserIdentity,
+		private playerSetup: PlayerSetup,
+		private wadRunner: WadRunner,
+	) {}
 
 	execute(): void {
 		this.pipeline
 			.add(
-				bidders,
-				wadRunner,
-				userIdentity,
-				liveRampPixel.setOptions({ dependencies: [userIdentity.initialized] }),
-				liveConnect,
-				confiant,
-				iasPublisherOptimization,
-				captify,
-				durationMedia,
-				gptSetup.setOptions({
-					dependencies: [wadRunner.initialized, bidders.initialized],
+				this.bidders,
+				this.wadRunner,
+				this.userIdentity,
+				this.liveRampPixel.setOptions({ dependencies: [this.userIdentity.initialized] }),
+				this.liveConnect,
+				this.confiant,
+				this.iasPublisherOptimization,
+				this.captify,
+				this.durationMedia,
+				this.playerSetup,
+				this.gptSetup.setOptions({
+					dependencies: [this.wadRunner.initialized, this.bidders.initialized],
 				}),
 			)
 			.execute()

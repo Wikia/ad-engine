@@ -1,7 +1,7 @@
-import { TargetingManagerInterface } from '../domain/interfaces/targeting-manager.interface';
 import { ContextInterface } from '@wikia/ad-engine';
 import { SlotsContextInterface } from '../../slots/slots-context';
 import { SequenceState } from '../domain/data-structures/user-sequential-message-state';
+import { TargetingManagerInterface } from '../domain/interfaces/targeting-manager.interface';
 
 export class GamTargetingManager implements TargetingManagerInterface {
 	constructor(

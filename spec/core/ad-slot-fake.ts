@@ -1,4 +1,4 @@
-import { communicationService, eventsRepository } from '@wikia/communication/index';
+import { communicationService, eventsRepository } from '@wikia/communication';
 
 const dataset = {};
 let offsetTop = 1000;

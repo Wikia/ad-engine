@@ -472,6 +472,20 @@ export class AdSlot {
 			name: this.getSlotName(),
 			state: AdSlot.STATUS_SUCCESS,
 		});
+
+		this.setupDelayedCollapse();
+	}
+
+	private setupDelayedCollapse() {
+		communicationService.on(
+			eventsRepository.GAM_AD_DELAYED_COLLAPSE,
+			(payload) => {
+				if (payload.source.includes(this.getSlotName())) {
+					this.collapse();
+				}
+			},
+			false,
+		);
 	}
 
 	collapse(status: string = AdSlot.STATUS_COLLAPSE): void {
@@ -655,7 +669,6 @@ export class AdSlot {
 		const adFrame = this.getIframe();
 
 		if (adFrame && adType.includes('success') && window['ResizeObserver']) {
-			//@ts-ignore ResizeObserver is a native module in most of the modern browsers
 			const resizeObserver = new ResizeObserver((entries) => {
 				for (const entry of entries) {
 					const width = Math.floor(entry.target.clientWidth);

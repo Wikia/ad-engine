@@ -1,7 +1,7 @@
-import { BaseServiceSetup, utils } from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { BaseServiceSetup, utils } from '@ad-engine/core';
 
-class LiveRampPixel extends BaseServiceSetup {
+export class LiveRampPixel extends BaseServiceSetup {
 	private PIXEL_ID = 712315;
 	private logGroup = 'LiveRamp';
 	private PIXEL_URL = `https://idsync.rlcdn.com/${this.PIXEL_ID}.gif?partner_uid=`;
@@ -13,10 +13,11 @@ class LiveRampPixel extends BaseServiceSetup {
 	}
 
 	async call(): Promise<void> {
-		if (!this.isEnabled('services.liveRampPixel.enabled')) {
+		if (!this.isEnabled('icLiveRampPixel')) {
 			utils.logger(this.logGroup, 'pixel disabled');
 			return;
 		}
+
 		communicationService.on(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, (event) => {
 			if (event.payload.partnerName === 'Google') {
 				this.insertLiveRampPixel(event.payload.partnerIdentityId);
@@ -24,5 +25,3 @@ class LiveRampPixel extends BaseServiceSetup {
 		});
 	}
 }
-
-export const liveRampPixel = new LiveRampPixel();

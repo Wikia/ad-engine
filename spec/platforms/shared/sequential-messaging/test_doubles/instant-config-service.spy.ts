@@ -1,5 +1,5 @@
-import { InstantConfigServiceInterface } from '@wikia/ad-services';
-import { InstantConfigValue } from '@wikia/ad-services/instant-config/instant-config.models';
+import { InstantConfigServiceInterface } from '@wikia/core';
+import { InstantConfigValue } from '@wikia/core/services/instant-config/instant-config.models';
 import { createStubInstance, SinonStubbedInstance } from 'sinon';
 
 class InstantConfigServiceSpy implements InstantConfigServiceInterface {

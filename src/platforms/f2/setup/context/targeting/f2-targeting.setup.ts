@@ -8,7 +8,7 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
-import { F2_ENV, F2Environment } from '../../../setup-f2';
+import { F2Environment, F2_ENV } from '../../../setup-f2';
 import { F2State } from '../../../utils/f2-state';
 import { F2_STATE } from '../../../utils/f2-state-binder';
 

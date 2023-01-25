@@ -1,3 +1,4 @@
+import { StickedBoxadHelper } from '@platforms/shared';
 import {
 	context,
 	DiProcess,
@@ -8,13 +9,12 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
-import { registerFloorAdhesionTemplate } from './floor-adhesion-template';
 import { registerBfaaTemplate } from './bfaa-template';
 import { registerBfabTemplate } from './bfab-template';
+import { registerFloorAdhesionTemplate } from './floor-adhesion-template';
 import { registerLogoReplacementTemplate } from './logo-replacement-template';
 import { registerRoadblockTemplate } from './roadblock-template';
 import { registerStickyTlbTemplate } from './sticky-tlb-template';
-import { StickedBoxadHelper } from '@platforms/shared';
 
 @Injectable()
 export class F2TemplatesSetup implements DiProcess {

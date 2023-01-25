@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { NewsAndRatingsDynamicSlotsSetup } from '@wikia/platforms/news-and-ratings/shared/setup/dynamic-slots/news-and-ratings-dynamic-slots.setup';
 import { context, utils } from '@wikia/core';
+import { NewsAndRatingsDynamicSlotsSetup } from '@wikia/platforms/news-and-ratings/shared/setup/dynamic-slots/news-and-ratings-dynamic-slots.setup';
 
-import { createHtmlElementStub } from '../../../../../spec-utils/html-element.stub';
+import { createHtmlElementStub } from '../../../../../helpers/html-element.stub';
 
 describe('Inserting dynamic slots on NnR', () => {
 	const sandbox = sinon.createSandbox();

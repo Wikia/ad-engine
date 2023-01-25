@@ -1,5 +1,5 @@
 import {
-	bidders,
+	Bidders,
 	communicationService,
 	context,
 	DiProcess,
@@ -9,12 +9,15 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 
 import { getAppnexusContext } from '../../../bidders/appnexus';
+import { getMedianetContext } from '../../../bidders/medianet';
 import { getPubmaticContext } from '../../../bidders/pubmatic';
 import { getRubiconDisplayContext } from '../../../bidders/rubicon-display';
 import { getWikiaContext } from '../../../bidders/wikia';
 
 @Injectable()
 export class GiantbombPrebidConfigSetup implements DiProcess {
+	constructor(private bidders: Bidders) {}
+
 	execute(): void {
 		const isDesktop = utils.client.isDesktop();
 
@@ -23,6 +26,7 @@ export class GiantbombPrebidConfigSetup implements DiProcess {
 		}
 
 		context.set('bidders.prebid.appnexus', getAppnexusContext(isDesktop));
+		context.set('bidders.prebid.medianet', getMedianetContext(isDesktop));
 		context.set('bidders.prebid.pubmatic', getPubmaticContext(isDesktop));
 		context.set('bidders.prebid.rubicon_display', getRubiconDisplayContext(isDesktop));
 		context.set('bidders.prebid.wikia', getWikiaContext());
@@ -34,7 +38,7 @@ export class GiantbombPrebidConfigSetup implements DiProcess {
 		communicationService.on(
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
 			({ slot }) => {
-				bidders.updateSlotTargeting(slot.getSlotName());
+				this.bidders.updateSlotTargeting(slot.getSlotName());
 			},
 			false,
 		);

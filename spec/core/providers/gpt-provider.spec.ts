@@ -1,6 +1,6 @@
+import { context, GptProvider } from '@wikia/core';
 import { expect } from 'chai';
 import { spy, stub } from 'sinon';
-import { context, GptProvider } from '@wikia/core';
 
 let provider;
 let pubads;

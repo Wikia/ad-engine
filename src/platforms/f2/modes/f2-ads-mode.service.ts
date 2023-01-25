@@ -1,48 +1,60 @@
-import { Injectable } from '@wikia/dependency-injection';
+import { GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
-	audigent,
-	captify,
+	Audigent,
+	Captify,
 	communicationService,
 	context,
 	DiProcess,
 	eventsRepository,
-	iasPublisherOptimization,
-	liveConnect,
+	IasPublisherOptimization,
 	jwPlayerInhibitor,
-	liveRampPixel,
-	nielsen,
+	LiveConnect,
+	LiveRampPixel,
+	Nielsen,
 	PartnerPipeline,
-	userIdentity,
+	UserIdentity,
 } from '@wikia/ad-engine';
-import { wadRunner, playerSetup, gptSetup } from '@platforms/shared';
+import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class F2AdsMode implements DiProcess {
-	constructor(private pipeline: PartnerPipeline) {}
+	constructor(
+		private pipeline: PartnerPipeline,
+		private audigent: Audigent,
+		private captify: Captify,
+		private gptSetup: GptSetup,
+		private iasPublisherOptimization: IasPublisherOptimization,
+		private liveConnect: LiveConnect,
+		private liveRampPixel: LiveRampPixel,
+		private nielsen: Nielsen,
+		private playerSetup: PlayerSetup,
+		private userIdentity: UserIdentity,
+		private wadRunner: WadRunner,
+	) {}
 
 	execute(): void {
 		this.pipeline
 			.add(
-				userIdentity,
-				liveRampPixel.setOptions({
-					dependencies: [userIdentity.initialized],
+				this.userIdentity,
+				this.liveRampPixel.setOptions({
+					dependencies: [this.userIdentity.initialized],
 				}),
-				audigent,
-				captify,
-				liveConnect,
-				iasPublisherOptimization,
-				nielsen,
-				wadRunner,
-				playerSetup.setOptions({
-					dependencies: [wadRunner.initialized],
+				this.audigent,
+				this.captify,
+				this.liveConnect,
+				this.iasPublisherOptimization,
+				this.nielsen,
+				this.wadRunner,
+				this.playerSetup.setOptions({
+					dependencies: [this.wadRunner.initialized],
 					timeout: context.get('options.jwpMaxDelayTimeout'),
 				}),
-				gptSetup.setOptions({
+				this.gptSetup.setOptions({
 					dependencies: [
-						userIdentity.initialized,
-						playerSetup.initialized,
+						this.userIdentity.initialized,
+						this.playerSetup.initialized,
 						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
-						iasPublisherOptimization.IASReady,
+						this.iasPublisherOptimization.IASReady,
 					],
 					timeout: context.get('options.jwpMaxDelayTimeout'),
 				}),

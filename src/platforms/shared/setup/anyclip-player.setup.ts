@@ -9,14 +9,14 @@ import {
 	UapLoadStatus,
 } from '@wikia/ad-engine';
 
-class AnyclipPlayerSetup extends BaseServiceSetup {
+export class AnyclipPlayerSetup extends BaseServiceSetup {
 	private initIncontentPlayer(incontentPlayer) {
 		const anyclip = new Anyclip(new AnyclipTracker(Anyclip.SUBSCRIBE_FUNC_NAME));
 
 		if (!incontentPlayer) return;
 		slotDataParamsUpdater.updateOnCreate(incontentPlayer);
-		if (anyclip.isEnabled()) {
-			anyclip.call();
+		if (this.isEnabled('services.anyclip.enabled', false)) {
+			anyclip.loadPlayerAsset();
 		}
 	}
 
@@ -31,5 +31,3 @@ class AnyclipPlayerSetup extends BaseServiceSetup {
 		);
 	}
 }
-
-export const anyclipPlayerSetup = new AnyclipPlayerSetup();

@@ -115,7 +115,7 @@ class Client {
 			userAgent.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
 
 		if (/trident/i.test(matches[1])) {
-			temp = /\brv[ :]+(\d+)/g.exec(userAgent) || [];
+			temp = /\brv[ :]+(\d+)/g.exec(userAgent) || [''];
 			browser = `IE ${temp[1] || ''}`;
 
 			return browser;

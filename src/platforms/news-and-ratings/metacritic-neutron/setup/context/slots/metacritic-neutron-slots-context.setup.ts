@@ -3,7 +3,7 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class MetacriticNeutronSlotsContextSetup implements DiProcess {
-	// TODO: Refactor - wait for decision on ADEN-12650 
+	// TODO: Refactor - wait for decision on ADEN-12650
 	execute(): void {
 		const slots = {
 			'omni-skybox-leader-nav': {

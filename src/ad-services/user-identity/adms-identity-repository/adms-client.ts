@@ -1,6 +1,6 @@
-import { ActionType, Action, ActiveData } from './adms-actions';
 import { UniversalStorage, utils } from '@ad-engine/core';
 import { UserIdentity } from '../index';
+import { Action, ActionType, ActiveData } from './adms-actions';
 
 class AdmsClient {
 	private ADMSStorageKey = 'silver-surfer-active-data-v2';

@@ -2,11 +2,11 @@ import { BaseServiceSetup, context, utils } from '@ad-engine/core';
 
 const logGroup = 'duration-media';
 
-class DurationMedia extends BaseServiceSetup {
+export class DurationMedia extends BaseServiceSetup {
 	call(): Promise<void> {
 		const libraryUrl: string = context.get('services.durationMedia.libraryUrl');
 
-		if (!context.get('services.durationMedia.enabled') || !libraryUrl) {
+		if (!this.isEnabled('icDurationMedia', false) || !libraryUrl) {
 			utils.logger(logGroup, 'disabled');
 
 			return Promise.resolve();
@@ -23,5 +23,3 @@ class DurationMedia extends BaseServiceSetup {
 			});
 	}
 }
-
-export const durationMedia = new DurationMedia();
