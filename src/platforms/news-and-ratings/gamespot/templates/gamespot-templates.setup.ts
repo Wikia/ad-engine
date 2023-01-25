@@ -2,7 +2,6 @@ import { DiProcess, logTemplates, TemplateRegistry, templateService } from '@wik
 import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
 import { registerBfaaTemplate } from './bfaa-template';
-import { registerBfabTemplate } from './bfab-template';
 
 @Injectable()
 export class GamespotTemplatesSetup implements DiProcess {
@@ -12,8 +11,7 @@ export class GamespotTemplatesSetup implements DiProcess {
 
 	execute(): void {
 		const bfaa$ = registerBfaaTemplate(this.registry);
-		const bfab$ = registerBfabTemplate(this.registry);
 
-		logTemplates(merge(bfaa$, bfab$));
+		logTemplates(merge(bfaa$));
 	}
 }

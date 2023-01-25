@@ -11,6 +11,7 @@ import {
 	SlotDecisionImpactToResolvedHandler,
 	SlotDecisionTimeoutHandler,
 	SlotHeightClippingHandler,
+	SlotSizeImpactToResolvedHandler,
 	SlotSizeImpactWithPlaceholderHandler,
 	SlotSizeResolvedWithPlaceholderHandler,
 	SlotTransitionHandler,
@@ -22,19 +23,20 @@ import {
 	VideoCtpHandler,
 	VideoDomManager,
 	VideoDomReader,
+	VideoLearnMoreHandler,
 	VideoRestartHandler,
 	VideoSizeImpactToResolvedHandler,
 	VideoSizeResolvedHandler,
 } from '@platforms/shared';
-import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
+import { context, TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
 import { registerUapDomElements } from './configs/register-uap-dom-elements';
-import { BfaaConfigHandler } from './handlers/bfaa/bfaa-config-handler';
+import { BfaaGamespotConfigHandler } from './handlers/bfaa/bfaa-gamespot-config-handler';
 
 export function registerBfaaTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	const templateStates = {
 		initial: [
-			BfaaConfigHandler,
+			BfaaGamespotConfigHandler,
 			BfaaBootstrapHandler,
 			VideoBootstrapHandler,
 			VideoCtpHandler,
@@ -42,14 +44,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 			AdvertisementLabelHandler,
 			DebugTransitionHandler,
 		],
-		impact: [
-			SlotSizeImpactWithPlaceholderHandler,
-			SlotDecisionImpactToResolvedHandler,
-			SlotHeightClippingHandler,
-			VideoSizeImpactToResolvedHandler,
-			VideoCompletedHandler,
-			DomCleanupHandler,
-		],
+		impact: [],
 		sticky: [
 			SlotSizeResolvedWithPlaceholderHandler,
 			SlotDecisionTimeoutHandler,
@@ -70,6 +65,27 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 			DomCleanupHandler,
 		],
 	};
+
+	if (context.get('state.isMobile')) {
+		templateStates.impact = [
+			SlotSizeImpactWithPlaceholderHandler,
+			SlotSizeImpactToResolvedHandler,
+			SlotDecisionImpactToResolvedHandler,
+			VideoSizeImpactToResolvedHandler,
+			VideoCompletedHandler,
+			VideoLearnMoreHandler,
+			DomCleanupHandler,
+		];
+	} else {
+		templateStates.impact = [
+			SlotSizeImpactWithPlaceholderHandler,
+			SlotDecisionImpactToResolvedHandler,
+			SlotHeightClippingHandler,
+			VideoSizeImpactToResolvedHandler,
+			VideoCompletedHandler,
+			DomCleanupHandler,
+		];
+	}
 
 	return registry.register('bfaa', templateStates, 'initial', [
 		ScrollCorrector,

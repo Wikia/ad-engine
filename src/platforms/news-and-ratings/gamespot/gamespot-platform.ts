@@ -1,4 +1,9 @@
-import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
+import {
+	BiddersStateSetup,
+	bootstrapAndGetConsent,
+	getDeviceMode,
+	InstantConfigSetup,
+} from '@platforms/shared';
 import { context, ProcessPipeline } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import {
@@ -21,6 +26,7 @@ export class GameSpotPlatform {
 	execute(): void {
 		this.pipeline.add(
 			() => context.extend(basicContext),
+			() => context.set('state.isMobile', getDeviceMode() === 'mobile'),
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
