@@ -141,12 +141,7 @@ export class AdSlot {
 
 		this.config.slotName = this.config.slotName || ad.id;
 		this.config.slotNameSuffix = this.config.slotNameSuffix || '';
-
-		const targetingData = this.config.targeting || ({} as SlotTargeting);
-		targetingData.src = targetingData.src || context.get('src');
-		targetingData.pos = targetingData.pos || this.getSlotName();
-		targetingData.rv = targetingData.rv || '1';
-		targetingService.extend(targetingData, this.getSlotName());
+		this.setUpSlotTargeting();
 		delete this.config.targeting;
 
 		this.requested = new Promise<void>((resolve) => {
@@ -206,6 +201,14 @@ export class AdSlot {
 		if (!this.enabled) {
 			this.hide();
 		}
+	}
+
+	private setUpSlotTargeting() {
+		const targetingData = this.config.targeting || ({} as SlotTargeting);
+		targetingData.src = targetingData.src || context.get('src');
+		targetingData.pos = targetingData.pos || this.getSlotName();
+		targetingData.rv = targetingData.rv || '1';
+		targetingService.extend(targetingData, this.getSlotName());
 	}
 
 	private logger = (...args: any[]) => logger(AdSlot.LOG_GROUP, ...args);
