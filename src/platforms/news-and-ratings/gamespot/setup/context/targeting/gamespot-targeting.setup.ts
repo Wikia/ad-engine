@@ -6,6 +6,7 @@ export class GamespotTargetingSetup implements DiProcess {
 			s0: 'gaming',
 			uap: 'none',
 			uap_c: 'none',
+			is_mobile: context.get('state.isMobile') ? '1' : '0',
 		};
 
 		context.set('targeting', {
