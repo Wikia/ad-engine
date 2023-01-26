@@ -8,18 +8,19 @@ export interface CookieBasedTargetingParams {
 
 export interface TargetingParams extends CookieBasedTargetingParams {
 	category?: string;
-	cid?: string;
-	con?: string;
+	contentid_nr?: string;
 	collection?: string;
 	franchise?: string;
 	game?: string;
-	genre?: string;
+	gnre?: string;
 	env?: string;
+	pform?: string;
 	publisher?: string;
 	ptype?: string;
 	rating?: string;
 	rdate?: string;
 	score?: string;
+	tv?: string;
 	user?: string;
 	vguid?: string;
 }
