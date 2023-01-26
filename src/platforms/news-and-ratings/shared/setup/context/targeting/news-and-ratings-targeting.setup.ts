@@ -14,8 +14,9 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 		const customConfig = context.get('custom');
 
 		const targeting = {
-			...this.getUtagDataTargeting(),
+			...this.getPageLevelTargeting(),
 			...this.getCookieBasedTargeting(customConfig),
+			...this.getViewGuid(),
 			...this.getForcedCampaignsTargeting(),
 		};
 
@@ -27,27 +28,81 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 		});
 	}
 
-	getUtagDataTargeting(): TargetingParams {
-		const utagData = window.utag_data;
+	getPageLevelTargeting(): TargetingParams {
+		const adTags = this.getAdTags();
+		const parsedAdTags = this.parseAdTags(adTags);
+		const mappedAdTags = this.getMappedAdTags(parsedAdTags);
 
-		return {
-			ptype: utagData?.pageType,
-			user: utagData?.userType,
-			vguid: this.getViewGuid(),
-		};
+		return mappedAdTags;
+	}
+
+	getAdTags(): string {
+		return document.head.querySelector('[name=adtags]')?.getAttribute('content');
+	}
+
+	parseAdTags(adTags: string): object {
+		const adTagsObj = {};
+
+		if (!adTags) {
+			return;
+		}
+
+		adTags.split('&').forEach((keyval) => {
+			const parts = keyval.split('=');
+
+			if (Array.isArray(parts) && parts.length === 2) {
+				adTagsObj[parts[0]] = parts[1];
+			}
+		});
+
+		return adTagsObj;
+	}
+
+	getMappedAdTags(adTagsToMap: object): TargetingParams {
+		const mappedAdTags = {};
+
+		if (!adTagsToMap) {
+			return;
+		}
+
+		for (const [key, value] of Object.entries(adTagsToMap)) {
+			if (key === 'cid') {
+				mappedAdTags['contentid_nr'] = value;
+				continue;
+			}
+
+			if (key === 'con') {
+				mappedAdTags['pform'] = value;
+				continue;
+			}
+
+			if (key === 'genre') {
+				mappedAdTags['gnre'] = value;
+				continue;
+			}
+
+			if (key === 'network') {
+				mappedAdTags['tv'] = value;
+				continue;
+			}
+
+			mappedAdTags[key] = value;
+		}
+
+		return mappedAdTags;
 	}
 
 	getViewGuid() {
 		const el = document.getElementById('view-guid-meta');
 		const key = 'content';
 
-		let guid;
+		let vguid = '';
 
 		if (el && el.hasAttribute(key)) {
-			guid = el.getAttribute(key);
+			vguid = el.getAttribute(key);
 		}
 
-		return guid;
+		return { vguid };
 	}
 
 	// Transfered from: https://github.com/Wikia/player1-ads-adlibrary/blob/0df200c535adf3599c7de9e99b719953af2784e1/core/targeting.js#L205
