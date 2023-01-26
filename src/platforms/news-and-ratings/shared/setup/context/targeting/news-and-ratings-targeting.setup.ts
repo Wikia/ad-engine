@@ -41,11 +41,11 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 	}
 
 	parseAdTags(adTags: string): object {
-		const adTagsObj = {};
-
 		if (!adTags) {
 			return;
 		}
+
+		const adTagsObj = {};
 
 		adTags.split('&').forEach((keyval) => {
 			const parts = keyval.split('=');
@@ -59,11 +59,11 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 	}
 
 	getMappedAdTags(adTagsToMap: object): TargetingParams {
-		const mappedAdTags = {};
-
 		if (!adTagsToMap) {
 			return;
 		}
+
+		const mappedAdTags = {};
 
 		for (const [key, value] of Object.entries(adTagsToMap)) {
 			if (key === 'cid') {
