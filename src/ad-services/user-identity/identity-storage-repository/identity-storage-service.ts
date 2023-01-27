@@ -27,7 +27,7 @@ class IdentityStorageService {
 	}
 
 	private async migrateExistingPpid(deprecatedPPID: string) {
-		this.storage.removeItem(deprecatedPPID);
+		this.storage.removeItem('ppid');
 
 		const remoteData = await this.setRemote({ ppid: deprecatedPPID, synced: false });
 		this.updateLocalData(remoteData);
