@@ -1,6 +1,6 @@
 import { Injectable } from '@wikia/dependency-injection';
 
-import { bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
+import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
 import { context, ProcessPipeline } from '@wikia/ad-engine';
 
 import {
@@ -30,6 +30,7 @@ export class MetacriticNeutronPlatform {
 			MetacriticNeutronDynamicSlotsSetup,
 			MetacriticNeutronSlotsContextSetup,
 			MetacriticNeutronPrebidConfigSetup,
+			BiddersStateSetup,
 			NewsAndRatingsAdsMode,
 		);
 
