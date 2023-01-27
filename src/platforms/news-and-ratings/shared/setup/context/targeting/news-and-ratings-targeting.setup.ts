@@ -93,16 +93,8 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 	}
 
 	getViewGuid() {
-		const el = document.getElementById('view-guid-meta');
-		const key = 'content';
-
-		let vguid = '';
-
-		if (el && el.hasAttribute(key)) {
-			vguid = el.getAttribute(key);
-		}
-
-		return { vguid };
+		const pageViewGuid: string = window.utag_data?.pageViewGuid;
+		return { vguid: pageViewGuid };
 	}
 
 	// Transfered from: https://github.com/Wikia/player1-ads-adlibrary/blob/0df200c535adf3599c7de9e99b719953af2784e1/core/targeting.js#L205
