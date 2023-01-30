@@ -5,9 +5,11 @@ import { expect } from 'chai';
 
 describe('News and Ratings Targeting Setup', () => {
 	let queryStringGetStub;
+	let newsAndRatingsTargetingSetup;
 
 	beforeEach(() => {
 		queryStringGetStub = global.sandbox.stub(utils.queryString, 'get');
+		newsAndRatingsTargetingSetup = new NewsAndRatingsTargetingSetup();
 	});
 
 	afterEach(() => {
@@ -61,6 +63,45 @@ describe('News and Ratings Targeting Setup', () => {
 			expect(targetingSetup.getForcedCampaignsTargeting()).to.be.deep.eq({
 				cid: 'test-campaign',
 			});
+		});
+	});
+
+	describe('parseAdTags()', () => {
+		it('parseAdTags correctly parses ad tags string to object', () => {
+			const adTagsString =
+				'game=test-game&franchise=test-franchise&genre=test-genre&user=test-user';
+			const expectedParsedAdTags = {
+				game: 'test-game',
+				franchise: 'test-franchise',
+				genre: 'test-genre',
+				user: 'test-user',
+			};
+
+			const parsedAdTags = newsAndRatingsTargetingSetup.parseAdTags(adTagsString);
+
+			expect(parsedAdTags).to.be.deep.eq(expectedParsedAdTags);
+		});
+
+		it('getMappedAdTags correctly maps N&R specific targeting key names to match Fandom convention', () => {
+			const parsedAdTags = {
+				cid: 'test-cid',
+				con: 'test-con',
+				genre: 'test-genre',
+				network: 'test-network',
+				user: 'test-user',
+			};
+
+			const expectedMappedAdTags = {
+				contentid_nr: 'test-cid',
+				pform: 'test-con',
+				gnre: 'test-genre',
+				tv: 'test-network',
+				user: 'test-user',
+			};
+
+			const mappedAdTags = newsAndRatingsTargetingSetup.getMappedAdTags(parsedAdTags);
+
+			expect(mappedAdTags).to.be.deep.eq(expectedMappedAdTags);
 		});
 	});
 });

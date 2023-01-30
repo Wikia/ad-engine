@@ -17,7 +17,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					pos: 'nav',
+					pos_nr: 'nav',
 				},
 			},
 			'skybox-nav': {
@@ -27,7 +27,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					pos: 'nav',
+					pos_nr: 'nav',
 				},
 			},
 			'native-top': {
@@ -37,7 +37,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[11, 11],
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'incontent-ad': {
@@ -49,7 +49,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			leader_plus_top: {
@@ -60,7 +60,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[970, 66],
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			leader_top: {
@@ -70,14 +70,14 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[970, 66],
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			mpu_top: {
 				code: 'mpu_top',
 				defaultSizes: [[300, 250]],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			mpu_plus_top: {
@@ -87,7 +87,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[300, 600],
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			mpu_bottom: {
@@ -95,7 +95,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 				defaultSizes: [[300, 250]],
 				lazyLoad: true,
 				targeting: {
-					pos: 'bottom',
+					pos_nr: 'bottom',
 				},
 			},
 			leader_bottom: {
@@ -106,7 +106,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 				],
 				lazyLoad: true,
 				targeting: {
-					pos: 'bottom',
+					pos_nr: 'bottom',
 				},
 			},
 			'mobile-omni-skybox-nav': {
@@ -116,7 +116,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					pos: 'nav',
+					pos_nr: 'nav',
 				},
 			},
 			'mobile-skybox-nav': {
@@ -126,7 +126,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					pos: 'nav',
+					pos_nr: 'nav',
 				},
 			},
 			'mobile-native-top': {
@@ -138,7 +138,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[11, 11],
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'mobile-incontent-ad': {
@@ -150,7 +150,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					// 'fluid'
 				],
 				targeting: {
-					pos: 'incontent',
+					pos_nr: 'incontent',
 				},
 			},
 			'mobile-mpu-banner-bottom': {
@@ -160,7 +160,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[320, 50],
 				],
 				targeting: {
-					pos: 'bottom',
+					pos_nr: 'bottom',
 				},
 			},
 			'mobile-native-plus-top': {
@@ -172,7 +172,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[11, 11],
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'mobile-highimpact-plus': {
@@ -183,7 +183,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					pos: 'plus',
+					pos_nr: 'plus',
 				},
 			},
 			'incontent-mobile-flex': {
@@ -194,7 +194,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 				],
 				incremental: true,
 				targeting: {
-					pos: '1',
+					pos_nr: '1',
 				},
 			},
 			'mobile-banner': {
@@ -202,7 +202,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 				defaultSizes: [[320, 50]],
 				incremental: true,
 				targeting: {
-					pos: '1',
+					pos_nr: '1',
 				},
 			},
 			'mobile-mpu': {
@@ -210,7 +210,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 				defaultSizes: [[300, 250]],
 				incremental: true,
 				targeting: {
-					pos: '1',
+					pos_nr: '1',
 				},
 			},
 			'nav-ad-plus': {
@@ -222,7 +222,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 				],
 				collapseEmptyDiv: [true],
 				targeting: {
-					pos: 'nav',
+					pos_nr: 'nav',
 				},
 			},
 			'mobile-nav-ad-plus': {
@@ -233,7 +233,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 				],
 				collapseEmptyDiv: [true],
 				targeting: {
-					pos: 'nav',
+					pos_nr: 'nav',
 				},
 			},
 			'mobile-banner-plus-inc': {
@@ -244,7 +244,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 				],
 				collapseEmptyDiv: [true],
 				targeting: {
-					pos: 'inc',
+					pos_nr: 'inc',
 				},
 			},
 			'mobile-incontent-ad-plus': {
@@ -257,7 +257,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 				lazyLoad: true,
 				incremental: true,
 				targeting: {
-					pos: 'inc',
+					pos_nr: 'inc',
 				},
 			},
 			'mobile-banner-mpu': {
@@ -269,7 +269,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 				lazyLoad: true,
 				incremental: true,
 				targeting: {
-					pos: 'inc',
+					pos_nr: 'inc',
 				},
 			},
 			'incontent-ad-plus': {
@@ -282,7 +282,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 				lazyLoad: true,
 				incremental: true,
 				targeting: {
-					pos: 'inc',
+					pos_nr: 'inc',
 				},
 			},
 			'incontent-leader-middle': {
@@ -294,7 +294,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 				lazyLoad: true,
 				incremental: true,
 				targeting: {
-					pos: 'inc',
+					pos_nr: 'inc',
 				},
 			},
 			video: {
