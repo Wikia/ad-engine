@@ -18,3 +18,13 @@ body:not(.skybox-loaded) {
 		min-height: 0;
 	}
 }
+
+.skybox-loaded {
+	.mapped-skybox-nav {
+		min-height: 19vw;
+	}
+
+	.mapped-mobile-skybox-nav {
+		min-height: 56vw;
+	}
+}
