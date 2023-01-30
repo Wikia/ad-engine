@@ -44,4 +44,3 @@ export class Kargo extends PrebidAdapter {
 		];
 	}
 }
-g;
