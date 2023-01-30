@@ -1,10 +1,4 @@
-import {
-	context,
-	DiProcess,
-	getAdUnitString,
-	globalRuntimeVariableSetter,
-	targetingService,
-} from '@wikia/ad-engine';
+import { context, DiProcess, getAdUnitString, globalRuntimeVariableSetter } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -29,6 +23,6 @@ export class UcpDesktopSlotsStateSetup implements DiProcess {
 	}
 
 	private disableIncontentPlayerSlot(): void {
-		targetingService.set('disabled', true, 'incontent_player');
+		context.set('slots.incontent_player.disabled', true);
 	}
 }

@@ -13,7 +13,7 @@ export interface SlotTargeting {
 	src?: string;
 	pos?: string;
 	loc?: string;
-	rv?: string | string[];
+	rv?: string | string[] | number;
 
 	[key: string]: googletag.NamedSize | number;
 }
@@ -132,13 +132,15 @@ export class TargetingService implements TargetingServiceInterface {
 	}
 
 	set(key: string, value: any, slotName: string | null = null): void {
-		const targetingGroupName = slotName || this.pageTargetingGroupName;
-		this.adTargeting[targetingGroupName] =
-			this.adTargeting[targetingGroupName] || ({} as TargetingObject);
-		this.adTargeting[targetingGroupName][key] = value;
+		if (value !== undefined) {
+			const targetingGroupName = slotName || this.pageTargetingGroupName;
+			this.adTargeting[targetingGroupName] =
+				this.adTargeting[targetingGroupName] || ({} as TargetingObject);
+			this.adTargeting[targetingGroupName][key] = value;
 
-		if (targetingGroupName === this.pageTargetingGroupName) {
-			this.triggerOnChange(key, value);
+			if (targetingGroupName === this.pageTargetingGroupName) {
+				this.triggerOnChange(key, value);
+			}
 		}
 	}
 
