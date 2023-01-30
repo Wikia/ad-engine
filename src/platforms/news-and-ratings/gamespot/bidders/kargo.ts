@@ -9,7 +9,7 @@ export function getKargoContext(isDesktop: boolean): object {
 				[300, 250],
 				[300, 600],
 			],
-			placementIds: ['_rXEPrtrFI5', '_jiHQTggPyr'],
+			placementId: ['_rXEPrtrFI5', '_jiHQTggPyr'],
 		},
 		mpu_middle: {
 			sizes: [[300, 250]],

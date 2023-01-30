@@ -25,7 +25,7 @@ export function getKargoContext(isDesktop: boolean): object {
 				[300, 250],
 				[300, 600],
 			],
-			placementIds: ['_k2DaJyM0HX', '_uBlNGOzrJP'],
+			placementId: ['_k2DaJyM0HX', '_uBlNGOzrJP'],
 		},
 		'mpu-top': {
 			sizes: [[300, 250]],
