@@ -21,6 +21,7 @@ import {
 	Wikia,
 	WikiaVideo,
 } from './adapters';
+import { YahooSsp } from './adapters/yahoossp';
 import { PrebidAdapter } from './prebid-adapter';
 import { isPrebidAdapterConfig } from './prebid-helper';
 import { PrebidConfig } from './prebid-models';
@@ -48,6 +49,7 @@ class AdaptersRegistry {
 		Verizon,
 		Wikia,
 		WikiaVideo,
+		YahooSsp,
 	];
 
 	getAdapter(bidderName: string): PrebidAdapter | undefined {
