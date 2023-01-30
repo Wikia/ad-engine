@@ -9,6 +9,7 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 
 import { getIndexExchangeContext } from '../../../bidders/index-exchange';
+import { getKargoContext } from '../../../bidders/kargo';
 
 @Injectable()
 export class MetacriticNeutronPrebidConfigSetup implements DiProcess {
@@ -22,6 +23,7 @@ export class MetacriticNeutronPrebidConfigSetup implements DiProcess {
 		}
 
 		context.set('bidders.prebid.indexExchange', getIndexExchangeContext(isDesktop));
+		context.set('bidders.prebid.kargo', getKargoContext(isDesktop));
 
 		this.registerListeners();
 	}
