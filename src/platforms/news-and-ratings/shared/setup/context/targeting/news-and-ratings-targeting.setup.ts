@@ -16,6 +16,7 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 		const targeting = {
 			...this.getPageLevelTargeting(),
 			...this.getCookieBasedTargeting(customConfig),
+			...this.getViewGuid(),
 			...this.getForcedCampaignsTargeting(),
 		};
 
@@ -28,50 +29,80 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 	}
 
 	getPageLevelTargeting(): TargetingParams {
-		const targetParams = this.getMetadataTargetingParams();
-		const utagData = window.utag_data;
+		const adTags = this.getAdTags();
+		const parsedAdTags = this.parseAdTags(adTags);
+		const mappedAdTags = this.getMappedAdTags(parsedAdTags);
 
-		let targeting: TargetingParams = {};
-
-		if (targetParams) {
-			for (const [key, value] of Object.entries(targetParams)) {
-				targeting[key] = value;
-			}
-		}
-
-		targeting = {
-			...targeting,
-			ptype: utagData?.pageType,
-			user: utagData?.userType,
-			vguid: this.getViewGuid(),
-		};
-
-		return targeting;
+		return mappedAdTags;
 	}
 
-	getMetadataTargetingParams(): TargetingParams {
-		const dataSettingsElement = document.head
-			.querySelector('[id=ad-settings]')
-			?.getAttribute('data-settings');
+	getAdTags(): string {
+		return document.head.querySelector('[name=adtags]')?.getAttribute('content');
+	}
 
-		if (dataSettingsElement) {
-			return JSON.parse(dataSettingsElement)?.target_params;
+	parseAdTags(adTags: string): object {
+		if (!adTags) {
+			return;
 		}
 
-		return null;
+		const adTagsObj = {};
+
+		adTags.split('&').forEach((keyval) => {
+			const parts = keyval.split('=');
+
+			if (Array.isArray(parts) && parts.length === 2) {
+				adTagsObj[parts[0]] = parts[1];
+			}
+		});
+
+		return adTagsObj;
+	}
+
+	getMappedAdTags(adTagsToMap: object): TargetingParams {
+		if (!adTagsToMap) {
+			return;
+		}
+
+		const mappedAdTags = {};
+
+		for (const [key, value] of Object.entries(adTagsToMap)) {
+			if (key === 'cid') {
+				mappedAdTags['contentid_nr'] = value;
+				continue;
+			}
+
+			if (key === 'con') {
+				mappedAdTags['pform'] = value;
+				continue;
+			}
+
+			if (key === 'genre') {
+				mappedAdTags['gnre'] = value;
+				continue;
+			}
+
+			if (key === 'network') {
+				mappedAdTags['tv'] = value;
+				continue;
+			}
+
+			mappedAdTags[key] = value;
+		}
+
+		return mappedAdTags;
 	}
 
 	getViewGuid() {
 		const el = document.getElementById('view-guid-meta');
 		const key = 'content';
 
-		let guid;
+		let vguid = '';
 
 		if (el && el.hasAttribute(key)) {
-			guid = el.getAttribute(key);
+			vguid = el.getAttribute(key);
 		}
 
-		return guid;
+		return { vguid };
 	}
 
 	// Transfered from: https://github.com/Wikia/player1-ads-adlibrary/blob/0df200c535adf3599c7de9e99b719953af2784e1/core/targeting.js#L205
