@@ -27,7 +27,7 @@ export const basicContext = {
 	},
 	services: {
 		durationMedia: {
-			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',
+			libraryUrl: '//tag.durationmedia.net/sites/11359/dm.js',
 		},
 		iasPublisherOptimization: {
 			slots: ['mpu-plus-top'],

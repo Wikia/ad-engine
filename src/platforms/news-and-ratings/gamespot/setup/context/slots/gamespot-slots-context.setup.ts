@@ -16,16 +16,14 @@ export class GamespotSlotsContextSetup implements DiProcess {
 			'skybox-nav': {
 				defaultSizes: [[5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
 				targeting: {
-					sl: '',
-					pos: 'nav',
 					loc: 'top',
+					pos_nr: 'nav',
 				},
 			},
 			mpu_top: {
 				defaultSizes: [[300, 250]],
 				targeting: {
-					sl: '',
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			mpu_plus_top: {
@@ -34,22 +32,19 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					[300, 600],
 				],
 				targeting: {
-					sl: '',
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			mpu_middle: {
 				defaultSizes: [[300, 250]],
 				targeting: {
-					sl: '',
-					pos: '1',
+					pos_nr: '1',
 				},
 			},
 			mpu_bottom: {
 				defaultSizes: [[300, 250]],
 				targeting: {
-					sl: '',
-					pos: 'bottom',
+					pos_nr: 'bottom',
 				},
 			},
 			leader_plus_top: {
@@ -59,8 +54,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					[970, 250],
 				],
 				targeting: {
-					sl: '',
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			leader_top: {
@@ -69,8 +63,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					[970, 66],
 				],
 				targeting: {
-					sl: '',
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			leader_bottom: {
@@ -79,8 +72,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					[970, 66],
 				],
 				targeting: {
-					sl: '',
-					pos: 'bottom',
+					pos_nr: 'bottom',
 				},
 			},
 			overlay_leader_top: {
@@ -89,15 +81,13 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					[970, 66],
 				],
 				targeting: {
-					sl: '',
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			overlay_mpu_top: {
 				defaultSizes: [[300, 250]],
 				targeting: {
-					sl: '',
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			leader_middle: {
@@ -106,8 +96,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					[970, 66],
 				],
 				targeting: {
-					sl: '',
-					pos: '1',
+					pos_nr: '1',
 				},
 			},
 			'sky-leader-plus-top': {
@@ -118,8 +107,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					sl: '',
-					pos: '1',
+					pos_nr: '1',
 				},
 			},
 			'incontent-ad': {
@@ -131,8 +119,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					// fluid?
 				],
 				targeting: {
-					sl: '',
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'incontent-ad-inc': {
@@ -144,8 +131,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					// fluid?
 				],
 				targeting: {
-					sl: '',
-					pos: '1',
+					pos_nr: '1',
 				},
 			},
 			'leader-plus-inc': {
@@ -156,22 +142,19 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					[728, 90],
 				],
 				targeting: {
-					sl: '',
-					pos: '1',
+					pos_nr: '1',
 				},
 			},
 			'mpu-top-inc': {
 				defaultSizes: [[300, 250]],
 				targeting: {
-					sl: '',
-					pos: '1',
+					pos_nr: '1',
 				},
 			},
 			'mpu-bottom-inc': {
 				defaultSizes: [[300, 250]],
 				targeting: {
-					sl: '',
-					pos: '1',
+					pos_nr: '1',
 				},
 			},
 			'leader-bottom-inc': {
@@ -180,15 +163,13 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					[728, 90],
 				],
 				targeting: {
-					sl: '',
-					pos: '1',
+					pos_nr: '1',
 				},
 			},
 			logo_top: {
 				defaultSizes: [[160, 70]],
 				targeting: {
-					sl: '',
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'native-top': {
@@ -197,16 +178,14 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					// fluid
 				],
 				targeting: {
-					sl: '',
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'mobile-skybox-nav': {
 				defaultSizes: [[6, 6], [5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
 				targeting: {
-					sl: '',
-					pos: 'nav',
 					loc: 'top',
+					pos_nr: 'nav',
 				},
 			},
 			'mobile-native': {
@@ -216,8 +195,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					// fluid
 				],
 				targeting: {
-					sl: '',
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'mobile-incontent-ad': {
@@ -229,22 +207,19 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					// fluid
 				],
 				targeting: {
-					sl: '',
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'mobile-banner-bottom': {
 				defaultSizes: [[320, 50]],
 				targeting: {
-					sl: '',
-					pos: 'bottom',
+					pos_nr: 'bottom',
 				},
 			},
 			'mobile-mpu-bottom': {
 				defaultSizes: [[300, 250]],
 				targeting: {
-					sl: '',
-					pos: 'bottom',
+					pos_nr: 'bottom',
 				},
 			},
 			'mobile-native-plus-top': {
@@ -254,8 +229,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					// fluid
 				],
 				targeting: {
-					sl: '',
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'mobile-flex-bottom': {
@@ -264,8 +238,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					[320, 50],
 				],
 				targeting: {
-					sl: '',
-					pos: 'bottom',
+					pos_nr: 'bottom',
 				},
 			},
 			'mobile-autoplay-plus': {
@@ -277,8 +250,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					// fluid
 				],
 				targeting: {
-					sl: '',
-					pos: 'plus',
+					pos_nr: 'plus',
 				},
 			},
 			'mobile-highimpact-plus': {
@@ -288,8 +260,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					sl: '',
-					pos: 'plus',
+					pos_nr: 'plus',
 				},
 			},
 			'incontent-mobile-flex': {
@@ -298,22 +269,19 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					[320, 50],
 				],
 				targeting: {
-					sl: '',
-					pos: '1',
+					pos_nr: '1',
 				},
 			},
 			'mobile-banner': {
 				defaultSizes: [[320, 50]],
 				targeting: {
-					sl: '',
-					pos: '1',
+					pos_nr: '1',
 				},
 			},
 			'mobile-mpu': {
 				defaultSizes: [[300, 250]],
 				targeting: {
-					sl: '',
-					pos: '1',
+					pos_nr: '1',
 				},
 			},
 			'mobile-incontent-ad-inc': {
@@ -325,8 +293,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					// fluid
 				],
 				targeting: {
-					sl: '',
-					pos: '1',
+					pos_nr: '1',
 				},
 			},
 			'mobile-flex-inc': {
@@ -335,15 +302,13 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					[320, 50],
 				],
 				targeting: {
-					sl: '',
-					pos: '1',
+					pos_nr: '1',
 				},
 			},
 			'mobile-logo': {
 				defaultSizes: [[160, 70]],
 				targeting: {
-					sl: '',
-					pos: '1',
+					pos_nr: '1',
 				},
 			},
 			'mobile-nav-ad-plus-banner': {
@@ -352,8 +317,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					sl: '',
-					pos: 'nav',
+					pos_nr: 'nav',
 				},
 			},
 			'leader-ad-plus-top': {
@@ -363,8 +327,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					[970, 250],
 				],
 				targeting: {
-					sl: '',
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'leader-ad-plus-middle': {
@@ -374,8 +337,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					[970, 250],
 				],
 				targeting: {
-					sl: '',
-					pos: 'middle',
+					pos_nr: 'middle',
 				},
 			},
 			'native-mpu': {
@@ -384,8 +346,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					// fluid
 				],
 				targeting: {
-					sl: '',
-					pos: 'native',
+					pos_nr: 'native',
 				},
 			},
 			'incontent-ad-plus-billboard-bottom': {
@@ -396,8 +357,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					sl: '',
-					pos: 'bottom',
+					pos_nr: 'bottom',
 				},
 			},
 			'mobile-incontent-plus': {
@@ -407,8 +367,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					sl: '',
-					pos: 'increment',
+					pos_nr: 'increment',
 				},
 			},
 			'mobile-incontent-plus-bottom': {
@@ -418,8 +377,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					sl: '',
-					pos: 'bottom',
+					pos_nr: 'bottom',
 				},
 			},
 			'nav-ad-plus-leader': {
@@ -430,8 +388,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					sl: '',
-					pos: 'nav',
+					pos_nr: 'nav',
 				},
 			},
 			'mobile-banner-plus': {
@@ -440,8 +397,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					[320, 50],
 				],
 				targeting: {
-					sl: '',
-					pos: 'increment',
+					pos_nr: 'increment',
 				},
 			},
 			'incontent-ad-plus-inc': {
@@ -452,8 +408,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					// fluid
 				],
 				targeting: {
-					sl: '',
-					pos: 'inc',
+					pos_nr: 'inc',
 				},
 			},
 			'mobile-incontent-ad-plus-inc': {
@@ -464,8 +419,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					// fluid
 				],
 				targeting: {
-					sl: '',
-					pos: 'inc',
+					pos_nr: 'inc',
 				},
 			},
 			'incontent-all-top': {
@@ -477,8 +431,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					sl: '',
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'mobile-incontent-all': {
@@ -489,8 +442,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					sl: '',
-					pos: 'increment',
+					pos_nr: 'increment',
 				},
 			},
 			'incontent-narrow-all-top': {
@@ -500,8 +452,7 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					sl: '',
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			video: {
