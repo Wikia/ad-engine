@@ -4,7 +4,6 @@ import {
 	context,
 	DiProcess,
 	eventsRepository,
-	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -21,11 +20,11 @@ export class TvGuidePrebidConfigSetup implements DiProcess {
 	constructor(private bidders: Bidders) {}
 
 	execute(): void {
-		const isDesktop = utils.client.isDesktop();
-
 		if (!this.isPrebidEnabled()) {
 			return;
 		}
+
+		const isDesktop = !context.get('state.isMobile');
 
 		context.set('bidders.prebid.appnexus', getAppnexusContext(isDesktop));
 		context.set('bidders.prebid.criteo', getCriteoContext(isDesktop));

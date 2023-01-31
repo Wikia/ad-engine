@@ -14,7 +14,7 @@ export class BfaaGamespotConfigHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.PARAMS) private params: UapParams) {}
 
 	async onEnter(): Promise<void> {
-		const enabledSlots: string[] = ['skybox-nav'];
+		const enabledSlots: string[] = [];
 
 		if (this.params.newTakeoverConfig) {
 			communicationService.emit(eventsRepository.AD_ENGINE_UAP_NTC_LOADED);
