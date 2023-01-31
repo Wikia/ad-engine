@@ -1,5 +1,6 @@
 export * from './appnexus';
 export * from './appnexus-ast';
+export * from './criteo';
 export * from './gumgum';
 export * from './index-exchange';
 export * from './kargo';
@@ -17,3 +18,4 @@ export * from './triplelift';
 export * from './verizon';
 export * from './wikia';
 export * from './wikia-video';
+export * from './yahoossp';
