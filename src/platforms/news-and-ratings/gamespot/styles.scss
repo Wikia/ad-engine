@@ -11,3 +11,10 @@
 		margin: 0 auto;
 	}
 }
+
+body:not(.skybox-loaded) {
+	.mapped-skybox-nav,
+	.mapped-mobile-skybox-nav {
+		min-height: 0;
+	}
+}

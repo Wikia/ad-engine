@@ -93,16 +93,25 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 	}
 
 	getViewGuid() {
+		const pageViewGuid = this.getViewGuidFromUtagData() || this.getViewGuidFromMetaTag();
+		return { vguid: pageViewGuid };
+	}
+
+	getViewGuidFromUtagData() {
+		return window.utag_data?.pageViewGuid;
+	}
+
+	getViewGuidFromMetaTag() {
 		const el = document.getElementById('view-guid-meta');
 		const key = 'content';
 
-		let vguid = '';
+		let pageViewGuid = '';
 
 		if (el && el.hasAttribute(key)) {
-			vguid = el.getAttribute(key);
+			pageViewGuid = el.getAttribute(key);
 		}
 
-		return { vguid };
+		return pageViewGuid;
 	}
 
 	// Transfered from: https://github.com/Wikia/player1-ads-adlibrary/blob/0df200c535adf3599c7de9e99b719953af2784e1/core/targeting.js#L205
