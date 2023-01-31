@@ -206,7 +206,6 @@ export class GptProvider implements Provider {
 
 	setupRestrictDataProcessing(): void {
 		const tag = window.googletag.pubads();
-		console.log(context.get('options.geoRequiresConsent'));
 		const settings: Dictionary = {
 			restrictDataProcessing: trackingOptIn.isOptOutSale(),
 		};
