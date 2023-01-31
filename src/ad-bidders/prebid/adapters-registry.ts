@@ -2,6 +2,7 @@ import { Aliases, context, pbjsFactory } from '@ad-engine/core';
 import {
 	Appnexus,
 	AppnexusAst,
+	Criteo,
 	Gumgum,
 	IndexExchange,
 	Kargo,
@@ -29,6 +30,7 @@ class AdaptersRegistry {
 	private availableAdapters = [
 		Appnexus,
 		AppnexusAst,
+		Criteo,
 		Gumgum,
 		IndexExchange,
 		Kargo,
