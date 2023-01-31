@@ -88,11 +88,6 @@ export function buildVastUrl(
 	];
 	const slot: AdSlot = slotService.get(slotName);
 	const ppid = context.get('targeting.ppid');
-	const over18 = context.get('targeting.over18');
-
-	if (over18) {
-		params.push(`over_18=${over18}`);
-	}
 
 	if (ppid) {
 		params.push(`ppid=${ppid}`);
@@ -136,15 +131,10 @@ export function buildVastUrl(
 
 export function buildTaglessRequestUrl(options: Partial<TaglessSlotOptions> = {}): string {
 	const ppid = context.get('targeting.ppid');
-	const over18 = context.get('targeting.over18');
 	const params: string[] = [`c=${correlator}`, 'tile=1', 'd_imp=1'];
 
 	params.push(`iu=${options.adUnit}`);
 	params.push(`sz=${options.size}`);
-
-	if (over18) {
-		params.push(`over_18=${over18}`);
-	}
 
 	if (ppid) {
 		params.push(`ppid=${ppid}`);
