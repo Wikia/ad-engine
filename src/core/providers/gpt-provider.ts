@@ -208,6 +208,7 @@ export class GptProvider implements Provider {
 		const tag = window.googletag.pubads();
 		const settings: Dictionary = {
 			restrictDataProcessing: trackingOptIn.isOptOutSale(),
+			nonPersonalizedAds: context.get('options.geoRequiresConsent') && !trackingOptIn.isOptedIn(),
 		};
 
 		if (config.rollout.coppaFlag().gam && utils.targeting.isWikiDirectedAtChildren()) {
