@@ -51,7 +51,9 @@ body {
 	}
 }
 
-.mapped-skybox-nav,
-.mapped-mobile-skybox-nav {
-	min-height: 0;
+body:not(.skybox-loaded) {
+	.mapped-skybox-nav,
+	.mapped-mobile-skybox-nav {
+		min-height: 0;
+	}
 }
