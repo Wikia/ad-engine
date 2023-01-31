@@ -1,4 +1,4 @@
-export function getIndexExchangeContext(isDesktop: boolean): object {
+export function getCriteoContext(isDesktop: boolean): object {
 	const desktopSlots = {
 		'omni-skybox-leader-nav': {
 			sizes: [[728, 90]],

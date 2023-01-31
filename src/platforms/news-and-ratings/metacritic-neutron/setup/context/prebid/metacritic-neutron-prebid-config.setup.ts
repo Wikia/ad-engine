@@ -8,6 +8,7 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
+import { getCriteoContext } from '../../../bidders/criteo';
 import { getIndexExchangeContext } from '../../../bidders/index-exchange';
 
 @Injectable()
@@ -21,6 +22,7 @@ export class MetacriticNeutronPrebidConfigSetup implements DiProcess {
 			return;
 		}
 
+		context.set('bidders.prebid.criteo', getCriteoContext(isDesktop));
 		context.set('bidders.prebid.indexExchange', getIndexExchangeContext(isDesktop));
 
 		this.registerListeners();
