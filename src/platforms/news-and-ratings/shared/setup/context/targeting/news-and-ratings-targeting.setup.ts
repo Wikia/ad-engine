@@ -51,7 +51,10 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 			const parts = keyval.split('=');
 
 			if (Array.isArray(parts) && parts.length === 2) {
-				adTagsObj[parts[0]] = parts[1];
+				const key = parts[0];
+				const value = decodeURIComponent(parts[1]).replace(/\+/g, ' ');
+
+				adTagsObj[key] = value;
 			}
 		});
 
