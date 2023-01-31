@@ -23,6 +23,7 @@ export class BiddersStateSetup implements DiProcess {
 		rubicon: 'icPrebidRubicon',
 		triplelift: 'icPrebidTriplelift',
 		verizon: 'icPrebidVerizon',
+		yahoossp: 'icPrebidYahooSsp',
 	};
 
 	constructor(private instantConfig: InstantConfigService) {

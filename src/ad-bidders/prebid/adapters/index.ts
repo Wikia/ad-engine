@@ -18,3 +18,4 @@ export * from './triplelift';
 export * from './verizon';
 export * from './wikia';
 export * from './wikia-video';
+export * from './yahoossp';
