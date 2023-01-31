@@ -85,6 +85,19 @@ describe('News and Ratings Targeting Setup', () => {
 			expect(parsedAdTags).to.be.deep.eq(expectedParsedAdTags);
 		});
 
+		it('parseAdTags correctly decodes encoded values', () => {
+			const adTagsString = 'game=test-game&genre=Role-Playing%2CAction+RPG';
+
+			const expectedParsedAdTags = {
+				game: 'test-game',
+				genre: 'Role-Playing,Action RPG',
+			};
+
+			const parsedAdTags = newsAndRatingsTargetingSetup.parseAdTags(adTagsString);
+
+			expect(parsedAdTags).to.be.deep.eq(expectedParsedAdTags);
+		});
+
 		it('getMappedAdTags correctly maps N&R specific targeting key names to match Fandom convention', () => {
 			const parsedAdTags = {
 				cid: 'test-cid',
