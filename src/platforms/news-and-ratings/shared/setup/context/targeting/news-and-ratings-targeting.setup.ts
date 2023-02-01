@@ -31,9 +31,7 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 	getPageLevelTargeting(): TargetingParams {
 		const adTags = this.getAdTags();
 		const parsedAdTags = this.parseAdTags(adTags);
-		const mappedAdTags = this.getMappedAdTags(parsedAdTags);
-
-		return mappedAdTags;
+		return this.getMappedAdTags(parsedAdTags);
 	}
 
 	getAdTags(): string {
@@ -52,7 +50,7 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 
 			if (Array.isArray(parts) && parts.length === 2) {
 				const key = parts[0];
-				const value = decodeURIComponent(parts[1]).replace(/\+/g, ' ');
+				const value = decodeURIComponent(parts[1]).replaceAll('+', ' ');
 
 				adTagsObj[key] = value;
 			}

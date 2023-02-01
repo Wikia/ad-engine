@@ -86,11 +86,11 @@ describe('News and Ratings Targeting Setup', () => {
 		});
 
 		it('parseAdTags correctly decodes encoded values', () => {
-			const adTagsString = 'game=test-game&genre=Role-Playing%2CAction+RPG';
+			const adTagsString = 'game=test-game&genre=Role-Playing%2CAction+RPG%2CBattle+Royale';
 
 			const expectedParsedAdTags = {
 				game: 'test-game',
-				genre: 'Role-Playing,Action RPG',
+				genre: 'Role-Playing,Action RPG,Battle Royale',
 			};
 
 			const parsedAdTags = newsAndRatingsTargetingSetup.parseAdTags(adTagsString);
