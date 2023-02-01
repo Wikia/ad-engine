@@ -10,7 +10,7 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })
-export class BfaaGamespotConfigHandler implements TemplateStateHandler {
+export class BfaaNewsAndRatingsConfigHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.PARAMS) private params: UapParams) {}
 
 	async onEnter(): Promise<void> {

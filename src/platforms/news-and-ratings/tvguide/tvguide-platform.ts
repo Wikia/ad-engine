@@ -13,6 +13,7 @@ import { TvGuidePrebidConfigSetup } from './setup/context/prebid/tvguide-prebid-
 import { TvGuideSlotsContextSetup } from './setup/context/slots/tvguide-slots-context.setup';
 import { TvGuideTargetingSetup } from './setup/context/targeting/tvguide-targeting.setup';
 import { TvGuideDynamicSlotsSetup } from './setup/dynamic-slots/tvguide-dynamic-slots.setup';
+import { TvguideTemplatesSetup } from './templates/tvguide-templates.setup';
 
 @Injectable()
 export class TvGuidePlatform {
@@ -33,6 +34,7 @@ export class TvGuidePlatform {
 			TvGuideSlotsContextSetup,
 			TvGuidePrebidConfigSetup,
 			BiddersStateSetup,
+			TvguideTemplatesSetup,
 			NewsAndRatingsAdsMode,
 		);
 

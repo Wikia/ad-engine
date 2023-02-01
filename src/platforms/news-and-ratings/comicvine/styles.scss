@@ -1,3 +1,9 @@
+@import '../shared/styles/uap-styles.scss';
+
+body {
+	@include uap-styles();
+}
+
 .gpt-ad {
 	text-align: center;
 

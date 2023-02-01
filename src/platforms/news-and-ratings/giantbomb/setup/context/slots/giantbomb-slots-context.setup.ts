@@ -1,4 +1,4 @@
-import { context, DiProcess } from '@wikia/ad-engine';
+import { context, DiProcess, universalAdPackage } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -6,9 +6,11 @@ export class GiantbombSlotsContextSetup implements DiProcess {
 	execute(): void {
 		const slots = {
 			'skybox-nav': {
-				defaultSizes: [[5, 5]],
+				firstCall: true,
+				defaultSizes: [[5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
 				targeting: {
 					pos_nr: 'nav',
+					loc: 'top',
 				},
 			},
 			leader_plus_top: {
@@ -98,12 +100,11 @@ export class GiantbombSlotsContextSetup implements DiProcess {
 				},
 			},
 			'mobile-skybox-nav': {
-				defaultSizes: [
-					[6, 6],
-					[5, 5],
-				],
+				firstCall: true,
+				defaultSizes: [[6, 6], [5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
 				targeting: {
 					pos_nr: 'nav',
+					loc: 'top',
 				},
 			},
 			'mobile-native': {

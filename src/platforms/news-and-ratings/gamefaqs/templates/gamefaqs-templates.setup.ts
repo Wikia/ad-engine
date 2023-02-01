@@ -5,7 +5,7 @@ import { registerBfaaTemplate } from '../../shared';
 import { registerUapDomElements } from './configs/register-uap-dom-elements';
 
 @Injectable()
-export class GamespotTemplatesSetup implements DiProcess {
+export class GamefaqsTemplatesSetup implements DiProcess {
 	constructor(private registry: TemplateRegistry) {
 		templateService.setInitializer(this.registry);
 	}

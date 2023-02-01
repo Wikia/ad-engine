@@ -28,15 +28,23 @@ import {
 	VideoSizeImpactToResolvedHandler,
 	VideoSizeResolvedHandler,
 } from '@platforms/shared';
-import { context, TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
+import {
+	context,
+	TemplateAction,
+	TemplateDependency,
+	TemplateRegistry,
+	universalAdPackage,
+} from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
-import { registerUapDomElements } from './configs/register-uap-dom-elements';
-import { BfaaGamespotConfigHandler } from './handlers/bfaa/bfaa-gamespot-config-handler';
+import { BfaaNewsAndRatingsConfigHandler } from './handlers/bfaa/bfaa-news-and-ratings-config-handler';
 
-export function registerBfaaTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
+export function registerBfaaTemplate(
+	registry: TemplateRegistry,
+	registerUapDomElements: () => TemplateDependency[],
+): Observable<TemplateAction> {
 	const templateStates = {
 		initial: [
-			BfaaGamespotConfigHandler,
+			BfaaNewsAndRatingsConfigHandler,
 			BfaaBootstrapHandler,
 			VideoBootstrapHandler,
 			VideoCtpHandler,

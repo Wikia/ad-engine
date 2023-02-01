@@ -1,4 +1,4 @@
-import { context, DiProcess } from '@wikia/ad-engine';
+import { context, DiProcess, universalAdPackage } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -6,12 +6,11 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 	execute(): void {
 		const slots = {
 			nav_ad_omni: {
-				defaultSizes: [
-					[5, 5],
-					[6, 6],
-				],
+				firstCall: true,
+				defaultSizes: [[5, 5], [6, 6], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
 				targeting: {
 					pos_nr: 'nav',
+					loc: 'top',
 				},
 			},
 			leader_plus_top: {
@@ -303,12 +302,11 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 				},
 			},
 			'mobile-nav-ad-plus-banner': {
-				defaultSizes: [
-					[5, 5],
-					[320, 50],
-				],
+				firstCall: true,
+				defaultSizes: [[5, 5], [320, 50], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
 				targeting: {
 					pos_nr: 'nav',
+					loc: 'top',
 				},
 			},
 			video: {

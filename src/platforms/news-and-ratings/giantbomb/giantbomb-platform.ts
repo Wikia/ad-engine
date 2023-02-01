@@ -12,6 +12,7 @@ import { basicContext } from './ad-context';
 import { GiantbombPrebidConfigSetup } from './setup/context/prebid/giantbomb-prebid-config.setup';
 import { GiantbombSlotsContextSetup } from './setup/context/slots/giantbomb-slots-context.setup';
 import { GiantbombTargetingSetup } from './setup/context/targeting/giantbomb-targeting.setup';
+import { GiantbombTemplatesSetup } from './templates/giantbomb-templates.setup';
 
 @Injectable()
 export class GiantbombPlatform {
@@ -32,6 +33,7 @@ export class GiantbombPlatform {
 			NewsAndRatingsDynamicSlotsSetup,
 			GiantbombPrebidConfigSetup,
 			BiddersStateSetup,
+			GiantbombTemplatesSetup,
 			NewsAndRatingsAdsMode,
 		);
 
