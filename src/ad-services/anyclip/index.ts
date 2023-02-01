@@ -32,7 +32,7 @@ export class Anyclip {
 		return utils.scriptLoader
 			.loadScript(this.libraryUrl, 'text/javascript', true, incontentPlayerContainer, this.params)
 			.then(() => {
-				incontentPlayerContainer.classList.remove('hide');
+				incontentPlayerContainer?.classList.remove('hide');
 				utils.logger(logGroup, 'ready');
 
 				this.waitForSubscribeReady().then((isSubscribeReady) => {
