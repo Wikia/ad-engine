@@ -2,6 +2,7 @@ import { Aliases, context, pbjsFactory } from '@ad-engine/core';
 import {
 	Appnexus,
 	AppnexusAst,
+	Criteo,
 	Gumgum,
 	IndexExchange,
 	Kargo,
@@ -20,6 +21,7 @@ import {
 	Wikia,
 	WikiaVideo,
 } from './adapters';
+import { YahooSsp } from './adapters/yahoossp';
 import { PrebidAdapter } from './prebid-adapter';
 import { isPrebidAdapterConfig } from './prebid-helper';
 import { PrebidConfig } from './prebid-models';
@@ -29,6 +31,7 @@ class AdaptersRegistry {
 	private availableAdapters = [
 		Appnexus,
 		AppnexusAst,
+		Criteo,
 		Gumgum,
 		IndexExchange,
 		Kargo,
@@ -46,6 +49,7 @@ class AdaptersRegistry {
 		Verizon,
 		Wikia,
 		WikiaVideo,
+		YahooSsp,
 	];
 
 	getAdapter(bidderName: string): PrebidAdapter | undefined {

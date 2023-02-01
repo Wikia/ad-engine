@@ -20,14 +20,27 @@ export class Kargo extends PrebidAdapter {
 					sizes,
 				},
 			},
-			bids: [
-				{
-					bidder: this.bidderName,
-					params: {
-						placementId,
-					},
-				},
-			],
+			bids: this.getBids(placementId),
 		};
+	}
+
+	getBids(placementId) {
+		if (Array.isArray(placementId) && placementId.length > 0) {
+			return placementId.map((id) => ({
+				bidder: this.bidderName,
+				params: {
+					placementId: id,
+				},
+			}));
+		}
+
+		return [
+			{
+				bidder: this.bidderName,
+				params: {
+					placementId,
+				},
+			},
+		];
 	}
 }
