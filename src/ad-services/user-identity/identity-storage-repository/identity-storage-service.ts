@@ -6,24 +6,23 @@ class IdentityStorageService {
 	constructor(private storage: UniversalStorage) {}
 
 	async get(): Promise<Partial<IdentityStorageDto>> {
-		const deprecatedPPID = this.getLocalIdentityToken();
+		const deprecatedPPID = this.getLocalPPID();
 		if (deprecatedPPID) {
 			return await this.migrateExistingPpid(deprecatedPPID);
-		} else {
-			const localData = await identityStorageClient.getLocalData();
-			if (!localData) {
-				const remoteData = await identityStorageClient.fetchData();
-				this.updateLocalData(remoteData);
-				return remoteData;
-			} else if (!localData.synced) {
-				const remoteData = await this.setRemote(localData);
-				this.updateLocalData(remoteData);
-				return remoteData;
-			}
-
-			this.setIdentityContextVariables(localData);
-			return localData;
 		}
+		const localData = await identityStorageClient.getLocalData();
+		if (!localData) {
+			const remoteData = await identityStorageClient.fetchData();
+			this.updateLocalData(remoteData);
+			return remoteData;
+		} else if (!localData.synced) {
+			const remoteData = await this.setRemote(localData);
+			this.updateLocalData(remoteData);
+			return remoteData;
+		}
+
+		this.setIdentityContextVariables(localData);
+		return localData;
 	}
 
 	private async migrateExistingPpid(deprecatedPPID: string) {
@@ -34,7 +33,7 @@ class IdentityStorageService {
 		return remoteData;
 	}
 
-	private getLocalIdentityToken(): string | null {
+	private getLocalPPID(): string | null {
 		return this.storage.getItem('ppid');
 	}
 
@@ -44,7 +43,9 @@ class IdentityStorageService {
 	}
 
 	private setIdentityContextVariables(userData: IdentityStorageDto) {
-		context.set('targeting.over_18', userData.over18 ? '1' : '0');
+		if (userData.over18) {
+			context.set('targeting.over_18', '1');
+		}
 	}
 
 	async setRemote(data: IdentityStorageDto): Promise<IdentityStorageDto> {
