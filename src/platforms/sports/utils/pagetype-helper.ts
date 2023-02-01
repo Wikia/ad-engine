@@ -25,7 +25,7 @@ export function getPageType(pathName: string): PageTypes {
 		case /squad-builder/.test(pathName):
 			return 'squad_builder';
 
-		case /squads/.test(pathName):
+		case /squads\/\d+/.test(pathName):
 			return 'squads';
 
 		case /talk/.test(pathName):
