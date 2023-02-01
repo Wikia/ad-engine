@@ -209,8 +209,11 @@ export class GptProvider implements Provider {
 		const settings: Dictionary = {
 			restrictDataProcessing: trackingOptIn.isOptOutSale(),
 		};
-		if (context.get('options.geoRequiresConsent') && !trackingOptIn.isOptedIn()) {
-			settings.nonPersonalizedAds = true;
+		if (
+			context.get('options.geoRequiresConsent') &&
+			context.get('custom.targeting.manualDataRestriction')
+		) {
+			settings.nonPersonalizedAds = !trackingOptIn.isOptedIn();
 		}
 		if (config.rollout.coppaFlag().gam && utils.targeting.isWikiDirectedAtChildren()) {
 			settings.childDirectedTreatment = true;

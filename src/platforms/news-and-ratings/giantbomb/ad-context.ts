@@ -20,6 +20,7 @@ export const basicContext = {
 					ttag: 'ttag',
 				},
 			},
+			manualDataRestriction: true,
 		},
 		timeouts: {
 			bidder: 1000,
