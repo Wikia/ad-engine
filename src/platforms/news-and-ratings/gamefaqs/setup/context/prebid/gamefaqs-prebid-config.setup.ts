@@ -9,6 +9,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { getAppnexusContext } from '../../../bidders/appnexus';
 import { getCriteoContext } from '../../../bidders/criteo';
 import { getIndexExchangeContext } from '../../../bidders/index-exchange';
+import { getKargoContext } from '../../../bidders/kargo';
 import { getMedianetContext } from '../../../bidders/medianet';
 import { getPubmaticContext } from '../../../bidders/pubmatic';
 import { getRubiconDisplayContext } from '../../../bidders/rubicon-display';
@@ -29,6 +30,7 @@ export class GamefaqsPrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.appnexus', getAppnexusContext(isDesktop));
 		context.set('bidders.prebid.criteo', getCriteoContext(isDesktop));
 		context.set('bidders.prebid.indexExchange', getIndexExchangeContext(isDesktop));
+		context.set('bidders.prebid.kargo', getKargoContext(isDesktop));
 		context.set('bidders.prebid.medianet', getMedianetContext(isDesktop));
 		context.set('bidders.prebid.pubmatic', getPubmaticContext(isDesktop));
 		context.set('bidders.prebid.rubicon_display', getRubiconDisplayContext(isDesktop));
