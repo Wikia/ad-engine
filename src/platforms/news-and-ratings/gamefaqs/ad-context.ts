@@ -26,6 +26,13 @@ export const basicContext = {
 		},
 	},
 	services: {
+		anyclip: {
+			enabled: true,
+			pubname: '1999',
+			widgetname: '001w000001Y8ud2AAB_M7309',
+			libraryUrl: 'https://player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/acins.js',
+			loadOnPageLoad: true,
+		},
 		durationMedia: {
 			libraryUrl: '//tag.durationmedia.net/sites/11354/dm.js',
 		},

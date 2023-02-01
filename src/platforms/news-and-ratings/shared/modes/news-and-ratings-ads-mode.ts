@@ -1,4 +1,4 @@
-import { GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
+import { AnyclipPlayerSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
 	Bidders,
 	Captify,
@@ -18,6 +18,7 @@ import { Injectable } from '@wikia/dependency-injection';
 @Injectable()
 export class NewsAndRatingsAdsMode implements DiProcess {
 	constructor(
+		private anyclipPlayerSetup: AnyclipPlayerSetup,
 		private pipeline: PartnerPipeline,
 		private bidders: Bidders,
 		private captify: Captify,
@@ -35,6 +36,7 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 	execute(): void {
 		this.pipeline
 			.add(
+				this.anyclipPlayerSetup,
 				this.bidders,
 				this.wadRunner,
 				this.userIdentity,
