@@ -43,20 +43,7 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 			return;
 		}
 
-		const adTagsObj = {};
-
-		adTags.split('&').forEach((keyval) => {
-			const parts = keyval.split('=');
-
-			if (Array.isArray(parts) && parts.length === 2) {
-				const key = parts[0];
-				const value = decodeURIComponent(parts[1]).replaceAll('+', ' ');
-
-				adTagsObj[key] = value;
-			}
-		});
-
-		return adTagsObj;
+		return Object.fromEntries(new URLSearchParams(adTags));
 	}
 
 	getMappedAdTags(adTagsToMap: object): TargetingParams {
