@@ -18,6 +18,9 @@
 		#mobile-omni-skybox-plus-nav,
 		#omni-skybox-leader-sticky,
 		#mobile-omni-skybox-plus-sticky {
+			line-height: unset;
+			margin: unset;
+
 			@include bfaa-slot();
 
 			@include uap-porvata();
@@ -28,6 +31,15 @@
 
 			&.is-dark {
 				@include uap-dark-theme();
+			}
+
+			.porvata-interface .current-time {
+				margin: unset !important;
+			}
+
+			.learn-more > div {
+				margin-right: 30px !important;
+				margin-top: 5px !important;
 			}
 		}
 

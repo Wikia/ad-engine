@@ -1,37 +1,4 @@
-@import '../../shared/styles/mixin';
-@import '../../shared/styles/uap/uap-advertisement-label';
-@import '../../shared/styles/uap/uap-button-close';
-@import '../../shared/styles/uap/bfaa-slot';
-@import '../../shared/styles/uap/expanded-slot';
-@import '../../shared/styles/uap-porvata/uap-porvata-learn-more';
-@import '../../shared/styles/uap-porvata/uap-porvata-right-position';
-@import '../../shared/styles/uap-porvata/uap-porvata';
-@import '../../shared/styles/uap-porvata/porvata';
-
-@mixin uap-styles() {
-	&.has-uap {
-		#skybox-nav,
-		#mobile-skybox-nav {
-			@include bfaa-slot();
-
-			@include uap-porvata();
-			@include uap-porvata-learn-more();
-
-			@include uap-advertisement-label();
-			@include uap-button-close();
-
-			&.is-dark {
-				@include uap-dark-theme();
-			}
-		}
-
-		#skybox-nav {
-			@include uap-porvata-right-position();
-		}
-	}
-
-	@include expanded-slot();
-}
+@import '../shared/styles/uap-styles.scss';
 
 body {
 	@include uap-styles();

@@ -1,11 +1,13 @@
 import { FOOTER, NAVBAR, PAGE } from '@platforms/shared';
-import { TemplateDependency } from '@wikia/ad-engine';
+import { context, TemplateDependency } from '@wikia/ad-engine';
 
 export function registerUapDomElements(): TemplateDependency[] {
 	return [
 		{
 			bind: NAVBAR,
-			value: document.getElementById('masthead'),
+			value: context.get('state.isMobile')
+				? document.getElementById('header')
+				: document.getElementById('masthead'),
 		},
 		{
 			bind: PAGE,
@@ -13,7 +15,9 @@ export function registerUapDomElements(): TemplateDependency[] {
 		},
 		{
 			bind: FOOTER,
-			value: document.getElementById('mastfoot'),
+			value: context.get('state.isMobile')
+				? document.getElementById('footer')
+				: document.getElementById('mastfoot'),
 		},
 	];
 }
