@@ -147,6 +147,7 @@ export class BaseContextSetup implements DiProcess {
 
 	private setServicesContext(): void {
 		context.set('services.anyclip.enabled', this.instantConfig.get('icAnyclipPlayer'));
+		context.set('services.anyclip.isApplicable', () => true);
 		context.set(
 			'services.interventionTracker.enabled',
 			this.instantConfig.get('icInterventionTracking'),

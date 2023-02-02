@@ -13,6 +13,7 @@ import { basicContext } from './ad-context';
 import { GamefaqsPrebidConfigSetup } from './setup/context/prebid/gamefaqs-prebid-config.setup';
 import { GamefaqsSlotsContextSetup } from './setup/context/slots/gamefaqs-slots-context.setup';
 import { GamefaqsTargetingSetup } from './setup/context/targeting/gamefaqs-targeting.setup';
+import { GamefaqsAnyclipApplierSetup } from './setup/context/video/GamefaqsAnyclipApplierSetup';
 
 @Injectable()
 export class GamefaqsPlatform {
@@ -28,6 +29,7 @@ export class GamefaqsPlatform {
 			NewsAndRatingsWadSetup,
 			NewsAndRatingsTargetingSetup,
 			GamefaqsTargetingSetup,
+			GamefaqsAnyclipApplierSetup,
 			GamefaqsSlotsContextSetup,
 			LazyLoadedSlotsContextSetup,
 			NewsAndRatingsDynamicSlotsSetup,
