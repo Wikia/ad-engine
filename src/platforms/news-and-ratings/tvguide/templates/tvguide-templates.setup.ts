@@ -5,7 +5,7 @@ import { registerBfaaTemplate } from '../../shared';
 import { registerUapDomElements } from './configs/register-uap-dom-elements';
 
 @Injectable()
-export class TvguideTemplatesSetup implements DiProcess {
+export class TvGuideTemplatesSetup implements DiProcess {
 	constructor(private registry: TemplateRegistry) {
 		templateService.setInitializer(this.registry);
 	}
