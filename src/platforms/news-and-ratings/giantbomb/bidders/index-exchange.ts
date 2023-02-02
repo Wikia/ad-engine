@@ -38,6 +38,9 @@ export function getIndexExchangeContext(isDesktop: boolean): object {
 			],
 			siteId: ['936262', '936263'],
 		},
+		video: {
+			siteId: '936612',
+		},
 	};
 
 	const mobileSlots = {
@@ -80,6 +83,9 @@ export function getIndexExchangeContext(isDesktop: boolean): object {
 		'mobile-mpu': {
 			sizes: [[300, 250]],
 			siteId: ['936274'],
+		},
+		video: {
+			siteId: '936613',
 		},
 	};
 
