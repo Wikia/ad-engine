@@ -28,15 +28,11 @@ import {
 	VideoSizeImpactToResolvedHandler,
 	VideoSizeResolvedHandler,
 } from '@platforms/shared';
-import {
-	context,
-	TemplateAction,
-	TemplateDependency,
-	TemplateRegistry,
-	universalAdPackage,
-} from '@wikia/ad-engine';
+import { context, TemplateAction, TemplateDependency, TemplateRegistry } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
 import { BfaaNewsAndRatingsConfigHandler } from './handlers/bfaa/bfaa-news-and-ratings-config-handler';
+
+const BFAA_LONG_UNSTICK_DELAY = 10000000;
 
 export function registerBfaaTemplate(
 	registry: TemplateRegistry,
@@ -104,7 +100,7 @@ export function registerBfaaTemplate(
 		VideoDomReader,
 		VideoDomManager,
 		CloseButtonHelper,
-		StickinessTimeout.provide(universalAdPackage.BFAA_UNSTICK_DELAY),
+		StickinessTimeout.provide(BFAA_LONG_UNSTICK_DELAY),
 		registerUapDomElements(),
 	]);
 }
