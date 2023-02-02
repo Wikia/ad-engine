@@ -18,8 +18,8 @@ import { Injectable } from '@wikia/dependency-injection';
 @Injectable()
 export class NewsAndRatingsAdsMode implements DiProcess {
 	constructor(
-		private anyclipPlayerSetup: AnyclipPlayerSetup,
 		private pipeline: PartnerPipeline,
+		private anyclipPlayerSetup: AnyclipPlayerSetup,
 		private bidders: Bidders,
 		private captify: Captify,
 		private confiant: Confiant,

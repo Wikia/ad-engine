@@ -65,6 +65,7 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 			this.instantConfig.get('icComscoreJwpTracking'),
 		);
 		context.set('options.video.pauseJWPlayerAd', this.instantConfig.get('icPauseJWPlayerAd'));
+		context.set('services.anyclip.enabled', this.instantConfig.get('icAnyclipPlayer'));
 	}
 
 	private shouldSwitchGamToRV() {
