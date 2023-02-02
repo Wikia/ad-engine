@@ -4,7 +4,6 @@ import {
 	context,
 	DiProcess,
 	eventsRepository,
-	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { getAppnexusContext } from '../../../bidders/appnexus';
@@ -22,7 +21,7 @@ export class GamefaqsPrebidConfigSetup implements DiProcess {
 	constructor(private bidders: Bidders) {}
 
 	execute(): void {
-		const isDesktop = utils.client.isDesktop();
+		const isDesktop = !context.get('state.isMobile');
 
 		context.set('bidders.prebid.appnexus', getAppnexusContext(isDesktop));
 		context.set('bidders.prebid.criteo', getCriteoContext(isDesktop));
