@@ -20,10 +20,6 @@ export class MetacriticNeutronPrebidConfigSetup implements DiProcess {
 	execute(): void {
 		const isDesktop = utils.client.isDesktop();
 
-		if (!this.isPrebidEnabled()) {
-			return;
-		}
-
 		context.set('bidders.prebid.criteo', getCriteoContext(isDesktop));
 		context.set('bidders.prebid.indexExchange', getIndexExchangeContext(isDesktop));
 		context.set('bidders.prebid.kargo', getKargoContext(isDesktop));
@@ -40,9 +36,5 @@ export class MetacriticNeutronPrebidConfigSetup implements DiProcess {
 			},
 			false,
 		);
-	}
-
-	private isPrebidEnabled() {
-		return !!context.get('bidders.prebid');
 	}
 }

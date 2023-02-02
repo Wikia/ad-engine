@@ -24,10 +24,6 @@ export class GamefaqsPrebidConfigSetup implements DiProcess {
 	execute(): void {
 		const isDesktop = utils.client.isDesktop();
 
-		if (!this.isPrebidEnabled()) {
-			return;
-		}
-
 		context.set('bidders.prebid.appnexus', getAppnexusContext(isDesktop));
 		context.set('bidders.prebid.criteo', getCriteoContext(isDesktop));
 		context.set('bidders.prebid.indexExchange', getIndexExchangeContext(isDesktop));
@@ -49,9 +45,5 @@ export class GamefaqsPrebidConfigSetup implements DiProcess {
 			},
 			false,
 		);
-	}
-
-	private isPrebidEnabled() {
-		return !!context.get('bidders.prebid');
 	}
 }
