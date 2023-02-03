@@ -1,4 +1,4 @@
-import { btfBlockerService, context, DiProcess, utils } from '@wikia/ad-engine';
+import { context, DiProcess, utils } from '@wikia/ad-engine';
 
 export class NewsAndRatingsDynamicSlotsSetup implements DiProcess {
 	execute(): void {
@@ -7,7 +7,6 @@ export class NewsAndRatingsDynamicSlotsSetup implements DiProcess {
 
 	private injectSlots(): void {
 		const adPlaceholders = document.querySelectorAll('.mapped-ad,.ad');
-		let firstCallSlotActive = false;
 
 		if (!adPlaceholders || adPlaceholders.length === 0) {
 			console.warn('AdEngine did not find any ad placeholders');
@@ -29,22 +28,10 @@ export class NewsAndRatingsDynamicSlotsSetup implements DiProcess {
 			} else {
 				context.push('state.adStack', { id: adSlotName });
 			}
-
-			if (this.isFirstCallSlot(adSlotName)) {
-				firstCallSlotActive = true;
-			}
 		});
-
-		if (!firstCallSlotActive) {
-			btfBlockerService.finishFirstCall();
-		}
 	}
 
 	private isSlotLazyLoaded(slotName: string): boolean {
 		return context.get(`slots.${slotName}.lazyLoad`);
-	}
-
-	private isFirstCallSlot(slotName: string): boolean {
-		return context.get(`slots.${slotName}.firstCall`);
 	}
 }

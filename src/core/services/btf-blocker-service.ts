@@ -65,9 +65,9 @@ class BtfBlockerService {
 		this.firstCallEnded = true;
 		logger(logGroup, 'first call queue finished');
 
-		if (window?.ads?.runtime?.disableSecondCall) {
+		if (window.ads.runtime.disableSecondCall) {
 			this.disableSecondCall([]);
-		} else if (window?.ads?.runtime?.disableBtf) {
+		} else if (window.ads.runtime.disableBtf) {
 			this.disableSecondCall([...this.unblockedSlotNames, ...slotService.getAtfSlotNames()]);
 		}
 
