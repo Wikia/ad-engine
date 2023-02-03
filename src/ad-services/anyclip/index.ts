@@ -9,7 +9,7 @@ export class Anyclip {
 	constructor(
 		private pubname: string = 'fandomcom',
 		private widgetname: string = '001w000001Y8ud2_19593',
-		private libraryUrl: string = 'https://player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/lre.js',
+		private libraryUrl: string = '//player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/lre.js',
 		private isApplicable: () => boolean | null,
 		private tracker: VideoTracker,
 		private timeoutForGlobal: number = 250,
