@@ -34,18 +34,22 @@ export class AnyclipPlayerSetup extends BaseServiceSetup {
 		}
 	}
 
+	private registerAnyclipToLoadOnUapLoadStatus() {
+		communicationService.on(
+			eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+			({ isLoaded, adProduct }: UapLoadStatus) => {
+				if (!isLoaded && adProduct !== 'ruap') {
+					this.initIncontentPlayer(slotService.get('incontent_player'));
+				}
+			},
+		);
+	}
+
 	call() {
 		if (context.get('services.anyclip.loadOnPageLoad')) {
 			this.loadAnyclipIfEnabled();
 		} else {
-			communicationService.on(
-				eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
-				({ isLoaded, adProduct }: UapLoadStatus) => {
-					if (!isLoaded && adProduct !== 'ruap') {
-						this.initIncontentPlayer(slotService.get('incontent_player'));
-					}
-				},
-			);
+			this.registerAnyclipToLoadOnUapLoadStatus();
 		}
 	}
 }
