@@ -8,6 +8,7 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
+import { getAppnexusContext } from '../../../bidders/appnexus';
 import { getCriteoContext } from '../../../bidders/criteo';
 import { getIndexExchangeContext } from '../../../bidders/index-exchange';
 import { getKargoContext } from '../../../bidders/kargo';
@@ -24,6 +25,7 @@ export class MetacriticNeutronPrebidConfigSetup implements DiProcess {
 			return;
 		}
 
+		context.set('bidders.prebid.appnexus', getAppnexusContext(isDesktop));
 		context.set('bidders.prebid.criteo', getCriteoContext(isDesktop));
 		context.set('bidders.prebid.indexExchange', getIndexExchangeContext(isDesktop));
 		context.set('bidders.prebid.kargo', getKargoContext(isDesktop));
