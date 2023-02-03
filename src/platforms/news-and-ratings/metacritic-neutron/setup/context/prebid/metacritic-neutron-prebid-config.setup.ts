@@ -13,6 +13,7 @@ import { getCriteoContext } from '../../../bidders/criteo';
 import { getIndexExchangeContext } from '../../../bidders/index-exchange';
 import { getKargoContext } from '../../../bidders/kargo';
 import { getMedianetContext } from '../../../bidders/medianet';
+import { getPubmaticContext } from '../../../bidders/pubmatic';
 import { getYahooSspContext } from '../../../bidders/yahoossp';
 
 @Injectable()
@@ -31,6 +32,7 @@ export class MetacriticNeutronPrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.indexExchange', getIndexExchangeContext(isDesktop));
 		context.set('bidders.prebid.kargo', getKargoContext(isDesktop));
 		context.set('bidders.prebid.medianet', getMedianetContext(isDesktop));
+		context.set('bidders.prebid.pubmatic', getPubmaticContext(isDesktop));
 		context.set('bidders.prebid.yahoossp', getYahooSspContext(isDesktop));
 
 		this.registerListeners();
