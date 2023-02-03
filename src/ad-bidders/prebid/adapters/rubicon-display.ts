@@ -39,22 +39,43 @@ export class RubiconDisplay extends PrebidAdapter {
 					sizes,
 				},
 			},
-			bids: [
-				{
-					bidder: this.bidderName,
-					params: {
-						position,
-						siteId,
-						zoneId,
-						accountId: this.accountId,
-						name: code,
-						keywords: ['rp.fastlane'],
-						inventory: {
-							...this.getTargeting(code, { ...(targeting || {}), ...this.customTargeting }),
-						},
+			bids: this.getBids(code, position, siteId, zoneId, targeting),
+		};
+	}
+
+	getBids(code, position, siteId, zoneId, targeting) {
+		if (Array.isArray(zoneId) && zoneId.length > 0) {
+			return zoneId.map((id) => ({
+				bidder: this.bidderName,
+				params: {
+					position,
+					siteId,
+					id,
+					accountId: this.accountId,
+					name: code,
+					keywords: ['rp.fastlane'],
+					inventory: {
+						...this.getTargeting(code, { ...(targeting || {}), ...this.customTargeting }),
 					},
 				},
-			],
-		};
+			}));
+		}
+
+		return [
+			{
+				bidder: this.bidderName,
+				params: {
+					position,
+					siteId,
+					zoneId,
+					accountId: this.accountId,
+					name: code,
+					keywords: ['rp.fastlane'],
+					inventory: {
+						...this.getTargeting(code, { ...(targeting || {}), ...this.customTargeting }),
+					},
+				},
+			},
+		];
 	}
 }
