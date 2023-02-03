@@ -14,7 +14,6 @@ export class GamespotSlotsContextSetup implements DiProcess {
 				outOfPage: true,
 			},
 			'skybox-nav': {
-				firstCall: true,
 				defaultSizes: [[5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
 				targeting: {
 					loc: 'top',
@@ -183,7 +182,6 @@ export class GamespotSlotsContextSetup implements DiProcess {
 				},
 			},
 			'mobile-skybox-nav': {
-				firstCall: true,
 				defaultSizes: [[6, 6], [5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
 				targeting: {
 					loc: 'top',

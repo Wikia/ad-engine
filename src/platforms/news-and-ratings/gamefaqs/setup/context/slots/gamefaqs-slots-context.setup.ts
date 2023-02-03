@@ -21,7 +21,6 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 				},
 			},
 			'skybox-nav': {
-				firstCall: true,
 				code: 'skybox-nav',
 				defaultSizes: [[6, 6], [5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
 				targeting: {
@@ -119,7 +118,6 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 				},
 			},
 			'mobile-skybox-nav': {
-				firstCall: true,
 				code: 'mobile-skybox-nav',
 				defaultSizes: [[6, 6], [5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
 				targeting: {

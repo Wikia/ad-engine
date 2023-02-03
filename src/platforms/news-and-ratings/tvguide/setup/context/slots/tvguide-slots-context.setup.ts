@@ -12,7 +12,6 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 			},
 			'omni-skybox-leader-sticky': {
-				firstCall: true,
 				defaultSizes: [
 					[6, 6],
 					[728, 90],
@@ -330,7 +329,6 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 			},
 			'mobile-omni-skybox-plus-sticky': {
-				firstCall: true,
 				defaultSizes: [
 					[6, 6],
 					[320, 50],

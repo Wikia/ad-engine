@@ -7,7 +7,6 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 	execute(): void {
 		const slots = {
 			'omni-skybox-leader-nav': {
-				firstCall: true,
 				defaultSizes: [
 					[6, 6],
 					[5, 5],
@@ -94,7 +93,6 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 				},
 			},
 			'mobile-omni-skybox-plus-nav': {
-				firstCall: true,
 				defaultSizes: [
 					[6, 6],
 					[5, 5],

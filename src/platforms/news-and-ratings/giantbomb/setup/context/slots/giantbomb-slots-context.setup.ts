@@ -6,7 +6,6 @@ export class GiantbombSlotsContextSetup implements DiProcess {
 	execute(): void {
 		const slots = {
 			'skybox-nav': {
-				firstCall: true,
 				defaultSizes: [[5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
 				targeting: {
 					pos_nr: 'nav',
@@ -100,7 +99,6 @@ export class GiantbombSlotsContextSetup implements DiProcess {
 				},
 			},
 			'mobile-skybox-nav': {
-				firstCall: true,
 				defaultSizes: [[6, 6], [5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
 				targeting: {
 					pos_nr: 'nav',
