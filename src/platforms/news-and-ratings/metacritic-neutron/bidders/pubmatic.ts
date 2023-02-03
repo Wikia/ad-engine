@@ -8,6 +8,17 @@ export function getPubmaticContext(isDesktop: boolean): object {
 			sizes: [[728, 90]],
 			ids: ['4856966'],
 		},
+		'incontent-leader-plus-top': {
+			sizes: [
+				[970, 250],
+				[728, 90],
+			],
+			ids: ['4856971', '4856974'],
+		},
+		'incontent-leaderboard-top': {
+			sizes: [[728, 90]],
+			ids: ['4856974'],
+		},
 		'incontent-leader-plus-bottom': {
 			sizes: [
 				[728, 90],
@@ -66,17 +77,6 @@ export function getPubmaticContext(isDesktop: boolean): object {
 		'leaderboard-middle': {
 			sizes: [[728, 90]],
 			ids: ['4856973'],
-		},
-		'incontent-leader-plus-top': {
-			sizes: [
-				[970, 250],
-				[728, 90],
-			],
-			ids: ['4856971', '4856974'],
-		},
-		'incontent-leaderboard-top': {
-			sizes: [[728, 90]],
-			ids: ['4856974'],
 		},
 	};
 

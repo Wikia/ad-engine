@@ -10,6 +10,19 @@ export function getMedianetContext(isDesktop: boolean): object {
 			crid: ['735481387'],
 			cid: '8CU5JOKX4',
 		},
+		'incontent-leader-plus-top': {
+			sizes: [
+				[970, 250],
+				[728, 90],
+			],
+			crid: ['142384784', '735481387'],
+			cid: '8CU5JOKX4',
+		},
+		'incontent-leaderboard-top': {
+			sizes: [[728, 90]],
+			crid: ['735481387'],
+			cid: '8CU5JOKX4',
+		},
 		'incontent-leader-plus-bottom': {
 			sizes: [
 				[728, 90],
@@ -76,19 +89,6 @@ export function getMedianetContext(isDesktop: boolean): object {
 			cid: '8CU5JOKX4',
 		},
 		'leaderboard-middle': {
-			sizes: [[728, 90]],
-			crid: ['735481387'],
-			cid: '8CU5JOKX4',
-		},
-		'incontent-leader-plus-top': {
-			sizes: [
-				[970, 250],
-				[728, 90],
-			],
-			crid: ['142384784', '735481387'],
-			cid: '8CU5JOKX4',
-		},
-		'incontent-leaderboard-top': {
 			sizes: [[728, 90]],
 			crid: ['735481387'],
 			cid: '8CU5JOKX4',

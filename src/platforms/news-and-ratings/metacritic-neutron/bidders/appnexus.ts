@@ -8,6 +8,17 @@ export function getAppnexusContext(isDesktop: boolean): object {
 			sizes: [[728, 90]],
 			placementId: ['28574575'],
 		},
+		'incontent-leader-plus-top': {
+			sizes: [
+				[970, 250],
+				[728, 90],
+			],
+			placementId: ['28574580', '28574583'],
+		},
+		'incontent-leaderboard-top': {
+			sizes: [[728, 90]],
+			placementId: ['28574583'],
+		},
 		'incontent-leader-plus-bottom': {
 			sizes: [
 				[728, 90],
@@ -66,17 +77,6 @@ export function getAppnexusContext(isDesktop: boolean): object {
 		'leaderboard-middle': {
 			sizes: [[728, 90]],
 			placementId: ['28574582'],
-		},
-		'incontent-leader-plus-top': {
-			sizes: [
-				[970, 250],
-				[728, 90],
-			],
-			placementId: ['28574580', '28574583'],
-		},
-		'incontent-leaderboard-top': {
-			sizes: [[728, 90]],
-			placementId: ['28574583'],
 		},
 	};
 
