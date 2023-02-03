@@ -1,5 +1,6 @@
 import { GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
+	Audigent,
 	Bidders,
 	Captify,
 	communicationService,
@@ -19,6 +20,7 @@ import { Injectable } from '@wikia/dependency-injection';
 export class NewsAndRatingsAdsMode implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,
+		private audigent: Audigent,
 		private bidders: Bidders,
 		private captify: Captify,
 		private confiant: Confiant,
@@ -40,6 +42,7 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 				this.userIdentity,
 				this.liveRampPixel.setOptions({ dependencies: [this.userIdentity.initialized] }),
 				this.liveConnect,
+				this.audigent,
 				this.confiant,
 				this.iasPublisherOptimization,
 				this.captify,
