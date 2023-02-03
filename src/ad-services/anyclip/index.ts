@@ -10,7 +10,7 @@ export class Anyclip {
 		private pubname: string = 'fandomcom',
 		private widgetname: string = '001w000001Y8ud2_19593',
 		private libraryUrl: string = 'https://player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/lre.js',
-		private isApplicable,
+		private isApplicable: () => boolean | null,
 		private tracker: VideoTracker,
 		private timeoutForGlobal: number = 250,
 		private retriesForGlobal: number = 4,
@@ -26,7 +26,7 @@ export class Anyclip {
 	}
 
 	loadPlayerAsset() {
-		if (!this.isApplicable()) {
+		if (typeof this.isApplicable === 'function' && !this.isApplicable()) {
 			utils.logger(logGroup, 'Anyclip is not applicable - aborting');
 			return;
 		}

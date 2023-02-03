@@ -67,7 +67,6 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		context.set('options.video.pauseJWPlayerAd', this.instantConfig.get('icPauseJWPlayerAd'));
 
 		context.set('services.anyclip.enabled', this.instantConfig.get('icAnyclipPlayer'));
-		context.set('services.anyclip.isApplicable', () => true);
 	}
 
 	private shouldSwitchGamToRV() {
