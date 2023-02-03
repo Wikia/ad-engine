@@ -1,4 +1,4 @@
-import { context, DiProcess } from '@wikia/ad-engine';
+import { btfBlockerService, context, DiProcess } from '@wikia/ad-engine';
 
 export class MetacriticNeutronDynamicSlotsSetup implements DiProcess {
 	execute(): void {
@@ -7,6 +7,7 @@ export class MetacriticNeutronDynamicSlotsSetup implements DiProcess {
 
 	private injectSlots(): void {
 		const adPlaceholders = document.querySelectorAll('.c-adDisplay_container');
+		let firstCallSlotActive = false;
 
 		if (!adPlaceholders) {
 			return;
@@ -23,6 +24,18 @@ export class MetacriticNeutronDynamicSlotsSetup implements DiProcess {
 			adWrapper.id = adSlotName;
 
 			context.push('state.adStack', { id: adSlotName });
+
+			if (this.isFirstCallSlot(adSlotName)) {
+				firstCallSlotActive = true;
+			}
 		});
+
+		if (!firstCallSlotActive) {
+			btfBlockerService.finishFirstCall();
+		}
+	}
+
+	private isFirstCallSlot(slotName: string): boolean {
+		return context.get(`slots.${slotName}.firstCall`);
 	}
 }
