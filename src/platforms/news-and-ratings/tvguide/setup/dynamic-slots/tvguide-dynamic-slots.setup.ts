@@ -1,4 +1,4 @@
-import { btfBlockerService, context, DiProcess, utils } from '@wikia/ad-engine';
+import { context, DiProcess, utils } from '@wikia/ad-engine';
 
 export class TvGuideDynamicSlotsSetup implements DiProcess {
 	execute(): void {
@@ -14,8 +14,6 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 	}
 
 	private injectSlots(adPlaceholders): void {
-		let firstCallSlotActive = false;
-
 		adPlaceholders.forEach((placeholder) => {
 			const adWrapper = placeholder.firstElementChild;
 
@@ -27,19 +25,7 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 			adWrapper.id = adSlotName;
 
 			context.push('state.adStack', { id: adSlotName });
-
-			if (this.isFirstCallSlot(adSlotName)) {
-				firstCallSlotActive = true;
-			}
 		});
-
-		if (!firstCallSlotActive) {
-			btfBlockerService.finishFirstCall();
-		}
-	}
-
-	private isFirstCallSlot(slotName: string): boolean {
-		return context.get(`slots.${slotName}.firstCall`);
 	}
 
 	// TODO: This is temporary workaround. Change it for the proper event informing that ad placeholders
