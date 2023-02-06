@@ -17,10 +17,6 @@ export class MetacriticNeutronPrebidConfigSetup implements DiProcess {
 	constructor(private bidders: Bidders) {}
 
 	execute(): void {
-		if (!this.isPrebidEnabled()) {
-			return;
-		}
-
 		const isDesktop = !context.get('state.isMobile');
 
 		context.set('bidders.prebid.criteo', getCriteoContext(isDesktop));
@@ -39,9 +35,5 @@ export class MetacriticNeutronPrebidConfigSetup implements DiProcess {
 			},
 			false,
 		);
-	}
-
-	private isPrebidEnabled() {
-		return !!context.get('bidders.prebid');
 	}
 }

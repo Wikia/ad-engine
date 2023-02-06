@@ -22,10 +22,6 @@ export class GamespotPrebidConfigSetup implements DiProcess {
 	constructor(private bidders: Bidders) {}
 
 	execute(): void {
-		if (!this.isPrebidEnabled()) {
-			return;
-		}
-
 		const isDesktop = !context.get('state.isMobile');
 
 		context.set('bidders.prebid.appnexus', getAppnexusContext(isDesktop));
@@ -49,9 +45,5 @@ export class GamespotPrebidConfigSetup implements DiProcess {
 			},
 			false,
 		);
-	}
-
-	private isPrebidEnabled() {
-		return !!context.get('bidders.prebid');
 	}
 }

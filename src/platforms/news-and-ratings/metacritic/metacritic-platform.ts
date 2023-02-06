@@ -10,6 +10,7 @@ import {
 	NewsAndRatingsWadSetup,
 } from '../shared';
 import { basicContext } from './ad-context';
+import { MetacriticA9ConfigSetup } from './setup/context/a9/metacritic-a9-config.setup';
 import { MetacriticPrebidConfigSetup } from './setup/context/prebid/metacritic-prebid-config.setup';
 import { MetacriticSlotsContextSetup } from './setup/context/slots/metacritic-slots-context.setup';
 import { MetacriticTargetingSetup } from './setup/context/targeting/metacritic-targeting.setup';
@@ -34,6 +35,7 @@ export class MetacriticPlatform {
 			MetacriticDynamicSlotsSetup,
 			MetacriticSlotsContextSetup,
 			MetacriticPrebidConfigSetup,
+			MetacriticA9ConfigSetup,
 			BiddersStateSetup,
 			MetacriticTemplatesSetup,
 			NewsAndRatingsAdsMode,

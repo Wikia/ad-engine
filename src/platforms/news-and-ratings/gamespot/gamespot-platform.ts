@@ -9,6 +9,7 @@ import {
 	NewsAndRatingsWadSetup,
 } from '../shared';
 import { basicContext } from './ad-context';
+import { GamespotA9ConfigSetup } from './setup/context/a9/gamespot-a9-config.setup';
 import { GamespotPrebidConfigSetup } from './setup/context/prebid/gamespot-prebid-config.setup';
 import { GamespotSlotsContextSetup } from './setup/context/slots/gamespot-slots-context.setup';
 import { GamespotTargetingSetup } from './setup/context/targeting/gamespot-targeting.setup';
@@ -32,6 +33,7 @@ export class GameSpotPlatform {
 			GamespotSlotsContextSetup,
 			NewsAndRatingsDynamicSlotsSetup,
 			GamespotPrebidConfigSetup,
+			GamespotA9ConfigSetup,
 			BiddersStateSetup,
 			GamespotTemplatesSetup,
 			NewsAndRatingsAdsMode,

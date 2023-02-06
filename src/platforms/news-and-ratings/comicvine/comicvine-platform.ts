@@ -9,6 +9,7 @@ import {
 	NewsAndRatingsWadSetup,
 } from '../shared';
 import { basicContext } from './ad-context';
+import { ComicvineA9ConfigSetup } from './setup/context/a9/comicvine-a9-config.setup';
 import { ComicvinePrebidConfigSetup } from './setup/context/prebid/comicvine-prebid-config.setup';
 import { ComicvineSlotsContextSetup } from './setup/context/slots/comicvine-slots-context.setup';
 import { ComicvineTargetingSetup } from './setup/context/targeting/comicvine-targeting.setup';
@@ -32,6 +33,7 @@ export class ComicvinePlatform {
 			NewsAndRatingsDynamicSlotsSetup,
 			ComicvineSlotsContextSetup,
 			ComicvinePrebidConfigSetup,
+			ComicvineA9ConfigSetup,
 			BiddersStateSetup,
 			ComicvineTemplatesSetup,
 			NewsAndRatingsAdsMode,

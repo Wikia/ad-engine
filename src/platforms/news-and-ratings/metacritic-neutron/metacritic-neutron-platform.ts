@@ -10,6 +10,7 @@ import {
 	NewsAndRatingsWadSetup,
 } from '../shared';
 import { basicContext } from './ad-context';
+import { MetacriticNeutronA9ConfigSetup } from './setup/context/a9/metacritic-neutron-a9-config.setup';
 import { MetacriticNeutronPrebidConfigSetup } from './setup/context/prebid/metacritic-neutron-prebid-config.setup';
 import { MetacriticNeutronSlotsContextSetup } from './setup/context/slots/metacritic-neutron-slots-context.setup';
 import { MetacriticNeutronTargetingSetup } from './setup/context/targeting/metacritic-neutron-targeting.setup';
@@ -34,6 +35,7 @@ export class MetacriticNeutronPlatform {
 			MetacriticNeutronDynamicSlotsSetup,
 			MetacriticNeutronSlotsContextSetup,
 			MetacriticNeutronPrebidConfigSetup,
+			MetacriticNeutronA9ConfigSetup,
 			BiddersStateSetup,
 			MetacriticNeutronTemplatesSetup,
 			NewsAndRatingsAdsMode,

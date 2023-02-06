@@ -9,6 +9,7 @@ import {
 	NewsAndRatingsWadSetup,
 } from '../shared';
 import { basicContext } from './ad-context';
+import { GiantbombA9ConfigSetup } from './setup/context/a9/giantbomb-a9-config.setup';
 import { GiantbombPrebidConfigSetup } from './setup/context/prebid/giantbomb-prebid-config.setup';
 import { GiantbombSlotsContextSetup } from './setup/context/slots/giantbomb-slots-context.setup';
 import { GiantbombTargetingSetup } from './setup/context/targeting/giantbomb-targeting.setup';
@@ -32,6 +33,7 @@ export class GiantbombPlatform {
 			GiantbombSlotsContextSetup,
 			NewsAndRatingsDynamicSlotsSetup,
 			GiantbombPrebidConfigSetup,
+			GiantbombA9ConfigSetup,
 			BiddersStateSetup,
 			GiantbombTemplatesSetup,
 			NewsAndRatingsAdsMode,
