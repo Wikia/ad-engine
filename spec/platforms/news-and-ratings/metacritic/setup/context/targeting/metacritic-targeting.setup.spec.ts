@@ -21,4 +21,20 @@ describe('Metacritic Targeting Setup', () => {
 
 		expect(verticalName).to.equal('ent');
 	});
+
+	it('getPageType() returns correct ptype from utag_data', () => {
+		window.utag_data = { pageType: 'article' };
+
+		const ptype = new MetacriticTargetingSetup().getPageType();
+
+		expect(ptype).to.equal('article');
+	});
+
+	it('getPageType() returns undefined when utag_data is missing pageType', () => {
+		window.utag_data = { siteType: 'article' };
+
+		const ptype = new MetacriticTargetingSetup().getPageType();
+
+		expect(ptype).to.be.undefined;
+	});
 });
