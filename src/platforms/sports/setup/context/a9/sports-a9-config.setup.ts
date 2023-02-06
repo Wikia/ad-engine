@@ -1,16 +1,15 @@
-import { DeviceMode, getDeviceMode } from '@platforms/shared';
-import { context, DiProcess } from '@wikia/ad-engine';
+import { context, DiProcess, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class SportsA9ConfigSetup implements DiProcess {
 	execute(): void {
-		const mode: DeviceMode = getDeviceMode();
+		const mode = context.get('state.isMobile') ? 'mobile' : 'desktop';
 
 		context.set('bidders.a9.slots', this.getA9Context(mode));
 	}
 
-	private getA9Context(device: DeviceMode): any {
+	private getA9Context(device: utils.DeviceMode): any {
 		const a9Context = {
 			desktop: {
 				'01_LB': {
