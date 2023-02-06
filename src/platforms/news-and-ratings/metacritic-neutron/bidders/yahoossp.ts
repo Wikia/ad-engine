@@ -8,6 +8,17 @@ export function getYahooSspContext(isDesktop: boolean): object {
 			sizes: [[728, 90]],
 			pubId: ['8a9691e7018585a630eba7e5011b0105'],
 		},
+		'incontent-leader-plus-top': {
+			sizes: [
+				[970, 250],
+				[728, 90],
+			],
+			pubId: ['8a969dc9018585a62bdba7e506430111', '8a969dc9018585a62bdba7e5098f0112'],
+		},
+		'incontent-leaderboard-top': {
+			sizes: [[728, 90]],
+			pubId: ['8a969dc9018585a62bdba7e5098f0112'],
+		},
 		'incontent-leader-plus-bottom': {
 			sizes: [
 				[728, 90],
@@ -66,17 +77,6 @@ export function getYahooSspContext(isDesktop: boolean): object {
 		'leaderboard-middle': {
 			sizes: [[728, 90]],
 			pubId: ['8a969450018585a63429a7e508730133'],
-		},
-		'incontent-leader-plus-top': {
-			sizes: [
-				[970, 250],
-				[728, 90],
-			],
-			pubId: ['8a969dc9018585a62bdba7e506430111', '8a969dc9018585a62bdba7e5098f0112'],
-		},
-		'incontent-leaderboard-top': {
-			sizes: [[728, 90]],
-			pubId: ['8a969dc9018585a62bdba7e5098f0112'],
 		},
 	};
 
