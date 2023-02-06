@@ -50,7 +50,7 @@ export class RubiconDisplay extends PrebidAdapter {
 				params: {
 					position,
 					siteId,
-					id,
+					zoneId: id,
 					accountId: this.accountId,
 					name: code,
 					keywords: ['rp.fastlane'],
