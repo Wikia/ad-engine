@@ -13,9 +13,7 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 	}
 
 	private setBaseState(): void {
-		const isDesktop = utils.client.isDesktop();
-
-		context.set('custom.device', isDesktop ? '' : 'm');
+		context.set('custom.device', context.get('state.isMobile') ? 'm' : '');
 		context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441);
 		context.set('custom.pagePath', this.getPagePath());
 		context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src'));

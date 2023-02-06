@@ -1,88 +1,97 @@
-export function getIndexExchangeContext(isDesktop: boolean): object {
+export function getMedianetContext(isDesktop: boolean): object {
 	const desktopSlots = {
 		'omni-skybox-leader-nav': {
 			sizes: [[728, 90]],
-			siteId: ['936309'],
+			crid: ['735481387'],
+			cid: '8CU5JOKX4',
 		},
 		'omni-skybox-leaderboard-nav': {
 			sizes: [[728, 90]],
-			siteId: ['936311'],
+			crid: ['735481387'],
+			cid: '8CU5JOKX4',
 		},
 		'incontent-leader-plus-top': {
 			sizes: [
 				[970, 250],
 				[728, 90],
 			],
-			siteId: ['936316', '936319'],
+			crid: ['142384784', '735481387'],
+			cid: '8CU5JOKX4',
 		},
 		'incontent-leaderboard-top': {
 			sizes: [[728, 90]],
-			siteId: ['936319'],
+			crid: ['735481387'],
+			cid: '8CU5JOKX4',
 		},
 		'incontent-leader-plus-bottom': {
 			sizes: [
 				[728, 90],
 				[970, 250],
 			],
-			siteId: ['936315', '936310'],
+			crid: ['735481387', '142384784'],
+			cid: '8CU5JOKX4',
 		},
 		'incontent-leaderboard-bottom': {
 			sizes: [[728, 90]],
-			siteId: ['936317'],
+			crid: ['735481387'],
+			cid: '8CU5JOKX4',
 		},
 		'mpu-plus-top': {
 			sizes: [[300, 250]],
-			siteId: ['936312'],
+			crid: ['433823587'],
+			cid: '8CU5JOKX4',
 		},
 		'mpu-top': {
 			sizes: [[300, 250]],
-			siteId: ['936314'],
+			crid: ['433823587'],
+			cid: '8CU5JOKX4',
 		},
 		'mpu-middle': {
 			sizes: [[300, 250]],
-			siteId: ['936325'],
+			crid: ['134715738'],
+			cid: '8CU5JOKX4',
 		},
 		'mpu-bottom': {
 			sizes: [[300, 250]],
-			siteId: ['936327'],
-		},
-		video: {
-			siteId: '936594',
+			crid: ['134715738'],
+			cid: '8CU5JOKX4',
 		},
 	};
 
 	const mobileSlots = {
 		'mobile-omni-skybox-plus-nav': {
 			sizes: [[320, 50]],
-			siteId: ['936322'],
+			crid: ['278522313'],
+			cid: '8CU5JOKX4',
 		},
 		'mobile-banner-plus': {
 			sizes: [
 				[320, 50],
 				[300, 250],
 			],
-			siteId: ['936324', '936312'],
+			crid: ['278522313', '433823587'],
+			cid: '8CU5JOKX4',
 		},
 		'mobile-incontent-plus': {
 			sizes: [
 				[300, 250],
 				[320, 50],
 			],
-			siteId: ['936314', '936326'],
+			crid: ['433823587', '278522313'],
+			cid: '8CU5JOKX4',
 		},
 		'mobile-incontent-plus-bottom': {
 			sizes: [
 				[320, 50],
 				[300, 250],
 			],
-			siteId: ['936328', '936325'],
+			crid: ['278522313', '134715738'],
+			cid: '8CU5JOKX4',
 		},
 		'leaderboard-middle': {
 			sizes: [[728, 90]],
-			siteId: ['936318'],
-		},
-		video: {
-			siteId: '936611',
+			crid: ['735481387'],
+			cid: '8CU5JOKX4',
 		},
 	};
 

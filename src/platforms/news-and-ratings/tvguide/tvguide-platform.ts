@@ -1,5 +1,5 @@
 import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
-import { context, ProcessPipeline } from '@wikia/ad-engine';
+import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 import {
@@ -9,6 +9,7 @@ import {
 	NewsAndRatingsWadSetup,
 } from '../shared';
 import { basicContext } from './ad-context';
+import { TvGuideA9ConfigSetup } from './setup/context/a9/tvguide-a9-config.setup';
 import { TvGuidePrebidConfigSetup } from './setup/context/prebid/tvguide-prebid-config-setup.service';
 import { TvGuideSlotsContextSetup } from './setup/context/slots/tvguide-slots-context.setup';
 import { TvGuideTargetingSetup } from './setup/context/targeting/tvguide-targeting.setup';
@@ -21,6 +22,7 @@ export class TvGuidePlatform {
 	execute(): void {
 		this.pipeline.add(
 			() => context.extend(basicContext),
+			() => context.set('state.isMobile', !utils.client.isDesktop()),
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
@@ -31,6 +33,7 @@ export class TvGuidePlatform {
 			TvGuideDynamicSlotsSetup,
 			TvGuideSlotsContextSetup,
 			TvGuidePrebidConfigSetup,
+			TvGuideA9ConfigSetup,
 			BiddersStateSetup,
 			NewsAndRatingsAdsMode,
 		);
