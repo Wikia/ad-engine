@@ -12,14 +12,12 @@ import {
 } from '@wikia/ad-engine';
 
 export class AnyclipPlayerSetup extends BaseServiceSetup {
-	private initIncontentPlayer(incontentPlayer) {
-		if (!incontentPlayer) {
-			utils.logger('AnyclipPlayerSetup', 'No incontent player - aborting');
-			return;
+	call() {
+		if (context.get('services.anyclip.loadOnPageLoad')) {
+			this.loadAnyclipIfEnabled();
+		} else {
+			this.registerAnyclipToLoadOnUapLoadStatus();
 		}
-
-		slotDataParamsUpdater.updateOnCreate(incontentPlayer);
-		this.loadAnyclipIfEnabled();
 	}
 
 	private loadAnyclipIfEnabled() {
@@ -45,11 +43,13 @@ export class AnyclipPlayerSetup extends BaseServiceSetup {
 		);
 	}
 
-	call() {
-		if (context.get('services.anyclip.loadOnPageLoad')) {
-			this.loadAnyclipIfEnabled();
-		} else {
-			this.registerAnyclipToLoadOnUapLoadStatus();
+	private initIncontentPlayer(incontentPlayer) {
+		if (!incontentPlayer) {
+			utils.logger('AnyclipPlayerSetup', 'No incontent player - aborting');
+			return;
 		}
+
+		slotDataParamsUpdater.updateOnCreate(incontentPlayer);
+		this.loadAnyclipIfEnabled();
 	}
 }
