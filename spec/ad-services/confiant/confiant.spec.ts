@@ -4,8 +4,10 @@ import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 
 describe('Confiant', () => {
-	const DEFAULT_CONFIANT_LIB =
+	const DEFAULT_CONFIANT_LIB_URL =
 		'//cdn.confiant-integrations.net/d-aIf3ibf0cYxCLB1HTWfBQOFEA/gpt_and_prebid/config.js';
+	const TEST_CONFIANT_LIB_URL =
+		'//cdn.confiant-integrations.net/TEST_PROPERTY_ID/gpt_and_prebid/config.js';
 
 	const sandbox = createSandbox();
 
@@ -42,7 +44,34 @@ describe('Confiant', () => {
 
 		await confiant.call();
 
-		expect(loadScriptStub.calledWith(DEFAULT_CONFIANT_LIB)).to.equal(true);
+		expect(loadScriptStub.calledWith(DEFAULT_CONFIANT_LIB_URL)).to.equal(true);
+	});
+
+	it('Confiant is loaded with selected propertyId in the script URL', async () => {
+		instantConfigStub.get.withArgs('icConfiant').returns(true);
+		context.set('services.confiant.propertyId', 'TEST_PROPERTY_ID');
+
+		await confiant.call();
+
+		expect(loadScriptStub.calledWith(TEST_CONFIANT_LIB_URL)).to.equal(true);
+	});
+
+	it('Confiant is loaded with default propertyId when the context one is an empty string', async () => {
+		instantConfigStub.get.withArgs('icConfiant').returns(true);
+		context.set('services.confiant.propertyId', '');
+
+		await confiant.call();
+
+		expect(loadScriptStub.calledWith(DEFAULT_CONFIANT_LIB_URL)).to.equal(true);
+	});
+
+	it('Confiant is loaded with default propertyId when the context one is undefined', async () => {
+		instantConfigStub.get.withArgs('icConfiant').returns(true);
+		context.set('services.confiant.propertyId', undefined);
+
+		await confiant.call();
+
+		expect(loadScriptStub.calledWith(DEFAULT_CONFIANT_LIB_URL)).to.equal(true);
 	});
 
 	it('Confiant is not called when disabled', async () => {

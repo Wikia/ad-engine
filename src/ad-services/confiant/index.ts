@@ -1,4 +1,4 @@
-import { BaseServiceSetup, slotService, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, slotService, utils } from '@ad-engine/core';
 
 const logGroup = 'confiant';
 
@@ -34,6 +34,8 @@ export class Confiant extends BaseServiceSetup {
 			return Promise.resolve();
 		}
 
+		this.overwritePropertyIdIfPresent();
+
 		utils.logger(logGroup, 'loading');
 
 		window.confiant = window.confiant || {};
@@ -42,6 +44,12 @@ export class Confiant extends BaseServiceSetup {
 		return this.loadScript().then(() => {
 			utils.logger(logGroup, 'ready');
 		});
+	}
+
+	private overwritePropertyIdIfPresent() {
+		const contextPropertyId = context.get('services.confiant.propertyId');
+
+		this.propertyId = contextPropertyId ? contextPropertyId : this.propertyId;
 	}
 
 	private loadScript(): Promise<Event> {
