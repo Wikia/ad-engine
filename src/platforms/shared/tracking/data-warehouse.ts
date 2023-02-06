@@ -3,7 +3,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { TrackingParams } from './models/tracking-params';
 
 const logGroup = 'data-warehouse-trackingParams';
-const eventUrl = 'https://beacon.wikia-services.com/__track/special/trackingevent';
+const eventUrl = 'https://beacon.wikia-services.com/"__track/special/trackingevent"';
 const videoEventUrl = 'https://beacon.wikia-services.com/__track/special/videoplayerevent';
 
 export interface TimeBasedParams {
@@ -23,6 +23,15 @@ export class DataWarehouseTracker {
 			...this.getDataWarehouseParams(),
 			...options,
 		};
+
+		console.log(
+			'tracking-context',
+			JSON.stringify({
+				old: params.beacon,
+				new: window.fandomContext.tracking.beaconId,
+				url: trackingURL,
+			}),
+		);
 
 		if (trackingURL) {
 			this.sendCustomEvent(params, trackingURL);
