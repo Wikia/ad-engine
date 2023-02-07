@@ -1,3 +1,4 @@
+import { UcpIncontentPlayerStateSetup } from '@platforms/shared';
 import { ProcessPipeline } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { UcpMobileLighterAds } from './modes/ucp-mobile-lighter-ads-mode.service';
@@ -9,7 +10,12 @@ export class UcpMobileAdLayoutSetup {
 	constructor(private pipeline: ProcessPipeline) {}
 
 	execute(): void {
-		this.pipeline.add(UcpMobileDynamicSlotsSetup, UcpMobileTemplatesSetup, UcpMobileLighterAds);
+		this.pipeline.add(
+			UcpMobileDynamicSlotsSetup,
+			UcpIncontentPlayerStateSetup,
+			UcpMobileTemplatesSetup,
+			UcpMobileLighterAds,
+		);
 
 		this.pipeline.execute();
 	}

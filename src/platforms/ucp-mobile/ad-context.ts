@@ -67,6 +67,12 @@ export const basicContext = {
 		},
 	},
 	services: {
+		anyclip: {
+			pubname: 'fandomcom',
+			widgetname: '001w000001Y8ud2AAB_M6237',
+			libraryUrl: 'https://player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/lre.js',
+			latePageInject: true,
+		},
 		durationMedia: {
 			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',
 		},

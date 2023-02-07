@@ -33,11 +33,27 @@ export class AnyclipPlayerSetup extends BaseServiceSetup {
 	}
 
 	private registerAnyclipToLoadOnUapLoadStatus() {
+		const slotName = 'incontent_player';
+
 		communicationService.on(
 			eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
 			({ isLoaded, adProduct }: UapLoadStatus) => {
 				if (!isLoaded && adProduct !== 'ruap') {
-					this.initIncontentPlayer(slotService.get('incontent_player'));
+					if (!context.get('services.anyclip.latePageInject')) {
+						this.initIncontentPlayer(slotService.get(slotName));
+						return;
+					}
+
+					communicationService.on(
+						eventsRepository.AD_ENGINE_SLOT_ADDED,
+						({ slot }) => {
+							if (slot.getSlotName() === slotName) {
+								slot.getPlaceholder()?.classList.remove('is-loading');
+								this.initIncontentPlayer(slotService.get(slotName));
+							}
+						},
+						false,
+					);
 				}
 			},
 		);
