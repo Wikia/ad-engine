@@ -8,7 +8,6 @@ export * from './dynamic-slots/quiz-slots-definition-repository';
 export * from './dynamic-slots/sticked-boxad-helper';
 export * from './ensure-geo-cookie';
 export * from './experiments/experiment';
-export * from './models/device-mode';
 export * from './modes/no-ads/no-ads.mode';
 export * from './sequential-messaging/sequential-messaging.setup';
 export * from './services/no-ads-detector';

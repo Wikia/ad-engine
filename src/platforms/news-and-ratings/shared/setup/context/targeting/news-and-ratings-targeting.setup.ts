@@ -25,15 +25,16 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 		context.set('targeting', {
 			...context.get('targeting'),
 			...targeting,
+			uap: 'none',
+			uap_c: 'none',
 		});
 	}
 
 	getPageLevelTargeting(): TargetingParams {
 		const adTags = this.getAdTags();
 		const parsedAdTags = this.parseAdTags(adTags);
-		const mappedAdTags = this.getMappedAdTags(parsedAdTags);
-
-		return mappedAdTags;
+    
+		return this.getMappedAdTags(parsedAdTags);
 	}
 
 	getAdTags(): string {
@@ -45,17 +46,7 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 			return;
 		}
 
-		const adTagsObj = {};
-
-		adTags.split('&').forEach((keyval) => {
-			const parts = keyval.split('=');
-
-			if (Array.isArray(parts) && parts.length === 2) {
-				adTagsObj[parts[0]] = parts[1];
-			}
-		});
-
-		return adTagsObj;
+		return Object.fromEntries(new URLSearchParams(adTags));
 	}
 
 	getMappedAdTags(adTagsToMap: object): TargetingParams {

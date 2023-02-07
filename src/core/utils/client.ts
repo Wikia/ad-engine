@@ -9,6 +9,7 @@ let isBabInitialised = false;
 let operatingSystem: string = null;
 
 export type DeviceType = 'tablet' | 'smartphone' | 'desktop';
+export type DeviceMode = 'desktop' | 'mobile';
 
 function setupBab(): void {
 	bab = new BlockAdBlock({
@@ -75,6 +76,10 @@ class Client {
 		}
 
 		return 'desktop';
+	}
+
+	getDeviceMode(): DeviceMode {
+		return window.matchMedia('(max-width: 840px)').matches ? 'mobile' : 'desktop';
 	}
 
 	getOperatingSystem(): string {
