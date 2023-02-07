@@ -1,45 +1,54 @@
 import { context, UniversalStorage } from '@ad-engine/core';
+import { ActiveData } from '../adms-identity-repository/adms-actions';
 import { identityStorageClient } from './identity-storage-client';
 import { IdentityStorageDto } from './identity-storage-dto';
 
 class IdentityStorageService {
 	constructor(private storage: UniversalStorage) {}
 
-	async get(): Promise<Partial<IdentityStorageDto>> {
-		const deprecatedPPID = this.getLocalPPID();
-		if (deprecatedPPID) {
-			return await this.migrateExistingPpid(deprecatedPPID);
+	async get(): Promise<IdentityStorageDto> {
+		const localData = await this.getLocalData();
+		if (localData && !localData.synced) {
+			await this.setRemote(localData);
 		}
-		const localData = await identityStorageClient.getLocalData();
-		if (!localData) {
-			const remoteData = await identityStorageClient.fetchData();
-			this.updateLocalData(remoteData);
-			return remoteData;
-		} else if (!localData.synced) {
-			const remoteData = await this.setRemote(localData);
-			this.updateLocalData(remoteData);
-			return remoteData;
-		}
-
-		this.setIdentityContextVariables(localData);
-		return localData;
+		return this.getRemoteData();
 	}
 
-	private async migrateExistingPpid(deprecatedPPID: string) {
-		this.storage.removeItem('ppid');
-
-		const remoteData = await this.setRemote({ ppid: deprecatedPPID, synced: false });
-		this.updateLocalData(remoteData);
+	private async getRemoteData(): Promise<IdentityStorageDto> {
+		const remoteData = await identityStorageClient.fetchData();
+		this.setIdentityContextVariables(remoteData);
+		identityStorageClient.setLocalData(remoteData);
 		return remoteData;
+	}
+
+	private async getLocalData() {
+		let localIdentity = await identityStorageClient.getLocalData();
+		if (!localIdentity) {
+			const deprecatedPpid = this.getLocalPPID() || this.getAdmsPPID();
+			if (deprecatedPpid) {
+				localIdentity = await this.migrateDeprecatedIdentity(deprecatedPpid);
+			}
+		}
+		return localIdentity;
+	}
+
+	private async migrateDeprecatedIdentity(deprecatedPPID: string) {
+		const remoteData = await this.setRemote({ ppid: deprecatedPPID, synced: false });
+		this.clearDeprecatedLocalPpid();
+		return remoteData;
+	}
+
+	private clearDeprecatedLocalPpid() {
+		this.storage.removeItem('ppid');
+	}
+
+	private getAdmsPPID(): string | null {
+		const admsData = this.storage.getItem<ActiveData>('silver-surfer-active-data-v2') as ActiveData;
+		return admsData?.IDENTITY?.[0].payload?.identityToken;
 	}
 
 	private getLocalPPID(): string | null {
 		return this.storage.getItem('ppid');
-	}
-
-	private updateLocalData(userData: IdentityStorageDto) {
-		identityStorageClient.setLocalData(userData);
-		this.setIdentityContextVariables(userData);
 	}
 
 	private setIdentityContextVariables(userData: IdentityStorageDto) {

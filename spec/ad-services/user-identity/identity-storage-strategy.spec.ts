@@ -7,7 +7,6 @@ import { createSandbox } from 'sinon';
 
 describe('User Identity', () => {
 	let sandbox;
-	let clientSpy;
 	const mockId = '00000000-0000-0000-0000-000000000000';
 	const userIdentity = new UserIdentity();
 
@@ -15,7 +14,6 @@ describe('User Identity', () => {
 		context.set('services.ppid.enabled', true);
 		context.set('services.ppidRepository', IdentityRepositories.IDENTITY_STORAGE);
 		sandbox = createSandbox();
-		clientSpy = sandbox.spy(identityStorageClient, 'postData');
 	});
 
 	afterEach(() => {
@@ -48,28 +46,5 @@ describe('User Identity', () => {
 		await userIdentity.call();
 
 		expect(context.get('targeting.ppid')).to.eq(mockId);
-	});
-
-	it('use Identity Storage strategy and gets synced PPID from Cache', async () => {
-		sandbox.stub(identityStorageClient.storage, 'getItem').callsFake(() => ({
-			ppid: mockId,
-			synced: true,
-		}));
-
-		await userIdentity.call();
-
-		expect(context.get('targeting.ppid')).to.eq(mockId);
-		expect(clientSpy.called).to.eq(false);
-	});
-
-	it('use Identity Storage strategy and gets not synced PPID from Cache', async () => {
-		sandbox.stub(identityStorageClient.storage, 'getItem').callsFake(() => ({
-			ppid: mockId,
-			synced: false,
-		}));
-		await userIdentity.call();
-
-		expect(context.get('targeting.ppid')).to.eq(mockId);
-		expect(clientSpy.called).to.eq(true);
 	});
 });
