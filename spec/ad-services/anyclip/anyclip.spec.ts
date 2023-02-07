@@ -11,8 +11,8 @@ describe('Anyclip', () => {
 	const MOCKED_WIDGETNAME = 'test';
 	const MOCKED_LIBRARY_URL = '//fandom.com/test';
 
-	const mockUserIsLoggedOut = () => true;
-	const mockUserIsLoggedIn = () => false;
+	const mockIsApplicable = () => true;
+	const mockIsNotApplicable = () => false;
 
 	let loadScriptStub;
 
@@ -36,7 +36,7 @@ describe('Anyclip', () => {
 			MOCKED_PUBNAME,
 			MOCKED_WIDGETNAME,
 			MOCKED_LIBRARY_URL,
-			mockUserIsLoggedOut,
+			mockIsApplicable,
 			null,
 		);
 		anyclip.loadPlayerAsset();
@@ -48,7 +48,7 @@ describe('Anyclip', () => {
 			MOCKED_PUBNAME,
 			MOCKED_WIDGETNAME,
 			MOCKED_LIBRARY_URL,
-			mockUserIsLoggedIn,
+			mockIsNotApplicable,
 			null,
 		);
 		anyclip.loadPlayerAsset();
