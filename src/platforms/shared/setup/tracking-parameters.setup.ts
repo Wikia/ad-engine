@@ -28,9 +28,6 @@ function getLegacyTrackingParameters(): ITrackingParameters {
 }
 
 async function getNewTrackingParameters(): Promise<ITrackingParameters> {
-	if (!window.fandomContext.tracking) {
-		console.error('tracking-context', 'Too late');
-	}
 	await new utils.WaitFor(() => !!window.fandomContext.tracking, 10, 100).until();
 
 	const wikiContext = {
@@ -52,8 +49,6 @@ export class TrackingParametersSetup implements DiProcess {
 	async execute() {
 		const legacyEnabled = !this.instantConfig.get('icDisableLegacyTrackingParameters', false);
 		const trackingParameters = await getTrackingParameters(legacyEnabled);
-
-		console.log('tracking-context', trackingParameters);
 
 		context.set('wiki', Object.assign(trackingParameters, context.get('wiki')));
 	}

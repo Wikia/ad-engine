@@ -24,15 +24,6 @@ export class DataWarehouseTracker {
 			...options,
 		};
 
-		console.log(
-			'tracking-context',
-			JSON.stringify({
-				old: params.beacon,
-				new: window.fandomContext.tracking.beaconId,
-				url: trackingURL,
-			}),
-		);
-
 		if (trackingURL) {
 			this.sendCustomEvent(params, trackingURL);
 		} else {
