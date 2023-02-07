@@ -8,6 +8,7 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 	execute(): void {
 		this.setBaseState();
 		this.setupIdentityOptions();
+		this.setupServicesOptions();
 		this.setupVideoOptions();
 	}
 
@@ -29,6 +30,10 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 
 		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
 		context.set('services.ppidRepository', this.instantConfig.get('icPpidRepository'));
+	}
+
+	private setupServicesOptions() {
+		context.set('services.confiant.propertyId', 'IOegabOoWb7FyEI1AmEa9Ki-5AY');
 	}
 
 	private setupVideoOptions() {
