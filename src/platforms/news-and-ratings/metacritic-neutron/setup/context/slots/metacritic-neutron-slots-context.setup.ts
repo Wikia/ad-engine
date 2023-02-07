@@ -280,6 +280,12 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 					pos_nr: 'increment',
 				},
 			},
+			video: {
+				targeting: {
+					rv: 1,
+				},
+				isVideo: true,
+			},
 		};
 
 		context.set('slots', slots);
