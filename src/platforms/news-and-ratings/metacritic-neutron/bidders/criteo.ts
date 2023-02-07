@@ -6,6 +6,15 @@ export function getCriteoContext(isDesktop: boolean): object {
 		'omni-skybox-leaderboard-nav': {
 			sizes: [[728, 90]],
 		},
+		'incontent-leader-plus-top': {
+			sizes: [
+				[970, 250],
+				[728, 90],
+			],
+		},
+		'incontent-leaderboard-top': {
+			sizes: [[728, 90]],
+		},
 		'incontent-leader-plus-bottom': {
 			sizes: [
 				[728, 90],
@@ -52,15 +61,6 @@ export function getCriteoContext(isDesktop: boolean): object {
 			],
 		},
 		'leaderboard-middle': {
-			sizes: [[728, 90]],
-		},
-		'incontent-leader-plus-top': {
-			sizes: [
-				[970, 250],
-				[728, 90],
-			],
-		},
-		'incontent-leaderboard-top': {
 			sizes: [[728, 90]],
 		},
 	};

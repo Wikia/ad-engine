@@ -8,13 +8,12 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 	execute(): void {
 		this.setBaseState();
 		this.setupIdentityOptions();
+		this.setupServicesOptions();
 		this.setupVideoOptions();
 	}
 
 	private setBaseState(): void {
-		const isDesktop = utils.client.isDesktop();
-
-		context.set('custom.device', isDesktop ? '' : 'm');
+		context.set('custom.device', context.get('state.isMobile') ? 'm' : '');
 		context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441);
 		context.set('custom.pagePath', this.getPagePath());
 		context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src'));
@@ -31,6 +30,10 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 
 		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
 		context.set('services.ppidRepository', this.instantConfig.get('icPpidRepository'));
+	}
+
+	private setupServicesOptions() {
+		context.set('services.confiant.propertyId', 'IOegabOoWb7FyEI1AmEa9Ki-5AY');
 	}
 
 	private setupVideoOptions() {
