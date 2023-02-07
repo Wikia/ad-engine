@@ -1,10 +1,14 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { utils } from '../../index';
+import {
+	BrowserMatcher,
+	DeviceMatcher,
+	InstantConfigInterpreter,
+	InstantConfigLoader,
+	InstantConfigOverrider,
+	InstantConfigValue,
+} from '@wikia/instant-config-loader';
+import { context, utils } from '../../index';
 import { Dictionary } from '../../models';
-import { InstantConfigInterpreter } from './instant-config.interpreter';
-import { instantConfigLoader } from './instant-config.loader';
-import { InstantConfigValue } from './instant-config.models';
-import { InstantConfigOverrider } from './instant-config.overrider';
 
 const logGroup = 'instant-config-service';
 
@@ -17,10 +21,25 @@ export class InstantConfigService implements InstantConfigServiceInterface {
 	private repository: Dictionary<InstantConfigValue>;
 
 	async init(globals: Dictionary = {}): Promise<InstantConfigService> {
+		const instantConfigLoader = new InstantConfigLoader({
+			appName: context.get('services.instantConfig.appName'),
+			instantConfigEndpoint: context.get('services.instantConfig.endpoint'),
+			instantConfigVariant: context.get('wiki.services_instantConfig_variant'),
+			instantConfigFallbackEndpoint: context.get('services.instantConfig.fallback'),
+		});
+		const instantConfigInterpreter = new InstantConfigInterpreter(
+			new BrowserMatcher(utils.client.getBrowser()),
+			new DeviceMatcher(utils.client.getDeviceType() as unknown as string),
+		);
+
 		this.interpreter = await instantConfigLoader
 			.getConfig()
-			.then((config) => new InstantConfigOverrider().override(config))
-			.then((config) => new InstantConfigInterpreter().init(config, globals));
+			.then((config) =>
+				new InstantConfigOverrider().override(utils.queryString.getURLSearchParams(), config),
+			)
+			.then((config) =>
+				instantConfigInterpreter.init(config, globals, utils.geoService.isProperGeo),
+			);
 		this.repository = this.interpreter.getValues();
 
 		utils.logger(logGroup, 'instantiated with', this.repository);

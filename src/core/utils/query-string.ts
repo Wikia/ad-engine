@@ -19,6 +19,12 @@ class QueryString {
 		return queryParameters;
 	}
 
+	getURLSearchParams(input?: string): URLSearchParams {
+		const path: string = input || window.location.search.substr(1);
+
+		return new URLSearchParams(path);
+	}
+
 	get(key: string): string {
 		const queryParameters = this.getValues();
 

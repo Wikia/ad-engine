@@ -1,4 +1,9 @@
-import { AdEngineRunnerSetup, bootstrapAndGetConsent, GptSetup } from '@platforms/shared';
+import {
+	AdEngineRunnerSetup,
+	bootstrapAndGetConsent,
+	GptSetup,
+	InstantConfigSetup,
+} from '@platforms/shared';
 import { communicationService, context, eventsRepository, ProcessPipeline } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
@@ -16,6 +21,7 @@ export class TestPagePlatform {
 		this.pipeline.add(
 			() => context.extend(basicContext),
 			() => bootstrapAndGetConsent(),
+			InstantConfigSetup,
 			TestPageIocSetup,
 			TestPageSlotsContextSetup,
 			TestPageSlotsStateSetup,
