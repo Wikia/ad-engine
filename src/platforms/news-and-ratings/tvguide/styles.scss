@@ -2,6 +2,10 @@
 
 body {
 	@include uap-styles();
+
+	&.has-uap .c-siteHeader {
+		z-index: 201;
+	}
 }
 
 .gpt-ad {

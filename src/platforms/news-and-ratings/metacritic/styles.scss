@@ -2,6 +2,10 @@
 
 body {
 	@include uap-styles();
+
+	&.has-uap #top_header {
+		z-index: 201;
+	}
 }
 
 .gpt-ad {

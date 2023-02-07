@@ -7,7 +7,7 @@ export function registerUapDomElements(): TemplateDependency[] {
 			bind: NAVBAR,
 			value: context.get('state.isMobile')
 				? document.getElementById('header')
-				: document.getElementById('masthead'),
+				: document.getElementById('top_header'),
 		},
 		{
 			bind: PAGE,
@@ -17,7 +17,7 @@ export function registerUapDomElements(): TemplateDependency[] {
 			bind: FOOTER,
 			value: context.get('state.isMobile')
 				? document.getElementById('footer')
-				: document.getElementById('mastfoot'),
+				: document.getElementById('bottom_footer'),
 		},
 	];
 }
