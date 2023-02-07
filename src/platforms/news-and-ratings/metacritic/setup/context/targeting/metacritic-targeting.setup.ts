@@ -17,7 +17,7 @@ export class MetacriticTargetingSetup implements DiProcess {
 		return window.utag_data?.siteSection === 'games' ? 'gaming' : 'ent';
 	}
 
-	getPageType(): string {
+	getPageType(): string | undefined {
 		return window.utag_data?.pageType;
 	}
 }
