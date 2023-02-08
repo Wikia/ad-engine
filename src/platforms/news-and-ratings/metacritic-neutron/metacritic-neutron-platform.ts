@@ -1,6 +1,12 @@
 import { Injectable } from '@wikia/dependency-injection';
 
-import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
+import {
+	BiddersStateSetup,
+	bootstrapAndGetConsent,
+	InstantConfigSetup,
+	TrackingParametersSetup,
+	TrackingSetup,
+} from '@platforms/shared';
 import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
 
 import {
@@ -26,6 +32,7 @@ export class MetacriticNeutronPlatform {
 			() => context.set('state.isMobile', !utils.client.isDesktop()),
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
+			TrackingParametersSetup,
 			InstantConfigSetup,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
@@ -37,6 +44,7 @@ export class MetacriticNeutronPlatform {
 			MetacriticNeutronA9ConfigSetup,
 			BiddersStateSetup,
 			NewsAndRatingsAdsMode,
+			TrackingSetup,
 		);
 
 		this.pipeline.execute();
