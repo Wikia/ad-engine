@@ -23,6 +23,11 @@ class TrackingOptInWrapper {
 		return new Promise((resolve) => {
 			utils.logger(logGroup, 'Waiting for consents');
 
+			communicationService.on(eventsRepository.AD_ENGINE_NO_CONSENT_MODE, () => {
+				utils.logger(logGroup, 'AdEngine running in no consent mode');
+				resolve();
+			});
+
 			communicationService.on(eventsRepository.AD_ENGINE_CONSENT_READY, (payload) => {
 				this.setConsents(payload);
 				resolve();
