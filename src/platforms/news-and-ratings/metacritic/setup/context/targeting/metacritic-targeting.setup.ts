@@ -5,6 +5,8 @@ export class MetacriticTargetingSetup implements DiProcess {
 		const targeting = {
 			s0: this.getVerticalName(),
 			ptype: this.getPageType(),
+			s1: 'metacritic',
+			skin: 'metacritic',
 		};
 
 		context.set('targeting', {

@@ -33,7 +33,7 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 	getPageLevelTargeting(): TargetingParams {
 		const adTags = this.getAdTags();
 		const parsedAdTags = this.parseAdTags(adTags);
-    
+
 		return this.getMappedAdTags(parsedAdTags);
 	}
 

@@ -4,6 +4,8 @@ export class TvGuideTargetingSetup implements DiProcess {
 	execute(): void {
 		const targeting = {
 			s0: 'ent',
+			s1: 'tvguide',
+			skin: 'tvguide',
 		};
 
 		context.set('targeting', {
