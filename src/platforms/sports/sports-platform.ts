@@ -4,7 +4,6 @@ import {
 	BiddersStateSetup,
 	bootstrapAndGetConsent,
 	ensureGeoCookie,
-	getDeviceMode,
 	InstantConfigSetup,
 	LabradorSetup,
 	LoadTimesSetup,
@@ -21,6 +20,7 @@ import {
 	eventsRepository,
 	parallel,
 	ProcessPipeline,
+	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { getBasicContext } from './ad-context';
@@ -42,7 +42,7 @@ export class SportsPlatform {
 		// Config
 		this.pipeline.add(
 			() => context.extend(getBasicContext()),
-			() => context.set('state.isMobile', getDeviceMode() === 'mobile'),
+			() => context.set('state.isMobile', utils.client.getDeviceMode() === 'mobile'),
 			() => document.body.classList.add(`ae-${selectApplication('futhead', 'muthead')}`),
 			() => ensureGeoCookie(),
 			PlatformContextSetup,

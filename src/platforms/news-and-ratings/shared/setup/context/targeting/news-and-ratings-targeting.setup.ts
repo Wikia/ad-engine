@@ -26,12 +26,15 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 		targetingService.extend({
 			...targetingService.dump(),
 			...targeting,
+			uap: 'none',
+			uap_c: 'none',
 		});
 	}
 
 	getPageLevelTargeting(): TargetingParams {
 		const adTags = this.getAdTags();
 		const parsedAdTags = this.parseAdTags(adTags);
+    
 		return this.getMappedAdTags(parsedAdTags);
 	}
 

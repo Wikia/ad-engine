@@ -1,20 +1,21 @@
 import { expect } from 'chai';
 
-import { context, InstantConfigService, utils } from '@wikia/core';
+import { context, InstantConfigService } from '@wikia/core';
 import { NewsAndRatingsBaseContextSetup } from '@wikia/platforms/news-and-ratings/shared';
 
 describe('News and Ratings base context setup', () => {
-	let instantConfigStub, utilsClientIsDesktopStub;
+	const sandbox = createSandbox();
+	let instantConfigStub;
 
 	beforeEach(() => {
-		utilsClientIsDesktopStub = global.sandbox.stub(utils.client, 'isDesktop');
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		context.set('custom.property', 'test');
 		context.set('custom.device', undefined);
 	});
 
 	afterEach(() => {
-		utilsClientIsDesktopStub.resetHistory();
+		sandbox.restore();
+		context.remove('state.isMobile');
 		context.remove('custom.property');
 		context.remove('custom.device');
 		context.remove('custom.pagePath');
@@ -22,7 +23,7 @@ describe('News and Ratings base context setup', () => {
 
 	describe('setBaseState()', () => {
 		it('sets proper device custom key for desktop', () => {
-			utilsClientIsDesktopStub.returns(true);
+			context.set('state.isMobile', false);
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
 			baseContextSetup.execute();
 
@@ -30,7 +31,7 @@ describe('News and Ratings base context setup', () => {
 		});
 
 		it('sets proper device custom key for mobile', () => {
-			utilsClientIsDesktopStub.returns(false);
+			context.set('state.isMobile', true);
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
 			baseContextSetup.execute();
 

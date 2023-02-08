@@ -7,28 +7,37 @@ export class Anyclip {
 	public static SUBSCRIBE_FUNC_NAME = 'lreSubscribe';
 
 	constructor(
+		private pubname: string = 'fandomcom',
+		private widgetname: string = '001w000001Y8ud2_19593',
+		private libraryUrl: string = '//player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/lre.js',
+		private isApplicable: () => boolean | null,
 		private tracker: VideoTracker,
 		private timeoutForGlobal: number = 250,
 		private retriesForGlobal: number = 4,
-	) {}
+	) {
+		utils.logger(logGroup, 'Anyclip initialized', this.pubname, this.widgetname, this.libraryUrl);
+	}
 
 	get params(): Record<string, string> {
 		return {
-			pubname: 'fandomcom',
-			widgetname: '001w000001Y8ud2_19593',
+			pubname: this.pubname,
+			widgetname: this.widgetname,
 		};
 	}
 
 	loadPlayerAsset() {
-		const libraryUrl = 'https://player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/lre.js';
+		if (typeof this.isApplicable === 'function' && !this.isApplicable()) {
+			utils.logger(logGroup, 'Anyclip is not applicable - aborting');
+			return;
+		}
+
+		utils.logger(logGroup, 'loading Anyclip asset', this.libraryUrl);
 		const incontentPlayerContainer = document.getElementById('incontent_player');
 
-		utils.logger(logGroup, 'loading Anyclip asset', libraryUrl);
-
 		return utils.scriptLoader
-			.loadScript(libraryUrl, 'text/javascript', true, incontentPlayerContainer, this.params)
+			.loadScript(this.libraryUrl, 'text/javascript', true, incontentPlayerContainer, this.params)
 			.then(() => {
-				incontentPlayerContainer.classList.remove('hide');
+				incontentPlayerContainer?.classList.remove('hide');
 				utils.logger(logGroup, 'ready');
 
 				this.waitForSubscribeReady().then((isSubscribeReady) => {
