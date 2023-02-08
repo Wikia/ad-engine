@@ -4,6 +4,8 @@ import { identityStorageClient } from './identity-storage-client';
 import { IdentityStorageDto } from './identity-storage-dto';
 
 class IdentityStorageService {
+	WEEK_DIFFERENCE = 7 * 24 * 60 * 60 * 1000; // days * hours * minutes * seconds * miliseconds
+
 	constructor(private storage: UniversalStorage) {}
 
 	async get(): Promise<IdentityStorageDto> {
@@ -11,14 +13,16 @@ class IdentityStorageService {
 		if (localData && !localData.synced) {
 			await this.setRemote(localData);
 		}
-		return this.getRemoteData();
+		if (!localData || this.isDeprecated(localData)) {
+			return this.getRemote();
+		} else {
+			return localData;
+		}
 	}
 
-	private async getRemoteData(): Promise<IdentityStorageDto> {
-		const remoteData = await identityStorageClient.fetchData();
-		this.setIdentityContextVariables(remoteData);
-		identityStorageClient.setLocalData(remoteData);
-		return remoteData;
+	private isDeprecated(localData: IdentityStorageDto): boolean {
+		const lastWeek = Date.now() - this.WEEK_DIFFERENCE;
+		return !localData.timestamp || localData.timestamp - lastWeek < 0;
 	}
 
 	private async getLocalData() {
@@ -38,10 +42,6 @@ class IdentityStorageService {
 		return remoteData;
 	}
 
-	private clearDeprecatedLocalPpid() {
-		this.storage.removeItem('ppid');
-	}
-
 	private getAdmsPPID(): string | null {
 		const admsData = this.storage.getItem<ActiveData>('silver-surfer-active-data-v2') as ActiveData;
 		return admsData?.IDENTITY?.[0].payload?.identityToken;
@@ -51,14 +51,28 @@ class IdentityStorageService {
 		return this.storage.getItem('ppid');
 	}
 
+	private clearDeprecatedLocalPpid() {
+		this.storage.removeItem('ppid');
+	}
+
+	private async getRemote(): Promise<IdentityStorageDto> {
+		const remoteData = await identityStorageClient.fetchData();
+		this.setIdentityContextVariables(remoteData);
+		identityStorageClient.setLocalData({ ...remoteData, timestamp: Date.now() });
+		return remoteData;
+	}
+
+	async setRemote(data: IdentityStorageDto): Promise<IdentityStorageDto> {
+		const remoteData = await identityStorageClient.postData(data);
+		this.setIdentityContextVariables(remoteData);
+		identityStorageClient.setLocalData({ ...remoteData, timestamp: Date.now() });
+		return remoteData;
+	}
+
 	private setIdentityContextVariables(userData: IdentityStorageDto) {
 		if (userData.over18) {
 			context.set('targeting.over_18', '1');
 		}
-	}
-
-	async setRemote(data: IdentityStorageDto): Promise<IdentityStorageDto> {
-		return identityStorageClient.postData(data);
 	}
 }
 
