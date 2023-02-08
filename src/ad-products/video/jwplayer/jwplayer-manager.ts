@@ -36,7 +36,22 @@ export class JWPlayerManager {
 				this.loadIasTrackerIfEnabled();
 			}),
 			map(({ options, targeting, playerKey }) => {
-				const jwplayer: JWPlayer = window[playerKey] as any;
+				let jwplayer: JWPlayer = window[playerKey] as any;
+
+				if (!jwplayer) {
+					const nestedIframes = document.getElementsByTagName('iframe');
+
+					for (let i = 0; i < nestedIframes.length; i++) {
+						if (!nestedIframes[i]?.contentWindow?.document?.querySelector) {
+							continue;
+						}
+
+						if (nestedIframes[i].contentWindow['aeJWPlayerKey']) {
+							jwplayer = nestedIframes[i].contentWindow['aeJWPlayerKey'];
+						}
+					}
+				}
+
 				const adSlot = this.createAdSlot(options, jwplayer);
 				const stream$ = createJwpStream(jwplayer);
 
