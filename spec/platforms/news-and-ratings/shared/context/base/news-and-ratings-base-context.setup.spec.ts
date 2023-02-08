@@ -4,7 +4,6 @@ import { context, InstantConfigService } from '@wikia/core';
 import { NewsAndRatingsBaseContextSetup } from '@wikia/platforms/news-and-ratings/shared';
 
 describe('News and Ratings base context setup', () => {
-	const sandbox = createSandbox();
 	let instantConfigStub;
 
 	beforeEach(() => {
@@ -14,7 +13,7 @@ describe('News and Ratings base context setup', () => {
 	});
 
 	afterEach(() => {
-		sandbox.restore();
+		global.sandbox.restore();
 		context.remove('state.isMobile');
 		context.remove('custom.property');
 		context.remove('custom.device');
