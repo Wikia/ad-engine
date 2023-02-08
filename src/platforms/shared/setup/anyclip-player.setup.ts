@@ -40,6 +40,7 @@ export class AnyclipPlayerSetup extends BaseServiceSetup {
 			({ isLoaded, adProduct }: UapLoadStatus) => {
 				if (!isLoaded && adProduct !== 'ruap') {
 					if (!context.get('services.anyclip.latePageInject')) {
+						console.log('slotService: ', slotService);
 						this.initIncontentPlayer(slotService.get(slotName));
 						return;
 					}
@@ -60,6 +61,8 @@ export class AnyclipPlayerSetup extends BaseServiceSetup {
 	}
 
 	private initIncontentPlayer(incontentPlayer) {
+		console.log('incontentPlayer: ', incontentPlayer);
+
 		if (!incontentPlayer) {
 			utils.logger('AnyclipPlayerSetup', 'No incontent player - aborting');
 			return;
