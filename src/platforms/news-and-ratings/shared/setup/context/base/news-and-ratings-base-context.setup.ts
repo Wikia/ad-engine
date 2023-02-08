@@ -68,6 +68,12 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 			this.instantConfig.get('icComscoreJwpTracking'),
 		);
 		context.set('options.video.pauseJWPlayerAd', this.instantConfig.get('icPauseJWPlayerAd'));
+
+		context.set('services.anyclip.enabled', this.instantConfig.get('icAnyclipPlayer'));
+		context.set('services.anyclip.isApplicable', () => {
+			this.log('Anyclip setting:', this.getDataSettingsFromMetaTag()?.target_params?.anyclip);
+			return this.getDataSettingsFromMetaTag()?.target_params?.anyclip;
+		});
 	}
 
 	private shouldSwitchGamToRV() {
@@ -106,7 +112,7 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 
 	getDataSettingsFromMetaTag() {
 		const adSettingsJson = document.getElementById('ad-settings')?.getAttribute('data-settings');
-		utils.logger('setup', 'Ad settings: ', adSettingsJson);
+		this.log('Ad settings: ', adSettingsJson);
 
 		if (!adSettingsJson) {
 			return null;
@@ -115,14 +121,18 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		try {
 			return JSON.parse(adSettingsJson);
 		} catch (e) {
-			utils.logger('setup', 'Could not parse JSON');
+			this.log('Could not parse JSON');
 			return null;
 		}
 	}
 
 	getUtagData() {
 		const utagData = window.utag_data;
-		utils.logger('setup', 'utag data: ', utagData);
+		this.log('utag data: ', utagData);
 		return utagData;
+	}
+
+	private log(...logValues) {
+		utils.logger('setup', ...logValues);
 	}
 }
