@@ -1,5 +1,5 @@
 import { communicationService, DiProcess, eventsRepository } from '@wikia/ad-engine';
-import { getDataSettingsFromMetaTag } from '../../shared/utils/get-data-settings-from-metatag';
+import { getDataSettingsFromMetaTag } from '../../shared';
 
 export class GamespotNoConsentModeVerifier implements DiProcess {
 	execute(): void {

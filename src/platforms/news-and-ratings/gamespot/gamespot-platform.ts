@@ -9,6 +9,7 @@ import {
 	NewsAndRatingsWadSetup,
 } from '../shared';
 import { basicContext } from './ad-context';
+import { GamespotNoConsentModeVerifier } from './modes/gamespot-no-consent-mode-verifier';
 import { GamespotA9ConfigSetup } from './setup/context/a9/gamespot-a9-config.setup';
 import { GamespotPrebidConfigSetup } from './setup/context/prebid/gamespot-prebid-config.setup';
 import { GamespotSlotsContextSetup } from './setup/context/slots/gamespot-slots-context.setup';
@@ -23,6 +24,7 @@ export class GameSpotPlatform {
 			() => context.extend(basicContext),
 			() => context.set('state.isMobile', !utils.client.isDesktop()),
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
+			GamespotNoConsentModeVerifier,
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
 			NewsAndRatingsBaseContextSetup,
