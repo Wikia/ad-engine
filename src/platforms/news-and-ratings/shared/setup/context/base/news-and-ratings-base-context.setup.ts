@@ -1,5 +1,6 @@
 import { context, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { getDataSettingsFromMetaTag } from '../../../utils/get-data-settings-from-metatag';
 
 @Injectable()
 export class NewsAndRatingsBaseContextSetup implements DiProcess {
@@ -71,8 +72,8 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 
 		context.set('services.anyclip.enabled', this.instantConfig.get('icAnyclipPlayer'));
 		context.set('services.anyclip.isApplicable', () => {
-			this.log('Anyclip setting:', this.getDataSettingsFromMetaTag()?.target_params?.anyclip);
-			return this.getDataSettingsFromMetaTag()?.target_params?.anyclip;
+			this.log('Anyclip setting:', getDataSettingsFromMetaTag()?.target_params?.anyclip);
+			return getDataSettingsFromMetaTag()?.target_params?.anyclip;
 		});
 	}
 
@@ -85,7 +86,7 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 	}
 
 	private getPagePath(): string {
-		const dataWithPagePath = this.getDataSettingsFromMetaTag();
+		const dataWithPagePath = getDataSettingsFromMetaTag();
 		const pagePath = dataWithPagePath?.unit_name
 			? this.getPagePathFromMetaTagData(dataWithPagePath)
 			: this.getPagePathFromUtagData();
@@ -108,22 +109,6 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 	private getPagePathFromUtagData() {
 		const dataWithPagePath = this.getUtagData();
 		return dataWithPagePath?.siteSection;
-	}
-
-	getDataSettingsFromMetaTag() {
-		const adSettingsJson = document.getElementById('ad-settings')?.getAttribute('data-settings');
-		this.log('Ad settings: ', adSettingsJson);
-
-		if (!adSettingsJson) {
-			return null;
-		}
-
-		try {
-			return JSON.parse(adSettingsJson);
-		} catch (e) {
-			this.log('Could not parse JSON');
-			return null;
-		}
 	}
 
 	getUtagData() {
