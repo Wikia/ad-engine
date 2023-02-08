@@ -16,6 +16,7 @@ class IdentityStorageService {
 		if (!localData || this.isDeprecated(localData)) {
 			return this.getRemote();
 		} else {
+			this.setIdentityContextVariables(localData);
 			return localData;
 		}
 	}
