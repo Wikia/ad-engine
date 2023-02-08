@@ -1,6 +1,6 @@
-import { DeviceMode } from '@platforms/shared';
+import { utils } from '@wikia/ad-engine';
 
-export function getRubiconMutheadContext(device: DeviceMode): any {
+export function getRubiconMutheadContext(device: utils.DeviceMode): any {
 	const context = {
 		desktop: {
 			enabled: false,

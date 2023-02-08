@@ -38,6 +38,9 @@ export function getIndexExchangeContext(isDesktop: boolean): object {
 			sizes: [[728, 90]],
 			siteId: ['936139'],
 		},
+		video: {
+			siteId: '936616',
+		},
 	};
 
 	const mobileSlots = {
@@ -119,6 +122,9 @@ export function getIndexExchangeContext(isDesktop: boolean): object {
 		'incontent-ad-plus': {
 			sizes: [[728, 90]],
 			siteId: ['936147'],
+		},
+		video: {
+			siteId: '936617',
 		},
 	};
 

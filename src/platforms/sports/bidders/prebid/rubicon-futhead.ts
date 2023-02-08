@@ -1,6 +1,6 @@
-import { DeviceMode } from '@platforms/shared';
+import { utils } from '@wikia/ad-engine';
 
-export function getRubiconFutheadContext(device: DeviceMode): any {
+export function getRubiconFutheadContext(device: utils.DeviceMode): any {
 	const context = {
 		desktop: {
 			enabled: false,
