@@ -36,6 +36,7 @@ class IdentityStorageClient {
 			.then((response) => response.json())
 			.catch((reason) => {
 				utils.logger(this.logGroup, 'Updating Identity Storage data failed', reason);
+				throw new Error();
 			});
 	}
 

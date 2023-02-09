@@ -1,4 +1,4 @@
-import { context, UniversalStorage } from '@ad-engine/core';
+import { context, UniversalStorage, utils } from '@ad-engine/core';
 import { ActiveData } from '../adms-identity-repository/adms-actions';
 import { identityStorageClient } from './identity-storage-client';
 import { IdentityStorageDto } from './identity-storage-dto';
@@ -64,11 +64,15 @@ class IdentityStorageService {
 	}
 
 	async setRemote(data: IdentityStorageDto): Promise<IdentityStorageDto> {
-		await identityStorageClient.postData(data);
-		const localData = { ...identityStorageClient.getLocalData(), synced: true };
-		this.setIdentityContextVariables(localData);
-		identityStorageClient.setLocalData({ ...localData, timestamp: Date.now() });
-		return localData;
+		try {
+			await identityStorageClient.postData(data);
+			const localData = { ...identityStorageClient.getLocalData(), synced: true };
+			this.setIdentityContextVariables(localData);
+			identityStorageClient.setLocalData({ ...localData, timestamp: Date.now() });
+			return localData;
+		} catch (ex) {
+			utils.logger('identity-storage', 'Updating Identity Storage data failed');
+		}
 	}
 
 	private setIdentityContextVariables(userData: IdentityStorageDto) {
