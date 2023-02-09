@@ -64,7 +64,8 @@ class IdentityStorageService {
 	}
 
 	async setRemote(data: IdentityStorageDto): Promise<IdentityStorageDto> {
-		const remoteData = await identityStorageClient.postData(data);
+		await identityStorageClient.postData(data);
+		const remoteData = await identityStorageClient.fetchData();
 		this.setIdentityContextVariables(remoteData);
 		identityStorageClient.setLocalData({ ...remoteData, timestamp: Date.now() });
 		return remoteData;
