@@ -32,12 +32,7 @@ class IdentityStorageClient {
 			},
 			method: 'PUT',
 			body: JSON.stringify({ ppid: data.ppid }),
-		})
-			.then((response) => response.json())
-			.catch((reason) => {
-				utils.logger(this.logGroup, 'Updating Identity Storage data failed', reason);
-				throw new Error();
-			});
+		}).then((response) => response.json());
 	}
 
 	getLocalData(): IdentityStorageDto {
