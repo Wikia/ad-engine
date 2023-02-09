@@ -218,7 +218,10 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 					pos_nr: 'top',
 				},
 			},
+			// as this slot can be repeated many, it uses bidderAlias incontent-leader-plus-inc
 			'incontent-leader-plus-inc': {
+				bidderAlias: 'incontent-leader-plus-inc',
+				defaultClasses: ['hide'],
 				defaultSizes: [
 					[728, 90],
 					[970, 250],
@@ -228,6 +231,9 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				incremental: true,
 				targeting: {
 					pos_nr: 'inc',
+					loc: 'middle',
+					pos: ['incontent-leader-plus-inc'],
+					rv: 1,
 				},
 			},
 			'incontent-leader-plus-bottom': {

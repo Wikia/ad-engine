@@ -14,6 +14,8 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 	}
 
 	private injectSlots(adPlaceholders): void {
+		let slotCounter = 1;
+
 		adPlaceholders.forEach((placeholder) => {
 			const adWrapper = placeholder.firstElementChild;
 
@@ -28,12 +30,30 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 				return;
 			}
 
-			context.push('state.adStack', { id: adSlotName });
+			if (this.isIncrementalSlot(adSlotName)) {
+				const repeatedAdSlotName = `${adSlotName}-${slotCounter}`;
+				adWrapper.id = repeatedAdSlotName;
+
+				context.set(`slots.${repeatedAdSlotName}`, {
+					...context.get(`slots.${adSlotName}`),
+				});
+				context.set(`slots.${repeatedAdSlotName}.targeting.pos`, repeatedAdSlotName);
+
+				context.push('state.adStack', { id: repeatedAdSlotName });
+
+				slotCounter++;
+			} else {
+				context.push('state.adStack', { id: adSlotName });
+			}
 		});
 	}
 
 	private isSlotDefinedInContext(slotName: string): boolean {
 		return !Object.keys(context.get('slots')).includes(slotName);
+	}
+
+	private isIncrementalSlot(slotName: string): boolean {
+		return context.get(`slots.${slotName}.incremental`);
 	}
 
 	// TODO: This is temporary workaround. Change it for the proper event informing that ad placeholders
