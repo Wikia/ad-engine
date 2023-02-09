@@ -2,12 +2,14 @@ import { communicationService, eventsRepository } from '@ad-engine/communication
 import {
 	BrowserMatcher,
 	DeviceMatcher,
+	DomainMatcher,
 	InstantConfigInterpreter,
 	InstantConfigLoader,
 	InstantConfigOverrider,
 	InstantConfigValue,
+	RegionMatcher,
 } from '@wikia/instant-config-loader';
-import { context, utils } from '../../index';
+import { context, InstantConfigCacheStorage, utils } from '../../index';
 import { Dictionary } from '../../models';
 
 const logGroup = 'instant-config-service';
@@ -30,6 +32,9 @@ export class InstantConfigService implements InstantConfigServiceInterface {
 		const instantConfigInterpreter = new InstantConfigInterpreter(
 			new BrowserMatcher(utils.client.getBrowser()),
 			new DeviceMatcher(utils.client.getDeviceType() as unknown as string),
+			new DomainMatcher(),
+			new RegionMatcher(),
+			InstantConfigCacheStorage.make(),
 		);
 
 		this.interpreter = await instantConfigLoader
