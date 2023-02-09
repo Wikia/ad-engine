@@ -3,8 +3,14 @@
 body {
 	@include uap-styles();
 
-	&.has-uap .c-siteHeader {
-		z-index: 201;
+	&.has-uap {
+		.c-siteHeader {
+			z-index: 201;
+		}
+
+		.c-layoutDefault:has(.c-searchBox_autoSuggest.isActive) #mobile-omni-skybox-plus-sticky {
+			display: none;
+		}
 	}
 }
 
