@@ -1,16 +1,28 @@
-import { context, DiProcess, utils } from '@wikia/ad-engine';
+import {
+	communicationService,
+	context,
+	DiProcess,
+	eventsRepository,
+	utils,
+} from '@wikia/ad-engine';
 
 export class TvGuideDynamicSlotsSetup implements DiProcess {
 	execute(): void {
-		const adPlaceholders = document.querySelectorAll('.c-adDisplay_container');
+		communicationService.on(
+			eventsRepository.AD_ENGINE_PARTNERS_READY,
+			() => {
+				const adPlaceholders = document.querySelectorAll('.c-adDisplay_container');
 
-		if (!adPlaceholders) {
-			return;
-		}
+				if (!adPlaceholders) {
+					return;
+				}
 
-		new utils.WaitFor(() => this.adDivsReady(adPlaceholders), 10, 100)
-			.until()
-			.then(() => this.injectSlots(adPlaceholders));
+				new utils.WaitFor(() => this.adDivsReady(adPlaceholders), 10, 100)
+					.until()
+					.then(() => this.injectSlots(adPlaceholders));
+			},
+			false,
+		);
 	}
 
 	private injectSlots(adPlaceholders): void {
@@ -30,9 +42,8 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 
 	// TODO: This is temporary workaround. Change it for the proper event informing that ad placeholders
 	//  are ready to inject the ad slots (event should be ready after RV code freeze is over).
-	adDivsReady(adPlaceholders) {
+	private adDivsReady(adPlaceholders) {
 		const firstPlaceholder = adPlaceholders[0];
-
 		const adDiv = firstPlaceholder.firstElementChild;
 
 		return !!adDiv;

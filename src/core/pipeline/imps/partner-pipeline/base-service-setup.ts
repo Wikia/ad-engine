@@ -10,11 +10,11 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 	options: PartnerInitializationProcessOptions;
 	initializationTimeout;
 	resolve: () => void;
-	initialized: Promise<void> = new Promise<void>((resolve) => {
-		this.resolve = resolve;
-	});
+	initialized: Promise<void>;
 
-	constructor(protected instantConfig: InstantConfigService = null) {}
+	constructor(protected instantConfig: InstantConfigService = null) {
+		this.resetInitialized();
+	}
 
 	private getContextVariablesValue(contextVariables: string | string[]): boolean {
 		if (typeof contextVariables === 'string') {
@@ -52,6 +52,12 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 	setInitialized(): void {
 		this.resolve();
 		clearTimeout(this.initializationTimeout);
+	}
+
+	public resetInitialized(): void {
+		this.initialized = new Promise<void>((resolve) => {
+			this.resolve = resolve;
+		});
 	}
 
 	getDelayTimeoutInMs(): number {
