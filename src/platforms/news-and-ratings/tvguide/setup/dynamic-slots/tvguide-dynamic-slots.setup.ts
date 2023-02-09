@@ -24,8 +24,16 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 			const adSlotName = adWrapper.getAttribute('data-ad');
 			adWrapper.id = adSlotName;
 
+			if (this.isSlotDefinedInContext(adSlotName)) {
+				return;
+			}
+
 			context.push('state.adStack', { id: adSlotName });
 		});
+	}
+
+	private isSlotDefinedInContext(slotName: string): boolean {
+		return !Object.keys(context.get('slots')).includes(slotName);
 	}
 
 	// TODO: This is temporary workaround. Change it for the proper event informing that ad placeholders
