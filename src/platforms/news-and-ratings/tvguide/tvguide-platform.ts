@@ -24,9 +24,9 @@ import { TvGuideDynamicSlotsSetup } from './setup/dynamic-slots/tvguide-dynamic-
 
 @Injectable()
 export class TvGuidePlatform {
-	constructor(private pipeline: ProcessPipeline) {}
-
 	private currentUrl = '';
+
+	constructor(private pipeline: ProcessPipeline) {}
 
 	execute(): void {
 		this.pipeline.add(
@@ -59,7 +59,7 @@ export class TvGuidePlatform {
 			}
 
 			if (this.currentUrl !== location.href) {
-				utils.logger('SPA: url changed', location.href);
+				utils.logger('SPA', 'url changed', location.href);
 
 				this.currentUrl = location.href;
 				communicationService.emit(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
@@ -69,7 +69,7 @@ export class TvGuidePlatform {
 				const refreshPipeline = new ProcessPipeline(container);
 				refreshPipeline
 					.add(
-						() => utils.logger('SPA: starting pipeline refresh', location.href),
+						() => utils.logger('SPA', 'starting pipeline refresh', location.href),
 						NewsAndRatingsBaseContextSetup,
 						TvGuideTargetingSetup,
 						NewsAndRatingsTargetingSetup,
@@ -80,6 +80,6 @@ export class TvGuidePlatform {
 			}
 		});
 
-		observer.observe(document, config);
+		observer.observe(document.querySelector('title'), config);
 	}
 }
