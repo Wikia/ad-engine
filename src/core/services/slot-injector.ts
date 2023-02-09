@@ -64,6 +64,13 @@ class SlotInjector {
 			slotConfig.avoidConflictWith = [config.avoidConflictWith];
 		}
 
+		if (
+			slotConfig.insertMethod === 'none' &&
+			this.getDisablePushOnScroll(disablePushOnScroll, config) === false
+		) {
+			context.push('state.adStack', { id: slotName });
+		}
+
 		try {
 			container = this.slotCreator.createSlot(slotConfig);
 		} catch (e) {

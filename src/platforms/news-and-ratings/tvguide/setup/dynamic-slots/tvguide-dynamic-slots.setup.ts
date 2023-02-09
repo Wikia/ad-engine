@@ -1,6 +1,8 @@
 import { context, DiProcess, utils } from '@wikia/ad-engine';
 
 export class TvGuideDynamicSlotsSetup implements DiProcess {
+	private alreadyPushedSlots = {};
+
 	execute(): void {
 		const adPlaceholders = document.querySelectorAll('.c-adDisplay_container');
 
@@ -14,8 +16,6 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 	}
 
 	private injectSlots(adPlaceholders): void {
-		let slotCounter = 1;
-
 		adPlaceholders.forEach((placeholder) => {
 			const adWrapper = placeholder.firstElementChild;
 
@@ -30,21 +30,15 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 				return;
 			}
 
-			if (this.isIncrementalSlot(adSlotName)) {
-				const repeatedAdSlotName = `${adSlotName}-${slotCounter}`;
-				adWrapper.id = repeatedAdSlotName;
-
-				context.set(`slots.${repeatedAdSlotName}`, {
-					...context.get(`slots.${adSlotName}`),
-				});
-				context.set(`slots.${repeatedAdSlotName}.targeting.pos`, repeatedAdSlotName);
-
-				context.push('state.adStack', { id: repeatedAdSlotName });
-
-				slotCounter++;
-			} else {
-				context.push('state.adStack', { id: adSlotName });
+			if (this.isRepeatableSlot(adSlotName) && this.isAlreadyPushedSlot(adSlotName)) {
+				this.alreadyPushedSlots[adSlotName]++;
+				const repeatedSlotName = `${adSlotName}-${this.alreadyPushedSlots[adSlotName]}`;
+				adWrapper.id = repeatedSlotName;
+				return;
 			}
+
+			context.push('state.adStack', { id: adSlotName });
+			this.alreadyPushedSlots[adSlotName] = 1;
 		});
 	}
 
@@ -52,8 +46,12 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 		return !Object.keys(context.get('slots')).includes(slotName);
 	}
 
-	private isIncrementalSlot(slotName: string): boolean {
-		return context.get(`slots.${slotName}.incremental`);
+	private isRepeatableSlot(slotName: string): boolean {
+		return context.get(`slots.${slotName}.repeat`);
+	}
+
+	private isAlreadyPushedSlot(slotName: string): boolean {
+		return this.alreadyPushedSlots[slotName];
 	}
 
 	// TODO: This is temporary workaround. Change it for the proper event informing that ad placeholders
