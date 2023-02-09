@@ -25,6 +25,14 @@ class TrackingOptInWrapper {
 
 			communicationService.on(eventsRepository.AD_ENGINE_NO_CONSENT_MODE, () => {
 				utils.logger(logGroup, 'AdEngine running in no consent mode');
+
+				this.setConsents({
+					gdprConsent: true,
+					geoRequiresConsent: false,
+					ccpaSignal: false,
+					geoRequiresSignal: false,
+				});
+
 				resolve();
 			});
 
