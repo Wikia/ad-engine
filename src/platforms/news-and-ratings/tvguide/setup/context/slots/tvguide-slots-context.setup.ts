@@ -1,4 +1,4 @@
-import { context, DiProcess } from '@wikia/ad-engine';
+import { context, DiProcess, universalAdPackage } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -17,9 +17,11 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 					[728, 90],
 					[970, 66],
 					[5, 5],
+					universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop,
 				],
 				targeting: {
 					pos_nr: 'sticky',
+					loc: 'top',
 				},
 			},
 			'omni-skybox-leaderboard-sticky': {
@@ -331,9 +333,11 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 					[6, 6],
 					[320, 50],
 					[5, 5],
+					universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile,
 				],
 				targeting: {
 					pos_nr: 'sticky',
+					loc: 'top',
 				},
 			},
 			'mobile-omni-plus-sticky': {

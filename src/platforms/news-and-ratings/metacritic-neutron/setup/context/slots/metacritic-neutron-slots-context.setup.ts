@@ -1,4 +1,4 @@
-import { context, DiProcess } from '@wikia/ad-engine';
+import { context, DiProcess, universalAdPackage } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -12,11 +12,13 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 					[5, 5],
 					[970, 66],
 					[728, 90],
+					universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop,
 				],
 				incremental: true,
 				collapseEmptyDiv: [true],
 				targeting: {
 					pos_nr: 'nav',
+					loc: 'top',
 				},
 			},
 			'omni-skybox-leaderboard-nav': {
@@ -95,11 +97,13 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 					[6, 6],
 					[5, 5],
 					[320, 50],
+					universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile,
 				],
 				incremental: true,
 				collapseEmptyDiv: [true],
 				targeting: {
 					pos_nr: 'nav',
+					loc: 'top',
 				},
 			},
 			'mobile-banner-plus': {
