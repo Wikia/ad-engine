@@ -13,6 +13,7 @@ import { GamespotA9ConfigSetup } from './setup/context/a9/gamespot-a9-config.set
 import { GamespotPrebidConfigSetup } from './setup/context/prebid/gamespot-prebid-config.setup';
 import { GamespotSlotsContextSetup } from './setup/context/slots/gamespot-slots-context.setup';
 import { GamespotTargetingSetup } from './setup/context/targeting/gamespot-targeting.setup';
+import { GamespotTemplatesSetup } from './templates/gamespot-templates.setup';
 
 @Injectable()
 export class GameSpotPlatform {
@@ -34,6 +35,7 @@ export class GameSpotPlatform {
 			GamespotPrebidConfigSetup,
 			GamespotA9ConfigSetup,
 			BiddersStateSetup,
+			GamespotTemplatesSetup,
 			NewsAndRatingsAdsMode,
 		);
 
