@@ -73,7 +73,7 @@ describe('User Identity', () => {
 
 	it('use Identity Storage strategy and gets PPID from local if it is not deprecated', async () => {
 		sandbox
-			.stub(localStorageRepository.storage, 'getItem')
+			.stub(identityStorageClient, 'getLocalData')
 			.callsFake(() => ({ ppid: mockId, synced: true, over18: false, timestamp: Date.now() }));
 		const fetchMock = sandbox.stub(identityStorageClient, 'fetchData').returns(
 			Promise.resolve({
