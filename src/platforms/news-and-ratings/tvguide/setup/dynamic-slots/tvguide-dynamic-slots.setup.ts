@@ -39,6 +39,10 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 
 			const adSlotName = adWrapper.getAttribute('data-ad');
 
+			if (!this.isSlotDefinedInContext(adSlotName)) {
+				return;
+			}
+
 			if (pushedSlots.includes(adSlotName)) {
 				return;
 			}
@@ -49,10 +53,6 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 
 			pushedSlots.push(adSlotName);
 			adWrapper.id = adSlotName;
-
-			if (this.isSlotDefinedInContext(adSlotName)) {
-				return;
-			}
 
 			context.push('state.adStack', { id: adSlotName });
 		});
@@ -91,7 +91,7 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 	}
 
 	private isSlotDefinedInContext(slotName: string): boolean {
-		return !Object.keys(context.get('slots')).includes(slotName);
+		return Object.keys(context.get('slots')).includes(slotName);
 	}
 
 	// TODO: This is temporary workaround. Change it for the proper event informing that ad placeholders
