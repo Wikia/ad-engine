@@ -1,5 +1,5 @@
 import { Injectable } from '@wikia/dependency-injection';
-import { RepeatConfig } from '../models/index';
+import { RepeatConfig } from '../models';
 import {
 	AD_LABEL_CLASS,
 	getTopOffset,
@@ -9,7 +9,7 @@ import {
 	logger,
 } from '../utils';
 import { context } from './context-service';
-export type insertMethodType = 'append' | 'prepend' | 'after' | 'before' | 'none';
+export type insertMethodType = 'append' | 'prepend' | 'after' | 'before';
 
 export interface SlotCreatorConfig {
 	slotName: string;

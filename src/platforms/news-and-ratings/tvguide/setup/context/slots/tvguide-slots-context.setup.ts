@@ -220,7 +220,6 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 			},
 			// as this slot can be repeated many, it uses bidderAlias incontent-leader-plus-inc
 			'incontent-leader-plus-inc': {
-				additionalClasses: ['incontent-leader-plus-inc'],
 				bidderAlias: 'incontent-leader-plus-inc',
 				defaultClasses: ['hide'],
 				defaultSizes: [
@@ -232,11 +231,8 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				targeting: {
 					pos_nr: 'inc',
 					loc: 'middle',
-					pos: 'incontent-leader-plus-inc',
 					rv: 1,
 				},
-				parentContainerSelector: 'none', // server-side rendered container
-				insertIntoParentContainerMethod: 'none', // server-side rendered container
 				repeat: {
 					index: 1,
 					limit: 4,
@@ -245,9 +241,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 					updateProperties: {
 						adProduct: '{slotConfig.slotName}',
 						'targeting.pos': '{slotConfig.slotName}',
-						'placeholder.createLabel': false,
 					},
-					insertBelowScrollPosition: true,
 				},
 			},
 			'incontent-leader-plus-bottom': {
