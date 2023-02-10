@@ -10,18 +10,10 @@ import {
 export class TvGuideDynamicSlotsSetup implements DiProcess {
 	execute(): void {
 		const adPlaceholders = document.querySelectorAll('.c-adDisplay_container');
-		const repeatableSlots =
-			Object.keys(context.get('slots')).filter((slotName) =>
-				context.get(`slots.${slotName}.repeat`),
-			) || [];
 
 		if (!adPlaceholders) {
 			return;
 		}
-
-		repeatableSlots.forEach((slot) => {
-			this.setupRepeatableSlot(slot);
-		});
 
 		new utils.WaitFor(() => this.adDivsReady(adPlaceholders), 10, 100)
 			.until()
@@ -42,6 +34,10 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 
 			if (pushedSlots.includes(adSlotName)) {
 				return;
+			}
+
+			if (context.get(`slots.${adSlotName}.repeat`)) {
+				this.setupRepeatableSlot(adSlotName);
 			}
 
 			pushedSlots.push(adSlotName);
