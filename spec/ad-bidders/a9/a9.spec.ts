@@ -31,19 +31,19 @@ describe('A9Provider', () => {
 		const testCases: {
 			coppaA9: boolean;
 			a9: boolean;
-			directedAtChildern: boolean;
+			directedAtChildren: boolean;
 			enabled: boolean;
 		}[] = [
-			{ coppaA9: false, a9: false, directedAtChildern: false, enabled: false },
-			{ coppaA9: false, a9: true, directedAtChildern: true, enabled: true },
-			{ coppaA9: true, a9: true, directedAtChildern: true, enabled: false },
-			{ coppaA9: true, a9: true, directedAtChildern: false, enabled: true },
+			{ coppaA9: false, a9: false, directedAtChildren: false, enabled: false },
+			{ coppaA9: false, a9: true, directedAtChildren: true, enabled: true },
+			{ coppaA9: true, a9: true, directedAtChildren: true, enabled: false },
+			{ coppaA9: true, a9: true, directedAtChildren: false, enabled: true },
 		];
 
 		testCases.forEach((testCase) => {
 			context.set('bidders.coppaA9', testCase.coppaA9);
 			context.set('bidders.a9.enabled', testCase.a9);
-			context.set('wiki.targeting.directedAtChildren', testCase.directedAtChildern);
+			context.set('wiki.targeting.directedAtChildren', testCase.directedAtChildren);
 			expect(A9Provider.isEnabled()).to.equal(testCase.enabled);
 		});
 	});
