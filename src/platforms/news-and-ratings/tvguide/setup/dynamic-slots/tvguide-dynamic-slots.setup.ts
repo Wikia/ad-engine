@@ -50,25 +50,33 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 	private setupRepeatableSlot(slotName, slotNameBase = '') {
 		communicationService.onSlotEvent(
 			AdSlot.STATUS_SUCCESS,
-			() => {
-				const adSlot = slotService.get(slotName);
-				const nextIndex = adSlot.getConfigProperty('repeat.index') + 1;
-				const nextSlotName = `${slotNameBase || slotName}-${nextIndex}`;
-				const nextSlotPlace = document.querySelector(
-					`.c-adDisplay_container > div[data-ad="${slotNameBase || slotName}"]:not(.gpt-ad)`,
-				);
-
-				if (!nextSlotPlace) {
-					return;
-				}
-
-				this.setupRepeatableSlot(nextSlotName, slotNameBase || slotName);
-				nextSlotPlace.id = nextSlotName;
-				context.push('state.adStack', { id: nextSlotName });
-			},
+			() => this.injectNextSlot(slotName, slotNameBase),
 			slotName,
 			true,
 		);
+		communicationService.onSlotEvent(
+			AdSlot.STATUS_COLLAPSE,
+			() => this.injectNextSlot(slotName, slotNameBase),
+			slotName,
+			true,
+		);
+	}
+
+	private injectNextSlot(slotName, slotNameBase = '') {
+		const adSlot = slotService.get(slotName);
+		const nextIndex = adSlot.getConfigProperty('repeat.index') + 1;
+		const nextSlotName = `${slotNameBase || slotName}-${nextIndex}`;
+		const nextSlotPlace = document.querySelector(
+			`.c-adDisplay_container > div[data-ad="${slotNameBase || slotName}"]:not(.gpt-ad)`,
+		);
+
+		if (!nextSlotPlace) {
+			return;
+		}
+
+		this.setupRepeatableSlot(nextSlotName, slotNameBase || slotName);
+		nextSlotPlace.id = nextSlotName;
+		context.push('state.adStack', { id: nextSlotName });
 	}
 
 	// TODO: This is temporary workaround. Change it for the proper event informing that ad placeholders
