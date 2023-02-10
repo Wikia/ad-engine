@@ -56,6 +56,10 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 			)
 			.execute()
 			.then(() => {
+				if (window?.Phoenix?.Events) {
+					window.Phoenix.Events.trigger('ads_initialized');
+				}
+
 				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);
 			});
 	}
