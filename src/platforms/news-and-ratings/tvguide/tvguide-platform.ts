@@ -1,6 +1,12 @@
 import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
-import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import {
+	communicationService,
+	context,
+	eventsRepository,
+	ProcessPipeline,
+	utils,
+} from '@wikia/ad-engine';
+import { Container, Injectable } from '@wikia/dependency-injection';
 
 import {
 	NewsAndRatingsAdsMode,
@@ -9,6 +15,7 @@ import {
 	NewsAndRatingsWadSetup,
 } from '../shared';
 import { basicContext } from './ad-context';
+import { TvGuidePageChangeAdsMode } from './modes/tvguide-page-change-ads-mode';
 import { TvGuideA9ConfigSetup } from './setup/context/a9/tvguide-a9-config.setup';
 import { TvGuidePrebidConfigSetup } from './setup/context/prebid/tvguide-prebid-config-setup.service';
 import { TvGuideSlotsContextSetup } from './setup/context/slots/tvguide-slots-context.setup';
@@ -18,6 +25,8 @@ import { TvGuideTemplatesSetup } from './templates/tvguide-templates.setup';
 
 @Injectable()
 export class TvGuidePlatform {
+	private currentUrl = '';
+
 	constructor(private pipeline: ProcessPipeline) {}
 
 	execute(): void {
@@ -41,5 +50,38 @@ export class TvGuidePlatform {
 		);
 
 		this.pipeline.execute();
+	}
+
+	setupPageChangeWatcher(container: Container) {
+		const config = { subtree: true, childList: true };
+		const observer = new MutationObserver(() => {
+			if (!this.currentUrl) {
+				this.currentUrl = location.href;
+				return;
+			}
+
+			if (this.currentUrl !== location.href) {
+				utils.logger('SPA', 'url changed', location.href);
+
+				this.currentUrl = location.href;
+				communicationService.emit(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
+
+				context.set('targeting', {});
+
+				const refreshPipeline = new ProcessPipeline(container);
+				refreshPipeline
+					.add(
+						() => utils.logger('SPA', 'starting pipeline refresh', location.href),
+						NewsAndRatingsBaseContextSetup,
+						TvGuideTargetingSetup,
+						NewsAndRatingsTargetingSetup,
+						TvGuideSlotsContextSetup,
+						TvGuidePageChangeAdsMode,
+					)
+					.execute();
+			}
+		});
+
+		observer.observe(document.querySelector('title'), config);
 	}
 }
