@@ -9,14 +9,17 @@ import {
 
 export class TvGuideDynamicSlotsSetup implements DiProcess {
 	execute(): void {
-		const repeatableSLots = ['incontent-leader-plus-inc'];
 		const adPlaceholders = document.querySelectorAll('.c-adDisplay_container');
+		const repeatableSlots =
+			Object.keys(context.get('slots')).filter((slotName) =>
+				context.get(`slots.${slotName}.repeat`),
+			) || [];
 
 		if (!adPlaceholders) {
 			return;
 		}
 
-		repeatableSLots.forEach((slot) => {
+		repeatableSlots.forEach((slot) => {
 			this.setupRepeatableSlot(slot);
 		});
 
