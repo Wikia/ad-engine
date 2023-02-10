@@ -235,7 +235,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 				repeat: {
 					index: 1,
-					limit: 4,
+					limit: 10,
 					additionalClasses: ['incontent-leader-plus-inc'],
 					slotNamePattern: `{slotConfig.bidderAlias}-{slotConfig.repeat.index}`,
 					updateProperties: {
