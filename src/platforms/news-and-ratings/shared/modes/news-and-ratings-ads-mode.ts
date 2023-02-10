@@ -56,7 +56,7 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 			)
 			.execute()
 			.then(() => {
-				if (window?.Phoenix?.Events) {
+				if (window?.Phoenix?.Events?.trigger) {
 					window.Phoenix.Events.trigger('ads_initialized');
 				}
 
