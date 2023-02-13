@@ -1,11 +1,5 @@
 import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
-import {
-	communicationService,
-	context,
-	eventsRepository,
-	ProcessPipeline,
-	utils,
-} from '@wikia/ad-engine';
+import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import {
 	NewsAndRatingsAdsMode,
@@ -88,7 +82,6 @@ export class GameSpotPlatform {
 				}
 
 				this.seamlessContentLoaded[location.pathname] = true;
-				communicationService.emit(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
 
 				// TODO: we should do below on "page loaded" event for the lazy-loaded seamless content
 				const adSlotsToFill = document.querySelectorAll('.mapped-ad > .ad-wrap:not(.gpt-ad)');
@@ -121,6 +114,7 @@ export class GameSpotPlatform {
 
 	private updateSlotContext(baseSlotName: string, slotName: string) {
 		context.set(`slots.${slotName}`, { ...context.get(`slots.${baseSlotName}`) });
+		context.set(`slots.${slotName}.slotName`, slotName);
 		context.set(`slots.${slotName}.targeting.pos`, slotName);
 		utils.logger('pageChangeWatcher', 'new slot config: ', context.get(`slots.${slotName}`));
 	}
