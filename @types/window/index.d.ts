@@ -48,4 +48,5 @@ interface Window {
 	utag_data?: any;
 	wgCookiePath?: string;
 	XMLHttpRequest?: any;
+	Phoenix?: Phoenix;
 }
