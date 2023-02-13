@@ -52,7 +52,7 @@ export class UcpMobilePlatform {
 			NoAdsExperimentSetup,
 			LabradorSetup,
 			// ToDo: Remove after ADEN-12559.
-			this.userIdentity.call,
+			() => this.userIdentity.call(),
 			TrackingSetup,
 			AdEngineRunnerSetup,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
