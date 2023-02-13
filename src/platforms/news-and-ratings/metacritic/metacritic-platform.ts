@@ -33,8 +33,8 @@ export class MetacriticPlatform {
 			() => context.set('state.isMobile', !utils.client.isDesktop()),
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
-			TrackingParametersSetup,
 			InstantConfigSetup,
+			TrackingParametersSetup,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			NewsAndRatingsTargetingSetup,
