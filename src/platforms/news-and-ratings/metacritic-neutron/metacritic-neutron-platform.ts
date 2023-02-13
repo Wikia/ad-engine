@@ -21,6 +21,7 @@ import { MetacriticNeutronPrebidConfigSetup } from './setup/context/prebid/metac
 import { MetacriticNeutronSlotsContextSetup } from './setup/context/slots/metacritic-neutron-slots-context.setup';
 import { MetacriticNeutronTargetingSetup } from './setup/context/targeting/metacritic-neutron-targeting.setup';
 import { MetacriticNeutronDynamicSlotsSetup } from './setup/dynamic-slots/metacritic-neutron-dynamic-slots.setup';
+import { MetacriticNeutronTemplatesSetup } from './templates/metacritic-neutron-templates.setup';
 
 @Injectable()
 export class MetacriticNeutronPlatform {
@@ -43,6 +44,7 @@ export class MetacriticNeutronPlatform {
 			MetacriticNeutronPrebidConfigSetup,
 			MetacriticNeutronA9ConfigSetup,
 			BiddersStateSetup,
+			MetacriticNeutronTemplatesSetup,
 			NewsAndRatingsAdsMode,
 			TrackingSetup,
 		);
