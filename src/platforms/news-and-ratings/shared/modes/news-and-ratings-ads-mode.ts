@@ -56,6 +56,7 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 			)
 			.execute()
 			.then(() => {
+				// TODO: we could remove Phoenix lines below once we introduce communicationService on the platforms
 				if (window?.Phoenix?.Events?.trigger) {
 					window.Phoenix.Events.trigger('ads_initialized');
 				}
