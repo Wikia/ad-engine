@@ -2,8 +2,8 @@ import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 
 import { JWPlayerManager, jwpReady } from '@wikia/ad-products';
-import { context, utils } from '@wikia/core';
 import { communicationService } from '@wikia/communication';
+import { context, utils } from '@wikia/core';
 
 describe('JWPlayerManager', () => {
 	const sandbox = createSandbox();
