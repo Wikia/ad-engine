@@ -18,6 +18,7 @@ import {
 	eventsRepository,
 	parallel,
 	ProcessPipeline,
+	UserIdentity,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
@@ -29,7 +30,7 @@ import { UcpMobileLegacySetup } from './ucp-mobile-legacy-setup';
 
 @Injectable()
 export class UcpMobilePlatform {
-	constructor(private pipeline: ProcessPipeline) {}
+	constructor(private pipeline: ProcessPipeline, private userIdentity: UserIdentity) {}
 
 	execute(): void {
 		// Config
@@ -50,6 +51,8 @@ export class UcpMobilePlatform {
 			}),
 			NoAdsExperimentSetup,
 			LabradorSetup,
+			// ToDo: Remove after ADEN-12559.
+			this.userIdentity.call,
 			TrackingSetup,
 			AdEngineRunnerSetup,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
