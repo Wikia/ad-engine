@@ -5,7 +5,7 @@ export class GiantbombTargetingSetup implements DiProcess {
 		const targeting = {
 			s0: 'gaming',
 			s1: 'giantbomb',
-			skin: 'giantbomb',
+			skin: `giantbomb_${context.get('state.isMobile') ? 'mobile' : 'desktop'}`,
 		};
 
 		context.set('targeting', {

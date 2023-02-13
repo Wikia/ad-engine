@@ -5,7 +5,7 @@ export class GamespotTargetingSetup implements DiProcess {
 		const targeting = {
 			s0: 'gaming',
 			s1: 'gamespot',
-			skin: 'gamespot',
+			skin: `gamespot_${context.get('state.isMobile') ? 'mobile' : 'desktop'}`,
 		};
 
 		context.set('targeting', {

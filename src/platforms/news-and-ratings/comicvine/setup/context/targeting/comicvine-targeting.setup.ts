@@ -5,7 +5,7 @@ export class ComicvineTargetingSetup implements DiProcess {
 		const targeting = {
 			s0: 'ent',
 			s1: 'comicvine',
-			skin: 'comicvine',
+			skin: `comicvine_${context.get('state.isMobile') ? 'mobile' : 'desktop'}`,
 		};
 
 		context.set('targeting', {

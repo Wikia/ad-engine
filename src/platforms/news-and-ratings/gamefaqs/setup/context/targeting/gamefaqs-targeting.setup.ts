@@ -5,7 +5,7 @@ export class GamefaqsTargetingSetup implements DiProcess {
 		const targeting = {
 			s0: 'gaming',
 			s1: 'gamefaqs',
-			skin: 'gamefaqs',
+			skin: `gamefaqs_${context.get('state.isMobile') ? 'mobile' : 'desktop'}`,
 		};
 
 		context.set('targeting', {

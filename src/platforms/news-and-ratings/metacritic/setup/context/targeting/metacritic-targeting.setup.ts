@@ -6,7 +6,7 @@ export class MetacriticTargetingSetup implements DiProcess {
 			s0: this.getVerticalName(),
 			ptype: this.getPageType(),
 			s1: 'metacritic',
-			skin: 'metacritic',
+			skin: `metacritic_${context.get('state.isMobile') ? 'mobile' : 'desktop'}`,
 		};
 
 		context.set('targeting', {
