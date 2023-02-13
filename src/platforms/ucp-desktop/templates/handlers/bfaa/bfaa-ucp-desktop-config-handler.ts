@@ -8,11 +8,11 @@ import {
 	UapParams,
 	universalAdPackage,
 } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
+import { inject, injectable } from 'tsyringe';
 
-@Injectable({ autobind: false })
+@injectable()
 export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
-	constructor(@Inject(TEMPLATE.PARAMS) private params: UapParams) {}
+	constructor(@inject(TEMPLATE.PARAMS) private params: UapParams) {}
 
 	async onEnter(): Promise<void> {
 		const enabledSlots: string[] = ['top_boxad', 'incontent_boxad_1', 'bottom_leaderboard'];

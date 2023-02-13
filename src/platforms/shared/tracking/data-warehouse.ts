@@ -1,5 +1,5 @@
 import { context, trackingOptIn, utils } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { TrackingParams } from './models/tracking-params';
 
 const logGroup = 'data-warehouse-trackingParams';
@@ -13,10 +13,10 @@ export interface TimeBasedParams {
 
 type DataWarehouseParams = TrackingParams & TimeBasedParams;
 
-@Injectable()
+@injectable()
 export class DataWarehouseTracker {
 	/**
-	 * Call all of the setup trackers
+	 * Call all the setup trackers
 	 */
 	track(options: TrackingParams, trackingURL?: string): void {
 		const params: TrackingParams = {

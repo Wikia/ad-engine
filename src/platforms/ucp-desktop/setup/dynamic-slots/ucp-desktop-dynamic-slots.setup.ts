@@ -17,10 +17,10 @@ import {
 	slotService,
 	universalAdPackage,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { UcpDesktopSlotsDefinitionRepository } from './ucp-desktop-slots-definition-repository';
 
-@Injectable()
+@injectable()
 export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	constructor(
 		private slotsDefinitionRepository: UcpDesktopSlotsDefinitionRepository,

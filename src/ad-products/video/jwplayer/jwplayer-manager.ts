@@ -1,8 +1,8 @@
 import { communicationService, ofType } from '@ad-engine/communication';
 import { AdSlot, context, slotService, tapOnce, utils } from '@ad-engine/core';
-import { Injectable } from '@wikia/dependency-injection';
 import { merge, Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
+import { injectable } from 'tsyringe';
 import { iasVideoTracker } from '../porvata/plugins/ias/ias-video-tracker';
 import { JWPlayer } from './external-types/jwplayer';
 import { JwplayerComscoreHandler } from './handlers/jwplayer-comscore-handler';
@@ -12,7 +12,7 @@ import { PlayerReadyResult } from './helpers/player-ready-result';
 import { JwPlayerAdsFactoryOptions, jwpReady } from './jwplayer-actions';
 import { createJwpStream } from './streams/jwplayer-stream';
 
-@Injectable()
+@injectable()
 export class JWPlayerManager {
 	manage(): void {
 		this.onPlayerReady()

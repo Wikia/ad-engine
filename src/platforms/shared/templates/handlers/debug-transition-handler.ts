@@ -1,9 +1,9 @@
 import { TEMPLATE, TemplateStateHandler, TemplateTransition } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
+import { inject, injectable } from 'tsyringe';
 
-@Injectable({ autobind: false })
+@injectable()
 export class DebugTransitionHandler implements TemplateStateHandler {
-	constructor(@Inject(TEMPLATE.NAME) private name: string) {}
+	constructor(@inject(TEMPLATE.NAME) private name: string) {}
 
 	async onEnter(transition: TemplateTransition<any>): Promise<void> {
 		(window.ads as any).transitions = (window.ads as any).transitions || {};

@@ -1,8 +1,8 @@
-import { Injectable } from '@wikia/dependency-injection';
 import { animationFrameScheduler, fromEvent, Observable } from 'rxjs';
 import { observeOn, publish, refCount } from 'rxjs/operators';
+import { injectable } from 'tsyringe';
 
-@Injectable()
+@injectable()
 export class DomListener {
 	readonly scroll$: Observable<Event> = this.createSource(document, 'scroll');
 	readonly resize$: Observable<Event> = this.createSource(window, 'resize');

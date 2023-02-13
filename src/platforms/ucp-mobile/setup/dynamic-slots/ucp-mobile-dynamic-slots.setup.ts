@@ -22,10 +22,10 @@ import {
 	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { UcpMobileSlotsDefinitionRepository } from './ucp-mobile-slots-definition-repository';
 
-@Injectable()
+@injectable()
 export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	constructor(
 		private slotsDefinitionRepository: UcpMobileSlotsDefinitionRepository,

@@ -1,10 +1,10 @@
 import { utils } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
+import { inject, injectable } from 'tsyringe';
 import { F2Environment, F2_ENV } from '../setup-f2';
 
-@Injectable()
+@injectable()
 export class F2SrcAdapter {
-	constructor(@Inject(F2_ENV) private f2Env: F2Environment) {}
+	constructor(@inject(F2_ENV) private f2Env: F2Environment) {}
 
 	/**
 	 * Return src targeting parameter based on current env

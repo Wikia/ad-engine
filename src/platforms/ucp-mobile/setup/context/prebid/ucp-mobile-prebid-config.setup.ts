@@ -1,5 +1,5 @@
 import { context, DiProcess } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { getAppnexusContext } from '../../../bidders/prebid/appnexus';
 import { getAppnexusAstContext } from '../../../bidders/prebid/appnexus-ast';
 import { getGumgumContext } from '../../../bidders/prebid/gumgum';
@@ -18,7 +18,7 @@ import { getVerizonContext } from '../../../bidders/prebid/verizon';
 import { getWikiaContext } from '../../../bidders/prebid/wikia';
 import { getWikiaVideoContext } from '../../../bidders/prebid/wikia-video';
 
-@Injectable()
+@injectable()
 export class UcpMobilePrebidConfigSetup implements DiProcess {
 	execute(): void {
 		context.set('bidders.prebid.appnexus', getAppnexusContext());

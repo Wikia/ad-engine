@@ -6,7 +6,7 @@ import {
 	ProcessPipeline,
 	utils,
 } from '@wikia/ad-engine';
-import { Container, Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
 import {
 	NewsAndRatingsAdsMode,
@@ -23,7 +23,7 @@ import { TvGuideTargetingSetup } from './setup/context/targeting/tvguide-targeti
 import { TvGuideDynamicSlotsSetup } from './setup/dynamic-slots/tvguide-dynamic-slots.setup';
 import { TvGuideTemplatesSetup } from './templates/tvguide-templates.setup';
 
-@Injectable()
+@injectable()
 export class TvGuidePlatform {
 	private currentUrl = '';
 
@@ -52,7 +52,7 @@ export class TvGuidePlatform {
 		this.pipeline.execute();
 	}
 
-	setupPageChangeWatcher(container: Container) {
+	setupPageChangeWatcher() {
 		const config = { subtree: true, childList: true };
 		const observer = new MutationObserver(() => {
 			if (!this.currentUrl) {
@@ -68,7 +68,7 @@ export class TvGuidePlatform {
 
 				context.set('targeting', {});
 
-				const refreshPipeline = new ProcessPipeline(container);
+				const refreshPipeline = new ProcessPipeline();
 				refreshPipeline
 					.add(
 						() => utils.logger('SPA', 'starting pipeline refresh', location.href),

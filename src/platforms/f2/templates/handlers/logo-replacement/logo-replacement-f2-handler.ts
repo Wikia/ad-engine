@@ -1,13 +1,13 @@
 import { LogoReplacementParams } from '@platforms/shared';
 import { TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
+import { inject, injectable } from 'tsyringe';
 import { F2Environment, F2_ENV } from '../../../setup-f2';
 
-@Injectable({ autobind: false })
+@injectable()
 export class LogoReplacementF2Handler implements TemplateStateHandler {
 	constructor(
-		@Inject(TEMPLATE.PARAMS) private params: LogoReplacementParams,
-		@Inject(F2_ENV) private f2Env: F2Environment,
+		@inject(TEMPLATE.PARAMS) private params: LogoReplacementParams,
+		@inject(F2_ENV) private f2Env: F2Environment,
 	) {}
 
 	async onEnter(): Promise<void> {

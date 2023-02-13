@@ -1,6 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { Container, Injectable } from '@wikia/dependency-injection';
 import { Observable, Subject } from 'rxjs';
+import { injectable, Lifecycle } from 'tsyringe';
 import { AdSlot, Dictionary, Type } from '../../models';
 import { TemplateAction } from './template-action';
 import { TemplateDependenciesManager, TemplateDependency } from './template-dependencies-manager';
@@ -19,15 +19,12 @@ interface TemplateMachinePayload<
 
 type TemplateDependencies = (TemplateDependency | TemplateDependencies)[];
 
-@Injectable()
+@injectable()
 export class TemplateRegistry {
 	private settings = new Map<string, TemplateMachinePayload>();
 	private machines = new Map<string, Set<TemplateMachine>>();
 
-	constructor(
-		private container: Container,
-		private dependenciesManager: TemplateDependenciesManager,
-	) {}
+	constructor(private dependenciesManager: TemplateDependenciesManager) {}
 
 	has(templateName: string): boolean {
 		return this.settings.has(templateName);
@@ -45,7 +42,7 @@ export class TemplateRegistry {
 			StateHandlerTypesDict,
 			initialStateKey,
 			emitter$,
-			// @ts-ignore TypeScript don't understand which overload we want to retype in Parameters<Container['bind']>[0]
+			// @ts-expect-error TypeScript can't understand which overload we want to retype in TemplateDependency
 			templateDependencies: templateDependencies.flat<TemplateDependency>(Infinity),
 		});
 
@@ -92,7 +89,7 @@ export class TemplateRegistry {
 
 		const templateStateMap = this.createTemplateStateMap(StateHandlerTypesDict);
 
-		this.dependenciesManager.resetDependencies(templateDependencies);
+		this.dependenciesManager.resetDependencies();
 
 		const machine = new TemplateMachine(templateName, templateStateMap, initialStateKey, emitter$);
 
@@ -136,8 +133,14 @@ export class TemplateRegistry {
 	private createStateHandler<T extends string>(
 		StateHandlerType: Type<TemplateStateHandler<T>>,
 	): TemplateStateHandler<T> {
-		this.container.bind(StateHandlerType).scope('Transient');
+		this.dependenciesManager
+			.getContainer()
+			.register(
+				StateHandlerType,
+				{ useClass: StateHandlerType },
+				{ lifecycle: Lifecycle.Transient },
+			);
 
-		return this.container.get(StateHandlerType);
+		return this.dependenciesManager.getContainer().resolve(StateHandlerType);
 	}
 }

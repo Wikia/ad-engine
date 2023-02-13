@@ -14,14 +14,14 @@ import {
 	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
 interface SlotCreatorInsertionParamsType {
 	anchorSelector: string;
 	insertMethod: insertMethodType;
 }
 
-@Injectable()
+@injectable()
 export class UcpMobileSlotsDefinitionRepository {
 	constructor(protected instantConfig: InstantConfigService) {}
 

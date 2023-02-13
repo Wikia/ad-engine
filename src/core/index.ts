@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import * as utils from './utils';
 
 export * from './ad-engine';

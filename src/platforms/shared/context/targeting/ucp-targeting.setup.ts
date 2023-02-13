@@ -8,23 +8,20 @@ import {
 	UapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
+import { inject, injectable } from 'tsyringe';
 import { createFandomContext } from './targeting-strategies/factories/create-fandom-context';
 import { createSelectedStrategy } from './targeting-strategies/factories/create-selected-strategy';
 import { TargetingTags } from './targeting-strategies/interfaces/taxonomy-tags';
 
 const SKIN = Symbol('targeting skin');
 
-@Injectable()
+@injectable()
 export class UcpTargetingSetup implements DiProcess {
-	static skin(skin: string): Binder {
-		return {
-			bind: SKIN,
-			value: skin,
-		};
+	static skin(skin: string): Binder<typeof skin> {
+		return [SKIN, { useValue: skin }];
 	}
 
-	constructor(@Inject(SKIN) private skin: string, protected instantConfig: InstantConfigService) {}
+	constructor(@inject(SKIN) private skin: string, protected instantConfig: InstantConfigService) {}
 
 	execute(): void {
 		context.set('targeting', {

@@ -1,7 +1,7 @@
 import { context, utils } from '@ad-engine/core';
-import { Injectable } from '@wikia/dependency-injection';
 import { merge, Observable } from 'rxjs';
 import { filter, mergeMap, tap } from 'rxjs/operators';
+import { injectable } from 'tsyringe';
 import {
 	JWPlayerHelper,
 	JWPlayerHelperSkippingSecondVideo,
@@ -16,7 +16,7 @@ const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
 /**
  * Describes what is done
  */
-@Injectable({ scope: 'Transient' })
+@injectable()
 export class JWPlayerHandler {
 	private stream$: JwpStream;
 	private helper: JWPlayerHelper;

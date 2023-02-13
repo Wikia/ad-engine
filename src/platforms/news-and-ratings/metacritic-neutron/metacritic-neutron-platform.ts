@@ -1,4 +1,4 @@
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
 import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
 import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
@@ -17,7 +17,7 @@ import { MetacriticNeutronTargetingSetup } from './setup/context/targeting/metac
 import { MetacriticNeutronDynamicSlotsSetup } from './setup/dynamic-slots/metacritic-neutron-dynamic-slots.setup';
 import { MetacriticNeutronTemplatesSetup } from './templates/metacritic-neutron-templates.setup';
 
-@Injectable()
+@injectable()
 export class MetacriticNeutronPlatform {
 	constructor(private pipeline: ProcessPipeline) {}
 

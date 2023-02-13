@@ -1,12 +1,12 @@
 import { UcpTargetingSetup } from '@platforms/shared';
 import { DiProcess } from '@wikia/ad-engine';
-import { Container, Injectable } from '@wikia/dependency-injection';
+import { DependencyContainer, injectable } from 'tsyringe';
 
-@Injectable()
+@injectable()
 export class UcpDesktopIocSetup implements DiProcess {
-	constructor(private container: Container) {}
+	constructor(private container: DependencyContainer) {}
 
 	execute(): void {
-		this.container.bind(UcpTargetingSetup.skin('ucp_desktop'));
+		this.container.register(...UcpTargetingSetup.skin('ucp_desktop'));
 	}
 }

@@ -1,5 +1,5 @@
 import { TEMPLATE, UapParams, UapState } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
+import { inject, injectable } from 'tsyringe';
 import { UapDomReader } from './uap-dom-reader';
 
 export interface UapVideoSize {
@@ -10,9 +10,9 @@ export interface UapVideoSize {
 	bottom?: number;
 }
 
-@Injectable({ autobind: false })
+@injectable()
 export class VideoDomReader {
-	constructor(@Inject(TEMPLATE.PARAMS) private params: UapParams, private reader: UapDomReader) {}
+	constructor(@inject(TEMPLATE.PARAMS) private params: UapParams, private reader: UapDomReader) {}
 
 	getVideoSizeImpact(): UapVideoSize {
 		return this.calculateVideoSize(this.reader.getSlotHeightImpact(), 0);

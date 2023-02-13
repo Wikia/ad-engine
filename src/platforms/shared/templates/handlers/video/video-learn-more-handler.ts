@@ -1,14 +1,14 @@
 import { PorvataPlayer, TemplateStateHandler } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { take, takeUntil, tap } from 'rxjs/operators';
+import { injectable } from 'tsyringe';
 import { DomManipulator } from '../../helpers/manipulators/dom-manipulator';
 import { PlayerRegistry } from '../../helpers/player-registry';
 
 /**
  * Displays Learn More link
  */
-@Injectable({ autobind: false })
+@injectable()
 export class VideoLearnMoreHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 

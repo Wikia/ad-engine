@@ -1,8 +1,8 @@
 import { parallel, ProcessPipeline } from '@wikia/core';
 import { wait } from '@wikia/core/utils';
-import { Container } from '@wikia/dependency-injection';
 import { expect } from 'chai';
 import { createSandbox, SinonSpy } from 'sinon';
+import { container as tsyringeContainer } from 'tsyringe';
 
 describe('ParallelProcess', () => {
 	const sandbox = createSandbox();
@@ -18,10 +18,10 @@ describe('ParallelProcess', () => {
 	}
 
 	beforeEach(() => {
-		const container = new Container();
+		const container = tsyringeContainer.createChildContainer();
 
 		spy = sandbox.spy();
-		pipeline = container.get(ProcessPipeline);
+		pipeline = container.resolve(ProcessPipeline);
 	});
 
 	afterEach(() => {

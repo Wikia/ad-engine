@@ -1,6 +1,6 @@
 import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
 import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import {
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
@@ -15,7 +15,7 @@ import { ComicvineSlotsContextSetup } from './setup/context/slots/comicvine-slot
 import { ComicvineTargetingSetup } from './setup/context/targeting/comicvine-targeting.setup';
 import { ComicvineTemplatesSetup } from './templates/comicvine-templates.setup';
 
-@Injectable()
+@injectable()
 export class ComicvinePlatform {
 	constructor(private pipeline: ProcessPipeline) {}
 

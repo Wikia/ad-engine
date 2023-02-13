@@ -1,6 +1,6 @@
 import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
 import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import {
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
@@ -15,7 +15,7 @@ import { GiantbombSlotsContextSetup } from './setup/context/slots/giantbomb-slot
 import { GiantbombTargetingSetup } from './setup/context/targeting/giantbomb-targeting.setup';
 import { GiantbombTemplatesSetup } from './templates/giantbomb-templates.setup';
 
-@Injectable()
+@injectable()
 export class GiantbombPlatform {
 	constructor(private pipeline: ProcessPipeline) {}
 

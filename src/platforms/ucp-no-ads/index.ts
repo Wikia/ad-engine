@@ -1,11 +1,10 @@
-import { Container } from '@wikia/dependency-injection';
+import { container } from 'tsyringe';
 import './styles.scss';
 import { UcpNoAdsPlatform } from './ucp-no-ads-platform';
 
 window.RLQ = window.RLQ || [];
 window.RLQ.push(async () => {
-	const container = new Container();
-	const platform = container.get(UcpNoAdsPlatform);
+	const platform = container.resolve(UcpNoAdsPlatform);
 
 	platform.execute();
 });

@@ -19,7 +19,7 @@ import {
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { basicContext } from './ad-context';
 import { UcpMobileBaseContextSetup } from './setup/context/base/ucp-mobile-base-context.setup';
 import { UcpMobileSlotsContextSetup } from './setup/context/slots/ucp-mobile-slots-context.setup';
@@ -27,7 +27,7 @@ import { UcpMobileAdLayoutSetup } from './ucp-mobile-ad-layout-setup';
 import { UcpMobileIocSetup } from './ucp-mobile-ioc-setup';
 import { UcpMobileLegacySetup } from './ucp-mobile-legacy-setup';
 
-@Injectable()
+@injectable()
 export class UcpMobilePlatform {
 	constructor(private pipeline: ProcessPipeline) {}
 

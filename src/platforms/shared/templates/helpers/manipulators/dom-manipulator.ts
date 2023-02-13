@@ -1,7 +1,7 @@
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { ElementManipulator } from './element-manipulator';
 
-@Injectable({ autobind: false })
+@injectable()
 export class DomManipulator {
 	private elements = new Map<HTMLElement, ElementManipulator>();
 

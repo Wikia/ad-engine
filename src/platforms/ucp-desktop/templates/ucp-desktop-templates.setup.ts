@@ -7,8 +7,8 @@ import {
 	TemplateRegistry,
 	templateService,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
+import { injectable } from 'tsyringe';
 import { registerBfaaTemplate } from './bfaa-template';
 import { registerBfabTemplate } from './bfab-template';
 import { getOutstreamConfig } from './configs/outstream-config';
@@ -17,7 +17,7 @@ import { registerLogoReplacementTemplate } from './logo-replacement-template';
 import { registerRoadblockTemplate } from './roadblock-template';
 import { registerStickyTlbTemplate } from './sticky-tlb-template';
 
-@Injectable()
+@injectable()
 export class UcpDesktopTemplatesSetup implements DiProcess {
 	constructor(private registry: TemplateRegistry, private stickedBoxadHelper: StickedBoxadHelper) {
 		templateService.setInitializer(this.registry);

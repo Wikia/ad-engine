@@ -1,6 +1,6 @@
 import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
 import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import {
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
@@ -15,7 +15,7 @@ import { GamespotSlotsContextSetup } from './setup/context/slots/gamespot-slots-
 import { GamespotTargetingSetup } from './setup/context/targeting/gamespot-targeting.setup';
 import { GamespotTemplatesSetup } from './templates/gamespot-templates.setup';
 
-@Injectable()
+@injectable()
 export class GameSpotPlatform {
 	constructor(private pipeline: ProcessPipeline) {}
 

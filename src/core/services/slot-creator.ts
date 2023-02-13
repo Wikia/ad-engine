@@ -1,4 +1,4 @@
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { RepeatConfig } from '../models';
 import {
 	AD_LABEL_CLASS,
@@ -37,7 +37,7 @@ export interface SlotPlaceholderContextConfig {
 
 const groupName = 'slot-creator';
 
-@Injectable()
+@injectable()
 export class SlotCreator {
 	createSlot(
 		slotLooseConfig: SlotCreatorConfig,

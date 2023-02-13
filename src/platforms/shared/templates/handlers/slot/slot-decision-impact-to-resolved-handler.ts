@@ -6,19 +6,19 @@ import {
 	TemplateTransition,
 	universalAdPackage,
 } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { filter, startWith, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { inject, injectable } from 'tsyringe';
 import { ScrollCorrector } from '../../helpers/scroll-corrector';
 import { StickinessTimeout } from '../../helpers/stickiness-timeout';
 import { UapDomReader } from '../../helpers/uap-dom-reader';
 
-@Injectable({ autobind: false })
+@injectable()
 export class SlotDecisionImpactToResolvedHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(
-		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
+		@inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		private domListener: DomListener,
 		private scrollCorrector: ScrollCorrector,
 		private reader: UapDomReader,

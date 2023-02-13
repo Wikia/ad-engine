@@ -1,13 +1,13 @@
 import { AdSlot, TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
+import { inject, injectable } from 'tsyringe';
 import { UapDomManager } from '../../helpers/uap-dom-manager';
 
-@Injectable({ autobind: false })
+@injectable()
 export class SlotStateStickedHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
-	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot, private manager: UapDomManager) {}
+	constructor(@inject(TEMPLATE.SLOT) private adSlot: AdSlot, private manager: UapDomManager) {}
 
 	async onEnter(): Promise<void> {
 		this.manager.addClassToPage('uap-sticked');

@@ -5,7 +5,7 @@ import {
 	DiProcess,
 	eventsRepository,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { getAppnexusContext } from '../../../bidders/appnexus';
 import { getCriteoContext } from '../../../bidders/criteo';
 import { getIndexExchangeContext } from '../../../bidders/index-exchange';
@@ -16,7 +16,7 @@ import { getRubiconDisplayContext } from '../../../bidders/rubicon-display';
 import { getWikiaContext } from '../../../bidders/wikia';
 import { getYahooSspContext } from '../../../bidders/yahoossp';
 
-@Injectable()
+@injectable()
 export class GamefaqsPrebidConfigSetup implements DiProcess {
 	constructor(private bidders: Bidders) {}
 

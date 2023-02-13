@@ -1,8 +1,7 @@
-import { Container } from '@wikia/dependency-injection';
+import { container } from 'tsyringe';
 import { GamefaqsPlatform } from './gamefaqs-platform';
 import './styles.scss';
 
-const container = new Container();
-const platform = container.get(GamefaqsPlatform);
+const platform = container.resolve(GamefaqsPlatform);
 
 platform.execute();

@@ -1,5 +1,5 @@
-import { Container, Injectable } from '@wikia/dependency-injection';
-import { Type } from '../../../../models/dictionary';
+import { container, injectable } from 'tsyringe';
+import { Type } from '../../../../models';
 import { ProcessPipeline } from '../process-pipeline';
 import { CompoundProcess, CompoundProcessStep, ProcessStepUnion } from '../process-pipeline-types';
 
@@ -17,16 +17,14 @@ interface ConditionalProcessPayload<T> {
 	noStep?: ProcessStepUnion<T>;
 }
 
-@Injectable({ scope: 'Transient' })
+@injectable()
 class ConditionalProcess<T> implements CompoundProcess<ConditionalProcessPayload<T>> {
-	constructor(private container: Container) {}
-
 	async execute(payload: ConditionalProcessPayload<T>): Promise<void> {
 		const result = await this.getResult(payload.condition);
 		const step = result ? payload.yesStep : payload.noStep;
 
 		if (step) {
-			const pipeline = this.container.get(ProcessPipeline);
+			const pipeline = container.resolve(ProcessPipeline);
 
 			return pipeline.add(step).execute();
 		}
@@ -34,7 +32,7 @@ class ConditionalProcess<T> implements CompoundProcess<ConditionalProcessPayload
 
 	private getResult(condition: Condition): Promise<boolean> | boolean {
 		if (this.isDiCondition(condition)) {
-			return this.container.get(condition).execute();
+			return container.resolve(condition).execute();
 		}
 
 		return condition();

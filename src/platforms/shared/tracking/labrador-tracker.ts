@@ -1,10 +1,10 @@
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { DataWarehouseTracker } from './data-warehouse';
 
 /**
  * Wrapper for labrador info warehouse trackingParams
  */
-@Injectable()
+@injectable()
 export class LabradorTracker {
 	constructor(private dwTracker: DataWarehouseTracker) {}
 

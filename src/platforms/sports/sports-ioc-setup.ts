@@ -1,7 +1,7 @@
 import { DiProcess } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
-@Injectable()
+@injectable()
 export class SportsIocSetup implements DiProcess {
 	constructor() {
 		// del

@@ -1,9 +1,8 @@
-import { Container } from '@wikia/dependency-injection';
+import { container } from 'tsyringe';
 import './styles.scss';
 import { TvGuidePlatform } from './tvguide-platform';
 
-const container = new Container();
-const platform = container.get(TvGuidePlatform);
+const platform = container.resolve(TvGuidePlatform);
 
 platform.execute();
-platform.setupPageChangeWatcher(container);
+platform.setupPageChangeWatcher();

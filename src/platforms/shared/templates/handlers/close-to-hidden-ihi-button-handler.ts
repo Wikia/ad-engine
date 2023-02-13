@@ -6,13 +6,13 @@ import {
 	TemplateStateHandler,
 	TemplateTransition,
 } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
+import { inject, injectable } from 'tsyringe';
 
-@Injectable({ autobind: false })
+@injectable()
 export class CloseToHiddenIhiButtonHandler implements TemplateStateHandler {
 	private button: HTMLButtonElement;
 
-	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
+	constructor(@inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
 
 	async onEnter(transition: TemplateTransition<'hidden'>): Promise<void> {
 		this.button = new CloseButton({

@@ -11,10 +11,10 @@ import {
 	PartnerPipeline,
 	UserIdentity,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { NoAdsDetector } from '../../services/no-ads-detector';
 
-@Injectable()
+@injectable()
 export class NoAdsMode implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,

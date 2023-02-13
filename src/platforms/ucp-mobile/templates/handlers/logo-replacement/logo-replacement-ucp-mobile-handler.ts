@@ -1,10 +1,10 @@
 import { LogoReplacementParams } from '@platforms/shared';
 import { TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
+import { inject, injectable } from 'tsyringe';
 
-@Injectable({ autobind: false })
+@injectable()
 export class LogoReplacementUcpMobileHandler implements TemplateStateHandler {
-	constructor(@Inject(TEMPLATE.PARAMS) private params: LogoReplacementParams) {}
+	constructor(@inject(TEMPLATE.PARAMS) private params: LogoReplacementParams) {}
 
 	async onEnter(): Promise<void> {
 		const fandomLogo = document.querySelector('.mobile-global-navigation__logo');

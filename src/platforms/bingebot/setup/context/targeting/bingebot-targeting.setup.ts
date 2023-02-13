@@ -9,21 +9,18 @@ import {
 	Targeting,
 	utils,
 } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
 import { shareReplay } from 'rxjs/operators';
+import { inject, injectable } from 'tsyringe';
 
 const SKIN = Symbol('targeting skin');
 
-@Injectable()
+@injectable()
 export class BingeBotTargetingSetup implements DiProcess {
-	static skin(skin: string): Binder {
-		return {
-			bind: SKIN,
-			value: skin,
-		};
+	static skin(skin: string): Binder<typeof skin> {
+		return [SKIN, { useValue: skin }];
 	}
 
-	constructor(@Inject(SKIN) private skin: string) {}
+	constructor(@inject(SKIN) private skin: string) {}
 
 	execute(): void {
 		context.set('targeting', { ...context.get('targeting'), ...this.getPageLevelTargeting() });

@@ -5,8 +5,8 @@ import {
 	UniversalPipelineStep,
 } from '@wikia/core';
 import { PipelineNext } from '@wikia/core/pipeline/pipeline-types';
-import { Container } from '@wikia/dependency-injection';
 import { createSandbox } from 'sinon';
+import { container as tsyringeContainer } from 'tsyringe';
 import { PipelineTestSuite } from './pipeline-test-suite';
 
 describe('UniversalPipeline', () => {
@@ -39,12 +39,12 @@ describe('UniversalPipeline', () => {
 	}
 
 	beforeEach(() => {
-		const container = new Container();
+		const container = tsyringeContainer.createChildContainer();
 
 		pipelineTestSuite = new PipelineTestSuite<UniversalPipelineStep<number>>(
 			sandbox,
 			spies,
-			container.get<UniversalPipeline<number>>(UniversalPipeline),
+			container.resolve<UniversalPipeline<number>>(UniversalPipeline),
 			{ first: FirstStep, second: secondStep, final: FinalStep },
 		);
 	});

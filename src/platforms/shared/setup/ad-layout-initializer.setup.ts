@@ -7,7 +7,7 @@ import {
 	Targeting,
 	utils,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
 const logGroup = 'layout-initializer';
 
@@ -33,7 +33,7 @@ export function shouldUseAdLayouts(): Promise<boolean> {
 		.catch(() => false);
 }
 
-@Injectable()
+@injectable()
 export class AdLayoutInitializerSetup implements DiProcess {
 	private lisAdUnit = '/5441/wka1b.LIS/layout_initializer/';
 	private lisSize = '1x1';

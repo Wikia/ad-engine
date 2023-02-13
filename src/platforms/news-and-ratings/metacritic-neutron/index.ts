@@ -1,8 +1,7 @@
-import { Container } from '@wikia/dependency-injection';
+import { container } from 'tsyringe';
 import { MetacriticNeutronPlatform } from './metacritic-neutron-platform';
 import './styles.scss';
 
-const container = new Container();
-const platform = container.get(MetacriticNeutronPlatform);
+const platform = container.resolve(MetacriticNeutronPlatform);
 
 platform.execute();

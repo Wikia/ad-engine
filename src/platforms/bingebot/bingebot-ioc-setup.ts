@@ -1,12 +1,12 @@
 import { DiProcess } from '@wikia/ad-engine';
-import { Container, Injectable } from '@wikia/dependency-injection';
+import { DependencyContainer, injectable } from 'tsyringe';
 import { BingeBotTargetingSetup } from './setup/context/targeting/bingebot-targeting.setup';
 
-@Injectable()
+@injectable()
 export class BingeBotIocSetup implements DiProcess {
-	constructor(private container: Container) {}
+	constructor(private container: DependencyContainer) {}
 
 	async execute(): Promise<void> {
-		this.container.bind(BingeBotTargetingSetup.skin('bingebot'));
+		this.container.register(...BingeBotTargetingSetup.skin('bingebot'));
 	}
 }

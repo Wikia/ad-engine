@@ -1,7 +1,7 @@
 import { context, DiProcess, universalAdPackage } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
-@Injectable()
+@injectable()
 export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 	// TODO: Refactor - wait for decision on ADEN-12650
 	execute(): void {

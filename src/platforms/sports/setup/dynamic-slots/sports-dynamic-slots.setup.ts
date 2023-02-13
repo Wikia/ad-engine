@@ -1,9 +1,9 @@
 import { insertSlots, slotsContext } from '@platforms/shared';
 import { context, DiProcess, universalAdPackage } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { SportsSlotsDefinitionRepository } from './sports-slots-definition-repository';
 
-@Injectable()
+@injectable()
 export class SportsDynamicSlotsSetup implements DiProcess {
 	private uapFirstCallSlotName = 'cdm-zone-01';
 

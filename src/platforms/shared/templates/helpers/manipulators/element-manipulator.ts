@@ -1,6 +1,6 @@
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
-@Injectable({ autobind: false })
+@injectable()
 export class ElementManipulator {
 	private stylesBackup: Partial<CSSStyleDeclaration> = {};
 	private classesBackup?: string;

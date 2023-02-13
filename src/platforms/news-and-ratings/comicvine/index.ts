@@ -1,8 +1,7 @@
-import { Container } from '@wikia/dependency-injection';
+import { container } from 'tsyringe';
 import { ComicvinePlatform } from './comicvine-platform';
 import './styles.scss';
 
-const container = new Container();
-const platform = container.get(ComicvinePlatform);
+const platform = container.resolve(ComicvinePlatform);
 
 platform.execute();

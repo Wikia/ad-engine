@@ -7,14 +7,14 @@ import {
 	TemplateStateHandler,
 	TemplateTransition,
 } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
+import { inject, injectable } from 'tsyringe';
 
-@Injectable({ autobind: false })
+@injectable()
 export class FloorAdhesionCloseButtonHandler implements TemplateStateHandler {
 	private button: HTMLButtonElement;
 	private readonly showCloseButtonAfter?: number;
 
-	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot, instantConfig: InstantConfigService) {
+	constructor(@inject(TEMPLATE.SLOT) private adSlot: AdSlot, instantConfig: InstantConfigService) {
 		this.showCloseButtonAfter = instantConfig.get('icFloorAdhesionTimeToCloseButton', 0);
 	}
 

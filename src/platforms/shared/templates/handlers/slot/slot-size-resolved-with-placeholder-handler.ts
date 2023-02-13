@@ -1,10 +1,10 @@
 import { DomListener, TemplateStateHandler } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil, tap } from 'rxjs/operators';
+import { injectable } from 'tsyringe';
 import { UapDomManager } from '../../helpers/uap-dom-manager';
 
-@Injectable({ autobind: false })
+@injectable()
 export class SlotSizeResolvedWithPlaceholderHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 

@@ -1,9 +1,9 @@
-import { Inject, Injectable } from '@wikia/dependency-injection';
+import { inject, injectable } from 'tsyringe';
 import { FOOTER } from '../configs/uap-dom-elements';
 
-@Injectable({ autobind: false })
+@injectable()
 export class ScrollCorrector {
-	constructor(@Inject(FOOTER) private footer: HTMLElement) {}
+	constructor(@inject(FOOTER) private footer: HTMLElement) {}
 
 	/**
 	 * corrects scroll position based a on scrollY value

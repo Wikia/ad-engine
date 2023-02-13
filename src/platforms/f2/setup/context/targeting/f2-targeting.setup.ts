@@ -6,17 +6,17 @@ import {
 	Targeting,
 	utils,
 } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
+import { inject, injectable } from 'tsyringe';
 
 import { F2Environment, F2_ENV } from '../../../setup-f2';
 import { F2State } from '../../../utils/f2-state';
 import { F2_STATE } from '../../../utils/f2-state-binder';
 
-@Injectable()
+@injectable()
 export class F2TargetingSetup implements DiProcess {
 	constructor(
-		@Inject(F2_ENV) private f2Env: F2Environment,
-		@Inject(F2_STATE) private f2State: F2State,
+		@inject(F2_ENV) private f2Env: F2Environment,
+		@inject(F2_STATE) private f2State: F2State,
 		private instantConfig: InstantConfigService,
 		private cacheStorage: InstantConfigCacheStorage,
 	) {}

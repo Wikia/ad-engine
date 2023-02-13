@@ -1,13 +1,13 @@
 import { TemplateStateHandler, TemplateTransition } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
 import { fromEvent, Subject } from 'rxjs';
 import { skip, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { injectable } from 'tsyringe';
 import { PlayerRegistry } from '../../helpers/player-registry';
 
 /**
  * Transition to impact when video is restarted
  */
-@Injectable({ autobind: false })
+@injectable()
 export class VideoRestartHandler implements TemplateStateHandler {
 	private destroy$ = new Subject<void>();
 

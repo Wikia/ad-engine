@@ -9,9 +9,9 @@ import {
 	scrollListener,
 	utils,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
-@Injectable()
+@injectable()
 export class UcpDesktopSlotsDefinitionRepository {
 	constructor(protected instantConfig: InstantConfigService) {}
 

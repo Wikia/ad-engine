@@ -5,20 +5,20 @@ import {
 	TemplateTransition,
 	universalAdPackage,
 } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
 import { fromEvent, Subject } from 'rxjs';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
+import { inject, injectable } from 'tsyringe';
 import { PlayerRegistry } from '../../helpers/player-registry';
 
 /**
  * Transition to resolved when video completes
  */
-@Injectable({ autobind: false })
+@injectable()
 export class VideoCompletedHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(
-		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
+		@inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		private playerRegistry: PlayerRegistry,
 	) {}
 

@@ -1,5 +1,5 @@
-import { Container, Injectable } from '@wikia/dependency-injection';
-import { Type } from '../../models/dictionary';
+import { container, injectable } from 'tsyringe';
+import { Type } from '../../models';
 import { Pipeline } from '../pipeline';
 import { PipelineAdapter, PipelineNext } from '../pipeline-types';
 import { FuncPipelineStep } from './func-pipeline';
@@ -12,19 +12,17 @@ export interface DiPipelineStep<TPayload> {
 	execute(payload: TPayload, next?: PipelineNext<TPayload>): Promise<TPayload>;
 }
 
-@Injectable({ scope: 'Transient' })
+@injectable()
 class UniversalPipelineAdapter<TPayload>
 	implements PipelineAdapter<UniversalPipelineStep<TPayload>, TPayload>
 {
-	constructor(private container: Container) {}
-
 	execute(
 		step: UniversalPipelineStep<TPayload>,
 		payload: TPayload,
 		next?: PipelineNext<TPayload>,
 	): Promise<TPayload> {
 		if (this.isDiStep(step)) {
-			const instance = this.container.get(step);
+			const instance = container.resolve(step);
 
 			return instance.execute(payload, next);
 		}
@@ -37,12 +35,12 @@ class UniversalPipelineAdapter<TPayload>
 	}
 }
 
-@Injectable({ scope: 'Transient' })
+@injectable()
 export class UniversalPipeline<TPayload> extends Pipeline<
 	UniversalPipelineStep<TPayload>,
 	TPayload
 > {
-	constructor(container: Container) {
-		super(container.get<UniversalPipelineAdapter<TPayload>>(UniversalPipelineAdapter));
+	constructor() {
+		super(container.resolve<UniversalPipelineAdapter<TPayload>>(UniversalPipelineAdapter));
 	}
 }

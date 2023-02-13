@@ -1,8 +1,8 @@
 import { slotsContext } from '@platforms/shared';
 import { context, DiProcess, universalAdPackage } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
-@Injectable()
+@injectable()
 export class F2SlotsContextSetup implements DiProcess {
 	execute(): void {
 		const slots = {

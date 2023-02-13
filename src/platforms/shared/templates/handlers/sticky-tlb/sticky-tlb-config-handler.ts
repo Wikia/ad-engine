@@ -1,9 +1,9 @@
 import { AdSlot, TEMPLATE, TemplateStateHandler, universalAdPackage } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
+import { inject, injectable } from 'tsyringe';
 
-@Injectable({ autobind: false })
+@injectable()
 export class StickyTlbConfigHandler implements TemplateStateHandler {
-	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
+	constructor(@inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
 
 	async onEnter(): Promise<void> {
 		this.adSlot.setConfigProperty('showManually', true);

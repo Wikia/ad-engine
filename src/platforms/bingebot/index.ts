@@ -1,8 +1,7 @@
-import { Container } from '@wikia/dependency-injection';
+import { container } from 'tsyringe';
 import { BingeBotPlatform } from './bingebot-platform';
 import './styles.scss';
 
-const container = new Container();
-const platform = container.get(BingeBotPlatform);
+const platform = container.resolve(BingeBotPlatform);
 
 platform.execute();

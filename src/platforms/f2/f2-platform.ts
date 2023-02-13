@@ -19,7 +19,7 @@ import {
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { basicContext } from './ad-context';
 import { F2IocSetup } from './f2-ioc-setup';
 import { F2AdsMode } from './modes/f2-ads-mode.service';
@@ -30,7 +30,7 @@ import { F2TargetingSetup } from './setup/context/targeting/f2-targeting.setup';
 import { F2DynamicSlotsSetup } from './setup/dynamic-slots/f2-dynamic-slots.setup';
 import { F2TemplatesSetup } from './templates/f2-templates.setup';
 
-@Injectable()
+@injectable()
 export class F2Platform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 

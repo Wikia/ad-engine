@@ -1,7 +1,7 @@
 import { once, ProcessPipeline } from '@wikia/core';
-import { Container } from '@wikia/dependency-injection';
 import { expect } from 'chai';
 import { createSandbox, SinonStub } from 'sinon';
+import { container as tsyringeContainer } from 'tsyringe';
 
 describe('OnceProcess', () => {
 	const sandbox = createSandbox();
@@ -12,13 +12,14 @@ describe('OnceProcess', () => {
 	const executableOnceProcess = () => stub('once');
 
 	beforeEach(() => {
-		const container = new Container();
+		const container = tsyringeContainer.createChildContainer();
 
 		stub = sandbox.stub();
-		pipeline = container.get(ProcessPipeline);
+		pipeline = container.resolve(ProcessPipeline);
 	});
 
 	afterEach(() => {
+		tsyringeContainer.clearInstances();
 		sandbox.restore();
 	});
 

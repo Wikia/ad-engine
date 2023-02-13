@@ -1,9 +1,9 @@
 import { context, slotService } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
 import { SlotSetupDefinition } from '../utils/insert-slots';
 
-@Injectable()
+@injectable()
 export class QuizSlotsDefinitionRepository {
 	getQuizAdConfig(slotName: string): SlotSetupDefinition {
 		return {

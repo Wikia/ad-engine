@@ -1,7 +1,7 @@
 import { context, DiProcess, getAdUnitString, globalRuntimeVariableSetter } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
-@Injectable()
+@injectable()
 export class UcpDesktopSlotsStateSetup implements DiProcess {
 	execute(): void {
 		if (context.get('services.anyclip.enabled')) {

@@ -1,6 +1,6 @@
 import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
 import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import {
 	LazyLoadedSlotsContextSetup,
 	NewsAndRatingsAdsMode,
@@ -16,7 +16,7 @@ import { GamefaqsSlotsContextSetup } from './setup/context/slots/gamefaqs-slots-
 import { GamefaqsTargetingSetup } from './setup/context/targeting/gamefaqs-targeting.setup';
 import { GamefaqsTemplatesSetup } from './templates/gamefaqs-templates.setup';
 
-@Injectable()
+@injectable()
 export class GamefaqsPlatform {
 	constructor(private pipeline: ProcessPipeline) {}
 

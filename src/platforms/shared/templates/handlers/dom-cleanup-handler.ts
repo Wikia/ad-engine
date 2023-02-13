@@ -1,11 +1,11 @@
 import { TemplateStateHandler } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { DomManipulator } from '../helpers/manipulators/dom-manipulator';
 
 /**
  * Resets DomManipulator on leave
  */
-@Injectable({ autobind: false })
+@injectable()
 export class DomCleanupHandler implements TemplateStateHandler {
 	constructor(private manipulator: DomManipulator) {}
 

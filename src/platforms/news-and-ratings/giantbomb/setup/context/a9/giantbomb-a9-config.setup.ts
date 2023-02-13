@@ -1,7 +1,7 @@
 import { context, DiProcess } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
-@Injectable()
+@injectable()
 export class GiantbombA9ConfigSetup implements DiProcess {
 	execute(): void {
 		context.set('bidders.a9.slots', this.getA9Context());

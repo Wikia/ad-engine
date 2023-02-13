@@ -1,10 +1,10 @@
 import { DiProcess, logTemplates, TemplateRegistry, templateService } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
+import { injectable } from 'tsyringe';
 import { registerSponsoredLogoTemplate } from './sponsored-logo-template';
 import { registerSponsoredTextLogoTemplate } from './sponsored-text-logo-template';
 
-@Injectable()
+@injectable()
 export class BingeBotTemplatesSetup implements DiProcess {
 	constructor(private registry: TemplateRegistry) {
 		templateService.setInitializer(this.registry);

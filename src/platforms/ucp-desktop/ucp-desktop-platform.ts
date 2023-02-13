@@ -19,7 +19,7 @@ import {
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { basicContext } from './ad-context';
 import { UcpDesktopBaseContextSetup } from './setup/context/base/ucp-desktop-base-context.setup';
 import { UcpDesktopSlotsContextSetup } from './setup/context/slots/ucp-desktop-slots-context.setup';
@@ -27,7 +27,7 @@ import { UcpDesktopAdLayoutSetup } from './ucp-desktop-ad-layout-setup';
 import { UcpDesktopIocSetup } from './ucp-desktop-ioc-setup';
 import { UcpDesktopLegacySetup } from './ucp-desktop-legacy-setup';
 
-@Injectable()
+@injectable()
 export class UcpDesktopPlatform {
 	constructor(private pipeline: ProcessPipeline) {}
 

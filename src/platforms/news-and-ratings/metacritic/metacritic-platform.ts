@@ -1,4 +1,4 @@
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
 import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
 import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
@@ -17,7 +17,7 @@ import { MetacriticTargetingSetup } from './setup/context/targeting/metacritic-t
 import { MetacriticDynamicSlotsSetup } from './setup/dynamic-slots/metacritic-dynamic-slots.setup';
 import { MetacriticTemplatesSetup } from './templates/metacritic-templates.setup';
 
-@Injectable()
+@injectable()
 export class MetacriticPlatform {
 	constructor(private pipeline: ProcessPipeline) {}
 

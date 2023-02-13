@@ -18,20 +18,20 @@ import {
 	UapParams,
 	universalAdPackage,
 } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
 import { fromEvent, merge, Observable, Subject } from 'rxjs';
 import { debounceTime, filter, mergeMap, take, takeUntil, tap } from 'rxjs/operators';
+import { inject, injectable } from 'tsyringe';
 import { slotsContext } from '../../../slots/slots-context';
 import { PlayerRegistry } from '../../helpers/player-registry';
 
-@Injectable({ autobind: false })
+@injectable()
 export class VideoBootstrapHandler implements TemplateStateHandler {
 	static DEBOUNCE_TIME = 10;
 	private destroy$ = new Subject<void>();
 
 	constructor(
-		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
-		@Inject(TEMPLATE.PARAMS) private params: UapParams,
+		@inject(TEMPLATE.SLOT) private adSlot: AdSlot,
+		@inject(TEMPLATE.PARAMS) private params: UapParams,
 		private playerRegistry: PlayerRegistry,
 	) {}
 

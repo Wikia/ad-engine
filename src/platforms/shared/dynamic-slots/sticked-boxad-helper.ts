@@ -5,7 +5,7 @@ import {
 	eventsRepository,
 	universalAdPackage,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
 interface StickedBoxadHelperConfiguration {
 	slotName: string;
@@ -17,7 +17,7 @@ interface StickedBoxadHelperConfiguration {
 const ADDITIONAL_STICK_TIME = 500;
 const PADDING_TOP = 36;
 
-@Injectable()
+@injectable()
 export class StickedBoxadHelper {
 	private configuration: StickedBoxadHelperConfiguration;
 	private railElement: HTMLElement;

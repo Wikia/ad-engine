@@ -7,10 +7,10 @@ import {
 	eventsRepository,
 	universalAdPackage,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { F2SlotsDefinitionRepository } from './f2-slots-definition-repository';
 
-@Injectable()
+@injectable()
 export class F2DynamicSlotsSetup implements DiProcess {
 	constructor(private slotsDefinitionRepository: F2SlotsDefinitionRepository) {}
 

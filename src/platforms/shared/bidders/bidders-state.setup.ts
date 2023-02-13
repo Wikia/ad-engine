@@ -1,7 +1,7 @@
 import { context, Dictionary, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
-@Injectable()
+@injectable()
 export class BiddersStateSetup implements DiProcess {
 	private selectedBidder: string;
 	private prebidBidders: Dictionary<string> = {

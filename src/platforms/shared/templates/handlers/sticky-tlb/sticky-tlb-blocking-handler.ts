@@ -11,13 +11,13 @@ import {
 	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
+import { inject, injectable } from 'tsyringe';
 
-@Injectable({ autobind: false })
+@injectable()
 export class StickyTlbBlockingHandler implements TemplateStateHandler {
 	static LOG_GROUP = 'sticky-tlb';
 
-	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
+	constructor(@inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
 
 	async onEnter(transition: TemplateTransition<'initial'>): Promise<void> {
 		const isUap = await this.isUAP();

@@ -1,14 +1,14 @@
 import { BaseServiceSetup, PartnerPipeline } from '@wikia/core';
 import { wait } from '@wikia/core/utils';
-import { Container } from '@wikia/dependency-injection';
 import { expect } from 'chai';
 import { createSandbox, SinonSpy } from 'sinon';
+import { container as tsyringeContainer } from 'tsyringe';
 
 describe('PartnerPipeline', () => {
 	const sandbox = createSandbox();
 	let spy: SinonSpy;
-	const container = new Container();
-	const pipeline = container.get(PartnerPipeline);
+	const container = tsyringeContainer.createChildContainer();
+	const pipeline = container.resolve(PartnerPipeline);
 
 	beforeEach(() => {
 		spy = sandbox.spy();

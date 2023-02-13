@@ -8,16 +8,17 @@
 		"url": "https://github.com/Wikia/AdEngine"
 	},
 	"dependencies": {
-		"@wikia/dependency-injection": "2.2.3",
 		"@wikia/post-quecast": "2.0.1",
 		"blockadblock": "3.2.1",
 		"core-decorators": "0.20.0",
 		"current-device": "0.10.2",
 		"js-cookie": "3.0.1",
+		"reflect-metadata": "0.1.13",
 		"rxjs": "7.8.0",
 		"ts-action": "11.0.0",
 		"ts-action-operators": "9.1.2",
 		"ts-loader": "9.4.2",
+		"tsyringe": "4.7.0",
 		"uuid": "9.0.0"
 	},
 	"devDependencies": {
@@ -71,9 +72,9 @@
 		"prepare": "husky install",
 		"prebuild": "rm -rf dist",
 		"preversion": "./maintenance/preversion.sh",
-		"test": "instant-mocha './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.js",
+		"test": "instant-mocha  --file ./spec/setup.ts './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.js",
 		"test:watch": "npm run test -- -w",
-		"test-coverage": "nyc instant-mocha './src/!(platforms)*/**/*.ts' './src/platforms/shared/**/*.ts' './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.coverage.js"
+		"test-coverage": "nyc instant-mocha --file ./spec/setup.ts './src/!(platforms)*/**/*.ts' './src/platforms/shared/**/*.ts' './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.coverage.js"
 	},
 	"lint-staged": {
 		"*.ts": [

@@ -5,7 +5,7 @@ import {
 	DiProcess,
 	eventsRepository,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
 import { getAppnexusContext } from '../../../bidders/appnexus';
 import { getCriteoContext } from '../../../bidders/criteo';
@@ -16,7 +16,7 @@ import { getPubmaticContext } from '../../../bidders/pubmatic';
 import { getRubiconDisplayContext } from '../../../bidders/rubicon-display';
 import { getYahooSspContext } from '../../../bidders/yahoossp';
 
-@Injectable()
+@injectable()
 export class MetacriticNeutronPrebidConfigSetup implements DiProcess {
 	constructor(private bidders: Bidders) {}
 

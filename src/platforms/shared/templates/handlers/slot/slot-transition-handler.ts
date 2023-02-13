@@ -6,19 +6,19 @@ import {
 	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
 import { from, Observable, Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
+import { inject, injectable } from 'tsyringe';
 import { DomManipulator } from '../../helpers/manipulators/dom-manipulator';
 import { ScrollCorrector } from '../../helpers/scroll-corrector';
 import { UapDomReader } from '../../helpers/uap-dom-reader';
 
-@Injectable({ autobind: false })
+@injectable()
 export class SlotTransitionHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(
-		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
+		@inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		private scrollCorrector: ScrollCorrector,
 		private manipulator: DomManipulator,
 		private reader: UapDomReader,

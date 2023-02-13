@@ -1,14 +1,14 @@
 import { BaseContextSetup, NoAdsDetector } from '@platforms/shared';
 import { context, InstantConfigService, utils } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
+import { inject, injectable } from 'tsyringe';
 import { F2SrcAdapter } from '../../../utils/f2-src-adapter';
 import { F2State } from '../../../utils/f2-state';
 import { F2_STATE } from '../../../utils/f2-state-binder';
 
-@Injectable()
+@injectable()
 export class F2BaseContextSetup extends BaseContextSetup {
 	constructor(
-		@Inject(F2_STATE) private f2State: F2State,
+		@inject(F2_STATE) private f2State: F2State,
 		private srcAdapter: F2SrcAdapter,
 		instantConfig: InstantConfigService,
 		noAdsDetector: NoAdsDetector,

@@ -8,7 +8,7 @@ import {
 	InstantConfigService,
 	universalAdPackage,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { slotsContext } from '../slots/slots-context';
 
 interface NoAdsConfig {
@@ -38,7 +38,7 @@ export function getUnitNameToDisable(configs: NoAdsConfig[], userBeacon = ''): s
 	return config?.unitName;
 }
 
-@Injectable()
+@injectable()
 export class NoAdsExperimentSetup implements DiProcess {
 	constructor(
 		private instantConfig: InstantConfigService,
