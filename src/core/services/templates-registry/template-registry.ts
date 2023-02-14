@@ -1,9 +1,9 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { Observable, Subject } from 'rxjs';
 import { injectable, Lifecycle } from 'tsyringe';
-import { AdSlot, Dictionary, Type } from '../../models';
+import { AdSlot, Dictionary, TemplateDependency, Type } from '../../models';
 import { TemplateAction } from './template-action';
-import { TemplateDependenciesManager, TemplateDependency } from './template-dependencies-manager';
+import { TemplateDependenciesManager } from './template-dependencies-manager';
 import { TemplateMachine } from './template-machine';
 import { TemplateState } from './template-state';
 import { TemplateStateHandler } from './template-state-handler';

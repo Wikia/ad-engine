@@ -1,7 +1,7 @@
 import { AdSlot, TEMPLATE } from '@wikia/core';
 import { TemplateDependenciesManager } from '@wikia/core/services/templates-registry/template-dependencies-manager';
 import { assert, expect } from 'chai';
-import { container as tsyringeContainer, DependencyContainer, inject, injectable } from 'tsyringe';
+import { container as diContainer, DependencyContainer, inject, injectable } from 'tsyringe';
 
 @injectable()
 class AdditionalDependency {
@@ -16,7 +16,7 @@ describe('Template Dependencies Manager', () => {
 	const templateParams = { params: 'params' };
 
 	beforeEach(() => {
-		instance = tsyringeContainer.resolve(TemplateDependenciesManager);
+		instance = diContainer.resolve(TemplateDependenciesManager);
 		container = instance.getContainer();
 	});
 

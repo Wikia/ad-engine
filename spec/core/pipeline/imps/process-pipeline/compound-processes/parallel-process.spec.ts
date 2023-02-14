@@ -2,7 +2,7 @@ import { parallel, ProcessPipeline } from '@wikia/core';
 import { wait } from '@wikia/core/utils';
 import { expect } from 'chai';
 import { createSandbox, SinonSpy } from 'sinon';
-import { container as tsyringeContainer } from 'tsyringe';
+import { container as diContainer } from 'tsyringe';
 
 describe('ParallelProcess', () => {
 	const sandbox = createSandbox();
@@ -18,7 +18,7 @@ describe('ParallelProcess', () => {
 	}
 
 	beforeEach(() => {
-		const container = tsyringeContainer.createChildContainer();
+		const container = diContainer.createChildContainer();
 
 		spy = sandbox.spy();
 		pipeline = container.resolve(ProcessPipeline);

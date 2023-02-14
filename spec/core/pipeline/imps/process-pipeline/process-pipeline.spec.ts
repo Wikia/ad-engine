@@ -2,7 +2,7 @@ import { conditional, DiProcess, parallel, ProcessPipeline, sequential } from '@
 import { wait } from '@wikia/core/utils';
 import { expect } from 'chai';
 import { createSandbox, SinonSpy } from 'sinon';
-import { container as tsyringeContainer } from 'tsyringe';
+import { container as diContainer } from 'tsyringe';
 
 describe('ProcessPipeline', () => {
 	const sandbox = createSandbox();
@@ -23,7 +23,7 @@ describe('ProcessPipeline', () => {
 	});
 
 	it('should work', async () => {
-		const container = tsyringeContainer.createChildContainer();
+		const container = diContainer.createChildContainer();
 		const pipeline = container.resolve(ProcessPipeline);
 
 		const promise = pipeline

@@ -6,7 +6,7 @@ import {
 } from '@wikia/core';
 import { PipelineNext } from '@wikia/core/pipeline/pipeline-types';
 import { createSandbox } from 'sinon';
-import { container as tsyringeContainer } from 'tsyringe';
+import { container as diContainer } from 'tsyringe';
 import { PipelineTestSuite } from './pipeline-test-suite';
 
 describe('UniversalPipeline', () => {
@@ -39,7 +39,7 @@ describe('UniversalPipeline', () => {
 	}
 
 	beforeEach(() => {
-		const container = tsyringeContainer.createChildContainer();
+		const container = diContainer.createChildContainer();
 
 		pipelineTestSuite = new PipelineTestSuite<UniversalPipelineStep<number>>(
 			sandbox,

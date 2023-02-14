@@ -22,9 +22,9 @@ export class InstantConfigSetup implements DiProcess {
 		const instantConfig = await new InstantConfigService().init();
 
 		container.register(InstantConfigService, { useValue: instantConfig });
-		// @ts-expect-error FIXME wtf?
+		// @ts-expect-error Typescript will fail here - cannot assign public constructor type to private one
 		container.register(InstantConfigCacheStorage, {
-			useValue: InstantConfigCacheStorage.make(),
+			useFactory: InstantConfigCacheStorage.make(),
 		});
 		communicationService.dispatch(setInstantConfig({ instantConfig }));
 

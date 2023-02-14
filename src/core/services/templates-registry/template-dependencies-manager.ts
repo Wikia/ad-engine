@@ -1,16 +1,12 @@
-import { container, DependencyContainer, injectable, InjectionToken } from 'tsyringe';
-import { AdSlot, Dictionary } from '../../models/';
+import { container, DependencyContainer, injectable, isNormalToken } from 'tsyringe';
+import {
+	AdSlot,
+	Dictionary,
+	isDependencyProvider,
+	isDependencyValue,
+	TemplateDependency,
+} from '../../models/';
 import { TEMPLATE } from './template-symbols';
-
-type BoundTemplateDependencyValue<T> = { bind: InjectionToken<T>; value: T };
-type BoundTemplateDependencyProvider<T> = {
-	bind: InjectionToken<T>;
-	provider: (container: DependencyContainer) => T;
-};
-export type TemplateDependency<T = any> =
-	| InjectionToken<T>
-	| BoundTemplateDependencyValue<T>
-	| BoundTemplateDependencyProvider<T>;
 
 @injectable()
 export class TemplateDependenciesManager {
@@ -45,53 +41,22 @@ export class TemplateDependenciesManager {
 		return this.container;
 	}
 
-	private isDependencyProvider(
-		dependency: TemplateDependency,
-	): dependency is BoundTemplateDependencyProvider<unknown> {
-		return (
-			!this.isSimpleDependency(dependency) &&
-			Object.hasOwn(dependency, 'bind') &&
-			// @ts-expect-error FIXME wtf?
-			dependency?.bind !== undefined &&
-			Object.hasOwn(dependency, 'provider') &&
-			// @ts-expect-error FIXME wtf?
-			dependency?.provider !== undefined
-		);
-	}
-
 	private register(dependency: TemplateDependency): void {
-		if (this.isDependencyProvider(dependency)) {
+		if (isDependencyProvider(dependency)) {
 			this.container.register(dependency.bind, { useFactory: dependency.provider });
 			return;
 		}
 
-		if (this.isDependencyValue(dependency)) {
+		if (isDependencyValue(dependency)) {
 			this.container.register(dependency.bind, { useValue: dependency.value });
 			return;
 		}
 
-		this.container.register(
-			dependency,
-			// @ts-expect-error Typescript cannot figure out which overload method to use
-			this.isSimpleDependency(dependency) ? { useValue: dependency } : { useClass: dependency },
-		);
-	}
+		if (isNormalToken(dependency)) {
+			this.container.register(dependency, { useValue: dependency });
+			return;
+		}
 
-	private isDependencyValue(
-		dependency: TemplateDependency,
-	): dependency is BoundTemplateDependencyValue<unknown> {
-		return (
-			!this.isSimpleDependency(dependency) &&
-			Object.hasOwn(dependency, 'bind') &&
-			// @ts-expect-error FIXME wtf?
-			dependency?.bind !== undefined &&
-			Object.hasOwn(dependency, 'value') &&
-			// @ts-expect-error FIXME wtf?
-			dependency?.value !== undefined
-		);
-	}
-
-	private isSimpleDependency(dependency: TemplateDependency): dependency is string | symbol {
-		return ['string', 'symbol'].includes(typeof dependency);
+		this.container.register(dependency, { useClass: dependency });
 	}
 }

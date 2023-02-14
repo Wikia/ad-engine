@@ -8,7 +8,7 @@ import {
 } from '@wikia/core';
 import { assert, expect } from 'chai';
 import { createSandbox, SinonSpy } from 'sinon';
-import { container as tsyringeContainer, DependencyContainer, inject, injectable } from 'tsyringe';
+import { container as diContainer, DependencyContainer, inject, injectable } from 'tsyringe';
 import {
 	createTemplateStateHandlerSpy,
 	TemplateStateHandlerSpy,
@@ -101,7 +101,7 @@ describe('Template Registry', () => {
 		stateASpy = createTemplateStateHandlerSpy(sandbox);
 		stateBSpy = createTemplateStateHandlerSpy(sandbox);
 		stateSharedSpy = createTemplateStateHandlerSpy(sandbox);
-		container = tsyringeContainer.createChildContainer();
+		container = diContainer.createChildContainer();
 		instance = container.resolve(TemplateRegistry);
 	});
 
