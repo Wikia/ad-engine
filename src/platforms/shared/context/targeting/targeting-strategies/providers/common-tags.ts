@@ -1,4 +1,4 @@
-import { context, Targeting, utils } from '@wikia/ad-engine';
+import { context, SlotTargeting, utils } from '@wikia/ad-engine';
 import { getDomain } from '../../../../utils/get-domain';
 import { getMediaWikiVariable } from '../../../../utils/get-media-wiki-variable';
 import { CommonTargetingParams } from '../interfaces/common-targeting-params';
@@ -6,27 +6,29 @@ import { OptionalTargetingParams } from '../interfaces/optional-targeting-params
 import { TargetingProvider } from '../interfaces/targeting-provider';
 import { FandomContext } from '../models/fandom-context';
 
-export class CommonTags implements TargetingProvider<Partial<Targeting>> {
-	constructor(private skin: string, private fandomContext: FandomContext) {}
+export class CommonTags implements TargetingProvider<Partial<SlotTargeting>> {
+	constructor(private fandomContext: FandomContext) {}
 
-	get(): Partial<Targeting> {
+	get(): Partial<SlotTargeting> {
 		return this.getCommonParams();
 	}
 
-	public getCommonParams(): Partial<Targeting> {
+	public getCommonParams(): Partial<SlotTargeting> {
 		const domain = getDomain();
 		const wiki: MediaWikiAdsContext = context.get('wiki');
+		const isMobile = context.get('state.isMobile');
 
-		const commonParams: Partial<Targeting> = {
+		const commonParams: Partial<SlotTargeting> = {
 			ar: window.innerWidth > window.innerHeight ? '4:3' : '3:4',
 			dmn: domain.base,
 			geo: utils.geoService.getCountryCode() || 'none',
 			hostpre: utils.targeting.getHostnamePrefix(),
 			original_host: wiki.opts?.isGamepedia ? 'gamepedia' : 'fandom',
-			skin: this.skin,
+			// Make more general after rolling out strategies outside UCP
+			skin: isMobile ? 'ucp_mobile' : 'ucp_desktop',
 			uap: 'none',
 			uap_c: 'none',
-			is_mobile: utils.client.isMobileSkin(this.skin) ? '1' : '0',
+			is_mobile: isMobile ? '1' : '0',
 		};
 
 		const commonContextParams: CommonTargetingParams = {

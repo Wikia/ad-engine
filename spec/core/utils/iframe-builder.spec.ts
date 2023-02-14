@@ -1,16 +1,13 @@
 import { IframeBuilder } from '@wikia/core/utils';
 import { assert } from 'chai';
-import { createSandbox, SinonSandbox } from 'sinon';
 
 describe('IFrameBuilder', () => {
-	let sandbox: SinonSandbox;
 	let iframeBuilder;
 	const mock = {
 		div: undefined,
 	};
 
 	beforeEach(() => {
-		sandbox = createSandbox();
 		iframeBuilder = new IframeBuilder();
 	});
 
@@ -35,9 +32,5 @@ describe('IFrameBuilder', () => {
 			assert.equal(iframe.marginWidth, 0);
 			assert.equal(iframe.marginHeight, 0);
 		});
-	});
-
-	afterEach(() => {
-		sandbox.restore();
 	});
 });

@@ -1,21 +1,19 @@
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
 
 import { context, InstantConfigService } from '@wikia/core';
 import { NewsAndRatingsBaseContextSetup } from '@wikia/platforms/news-and-ratings/shared';
 
 describe('News and Ratings base context setup', () => {
-	const sandbox = createSandbox();
 	let instantConfigStub;
 
 	beforeEach(() => {
-		instantConfigStub = sandbox.createStubInstance(InstantConfigService);
+		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		context.set('custom.property', 'test');
 		context.set('custom.device', undefined);
 	});
 
 	afterEach(() => {
-		sandbox.restore();
+		global.sandbox.restore();
 		context.remove('state.isMobile');
 		context.remove('custom.property');
 		context.remove('custom.device');
@@ -41,7 +39,7 @@ describe('News and Ratings base context setup', () => {
 
 		it('sets proper page path based on meta tag - happy path', () => {
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
-			const getDataSettingsFromMetaTagStub = sandbox.stub(
+			const getDataSettingsFromMetaTagStub = global.sandbox.stub(
 				baseContextSetup,
 				'getDataSettingsFromMetaTag',
 			);
@@ -54,7 +52,7 @@ describe('News and Ratings base context setup', () => {
 
 		it('sets proper page path when it is empty based on meta tag', () => {
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
-			const getDataSettingsFromMetaTagStub = sandbox.stub(
+			const getDataSettingsFromMetaTagStub = global.sandbox.stub(
 				baseContextSetup,
 				'getDataSettingsFromMetaTag',
 			);
@@ -67,7 +65,7 @@ describe('News and Ratings base context setup', () => {
 
 		it('sets proper page path when it is complex based on meta tag', () => {
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
-			const getDataSettingsFromMetaTagStub = sandbox.stub(
+			const getDataSettingsFromMetaTagStub = global.sandbox.stub(
 				baseContextSetup,
 				'getDataSettingsFromMetaTag',
 			);
@@ -80,12 +78,12 @@ describe('News and Ratings base context setup', () => {
 
 		it('sets proper page path based - incorrect ad-settings meta tag', () => {
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
-			const getDataSettingsFromMetaTagStub = sandbox.stub(
+			const getDataSettingsFromMetaTagStub = global.sandbox.stub(
 				baseContextSetup,
 				'getDataSettingsFromMetaTag',
 			);
 			getDataSettingsFromMetaTagStub.returns(null);
-			const getUtagDataStub = sandbox.stub(baseContextSetup, 'getUtagData');
+			const getUtagDataStub = global.sandbox.stub(baseContextSetup, 'getUtagData');
 			getUtagDataStub.returns({ siteSection: 'home' });
 
 			baseContextSetup.execute();
@@ -95,12 +93,12 @@ describe('News and Ratings base context setup', () => {
 
 		it('sets proper page path based - no unit_name in ad-settings meta tag', () => {
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
-			const getDataSettingsFromMetaTagStub = sandbox.stub(
+			const getDataSettingsFromMetaTagStub = global.sandbox.stub(
 				baseContextSetup,
 				'getDataSettingsFromMetaTag',
 			);
 			getDataSettingsFromMetaTagStub.returns({ foo: 'bar' });
-			const getUtagDataStub = sandbox.stub(baseContextSetup, 'getUtagData');
+			const getUtagDataStub = global.sandbox.stub(baseContextSetup, 'getUtagData');
 			getUtagDataStub.returns({ siteSection: 'home' });
 
 			baseContextSetup.execute();
@@ -110,12 +108,12 @@ describe('News and Ratings base context setup', () => {
 
 		it('sets proper page path based - incorrect ad-settings meta tag and no data from utag data', () => {
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
-			const getDataSettingsFromMetaTagStub = sandbox.stub(
+			const getDataSettingsFromMetaTagStub = global.sandbox.stub(
 				baseContextSetup,
 				'getDataSettingsFromMetaTag',
 			);
 			getDataSettingsFromMetaTagStub.returns(null);
-			const getUtagDataStub = sandbox.stub(baseContextSetup, 'getUtagData');
+			const getUtagDataStub = global.sandbox.stub(baseContextSetup, 'getUtagData');
 			getUtagDataStub.returns({});
 
 			baseContextSetup.execute();
@@ -125,12 +123,12 @@ describe('News and Ratings base context setup', () => {
 
 		it('sets proper page path based - incorrect ad-settings meta tag and no utag', () => {
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
-			const getDataSettingsFromMetaTagStub = sandbox.stub(
+			const getDataSettingsFromMetaTagStub = global.sandbox.stub(
 				baseContextSetup,
 				'getDataSettingsFromMetaTag',
 			);
 			getDataSettingsFromMetaTagStub.returns(null);
-			const getUtagDataStub = sandbox.stub(baseContextSetup, 'getUtagData');
+			const getUtagDataStub = global.sandbox.stub(baseContextSetup, 'getUtagData');
 			getUtagDataStub.returns(undefined);
 
 			baseContextSetup.execute();

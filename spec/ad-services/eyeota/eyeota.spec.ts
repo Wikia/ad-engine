@@ -1,37 +1,47 @@
 import { Eyeota, parseContextTags } from '@wikia/ad-services';
-import { context, InstantConfigService, tcf, utils } from '@wikia/core';
+import {
+	context,
+	InstantConfigService,
+	TargetingService,
+	targetingService,
+	tcf,
+	utils,
+} from '@wikia/core';
 import {
 	FandomContext,
 	Site,
 } from '@wikia/platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
+import { SinonStubbedInstance } from 'sinon';
 
 describe('Eyeota', () => {
-	const sandbox = createSandbox();
 	let eyeota: Eyeota;
 	let loadScriptStub, instantConfigStub, tcfStub;
+	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 
 	beforeEach(() => {
 		window.__tcfapi = window.__tcfapi as WindowTCF;
 
-		loadScriptStub = sandbox
+		loadScriptStub = global.sandbox
 			.stub(utils.scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
-		instantConfigStub = sandbox.createStubInstance(InstantConfigService);
+		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		instantConfigStub.get.withArgs('icEyeota').returns(true);
-		tcfStub = sandbox.stub(tcf, 'getTCData').returns(Promise.resolve({ tcString: 'test' }) as any);
+		tcfStub = global.sandbox
+			.stub(tcf, 'getTCData')
+			.returns(Promise.resolve({ tcString: 'test' }) as any);
 
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);
 		context.set('wiki.targeting.directedAtChildren', false);
+
+		targetingServiceStub = global.sandbox.stub(targetingService);
 
 		eyeota = new Eyeota(instantConfigStub);
 	});
 
 	afterEach(() => {
 		instantConfigStub.get.withArgs('icEyeota').returns(undefined);
-		sandbox.restore();
 		delete window.__tcfapi;
 
 		context.remove('options.trackingOptIn');
@@ -78,12 +88,10 @@ describe('Eyeota', () => {
 	});
 
 	it('constructs proper src', async () => {
-		context.set('targeting.s0v', 'lifestyle');
+		targetingServiceStub.get.withArgs('s0v').returns('lifestyle');
 		const src = await eyeota.createScriptSource();
 
 		expect(src).to.equal('https://ps.eyeota.net/pixel?pid=r8rcb20&sid=fandom&t=ajs&s0v=lifestyle');
-
-		context.remove('targeting.s0v');
 	});
 
 	it('constructs proper url with context', async () => {
@@ -99,7 +107,7 @@ describe('Eyeota', () => {
 			new Site([], true, 'test', false, mockedTags, null),
 			null,
 		);
-		sandbox.stub(window.fandomContext, 'site').value(mockedContext.site);
+		global.sandbox.stub(window.fandomContext, 'site').value(mockedContext.site);
 		const src = await eyeota.createScriptSource();
 		delete window.fandomContext;
 
@@ -110,18 +118,16 @@ describe('Eyeota', () => {
 
 	it('constructs proper params on GPDR-related geo', async () => {
 		tcfStub.restore();
-		tcfStub = sandbox
+		tcfStub = global.sandbox
 			.stub(tcf, 'getTCData')
 			.returns(Promise.resolve({ tcString: 'test', gdprApplies: true }) as any);
-		context.set('targeting.s0v', 'lifestyle');
+		targetingServiceStub.get.withArgs('s0v').returns('lifestyle');
 
 		const src = await eyeota.createScriptSource();
 
 		expect(src).to.equal(
 			'https://ps.eyeota.net/pixel?pid=r8rcb20&sid=fandom&t=ajs&s0v=lifestyle&gdpr=1&gdpr_consent=test',
 		);
-
-		context.remove('targeting.s0v');
 	});
 
 	describe('parseContextTags', () => {
