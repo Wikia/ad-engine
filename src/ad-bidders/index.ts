@@ -111,8 +111,10 @@ export class Bidders extends BaseServiceSetup {
 			this.biddersProviders.prebid = new PrebidProvider(config.prebid, config.timeout);
 		}
 
-		if (config.a9 && config.a9.enabled) {
+		if (A9Provider.isEnabled()) {
 			this.biddersProviders.a9 = new A9Provider(config.a9, config.timeout);
+		} else {
+			utils.logger(logGroup, 'A9 has been disabled');
 		}
 
 		if (!this.getBiddersProviders().length) {

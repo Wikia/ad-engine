@@ -1,6 +1,7 @@
 import { UserIdentity } from '@wikia/ad-services';
 import { IdentityRepositories } from '@wikia/ad-services/user-identity/identity-repositories';
 import { identityStorageClient } from '@wikia/ad-services/user-identity/identity-storage-repository/identity-storage-client';
+import { localStorageRepository } from '@wikia/ad-services/user-identity/local-storage-repository';
 import { context, TargetingService, targetingService } from '@wikia/core';
 import { expect } from 'chai';
 import { SinonStubbedInstance } from 'sinon';
@@ -9,7 +10,6 @@ describe('User Identity', () => {
 	let mockId;
 	let userIdentity;
 	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
-	let identityStorageClientPostDataStub;
 
 	beforeEach(() => {
 		mockId = `${Math.random()}-${Math.random()}-${Math.random()}-${Math.random()}`;
@@ -17,7 +17,6 @@ describe('User Identity', () => {
 		context.set('services.ppidRepository', IdentityRepositories.IDENTITY_STORAGE);
 		targetingServiceStub = global.sandbox.stub(targetingService);
 		userIdentity = new UserIdentity();
-		identityStorageClientPostDataStub = global.sandbox.stub(identityStorageClient, 'postData');
 	});
 
 	afterEach(() => {
@@ -26,7 +25,7 @@ describe('User Identity', () => {
 	});
 
 	it('use Identity Storage strategy and gets synced PPID from API', async () => {
-		global.sandbox.stub(identityStorageClient, 'fetchData').returns(
+		const fetchMock = global.sandbox.stub(identityStorageClient, 'fetchData').returns(
 			Promise.resolve({
 				ppid: mockId,
 				synced: true,
@@ -38,6 +37,7 @@ describe('User Identity', () => {
 		await userIdentity.call();
 
 		expect(targetingServiceStub.set.calledWith('ppid', mockId)).to.equal(true);
+		expect(fetchMock.called).to.eq(true);
 	});
 
 	it('use Identity Storage strategy and gets not synced PPID from API', async () => {
@@ -55,34 +55,41 @@ describe('User Identity', () => {
 		expect(targetingServiceStub.set.calledWith('ppid', mockId)).to.equal(true);
 	});
 
-	it('use Identity Storage strategy and gets synced PPID from Cache', async () => {
-		global.sandbox.stub(identityStorageClient.storage, 'getItem').callsFake(() => ({
+	it('use Identity Storage strategy and gets PPID from API when local is deprecated', async () => {
+		global.sandbox.stub(localStorageRepository.storage, 'getItem').callsFake(() => null);
+		global.sandbox.stub(identityStorageClient, 'getLocalData').returns({
 			ppid: mockId,
 			synced: true,
-		}));
-
-		await userIdentity.call();
-
-		expect(targetingServiceStub.set.calledWith('ppid', mockId)).to.equal(true);
-		expect(identityStorageClientPostDataStub.called).to.eq(false);
-	});
-
-	it('use Identity Storage strategy and gets not synced PPID from Cache', async () => {
-		identityStorageClientPostDataStub.returns(
+			over18: true,
+			timestamp: 0,
+		});
+		const fetchMock = global.sandbox.stub(identityStorageClient, 'fetchData').returns(
 			Promise.resolve({
 				ppid: mockId,
 				synced: true,
+				over18: true,
 			}),
 		);
 
-		global.sandbox.stub(identityStorageClient.storage, 'getItem').callsFake(() => ({
-			ppid: mockId,
-			synced: false,
-		}));
+		await userIdentity.call();
+
+		expect(fetchMock.called).to.eq(true);
+	});
+
+	it('use Identity Storage strategy and gets PPID from local if it is not deprecated', async () => {
+		global.sandbox
+			.stub(identityStorageClient, 'getLocalData')
+			.callsFake(() => ({ ppid: mockId, synced: true, over18: false, timestamp: Date.now() }));
+		const fetchMock = global.sandbox.stub(identityStorageClient, 'fetchData').returns(
+			Promise.resolve({
+				ppid: mockId,
+				synced: true,
+				over18: true,
+			}),
+		);
 
 		await userIdentity.call();
 
-		expect(targetingServiceStub.set.calledWith('ppid', mockId)).to.equal(true);
-		expect(identityStorageClientPostDataStub.called).to.eq(true);
+		expect(fetchMock.called).to.eq(false);
 	});
 });

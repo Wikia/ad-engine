@@ -13,6 +13,7 @@ import { ComicvineA9ConfigSetup } from './setup/context/a9/comicvine-a9-config.s
 import { ComicvinePrebidConfigSetup } from './setup/context/prebid/comicvine-prebid-config.setup';
 import { ComicvineSlotsContextSetup } from './setup/context/slots/comicvine-slots-context.setup';
 import { ComicvineTargetingSetup } from './setup/context/targeting/comicvine-targeting.setup';
+import { ComicvineTemplatesSetup } from './templates/comicvine-templates.setup';
 
 @Injectable()
 export class ComicvinePlatform {
@@ -34,6 +35,7 @@ export class ComicvinePlatform {
 			ComicvinePrebidConfigSetup,
 			ComicvineA9ConfigSetup,
 			BiddersStateSetup,
+			ComicvineTemplatesSetup,
 			NewsAndRatingsAdsMode,
 		);
 

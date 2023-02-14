@@ -26,6 +26,7 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 		targetingService.extend({
 			...targetingService.dump(),
 			...targeting,
+			is_mobile: context.get('state.isMobile') ? '1' : '0',
 			uap: 'none',
 			uap_c: 'none',
 		});
@@ -34,7 +35,7 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 	getPageLevelTargeting(): TargetingParams {
 		const adTags = this.getAdTags();
 		const parsedAdTags = this.parseAdTags(adTags);
-    
+
 		return this.getMappedAdTags(parsedAdTags);
 	}
 

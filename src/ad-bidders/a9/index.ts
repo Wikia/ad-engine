@@ -65,6 +65,12 @@ export class A9Provider extends BidderProvider {
 		};
 	}
 
+	public static isEnabled(): boolean {
+		const enabled = context.get('bidders.a9.enabled');
+		const coppaA9 = context.get('bidders.coppaA9');
+		return enabled && (coppaA9 ? !context.get('wiki.targeting.directedAtChildren') : true);
+	}
+
 	private loaded = false;
 
 	apstag: Apstag = Apstag.make();
