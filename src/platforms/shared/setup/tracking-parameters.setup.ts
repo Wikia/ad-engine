@@ -1,9 +1,13 @@
-import { context, DiProcess } from '@wikia/ad-engine';
+import { context, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
 import Cookies from 'js-cookie';
 import { getMediaWikiVariable } from '../utils/get-media-wiki-variable';
 
+@Injectable()
 export class TrackingParametersSetup implements DiProcess {
-	execute(): void {
+	constructor(private instantConfig: InstantConfigService) {}
+
+	private getLegacyTrackingParameters(): ITrackingParameters {
 		const cookies = Cookies.get();
 		const wikiContext = {
 			beaconId:
@@ -24,6 +28,30 @@ export class TrackingParametersSetup implements DiProcess {
 				cookies['tracking_session_id'],
 		};
 
-		context.set('wiki', Object.assign(wikiContext, context.get('wiki')));
+		return wikiContext;
+	}
+
+	private async getNewTrackingParameters(): Promise<ITrackingParameters> {
+		await new utils.WaitFor(() => !!window.fandomContext.tracking, 10, 100).until();
+
+		const wikiContext = {
+			...window.fandomContext.tracking,
+			pvUID: getMediaWikiVariable('pvUID') || window.pvUID,
+		};
+
+		return wikiContext;
+	}
+
+	private async getTrackingParameters(legacyEnabled: boolean): Promise<ITrackingParameters> {
+		return legacyEnabled
+			? this.getLegacyTrackingParameters()
+			: await this.getNewTrackingParameters();
+	}
+
+	async execute() {
+		const legacyEnabled = !this.instantConfig.get('icDisableLegacyTrackingParameters', false);
+		const trackingParameters = await this.getTrackingParameters(legacyEnabled);
+
+		context.set('wiki', { ...context.get('wiki'), ...trackingParameters });
 	}
 }
