@@ -7,7 +7,6 @@ import * as sinon from 'sinon';
 describe('Geo', () => {
 	const sessionCookie = SessionCookie.make();
 	const cacheStorage = InstantConfigCacheStorage.make();
-	let sandbox: sinon.SinonSandbox;
 	let randomStub: sinon.SinonStub;
 	let cookiesGetStub: sinon.SinonStub;
 
@@ -16,14 +15,9 @@ describe('Geo', () => {
 		context.set('geo.country', 'PL');
 		context.set('geo.region', '72');
 
-		sandbox = sinon.createSandbox();
-		randomStub = sandbox.stub(Math, 'random');
-		cookiesGetStub = sandbox.stub(Cookies, 'get');
+		randomStub = global.sandbox.stub(Math, 'random');
+		cookiesGetStub = global.sandbox.stub(Cookies, 'get');
 		cacheStorage.resetCache();
-	});
-
-	afterEach(() => {
-		sandbox.restore();
 	});
 
 	it('returns country and continent code', () => {
@@ -399,7 +393,7 @@ describe('Geo', () => {
 			'OOZ_B_99:ooz_b',
 		];
 
-		sandbox.stub(cacheStorage, 'getSamplingResults').returns(['FOO_A_1', 'BAR_B_99']);
+		global.sandbox.stub(cacheStorage, 'getSamplingResults').returns(['FOO_A_1', 'BAR_B_99']);
 		assert.deepEqual(cacheStorage.mapSamplingResults(wfKeyVals), ['foo_a', 'bar_b']);
 	});
 

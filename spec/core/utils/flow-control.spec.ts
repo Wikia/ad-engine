@@ -1,29 +1,22 @@
 import { once } from '@wikia/core/utils/flow-control';
 import { expect } from 'chai';
-import { createSandbox, SinonSandbox } from 'sinon';
 
-function getHtmlElementStub(sandbox: SinonSandbox): any {
+function getHtmlElementStub(): any {
 	let eventCallback;
 
 	return {
-		addEventListener: sandbox.stub().callsFake((name, callback) => {
+		addEventListener: global.sandbox.stub().callsFake((name, callback) => {
 			eventCallback = callback;
 		}),
-		runCallback: sandbox.stub().callsFake((...args) => {
+		runCallback: global.sandbox.stub().callsFake((...args) => {
 			eventCallback(...args);
 		}),
 	};
 }
 
 describe('Flow control - once', () => {
-	const sandbox = createSandbox();
-
-	afterEach(() => {
-		sandbox.restore();
-	});
-
 	it('once returns a promise', () => {
-		const object = getHtmlElementStub(sandbox);
+		const object = getHtmlElementStub();
 		const promise = once(object, 'xxx');
 
 		expect(typeof promise.then === 'function').to.be.ok;
@@ -31,7 +24,7 @@ describe('Flow control - once', () => {
 	});
 
 	it('once calls event subscribe method', () => {
-		const object = getHtmlElementStub(sandbox);
+		const object = getHtmlElementStub();
 
 		once(object, 'xxx');
 		object.runCallback();

@@ -1,32 +1,23 @@
 import {
-	Binder,
 	communicationService,
-	context,
 	Dictionary,
 	DiProcess,
 	eventsRepository,
 	ofType,
-	Targeting,
+	SlotTargeting,
+	targetingService,
 	utils,
 } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
+import { Injectable } from '@wikia/dependency-injection';
 import { shareReplay } from 'rxjs/operators';
-
-const SKIN = Symbol('targeting skin');
 
 @Injectable()
 export class BingeBotTargetingSetup implements DiProcess {
-	static skin(skin: string): Binder {
-		return {
-			bind: SKIN,
-			value: skin,
-		};
-	}
-
-	constructor(@Inject(SKIN) private skin: string) {}
-
 	execute(): void {
-		context.set('targeting', { ...context.get('targeting'), ...this.getPageLevelTargeting() });
+		targetingService.extend({
+			...targetingService.dump(),
+			...this.getPageLevelTargeting(),
+		});
 
 		communicationService.action$
 			.pipe(
@@ -34,16 +25,16 @@ export class BingeBotTargetingSetup implements DiProcess {
 				shareReplay(1), // take only the newest value
 			)
 			.subscribe((action) => {
-				context.set('targeting.s2', action.viewType);
+				targetingService.set('s2', action.viewType);
 			});
 	}
 
-	getPageLevelTargeting(): Partial<Targeting> {
+	getPageLevelTargeting(): Partial<SlotTargeting> {
 		const pageTargeting: Dictionary<string> = {
 			geo: utils.geoService.getCountryCode() || 'none',
 			s0: 'ent',
 			s2: 'bingebot_selection',
-			skin: this.skin,
+			skin: 'bingebot',
 		};
 
 		const cid = utils.queryString.get('cid');

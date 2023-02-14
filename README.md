@@ -172,7 +172,7 @@ context.set('state.isMobile', true);
 context.set('custom.namespace', 'article');
 
 // Setup GPT targeting
-context.set('targeting.post_id', 123);
+targetingService.set('post_id', 123);
 
 new AdEngine().init();
 ```

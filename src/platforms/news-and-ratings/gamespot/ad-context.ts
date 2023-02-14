@@ -37,10 +37,6 @@ export const basicContext = {
 		},
 	},
 	slots: {},
-	targeting: {
-		seg: '',
-		aamid: '',
-	},
 	src: ['gamespot'],
 	vast: {
 		adUnitId: '/{custom.dfpId}/{custom.region}-{custom.property}/video',

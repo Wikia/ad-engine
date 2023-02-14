@@ -8,7 +8,6 @@ import { context, vastParser } from '@wikia/core';
 import { expect } from 'chai';
 import { Observable, Subject } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
-import { createSandbox } from 'sinon';
 import { createJwplayerStub, JwplayerStub } from '../jwplayer.stub';
 
 function uniq(array) {
@@ -16,7 +15,6 @@ function uniq(array) {
 }
 
 describe('Jwplayer Stream State', () => {
-	const sandbox = createSandbox();
 	let jwplayerStub: JwplayerStub;
 	let subject$: Subject<JwpStatelessEvent<any>>;
 	let state$: Observable<JwpState>;
@@ -24,14 +22,13 @@ describe('Jwplayer Stream State', () => {
 
 	beforeEach(() => {
 		results = [];
-		jwplayerStub = createJwplayerStub(sandbox);
+		jwplayerStub = createJwplayerStub(global.sandbox);
 		subject$ = new Subject();
 		state$ = createJwpStateStream(subject$.asObservable().pipe(shareReplay(1)), jwplayerStub);
 		state$.subscribe((value) => results.push(value));
 	});
 
 	afterEach(() => {
-		sandbox.restore();
 		subject$.complete();
 
 		context.remove('options.video.forceVideoAdsOnAllVideosExceptSecond');
@@ -196,7 +193,7 @@ describe('Jwplayer Stream State', () => {
 
 	describe('VastParams', () => {
 		beforeEach(() => {
-			sandbox.stub(vastParser, 'parse').callsFake((arg) => arg as any);
+			global.sandbox.stub(vastParser, 'parse').callsFake((arg) => arg as any);
 		});
 
 		it('should start with default', () => {
