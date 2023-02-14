@@ -25,7 +25,6 @@ import { basicContext } from './ad-context';
 import { UcpDesktopBaseContextSetup } from './setup/context/base/ucp-desktop-base-context.setup';
 import { UcpDesktopSlotsContextSetup } from './setup/context/slots/ucp-desktop-slots-context.setup';
 import { UcpDesktopAdLayoutSetup } from './ucp-desktop-ad-layout-setup';
-import { UcpDesktopIocSetup } from './ucp-desktop-ioc-setup';
 import { UcpDesktopLegacySetup } from './ucp-desktop-legacy-setup';
 
 @Injectable()
@@ -40,7 +39,6 @@ export class UcpDesktopPlatform {
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
 			TrackingParametersSetup,
 			LoadTimesSetup,
-			UcpDesktopIocSetup,
 			UcpDesktopBaseContextSetup,
 			UcpDesktopSlotsContextSetup,
 			UcpTargetingSetup,

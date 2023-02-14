@@ -1,4 +1,4 @@
-import { context, UniversalStorage, utils } from '@ad-engine/core';
+import { targetingService, UniversalStorage, utils } from '@ad-engine/core';
 import { ActiveData } from '../adms-identity-repository/adms-actions';
 import { identityStorageClient } from './identity-storage-client';
 import { IdentityStorageDto } from './identity-storage-dto';
@@ -77,7 +77,7 @@ class IdentityStorageService {
 
 	private setIdentityContextVariables(userData: IdentityStorageDto) {
 		if (userData.over18) {
-			context.set('targeting.over_18', '1');
+			targetingService.set('over_18', '1');
 		}
 	}
 }

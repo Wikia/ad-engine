@@ -1,4 +1,4 @@
-import { context, DiProcess } from '@wikia/ad-engine';
+import { DiProcess, targetingService } from '@wikia/ad-engine';
 
 export class ComicvineTargetingSetup implements DiProcess {
 	execute(): void {
@@ -6,9 +6,6 @@ export class ComicvineTargetingSetup implements DiProcess {
 			s0: 'ent',
 		};
 
-		context.set('targeting', {
-			...context.get('targeting'),
-			...targeting,
-		});
+		targetingService.extend(targeting);
 	}
 }

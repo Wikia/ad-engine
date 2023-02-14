@@ -33,6 +33,7 @@ interface Window {
 	ntv?: NativoApi;
 	NOLBUNDLE?: any;
 	pbjs?: any;
+	Phoenix?: Phoenix;
 	PostRelease?: NativoPostRelease;
 	pvNumber?: number;
 	pvNumberGlobal?: number;
@@ -48,5 +49,4 @@ interface Window {
 	utag_data?: any;
 	wgCookiePath?: string;
 	XMLHttpRequest?: any;
-	Phoenix?: Phoenix;
 }

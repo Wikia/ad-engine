@@ -1,7 +1,7 @@
 import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
 
 import { AdSlot } from '../../models';
-import { Context, slotService } from '../../services';
+import { Context, slotService, targetingService } from '../../services';
 import { logger, scriptLoader } from '../../utils';
 
 const logGroup = 'nativo';
@@ -61,10 +61,7 @@ export class Nativo {
 			Nativo.log(logGroup, `Slot disabled due to the experiment: ${slotName}`);
 
 			// the Nativo ad server responses with a JS that searches for specific IDs that's why the removal here
-			if (
-				this.context.get('targeting.skin') !== 'ucp_mobile' &&
-				document.getElementById(slotName)
-			) {
+			if (targetingService.get('skin') !== 'ucp_mobile' && document.getElementById(slotName)) {
 				document.getElementById(slotName).id = '';
 			} else if (document.getElementById(slotName)) {
 				// on mobile the slots are injected before we know they're disabled, so we need to remove the node

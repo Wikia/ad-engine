@@ -8,14 +8,13 @@ import {
 } from '@wikia/core';
 import { Container, Inject, Injectable } from '@wikia/dependency-injection';
 import { assert, expect } from 'chai';
-import { createSandbox, SinonSpy } from 'sinon';
+import { SinonSpy } from 'sinon';
 import {
 	createTemplateStateHandlerSpy,
 	TemplateStateHandlerSpy,
 } from './template-state-handler.spy';
 
 describe('Template Registry', () => {
-	const sandbox = createSandbox();
 	let additionalDepsSpy: SinonSpy;
 	let stateASpy: TemplateStateHandlerSpy;
 	let stateBSpy: TemplateStateHandlerSpy;
@@ -93,16 +92,12 @@ describe('Template Registry', () => {
 	}
 
 	beforeEach(() => {
-		additionalDepsSpy = sandbox.spy();
-		stateASpy = createTemplateStateHandlerSpy(sandbox);
-		stateBSpy = createTemplateStateHandlerSpy(sandbox);
-		stateSharedSpy = createTemplateStateHandlerSpy(sandbox);
+		additionalDepsSpy = global.sandbox.spy();
+		stateASpy = createTemplateStateHandlerSpy(global.sandbox);
+		stateBSpy = createTemplateStateHandlerSpy(global.sandbox);
+		stateSharedSpy = createTemplateStateHandlerSpy(global.sandbox);
 		container = new Container();
 		instance = container.get(TemplateRegistry);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
 	});
 
 	it('should throw error if template not registered', () => {
@@ -215,7 +210,7 @@ describe('Template Registry', () => {
 			assert(stateASpy.onDestroy.calledOnce, 'stateASpy.onDestroy.calledOnce');
 			assert(stateBSpy.onDestroy.calledOnce, 'stateBSpy.onDestroy.calledOnce');
 			assert(stateSharedSpy.onDestroy.calledTwice, 'stateSharedSpy.onDestroy.calledTwice');
-			sandbox.assert.callOrder(
+			global.sandbox.assert.callOrder(
 				stateASpy.onLeave,
 				stateSharedSpy.onLeave,
 				stateASpy.onDestroy,
@@ -294,7 +289,7 @@ describe('Template Registry', () => {
 				assert(stateBSpy.onLeave.notCalled);
 				assert(stateSharedSpy.onEnter.calledTwice);
 				assert(stateSharedSpy.onLeave.calledOnce);
-				sandbox.assert.callOrder(
+				global.sandbox.assert.callOrder(
 					stateASpy.onEnter,
 					stateSharedSpy.onEnter,
 					stateASpy.onLeave,
