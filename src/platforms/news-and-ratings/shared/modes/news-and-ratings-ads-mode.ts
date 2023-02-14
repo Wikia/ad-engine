@@ -1,5 +1,6 @@
-import { GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
+import { AnyclipPlayerSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
+	Audigent,
 	Bidders,
 	Captify,
 	communicationService,
@@ -19,6 +20,8 @@ import { Injectable } from '@wikia/dependency-injection';
 export class NewsAndRatingsAdsMode implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,
+		private anyclipPlayerSetup: AnyclipPlayerSetup,
+		private audigent: Audigent,
 		private bidders: Bidders,
 		private captify: Captify,
 		private confiant: Confiant,
@@ -35,11 +38,13 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 	execute(): void {
 		this.pipeline
 			.add(
+				this.anyclipPlayerSetup,
 				this.bidders,
 				this.wadRunner,
 				this.userIdentity,
 				this.liveRampPixel.setOptions({ dependencies: [this.userIdentity.initialized] }),
 				this.liveConnect,
+				this.audigent,
 				this.confiant,
 				this.iasPublisherOptimization,
 				this.captify,
@@ -51,6 +56,11 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 			)
 			.execute()
 			.then(() => {
+				// TODO: we could remove Phoenix lines below once we introduce communicationService on the platforms
+				if (window?.Phoenix?.Events?.trigger) {
+					window.Phoenix.Events.trigger('ads_initialized');
+				}
+
 				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);
 			});
 	}

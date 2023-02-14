@@ -8,6 +8,17 @@ export function getIndexExchangeContext(isDesktop: boolean): object {
 			sizes: [[728, 90]],
 			siteId: ['936311'],
 		},
+		'incontent-leader-plus-top': {
+			sizes: [
+				[970, 250],
+				[728, 90],
+			],
+			siteId: ['936316', '936319'],
+		},
+		'incontent-leaderboard-top': {
+			sizes: [[728, 90]],
+			siteId: ['936319'],
+		},
 		'incontent-leader-plus-bottom': {
 			sizes: [
 				[728, 90],
@@ -69,17 +80,6 @@ export function getIndexExchangeContext(isDesktop: boolean): object {
 		'leaderboard-middle': {
 			sizes: [[728, 90]],
 			siteId: ['936318'],
-		},
-		'incontent-leader-plus-top': {
-			sizes: [
-				[970, 250],
-				[728, 90],
-			],
-			siteId: ['936316', '936319'],
-		},
-		'incontent-leaderboard-top': {
-			sizes: [[728, 90]],
-			siteId: ['936319'],
 		},
 		video: {
 			siteId: '936611',

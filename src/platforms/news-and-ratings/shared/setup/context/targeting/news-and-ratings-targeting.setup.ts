@@ -25,12 +25,16 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 		context.set('targeting', {
 			...context.get('targeting'),
 			...targeting,
+			is_mobile: context.get('state.isMobile') ? '1' : '0',
+			uap: 'none',
+			uap_c: 'none',
 		});
 	}
 
 	getPageLevelTargeting(): TargetingParams {
 		const adTags = this.getAdTags();
 		const parsedAdTags = this.parseAdTags(adTags);
+
 		return this.getMappedAdTags(parsedAdTags);
 	}
 

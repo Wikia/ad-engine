@@ -12,6 +12,14 @@ interface TaxonomyTags {
 	tv?: string[];
 }
 
+interface ITrackingParameters {
+	beaconId: string;
+	pvNumber: number;
+	pvNumberGlobal: number;
+	sessionId: string;
+	pvUID: string;
+}
+
 interface WindowFandomContext {
 	site: {
 		categories: [];
@@ -32,4 +40,5 @@ interface WindowFandomContext {
 		tags: TaxonomyTags;
 		wordCount: number;
 	};
+	tracking?: ITrackingParameters;
 }
