@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { container } from 'tsyringe';
 import { SportsPlatform } from './sports-platform';
 import './styles.scss';

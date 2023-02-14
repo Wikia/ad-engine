@@ -9,7 +9,7 @@ import {
 	pbjsFactory,
 } from '@wikia/ad-engine';
 import { props } from 'ts-action';
-import { DependencyContainer, injectable } from 'tsyringe';
+import { container, injectable } from 'tsyringe';
 
 const setInstantConfig = globalAction(
 	'[AdEngine] set InstantConfig',
@@ -18,14 +18,12 @@ const setInstantConfig = globalAction(
 
 @injectable()
 export class InstantConfigSetup implements DiProcess {
-	constructor(private container: DependencyContainer) {}
-
 	async execute(): Promise<void> {
 		const instantConfig = await new InstantConfigService().init();
 
-		this.container.register(InstantConfigService, { useValue: instantConfig });
+		container.register(InstantConfigService, { useValue: instantConfig });
 		// @ts-expect-error FIXME wtf?
-		this.container.register(InstantConfigCacheStorage, {
+		container.register(InstantConfigCacheStorage, {
 			useValue: InstantConfigCacheStorage.make(),
 		});
 		communicationService.dispatch(setInstantConfig({ instantConfig }));

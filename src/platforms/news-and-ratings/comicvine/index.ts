@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { container } from 'tsyringe';
 import { ComicvinePlatform } from './comicvine-platform';
 import './styles.scss';

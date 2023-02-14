@@ -60,7 +60,6 @@ export class TemplateDependenciesManager {
 	}
 
 	private register(dependency: TemplateDependency): void {
-		console.log('XXX - register', dependency);
 		if (this.isDependencyProvider(dependency)) {
 			this.container.register(dependency.bind, { useFactory: dependency.provider });
 			return;

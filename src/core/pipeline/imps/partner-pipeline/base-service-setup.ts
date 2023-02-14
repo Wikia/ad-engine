@@ -1,18 +1,18 @@
-import { injectable } from 'tsyringe';
+import { autoInjectable } from 'tsyringe';
 import { context, InstantConfigService } from '../../../services';
 import {
 	PartnerInitializationProcess,
 	PartnerInitializationProcessOptions,
 } from './partner-pipeline-types';
 
-@injectable()
+@autoInjectable()
 export class BaseServiceSetup implements PartnerInitializationProcess {
 	options: PartnerInitializationProcessOptions;
 	initializationTimeout;
 	resolve: () => void;
 	initialized: Promise<void>;
 
-	constructor(protected instantConfig: InstantConfigService = null) {
+	constructor(protected instantConfig?: InstantConfigService) {
 		this.resetInitialized();
 	}
 

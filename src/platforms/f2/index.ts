@@ -1,4 +1,5 @@
 import { communicationService, ofType } from '@wikia/ad-engine';
+import 'reflect-metadata';
 import { take } from 'rxjs/operators';
 import { container } from 'tsyringe';
 import { F2Platform } from './f2-platform';

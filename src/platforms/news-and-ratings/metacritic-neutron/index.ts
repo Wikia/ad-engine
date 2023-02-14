@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { container } from 'tsyringe';
 import { MetacriticNeutronPlatform } from './metacritic-neutron-platform';
 import './styles.scss';

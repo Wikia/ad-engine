@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { container } from 'tsyringe';
 import './styles.scss';
 import { UcpNoAdsPlatform } from './ucp-no-ads-platform';

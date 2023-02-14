@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { container } from 'tsyringe';
 import { GamefaqsPlatform } from './gamefaqs-platform';
 import './styles.scss';

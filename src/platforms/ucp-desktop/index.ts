@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { container } from 'tsyringe';
 import './styles.scss';
 import { UcpDesktopPlatform } from './ucp-desktop-platform';
