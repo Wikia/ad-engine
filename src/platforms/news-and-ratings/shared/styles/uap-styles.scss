@@ -17,7 +17,8 @@
 		#omni-skybox-leader-nav,
 		#mobile-omni-skybox-plus-nav,
 		#omni-skybox-leader-sticky,
-		#mobile-omni-skybox-plus-sticky {
+		#mobile-omni-skybox-plus-sticky,
+		#nav-ad-plus-leader {
 			line-height: unset;
 			margin: unset;
 
@@ -46,7 +47,8 @@
 		#skybox-nav,
 		#nav_ad_omni,
 		#omni-skybox-leader-nav,
-		#omni-skybox-leader-sticky {
+		#omni-skybox-leader-sticky,
+		#nav-ad-plus-leader {
 			@include uap-porvata-right-position();
 		}
 	}
