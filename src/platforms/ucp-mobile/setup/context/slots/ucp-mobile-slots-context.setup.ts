@@ -28,7 +28,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'top',
 					pos: ['top_leaderboard', 'mobile_top_leaderboard'],
-					rv: 1,
 				},
 				placeholder: {
 					createLabel: false,
@@ -60,7 +59,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'top',
 					pos: ['top_boxad'],
-					rv: 1,
 				},
 				placeholder: {
 					createLabel: true,
@@ -94,7 +92,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'middle',
 					pos: ['incontent_boxad'],
-					rv: 1,
 				},
 				placeholder: {
 					createLabel: true,
@@ -113,7 +110,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'middle',
 					pos: ['outstream'],
-					rv: 1,
 				},
 				isVideo: true,
 			},
@@ -130,7 +126,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				],
 				targeting: {
 					loc: 'footer',
-					rv: 1,
 				},
 				placeholder: {
 					createLabel: true,
@@ -145,7 +140,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				outOfPageFormat: 'INTERSTITIAL',
 				targeting: {
 					loc: 'hivi',
-					rv: 1,
 				},
 			},
 			floor_adhesion: {
@@ -156,7 +150,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				outOfPage: false,
 				targeting: {
 					loc: 'footer',
-					rv: 1,
 				},
 				defaultTemplates: ['floorAdhesion'],
 				defaultSizes: [
@@ -208,7 +201,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'footer',
 					pos: ['bottom_leaderboard', 'mobile_prefooter'],
-					rv: 1,
 				},
 				placeholder: {
 					createLabel: true,
@@ -222,16 +214,12 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				outOfPage: true,
 				targeting: {
 					loc: 'hivi',
-					rv: 1,
 				},
 			},
 			featured: {
 				adProduct: 'featured',
 				group: 'VIDEO',
 				videoSizes: [[640, 480]],
-				targeting: {
-					rv: 1,
-				},
 				trackEachStatus: true,
 				trackingKey: 'featured-video',
 				isVideo: true,

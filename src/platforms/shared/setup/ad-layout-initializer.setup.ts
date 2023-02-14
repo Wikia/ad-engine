@@ -4,7 +4,8 @@ import {
 	context,
 	DiProcess,
 	eventsRepository,
-	Targeting,
+	SlotTargeting,
+	targetingService,
 	utils,
 } from '@wikia/ad-engine';
 import { injectable } from 'tsyringe';
@@ -37,7 +38,7 @@ export function shouldUseAdLayouts(): Promise<boolean> {
 export class AdLayoutInitializerSetup implements DiProcess {
 	private lisAdUnit = '/5441/wka1b.LIS/layout_initializer/';
 	private lisSize = '1x1';
-	private lisTargeting: Targeting = {
+	private lisTargeting: SlotTargeting = {
 		loc: 'pre',
 		pos: 'layout_initializer',
 	};
@@ -53,7 +54,7 @@ export class AdLayoutInitializerSetup implements DiProcess {
 			adUnit: this.lisAdUnit,
 			size: this.lisSize,
 			targeting: {
-				...context.get('targeting'),
+				...targetingService.dump(),
 				...this.lisTargeting,
 				src: context.get('src'),
 			},
@@ -107,7 +108,7 @@ export class AdLayoutInitializerSetup implements DiProcess {
 	}
 
 	private setFanTakeoverTargeting(lineItemId: string, creativeId: string): void {
-		context.set('targeting.uap', lineItemId);
-		context.set('targeting.uap_c', creativeId);
+		targetingService.set('uap', lineItemId);
+		targetingService.set('uap_c', creativeId);
 	}
 }

@@ -1,31 +1,25 @@
 import {
-	Binder,
 	communicationService,
 	context,
 	DiProcess,
 	eventsRepository,
 	InstantConfigService,
+	targetingService,
 	UapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
-import { inject, injectable } from 'tsyringe';
+import { injectable } from 'tsyringe';
 import { createFandomContext } from './targeting-strategies/factories/create-fandom-context';
 import { createSelectedStrategy } from './targeting-strategies/factories/create-selected-strategy';
 import { TargetingTags } from './targeting-strategies/interfaces/taxonomy-tags';
 
-const SKIN = Symbol('targeting skin');
-
 @injectable()
 export class UcpTargetingSetup implements DiProcess {
-	static skin(skin: string): Binder<typeof skin> {
-		return [SKIN, { useValue: skin }];
-	}
-
-	constructor(@inject(SKIN) private skin: string, protected instantConfig: InstantConfigService) {}
+	constructor(protected instantConfig: InstantConfigService) {}
 
 	execute(): void {
-		context.set('targeting', {
-			...context.get('targeting'),
+		targetingService.extend({
+			...targetingService.dump(),
 			...this.getPageLevelTargeting(),
 		});
 
@@ -48,11 +42,11 @@ export class UcpTargetingSetup implements DiProcess {
 
 		if (context.get('wiki.targeting.wikiIsTop1000')) {
 			context.set('custom.wikiIdentifier', '_top1k_wiki');
-			context.set('custom.dbNameForAdUnit', context.get('targeting.s1'));
+			context.set('custom.dbNameForAdUnit', targetingService.get('s1'));
 		}
 
-		context.set(
-			'targeting.bundles',
+		targetingService.set(
+			'bundles',
 			utils.targeting.getTargetingBundles(this.instantConfig.get('icTargetingBundles')),
 		);
 	}
@@ -62,6 +56,6 @@ export class UcpTargetingSetup implements DiProcess {
 
 		utils.logger('Targeting', `Selected targeting priority strategy: ${selectedStrategy}`);
 
-		return createSelectedStrategy(selectedStrategy, createFandomContext(), this.skin).get();
+		return createSelectedStrategy(selectedStrategy, createFandomContext()).get();
 	}
 }

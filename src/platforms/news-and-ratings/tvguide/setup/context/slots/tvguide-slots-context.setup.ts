@@ -231,7 +231,6 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				targeting: {
 					pos_nr: 'inc',
 					loc: 'middle',
-					rv: 1,
 				},
 				repeat: {
 					index: 1,
@@ -497,9 +496,6 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 			},
 			video: {
-				targeting: {
-					rv: 1,
-				},
 				isVideo: true,
 			},
 		};

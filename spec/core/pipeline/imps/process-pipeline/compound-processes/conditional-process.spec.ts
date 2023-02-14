@@ -1,10 +1,9 @@
 import { conditional, ProcessPipeline } from '@wikia/core';
 import { expect } from 'chai';
-import { createSandbox, SinonSpy } from 'sinon';
+import { SinonSpy } from 'sinon';
 import { container as diContainer } from 'tsyringe';
 
 describe('ConditionalProcess', () => {
-	const sandbox = createSandbox();
 	let spy: SinonSpy;
 	let pipeline: ProcessPipeline;
 
@@ -19,12 +18,8 @@ describe('ConditionalProcess', () => {
 	beforeEach(() => {
 		const container = diContainer.createChildContainer();
 
-		spy = sandbox.spy();
+		spy = global.sandbox.spy();
 		pipeline = container.resolve(ProcessPipeline);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
 	});
 
 	describe('Condition', () => {

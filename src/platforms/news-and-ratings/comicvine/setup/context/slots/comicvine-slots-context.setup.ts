@@ -156,9 +156,6 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 				},
 			},
 			video: {
-				targeting: {
-					rv: 1,
-				},
 				isVideo: true,
 			},
 		};

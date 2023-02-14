@@ -2,20 +2,17 @@ import { utils } from '@wikia/core';
 import { NewsAndRatingsTargetingSetup } from '@wikia/platforms/news-and-ratings/shared/setup/context/targeting/news-and-ratings-targeting.setup';
 
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
 
 describe('News and Ratings Targeting Setup', () => {
-	const sandbox = createSandbox();
 	let queryStringGetStub;
 	let newsAndRatingsTargetingSetup;
 
 	beforeEach(() => {
-		queryStringGetStub = sandbox.stub(utils.queryString, 'get');
+		queryStringGetStub = global.sandbox.stub(utils.queryString, 'get');
 		newsAndRatingsTargetingSetup = new NewsAndRatingsTargetingSetup();
 	});
 
 	afterEach(() => {
-		sandbox.restore();
 		queryStringGetStub.resetHistory();
 	});
 

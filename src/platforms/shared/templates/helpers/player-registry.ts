@@ -61,8 +61,8 @@ export class PlayerRegistry {
 		const clickToPlaySuffix = isAutoPlayEnabled ? '' : '-ctp';
 
 		this.adSlot.setConfigProperty('slotNameSuffix', clickToPlaySuffix || audioSuffix || '');
-		this.adSlot.setConfigProperty('targeting.audio', audioSuffix ? 'yes' : 'no');
-		this.adSlot.setConfigProperty('targeting.ctp', clickToPlaySuffix ? 'yes' : 'no');
+		this.adSlot.setTargetingConfigProperty('audio', audioSuffix ? 'yes' : 'no');
+		this.adSlot.setTargetingConfigProperty('ctp', clickToPlaySuffix ? 'yes' : 'no');
 	}
 
 	/**

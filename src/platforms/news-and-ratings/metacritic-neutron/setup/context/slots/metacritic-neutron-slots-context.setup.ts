@@ -281,9 +281,6 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 				},
 			},
 			video: {
-				targeting: {
-					rv: 1,
-				},
 				isVideo: true,
 			},
 		};

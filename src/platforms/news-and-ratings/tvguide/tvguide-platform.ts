@@ -4,6 +4,7 @@ import {
 	context,
 	eventsRepository,
 	ProcessPipeline,
+	targetingService,
 	utils,
 } from '@wikia/ad-engine';
 import { injectable } from 'tsyringe';
@@ -65,8 +66,7 @@ export class TvGuidePlatform {
 
 				this.currentUrl = location.href;
 				communicationService.emit(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
-
-				context.set('targeting', {});
+				targetingService.clear();
 
 				const refreshPipeline = new ProcessPipeline();
 				refreshPipeline

@@ -50,7 +50,6 @@ export class SportsSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'top',
 					zne: '01',
-					rv: 1,
 				},
 			},
 			'cdm-zone-02': {
@@ -67,7 +66,6 @@ export class SportsSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'top',
 					zne: '02',
-					rv: 1,
 				},
 			},
 			'cdm-zone-03': {
@@ -77,7 +75,6 @@ export class SportsSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'footer',
 					zne: '03',
-					rv: 1,
 				},
 			},
 			'cdm-zone-04': {
@@ -87,7 +84,6 @@ export class SportsSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'middle',
 					zne: '04',
-					rv: 1,
 				},
 			},
 			'cdm-zone-06': {
@@ -97,7 +93,6 @@ export class SportsSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'footer',
 					zne: '06',
-					rv: 1,
 				},
 			},
 		};

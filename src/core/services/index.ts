@@ -18,6 +18,7 @@ export * from './slot-injector';
 export * from './slot-repeater';
 export * from './slot-service';
 export * from './slot-tweaker';
+export * from './targeting-service';
 export * from './template-service';
 export * from './templates-registry/template-action';
 export * from './templates-registry/template-logger';

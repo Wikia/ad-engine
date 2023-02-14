@@ -7,22 +7,18 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 describe('Instant Config Service', () => {
-	let sandbox;
 	let initInterpreterStub: sinon.SinonStub;
 	let getConfigStub: sinon.SinonStub;
 	let getValuesStub: sinon.SinonStub;
 	let overrideStub: sinon.SinonStub;
 
 	beforeEach(() => {
-		sandbox = sinon.createSandbox();
-		getConfigStub = sandbox.stub(instantConfigLoader, 'getConfig');
-		initInterpreterStub = sandbox.stub(InstantConfigInterpreter.prototype, 'init').returnsThis();
-		getValuesStub = sandbox.stub(InstantConfigInterpreter.prototype, 'getValues');
-		overrideStub = sandbox.stub(InstantConfigOverrider.prototype, 'override');
-	});
-
-	afterEach(() => {
-		sandbox.restore();
+		getConfigStub = global.sandbox.stub(instantConfigLoader, 'getConfig');
+		initInterpreterStub = global.sandbox
+			.stub(InstantConfigInterpreter.prototype, 'init')
+			.returnsThis();
+		getValuesStub = global.sandbox.stub(InstantConfigInterpreter.prototype, 'getValues');
+		overrideStub = global.sandbox.stub(InstantConfigOverrider.prototype, 'override');
 	});
 
 	describe('initialization', () => {

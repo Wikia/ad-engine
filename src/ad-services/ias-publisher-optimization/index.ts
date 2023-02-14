@@ -1,4 +1,11 @@
-import { BaseServiceSetup, context, Dictionary, SlotConfig, utils } from '@ad-engine/core';
+import {
+	BaseServiceSetup,
+	context,
+	Dictionary,
+	SlotConfig,
+	targetingService,
+	utils,
+} from '@ad-engine/core';
 
 const logGroup = 'ias-publisher-optimization';
 const scriptUrl = '//cdn.adsafeprotected.com/iasPET.1.js';
@@ -12,7 +19,7 @@ const brandSafetyValuesLevel: Dictionary<number> = {
 };
 
 type BrandSafetyValue = 'veryLow' | 'low' | 'medium' | 'high';
-type BrandSafetyKey = typeof brandSafetyKeys[number];
+type BrandSafetyKey = (typeof brandSafetyKeys)[number];
 type BrandSafetyData = Partial<Record<BrandSafetyKey, BrandSafetyValue>>;
 
 interface IasTargetingSlotData {
@@ -100,16 +107,16 @@ export class IasPublisherOptimization extends BaseServiceSetup {
 	private setInitialTargeting(): void {
 		utils.logger(logGroup, 'setting initial targeting...');
 
-		context.set('targeting.fr', '-1');
-		context.set('targeting.b_ias', '-1');
-		context.set('targeting.ias-kw', '-1');
+		targetingService.set('fr', '-1');
+		targetingService.set('b_ias', '-1');
+		targetingService.set('ias-kw', '-1');
 
 		brandSafetyKeys.forEach((key) => {
-			context.set(`targeting.${key}`, '-1');
+			targetingService.set(key, '-1');
 		});
 
 		this.slotList.forEach((slotName) => {
-			context.set(`slots.${slotName}.targeting.vw`, '-1');
+			targetingService.set('vw', '-1', slotName);
 		});
 	}
 
@@ -118,13 +125,13 @@ export class IasPublisherOptimization extends BaseServiceSetup {
 
 		const iasTargetingData: IasTargetingData = JSON.parse(adSlotData);
 
-		context.set('targeting.fr', iasTargetingData.fr);
+		targetingService.set('fr', iasTargetingData.fr);
 
 		IasPublisherOptimization.setBrandSafetyKeyValuesInTargeting(iasTargetingData.brandSafety);
 		IasPublisherOptimization.setCustomKeyValuesInTargeting(iasTargetingData.custom);
 
 		for (const [slotName, slotTargeting] of Object.entries(iasTargetingData.slots)) {
-			context.set(`slots.${slotName}.targeting.vw`, slotTargeting.vw || slotTargeting.vw_vv);
+			targetingService.set('vw', slotTargeting.vw || slotTargeting.vw_vv, slotName);
 		}
 		utils.logger(logGroup, 'Done.', this);
 		this.resolveIASReady();
@@ -140,7 +147,7 @@ export class IasPublisherOptimization extends BaseServiceSetup {
 
 		brandSafetyKeys.forEach((key) => {
 			if (brandSafetyData[key]) {
-				context.set(`targeting.${key}`, brandSafetyData[key]);
+				targetingService.set(key, brandSafetyData[key]);
 
 				if (
 					maxValue === '-1' ||
@@ -151,7 +158,7 @@ export class IasPublisherOptimization extends BaseServiceSetup {
 			}
 		});
 
-		context.set('targeting.b_ias', maxValue);
+		targetingService.set('b_ias', maxValue);
 	}
 
 	private static setCustomKeyValuesInTargeting(customData): void {
@@ -160,6 +167,6 @@ export class IasPublisherOptimization extends BaseServiceSetup {
 			return;
 		}
 
-		context.set('targeting.ias-kw', customData['ias-kw']);
+		targetingService.set('ias-kw', customData['ias-kw']);
 	}
 }
