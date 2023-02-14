@@ -122,6 +122,8 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			context.get('wiki.targeting.pageType') === 'home'
 		) {
 			context.set(`slots.${icpSlotName}.disabled`, true);
+		} else {
+			context.push('events.pushAfterRendered.top_boxad', icpSlotName);
 		}
 
 		context.set(`slots.${icpSlotName}.customFiller`, 'porvata');

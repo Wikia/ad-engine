@@ -21,7 +21,10 @@ export class AnyclipPlayerSetup extends BaseServiceSetup {
 	}
 
 	private loadAnyclipIfEnabled() {
-		if (this.isEnabled('services.anyclip.enabled', false)) {
+		if (
+			!context.get('custom.hasFeaturedVideo') &&
+			this.isEnabled('services.anyclip.enabled', false)
+		) {
 			new Anyclip(
 				context.get('services.anyclip.pubname'),
 				context.get('services.anyclip.widgetname'),
