@@ -1,6 +1,7 @@
 import { context, DiProcess, utils } from '@wikia/ad-engine';
 
 export class SeamlessContentObserverSetup implements DiProcess {
+	private NOT_REQUESTED_SLOT_WRAPPER_SELECTOR = '.mapped-ad > .ad-wrap:not(.gpt-ad)';
 	private currentUrl = '';
 	private seamlessContentLoaded = {};
 	private seamlessAdsAdded = {};
@@ -45,22 +46,24 @@ export class SeamlessContentObserverSetup implements DiProcess {
 			}
 
 			this.seamlessContentLoaded[location.pathname] = true;
-
-			// TODO: we should do below on "page loaded" event for the lazy-loaded seamless content
-			const adSlotsToFill = document.querySelectorAll('.mapped-ad > .ad-wrap:not(.gpt-ad)');
-			utils.logger('pageChangeWatcher', 'adSlotsToFill: ', adSlotsToFill);
-			adSlotsToFill.forEach((adWrapper: Element) => {
-				const placeholder = adWrapper.parentElement;
-				const baseSlotName = placeholder?.getAttribute('data-ad-type');
-				const slotName = this.calculateSeamlessSlotName(placeholder);
-				utils.logger('pageChangeWatcher', 'slot to copy: ', baseSlotName, slotName);
-
-				placeholder.id = slotName;
-
-				this.updateSlotContext(baseSlotName, slotName);
-				context.push('state.adStack', { id: slotName });
-			});
+			this.requestAdForUnfilledSlots();
 		}
+	}
+
+	private requestAdForUnfilledSlots() {
+		const adSlotsToFill = document.querySelectorAll(this.NOT_REQUESTED_SLOT_WRAPPER_SELECTOR);
+		utils.logger('pageChangeWatcher', 'adSlotsToFill: ', adSlotsToFill);
+		adSlotsToFill.forEach((adWrapper: Element) => {
+			const placeholder = adWrapper.parentElement;
+			const baseSlotName = placeholder?.getAttribute('data-ad-type');
+			const slotName = this.calculateSeamlessSlotName(placeholder);
+			utils.logger('pageChangeWatcher', 'slot to copy: ', baseSlotName, slotName);
+
+			placeholder.id = slotName;
+
+			this.updateSlotContext(baseSlotName, slotName);
+			context.push('state.adStack', { id: slotName });
+		});
 	}
 
 	private calculateSeamlessSlotName(placeholder) {
