@@ -36,7 +36,7 @@ describe('NewsAndRatingsPageDataGetter', () => {
 			expect(pagePath).to.eq('');
 		});
 
-		it('sets proper page path when it is complex based on meta tag', () => {
+		it('returns proper page path when it is complex based on meta tag', () => {
 			pageDataGetterStub.returns({ unit_name: '/123/aw-test/playstation/home' });
 
 			const pagePath = pageDataGetter.getPagePath();
@@ -44,7 +44,7 @@ describe('NewsAndRatingsPageDataGetter', () => {
 			expect(pagePath).to.eq('/playstation/home');
 		});
 
-		it('sets proper page path based - incorrect ad-settings meta tag', () => {
+		it('returns proper page path based - incorrect ad-settings meta tag', () => {
 			pageDataGetterStub.returns(null);
 			utagDataStub.returns({ siteSection: 'home' });
 
@@ -53,7 +53,7 @@ describe('NewsAndRatingsPageDataGetter', () => {
 			expect(pagePath).to.eq('/home');
 		});
 
-		it('sets proper page path based - no unit_name in ad-settings meta tag', () => {
+		it('returns proper page path based - no unit_name in ad-settings meta tag', () => {
 			pageDataGetterStub.returns({ foo: 'bar' });
 			utagDataStub.returns({ siteSection: 'home' });
 
@@ -62,7 +62,7 @@ describe('NewsAndRatingsPageDataGetter', () => {
 			expect(pagePath).to.eq('/home');
 		});
 
-		it('sets proper page path based - incorrect ad-settings meta tag and no data from utag data', () => {
+		it('returns proper page path based - incorrect ad-settings meta tag and no data from utag data', () => {
 			pageDataGetterStub.returns(null);
 			utagDataStub.returns({});
 
@@ -71,7 +71,7 @@ describe('NewsAndRatingsPageDataGetter', () => {
 			expect(pagePath).to.eq('');
 		});
 
-		it('sets proper page path based - incorrect ad-settings meta tag and no utag', () => {
+		it('returns proper page path based - incorrect ad-settings meta tag and no utag', () => {
 			pageDataGetterStub.returns(null);
 			utagDataStub.returns(undefined);
 
