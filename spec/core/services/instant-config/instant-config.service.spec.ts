@@ -1,4 +1,5 @@
 import { communicationService, eventsRepository } from '@wikia/communication';
+import { utils } from '@wikia/core';
 import { InstantConfigService } from '@wikia/core/services/instant-config/instant-config.service';
 import {
 	InstantConfigInterpreter,
@@ -48,8 +49,11 @@ describe('Instant Config Service', () => {
 
 			await new InstantConfigService().init();
 
-			expect(initInterpreterStub.firstCall.args[0]).to.deep.equal({ config: true });
-			expect(initInterpreterStub.firstCall.args[1]).to.deep.equal({});
+			expect(initInterpreterStub.firstCall.args).to.deep.equal([
+				{ config: true },
+				{},
+				utils.geoService.isProperGeo,
+			]);
 		});
 
 		it('should pass InstantConfig and InstantGlobals to InstantConfigInterpreter', async () => {
@@ -59,8 +63,11 @@ describe('Instant Config Service', () => {
 
 			await new InstantConfigService().init({ globals: true });
 
-			expect(initInterpreterStub.firstCall.args[0]).to.deep.equal({ config: true });
-			expect(initInterpreterStub.firstCall.args[1]).to.deep.equal({ globals: true });
+			expect(initInterpreterStub.firstCall.args).to.deep.equal([
+				{ config: true },
+				{ globals: true },
+				utils.geoService.isProperGeo,
+			]);
 		});
 
 		it('should call getValues again after emitting reset event', async () => {
