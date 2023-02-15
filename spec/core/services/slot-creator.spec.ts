@@ -1,9 +1,8 @@
 import { SlotCreator, SlotCreatorConfig, SlotCreatorWrapperConfig } from '@wikia/core';
 import { expect } from 'chai';
-import { createSandbox, SinonStub } from 'sinon';
+import { SinonStub } from 'sinon';
 
 describe('SlotCreator', () => {
-	const sandbox = createSandbox();
 	let slotCreator: SlotCreator;
 	let parent: HTMLDivElement;
 	let relativeElement0: HTMLDivElement;
@@ -21,14 +20,10 @@ describe('SlotCreator', () => {
 		relativeElement1.id = 'relative1';
 		relativeElement2.id = 'relative2';
 		parent.append(relativeElement0, relativeElement1, relativeElement2);
-		querySelectorAll = sandbox.stub(document, 'querySelectorAll');
+		querySelectorAll = global.sandbox.stub(document, 'querySelectorAll');
 		querySelectorAll
 			.withArgs('#relative')
 			.returns([relativeElement0, relativeElement1, relativeElement2]);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
 	});
 
 	describe('insertMethod', () => {
@@ -221,9 +216,9 @@ describe('SlotCreator', () => {
 
 	describe('avoidConflictWith', () => {
 		beforeEach(() => {
-			sandbox.stub(relativeElement0, 'offsetParent').value(true);
-			sandbox.stub(relativeElement1, 'offsetParent').value(true);
-			sandbox.stub(relativeElement2, 'offsetParent').value(true);
+			global.sandbox.stub(relativeElement0, 'offsetParent').value(true);
+			global.sandbox.stub(relativeElement1, 'offsetParent').value(true);
+			global.sandbox.stub(relativeElement2, 'offsetParent').value(true);
 		});
 
 		it('should throw if in the same node even if not within distance', () => {
@@ -307,22 +302,22 @@ describe('SlotCreator', () => {
 	});
 
 	function setViewPortHeight(height: number): void {
-		sandbox.stub(document.documentElement, 'clientHeight').value(height);
-		sandbox.stub(window, 'innerHeight').value(height);
+		global.sandbox.stub(document.documentElement, 'clientHeight').value(height);
+		global.sandbox.stub(window, 'innerHeight').value(height);
 	}
 
 	function setScrollPosition(position: number): void {
-		sandbox.stub(window, 'scrollY').value(position);
+		global.sandbox.stub(window, 'scrollY').value(position);
 	}
 
 	function setElementTopOffset(element: HTMLElement, top: number): void {
 		const scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
 
-		sandbox.stub(element, 'getBoundingClientRect').returns({ top: top - scrollTop } as any);
+		global.sandbox.stub(element, 'getBoundingClientRect').returns({ top: top - scrollTop } as any);
 	}
 
 	function setElementOffsetHeight(element: HTMLElement, height: number): void {
-		sandbox.stub(element, 'offsetHeight').value(height);
+		global.sandbox.stub(element, 'offsetHeight').value(height);
 	}
 
 	function expectThrowNoPlaceToInsertError(slotConfig: SlotCreatorConfig): void {

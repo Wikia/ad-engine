@@ -2,11 +2,8 @@ import { PorvataPlayer, PorvataSettings } from '@wikia/ad-products';
 import { iasVideoTracker } from '@wikia/ad-products/video/porvata/plugins/ias/ias-video-tracker';
 import { AdSlot, context, slotService, utils } from '@wikia/core';
 import { assert } from 'chai';
-import * as sinon from 'sinon';
 
 describe('IAS video tracker', () => {
-	const sandbox = sinon.createSandbox();
-
 	function createVideoSettings(iasTracking = true): PorvataSettings {
 		return new PorvataSettings({
 			iasTracking,
@@ -30,10 +27,12 @@ describe('IAS video tracker', () => {
 			init: () => {},
 		};
 
-		sandbox.stub(window.googleImaVansAdapter, 'init');
-		sandbox.stub(utils.scriptLoader, 'loadScript').returns(Promise.resolve(new Event('foo')));
+		global.sandbox.stub(window.googleImaVansAdapter, 'init');
+		global.sandbox
+			.stub(utils.scriptLoader, 'loadScript')
+			.returns(Promise.resolve(new Event('foo')));
 
-		sandbox.stub(slotService, 'get').returns({
+		global.sandbox.stub(slotService, 'get').returns({
 			getTargeting: () => ({
 				src: 'bar',
 				pos: 'foo_pos',
@@ -56,7 +55,6 @@ describe('IAS video tracker', () => {
 	});
 
 	afterEach(() => {
-		sandbox.restore();
 		delete window['googleImaVansAdapter'];
 	});
 

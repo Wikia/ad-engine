@@ -1,8 +1,15 @@
 import { Appnexus } from '@wikia/ad-bidders/prebid/adapters/appnexus';
-import { context } from '@wikia/core';
+import { TargetingService, targetingService } from '@wikia/core';
 import { expect } from 'chai';
+import { SinonStubbedInstance } from 'sinon';
 
 describe('Appnexus bidder adapter', () => {
+	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
+
+	beforeEach(() => {
+		targetingServiceStub = global.sandbox.stub(targetingService);
+	});
+
 	it('can be enabled', () => {
 		const appnexus = new Appnexus({
 			enabled: true,
@@ -157,7 +164,7 @@ describe('Appnexus bidder adapter', () => {
 			},
 		});
 
-		context.set('targeting.mappedVerticalName', 'gaming');
+		targetingServiceStub.get.withArgs('mappedVerticalName').returns('gaming');
 
 		expect(appnexus.getPlacement('mobile')).to.equal('99220022');
 	});

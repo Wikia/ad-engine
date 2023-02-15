@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
 
 import { JwplayerHelperSkippingSponsoredVideo } from '@wikia/ad-products/video/jwplayer/helpers';
 import { context } from '@wikia/core';
@@ -10,13 +9,12 @@ type shouldPostrollAppear = boolean;
 type videoTestRow = [shouldPrerollAppear, shouldMidrollAppear, shouldPostrollAppear];
 
 describe('JwplayerHelperSkippingSponsoredVideo', () => {
-	const sandbox = createSandbox();
 	let adSlotStub, helper;
 
 	describe('should play pre-, mid- and post-rolls depending on the settings', () => {
 		beforeEach(() => {
 			adSlotStub = {
-				isEnabled: sandbox.stub().returns(true),
+				isEnabled: global.sandbox.stub().returns(true),
 			};
 			window.sponsoredVideos = ['AbCd123e'];
 			helper = new JwplayerHelperSkippingSponsoredVideo(
@@ -32,8 +30,6 @@ describe('JwplayerHelperSkippingSponsoredVideo', () => {
 		});
 
 		afterEach(() => {
-			sandbox.restore();
-
 			window.sponsoredVideos = undefined;
 
 			context.remove('options.video.playAdsOnNextVideo');

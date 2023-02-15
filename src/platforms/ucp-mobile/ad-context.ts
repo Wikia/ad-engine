@@ -55,11 +55,6 @@ export const basicContext = {
 			'/{targeting.skin}-{targeting.original_host}-{targeting.s2}' +
 			'/{custom.dbNameForAdUnit}-{targeting.s0}',
 	},
-	targeting: {
-		skin: 'ucp_mobile',
-		uap: 'none',
-		uap_c: 'none',
-	},
 	templates: {
 		safeFanTakeoverElement: {
 			boxadSlotNames: ['top_boxad', 'mobile_prefooter'],

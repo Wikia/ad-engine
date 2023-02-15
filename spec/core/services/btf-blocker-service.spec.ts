@@ -1,19 +1,16 @@
 import { AdSlot, btfBlockerService, context, Dictionary, SlotConfig } from '@wikia/core';
 import { expect } from 'chai';
-import { createSandbox, spy } from 'sinon';
+import { spy } from 'sinon';
 import { adSlotFake } from '../ad-slot-fake';
 
 let firstCallSlot;
 let secondCallSlot;
-let sandbox;
 let slotConfigs: Dictionary<SlotConfig>;
 
 describe('btf-blocker-service', () => {
 	beforeEach(() => {
-		sandbox = createSandbox();
-
 		const originalGet = context.get;
-		sandbox.stub(context, 'get').callsFake((key) => {
+		global.sandbox.stub(context, 'get').callsFake((key) => {
 			if (key === 'slots') {
 				return slotConfigs;
 			}
@@ -47,10 +44,6 @@ describe('btf-blocker-service', () => {
 
 		btfBlockerService.resetState();
 		btfBlockerService.init();
-	});
-
-	afterEach(() => {
-		sandbox.restore();
 	});
 
 	it('should fill in first call slot', () => {

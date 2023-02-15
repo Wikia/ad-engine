@@ -1,4 +1,4 @@
-import { context, Dictionary, slotService, Targeting } from '@ad-engine/core';
+import { context, Dictionary, slotService, SlotTargeting } from '@ad-engine/core';
 import { VpaidMode } from './porvata';
 
 export interface PorvataParams extends Dictionary {
@@ -13,7 +13,7 @@ export interface PorvataParams extends Dictionary {
 	src: string;
 	type?: string;
 	width?: number;
-	vastTargeting?: Targeting;
+	vastTargeting?: SlotTargeting;
 	vastUrl?: string;
 	vpaidMode?: google.ima.ImaSdkSettings.VpaidMode;
 }
@@ -51,7 +51,7 @@ export class PorvataSettings {
 	private readonly slotName: string;
 	private readonly src: string;
 	private readonly vastUrl: string | undefined;
-	private readonly vastTargeting: Targeting;
+	private readonly vastTargeting: SlotTargeting;
 	private readonly vpaidMode: google.ima.ImaSdkSettings.VpaidMode;
 
 	constructor(private params: PorvataParams) {
@@ -126,7 +126,7 @@ export class PorvataSettings {
 		this.autoPlay = value;
 	}
 
-	getVastTargeting(): Targeting {
+	getVastTargeting(): SlotTargeting {
 		return this.vastTargeting;
 	}
 
