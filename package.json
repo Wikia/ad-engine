@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "127.3.0",
+	"version": "130.1.0",
 	"description": "Wikia AdEngine",
 	"license": "Apache-2.0",
 	"repository": {
@@ -71,9 +71,9 @@
 		"prepare": "husky install",
 		"prebuild": "rm -rf dist",
 		"preversion": "./maintenance/preversion.sh",
-		"test": "instant-mocha './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.js",
+		"test": "instant-mocha './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.js --require ./spec/helpers/sandbox-hook.js",
 		"test:watch": "npm run test -- -w",
-		"test-coverage": "nyc instant-mocha './src/!(platforms)*/**/*.ts' './src/platforms/shared/**/*.ts' './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.coverage.js"
+		"test-coverage": "nyc instant-mocha './src/!(platforms)*/**/*.ts' './src/platforms/shared/**/*.ts' './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.coverage.js --require ./spec/helpers/sandbox-hook.js"
 	},
 	"lint-staged": {
 		"*.ts": [

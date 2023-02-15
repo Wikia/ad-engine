@@ -27,7 +27,7 @@ Context is the ad-engine's store of custom global configuration. To get to know 
 
 ### Load GPT library
 
-Follow [DoubleClick for Publishers instructions](https://support.google.com/dfp_premium/answer/1638622?hl=en).
+Follow [Google Publisher Tag instructions](https://support.google.com/admanager/answer/1638622?hl=en).
 
 ### Prepare configuration
 
@@ -172,7 +172,7 @@ context.set('state.isMobile', true);
 context.set('custom.namespace', 'article');
 
 // Setup GPT targeting
-context.set('targeting.post_id', 123);
+targetingService.set('post_id', 123);
 
 new AdEngine().init();
 ```

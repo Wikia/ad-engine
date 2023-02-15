@@ -1,11 +1,8 @@
 import { PorvataSettings } from '@wikia/ad-products';
 import { context, slotService } from '@wikia/core';
 import { assert } from 'chai';
-import * as sinon from 'sinon';
 
 describe('Porvata Settings wrapper', () => {
-	const sandbox = sinon.createSandbox();
-
 	let porvataSettings;
 
 	beforeEach(() => {
@@ -27,10 +24,6 @@ describe('Porvata Settings wrapper', () => {
 		});
 	});
 
-	afterEach(() => {
-		sandbox.restore();
-	});
-
 	it('returns passed values in constructor', () => {
 		assert.equal(porvataSettings.getAdProduct(), 'hivi');
 		assert.isFalse(porvataSettings.isAutoPlay());
@@ -43,7 +36,7 @@ describe('Porvata Settings wrapper', () => {
 	});
 
 	it('enables moatTracking when true is passed', () => {
-		sandbox.stub(slotService, 'get').returns({
+		global.sandbox.stub(slotService, 'get').returns({
 			getConfigProperty: () => ({ isVideo: true }),
 		} as any);
 
@@ -58,7 +51,7 @@ describe('Porvata Settings wrapper', () => {
 	});
 
 	it('disables moatTracking when false is passed', () => {
-		sandbox.stub(slotService, 'get').returns({
+		global.sandbox.stub(slotService, 'get').returns({
 			getConfigProperty: () => ({ isVideo: true }),
 		} as any);
 

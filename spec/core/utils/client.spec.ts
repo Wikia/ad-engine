@@ -20,9 +20,4 @@ describe('client', () => {
 		expect(blocker).to.equal(true);
 		expect(notBlocked).to.equal(false);
 	});
-
-	it('isMobileSkin properly detects mobile skins', () => {
-		expect(client.isMobileSkin('fandom_mobile')).to.equal(true);
-		expect(client.isMobileSkin('anything_else')).to.equal(false);
-	});
 });

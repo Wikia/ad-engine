@@ -94,7 +94,7 @@ export class JWPlayerHelper {
 
 	updateVideoProperties(state: JwpState): void {
 		this.adSlot.setConfigProperty('videoDepth', state.depth);
-		this.adSlot.setConfigProperty('targeting.rv', state.rv);
+		this.adSlot.setTargetingConfigProperty('rv', state.rv);
 	}
 
 	shouldPlayPreroll(videoPlaylistOrderNumber: number, currentMediaId: string = null): boolean {

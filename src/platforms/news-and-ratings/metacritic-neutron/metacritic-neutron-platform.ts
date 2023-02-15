@@ -1,6 +1,12 @@
 import { Injectable } from '@wikia/dependency-injection';
 
-import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
+import {
+	BiddersStateSetup,
+	bootstrapAndGetConsent,
+	InstantConfigSetup,
+	TrackingParametersSetup,
+	TrackingSetup,
+} from '@platforms/shared';
 import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
 
 import {
@@ -15,6 +21,7 @@ import { MetacriticNeutronPrebidConfigSetup } from './setup/context/prebid/metac
 import { MetacriticNeutronSlotsContextSetup } from './setup/context/slots/metacritic-neutron-slots-context.setup';
 import { MetacriticNeutronTargetingSetup } from './setup/context/targeting/metacritic-neutron-targeting.setup';
 import { MetacriticNeutronDynamicSlotsSetup } from './setup/dynamic-slots/metacritic-neutron-dynamic-slots.setup';
+import { MetacriticNeutronTemplatesSetup } from './templates/metacritic-neutron-templates.setup';
 
 @Injectable()
 export class MetacriticNeutronPlatform {
@@ -27,6 +34,7 @@ export class MetacriticNeutronPlatform {
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
+			TrackingParametersSetup,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			NewsAndRatingsTargetingSetup,
@@ -36,7 +44,9 @@ export class MetacriticNeutronPlatform {
 			MetacriticNeutronPrebidConfigSetup,
 			MetacriticNeutronA9ConfigSetup,
 			BiddersStateSetup,
+			MetacriticNeutronTemplatesSetup,
 			NewsAndRatingsAdsMode,
+			TrackingSetup,
 		);
 
 		this.pipeline.execute();

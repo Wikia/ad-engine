@@ -1,6 +1,12 @@
 import { Injectable } from '@wikia/dependency-injection';
 
-import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
+import {
+	BiddersStateSetup,
+	bootstrapAndGetConsent,
+	InstantConfigSetup,
+	TrackingParametersSetup,
+	TrackingSetup,
+} from '@platforms/shared';
 import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
 
 import {
@@ -15,6 +21,7 @@ import { MetacriticPrebidConfigSetup } from './setup/context/prebid/metacritic-p
 import { MetacriticSlotsContextSetup } from './setup/context/slots/metacritic-slots-context.setup';
 import { MetacriticTargetingSetup } from './setup/context/targeting/metacritic-targeting.setup';
 import { MetacriticDynamicSlotsSetup } from './setup/dynamic-slots/metacritic-dynamic-slots.setup';
+import { MetacriticTemplatesSetup } from './templates/metacritic-templates.setup';
 
 @Injectable()
 export class MetacriticPlatform {
@@ -27,6 +34,7 @@ export class MetacriticPlatform {
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
+			TrackingParametersSetup,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			NewsAndRatingsTargetingSetup,
@@ -36,7 +44,9 @@ export class MetacriticPlatform {
 			MetacriticPrebidConfigSetup,
 			MetacriticA9ConfigSetup,
 			BiddersStateSetup,
+			MetacriticTemplatesSetup,
 			NewsAndRatingsAdsMode,
+			TrackingSetup,
 		);
 
 		this.pipeline.execute();

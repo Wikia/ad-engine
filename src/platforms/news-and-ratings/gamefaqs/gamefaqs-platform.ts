@@ -1,4 +1,10 @@
-import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
+import {
+	BiddersStateSetup,
+	bootstrapAndGetConsent,
+	InstantConfigSetup,
+	TrackingParametersSetup,
+	TrackingSetup,
+} from '@platforms/shared';
 import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import {
@@ -14,6 +20,7 @@ import { GamefaqsA9ConfigSetup } from './setup/context/a9/gamefaqs-a9-config.set
 import { GamefaqsPrebidConfigSetup } from './setup/context/prebid/gamefaqs-prebid-config.setup';
 import { GamefaqsSlotsContextSetup } from './setup/context/slots/gamefaqs-slots-context.setup';
 import { GamefaqsTargetingSetup } from './setup/context/targeting/gamefaqs-targeting.setup';
+import { GamefaqsTemplatesSetup } from './templates/gamefaqs-templates.setup';
 
 @Injectable()
 export class GamefaqsPlatform {
@@ -26,6 +33,7 @@ export class GamefaqsPlatform {
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
+			TrackingParametersSetup,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			NewsAndRatingsTargetingSetup,
@@ -36,7 +44,9 @@ export class GamefaqsPlatform {
 			GamefaqsPrebidConfigSetup,
 			GamefaqsA9ConfigSetup,
 			BiddersStateSetup,
+			GamefaqsTemplatesSetup,
 			NewsAndRatingsAdsMode,
+			TrackingSetup,
 		);
 
 		this.pipeline.execute();

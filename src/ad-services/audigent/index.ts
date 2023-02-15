@@ -1,5 +1,11 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { BaseServiceSetup, context, externalLogger, utils } from '@ad-engine/core';
+import {
+	BaseServiceSetup,
+	context,
+	externalLogger,
+	targetingService,
+	utils,
+} from '@ad-engine/core';
 
 const logGroup = 'audigent';
 const DEFAULT_MATCHES_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
@@ -38,7 +44,7 @@ export class Audigent extends BaseServiceSetup {
 			return;
 		}
 
-		context.set('targeting.AU_SEG', '-1');
+		targetingService.set('AU_SEG', '-1');
 
 		Audigent.sampling = this.instantConfig.get('icAudigentTrackingSampling');
 		Audigent.segmentLimit = this.instantConfig.get('icAudigentSegmentLimit');
@@ -110,7 +116,7 @@ export class Audigent extends BaseServiceSetup {
 
 	private static setSegmentsInTargeting(segments) {
 		utils.logger(logGroup, 'Setting segments in the targeting', segments);
-		context.set('targeting.AU_SEG', segments);
+		targetingService.set('AU_SEG', segments);
 	}
 
 	private static canSliceSegments(segments: string | [], limit: number): boolean {
