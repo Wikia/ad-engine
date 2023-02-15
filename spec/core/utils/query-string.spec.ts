@@ -32,6 +32,21 @@ describe('query-string', () => {
 				this: { is: 'json' },
 			});
 		});
+
+		it('parse null from empty string', () => {
+			expect(queryString.parseValue('')).to.equal(null);
+		});
+	});
+
+	describe('isUrlParamSet', () => {
+		beforeEach(() => {
+			global.sandbox.stub(window, 'location').value({ search: '?first=1&second' });
+		});
+
+		it('should return that param is set', () => {
+			expect(queryString.isUrlParamSet('first')).to.equal(true);
+			expect(queryString.isUrlParamSet('second')).to.equal(false);
+		});
 	});
 
 	describe('getURLSearchParams', () => {
