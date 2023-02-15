@@ -18,12 +18,32 @@ jobs:
         with:
           node-version-file: '.nvmrc'
 
-      - name: Package size report for platforms
+      - name: Package size report for ucp-desktop
         uses: pkg-size/action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           display-size: gzip
           build-command: npm run build:platforms -- --env platform=ucp-desktop
+          hide-files: '*.{map,txt}'
+          unchanged-files: hide
+
+      - name: Package size report for ucp-mobile
+        uses: pkg-size/action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          display-size: gzip
+          build-command: npm run build:platforms -- --env platform=ucp-mobile
+          hide-files: '*.{map,txt}'
+          unchanged-files: hide
+
+      - name: Package size report for f2
+        uses: pkg-size/action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          display-size: gzip
+          build-command: npm run build:platforms -- --env platform=f2
           hide-files: '*.{map,txt}'
           unchanged-files: hide
