@@ -23,23 +23,31 @@ class TrackingOptInWrapper {
 		return new Promise((resolve) => {
 			utils.logger(logGroup, 'Waiting for consents');
 
-			communicationService.on(eventsRepository.AD_ENGINE_NO_CONSENT_MODE, () => {
-				utils.logger(logGroup, 'AdEngine running in no consent mode');
+			this.setConsentsOnNoConsentModeEvent(resolve);
 
-				this.setConsents({
-					gdprConsent: true,
-					geoRequiresConsent: false,
-					ccpaSignal: false,
-					geoRequiresSignal: false,
-				});
+			this.setConsentsOnConsentReadyEvent(resolve);
+		});
+	}
 
-				resolve();
+	private setConsentsOnNoConsentModeEvent(resolve) {
+		communicationService.on(eventsRepository.AD_ENGINE_NO_CONSENT_MODE, () => {
+			utils.logger(logGroup, 'AdEngine running in no-consent mode');
+
+			this.setConsents({
+				gdprConsent: true,
+				geoRequiresConsent: false,
+				ccpaSignal: false,
+				geoRequiresSignal: false,
 			});
 
-			communicationService.on(eventsRepository.AD_ENGINE_CONSENT_READY, (payload) => {
-				this.setConsents(payload);
-				resolve();
-			});
+			resolve();
+		});
+	}
+
+	private setConsentsOnConsentReadyEvent(resolve) {
+		communicationService.on(eventsRepository.AD_ENGINE_CONSENT_READY, (payload) => {
+			this.setConsents(payload);
+			resolve();
 		});
 	}
 
