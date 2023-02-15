@@ -47,16 +47,9 @@ export class AnyclipPlayerSetup extends BaseServiceSetup {
 						return;
 					}
 
-					communicationService.on(
-						eventsRepository.AD_ENGINE_SLOT_ADDED,
-						({ slot }) => {
-							if (slot.getSlotName() === slotName) {
-								slot.getPlaceholder()?.classList.remove('is-loading');
-								this.initIncontentPlayer(slotService.get(slotName));
-							}
-						},
-						false,
-					);
+					communicationService.on(eventsRepository.ANYCLIP_LATE_INJECT, () => {
+						this.initIncontentPlayer(slotService.get(slotName));
+					});
 				}
 			},
 		);

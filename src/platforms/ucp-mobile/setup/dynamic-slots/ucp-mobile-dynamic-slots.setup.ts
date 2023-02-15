@@ -130,6 +130,30 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		context.set(`slots.${icpSlotName}.customFillerOptions`, {});
 
 		fillerService.register(new PorvataFiller());
+
+		communicationService.on(
+			eventsRepository.AD_ENGINE_SLOT_ADDED,
+			({ slot }) => {
+				if (slot.getSlotName() === icpSlotName) {
+					slot.getPlaceholder()?.classList.remove('is-loading');
+
+					const noTries = 2500;
+					const retryTimeout = 500;
+
+					new utils.WaitFor(() => slotImpactWatcher.isAvailable(6), noTries, 0, retryTimeout)
+						.until()
+						.then(() => {
+							slotImpactWatcher.request({
+								id: 'incontent_player',
+								priority: 6,
+								breakCallback: () => slot.getPlaceholder()?.classList.add('hide'),
+							});
+							communicationService.emit(eventsRepository.ANYCLIP_LATE_INJECT);
+						});
+				}
+			},
+			false,
+		);
 	}
 
 	private configureInterstitial(): void {
