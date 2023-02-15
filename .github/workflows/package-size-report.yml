@@ -24,6 +24,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           display-size: gzip
-          build-command: npm run build:platforms -- --env platform=ucp-desktop && rm -rf spec src
+          build-command: npm run build:pkg-size
           hide-files: '*.{map,txt}'
           unchanged-files: hide
