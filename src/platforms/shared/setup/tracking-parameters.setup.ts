@@ -32,7 +32,7 @@ export class TrackingParametersSetup implements DiProcess {
 	}
 
 	private async getNewTrackingParameters(): Promise<ITrackingParameters> {
-		await new utils.WaitFor(() => !!window.fandomContext.tracking, 10, 100).until();
+		await new utils.WaitFor(() => !!window.fandomContext?.tracking, 10, 100).until();
 
 		const wikiContext = {
 			...window.fandomContext.tracking,
