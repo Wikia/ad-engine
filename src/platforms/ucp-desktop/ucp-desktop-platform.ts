@@ -18,6 +18,7 @@ import {
 	eventsRepository,
 	parallel,
 	ProcessPipeline,
+	UserIdentity,
 } from '@wikia/ad-engine';
 import { injectable } from 'tsyringe';
 import { basicContext } from './ad-context';
@@ -28,7 +29,7 @@ import { UcpDesktopLegacySetup } from './ucp-desktop-legacy-setup';
 
 @injectable()
 export class UcpDesktopPlatform {
-	constructor(private pipeline: ProcessPipeline) {}
+	constructor(private pipeline: ProcessPipeline, private userIdentity: UserIdentity) {}
 
 	execute(): void {
 		// Config
@@ -47,6 +48,8 @@ export class UcpDesktopPlatform {
 			}),
 			NoAdsExperimentSetup,
 			LabradorSetup,
+			// ToDo: Remove after ADEN-12559.
+			() => this.userIdentity.call(),
 			TrackingSetup,
 			AdEngineRunnerSetup,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
