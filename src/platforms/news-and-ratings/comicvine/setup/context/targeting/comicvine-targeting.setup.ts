@@ -1,4 +1,4 @@
-import { DiProcess, targetingService } from '@wikia/ad-engine';
+import { context, DiProcess, targetingService } from '@wikia/ad-engine';
 
 export class ComicvineTargetingSetup implements DiProcess {
 	execute(): void {
