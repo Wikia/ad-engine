@@ -17,6 +17,7 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441);
 		context.set('custom.pagePath', this.getPagePath());
 		context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src'));
+		context.set('options.tracking.slot.status', this.instantConfig.get('icSlotTracking'));
 	}
 
 	private setupIdentityOptions() {

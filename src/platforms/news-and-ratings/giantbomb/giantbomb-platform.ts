@@ -1,4 +1,10 @@
-import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
+import {
+	BiddersStateSetup,
+	bootstrapAndGetConsent,
+	InstantConfigSetup,
+	TrackingParametersSetup,
+	TrackingSetup,
+} from '@platforms/shared';
 import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
 import { injectable } from 'tsyringe';
 import {
@@ -26,6 +32,7 @@ export class GiantbombPlatform {
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
+			TrackingParametersSetup,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			NewsAndRatingsTargetingSetup,
@@ -37,6 +44,7 @@ export class GiantbombPlatform {
 			BiddersStateSetup,
 			GiantbombTemplatesSetup,
 			NewsAndRatingsAdsMode,
+			TrackingSetup,
 		);
 
 		this.pipeline.execute();
