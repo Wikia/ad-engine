@@ -1,6 +1,8 @@
 import { communicationService, DiProcess, eventsRepository } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
 import { NewsAndRatingsPageDataGetter } from '../../shared';
 
+@Injectable()
 export class GamespotNoConsentModeVerifier implements DiProcess {
 	constructor(protected newsAndRatingsPageDataGetter: NewsAndRatingsPageDataGetter) {}
 
