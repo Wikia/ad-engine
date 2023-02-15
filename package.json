@@ -28,7 +28,7 @@
 		"@types/mocha": "10.0.1",
 		"@types/node": "18.11.18",
 		"@types/sinon": "10.0.13",
-		"@typescript-eslint/eslint-plugin": "5.48.0",
+		"@typescript-eslint/eslint-plugin": "5.52.0",
 		"@typescript-eslint/parser": "5.48.0",
 		"chai": "4.3.7",
 		"css-loader": "6.7.3",
