@@ -8,7 +8,7 @@ export class GamespotNoConsentModeVerifier implements DiProcess {
 
 	execute(): void {
 		if (this.appEmbeddedOnFacebook()) {
-			communicationService.emit(eventsRepository.AD_ENGINE_NO_CONSENT_MODE);
+			this.emitAdEngineNoConsentModeEvent();
 		}
 	}
 
@@ -16,5 +16,9 @@ export class GamespotNoConsentModeVerifier implements DiProcess {
 		const dataSettings = this.newsAndRatingsPageDataGetter.getDataSettingsFromMetaTag();
 
 		return dataSettings?.target_params?.partner === 'fb_instant';
+	}
+
+	emitAdEngineNoConsentModeEvent() {
+		communicationService.emit(eventsRepository.AD_ENGINE_NO_CONSENT_MODE);
 	}
 }
