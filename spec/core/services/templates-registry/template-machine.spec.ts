@@ -2,18 +2,16 @@ import { TemplateAction } from '@wikia/core/services/templates-registry/template
 import { TemplateMachine } from '@wikia/core/services/templates-registry/template-machine';
 import { assert, expect } from 'chai';
 import { Subject } from 'rxjs';
-import { createSandbox } from 'sinon';
 import { createTemplateStateStub, TemplateStateStub } from './template-state.stub';
 
 describe('Template Machine', () => {
-	const sandbox = createSandbox();
 	let stateA: TemplateStateStub;
 	let stateB: TemplateStateStub;
 	let machine: TemplateMachine;
 
 	beforeEach(() => {
-		stateA = createTemplateStateStub(sandbox);
-		stateB = createTemplateStateStub(sandbox);
+		stateA = createTemplateStateStub(global.sandbox);
+		stateB = createTemplateStateStub(global.sandbox);
 		machine = new TemplateMachine(
 			'mock-template',
 			new Map([
@@ -23,10 +21,6 @@ describe('Template Machine', () => {
 			'a',
 			new Subject<TemplateAction>(),
 		);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
 	});
 
 	it('should enter initial state after init', () => {
@@ -51,7 +45,7 @@ describe('Template Machine', () => {
 		assert(!stateB.leave.called);
 		assert(stateA.destroy.called);
 		assert(stateB.destroy.called);
-		sandbox.assert.callOrder(stateA.leave, stateA.destroy, stateB.destroy);
+		global.sandbox.assert.callOrder(stateA.leave, stateA.destroy, stateB.destroy);
 	});
 
 	it('should respond to transition', async () => {
@@ -68,7 +62,7 @@ describe('Template Machine', () => {
 		assert(stateB.enter.calledOnce);
 		assert(!stateB.leave.called);
 
-		sandbox.assert.callOrder(stateA.enter, stateA.leave, stateB.enter);
+		global.sandbox.assert.callOrder(stateA.enter, stateA.leave, stateB.enter);
 	});
 
 	it('should throw when transition to the same state', (done) => {

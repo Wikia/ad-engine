@@ -1,9 +1,16 @@
-import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
+import {
+	BiddersStateSetup,
+	bootstrapAndGetConsent,
+	InstantConfigSetup,
+	TrackingParametersSetup,
+	TrackingSetup,
+} from '@platforms/shared';
 import {
 	communicationService,
 	context,
 	eventsRepository,
 	ProcessPipeline,
+	targetingService,
 	utils,
 } from '@wikia/ad-engine';
 import { Container, Injectable } from '@wikia/dependency-injection';
@@ -36,6 +43,7 @@ export class TvGuidePlatform {
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
+			TrackingParametersSetup,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			TvGuideTargetingSetup,
@@ -47,6 +55,7 @@ export class TvGuidePlatform {
 			BiddersStateSetup,
 			TvGuideTemplatesSetup,
 			NewsAndRatingsAdsMode,
+			TrackingSetup,
 		);
 
 		this.pipeline.execute();
@@ -65,8 +74,7 @@ export class TvGuidePlatform {
 
 				this.currentUrl = location.href;
 				communicationService.emit(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
-
-				context.set('targeting', {});
+				targetingService.clear();
 
 				const refreshPipeline = new ProcessPipeline(container);
 				refreshPipeline

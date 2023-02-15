@@ -3,18 +3,12 @@ import { CommunicationService } from '@wikia/communication/communication-service
 import { Communicator } from '@wikia/post-quecast';
 import { expect } from 'chai';
 import { Subject } from 'rxjs';
-import { createSandbox } from 'sinon';
 import { Action, props } from 'ts-action';
 
 describe('CommunicationService', () => {
-	const sandbox = createSandbox();
 	const localExample = action('[Example] Test', props<{ foo: string }>());
 	const globalExample = globalAction('[Example] Test', props<{ bar: string }>());
 	const globalEvent = { category: '[Example]', name: 'Test', payload: props<{ bar: string }>() };
-
-	afterEach(() => {
-		sandbox.restore();
-	});
 
 	it('should return a correct global action', () => {
 		const service = new CommunicationService();
@@ -28,8 +22,8 @@ describe('CommunicationService', () => {
 		const nextResults: Action[] = [];
 		const dispatchResults: Action[] = [];
 
-		sandbox.stub(Subject.prototype, 'next').callsFake((value) => nextResults.push(value));
-		sandbox
+		global.sandbox.stub(Subject.prototype, 'next').callsFake((value) => nextResults.push(value));
+		global.sandbox
 			.stub(Communicator.prototype, 'dispatch')
 			.callsFake((value) => dispatchResults.push(value));
 
@@ -58,10 +52,10 @@ describe('CommunicationService', () => {
 		const localSubject = new Subject<Action>();
 		const globalSubject = new Subject<Action>();
 
-		sandbox
+		global.sandbox
 			.stub(Communicator.prototype, 'addListener')
 			.callsFake((cb) => globalSubject.subscribe(cb));
-		sandbox.stub(Subject.prototype, 'asObservable').returns(localSubject);
+		global.sandbox.stub(Subject.prototype, 'asObservable').returns(localSubject);
 
 		const service = new CommunicationService();
 

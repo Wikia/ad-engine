@@ -2,13 +2,15 @@ import { communicationService, eventsRepository } from '@ad-engine/communication
 import { decorate } from 'core-decorators';
 import { getAdStack } from '../ad-engine';
 import { utils } from '../index';
-import { AdSlot, Dictionary, Targeting } from '../models';
+import { AdSlot, Dictionary } from '../models';
 import {
 	btfBlockerService,
 	config,
 	context,
 	slotDataParamsUpdater,
 	slotService,
+	SlotTargeting,
+	targetingService,
 	trackingOptIn,
 } from '../services';
 import { defer, logger } from '../utils';
@@ -159,7 +161,7 @@ function adjustIframeSize(adSlot: AdSlot): void {
 	}
 }
 
-function SmLogger(targeting: Targeting) {
+function SmLogger(targeting: SlotTargeting) {
 	const isTlb =
 		(targeting.pos.constructor == Array && targeting.pos[0] == 'top_leaderboard') ||
 		targeting.pos == 'top_leaderboard';
@@ -218,7 +220,7 @@ export class GptProvider implements Provider {
 	}
 
 	setPPID() {
-		const ppid = context.get('targeting.ppid');
+		const ppid = targetingService.get('ppid');
 		if (ppid) {
 			const tag = window.googletag.pubads();
 			tag.setPublisherProvidedId(ppid);
@@ -279,7 +281,7 @@ export class GptProvider implements Provider {
 			.defineSizeMapping(sizeMap.build());
 	}
 
-	applyTargetingParams(gptSlot: googletag.Slot, targeting: Targeting): void {
+	applyTargetingParams(gptSlot: googletag.Slot, targeting: SlotTargeting): void {
 		SmLogger(targeting);
 
 		Object.keys(targeting).forEach((key) => {
