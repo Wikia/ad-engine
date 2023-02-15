@@ -1,12 +1,10 @@
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
 
 import { JWPlayerManager, jwpReady } from '@wikia/ad-products';
 import { communicationService } from '@wikia/communication';
 import { context, utils } from '@wikia/core';
 
 describe('JWPlayerManager', () => {
-	const sandbox = createSandbox();
 	const jwpReadyPayloadStub = {
 		playerKey: 'fakePlayer',
 		targeting: {
@@ -33,7 +31,7 @@ describe('JWPlayerManager', () => {
 	let loadScriptStub;
 
 	beforeEach(() => {
-		loadScriptStub = sandbox.stub(utils.scriptLoader, 'loadScript');
+		loadScriptStub = global.sandbox.stub(utils.scriptLoader, 'loadScript');
 		window['fakePlayer'] = fakePlayerStub;
 		context.set('options.video.moatTracking.jwplayerPluginUrl', undefined);
 
@@ -47,7 +45,6 @@ describe('JWPlayerManager', () => {
 	});
 
 	afterEach(() => {
-		sandbox.restore();
 		loadScriptStub.resetHistory();
 		window['fakePlayer'] = undefined;
 		context.remove('options.video.moatTracking.jwplayerPluginUrl');

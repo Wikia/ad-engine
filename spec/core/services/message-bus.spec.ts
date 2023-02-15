@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { createSandbox, SinonSandbox, SinonSpy, SinonStub } from 'sinon';
+import { SinonSpy, SinonStub } from 'sinon';
 
 import { MessageBus } from '@wikia/core';
 
@@ -30,21 +30,16 @@ describe('message-bus', () => {
 	let mockWindow: MockWindow;
 	let messageBus: MessageBus;
 	let cbStub: SinonStub;
-	const sandbox: SinonSandbox = createSandbox();
 
 	beforeEach(() => {
 		mockWindow = new MockWindow();
 		messageBus = new MessageBus(mockWindow);
-		cbStub = sandbox.stub();
-	});
-
-	afterEach(() => {
-		sandbox.restore();
+		cbStub = global.sandbox.stub();
 	});
 
 	describe('init', () => {
 		it('should add event listener only once if called multiple times', () => {
-			const addEventListenerSpy: SinonSpy = sandbox.spy(mockWindow, 'addEventListener');
+			const addEventListenerSpy: SinonSpy = global.sandbox.spy(mockWindow, 'addEventListener');
 
 			messageBus.init();
 

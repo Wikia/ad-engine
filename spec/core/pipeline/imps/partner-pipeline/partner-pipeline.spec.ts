@@ -2,20 +2,15 @@ import { BaseServiceSetup, PartnerPipeline } from '@wikia/core';
 import { wait } from '@wikia/core/utils';
 import { Container } from '@wikia/dependency-injection';
 import { expect } from 'chai';
-import { createSandbox, SinonSpy } from 'sinon';
+import { SinonSpy } from 'sinon';
 
 describe('PartnerPipeline', () => {
-	const sandbox = createSandbox();
 	let spy: SinonSpy;
 	const container = new Container();
 	const pipeline = container.get(PartnerPipeline);
 
 	beforeEach(() => {
-		spy = sandbox.spy();
-	});
-
-	afterEach(() => {
-		sandbox.restore();
+		spy = global.sandbox.spy();
 	});
 
 	class ExampleServiceSetup extends BaseServiceSetup {

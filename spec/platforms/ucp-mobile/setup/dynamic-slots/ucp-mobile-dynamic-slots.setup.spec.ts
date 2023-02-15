@@ -5,10 +5,9 @@ import {
 } from '@wikia/platforms/shared';
 import { UcpMobileDynamicSlotsSetup } from '@wikia/platforms/ucp-mobile/setup/dynamic-slots/ucp-mobile-dynamic-slots.setup';
 import { UcpMobileSlotsDefinitionRepository } from '@wikia/platforms/ucp-mobile/setup/dynamic-slots/ucp-mobile-slots-definition-repository';
-import sinon, { assert } from 'sinon';
+import { assert } from 'sinon';
 
 describe('floor_adhesion on ucp-mobile', () => {
-	const sandbox = sinon.createSandbox();
 	const instantConfig = {
 		get: () => [],
 	} as any;
@@ -18,7 +17,6 @@ describe('floor_adhesion on ucp-mobile', () => {
 	const quizDefinitionRepositoryMock = new QuizSlotsDefinitionRepository();
 
 	beforeEach(() => {
-		sandbox.restore();
 		context.set('slots.mobile_prefooter', {});
 	});
 
@@ -30,7 +28,7 @@ describe('floor_adhesion on ucp-mobile', () => {
 	it('is inserted right away on page load when there is no featured video on page', () => {
 		context.set('custom.hasFeaturedVideo', false);
 
-		const getFloorAdhesionConfigSpy = sandbox.spy(
+		const getFloorAdhesionConfigSpy = global.sandbox.spy(
 			slotDefinitionRepositoryMock,
 			'getFloorAdhesionConfig',
 		);
@@ -42,7 +40,7 @@ describe('floor_adhesion on ucp-mobile', () => {
 	it('is inserted after a slot injection when there is a feature video on page', () => {
 		context.set('custom.hasFeaturedVideo', true);
 
-		const getFloorAdhesionConfigSpy = sandbox.spy(
+		const getFloorAdhesionConfigSpy = global.sandbox.spy(
 			slotDefinitionRepositoryMock,
 			'getFloorAdhesionConfig',
 		);

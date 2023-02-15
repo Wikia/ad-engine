@@ -10,7 +10,6 @@ import {
 } from '@wikia/platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
 
 describe('CombinedStrategy', () => {
-	const mockedSkin = 'test';
 	const mockedTaxonomy = ['life', 'lifestyle'];
 	const mockedCommonParams = {
 		ar: '4:3',
@@ -27,7 +26,7 @@ describe('CombinedStrategy', () => {
 		s0v: mockedTaxonomy[1],
 		s1: '_test',
 		s2: 'article-test',
-		skin: 'test',
+		skin: 'ucp_desktop',
 		uap: 'none',
 		uap_c: 'none',
 		word_count: 546,
@@ -58,11 +57,7 @@ describe('CombinedStrategy', () => {
 			new Page(666, 'pl', 666, 'test', 'article-test', {}, 546),
 		);
 
-		const combinedStrategy = createSelectedStrategy(
-			TargetingStrategy.COMBINED,
-			mockedContext,
-			mockedSkin,
-		);
+		const combinedStrategy = createSelectedStrategy(TargetingStrategy.COMBINED, mockedContext);
 
 		const expectedResult = {
 			rating: 'esrb:ec,mpa:general',
@@ -114,11 +109,7 @@ describe('CombinedStrategy', () => {
 			...expectedTaxonomyTags,
 		};
 
-		const combinedStrategy = createSelectedStrategy(
-			TargetingStrategy.COMBINED,
-			mockedContext,
-			mockedSkin,
-		);
+		const combinedStrategy = createSelectedStrategy(TargetingStrategy.COMBINED, mockedContext);
 
 		expect(combinedStrategy.get()).to.deep.eq(expectedResult);
 		expect(mockedContext).to.deep.eq(
@@ -147,11 +138,7 @@ describe('CombinedStrategy', () => {
 
 		const expectedResult = { ...mockedCommonParams, ...expectedTaxonomyTags };
 
-		const combinedStrategy = createSelectedStrategy(
-			TargetingStrategy.COMBINED,
-			mockedContext,
-			mockedSkin,
-		);
+		const combinedStrategy = createSelectedStrategy(TargetingStrategy.COMBINED, mockedContext);
 
 		expect(combinedStrategy.get()).to.deep.eq(expectedResult);
 		expect(mockedContext).to.deep.eq(
@@ -198,11 +185,7 @@ describe('CombinedStrategy', () => {
 
 		const expectedResult = Object.assign({}, mockedCommonParams, expectedTaxonomyTags);
 
-		const combinedStrategy = createSelectedStrategy(
-			TargetingStrategy.COMBINED,
-			mockedContext,
-			mockedSkin,
-		);
+		const combinedStrategy = createSelectedStrategy(TargetingStrategy.COMBINED, mockedContext);
 
 		expect(combinedStrategy.get()).to.deep.eq(expectedResult);
 		expect(mockedContext).to.deep.eq(

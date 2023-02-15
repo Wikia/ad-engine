@@ -15,21 +15,20 @@ const logGroup = 'Targeting';
 export function createSelectedStrategy(
 	selectedStrategy: string,
 	fandomContext: FandomContext,
-	skin: string,
 ): TargetingProvider<TargetingTags> {
 	switch (selectedStrategy) {
 		case TargetingStrategy.SITE_CONTEXT:
 			utils.logger(logGroup, 'Executing SiteContext strategy...');
 
 			return new TagsPlainSumBuilder([
-				new CommonTags(skin, fandomContext),
+				new CommonTags(fandomContext),
 				new SiteLevelTaxonomyTags(fandomContext),
 			]);
 		case TargetingStrategy.PAGE_CONTEXT:
 			utils.logger(logGroup, 'Executing PageContext strategy...');
 
 			return new TagsPlainSumBuilder([
-				new CommonTags(skin, fandomContext),
+				new CommonTags(fandomContext),
 				new PrefixDecorator(new PageLevelTaxonomyTags(fandomContext)),
 			]);
 		case TargetingStrategy.COMBINED:
@@ -37,7 +36,7 @@ export function createSelectedStrategy(
 			utils.logger(logGroup, 'Executing Combined strategy...');
 
 			return new TagsPlainSumBuilder([
-				new CommonTags(skin, fandomContext),
+				new CommonTags(fandomContext),
 				new TagsByKeyComposer([
 					new SiteLevelTaxonomyTags(fandomContext),
 					new PrefixDecorator(new PageLevelTaxonomyTags(fandomContext)),

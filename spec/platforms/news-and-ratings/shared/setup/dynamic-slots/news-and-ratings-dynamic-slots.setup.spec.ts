@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import sinon from 'sinon';
 
 import { context, utils } from '@wikia/core';
 import { NewsAndRatingsDynamicSlotsSetup } from '@wikia/platforms/news-and-ratings/shared/setup/dynamic-slots/news-and-ratings-dynamic-slots.setup';
@@ -7,18 +6,16 @@ import { NewsAndRatingsDynamicSlotsSetup } from '@wikia/platforms/news-and-ratin
 import { createHtmlElementStub } from '../../../../../helpers/html-element.stub';
 
 describe('Inserting dynamic slots on NnR', () => {
-	const sandbox = sinon.createSandbox();
 	let querySelectorAllStub;
 
 	beforeEach(() => {
-		querySelectorAllStub = sandbox.stub(document, 'querySelectorAll');
+		querySelectorAllStub = global.sandbox.stub(document, 'querySelectorAll');
 		context.set('state.adStack', []);
 		context.set('events.pushOnScroll.ids', []);
 		context.set('slots', {});
 	});
 
 	afterEach(() => {
-		sandbox.restore();
 		context.remove('state.adStack');
 		context.remove('events.pushOnScroll.ids');
 		context.remove('slots');
@@ -35,7 +32,7 @@ describe('Inserting dynamic slots on NnR', () => {
 	});
 
 	it('works as expected for slots found on the page but without a wrapper', () => {
-		const slotElementStub = createHtmlElementStub(sandbox, 'div');
+		const slotElementStub = createHtmlElementStub(global.sandbox, 'div');
 		querySelectorAllStub.returns([slotElementStub] as any);
 
 		const dynamicSlotsSetup = new NewsAndRatingsDynamicSlotsSetup();
@@ -46,11 +43,11 @@ describe('Inserting dynamic slots on NnR', () => {
 	});
 
 	it('works as expected for slots found on the page', () => {
-		const slotElementStub = createHtmlElementStub(sandbox, 'div');
+		const slotElementStub = createHtmlElementStub(global.sandbox, 'div');
 		slotElementStub.getAttribute.returns('test-ad-slot');
-		sandbox
+		global.sandbox
 			.stub(utils.Document, 'getFirstElementChild')
-			.returns(createHtmlElementStub(sandbox, 'div'));
+			.returns(createHtmlElementStub(global.sandbox, 'div'));
 		querySelectorAllStub.returns([slotElementStub] as any);
 
 		const dynamicSlotsSetup = new NewsAndRatingsDynamicSlotsSetup();
@@ -61,11 +58,11 @@ describe('Inserting dynamic slots on NnR', () => {
 	});
 
 	it('works as expected for a lazy-load slot found on the page', () => {
-		const slotElementStub = createHtmlElementStub(sandbox, 'div');
+		const slotElementStub = createHtmlElementStub(global.sandbox, 'div');
 		slotElementStub.getAttribute.returns('test-ad-lazy-slot');
-		sandbox
+		global.sandbox
 			.stub(utils.Document, 'getFirstElementChild')
-			.returns(createHtmlElementStub(sandbox, 'div'));
+			.returns(createHtmlElementStub(global.sandbox, 'div'));
 		querySelectorAllStub.returns([slotElementStub] as any);
 
 		context.set('slots.test-ad-lazy-slot.lazyLoad', true);

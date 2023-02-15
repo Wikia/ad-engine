@@ -1,4 +1,4 @@
-import { Aliases, context, Dictionary } from '@ad-engine/core';
+import { Aliases, context, Dictionary, targetingService } from '@ad-engine/core';
 import { PrebidAdapterConfig, PrebidAdSlotConfig } from './prebid-models';
 
 export const DEFAULT_MAX_CPM = 20;
@@ -18,7 +18,7 @@ export abstract class PrebidAdapter {
 		this.enabled = enabled;
 		this.slots = slots;
 		this.pageTargeting = {
-			...(context.get('targeting') || {}),
+			...(targetingService.dump() || {}),
 		};
 
 		Object.keys(this.pageTargeting).forEach((key) => {

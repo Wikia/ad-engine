@@ -1,27 +1,21 @@
 import { DurationMedia } from '@wikia/ad-services';
 import { context, InstantConfigService, utils } from '@wikia/core';
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
 
 describe('Duration media service', () => {
-	const sandbox = createSandbox();
 	let durationMedia: DurationMedia;
 	let loadScriptStub, instantConfigStub;
 
 	beforeEach(() => {
-		loadScriptStub = sandbox
+		loadScriptStub = global.sandbox
 			.stub(utils.scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
-		instantConfigStub = sandbox.createStubInstance(InstantConfigService);
+		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		instantConfigStub.get.withArgs('icDurationMedia').returns(undefined);
 
 		context.remove('services.durationMedia.libraryUrl');
 
 		durationMedia = new DurationMedia(instantConfigStub);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
 	});
 
 	it('duration-media is disabled when libraryUrl is not configured', async () => {

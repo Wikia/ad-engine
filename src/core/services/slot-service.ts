@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { getAdStack, utils } from '../';
+import { getAdStack, targetingService, utils } from '../';
 import { AdSlot, Dictionary, SlotConfig } from '../models';
 import { getTopOffset, logger } from '../utils';
 import { context } from './context-service';
@@ -100,7 +100,7 @@ class SlotService {
 				return;
 			}
 
-			const position = slot.getConfigProperty('targeting.pos') || [];
+			const position = targetingService.get('pos', slot.getSlotName()) || [];
 
 			if (position === singleSlotName || position[0] === singleSlotName) {
 				slotByPos = slot;

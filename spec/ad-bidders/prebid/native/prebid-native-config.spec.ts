@@ -1,18 +1,11 @@
 import { PrebidNativeConfig } from '@wikia/ad-bidders';
 import { expect } from 'chai';
-import * as sinon from 'sinon';
 
 describe('Prebid native config', () => {
-	const sandbox = sinon.createSandbox();
-
-	afterEach(() => {
-		sandbox.restore();
-	});
-
 	describe('getPrebidNativeMediaTypes', () => {
 		const setViewportWidth = (width: number): void => {
-			sandbox.stub(document.documentElement, 'clientWidth').value(width);
-			sandbox.stub(window, 'innerWidth').value(width);
+			global.sandbox.stub(document.documentElement, 'clientWidth').value(width);
+			global.sandbox.stub(window, 'innerWidth').value(width);
 		};
 
 		it('contains all required fields', () => {
