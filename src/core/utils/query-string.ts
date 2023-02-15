@@ -4,7 +4,7 @@ type QueryValue = boolean | string | string[] | number | number[] | object | nul
 
 class QueryString {
 	getValues(input?: string): Dictionary<string> {
-		const path: string = input || window.location.search.substr(1);
+		const path: string = input || window.location.search.substring(1);
 		const queryStringParameters: string[] = path.split('&');
 		const queryParameters: Dictionary<string> = {};
 
@@ -20,7 +20,7 @@ class QueryString {
 	}
 
 	getURLSearchParams(input?: string): URLSearchParams {
-		const path: string = input || window.location.search.substr(1);
+		const path: string = input || window.location.search.substring(1);
 
 		return new URLSearchParams(path);
 	}
