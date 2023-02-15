@@ -1,10 +1,13 @@
 import { context, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { getDataSettingsFromMetaTag } from '../../../utils/get-data-settings-from-metatag';
+import { NewsAndRatingsPageDataGetter } from '../../../utils/news-and-ratings-page-data-getter';
 
 @Injectable()
 export class NewsAndRatingsBaseContextSetup implements DiProcess {
-	constructor(protected instantConfig: InstantConfigService) {}
+	constructor(
+		protected instantConfig: InstantConfigService,
+		protected metadataGetter: NewsAndRatingsPageDataGetter,
+	) {}
 
 	execute(): void {
 		this.setBaseState();
@@ -16,7 +19,7 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 	private setBaseState(): void {
 		context.set('custom.device', context.get('state.isMobile') ? 'm' : '');
 		context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441);
-		context.set('custom.pagePath', this.getPagePath());
+		context.set('custom.pagePath', this.metadataGetter.getPagePath());
 		context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src'));
 		context.set('options.tracking.slot.status', this.instantConfig.get('icSlotTracking'));
 	}
@@ -73,8 +76,11 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 
 		context.set('services.anyclip.enabled', this.instantConfig.get('icAnyclipPlayer'));
 		context.set('services.anyclip.isApplicable', () => {
-			this.log('Anyclip setting:', getDataSettingsFromMetaTag()?.target_params?.anyclip);
-			return getDataSettingsFromMetaTag()?.target_params?.anyclip;
+			this.log(
+				'Anyclip setting:',
+				this.metadataGetter.getDataSettingsFromMetaTag()?.target_params?.anyclip,
+			);
+			return this.metadataGetter.getDataSettingsFromMetaTag()?.target_params?.anyclip;
 		});
 	}
 
@@ -84,38 +90,6 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 
 	private shouldSwitchSrcToTest() {
 		return utils.queryString.get('switch_src_to_test') === '1';
-	}
-
-	private getPagePath(): string {
-		const dataWithPagePath = getDataSettingsFromMetaTag();
-		const pagePath = dataWithPagePath?.unit_name
-			? this.getPagePathFromMetaTagData(dataWithPagePath)
-			: this.getPagePathFromUtagData();
-
-		if (!pagePath) {
-			return '';
-		}
-
-		return pagePath[0] === '/' ? pagePath : '/' + pagePath;
-	}
-
-	private getPagePathFromMetaTagData(dataWithPagePath) {
-		const adUnitPropertyPart = context.get('custom.property');
-		const propertyIndex = dataWithPagePath?.unit_name?.indexOf(adUnitPropertyPart);
-		const slicedUnitName = dataWithPagePath?.unit_name?.slice(propertyIndex);
-
-		return slicedUnitName.replace(adUnitPropertyPart, '');
-	}
-
-	private getPagePathFromUtagData() {
-		const dataWithPagePath = this.getUtagData();
-		return dataWithPagePath?.siteSection;
-	}
-
-	getUtagData() {
-		const utagData = window.utag_data;
-		this.log('utag data: ', utagData);
-		return utagData;
 	}
 
 	private log(...logValues) {
