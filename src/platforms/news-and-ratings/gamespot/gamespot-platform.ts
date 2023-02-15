@@ -8,6 +8,7 @@ import {
 import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import {
+	InfiniteScrollObserverSetup,
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsDynamicSlotsSetup,
@@ -15,7 +16,6 @@ import {
 	NewsAndRatingsWadSetup,
 	SeamlessContentObserverSetup,
 } from '../shared';
-import { InfiniteScrollObserver } from '../shared/setup/page-change-observers/infinite-scroll-observer.setup';
 import { basicContext } from './ad-context';
 import { GamespotA9ConfigSetup } from './setup/context/a9/gamespot-a9-config.setup';
 import { GamespotPrebidConfigSetup } from './setup/context/prebid/gamespot-prebid-config.setup';
@@ -48,7 +48,7 @@ export class GameSpotPlatform {
 			NewsAndRatingsAdsMode,
 			TrackingSetup,
 			SeamlessContentObserverSetup,
-			InfiniteScrollObserver,
+			InfiniteScrollObserverSetup,
 		);
 
 		this.pipeline.execute();

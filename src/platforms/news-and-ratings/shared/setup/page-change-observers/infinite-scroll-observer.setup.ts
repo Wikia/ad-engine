@@ -1,6 +1,6 @@
 import { context, DiProcess, utils } from '@wikia/ad-engine';
 
-export class InfiniteScrollObserver implements DiProcess {
+export class InfiniteScrollObserverSetup implements DiProcess {
 	private NOT_REQUESTED_SLOT_WRAPPER_SELECTOR = '.mapped-ad > .ad-wrap:not(.gpt-ad)';
 	private currentPage = 1;
 	private loadedAds = {};
