@@ -43,6 +43,7 @@ export const slotTrackingCompiler = ({ data, slot }: CompilerPartial): CompilerP
 			kv_ah: window.document.body.scrollHeight,
 			kv_lang: targetingData.lang || '',
 			kv_s0v: targetingData.s0v || '',
+			kv_s1: targetingData.s1 || '',
 			kv_s2: targetingData.s2 || '',
 			kv_skin: targetingData.skin || '',
 			labrador: cacheStorage.getSamplingResults().join(';'),

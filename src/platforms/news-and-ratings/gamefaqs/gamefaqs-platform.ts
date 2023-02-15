@@ -1,4 +1,10 @@
-import { BiddersStateSetup, bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
+import {
+	BiddersStateSetup,
+	bootstrapAndGetConsent,
+	InstantConfigSetup,
+	TrackingParametersSetup,
+	TrackingSetup,
+} from '@platforms/shared';
 import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import {
@@ -27,6 +33,7 @@ export class GamefaqsPlatform {
 			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
+			TrackingParametersSetup,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			NewsAndRatingsTargetingSetup,
@@ -39,6 +46,7 @@ export class GamefaqsPlatform {
 			BiddersStateSetup,
 			GamefaqsTemplatesSetup,
 			NewsAndRatingsAdsMode,
+			TrackingSetup,
 		);
 
 		this.pipeline.execute();
