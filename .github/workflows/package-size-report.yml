@@ -25,5 +25,5 @@ jobs:
         with:
           display-size: gzip
           build-command: npm run build:platforms -- --env platform=ucp-desktop
-          hide-files: '*.{map,scss,ts,txt}'
+          hide-files: '*.{map,txt}'
           unchanged-files: hide
