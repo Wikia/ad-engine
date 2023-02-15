@@ -2,15 +2,9 @@ import { context, Dictionary } from '@wikia/core';
 import { instantConfigLoader } from '@wikia/core/services/instant-config/instant-config.loader';
 import { wait } from '@wikia/core/utils';
 import { expect } from 'chai';
-import {
-	createSandbox,
-	SinonFakeXMLHttpRequest,
-	SinonFakeXMLHttpRequestStatic,
-	SinonStub,
-} from 'sinon';
+import { SinonFakeXMLHttpRequest, SinonFakeXMLHttpRequestStatic, SinonStub } from 'sinon';
 
 describe('Instant Config Loader', () => {
-	const sandbox = createSandbox();
 	let callCount: number;
 	let xhr: SinonFakeXMLHttpRequestStatic;
 	let request: SinonFakeXMLHttpRequest & { setStatus: (status: number) => void };
@@ -22,11 +16,11 @@ describe('Instant Config Loader', () => {
 			'services.instantConfig.endpoint': 'http://endpoint.com',
 			'services.instantConfig.appName': 'testApp',
 		};
-		contextGetStub = sandbox.stub(context, 'get');
+		contextGetStub = global.sandbox.stub(context, 'get');
 		contextGetStub.callsFake((key) => contextRepo[key]);
 
 		callCount = 0;
-		xhr = sandbox.useFakeXMLHttpRequest();
+		xhr = global.sandbox.useFakeXMLHttpRequest();
 		xhr.onCreate = (_xhr) => {
 			callCount++;
 			request = _xhr as any;
@@ -35,7 +29,6 @@ describe('Instant Config Loader', () => {
 
 	afterEach(() => {
 		instantConfigLoader['configPromise'] = null;
-		sandbox.restore();
 	});
 
 	it('should get config', async () => {

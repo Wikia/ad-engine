@@ -1,4 +1,4 @@
-import { context, DiProcess } from '@wikia/ad-engine';
+import { context, DiProcess, targetingService } from '@wikia/ad-engine';
 
 export class GiantbombTargetingSetup implements DiProcess {
 	execute(): void {
@@ -6,11 +6,10 @@ export class GiantbombTargetingSetup implements DiProcess {
 			s0: 'gaming',
 			s1: 'giantbomb',
 			skin: `giantbomb_${context.get('state.isMobile') ? 'mobile' : 'desktop'}`,
+			seg: '',
+			aamid: '',
 		};
 
-		context.set('targeting', {
-			...context.get('targeting'),
-			...targeting,
-		});
+		targetingService.extend(targeting);
 	}
 }

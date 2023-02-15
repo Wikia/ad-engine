@@ -1,4 +1,4 @@
-import { context, DiProcess } from '@wikia/ad-engine';
+import { DiProcess, targetingService } from '@wikia/ad-engine';
 
 export class TvGuideTargetingSetup implements DiProcess {
 	execute(): void {
@@ -8,9 +8,6 @@ export class TvGuideTargetingSetup implements DiProcess {
 			skin: `tvguide_${context.get('state.isMobile') ? 'mobile' : 'desktop'}`,
 		};
 
-		context.set('targeting', {
-			...context.get('targeting'),
-			...targeting,
-		});
+		targetingService.extend(targeting);
 	}
 }

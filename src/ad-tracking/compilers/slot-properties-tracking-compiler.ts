@@ -12,7 +12,7 @@ export const slotPropertiesTrackingCompiler = ({
 			advertiser_id: slot.advertiserId || '',
 			creative_id: slot.creativeId || '',
 			kv_pos: slot.getMainPositionName(),
-			kv_rv: slot.getConfigProperty('targeting.rv') || '',
+			kv_rv: slot.getTargetingProperty('rv') || '',
 			order_id: slot.orderId || '',
 			product_lineitem_id: slot.lineItemId || '',
 			slot_id: slot.getUid() || '',

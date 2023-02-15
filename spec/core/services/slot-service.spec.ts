@@ -1,6 +1,13 @@
-import { context, Dictionary, SlotConfig, slotService } from '@wikia/core';
+import {
+	context,
+	Dictionary,
+	SlotConfig,
+	slotService,
+	TargetingService,
+	targetingService,
+} from '@wikia/core';
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
+import { SinonStubbedInstance } from 'sinon';
 import { adSlotFake } from '../ad-slot-fake';
 
 let adSlot;
@@ -14,22 +21,20 @@ function clearSlotServiceState(): void {
 }
 
 describe('slot-service', () => {
-	const sandbox = createSandbox();
+	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 
 	beforeEach(() => {
 		const originalGet = context.get;
 
-		sandbox.stub(context, 'get').callsFake((key) => {
+		global.sandbox.stub(context, 'get').callsFake((key) => {
 			if (key === 'slots') {
 				return slotConfigs;
 			}
 
 			return originalGet(key);
 		});
-	});
 
-	afterEach(() => {
-		sandbox.restore();
+		targetingServiceStub = global.sandbox.stub(targetingService);
 	});
 
 	beforeEach(() => {
@@ -41,7 +46,7 @@ describe('slot-service', () => {
 		};
 		slotConfigs = {};
 
-		sandbox
+		global.sandbox
 			.stub(document, 'getElementById')
 			.withArgs('foo-container')
 			.returns({
@@ -72,14 +77,14 @@ describe('slot-service', () => {
 	});
 
 	it('getter for slot with different single targeting.pos', () => {
-		adSlot.config.targeting.pos = 'bar3';
+		targetingServiceStub.get.withArgs('pos', 'FAKE_AD').returns('bar3');
 		slotService.add(adSlot);
 
 		expect(slotService.get('bar3')).to.equal(adSlot);
 	});
 
 	it('getter for slot with different multiple targeting.pos', () => {
-		adSlot.config.targeting.pos = ['foo1', 'bar2'];
+		targetingServiceStub.get.withArgs('pos', 'FAKE_AD').returns(['foo1', 'bar2']);
 		slotService.add(adSlot);
 
 		expect(slotService.get('foo1')).to.equal(adSlot);

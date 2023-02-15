@@ -18,15 +18,9 @@ function getMockElement(top: number, left = 0, hidden = false): HTMLElement {
 }
 
 describe('dimensions', () => {
-	const sandbox = sinon.createSandbox();
-
 	beforeEach(() => {
-		sandbox.stub(window, 'pageXOffset').value(0);
-		sandbox.stub(window, 'pageYOffset').value(200);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
+		global.sandbox.stub(window, 'pageXOffset').value(0);
+		global.sandbox.stub(window, 'pageYOffset').value(200);
 	});
 
 	it('getTopOffset of single element', () => {

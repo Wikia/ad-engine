@@ -1,4 +1,4 @@
-import { context, DiProcess } from '@wikia/ad-engine';
+import { DiProcess, targetingService } from '@wikia/ad-engine';
 
 export class MetacriticNeutronTargetingSetup implements DiProcess {
 	execute(): void {
@@ -8,9 +8,6 @@ export class MetacriticNeutronTargetingSetup implements DiProcess {
 			skin: `metacritic_neutron_${context.get('state.isMobile') ? 'mobile' : 'desktop'}`,
 		};
 
-		context.set('targeting', {
-			...context.get('targeting'),
-			...targeting,
-		});
+		targetingService.extend(targeting);
 	}
 }

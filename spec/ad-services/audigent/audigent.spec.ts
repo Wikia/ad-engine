@@ -1,23 +1,33 @@
 import { Audigent } from '@wikia/ad-services';
-import { context, externalLogger, InstantConfigService, utils } from '@wikia/core';
+import {
+	context,
+	externalLogger,
+	InstantConfigService,
+	TargetingService,
+	targetingService,
+	utils,
+} from '@wikia/core';
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
+import { SinonStubbedInstance } from 'sinon';
 
 describe('Audigent', () => {
-	const sandbox = createSandbox();
 	let audigent: Audigent;
 	let loadScriptStub, externalLoggerLogStub, instantConfigStub;
+	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
+
 	function executeMockedCustomEvent(segments) {
 		const auSegEvent = new CustomEvent('auSegReady', { detail: segments });
 		document.dispatchEvent(auSegEvent);
 	}
 
 	beforeEach(() => {
-		loadScriptStub = sandbox.spy(utils.scriptLoader, 'loadScript');
-		externalLoggerLogStub = sandbox.stub(externalLogger, 'log').returns({} as any);
-		instantConfigStub = sandbox.createStubInstance(InstantConfigService);
+		loadScriptStub = global.sandbox.spy(utils.scriptLoader, 'loadScript');
+		externalLoggerLogStub = global.sandbox.stub(externalLogger, 'log').returns({} as any);
+		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		instantConfigStub.get.withArgs('icAudigent').returns(true);
 		instantConfigStub.get.withArgs('icAudigentTrackingSampling').returns(0);
+
+		targetingServiceStub = global.sandbox.stub(targetingService);
 
 		audigent = new Audigent(instantConfigStub);
 
@@ -34,7 +44,6 @@ describe('Audigent', () => {
 		instantConfigStub.get.withArgs('icAudigentSegmentLimit').returns(undefined);
 		instantConfigStub.get.withArgs('icAudigentTrackingSampling').returns(undefined);
 
-		sandbox.restore();
 		loadScriptStub.resetHistory();
 		audigent.resetLoadedState();
 
@@ -92,13 +101,12 @@ describe('Audigent', () => {
 	});
 
 	it('Audigent key-val is set to -1 when API is too slow', () => {
-		context.set('targeting.AU_SEG', '-1');
-
+		targetingServiceStub.get.withArgs('AU_SEG').returns('-1');
 		window['au_seg'] = undefined;
 
 		audigent.setup();
 
-		expect(context.get('targeting.AU_SEG')).to.equal('-1');
+		expect(targetingServiceStub.set.called).to.be.false;
 	});
 
 	it('Audigent key-val is set to no_segments when no segments from API', () => {
@@ -107,7 +115,7 @@ describe('Audigent', () => {
 		audigent.setup();
 		executeMockedCustomEvent([]);
 
-		expect(context.get('targeting.AU_SEG')).to.equal('no_segments');
+		expect(targetingServiceStub.set.calledWith('AU_SEG', 'no_segments')).to.equal(true);
 	});
 
 	it('Audigent key-val is set to given segments when API response with some', () => {
@@ -117,7 +125,7 @@ describe('Audigent', () => {
 		audigent.setup();
 		executeMockedCustomEvent(mockedSegments);
 
-		expect(context.get('targeting.AU_SEG')).to.equal(mockedSegments);
+		expect(targetingServiceStub.set.calledWith('AU_SEG', mockedSegments)).to.equal(true);
 	});
 
 	it('Audigent key-val length keeps the limit', async () => {
@@ -149,7 +157,7 @@ describe('Audigent', () => {
 		audigent.setup();
 		executeMockedCustomEvent(mockedSegments);
 
-		expect(context.get('targeting.AU_SEG')).to.deep.equal(expectedSegements);
+		expect(targetingServiceStub.set.calledWith('AU_SEG', expectedSegements)).to.equal(true);
 	});
 
 	it('Audigent key-val length ignores limit if it is higher than returned segments', async () => {
@@ -173,7 +181,7 @@ describe('Audigent', () => {
 		audigent.setup();
 		executeMockedCustomEvent(mockedSegments);
 
-		expect(context.get('targeting.AU_SEG')).to.deep.equal(mockedSegments);
+		expect(targetingServiceStub.set.calledWith('AU_SEG', mockedSegments)).to.equal(true);
 	});
 
 	it('Audigent does not send data to Kibana when no segments', () => {

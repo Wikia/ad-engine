@@ -35,7 +35,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'top',
 					pos: ['top_leaderboard', 'hivi_leaderboard'],
-					rv: 1,
 				},
 				placeholder: {
 					createLabel: false,
@@ -54,7 +53,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				],
 				targeting: {
 					loc: 'top',
-					rv: 1,
 				},
 			},
 			incontent_leaderboard: {
@@ -64,7 +62,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				defaultSizes: [[728, 90]],
 				targeting: {
 					loc: 'middle',
-					rv: 1,
 				},
 			},
 			incontent_boxad_1: {
@@ -83,7 +80,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				],
 				targeting: {
 					loc: 'hivi',
-					rv: 1,
 				},
 			},
 			bottom_leaderboard: {
@@ -111,7 +107,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				defaultSizes: [[728, 90]],
 				targeting: {
 					loc: 'footer',
-					rv: 1,
 				},
 				placeholder: {
 					createLabel: false,
@@ -129,7 +124,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'middle',
 					pos: ['outstream'],
-					rv: 1,
 				},
 			},
 			floor_adhesion: {
@@ -138,7 +132,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				options: {},
 				targeting: {
 					loc: 'footer',
-					rv: 1,
 				},
 				defaultTemplates: ['floorAdhesion'],
 				defaultSizes: [[728, 90]],
@@ -150,16 +143,12 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				outOfPage: true,
 				targeting: {
 					loc: 'hivi',
-					rv: 1,
 				},
 			},
 			featured: {
 				adProduct: 'featured',
 				group: 'VIDEO',
 				videoSizes: [[640, 480]],
-				targeting: {
-					rv: 1,
-				},
 				trackEachStatus: true,
 				trackingKey: 'featured-video',
 				isVideo: true,

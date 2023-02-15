@@ -16,7 +16,6 @@ describe('CommonTags', () => {
 		context.set('geo.country', undefined);
 	});
 
-	const mockedSkin = 'test';
 	const mockedTaxonomy = ['life', 'lifestyle'];
 
 	it('commonTags are returned correctly', function () {
@@ -35,7 +34,7 @@ describe('CommonTags', () => {
 			new Page(666, 'pl', 666, 'test', 'article-test', {}, 546),
 		);
 
-		const commonTags = new CommonTags(mockedSkin, mockedContext);
+		const commonTags = new CommonTags(mockedContext);
 
 		expect(commonTags.getCommonParams()).to.deep.eq({
 			ar: '4:3',
@@ -53,7 +52,7 @@ describe('CommonTags', () => {
 			s0v: mockedTaxonomy[1],
 			s1: '_test',
 			s2: 'article-test',
-			skin: mockedSkin,
+			skin: 'ucp_desktop',
 			uap: 'none',
 			uap_c: 'none',
 			word_count: 546,
@@ -77,7 +76,7 @@ describe('CommonTags', () => {
 			new Page(666, 'pl', 666, 'test', 'article-test', {}, 546),
 		);
 
-		const commonTags = new CommonTags(mockedSkin, mockedContext).getCommonParams();
+		const commonTags = new CommonTags(mockedContext).getCommonParams();
 
 		expect(commonTags.s0).to.be.undefined;
 		expect(commonTags.s0v).to.be.undefined;
@@ -99,7 +98,7 @@ describe('CommonTags', () => {
 			new Page(666, 'pl', 666, 'test', 'article-test', {}, 546),
 		);
 
-		const commonTags = new CommonTags(mockedSkin, mockedContext);
+		const commonTags = new CommonTags(mockedContext);
 
 		expect(commonTags.getCommonParams().rating).to.be.eq('esrb:ec,mpa:general');
 	});
@@ -120,7 +119,7 @@ describe('CommonTags', () => {
 			new Page(666, 'pl', 666, 'test', 'article-test', {}, 546),
 		);
 
-		const commonTags = new CommonTags(mockedSkin, mockedContext);
+		const commonTags = new CommonTags(mockedContext);
 
 		expect(commonTags.getCommonParams().rating).to.be.eq('esrb:ec,esrb:mature,mpa:general');
 	});
@@ -141,7 +140,7 @@ describe('CommonTags', () => {
 			new Page(666, 'pl', 666, 'test', 'article-test', {}, 546),
 		);
 
-		const commonTags = new CommonTags(mockedSkin, mockedContext);
+		const commonTags = new CommonTags(mockedContext);
 
 		expect(commonTags.getCommonParams().rating).to.be.eq('esrb:ec,mpa:general,mpa:pg');
 	});
@@ -152,7 +151,7 @@ describe('CommonTags', () => {
 			new Page(666, 'pl', 666, 'test', 'article-test', {}, 546),
 		);
 
-		const commonTags = new CommonTags(mockedSkin, mockedContext);
+		const commonTags = new CommonTags(mockedContext);
 
 		expect(commonTags.getCommonParams().rating).to.be.undefined;
 	});
@@ -163,7 +162,7 @@ describe('CommonTags', () => {
 			new Page(666, 'pl', 666, 'test', 'article-test', {}, 546),
 		);
 
-		const commonTags = new CommonTags(mockedSkin, mockedContext);
+		const commonTags = new CommonTags(mockedContext);
 
 		expect(commonTags.getCommonParams().rating).to.be.undefined;
 	});

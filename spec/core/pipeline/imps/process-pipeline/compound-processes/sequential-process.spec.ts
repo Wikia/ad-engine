@@ -2,10 +2,9 @@ import { ProcessPipeline, sequential } from '@wikia/core';
 import { wait } from '@wikia/core/utils';
 import { Container } from '@wikia/dependency-injection';
 import { expect } from 'chai';
-import { createSandbox, SinonSpy } from 'sinon';
+import { SinonSpy } from 'sinon';
 
 describe('SequentialProcess', () => {
-	const sandbox = createSandbox();
 	let spy: SinonSpy;
 	let pipeline: ProcessPipeline;
 
@@ -20,12 +19,8 @@ describe('SequentialProcess', () => {
 	beforeEach(() => {
 		const container = new Container();
 
-		spy = sandbox.spy();
+		spy = global.sandbox.spy();
 		pipeline = container.get(ProcessPipeline);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
 	});
 
 	it('should work', async () => {
