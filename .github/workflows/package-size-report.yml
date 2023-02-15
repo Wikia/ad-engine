@@ -11,10 +11,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
 
@@ -24,6 +24,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           display-size: gzip
-          build-command: npm run build:platforms
+          build-command: npm run build:platforms -- --env platform=ucp-desktop
           hide-files: '*.{map,scss,ts,txt}'
           unchanged-files: hide
