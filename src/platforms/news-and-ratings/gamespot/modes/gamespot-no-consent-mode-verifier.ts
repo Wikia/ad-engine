@@ -2,7 +2,7 @@ import { communicationService, DiProcess, eventsRepository } from '@wikia/ad-eng
 import { NewsAndRatingsPageDataGetter } from '../../shared';
 
 export class GamespotNoConsentModeVerifier implements DiProcess {
-	constructor(protected metadataGetter: NewsAndRatingsPageDataGetter) {}
+	constructor(protected newsAndRatingsPageDataGetter: NewsAndRatingsPageDataGetter) {}
 
 	execute(): void {
 		if (this.appEmbeddedOnFacebook()) {
@@ -11,7 +11,7 @@ export class GamespotNoConsentModeVerifier implements DiProcess {
 	}
 
 	appEmbeddedOnFacebook() {
-		const dataSettings = this.metadataGetter.getDataSettingsFromMetaTag();
+		const dataSettings = this.newsAndRatingsPageDataGetter.getDataSettingsFromMetaTag();
 
 		return dataSettings?.target_params?.partner === 'fb_instant';
 	}

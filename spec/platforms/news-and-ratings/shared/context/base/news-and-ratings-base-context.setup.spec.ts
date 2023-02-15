@@ -8,11 +8,13 @@ import {
 
 describe('News and Ratings base context setup', () => {
 	let instantConfigStub;
-	let metadataGetterStub;
+	let newsAndRatingsPageDataGetterStub;
 
 	beforeEach(() => {
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
-		metadataGetterStub = global.sandbox.createStubInstance(NewsAndRatingsPageDataGetter);
+		newsAndRatingsPageDataGetterStub = global.sandbox.createStubInstance(
+			NewsAndRatingsPageDataGetter,
+		);
 		context.set('custom.property', 'test');
 		context.set('custom.device', undefined);
 	});
@@ -29,7 +31,7 @@ describe('News and Ratings base context setup', () => {
 			context.set('state.isMobile', false);
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(
 				instantConfigStub,
-				metadataGetterStub,
+				newsAndRatingsPageDataGetterStub,
 			);
 			baseContextSetup.execute();
 
@@ -40,7 +42,7 @@ describe('News and Ratings base context setup', () => {
 			context.set('state.isMobile', true);
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(
 				instantConfigStub,
-				metadataGetterStub,
+				newsAndRatingsPageDataGetterStub,
 			);
 			baseContextSetup.execute();
 

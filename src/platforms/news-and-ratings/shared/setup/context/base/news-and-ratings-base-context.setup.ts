@@ -6,7 +6,7 @@ import { NewsAndRatingsPageDataGetter } from '../../../utils/news-and-ratings-pa
 export class NewsAndRatingsBaseContextSetup implements DiProcess {
 	constructor(
 		protected instantConfig: InstantConfigService,
-		protected metadataGetter: NewsAndRatingsPageDataGetter,
+		protected newsAndRatingsPageDataGetter: NewsAndRatingsPageDataGetter,
 	) {}
 
 	execute(): void {
@@ -19,7 +19,7 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 	private setBaseState(): void {
 		context.set('custom.device', context.get('state.isMobile') ? 'm' : '');
 		context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441);
-		context.set('custom.pagePath', this.metadataGetter.getPagePath());
+		context.set('custom.pagePath', this.newsAndRatingsPageDataGetter.getPagePath());
 		context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src'));
 		context.set('options.tracking.slot.status', this.instantConfig.get('icSlotTracking'));
 	}
@@ -78,9 +78,9 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		context.set('services.anyclip.isApplicable', () => {
 			this.log(
 				'Anyclip setting:',
-				this.metadataGetter.getDataSettingsFromMetaTag()?.target_params?.anyclip,
+				this.newsAndRatingsPageDataGetter.getDataSettingsFromMetaTag()?.target_params?.anyclip,
 			);
-			return this.metadataGetter.getDataSettingsFromMetaTag()?.target_params?.anyclip;
+			return this.newsAndRatingsPageDataGetter.getDataSettingsFromMetaTag()?.target_params?.anyclip;
 		});
 	}
 
