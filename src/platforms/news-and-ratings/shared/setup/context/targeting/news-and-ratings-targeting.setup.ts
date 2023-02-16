@@ -260,8 +260,8 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 		communicationService.on(
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
 			({ slot: adSlot }) => {
-				adSlot.config.targeting.sl = this.getSlValue(adSlot, customConfig);
-				adSlot.config.targeting.iid = this.getIidValue(adSlot, targeting);
+				adSlot.setTargetingConfigProperty('sl', this.getSlValue(adSlot, customConfig));
+				adSlot.setTargetingConfigProperty('iid', this.getIidValue(adSlot, targeting));
 			},
 			false,
 		);
