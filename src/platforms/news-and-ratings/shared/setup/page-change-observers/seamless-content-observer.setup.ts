@@ -1,7 +1,6 @@
 import { context, DiProcess, utils } from '@wikia/ad-engine';
 
 export class SeamlessContentObserverSetup implements DiProcess {
-	private NOT_REQUESTED_SLOT_WRAPPER_SELECTOR = '.mapped-ad > .ad-wrap:not(.gpt-ad)';
 	private currentUrl = '';
 	private seamlessContentLoaded = {};
 	private seamlessAdsAdded = {};
@@ -51,12 +50,18 @@ export class SeamlessContentObserverSetup implements DiProcess {
 	}
 
 	private requestAdForUnfilledSlots() {
-		const adSlotsToFill = document.querySelectorAll(this.NOT_REQUESTED_SLOT_WRAPPER_SELECTOR);
+		const notRequestedSlotWrapperSelector =
+			context.get('src') === 'tvguide'
+				? '.c-adDisplay_container > .c-adDisplay:not(.gpt-ad)'
+				: '.mapped-ad > .ad-wrap:not(.gpt-ad)';
+
+		const adSlotsToFill = document.querySelectorAll(notRequestedSlotWrapperSelector);
 		utils.logger('pageChangeWatcher', 'adSlotsToFill: ', adSlotsToFill);
 		adSlotsToFill.forEach((adWrapper: Element) => {
-			const placeholder = adWrapper.parentElement;
+			const placeholder = context.get('src') === 'tvguide' ? adWrapper : adWrapper.parentElement;
 			const baseSlotName = placeholder?.getAttribute('data-ad-type');
-			const slotName = this.calculateSeamlessSlotName(placeholder);
+			const slotName = this.calculateSeamlessSlotName(baseSlotName);
+
 			utils.logger('pageChangeWatcher', 'slot to copy: ', baseSlotName, slotName);
 
 			placeholder.id = slotName;
@@ -66,8 +71,7 @@ export class SeamlessContentObserverSetup implements DiProcess {
 		});
 	}
 
-	private calculateSeamlessSlotName(placeholder) {
-		const baseSlotName = placeholder?.getAttribute('data-ad-type');
+	private calculateSeamlessSlotName(baseSlotName) {
 		this.seamlessAdsAdded[baseSlotName] = !this.seamlessAdsAdded[baseSlotName]
 			? 1
 			: this.seamlessAdsAdded[baseSlotName] + 1;
