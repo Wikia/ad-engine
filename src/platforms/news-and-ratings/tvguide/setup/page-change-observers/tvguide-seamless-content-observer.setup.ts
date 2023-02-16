@@ -1,7 +1,8 @@
 import { context, DiProcess, utils } from '@wikia/ad-engine';
 
-export class SeamlessContentObserverSetup implements DiProcess {
-	private NOT_REQUESTED_SLOT_WRAPPER_SELECTOR = '.mapped-ad > .ad-wrap:not(.gpt-ad)';
+export class TvGuideSeamlessContentObserverSetup implements DiProcess {
+	private NOT_REQUESTED_SLOT_WRAPPER_SELECTOR =
+		'.c-adDisplay_container > .c-adDisplay:not(.gpt-ad)';
 	private currentUrl = '';
 	private seamlessContentLoaded = {};
 	private seamlessAdsAdded = {};
@@ -54,12 +55,11 @@ export class SeamlessContentObserverSetup implements DiProcess {
 		const adSlotsToFill = document.querySelectorAll(this.NOT_REQUESTED_SLOT_WRAPPER_SELECTOR);
 		utils.logger('pageChangeWatcher', 'adSlotsToFill: ', adSlotsToFill);
 		adSlotsToFill.forEach((adWrapper: Element) => {
-			const placeholder = adWrapper.parentElement;
-			const baseSlotName = placeholder?.getAttribute('data-ad-type');
+			const baseSlotName = adWrapper?.getAttribute('data-ad');
 			const slotName = this.calculateSeamlessSlotName(baseSlotName);
 			utils.logger('pageChangeWatcher', 'slot to copy: ', baseSlotName, slotName);
 
-			placeholder.id = slotName;
+			adWrapper.id = slotName;
 
 			this.updateSlotContext(baseSlotName, slotName);
 			context.push('state.adStack', { id: slotName });

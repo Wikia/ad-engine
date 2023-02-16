@@ -13,7 +13,6 @@ import {
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsTargetingSetup,
 	NewsAndRatingsWadSetup,
-	SeamlessContentObserverSetup,
 } from '../shared';
 import { basicContext } from './ad-context';
 import { TvGuideA9ConfigSetup } from './setup/context/a9/tvguide-a9-config.setup';
@@ -21,6 +20,7 @@ import { TvGuidePrebidConfigSetup } from './setup/context/prebid/tvguide-prebid-
 import { TvGuideSlotsContextSetup } from './setup/context/slots/tvguide-slots-context.setup';
 import { TvGuideTargetingSetup } from './setup/context/targeting/tvguide-targeting.setup';
 import { TvGuideDynamicSlotsSetup } from './setup/dynamic-slots/tvguide-dynamic-slots.setup';
+import { TvGuideSeamlessContentObserverSetup } from './setup/page-change-observers/tvguide-seamless-content-observer.setup';
 import { TvGuideTemplatesSetup } from './templates/tvguide-templates.setup';
 
 @Injectable()
@@ -47,7 +47,7 @@ export class TvGuidePlatform {
 			TvGuideTemplatesSetup,
 			NewsAndRatingsAdsMode,
 			TrackingSetup,
-			SeamlessContentObserverSetup,
+			TvGuideSeamlessContentObserverSetup,
 		);
 
 		this.pipeline.execute();
