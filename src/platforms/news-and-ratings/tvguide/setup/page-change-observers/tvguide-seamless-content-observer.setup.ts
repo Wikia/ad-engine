@@ -56,6 +56,10 @@ export class TvGuideSeamlessContentObserverSetup implements DiProcess {
 		utils.logger('pageChangeWatcher', 'adSlotsToFill: ', adSlotsToFill);
 		adSlotsToFill.forEach((adWrapper: Element) => {
 			const baseSlotName = adWrapper?.getAttribute('data-ad');
+			if (!this.isSlotDefinedInContext(baseSlotName)) {
+				return;
+			}
+
 			const slotName = this.calculateSeamlessSlotName(baseSlotName);
 			utils.logger('pageChangeWatcher', 'slot to copy: ', baseSlotName, slotName);
 
@@ -79,5 +83,9 @@ export class TvGuideSeamlessContentObserverSetup implements DiProcess {
 		context.set(`slots.${slotName}.slotName`, slotName);
 		context.set(`slots.${slotName}.targeting.pos`, slotName);
 		utils.logger('pageChangeWatcher', 'new slot config: ', context.get(`slots.${slotName}`));
+	}
+
+	private isSlotDefinedInContext(slotName: string): boolean {
+		return Object.keys(context.get('slots')).includes(slotName);
 	}
 }
