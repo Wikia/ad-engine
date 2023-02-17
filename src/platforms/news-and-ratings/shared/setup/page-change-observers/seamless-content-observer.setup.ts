@@ -2,6 +2,8 @@ import { context, DiProcess, utils } from '@wikia/ad-engine';
 
 export class SeamlessContentObserverSetup implements DiProcess {
 	private NOT_REQUESTED_SLOT_WRAPPER_SELECTOR = '.mapped-ad > .ad-wrap:not(.gpt-ad)';
+	private ELEMENT_TO_OBSERVE_MUTATION = 'title';
+	private DATA_AD_ATTRIBUTE = 'data-ad-type';
 	private currentUrl = '';
 	private seamlessContentLoaded = {};
 	private seamlessAdsAdded = {};
@@ -12,9 +14,16 @@ export class SeamlessContentObserverSetup implements DiProcess {
 		this.currentUrl = location.href;
 		this.seamlessContentLoaded[location.pathname] = true;
 
+		if (context.get('custom.property') === 'tvguide') {
+			this.NOT_REQUESTED_SLOT_WRAPPER_SELECTOR =
+				'.c-adDisplay_container > .c-adDisplay:not(.gpt-ad)';
+			this.ELEMENT_TO_OBSERVE_MUTATION = '.c-pageArticleContainer';
+			this.DATA_AD_ATTRIBUTE = 'data-ad';
+		}
+
 		const observer = new MutationObserver(() => this.handleMutation());
 
-		observer.observe(document.querySelector('title'), config);
+		observer.observe(document.querySelector(this.ELEMENT_TO_OBSERVE_MUTATION), config);
 	}
 
 	private handleMutation() {
@@ -54,8 +63,13 @@ export class SeamlessContentObserverSetup implements DiProcess {
 		const adSlotsToFill = document.querySelectorAll(this.NOT_REQUESTED_SLOT_WRAPPER_SELECTOR);
 		utils.logger('pageChangeWatcher', 'adSlotsToFill: ', adSlotsToFill);
 		adSlotsToFill.forEach((adWrapper: Element) => {
-			const placeholder = adWrapper.parentElement;
-			const baseSlotName = placeholder?.getAttribute('data-ad-type');
+			const placeholder =
+				context.get('custom.property') === 'tvguide' ? adWrapper : adWrapper.parentElement;
+			const baseSlotName = placeholder?.getAttribute(this.DATA_AD_ATTRIBUTE);
+			if (!this.isSlotDefinedInContext(baseSlotName)) {
+				return;
+			}
+
 			const slotName = this.calculateSeamlessSlotName(baseSlotName);
 			utils.logger('pageChangeWatcher', 'slot to copy: ', baseSlotName, slotName);
 
@@ -79,5 +93,9 @@ export class SeamlessContentObserverSetup implements DiProcess {
 		context.set(`slots.${slotName}.slotName`, slotName);
 		context.set(`slots.${slotName}.targeting.pos`, slotName);
 		utils.logger('pageChangeWatcher', 'new slot config: ', context.get(`slots.${slotName}`));
+	}
+
+	private isSlotDefinedInContext(slotName: string): boolean {
+		return Object.keys(context.get('slots')).includes(slotName);
 	}
 }
