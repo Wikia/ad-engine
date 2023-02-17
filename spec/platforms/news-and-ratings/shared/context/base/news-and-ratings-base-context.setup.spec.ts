@@ -18,6 +18,7 @@ describe('News and Ratings base context setup', () => {
 		context.remove('custom.property');
 		context.remove('custom.device');
 		context.remove('custom.pagePath');
+		context.remove('services.anyclip.isApplicable');
 	});
 
 	describe('setBaseState()', () => {
@@ -134,6 +135,38 @@ describe('News and Ratings base context setup', () => {
 			baseContextSetup.execute();
 
 			expect(context.get('custom.pagePath')).to.eq('');
+		});
+	});
+
+	describe('setupVideoOptions()', () => {
+		// TODO: once backend responses in unified way let's remove the logic and test below
+		it('makes Anyclip applicable when it is enabled on backend via targeting params (GameFAQs)', () => {
+			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
+			const getDataSettingsFromMetaTagStub = global.sandbox.stub(
+				baseContextSetup,
+				'getDataSettingsFromMetaTag',
+			);
+			getDataSettingsFromMetaTagStub.returns({ target_params: { anyclip: '1' } });
+
+			baseContextSetup.execute();
+			const isApplicable = context.get('services.anyclip.isApplicable');
+
+			expect(isApplicable()).to.be.true;
+		});
+
+		// TODO: once backend responses in unified way let's remove the logic and test below
+		it('does not make Anyclip applicable when it is disabled on backend (GameFAQs)', () => {
+			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
+			const getDataSettingsFromMetaTagStub = global.sandbox.stub(
+				baseContextSetup,
+				'getDataSettingsFromMetaTag',
+			);
+			getDataSettingsFromMetaTagStub.returns({ target_params: { foo: 'bar' } });
+
+			baseContextSetup.execute();
+			const isApplicable = context.get('services.anyclip.isApplicable');
+
+			expect(isApplicable()).to.be.false;
 		});
 	});
 });

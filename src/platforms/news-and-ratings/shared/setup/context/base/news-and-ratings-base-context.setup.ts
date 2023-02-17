@@ -73,7 +73,7 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		context.set('services.anyclip.enabled', this.instantConfig.get('icAnyclipPlayer'));
 		context.set('services.anyclip.isApplicable', () => {
 			this.log('Anyclip setting:', this.getDataSettingsFromMetaTag()?.target_params?.anyclip);
-			return this.getDataSettingsFromMetaTag()?.target_params?.anyclip;
+			return !!this.getDataSettingsFromMetaTag()?.target_params?.anyclip;
 		});
 	}
 
