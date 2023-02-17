@@ -8,14 +8,14 @@ export class TvGuideSeamlessContentObserverSetup implements DiProcess {
 	private seamlessAdsAdded = {};
 
 	execute(): void {
-		const config = { subtree: true, childList: true };
+		const config = { childList: true };
 		// register first page after load
 		this.currentUrl = location.href;
 		this.seamlessContentLoaded[location.pathname] = true;
 
 		const observer = new MutationObserver(() => this.handleMutation());
 
-		observer.observe(document.querySelector('title'), config);
+		observer.observe(document.querySelector('.c-pageArticleContainer'), config);
 	}
 
 	private handleMutation() {

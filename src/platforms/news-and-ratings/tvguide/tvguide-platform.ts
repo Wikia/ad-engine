@@ -22,12 +22,12 @@ import {
 	NewsAndRatingsWadSetup,
 } from '../shared';
 import { basicContext } from './ad-context';
-import { TvGuidePageChangeAdsMode } from './modes/tvguide-page-change-ads-mode';
 import { TvGuideA9ConfigSetup } from './setup/context/a9/tvguide-a9-config.setup';
 import { TvGuidePrebidConfigSetup } from './setup/context/prebid/tvguide-prebid-config-setup.service';
 import { TvGuideSlotsContextSetup } from './setup/context/slots/tvguide-slots-context.setup';
 import { TvGuideTargetingSetup } from './setup/context/targeting/tvguide-targeting.setup';
 import { TvGuideDynamicSlotsSetup } from './setup/dynamic-slots/tvguide-dynamic-slots.setup';
+import { TvGuidePageChangeAdsObserver } from './setup/page-change-observers/tvguide-page-change-ads-observer';
 import { TvGuideSeamlessContentObserverSetup } from './setup/page-change-observers/tvguide-seamless-content-observer.setup';
 import { TvGuideTemplatesSetup } from './templates/tvguide-templates.setup';
 
@@ -86,7 +86,7 @@ export class TvGuidePlatform {
 						TvGuideTargetingSetup,
 						NewsAndRatingsTargetingSetup,
 						TvGuideSlotsContextSetup,
-						TvGuidePageChangeAdsMode,
+						TvGuidePageChangeAdsObserver,
 					)
 					.execute();
 			}
