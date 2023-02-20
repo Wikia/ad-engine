@@ -7,7 +7,7 @@ export class GamespotNoConsentModeVerifier implements DiProcess {
 	constructor(protected newsAndRatingsPageDataGetter: NewsAndRatingsPageDataGetter) {}
 
 	execute(): void {
-		if (this.appEmbeddedOnFacebook()) {
+		if (this.appEmbeddedOnFacebook() || this.videoEmbeddedOnThePage()) {
 			this.emitAdEngineNoConsentModeEvent();
 		}
 	}
@@ -16,6 +16,12 @@ export class GamespotNoConsentModeVerifier implements DiProcess {
 		const dataSettings = this.newsAndRatingsPageDataGetter.getDataSettingsFromMetaTag();
 
 		return dataSettings?.target_params?.partner === 'fb_instant';
+	}
+
+	videoEmbeddedOnThePage() {
+		const video = document.querySelector('#video-rectangle');
+
+		return video && window.utag_data?.pageType !== 'video_embed';
 	}
 
 	emitAdEngineNoConsentModeEvent() {
