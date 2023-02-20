@@ -1,8 +1,15 @@
 import { context, DiProcess, utils } from '@wikia/ad-engine';
 
 export class SeamlessContentObserverSetup implements DiProcess {
-	private NOT_REQUESTED_SLOT_WRAPPER_SELECTOR = '.mapped-ad > .ad-wrap:not(.gpt-ad)';
-	private DATA_AD_ATTRIBUTE = 'data-ad-type';
+	private DEFAULT_REQUESTED_SLOT_WRAPPER_SELECTOR = '.mapped-ad > .ad-wrap:not(.gpt-ad)';
+	private DEFAULT_ELEMENT_TO_OBSERVE_MUTATION_SELECTOR = 'title';
+	private DEFAULT_DATA_AD_ATTRIBUTE = 'data-ad-type';
+	private DEFAULT_USE_PARENT_AS_AD_PLACEHOLDER = true;
+
+	private notRequestedSlotWrapperSelector: string;
+	private dataAdAttribute: string;
+	private useParentAsAdPlaceholder: boolean;
+
 	private currentUrl = '';
 	private seamlessContentLoaded = {};
 	private seamlessAdsAdded = {};
@@ -13,16 +20,25 @@ export class SeamlessContentObserverSetup implements DiProcess {
 		this.currentUrl = location.href;
 		this.seamlessContentLoaded[location.pathname] = true;
 
-		let elementToObserveMutation = document.querySelector('title');
+		this.notRequestedSlotWrapperSelector =
+			context.get('services.seamlessContent.notRequestedSlotWrapperSelector') ||
+			this.DEFAULT_REQUESTED_SLOT_WRAPPER_SELECTOR;
+		this.dataAdAttribute =
+			context.get('services.seamlessContent.dataAdAttribute') || this.DEFAULT_DATA_AD_ATTRIBUTE;
+		this.useParentAsAdPlaceholder = context.get(
+			'services.seamlessContent.useParentAsAdPlaceholder',
+		);
+		this.useParentAsAdPlaceholder =
+			typeof this.useParentAsAdPlaceholder === 'boolean'
+				? this.useParentAsAdPlaceholder
+				: this.DEFAULT_USE_PARENT_AS_AD_PLACEHOLDER;
 
-		if (context.get('custom.property') === 'tvguide') {
-			this.NOT_REQUESTED_SLOT_WRAPPER_SELECTOR =
-				'.c-adDisplay_container > .c-adDisplay:not(.gpt-ad)';
-			this.DATA_AD_ATTRIBUTE = 'data-ad';
-			elementToObserveMutation = document.querySelector('.c-pageArticleContainer');
-			if (!elementToObserveMutation) {
-				return;
-			}
+		const elementToObserveMutationSelector =
+			context.get('services.seamlessContent.elementToObserveMutationSelector') ||
+			this.DEFAULT_ELEMENT_TO_OBSERVE_MUTATION_SELECTOR;
+		const elementToObserveMutation = document.querySelector(elementToObserveMutationSelector);
+		if (!elementToObserveMutation) {
+			return;
 		}
 
 		const observer = new MutationObserver(() => this.handleMutation());
@@ -64,13 +80,20 @@ export class SeamlessContentObserverSetup implements DiProcess {
 	}
 
 	private requestAdForUnfilledSlots() {
-		const adSlotsToFill = document.querySelectorAll(this.NOT_REQUESTED_SLOT_WRAPPER_SELECTOR);
+		const adSlotsToFill = document.querySelectorAll(this.notRequestedSlotWrapperSelector);
 		utils.logger('pageChangeWatcher', 'adSlotsToFill: ', adSlotsToFill);
 		adSlotsToFill.forEach((adWrapper: Element) => {
-			const placeholder =
-				context.get('custom.property') === 'tvguide' ? adWrapper : adWrapper.parentElement;
-			const baseSlotName = placeholder?.getAttribute(this.DATA_AD_ATTRIBUTE);
+			const placeholder = this.useParentAsAdPlaceholder ? adWrapper.parentElement : adWrapper;
+			const baseSlotName = placeholder?.getAttribute(this.dataAdAttribute);
+
 			if (!this.isSlotDefinedInContext(baseSlotName)) {
+				utils.logger(
+					'pageChangeWatcher',
+					'slot not defined in the context:',
+					baseSlotName,
+					placeholder,
+					this.dataAdAttribute,
+				);
 				return;
 			}
 
