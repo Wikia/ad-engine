@@ -34,6 +34,7 @@ import { TvGuideTemplatesSetup } from './templates/tvguide-templates.setup';
 @Injectable()
 export class TvGuidePlatform {
 	private currentUrl = '';
+	private currentPageViewGuid;
 
 	constructor(private pipeline: ProcessPipeline) {}
 
@@ -64,17 +65,26 @@ export class TvGuidePlatform {
 	}
 
 	setupPageChangeWatcher(container: Container) {
-		const config = { subtree: true, childList: true };
+		const config = { subtree: false, childList: true };
 		const observer = new MutationObserver(() => {
+			if (!this.currentPageViewGuid) {
+				this.currentPageViewGuid = window.utag_data?.pageViewGuid;
+			}
+
 			if (!this.currentUrl) {
 				this.currentUrl = location.href;
 				return;
 			}
 
-			if (this.currentUrl !== location.href) {
-				utils.logger('SPA', 'url changed', location.href);
+			if (
+				this.currentUrl !== location.href &&
+				this.currentPageViewGuid !== window.utag_data?.pageViewGuid
+			) {
+				utils.logger('pageChangeWatcher', 'SPA', 'url changed', location.href);
 
 				this.currentUrl = location.href;
+				this.currentPageViewGuid = window.utag_data?.pageViewGuid;
+
 				communicationService.emit(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
 				targetingService.clear();
 
@@ -87,6 +97,7 @@ export class TvGuidePlatform {
 						NewsAndRatingsTargetingSetup,
 						TvGuideSlotsContextSetup,
 						TvGuidePageChangeAdsObserver,
+						SeamlessContentObserverSetup,
 					)
 					.execute();
 			}

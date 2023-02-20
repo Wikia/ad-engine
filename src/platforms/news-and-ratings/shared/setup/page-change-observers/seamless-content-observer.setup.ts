@@ -9,7 +9,7 @@ export class SeamlessContentObserverSetup implements DiProcess {
 	private seamlessAdsAdded = {};
 
 	execute(): void {
-		const config = { subtree: true, childList: true };
+		const config = { subtree: false, childList: true };
 		// register first page after load
 		this.currentUrl = location.href;
 		this.seamlessContentLoaded[location.pathname] = true;
