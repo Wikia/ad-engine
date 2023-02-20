@@ -2,7 +2,6 @@ import { context, DiProcess, utils } from '@wikia/ad-engine';
 
 export class SeamlessContentObserverSetup implements DiProcess {
 	private NOT_REQUESTED_SLOT_WRAPPER_SELECTOR = '.mapped-ad > .ad-wrap:not(.gpt-ad)';
-	private ELEMENT_TO_OBSERVE_MUTATION = 'title';
 	private DATA_AD_ATTRIBUTE = 'data-ad-type';
 	private currentUrl = '';
 	private seamlessContentLoaded = {};
@@ -14,16 +13,21 @@ export class SeamlessContentObserverSetup implements DiProcess {
 		this.currentUrl = location.href;
 		this.seamlessContentLoaded[location.pathname] = true;
 
+		let elementToObserveMutation = document.querySelector('title');
+
 		if (context.get('custom.property') === 'tvguide') {
 			this.NOT_REQUESTED_SLOT_WRAPPER_SELECTOR =
 				'.c-adDisplay_container > .c-adDisplay:not(.gpt-ad)';
-			this.ELEMENT_TO_OBSERVE_MUTATION = '.c-pageArticleContainer';
 			this.DATA_AD_ATTRIBUTE = 'data-ad';
+			elementToObserveMutation = document.querySelector('.c-pageArticleContainer');
+			if (!elementToObserveMutation) {
+				return;
+			}
 		}
 
 		const observer = new MutationObserver(() => this.handleMutation());
 
-		observer.observe(document.querySelector(this.ELEMENT_TO_OBSERVE_MUTATION), config);
+		observer.observe(elementToObserveMutation, config);
 	}
 
 	private handleMutation() {
