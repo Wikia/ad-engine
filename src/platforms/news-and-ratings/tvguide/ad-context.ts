@@ -35,12 +35,6 @@ export const basicContext = {
 		instantConfig: {
 			appName: 'tvguide',
 		},
-		seamlessContent: {
-			notRequestedSlotWrapperSelector: '.c-adDisplay_container > .c-adDisplay:not(.gpt-ad)',
-			dataAdAttribute: 'data-ad',
-			elementToObserveMutationSelector: '.c-pageArticleContainer',
-			useParentAsAdPlaceholder: false,
-		},
 	},
 	slots: {},
 	src: ['tvguide'],

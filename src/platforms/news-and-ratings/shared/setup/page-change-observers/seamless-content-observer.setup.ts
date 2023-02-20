@@ -1,14 +1,10 @@
 import { context, DiProcess, utils } from '@wikia/ad-engine';
 
 export class SeamlessContentObserverSetup implements DiProcess {
-	private DEFAULT_REQUESTED_SLOT_WRAPPER_SELECTOR = '.mapped-ad > .ad-wrap:not(.gpt-ad)';
-	private DEFAULT_ELEMENT_TO_OBSERVE_MUTATION_SELECTOR = 'title';
-	private DEFAULT_DATA_AD_ATTRIBUTE = 'data-ad-type';
-	private DEFAULT_USE_PARENT_AS_AD_PLACEHOLDER = true;
-
-	private notRequestedSlotWrapperSelector: string;
-	private dataAdAttribute: string;
-	private useParentAsAdPlaceholder: boolean;
+	protected notRequestedSlotWrapperSelector = '.mapped-ad > .ad-wrap:not(.gpt-ad)';
+	protected elementToObserveMutationSelector = 'title';
+	protected dataAdAttribute = 'data-ad-type';
+	protected useParentAsAdPlaceholder = true;
 
 	private currentUrl = '';
 	private seamlessContentLoaded = {};
@@ -20,23 +16,7 @@ export class SeamlessContentObserverSetup implements DiProcess {
 		this.currentUrl = location.href;
 		this.seamlessContentLoaded[location.pathname] = true;
 
-		this.notRequestedSlotWrapperSelector =
-			context.get('services.seamlessContent.notRequestedSlotWrapperSelector') ||
-			this.DEFAULT_REQUESTED_SLOT_WRAPPER_SELECTOR;
-		this.dataAdAttribute =
-			context.get('services.seamlessContent.dataAdAttribute') || this.DEFAULT_DATA_AD_ATTRIBUTE;
-		this.useParentAsAdPlaceholder = context.get(
-			'services.seamlessContent.useParentAsAdPlaceholder',
-		);
-		this.useParentAsAdPlaceholder =
-			typeof this.useParentAsAdPlaceholder === 'boolean'
-				? this.useParentAsAdPlaceholder
-				: this.DEFAULT_USE_PARENT_AS_AD_PLACEHOLDER;
-
-		const elementToObserveMutationSelector =
-			context.get('services.seamlessContent.elementToObserveMutationSelector') ||
-			this.DEFAULT_ELEMENT_TO_OBSERVE_MUTATION_SELECTOR;
-		const elementToObserveMutation = document.querySelector(elementToObserveMutationSelector);
+		const elementToObserveMutation = document.querySelector(this.elementToObserveMutationSelector);
 		if (!elementToObserveMutation) {
 			return;
 		}
