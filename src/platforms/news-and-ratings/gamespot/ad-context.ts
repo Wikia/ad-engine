@@ -42,7 +42,4 @@ export const basicContext = {
 		aamid: '',
 	},
 	src: ['gamespot'],
-	vast: {
-		adUnitId: '/{custom.dfpId}/{custom.region}-{custom.property}/video',
-	},
 };
