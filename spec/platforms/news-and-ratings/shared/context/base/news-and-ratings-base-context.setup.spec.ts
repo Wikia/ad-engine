@@ -8,6 +8,7 @@ describe('News and Ratings base context setup', () => {
 
 	beforeEach(() => {
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
+		context.set('custom.region', 'test');
 		context.set('custom.property', 'test');
 		context.set('custom.device', undefined);
 	});
@@ -15,10 +16,13 @@ describe('News and Ratings base context setup', () => {
 	afterEach(() => {
 		global.sandbox.restore();
 		context.remove('state.isMobile');
+		context.remove('custom.dfpId');
+		context.remove('custom.region');
 		context.remove('custom.property');
 		context.remove('custom.device');
 		context.remove('custom.pagePath');
 		context.remove('services.anyclip.isApplicable');
+		context.remove('vast.adUnitId');
 	});
 
 	describe('setBaseState()', () => {
@@ -195,6 +199,30 @@ describe('News and Ratings base context setup', () => {
 			const isApplicable = context.get('services.anyclip.isApplicable');
 
 			expect(isApplicable()).to.be.false;
+		});
+
+		it('sets up proper VAST ad unit for mobile', () => {
+			// given
+			context.set('state.isMobile', true);
+
+			// when
+			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
+			baseContextSetup.execute();
+
+			// then
+			expect(context.get('vast.adUnitId')).to.equal('5441/vtest-test/mobile');
+		});
+
+		it('sets up proper VAST ad unit for desktop', () => {
+			// given
+			context.set('state.isMobile', false);
+
+			// when
+			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
+			baseContextSetup.execute();
+
+			// then
+			expect(context.get('vast.adUnitId')).to.equal('5441/vtest-test/desktop');
 		});
 	});
 });
