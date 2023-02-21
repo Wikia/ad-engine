@@ -1,3 +1,3 @@
-import { Targeting } from '@wikia/ad-engine';
+import { SlotTargeting } from '@wikia/ad-engine';
 
-export type TargetingTags = Partial<Targeting> | TaxonomyTags;
+export type TargetingTags = Partial<SlotTargeting> | TaxonomyTags;

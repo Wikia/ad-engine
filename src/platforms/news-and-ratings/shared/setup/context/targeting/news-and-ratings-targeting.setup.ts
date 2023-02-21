@@ -4,6 +4,7 @@ import {
 	CookieStorageAdapter,
 	DiProcess,
 	eventsRepository,
+	targetingService,
 	utils,
 } from '@wikia/ad-engine';
 import isMatch from 'lodash/isMatch.js';
@@ -22,15 +23,19 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 
 		this.setSlotLevelTargeting(targeting, customConfig);
 
-		context.set('targeting', {
-			...context.get('targeting'),
+		targetingService.extend({
+			...targetingService.dump(),
 			...targeting,
+			is_mobile: context.get('state.isMobile') ? '1' : '0',
+			uap: 'none',
+			uap_c: 'none',
 		});
 	}
 
 	getPageLevelTargeting(): TargetingParams {
 		const adTags = this.getAdTags();
 		const parsedAdTags = this.parseAdTags(adTags);
+
 		return this.getMappedAdTags(parsedAdTags);
 	}
 
@@ -255,8 +260,8 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 		communicationService.on(
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
 			({ slot: adSlot }) => {
-				adSlot.config.targeting.sl = this.getSlValue(adSlot, customConfig);
-				adSlot.config.targeting.iid = this.getIidValue(adSlot, targeting);
+				adSlot.setTargetingConfigProperty('sl', this.getSlValue(adSlot, customConfig));
+				adSlot.setTargetingConfigProperty('iid', this.getIidValue(adSlot, targeting));
 			},
 			false,
 		);

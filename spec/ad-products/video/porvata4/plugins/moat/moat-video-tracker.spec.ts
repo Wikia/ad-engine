@@ -2,11 +2,8 @@ import { PorvataSettings } from '@wikia/ad-products';
 import { moatVideoTracker } from '@wikia/ad-products/video/porvata/plugins/moat/moat-video-tracker';
 import { context, slotService, utils } from '@wikia/core';
 import { assert } from 'chai';
-import * as sinon from 'sinon';
 
 describe('MOAT video tracker', () => {
-	const sandbox = sinon.createSandbox();
-
 	function createVideoSettings(moatTracking = true): PorvataSettings {
 		return new PorvataSettings({
 			moatTracking,
@@ -17,16 +14,14 @@ describe('MOAT video tracker', () => {
 	}
 
 	beforeEach(() => {
-		sandbox.stub(utils.scriptLoader, 'loadScript').returns(Promise.resolve(new Event('foo')));
-		sandbox.stub(slotService, 'get').returns({
+		global.sandbox
+			.stub(utils.scriptLoader, 'loadScript')
+			.returns(Promise.resolve(new Event('foo')));
+		global.sandbox.stub(slotService, 'get').returns({
 			getConfigProperty: () => ({ isVideo: true }),
 		} as any);
 
 		context.set('options.video.moatTracking.partnerCode', 'bar');
-	});
-
-	afterEach(() => {
-		sandbox.restore();
 	});
 
 	it('is enabled when moatTracking is truthy in PorvataSettings', () => {

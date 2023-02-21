@@ -1,16 +1,10 @@
 import { context, slotInjector } from '@wikia/core/services';
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
 
 describe('slot-injector', () => {
-	const sandbox = createSandbox();
 	let elementProperties;
 	let conflictingElement;
 	let placeholder;
-
-	afterEach(() => {
-		sandbox.restore();
-	});
 
 	beforeEach(() => {
 		elementProperties = {
@@ -44,7 +38,7 @@ describe('slot-injector', () => {
 			before: () => {},
 		};
 
-		const querySelectorAll = sandbox.stub(document, 'querySelectorAll');
+		const querySelectorAll = global.sandbox.stub(document, 'querySelectorAll');
 
 		querySelectorAll.withArgs('.foo').returns([conflictingElement] as any);
 		querySelectorAll.withArgs('.main p').returns([placeholder] as any);

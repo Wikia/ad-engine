@@ -5,27 +5,22 @@ import {
 } from '@wikia/core/services/instant-config-cache-storage';
 import { SessionCookie } from '@wikia/core/services/session-cookie';
 import { expect } from 'chai';
-import { createSandbox, SinonSpy, SinonStub } from 'sinon';
+import { SinonSpy, SinonStub } from 'sinon';
 
 describe('Instant Config Cache Storage', () => {
-	const sandbox = createSandbox();
 	const cacheStorage = InstantConfigCacheStorage.make();
 	let getItemStub: SinonStub;
 	let setItemStub: SinonStub;
 	let readSessionIdSpy: SinonSpy;
 
 	beforeEach(() => {
-		getItemStub = sandbox.stub(SessionCookie.prototype, 'getItem');
-		setItemStub = sandbox.stub(SessionCookie.prototype, 'setItem');
-		readSessionIdSpy = sandbox.spy(SessionCookie.prototype, 'readSessionId');
+		getItemStub = global.sandbox.stub(SessionCookie.prototype, 'getItem');
+		setItemStub = global.sandbox.stub(SessionCookie.prototype, 'setItem');
+		readSessionIdSpy = global.sandbox.spy(SessionCookie.prototype, 'readSessionId');
 
 		cacheStorage.resetCache();
 		readSessionIdSpy.resetHistory();
 		getItemStub.resetHistory();
-	});
-
-	afterEach(() => {
-		sandbox.restore();
 	});
 
 	describe('resetCache', () => {
@@ -135,7 +130,7 @@ describe('Instant Config Cache Storage', () => {
 				'OOZ_B_99:ooz_b',
 			];
 
-			sandbox.stub(cacheStorage, 'getSamplingResults').returns(['FOO_A_1', 'BAR_B_99']);
+			global.sandbox.stub(cacheStorage, 'getSamplingResults').returns(['FOO_A_1', 'BAR_B_99']);
 			expect(cacheStorage.mapSamplingResults(wfKeyVals)).to.deep.equal(['foo_a', 'bar_b']);
 		});
 	});

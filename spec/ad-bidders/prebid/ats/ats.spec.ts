@@ -1,15 +1,13 @@
 import { Ats } from '@wikia/ad-bidders';
 import { context, utils } from '@wikia/core';
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
 
 describe('ATS', () => {
-	const sandbox = createSandbox();
 	const ats = new Ats();
 	let loadScriptStub;
 
 	beforeEach(() => {
-		loadScriptStub = sandbox
+		loadScriptStub = global.sandbox
 			.stub(utils.scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
 
@@ -24,10 +22,6 @@ describe('ATS', () => {
 		context.set('wiki.targeting.directedAtChildren', false);
 		context.set('wiki.opts.userEmailHashes', ['hash1', 'hash2', 'hash3']);
 		context.set('state.isLogged', true);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
 	});
 
 	it('ATS.js is called', async () => {

@@ -1,4 +1,4 @@
-import { context } from '../services';
+import { targetingService } from '../services';
 
 export function setupGptTargeting(): void {
 	const tag = window.googletag.pubads();
@@ -16,28 +16,25 @@ export function setupGptTargeting(): void {
 		}
 	}
 
-	function setTargetingFromContext(): void {
-		const targeting = context.get('targeting') || {};
+	function setTargeting(): void {
+		const targeting = targetingService.dump() || {};
 
 		Object.keys(targeting).forEach((key) => {
 			setTargetingValue(key, targeting[key]);
 		});
 	}
 
-	setTargetingFromContext();
+	setTargeting();
 
-	context.onChange('targeting', (trigger, value) => {
-		const segments = trigger.split('.');
-		const key = segments[segments.length - 1];
-
-		// trigger=targeting means that whole targeting
+	targetingService.onChange((trigger, value) => {
+		// trigger=null means that whole targeting
 		// dictionary was replaced in the context
-		if (trigger === 'targeting') {
+		if (trigger === null) {
 			Object.keys(value).forEach((dictionaryKey) => {
 				setTargetingValue(dictionaryKey, value[dictionaryKey]);
 			});
 		} else {
-			setTargetingValue(key, value);
+			setTargetingValue(trigger, value);
 		}
 	});
 }

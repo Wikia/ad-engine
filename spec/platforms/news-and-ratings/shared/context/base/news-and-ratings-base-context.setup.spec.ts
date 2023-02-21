@@ -1,31 +1,29 @@
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
 
-import { context, InstantConfigService, utils } from '@wikia/core';
+import { context, InstantConfigService } from '@wikia/core';
 import { NewsAndRatingsBaseContextSetup } from '@wikia/platforms/news-and-ratings/shared';
 
 describe('News and Ratings base context setup', () => {
-	const sandbox = createSandbox();
-	let instantConfigStub, utilsClientIsDesktopStub;
+	let instantConfigStub;
 
 	beforeEach(() => {
-		utilsClientIsDesktopStub = sandbox.stub(utils.client, 'isDesktop');
-		instantConfigStub = sandbox.createStubInstance(InstantConfigService);
+		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		context.set('custom.property', 'test');
 		context.set('custom.device', undefined);
 	});
 
 	afterEach(() => {
-		sandbox.restore();
-		utilsClientIsDesktopStub.resetHistory();
+		global.sandbox.restore();
+		context.remove('state.isMobile');
 		context.remove('custom.property');
 		context.remove('custom.device');
 		context.remove('custom.pagePath');
+		context.remove('services.anyclip.isApplicable');
 	});
 
 	describe('setBaseState()', () => {
 		it('sets proper device custom key for desktop', () => {
-			utilsClientIsDesktopStub.returns(true);
+			context.set('state.isMobile', false);
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
 			baseContextSetup.execute();
 
@@ -33,7 +31,7 @@ describe('News and Ratings base context setup', () => {
 		});
 
 		it('sets proper device custom key for mobile', () => {
-			utilsClientIsDesktopStub.returns(false);
+			context.set('state.isMobile', true);
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
 			baseContextSetup.execute();
 
@@ -42,7 +40,7 @@ describe('News and Ratings base context setup', () => {
 
 		it('sets proper page path based on meta tag - happy path', () => {
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
-			const getDataSettingsFromMetaTagStub = sandbox.stub(
+			const getDataSettingsFromMetaTagStub = global.sandbox.stub(
 				baseContextSetup,
 				'getDataSettingsFromMetaTag',
 			);
@@ -55,7 +53,7 @@ describe('News and Ratings base context setup', () => {
 
 		it('sets proper page path when it is empty based on meta tag', () => {
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
-			const getDataSettingsFromMetaTagStub = sandbox.stub(
+			const getDataSettingsFromMetaTagStub = global.sandbox.stub(
 				baseContextSetup,
 				'getDataSettingsFromMetaTag',
 			);
@@ -68,7 +66,7 @@ describe('News and Ratings base context setup', () => {
 
 		it('sets proper page path when it is complex based on meta tag', () => {
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
-			const getDataSettingsFromMetaTagStub = sandbox.stub(
+			const getDataSettingsFromMetaTagStub = global.sandbox.stub(
 				baseContextSetup,
 				'getDataSettingsFromMetaTag',
 			);
@@ -81,12 +79,12 @@ describe('News and Ratings base context setup', () => {
 
 		it('sets proper page path based - incorrect ad-settings meta tag', () => {
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
-			const getDataSettingsFromMetaTagStub = sandbox.stub(
+			const getDataSettingsFromMetaTagStub = global.sandbox.stub(
 				baseContextSetup,
 				'getDataSettingsFromMetaTag',
 			);
 			getDataSettingsFromMetaTagStub.returns(null);
-			const getUtagDataStub = sandbox.stub(baseContextSetup, 'getUtagData');
+			const getUtagDataStub = global.sandbox.stub(baseContextSetup, 'getUtagData');
 			getUtagDataStub.returns({ siteSection: 'home' });
 
 			baseContextSetup.execute();
@@ -96,12 +94,12 @@ describe('News and Ratings base context setup', () => {
 
 		it('sets proper page path based - no unit_name in ad-settings meta tag', () => {
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
-			const getDataSettingsFromMetaTagStub = sandbox.stub(
+			const getDataSettingsFromMetaTagStub = global.sandbox.stub(
 				baseContextSetup,
 				'getDataSettingsFromMetaTag',
 			);
 			getDataSettingsFromMetaTagStub.returns({ foo: 'bar' });
-			const getUtagDataStub = sandbox.stub(baseContextSetup, 'getUtagData');
+			const getUtagDataStub = global.sandbox.stub(baseContextSetup, 'getUtagData');
 			getUtagDataStub.returns({ siteSection: 'home' });
 
 			baseContextSetup.execute();
@@ -111,12 +109,12 @@ describe('News and Ratings base context setup', () => {
 
 		it('sets proper page path based - incorrect ad-settings meta tag and no data from utag data', () => {
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
-			const getDataSettingsFromMetaTagStub = sandbox.stub(
+			const getDataSettingsFromMetaTagStub = global.sandbox.stub(
 				baseContextSetup,
 				'getDataSettingsFromMetaTag',
 			);
 			getDataSettingsFromMetaTagStub.returns(null);
-			const getUtagDataStub = sandbox.stub(baseContextSetup, 'getUtagData');
+			const getUtagDataStub = global.sandbox.stub(baseContextSetup, 'getUtagData');
 			getUtagDataStub.returns({});
 
 			baseContextSetup.execute();
@@ -126,17 +124,77 @@ describe('News and Ratings base context setup', () => {
 
 		it('sets proper page path based - incorrect ad-settings meta tag and no utag', () => {
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
-			const getDataSettingsFromMetaTagStub = sandbox.stub(
+			const getDataSettingsFromMetaTagStub = global.sandbox.stub(
 				baseContextSetup,
 				'getDataSettingsFromMetaTag',
 			);
 			getDataSettingsFromMetaTagStub.returns(null);
-			const getUtagDataStub = sandbox.stub(baseContextSetup, 'getUtagData');
+			const getUtagDataStub = global.sandbox.stub(baseContextSetup, 'getUtagData');
 			getUtagDataStub.returns(undefined);
 
 			baseContextSetup.execute();
 
 			expect(context.get('custom.pagePath')).to.eq('');
+		});
+	});
+
+	describe('setupVideoOptions()', () => {
+		it('makes Anyclip applicable when it is enabled on backend via ad-settings param (ComicVine)', () => {
+			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
+			const getDataSettingsFromMetaTagStub = global.sandbox.stub(
+				baseContextSetup,
+				'getDataSettingsFromMetaTag',
+			);
+			getDataSettingsFromMetaTagStub.returns({ anyclip: 'active' });
+
+			baseContextSetup.execute();
+			const isApplicable = context.get('services.anyclip.isApplicable');
+
+			expect(isApplicable()).to.be.true;
+		});
+
+		it('does not make Anyclip applicable when it is disabled on backend (ComicVine)', () => {
+			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
+			const getDataSettingsFromMetaTagStub = global.sandbox.stub(
+				baseContextSetup,
+				'getDataSettingsFromMetaTag',
+			);
+			getDataSettingsFromMetaTagStub.returns();
+
+			baseContextSetup.execute();
+			const isApplicable = context.get('services.anyclip.isApplicable');
+
+			expect(isApplicable()).to.be.false;
+		});
+
+		// TODO: once backend responses in unified way let's remove the logic and test below (ADEN-12794)
+		it('makes Anyclip applicable when it is enabled on backend via targeting params (GameFAQs)', () => {
+			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
+			const getDataSettingsFromMetaTagStub = global.sandbox.stub(
+				baseContextSetup,
+				'getDataSettingsFromMetaTag',
+			);
+			getDataSettingsFromMetaTagStub.returns({ target_params: { anyclip: '1' } });
+
+			baseContextSetup.execute();
+			const isApplicable = context.get('services.anyclip.isApplicable');
+
+			expect(isApplicable()).to.be.true;
+		});
+
+		// TODO: once backend responses in unified way let's remove the logic and test below (ADEN-12794)
+		it('does not make Anyclip applicable when it is disabled on backend (GameFAQs)', () => {
+			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
+			const getDataSettingsFromMetaTagStub = global.sandbox.stub(
+				baseContextSetup,
+				'getDataSettingsFromMetaTag',
+			);
+			getDataSettingsFromMetaTagStub.returns({ target_params: { foo: 'bar' } });
+
+			baseContextSetup.execute();
+			const isApplicable = context.get('services.anyclip.isApplicable');
+
+			expect(isApplicable()).to.be.false;
 		});
 	});
 });

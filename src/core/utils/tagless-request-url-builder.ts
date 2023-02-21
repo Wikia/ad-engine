@@ -1,18 +1,18 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, Dictionary, Targeting } from '../models';
-import { config, context, slotService, trackingOptIn } from '../services';
+import { AdSlot, Dictionary } from '../models';
+import { config, slotService, SlotTargeting, targetingService, trackingOptIn } from '../services';
 import { targeting } from './targeting';
 
 export interface TaglessSlotOptions {
 	correlator: number;
-	targeting: Targeting;
+	targeting: SlotTargeting;
 	adUnit: string;
 	size: string;
 }
 
 export interface VastOptions {
 	correlator: number;
-	targeting: Targeting;
+	targeting: SlotTargeting;
 	videoAdUnitId: string;
 	contentSourceId: string;
 	customParams: string;
@@ -27,7 +27,7 @@ const vastBaseUrl = 'https://pubads.g.doubleclick.net/gampad/ads?';
 const correlator: number = Math.round(Math.random() * 10000000000);
 
 function getCustomParameters(slot: AdSlot, extraTargeting: Dictionary = {}): string {
-	const contextTargeting = context.get('targeting') || {};
+	const targetingData = targetingService.dump() || {};
 	const targeting = {};
 
 	function setTargetingValue(
@@ -41,8 +41,8 @@ function getCustomParameters(slot: AdSlot, extraTargeting: Dictionary = {}): str
 		}
 	}
 
-	Object.keys(contextTargeting).forEach((key) => {
-		setTargetingValue(key, contextTargeting[key]);
+	Object.keys(targetingData).forEach((key) => {
+		setTargetingValue(key, targetingData[key]);
 	});
 
 	communicationService.emit(eventsRepository.AD_ENGINE_INVALIDATE_SLOT_TARGETING, { slot });
@@ -87,7 +87,12 @@ export function buildVastUrl(
 		`correlator=${correlator}`,
 	];
 	const slot: AdSlot = slotService.get(slotName);
-	const ppid = context.get('targeting.ppid');
+	const ppid = targetingService.get('ppid');
+	const over18 = targetingService.get('over18');
+
+	if (over18) {
+		params.push(`over_18=${over18}`);
+	}
 
 	if (ppid) {
 		params.push(`ppid=${ppid}`);
@@ -130,11 +135,16 @@ export function buildVastUrl(
 }
 
 export function buildTaglessRequestUrl(options: Partial<TaglessSlotOptions> = {}): string {
-	const ppid = context.get('targeting.ppid');
+	const ppid = targetingService.get('ppid');
+	const over18 = targetingService.get('over18');
 	const params: string[] = [`c=${correlator}`, 'tile=1', 'd_imp=1'];
 
 	params.push(`iu=${options.adUnit}`);
 	params.push(`sz=${options.size}`);
+
+	if (over18) {
+		params.push(`over_18=${over18}`);
+	}
 
 	if (ppid) {
 		params.push(`ppid=${ppid}`);
