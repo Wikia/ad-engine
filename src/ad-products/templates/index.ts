@@ -1,4 +1,3 @@
-export { FloatingRail } from './floating-rail';
 export * from './interface/advertisement-label';
 export * from './interface/close-button';
 export * from './interface/video/ui-elements';
