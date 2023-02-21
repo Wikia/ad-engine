@@ -19,9 +19,9 @@ export class GamespotNoConsentModeVerifier implements DiProcess {
 	}
 
 	videoEmbeddedOnThePage() {
-		const video = document.querySelector('#video-rectangle');
+		const videoWrapper = document.querySelector('div[data-embed-type="video"]');
 
-		return video && window.utag_data?.pageType !== 'video_embed';
+		return videoWrapper && window.utag_data?.pageType !== 'video_embed';
 	}
 
 	emitAdEngineNoConsentModeEvent() {
