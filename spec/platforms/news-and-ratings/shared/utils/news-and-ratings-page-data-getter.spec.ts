@@ -80,4 +80,40 @@ describe('NewsAndRatingsPageDataGetter', () => {
 			expect(pagePath).to.eq('');
 		});
 	});
+
+	describe('setupVideoOptions()', () => {
+		it('makes Anyclip applicable when it is enabled on backend via ad-settings param (ComicVine)', () => {
+			pageDataGetterStub.returns({ anyclip: 'active' });
+
+			const isApplicable = pageDataGetter.isAnyclipApplicable();
+
+			expect(isApplicable).to.be.true;
+		});
+
+		it('does not make Anyclip applicable when it is disabled on backend (ComicVine)', () => {
+			pageDataGetterStub.returns({});
+
+			const isApplicable = pageDataGetter.isAnyclipApplicable();
+
+			expect(isApplicable).to.be.false;
+		});
+
+		// TODO: once backend responses in unified way let's remove the logic and test below (ADEN-12794)
+		it('makes Anyclip applicable when it is enabled on backend via targeting params (GameFAQs)', () => {
+			pageDataGetterStub.returns({ target_params: { anyclip: '1' } });
+
+			const isApplicable = pageDataGetter.isAnyclipApplicable();
+
+			expect(isApplicable).to.be.true;
+		});
+
+		// TODO: once backend responses in unified way let's remove the logic and test below (ADEN-12794)
+		it('does not make Anyclip applicable when it is disabled on backend (GameFAQs)', () => {
+			pageDataGetterStub.returns({ target_params: { foo: 'bar' } });
+
+			const isApplicable = pageDataGetter.isAnyclipApplicable();
+
+			expect(isApplicable).to.be.false;
+		});
+	});
 });

@@ -1,6 +1,13 @@
 import { context, utils } from '@wikia/ad-engine';
 
 export class NewsAndRatingsPageDataGetter {
+	isAnyclipApplicable(): boolean {
+		return (
+			!!this.getDataSettingsFromMetaTag()?.anyclip ||
+			!!this.getDataSettingsFromMetaTag()?.target_params?.anyclip
+		);
+	}
+
 	getPagePath(): string {
 		const dataWithPagePath = this.getDataSettingsFromMetaTag();
 		const pagePath = dataWithPagePath?.unit_name
