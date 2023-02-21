@@ -36,6 +36,8 @@ async function getBiddersPrices(slotName: string, bidders): Promise<Dictionary<s
 		bidder_30: transformBidderPrice('medianet'),
 		bidder_31: transformBidderPrice('roundel'),
 		bidder_32: transformBidderPrice('ogury'),
+		bidder_33: transformBidderPrice('criteo'),
+		bidder_34: transformBidderPrice('yahoossp'),
 		bidder_35: transformBidderPrice('freewheel'),
 	};
 }

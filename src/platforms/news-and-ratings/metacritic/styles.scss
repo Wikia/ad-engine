@@ -1,3 +1,13 @@
+@import '../shared/styles/uap-styles.scss';
+
+body {
+	@include uap-styles();
+
+	&.has-uap #top_header {
+		z-index: 201;
+	}
+}
+
 .gpt-ad {
 	text-align: center;
 

@@ -40,6 +40,7 @@ export class BiddersStateSetup implements DiProcess {
 
 		if (this.instantConfig.get('icA9Bidder')) {
 			context.set('bidders.a9.enabled', true);
+			context.set('bidders.coppaA9', this.instantConfig.get('icCoppaA9'));
 			context.set(
 				'bidders.a9.videoEnabled',
 				this.instantConfig.get('icA9VideoBidder') && hasFeaturedVideo,

@@ -2,20 +2,17 @@ import { utils } from '@wikia/core';
 import { NewsAndRatingsTargetingSetup } from '@wikia/platforms/news-and-ratings/shared/setup/context/targeting/news-and-ratings-targeting.setup';
 
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
 
 describe('News and Ratings Targeting Setup', () => {
-	const sandbox = createSandbox();
 	let queryStringGetStub;
 	let newsAndRatingsTargetingSetup;
 
 	beforeEach(() => {
-		queryStringGetStub = sandbox.stub(utils.queryString, 'get');
+		queryStringGetStub = global.sandbox.stub(utils.queryString, 'get');
 		newsAndRatingsTargetingSetup = new NewsAndRatingsTargetingSetup();
 	});
 
 	afterEach(() => {
-		sandbox.restore();
 		queryStringGetStub.resetHistory();
 	});
 
@@ -78,6 +75,19 @@ describe('News and Ratings Targeting Setup', () => {
 				franchise: 'test-franchise',
 				genre: 'test-genre',
 				user: 'test-user',
+			};
+
+			const parsedAdTags = newsAndRatingsTargetingSetup.parseAdTags(adTagsString);
+
+			expect(parsedAdTags).to.be.deep.eq(expectedParsedAdTags);
+		});
+
+		it('parseAdTags correctly decodes encoded values', () => {
+			const adTagsString = 'game=test-game&genre=Role-Playing%2CAction+RPG%2CBattle+Royale';
+
+			const expectedParsedAdTags = {
+				game: 'test-game',
+				genre: 'Role-Playing,Action RPG,Battle Royale',
 			};
 
 			const parsedAdTags = newsAndRatingsTargetingSetup.parseAdTags(adTagsString);

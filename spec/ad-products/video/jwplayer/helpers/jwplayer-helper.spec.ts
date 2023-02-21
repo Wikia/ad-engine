@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
 
 import { JWPlayerHelper } from '@wikia/ad-products/video/jwplayer/helpers/jwplayer-helper';
 import { context } from '@wikia/core';
@@ -10,13 +9,12 @@ type shouldPostrollAppear = boolean;
 type videoTestRow = [shouldPrerollAppear, shouldMidrollAppear, shouldPostrollAppear];
 
 describe('JWPlayerHelper', () => {
-	const sandbox = createSandbox();
 	let adSlotStub, helper;
 
 	describe('should play pre-, mid- and post-rolls depending on the settings', () => {
 		beforeEach(() => {
 			adSlotStub = {
-				isEnabled: sandbox.stub().returns(true),
+				isEnabled: global.sandbox.stub().returns(true),
 			};
 
 			helper = new JWPlayerHelper(adSlotStub, null, null);
@@ -27,8 +25,6 @@ describe('JWPlayerHelper', () => {
 		});
 
 		afterEach(() => {
-			sandbox.restore();
-
 			context.remove('options.video.playAdsOnNextVideo');
 			context.remove('options.video.isMidrollEnabled');
 			context.remove('options.video.isPostrollEnabled');

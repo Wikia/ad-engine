@@ -2,14 +2,12 @@ import { liveRamp } from '@wikia/ad-bidders';
 import { PrebidProvider } from '@wikia/ad-bidders/prebid';
 import { context } from '@wikia/core';
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
 
 const bidderConfig = {
 	enabled: false,
 };
 
 describe('Live Ramp', () => {
-	const sandbox = createSandbox();
 	const liveRampEnabledConfig = {
 		userSync: {
 			userIds: [
@@ -33,10 +31,6 @@ describe('Live Ramp', () => {
 		context.set('bidders.liveRampId.enabled', true);
 		context.set('options.optOutSale', false);
 		context.set('wiki.targeting.directedAtChildren', false);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
 	});
 
 	it('Prebid config includes LiveRamp setup', () => {

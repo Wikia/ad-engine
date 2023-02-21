@@ -7,7 +7,6 @@ import {
 } from '@wikia/ad-bidders/prebid/price-helper';
 import { context } from '@wikia/core';
 import { expect } from 'chai';
-import * as sinon from 'sinon';
 import { PbjsStub, stubPbjs } from '../../core/services/pbjs.stub';
 import { PrebidBidFactory } from './prebid-bid.factory';
 
@@ -51,19 +50,13 @@ describe('transformPriceFromCpm', () => {
 
 describe('getPrebidBestPrice', () => {
 	let adapters: Map<string, PrebidAdapter>;
-	let sandbox: sinon.SinonSandbox;
 	let pbjsStub: PbjsStub;
 	const bidderName = 'bidderA';
 
 	beforeEach(() => {
-		sandbox = sinon.createSandbox();
-		pbjsStub = stubPbjs(sandbox).pbjsStub;
+		pbjsStub = stubPbjs(global.sandbox).pbjsStub;
 		adapters = new Map();
-		sandbox.stub(adaptersRegistry, 'getAdapters').returns(adapters);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
+		global.sandbox.stub(adaptersRegistry, 'getAdapters').returns(adapters);
 	});
 
 	it('should return empty string if there is no price for bidder', async () => {
@@ -221,16 +214,10 @@ describe('getPrebidBestPrice', () => {
 
 describe('transformPriceFromBid', () => {
 	let adapter: PrebidAdapter;
-	let sandbox;
 
 	beforeEach(() => {
-		sandbox = sinon.createSandbox();
 		adapter = {} as PrebidAdapter;
-		sandbox.stub(adaptersRegistry, 'getAdapter').returns(adapter);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
+		global.sandbox.stub(adaptersRegistry, 'getAdapter').returns(adapter);
 	});
 
 	it(`should round price to DEFAULT_MAX_CPM (${DEFAULT_MAX_CPM}) if maxCpm is not present on adapter`, () => {

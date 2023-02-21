@@ -1,4 +1,4 @@
-import { context, Dictionary } from '@ad-engine/core';
+import { context, Dictionary, targetingService } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
 
@@ -17,10 +17,10 @@ export class RubiconDisplay extends PrebidAdapter {
 		this.customTargeting = {
 			s1: [
 				context.get('wiki.targeting.wikiIsTop1000')
-					? context.get('targeting.s1') || ''
+					? targetingService.get('s1') || ''
 					: 'not a top1k wiki',
 			],
-			lang: [context.get('targeting.wikiLanguage') || context.get('targeting.lang') || 'en'],
+			lang: [targetingService.get('wikiLanguage') || targetingService.get('lang') || 'en'],
 		};
 	}
 
@@ -39,22 +39,43 @@ export class RubiconDisplay extends PrebidAdapter {
 					sizes,
 				},
 			},
-			bids: [
-				{
-					bidder: this.bidderName,
-					params: {
-						position,
-						siteId,
-						zoneId,
-						accountId: this.accountId,
-						name: code,
-						keywords: ['rp.fastlane'],
-						inventory: {
-							...this.getTargeting(code, { ...(targeting || {}), ...this.customTargeting }),
-						},
+			bids: this.getBids(code, position, siteId, zoneId, targeting),
+		};
+	}
+
+	getBids(code, position, siteId, zoneId, targeting) {
+		if (Array.isArray(zoneId) && zoneId.length > 0) {
+			return zoneId.map((id) => ({
+				bidder: this.bidderName,
+				params: {
+					position,
+					siteId,
+					zoneId: id,
+					accountId: this.accountId,
+					name: code,
+					keywords: ['rp.fastlane'],
+					inventory: {
+						...this.getTargeting(code, { ...(targeting || {}), ...this.customTargeting }),
 					},
 				},
-			],
-		};
+			}));
+		}
+
+		return [
+			{
+				bidder: this.bidderName,
+				params: {
+					position,
+					siteId,
+					zoneId,
+					accountId: this.accountId,
+					name: code,
+					keywords: ['rp.fastlane'],
+					inventory: {
+						...this.getTargeting(code, { ...(targeting || {}), ...this.customTargeting }),
+					},
+				},
+			},
+		];
 	}
 }

@@ -8,14 +8,7 @@ export const basicContext = {
 	},
 	slots: {},
 	src: ['bingebot'],
-	targeting: {
-		skin: 'bingebot',
-	},
-	wiki: {
-		targeting: {
-			directedAtChildren: false,
-		},
-	},
+	wiki: {},
 	services: {
 		instantConfig: {
 			endpoint: 'https://services.fandom.com',

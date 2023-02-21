@@ -1,4 +1,4 @@
-import { context, DiProcess } from '@wikia/ad-engine';
+import { context, DiProcess, universalAdPackage } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -22,11 +22,9 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 			},
 			'skybox-nav': {
 				code: 'skybox-nav',
-				defaultSizes: [
-					[6, 6],
-					[5, 5],
-				],
+				defaultSizes: [[6, 6], [5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
 				targeting: {
+					loc: 'top',
 					pos_nr: 'nav',
 				},
 			},
@@ -121,12 +119,10 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 			},
 			'mobile-skybox-nav': {
 				code: 'mobile-skybox-nav',
-				defaultSizes: [
-					[6, 6],
-					[5, 5],
-				],
+				defaultSizes: [[6, 6], [5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
 				targeting: {
 					pos_nr: 'nav',
+					loc: 'top',
 				},
 			},
 			'mobile-native-top': {
@@ -298,9 +294,6 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 				},
 			},
 			video: {
-				targeting: {
-					rv: 1,
-				},
 				isVideo: true,
 			},
 		};

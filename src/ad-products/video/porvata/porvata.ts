@@ -3,7 +3,7 @@ import {
 	context,
 	SlotFiller,
 	slotService,
-	Targeting,
+	SlotTargeting,
 	templateService,
 	utils,
 } from '@ad-engine/core';
@@ -23,7 +23,7 @@ export interface PorvataTemplateParams {
 	slotName: string;
 	src: string;
 	startInViewportOnly?: boolean;
-	vastTargeting: Targeting;
+	vastTargeting: SlotTargeting;
 	viewportHookElement?: HTMLElement;
 	viewportOffsetBottom?: number;
 	viewportOffsetTop?: number;
@@ -46,7 +46,7 @@ export interface PorvataGamParams {
 	theme: string;
 	trackingDisabled: boolean;
 	type: string;
-	vastTargeting: Targeting;
+	vastTargeting: SlotTargeting;
 	vpaidMode: google.ima.ImaSdkSettings.VpaidMode;
 	width: number;
 }

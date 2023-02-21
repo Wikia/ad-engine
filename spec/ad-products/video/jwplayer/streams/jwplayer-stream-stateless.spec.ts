@@ -2,19 +2,13 @@ import { jwpEvents } from '@wikia/ad-products/video/jwplayer/streams/jwplayer-ev
 import { ofJwpEvent } from '@wikia/ad-products/video/jwplayer/streams/jwplayer-stream';
 import { createJwpStatelessStream } from '@wikia/ad-products/video/jwplayer/streams/jwplayer-stream-stateless';
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
 import { createJwplayerStub, JwplayerStub } from '../jwplayer.stub';
 
 describe('Jwplayer Stream Stateless', () => {
-	const sandbox = createSandbox();
 	let jwplayerStub: JwplayerStub;
 
 	beforeEach(() => {
-		jwplayerStub = createJwplayerStub(sandbox);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
+		jwplayerStub = createJwplayerStub(global.sandbox);
 	});
 
 	describe('all events', () => {

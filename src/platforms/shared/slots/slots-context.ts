@@ -100,8 +100,8 @@ class SlotsContext implements SlotsContextInterface {
 			slot.config.autoplay === true || slot.config.videoDepth > 1 ? '' : '-ctp';
 
 		slot.setConfigProperty('slotNameSuffix', clickToPlaySuffix || audioSuffix || '');
-		slot.setConfigProperty('targeting.audio', audioSuffix ? 'yes' : 'no');
-		slot.setConfigProperty('targeting.ctp', clickToPlaySuffix ? 'yes' : 'no');
+		slot.setTargetingConfigProperty('audio', audioSuffix ? 'yes' : 'no');
+		slot.setTargetingConfigProperty('ctp', clickToPlaySuffix ? 'yes' : 'no');
 	}
 }
 

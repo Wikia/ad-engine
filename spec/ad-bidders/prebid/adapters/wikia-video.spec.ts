@@ -1,17 +1,10 @@
 import { WikiaVideo } from '@wikia/ad-bidders/prebid/adapters/wikia-video';
 import { assert, expect } from 'chai';
-import { createSandbox } from 'sinon';
 import { stubPbjs } from '../../../core/services/pbjs.stub';
 
 describe('WikiaVideo bidder adapter', () => {
-	const sandbox = createSandbox();
-
 	beforeEach(() => {
-		stubPbjs(sandbox);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
+		stubPbjs(global.sandbox);
 	});
 
 	it('can be enabled only via query parameter', () => {
@@ -66,11 +59,11 @@ describe('WikiaVideo bidder adapter', () => {
 				},
 			],
 		};
-		const clock = sandbox.useFakeTimers();
-		const addBidResponseSpy = sandbox.spy();
+		const clock = global.sandbox.useFakeTimers();
+		const addBidResponseSpy = global.sandbox.spy();
 
-		sandbox.stub(WikiaVideo, 'getVastUrl').returns('https://fake-vast-url');
-		sandbox.stub(wikiaVideo, 'getPrice').returns(20);
+		global.sandbox.stub(WikiaVideo, 'getVastUrl').returns('https://fake-vast-url');
+		global.sandbox.stub(wikiaVideo, 'getPrice').returns(20);
 
 		wikiaVideo.addBids(bidRequest, addBidResponseSpy, () => {
 			assert.ok(addBidResponseSpy.called);
