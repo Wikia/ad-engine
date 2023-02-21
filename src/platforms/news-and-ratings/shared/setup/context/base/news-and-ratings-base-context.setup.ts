@@ -77,10 +77,18 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		context.set('services.anyclip.enabled', this.instantConfig.get('icAnyclipPlayer'));
 		context.set('services.anyclip.isApplicable', () => {
 			this.log(
-				'Anyclip setting:',
+				'Anyclip settings - ad settings param: ',
+				this.newsAndRatingsPageDataGetter.getDataSettingsFromMetaTag()?.anyclip,
+			);
+			// TODO: once backend responses in unified way let's remove the logic and the tests connected to the targeting param (ADEN-12794)
+			this.log(
+				'Anyclip settings - targeting param: ',
 				this.newsAndRatingsPageDataGetter.getDataSettingsFromMetaTag()?.target_params?.anyclip,
 			);
-			return this.newsAndRatingsPageDataGetter.getDataSettingsFromMetaTag()?.target_params?.anyclip;
+			return (
+				!!this.newsAndRatingsPageDataGetter.getDataSettingsFromMetaTag()?.anyclip ||
+				!!this.newsAndRatingsPageDataGetter.getDataSettingsFromMetaTag()?.target_params?.anyclip
+			);
 		});
 	}
 
