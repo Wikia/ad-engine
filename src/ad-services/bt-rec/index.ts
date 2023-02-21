@@ -22,7 +22,7 @@ class BTRec {
 		if (context.get('options.wad.btRec.CoppaMode') === 'context') {
 			globalContextService.setValue(GlobalContextCategories.partners, {
 				blockthrough: {
-					directedAtChildren: context.get('wiki.targeting.directedAtChildren'),
+					directedAtChildren: !!context.get('wiki.targeting.directedAtChildren'),
 				},
 			});
 		}
