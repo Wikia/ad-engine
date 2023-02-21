@@ -1,11 +1,4 @@
-import {
-	context,
-	DiProcess,
-	InstantConfigService,
-	setupNpaContext,
-	setupRdpContext,
-	utils,
-} from '@wikia/ad-engine';
+import { context, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -17,8 +10,6 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		this.setupIdentityOptions();
 		this.setupServicesOptions();
 		this.setupVideoOptions();
-		setupNpaContext();
-		setupRdpContext();
 	}
 
 	private setBaseState(): void {
