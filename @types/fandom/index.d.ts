@@ -20,25 +20,29 @@ interface ITrackingParameters {
 	pvUID: string;
 }
 
+interface ISiteParameters {
+	categories: [];
+	directedAtChildren: boolean;
+	esrbRating: string;
+	mpaRating: string;
+	siteName: string;
+	top1000: boolean | null;
+	tags: TaxonomyTags;
+	taxonomy: string[];
+}
+
+interface IPageParameters {
+	articleId: number;
+	lang: string;
+	pageId: number;
+	pageName: string;
+	pageType: string;
+	tags: TaxonomyTags;
+	wordCount: number;
+}
+
 interface WindowFandomContext {
-	site: {
-		categories: [];
-		directedAtChildren: boolean;
-		esrbRating: string;
-		mpaRating: string;
-		siteName: string;
-		top1000: boolean | null;
-		tags: TaxonomyTags;
-		taxonomy: string[];
-	};
-	page: {
-		articleId: number;
-		lang: string;
-		pageId: number;
-		pageName: string;
-		pageType: string;
-		tags: TaxonomyTags;
-		wordCount: number;
-	};
+	site: ISiteParameters;
+	page: IPageParameters;
 	tracking?: ITrackingParameters;
 }
