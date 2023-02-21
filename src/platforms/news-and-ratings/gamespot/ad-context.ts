@@ -37,9 +37,5 @@ export const basicContext = {
 		},
 	},
 	slots: {},
-	targeting: {
-		seg: '',
-		aamid: '',
-	},
 	src: ['gamespot'],
 };

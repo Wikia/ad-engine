@@ -8,16 +8,16 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 	execute(): void {
 		this.setBaseState();
 		this.setupIdentityOptions();
+		this.setupServicesOptions();
 		this.setupVideoOptions();
 	}
 
 	private setBaseState(): void {
-		const isDesktop = utils.client.isDesktop();
-
-		context.set('custom.device', isDesktop ? '' : 'm');
+		context.set('custom.device', context.get('state.isMobile') ? 'm' : '');
 		context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441);
 		context.set('custom.pagePath', this.getPagePath());
 		context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src'));
+		context.set('options.tracking.slot.status', this.instantConfig.get('icSlotTracking'));
 	}
 
 	private setupIdentityOptions() {
@@ -31,6 +31,10 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 
 		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
 		context.set('services.ppidRepository', this.instantConfig.get('icPpidRepository'));
+	}
+
+	private setupServicesOptions() {
+		context.set('services.confiant.propertyId', 'IOegabOoWb7FyEI1AmEa9Ki-5AY');
 	}
 
 	private setupVideoOptions() {
@@ -65,6 +69,23 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 			this.instantConfig.get('icComscoreJwpTracking'),
 		);
 		context.set('options.video.pauseJWPlayerAd', this.instantConfig.get('icPauseJWPlayerAd'));
+
+		context.set('services.anyclip.enabled', this.instantConfig.get('icAnyclipPlayer'));
+		context.set('services.anyclip.isApplicable', () => {
+			this.log(
+				'Anyclip settings - ad settings param: ',
+				this.getDataSettingsFromMetaTag()?.anyclip,
+			);
+			// TODO: once backend responses in unified way let's remove the logic and the tests connected to the targeting param (ADEN-12794)
+			this.log(
+				'Anyclip settings - targeting param: ',
+				this.getDataSettingsFromMetaTag()?.target_params?.anyclip,
+			);
+			return (
+				!!this.getDataSettingsFromMetaTag()?.anyclip ||
+				!!this.getDataSettingsFromMetaTag()?.target_params?.anyclip
+			);
+		});
 	}
 
 	private shouldSwitchGamToRV() {
@@ -103,7 +124,7 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 
 	getDataSettingsFromMetaTag() {
 		const adSettingsJson = document.getElementById('ad-settings')?.getAttribute('data-settings');
-		utils.logger('setup', 'Ad settings: ', adSettingsJson);
+		this.log('Ad settings: ', adSettingsJson);
 
 		if (!adSettingsJson) {
 			return null;
@@ -112,14 +133,18 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		try {
 			return JSON.parse(adSettingsJson);
 		} catch (e) {
-			utils.logger('setup', 'Could not parse JSON');
+			this.log('Could not parse JSON');
 			return null;
 		}
 	}
 
 	getUtagData() {
 		const utagData = window.utag_data;
-		utils.logger('setup', 'utag data: ', utagData);
+		this.log('utag data: ', utagData);
 		return utagData;
+	}
+
+	private log(...logValues) {
+		utils.logger('setup', ...logValues);
 	}
 }

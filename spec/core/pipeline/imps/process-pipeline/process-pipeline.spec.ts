@@ -2,10 +2,9 @@ import { conditional, DiProcess, parallel, ProcessPipeline, sequential } from '@
 import { wait } from '@wikia/core/utils';
 import { Container } from '@wikia/dependency-injection';
 import { expect } from 'chai';
-import { createSandbox, SinonSpy } from 'sinon';
+import { SinonSpy } from 'sinon';
 
 describe('ProcessPipeline', () => {
-	const sandbox = createSandbox();
 	let spy: SinonSpy;
 
 	class ClassProcess implements DiProcess {
@@ -15,11 +14,7 @@ describe('ProcessPipeline', () => {
 	}
 
 	beforeEach(() => {
-		spy = sandbox.spy();
-	});
-
-	afterEach(() => {
-		sandbox.restore();
+		spy = global.sandbox.spy();
 	});
 
 	it('should work', async () => {

@@ -1,6 +1,6 @@
-import { DeviceMode } from '../models/device-mode';
+import { utils } from '@wikia/ad-engine';
 
-export function getWikiaContext(device: DeviceMode): any {
+export function getWikiaContext(device: utils.DeviceMode): any {
 	const context = {
 		desktop: {
 			enabled: false,

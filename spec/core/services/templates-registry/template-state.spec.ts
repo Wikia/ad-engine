@@ -1,28 +1,23 @@
 import { TemplateTransition } from '@wikia/core';
 import { TemplateState } from '@wikia/core/services/templates-registry/template-state';
 import { assert, expect } from 'chai';
-import { createSandbox, SinonStub } from 'sinon';
+import { SinonStub } from 'sinon';
 import {
 	createMinimalTemplateStateHandlerStub,
 	createTemplateStateHandlerStub,
 } from './template-state-handler.stub';
 
 describe('Template State', () => {
-	const sandbox = createSandbox();
 	let templateTransitionStub: SinonStub;
 
 	beforeEach(() => {
-		templateTransitionStub = sandbox.stub().resolves();
-	});
-
-	afterEach(() => {
-		sandbox.restore();
+		templateTransitionStub = global.sandbox.stub().resolves();
 	});
 
 	it('should transition to and from a state', () => {
-		const handlerStub1 = createTemplateStateHandlerStub(sandbox);
-		const handlerStub2 = createTemplateStateHandlerStub(sandbox);
-		const handlerStub3 = createMinimalTemplateStateHandlerStub(sandbox);
+		const handlerStub1 = createTemplateStateHandlerStub(global.sandbox);
+		const handlerStub2 = createTemplateStateHandlerStub(global.sandbox);
+		const handlerStub3 = createMinimalTemplateStateHandlerStub(global.sandbox);
 		const instance = new TemplateState('mock', [handlerStub1, handlerStub2, handlerStub3]);
 
 		instance.enter(templateTransitionStub);
@@ -41,7 +36,7 @@ describe('Template State', () => {
 	});
 
 	it('should destroy', async () => {
-		const handlerStub1 = createTemplateStateHandlerStub(sandbox);
+		const handlerStub1 = createTemplateStateHandlerStub(global.sandbox);
 		const instance = new TemplateState('mock', [handlerStub1]);
 
 		await instance.destroy();
@@ -49,7 +44,7 @@ describe('Template State', () => {
 	});
 
 	it('should transition out of a state', async () => {
-		const handlerStub = createTemplateStateHandlerStub(sandbox);
+		const handlerStub = createTemplateStateHandlerStub(global.sandbox);
 		const instance = new TemplateState('mock', [handlerStub]);
 
 		handlerStub.onEnter.callsFake((stateTransition) => {
@@ -62,7 +57,7 @@ describe('Template State', () => {
 	});
 
 	it('should throw when attempting second transition if allowMulticast set to false', async () => {
-		const handlerStub = createTemplateStateHandlerStub(sandbox);
+		const handlerStub = createTemplateStateHandlerStub(global.sandbox);
 		const instance = new TemplateState('mock', [handlerStub]);
 		let stateTransition: TemplateTransition;
 
@@ -93,12 +88,12 @@ describe('Template State', () => {
 	});
 
 	it('should postpone transition till all handlers enter', (done) => {
-		const handlerStub1 = createTemplateStateHandlerStub(sandbox);
-		const handlerStub2 = createTemplateStateHandlerStub(sandbox);
+		const handlerStub1 = createTemplateStateHandlerStub(global.sandbox);
+		const handlerStub2 = createTemplateStateHandlerStub(global.sandbox);
 		const instance = new TemplateState('mock', [handlerStub1, handlerStub2]);
 
 		templateTransitionStub.callsFake(() => {
-			sandbox.assert.callOrder(handlerStub1.onEnter, handlerStub2.onEnter);
+			global.sandbox.assert.callOrder(handlerStub1.onEnter, handlerStub2.onEnter);
 			assert(handlerStub1.onEnter.calledOnce);
 			assert(handlerStub2.onEnter.calledOnce);
 			assert(handlerStub1.onLeave.callCount === 0);

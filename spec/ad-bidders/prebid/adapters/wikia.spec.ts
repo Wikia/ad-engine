@@ -1,17 +1,10 @@
 import { Wikia } from '@wikia/ad-bidders/prebid/adapters/wikia';
 import { assert, expect } from 'chai';
-import { createSandbox } from 'sinon';
 import { stubPbjs } from '../../../core/services/pbjs.stub';
 
 describe('Wikia bidder adapter', () => {
-	const sandbox = createSandbox();
-
 	beforeEach(() => {
-		stubPbjs(sandbox);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
+		stubPbjs(global.sandbox);
 	});
 
 	it('can be enabled only via query parameter', () => {
@@ -73,10 +66,10 @@ describe('Wikia bidder adapter', () => {
 		const responseCpm = 20;
 		const responseAd =
 			'<div style="background: rgb(0, 183, 224); color: rgb(255, 255, 255); font-family: sans-serif; width: 728px; height: 90px; text-align: center;"><p style="font-weight: bold; margin: 0px; padding-top: 10px;"></p><small></small></div>';
-		const clock = sandbox.useFakeTimers();
-		const addBidResponseSpy = sandbox.spy();
+		const clock = global.sandbox.useFakeTimers();
+		const addBidResponseSpy = global.sandbox.spy();
 
-		sandbox.stub(wikia, 'getPrice').returns(responseCpm);
+		global.sandbox.stub(wikia, 'getPrice').returns(responseCpm);
 
 		wikia.addBids(bidRequest, addBidResponseSpy, () => {
 			assert.ok(addBidResponseSpy.called);
