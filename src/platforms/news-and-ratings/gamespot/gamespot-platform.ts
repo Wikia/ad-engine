@@ -11,13 +11,13 @@ import {
 	InfiniteScrollObserverSetup,
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
-	NewsAndRatingsDynamicSlotsSetup,
 	NewsAndRatingsTargetingSetup,
 	NewsAndRatingsWadSetup,
 	SeamlessContentObserverSetup,
 } from '../shared';
 import { basicContext } from './ad-context';
 import { GamespotA9ConfigSetup } from './setup/context/a9/gamespot-a9-config.setup';
+import { GamespotDynamicSlotsSetup } from './setup/context/dynamic-slots/gamespot-dynamic-slots.setup';
 import { GamespotPrebidConfigSetup } from './setup/context/prebid/gamespot-prebid-config.setup';
 import { GamespotSlotsContextSetup } from './setup/context/slots/gamespot-slots-context.setup';
 import { GamespotTargetingSetup } from './setup/context/targeting/gamespot-targeting.setup';
@@ -40,7 +40,7 @@ export class GameSpotPlatform {
 			NewsAndRatingsTargetingSetup,
 			GamespotTargetingSetup,
 			GamespotSlotsContextSetup,
-			NewsAndRatingsDynamicSlotsSetup,
+			GamespotDynamicSlotsSetup,
 			GamespotPrebidConfigSetup,
 			GamespotA9ConfigSetup,
 			BiddersStateSetup,
