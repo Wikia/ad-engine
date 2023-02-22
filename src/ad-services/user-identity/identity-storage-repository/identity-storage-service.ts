@@ -20,7 +20,7 @@ class IdentityStorageService {
 	}
 
 	private isDeprecated(localData: IdentityStorageDto): boolean {
-		const timeDifference = context.get('services.identityTtl');
+		const timeDifference = context.get('services.identityTtl') || 7 * 24 * 60 * 60 * 1000; // Fallback : days * hours * minutes * seconds * miliseconds;
 		const lastWeek = Date.now() - timeDifference;
 		return !localData.timestamp || localData.timestamp - lastWeek < 0;
 	}
