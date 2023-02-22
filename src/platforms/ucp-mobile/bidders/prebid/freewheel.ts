@@ -3,7 +3,7 @@ export function getFreewheelContext(): object {
 		enabled: false,
 		slots: {
 			featured: {
-				zoneId: '32563810',
+				zoneId: '32563826',
 			},
 		},
 	};
