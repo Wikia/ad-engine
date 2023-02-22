@@ -9,7 +9,7 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class TvGuidePageChangeAdsMode implements DiProcess {
+export class TvGuidePageChangeAdsObserver implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,
 		private bidders: Bidders,
