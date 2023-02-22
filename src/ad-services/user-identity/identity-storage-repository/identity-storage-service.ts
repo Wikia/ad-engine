@@ -1,11 +1,9 @@
-import { targetingService, UniversalStorage, utils } from '@ad-engine/core';
+import { context, targetingService, UniversalStorage, utils } from '@ad-engine/core';
 import { ActiveData } from '../adms-identity-repository/adms-actions';
 import { identityStorageClient } from './identity-storage-client';
 import { IdentityStorageDto } from './identity-storage-dto';
 
 class IdentityStorageService {
-	WEEK_DIFFERENCE = 7 * 24 * 60 * 60 * 1000; // days * hours * minutes * seconds * miliseconds
-
 	constructor(private storage: UniversalStorage) {}
 
 	async get(): Promise<IdentityStorageDto> {
@@ -22,7 +20,8 @@ class IdentityStorageService {
 	}
 
 	private isDeprecated(localData: IdentityStorageDto): boolean {
-		const lastWeek = Date.now() - this.WEEK_DIFFERENCE;
+		const timeDifference = context.get('services.identityTtl');
+		const lastWeek = Date.now() - timeDifference;
 		return !localData.timestamp || localData.timestamp - lastWeek < 0;
 	}
 

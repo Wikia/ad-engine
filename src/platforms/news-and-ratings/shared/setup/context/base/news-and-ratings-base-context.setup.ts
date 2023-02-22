@@ -31,6 +31,7 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 
 		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
 		context.set('services.ppidRepository', this.instantConfig.get('icPpidRepository'));
+		context.set('services.identityTtl', this.instantConfig.get('icIdentityTtl'));
 	}
 
 	private setupServicesOptions() {
