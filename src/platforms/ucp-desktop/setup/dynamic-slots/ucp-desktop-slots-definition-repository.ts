@@ -201,28 +201,4 @@ export class UcpDesktopSlotsDefinitionRepository {
 	private isFloorAdhesionApplicable(): boolean {
 		return this.instantConfig.get('icFloorAdhesion') && !context.get('custom.hasFeaturedVideo');
 	}
-
-	getInvisibleHighImpactConfig(): SlotSetupDefinition {
-		if (!this.isInvisibleHighImpactApplicable()) {
-			return;
-		}
-
-		const slotName = 'invisible_high_impact_2';
-
-		return {
-			slotCreatorConfig: {
-				slotName,
-				anchorSelector: '.page',
-				insertMethod: 'before',
-				classList: ['hide', 'ad-slot'],
-			},
-			activator: () => {
-				context.push('state.adStack', { id: slotName });
-			},
-		};
-	}
-
-	private isInvisibleHighImpactApplicable(): boolean {
-		return !this.instantConfig.get('icFloorAdhesion') && !context.get('custom.hasFeaturedVideo');
-	}
 }
