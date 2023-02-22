@@ -186,15 +186,6 @@ export class BaseContextSetup implements DiProcess {
 			this.instantConfig.get('icLiveRampATSAnalytics'),
 		);
 		context.set('bidders.prebid.native.enabled', this.instantConfig.get('icPrebidNative'));
-
-		context.set(
-			'templates.safeFanTakeoverElement.lineItemIds',
-			this.instantConfig.get('icSafeFanTakeoverLineItemIds'),
-		);
-		context.set(
-			'templates.safeFanTakeoverElement.unstickTimeout',
-			this.instantConfig.get('icSafeFanTakeoverUnstickTimeout'),
-		);
 		context.set(
 			'templates.sizeOverwritingMap',
 			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes,

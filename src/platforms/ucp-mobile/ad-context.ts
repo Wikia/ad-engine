@@ -55,12 +55,7 @@ export const basicContext = {
 			'/{targeting.skin}-{targeting.original_host}-{targeting.s2}' +
 			'/{custom.dbNameForAdUnit}-{targeting.s0}',
 	},
-	templates: {
-		safeFanTakeoverElement: {
-			boxadSlotNames: ['top_boxad', 'mobile_prefooter'],
-			boxadSize: [300, 251],
-		},
-	},
+	templates: {},
 	services: {
 		durationMedia: {
 			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',

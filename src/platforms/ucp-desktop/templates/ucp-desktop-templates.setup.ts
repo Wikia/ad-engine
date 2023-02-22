@@ -3,7 +3,6 @@ import {
 	DiProcess,
 	logTemplates,
 	PorvataTemplate,
-	SafeFanTakeoverElement,
 	TemplateRegistry,
 	templateService,
 } from '@wikia/ad-engine';
@@ -37,7 +36,6 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 		);
 
 		templateService.register(PorvataTemplate, getOutstreamConfig());
-		templateService.register(SafeFanTakeoverElement);
 
 		this.stickedBoxadHelper.initialize({
 			slotName: 'top_boxad',
