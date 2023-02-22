@@ -175,7 +175,6 @@ export class BaseContextSetup implements DiProcess {
 	private setMiscContext(): void {
 		this.instantConfig.get('icLABradorTest');
 
-		context.set('options.initCall', this.instantConfig.get('icLayoutInitializerSlot'));
 		context.set('options.performanceAds', this.instantConfig.get('icPerformanceAds'));
 		context.set('pubmatic.identityHub.enabled', this.instantConfig.get('icPubmaticIdentityHub'));
 
