@@ -23,7 +23,7 @@ export class Captify extends BaseServiceSetup {
 	}
 
 	private overwritePropertyIdIfPresent() {
-		const contextPropertyId = context.get('services.confiant.propertyId');
+		const contextPropertyId = context.get('services.captify.propertyId');
 
 		this.propertyId = contextPropertyId ? contextPropertyId : this.propertyId;
 	}
