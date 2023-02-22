@@ -17,8 +17,8 @@ function createVideoElement(): HTMLVideoElement {
 function setSlotProperties(slot: AdSlot, videoSettings: PorvataSettings): void {
 	slot.setConfigProperty('autoplay', videoSettings.isAutoPlay());
 	slot.setConfigProperty('audio', !videoSettings.isAutoPlay());
-	slot.setConfigProperty('targeting.autoplay', videoSettings.isAutoPlay() ? 'yes' : 'no');
-	slot.setConfigProperty('targeting.audio', !videoSettings.isAutoPlay() ? 'yes' : 'no');
+	slot.setTargetingConfigProperty('autoplay', videoSettings.isAutoPlay() ? 'yes' : 'no');
+	slot.setTargetingConfigProperty('audio', !videoSettings.isAutoPlay() ? 'yes' : 'no');
 }
 
 function getPlugins(settings: PorvataSettings): PorvataPlugin[] {

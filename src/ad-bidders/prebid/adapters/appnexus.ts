@@ -1,4 +1,4 @@
-import { context, Dictionary } from '@ad-engine/core';
+import { context, Dictionary, targetingService } from '@ad-engine/core';
 import { PrebidNativeConfig } from '../native';
 import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
@@ -86,7 +86,7 @@ export class Appnexus extends PrebidAdapter {
 		let placement = position;
 
 		if (position === 'mobile') {
-			const vertical = context.get('targeting.mappedVerticalName');
+			const vertical = targetingService.get('mappedVerticalName');
 
 			placement = vertical && this.placements[vertical] ? vertical : 'other';
 		}

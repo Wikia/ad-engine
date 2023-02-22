@@ -1,12 +1,9 @@
 import { context } from '@wikia/core';
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
 
 function baz(): void {}
 
 describe('context-service', () => {
-	const sandbox = createSandbox();
-
 	beforeEach(() => {
 		context.extend({
 			foo: {
@@ -54,8 +51,8 @@ describe('context-service', () => {
 
 	it('execute onChange leaf and parent callbacks', () => {
 		const callbacks = {
-			foo: sandbox.spy(),
-			fooBar: sandbox.spy(),
+			foo: global.sandbox.spy(),
+			fooBar: global.sandbox.spy(),
 		};
 
 		context.onChange('foo', callbacks.foo);
@@ -76,8 +73,8 @@ describe('context-service', () => {
 
 	it('remove child event listener', () => {
 		const callbacks = {
-			foo: sandbox.spy(),
-			fooBar: sandbox.spy(),
+			foo: global.sandbox.spy(),
+			fooBar: global.sandbox.spy(),
 		};
 
 		context.onChange('foo', callbacks.foo);
@@ -92,8 +89,8 @@ describe('context-service', () => {
 
 	it('remove parent event listener', () => {
 		const callbacks = {
-			foo: sandbox.spy(),
-			fooBar: sandbox.spy(),
+			foo: global.sandbox.spy(),
+			fooBar: global.sandbox.spy(),
 		};
 
 		context.onChange('foo', callbacks.foo);

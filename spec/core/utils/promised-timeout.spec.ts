@@ -1,6 +1,6 @@
 import { utils } from '@wikia/core';
 import { expect } from 'chai';
-import { createSandbox, SinonFakeTimers, SinonSandbox } from 'sinon';
+import { SinonFakeTimers } from 'sinon';
 
 /**
  * The use of Promise.resolve() is required for testing Promise-based code.
@@ -10,16 +10,10 @@ import { createSandbox, SinonFakeTimers, SinonSandbox } from 'sinon';
  */
 
 describe('buildPromisedTimeout', () => {
-	let sandbox: SinonSandbox;
 	let clock: SinonFakeTimers;
 
 	beforeEach(() => {
-		sandbox = createSandbox();
-		clock = sandbox.useFakeTimers();
-	});
-
-	afterEach(() => {
-		sandbox.restore();
+		clock = global.sandbox.useFakeTimers();
 	});
 
 	it('should resolve after provided time passes', async () => {

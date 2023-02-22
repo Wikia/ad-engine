@@ -1,4 +1,4 @@
-import { context } from '../services';
+import { context, targetingService } from '../services';
 
 class StringBuilder {
 	build(string: string, parameters: any = {}): string {
@@ -23,6 +23,10 @@ class StringBuilder {
 						}
 						value = value[segment];
 					}
+				}
+
+				if (typeof value === 'undefined' && key.startsWith('targeting.')) {
+					value = targetingService.get(key.replace('targeting.', ''));
 				}
 
 				if (typeof value === 'undefined') {

@@ -38,11 +38,11 @@ export class F2Platform {
 		// Config
 		this.pipeline.add(
 			() => context.extend(basicContext),
+			() => context.set('state.isMobile', f2env.isPageMobile),
 			PlatformContextSetup,
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
 			F2IocSetup,
 			TrackingParametersSetup,
-			() => context.set('state.isMobile', f2env.isPageMobile),
 			F2TargetingSetup,
 			LoadTimesSetup,
 			F2BaseContextSetup,
