@@ -9,6 +9,7 @@ import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import {
 	InfiniteScrollObserverSetup,
+	LazyLoadedSlotsContextSetup,
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsTargetingSetup,
@@ -40,6 +41,7 @@ export class GameSpotPlatform {
 			NewsAndRatingsTargetingSetup,
 			GamespotTargetingSetup,
 			GamespotSlotsContextSetup,
+			LazyLoadedSlotsContextSetup,
 			GamespotDynamicSlotsSetup,
 			GamespotPrebidConfigSetup,
 			GamespotA9ConfigSetup,
