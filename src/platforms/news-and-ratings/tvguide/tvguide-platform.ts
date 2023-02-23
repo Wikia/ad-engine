@@ -22,17 +22,19 @@ import {
 	NewsAndRatingsWadSetup,
 } from '../shared';
 import { basicContext } from './ad-context';
-import { TvGuidePageChangeAdsMode } from './modes/tvguide-page-change-ads-mode';
 import { TvGuideA9ConfigSetup } from './setup/context/a9/tvguide-a9-config.setup';
 import { TvGuidePrebidConfigSetup } from './setup/context/prebid/tvguide-prebid-config-setup.service';
 import { TvGuideSlotsContextSetup } from './setup/context/slots/tvguide-slots-context.setup';
 import { TvGuideTargetingSetup } from './setup/context/targeting/tvguide-targeting.setup';
 import { TvGuideDynamicSlotsSetup } from './setup/dynamic-slots/tvguide-dynamic-slots.setup';
+import { TvGuidePageChangeAdsObserver } from './setup/page-change-observers/tvguide-page-change-ads-observer';
+import { TvGuideSeamlessContentObserverSetup } from './setup/page-change-observers/tvguide-seamless-content-observer.setup';
 import { TvGuideTemplatesSetup } from './templates/tvguide-templates.setup';
 
 @Injectable()
 export class TvGuidePlatform {
 	private currentUrl = '';
+	private currentPageViewGuid;
 
 	constructor(private pipeline: ProcessPipeline) {}
 
@@ -56,23 +58,33 @@ export class TvGuidePlatform {
 			TvGuideTemplatesSetup,
 			NewsAndRatingsAdsMode,
 			TrackingSetup,
+			TvGuideSeamlessContentObserverSetup,
 		);
 
 		this.pipeline.execute();
 	}
 
 	setupPageChangeWatcher(container: Container) {
-		const config = { subtree: true, childList: true };
+		const config = { subtree: false, childList: true };
 		const observer = new MutationObserver(() => {
+			if (!this.currentPageViewGuid) {
+				this.currentPageViewGuid = window.utag_data?.pageViewGuid;
+			}
+
 			if (!this.currentUrl) {
 				this.currentUrl = location.href;
 				return;
 			}
 
-			if (this.currentUrl !== location.href) {
-				utils.logger('SPA', 'url changed', location.href);
+			if (
+				this.currentUrl !== location.href &&
+				this.currentPageViewGuid !== window.utag_data?.pageViewGuid
+			) {
+				utils.logger('pageChangeWatcher', 'SPA', 'url changed', location.href);
 
 				this.currentUrl = location.href;
+				this.currentPageViewGuid = window.utag_data?.pageViewGuid;
+
 				communicationService.emit(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
 				targetingService.clear();
 
@@ -84,7 +96,8 @@ export class TvGuidePlatform {
 						TvGuideTargetingSetup,
 						NewsAndRatingsTargetingSetup,
 						TvGuideSlotsContextSetup,
-						TvGuidePageChangeAdsMode,
+						TvGuidePageChangeAdsObserver,
+						TvGuideSeamlessContentObserverSetup,
 					)
 					.execute();
 			}
