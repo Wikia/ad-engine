@@ -27,8 +27,8 @@ export class Freewheel extends PrebidAdapter {
 				{
 					bidder: this.bidderName,
 					params: {
-						zoneId,
 						format: 'instream',
+						zoneId,
 					},
 				},
 			],
