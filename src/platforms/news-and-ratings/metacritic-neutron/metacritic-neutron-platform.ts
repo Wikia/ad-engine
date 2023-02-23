@@ -1,4 +1,4 @@
-import { Injectable } from '@wikia/dependency-injection';
+import { Container, Injectable } from '@wikia/dependency-injection';
 
 import {
 	BiddersStateSetup,
@@ -7,7 +7,14 @@ import {
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
-import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
+import {
+	communicationService,
+	context,
+	eventsRepository,
+	ProcessPipeline,
+	targetingService,
+	utils,
+} from '@wikia/ad-engine';
 
 import {
 	NewsAndRatingsAdsMode,
@@ -21,10 +28,13 @@ import { MetacriticNeutronPrebidConfigSetup } from './setup/context/prebid/metac
 import { MetacriticNeutronSlotsContextSetup } from './setup/context/slots/metacritic-neutron-slots-context.setup';
 import { MetacriticNeutronTargetingSetup } from './setup/context/targeting/metacritic-neutron-targeting.setup';
 import { MetacriticNeutronDynamicSlotsSetup } from './setup/dynamic-slots/metacritic-neutron-dynamic-slots.setup';
+import { MetacriticNeutronPageChangeAdsObserver } from './setup/page-change-observers/metacritic-neutron-page-change-ads-observer.service';
 import { MetacriticNeutronTemplatesSetup } from './templates/metacritic-neutron-templates.setup';
 
 @Injectable()
 export class MetacriticNeutronPlatform {
+	private currentUrl = '';
+
 	constructor(private pipeline: ProcessPipeline) {}
 
 	execute(): void {
@@ -39,8 +49,8 @@ export class MetacriticNeutronPlatform {
 			NewsAndRatingsWadSetup,
 			NewsAndRatingsTargetingSetup,
 			MetacriticNeutronTargetingSetup,
-			MetacriticNeutronDynamicSlotsSetup,
 			MetacriticNeutronSlotsContextSetup,
+			MetacriticNeutronDynamicSlotsSetup,
 			MetacriticNeutronPrebidConfigSetup,
 			MetacriticNeutronA9ConfigSetup,
 			BiddersStateSetup,
@@ -50,5 +60,55 @@ export class MetacriticNeutronPlatform {
 		);
 
 		this.pipeline.execute();
+	}
+
+	setupPageChangeWatcher(container: Container) {
+		const config = { subtree: true, childList: true };
+
+		utils.logger(
+			'pageChangeWatcher',
+			'SPA',
+			'setupPageChangeWatcher',
+			location.href,
+			window.utag_data?.pageViewGuid,
+		);
+
+		const observer = new MutationObserver(() => {
+			utils.logger(
+				'pageChangeWatcher',
+				'SPA',
+				'MutationObserver init',
+				this.currentUrl,
+				location.href,
+			);
+
+			if (!this.currentUrl) {
+				this.currentUrl = location.href;
+				return;
+			}
+
+			if (this.currentUrl !== location.href) {
+				utils.logger('pageChangeWatcher', 'SPA', 'url changed', location.href);
+
+				this.currentUrl = location.href;
+
+				communicationService.emit(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
+				targetingService.clear();
+
+				const refreshPipeline = new ProcessPipeline(container);
+				refreshPipeline
+					.add(
+						() => utils.logger('SPA', 'starting pipeline refresh', location.href),
+						NewsAndRatingsBaseContextSetup,
+						MetacriticNeutronTargetingSetup,
+						NewsAndRatingsTargetingSetup,
+						MetacriticNeutronSlotsContextSetup,
+						MetacriticNeutronPageChangeAdsObserver,
+					)
+					.execute();
+			}
+		});
+
+		observer.observe(document.querySelector('title'), config);
 	}
 }
