@@ -33,7 +33,7 @@ import { MetacriticNeutronTemplatesSetup } from './templates/metacritic-neutron-
 
 @Injectable()
 export class MetacriticNeutronPlatform {
-	private currentUrl = '';
+	private currentPath = '';
 
 	constructor(private pipeline: ProcessPipeline) {}
 
@@ -63,7 +63,7 @@ export class MetacriticNeutronPlatform {
 	}
 
 	setupPageChangeWatcher(container: Container) {
-		const config = { subtree: true, childList: true };
+		const config = { subtree: false, childList: true };
 
 		utils.logger(
 			'pageChangeWatcher',
@@ -73,24 +73,24 @@ export class MetacriticNeutronPlatform {
 			window.utag_data?.pageViewGuid,
 		);
 
+		if (!this.currentPath) {
+			this.currentPath = location.pathname;
+		}
+
 		const observer = new MutationObserver(() => {
 			utils.logger(
 				'pageChangeWatcher',
 				'SPA',
 				'MutationObserver init',
-				this.currentUrl,
-				location.href,
+				this.currentPath,
+				location.pathname,
+				window.utag_data?.pageViewGuid,
 			);
 
-			if (!this.currentUrl) {
-				this.currentUrl = location.href;
-				return;
-			}
+			if (this.currentPath !== location.pathname) {
+				utils.logger('pageChangeWatcher', 'SPA', 'url changed', location.pathname);
 
-			if (this.currentUrl !== location.href) {
-				utils.logger('pageChangeWatcher', 'SPA', 'url changed', location.href);
-
-				this.currentUrl = location.href;
+				this.currentPath = location.pathname;
 
 				communicationService.emit(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
 				targetingService.clear();
@@ -98,7 +98,7 @@ export class MetacriticNeutronPlatform {
 				const refreshPipeline = new ProcessPipeline(container);
 				refreshPipeline
 					.add(
-						() => utils.logger('SPA', 'starting pipeline refresh', location.href),
+						() => utils.logger('SPA', 'starting pipeline refresh', location.pathname),
 						NewsAndRatingsBaseContextSetup,
 						MetacriticNeutronTargetingSetup,
 						NewsAndRatingsTargetingSetup,
