@@ -9,7 +9,7 @@ class IdentityStorageService {
 	async get(): Promise<IdentityStorageDto> {
 		const localData = await this.getLocalData();
 		if (localData && !localData.synced) {
-			await this.setRemote(localData);
+			this.setRemote(localData);
 		}
 		if (!localData || this.isDeprecated(localData)) {
 			return this.getRemote();

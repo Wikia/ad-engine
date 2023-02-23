@@ -9,13 +9,20 @@ class IdentityStorageClient {
 	storage = new UniversalStorage();
 
 	fetchData(): Promise<IdentityStorageDto> {
+		const controller = new AbortController();
+		const timeoutId = setTimeout(() => controller.abort(), 1000);
+
 		return fetch(this.ISUrl, {
 			mode: 'cors',
 			credentials: 'include',
+			signal: controller.signal,
 		})
 			.then((response) => {
+				clearTimeout(timeoutId);
 				if (response.status === 200) {
 					return response.json();
+				} else {
+					return this.createFallbackResponse();
 				}
 			})
 			.catch((reason) => {
@@ -41,6 +48,15 @@ class IdentityStorageClient {
 
 	setLocalData(data: Partial<IdentityStorageDto>): void {
 		this.storage.setItem(this.IdentityStorageKey, data);
+	}
+
+	private createFallbackResponse(): IdentityStorageDto {
+		return {
+			timestamp: Date.now(),
+			over18: false,
+			synced: false,
+			ppid: utils.uuid.v4(),
+		};
 	}
 }
 
