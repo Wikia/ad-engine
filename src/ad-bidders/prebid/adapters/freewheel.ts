@@ -2,7 +2,10 @@ import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class Freewheel extends PrebidAdapter {
-	static bidderName = 'freewheel-ssp';
+	static bidderName = 'freewheel';
+	aliases = {
+		'freewheel-ssp': [Freewheel.bidderName],
+	};
 
 	constructor(options) {
 		super(options);
