@@ -7,10 +7,10 @@ const OTHERS_LIKE_YOU_SELECTOR =
 	'.render-wiki-recommendations-right-rail .related-content-items-wrapper > a:first-of-type';
 const logGroup = 'performance-ads';
 
-type PerformanceAdsPositions = 'popularPages' | 'othersLikeYou' | 'othersLikeYouWide';
+type PerformanceAdType = 'popularPages' | 'othersLikeYou' | 'othersLikeYouWide';
 
 interface WidgetAdPayload {
-	type?: PerformanceAdsPositions;
+	type?: PerformanceAdType;
 	data?: {
 		impression: string;
 		clickthrough: string;
@@ -48,40 +48,53 @@ export class UcpDesktopPerformanceAdsDefinitionRepository {
 		};
 
 		if (this.popularPagesElement) {
-			await this.getDataFromAdServer('popularPages');
+			await this.getDataFromAdServer();
+			this.fillPerformanceWidget('popularPages');
 		}
 
 		new utils.WaitFor(() => !!document.querySelector(OTHERS_LIKE_YOU_SELECTOR), 50, 0, 250)
 			.until()
-			.then(() => {
+			.then(async () => {
 				this.othersLikeYouElement = document.querySelector(OTHERS_LIKE_YOU_SELECTOR);
-				this.getDataFromAdServer('othersLikeYou');
+
+				if (this.othersLikeYouElement) {
+					await this.getDataFromAdServer();
+					this.fillPerformanceWidget('othersLikeYou');
+				}
 			});
 	}
 
-	private async getDataFromAdServer(position: PerformanceAdsPositions): Promise<void> {
-		if (!this.widgetData) {
-			const taglessRequestUrl = utils.buildTaglessRequestUrl(this.taglessRequestParams);
-
-			utils.logger(logGroup, 'Tagless Request URL built', taglessRequestUrl);
-
-			await utils.scriptLoader.loadAsset(taglessRequestUrl, 'text').then((response) => {
-				if (!response) {
-					return;
-				}
-
-				try {
-					this.widgetData = JSON.parse(response) || {};
-					utils.logger(logGroup, 'Widget payload received', this.widgetData);
-				} catch (e) {
-					return;
-				}
-			});
-
-			this.widgetData = this.widgetData || {};
+	private async getDataFromAdServer(): Promise<void> {
+		if (this.widgetData) {
+			return Promise.resolve();
 		}
 
-		if (!this.widgetData.type || !this.widgetData.type.includes(position)) {
+		const taglessRequestUrl = utils.buildTaglessRequestUrl(this.taglessRequestParams);
+
+		utils.logger(logGroup, 'Tagless Request URL built', taglessRequestUrl);
+
+		await utils.scriptLoader.loadAsset(taglessRequestUrl, 'text').then((response) => {
+			if (!response) {
+				this.widgetData = {};
+				return;
+			}
+
+			try {
+				this.widgetData = JSON.parse(response) || {};
+				utils.logger(logGroup, 'Widget payload received', this.widgetData);
+			} catch (e) {
+				this.widgetData = {};
+				return;
+			}
+		});
+
+		this.widgetData = this.widgetData || {};
+
+		return Promise.resolve();
+	}
+
+	private fillPerformanceWidget(type: PerformanceAdType) {
+		if (!this.widgetData.type || !this.widgetData.type.includes(type)) {
 			return;
 		}
 
@@ -98,8 +111,6 @@ export class UcpDesktopPerformanceAdsDefinitionRepository {
 			default:
 				break;
 		}
-
-		return Promise.resolve();
 	}
 
 	private fillPopularPages() {
