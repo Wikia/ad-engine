@@ -8,6 +8,7 @@ import {
 	AdSlot,
 	btfBlockerService,
 	context,
+	runtimeVariableSetter,
 	slotService,
 	SlotTargeting,
 	targetingService,
@@ -67,7 +68,6 @@ export interface UapParams {
 	isSticky: boolean;
 	lineItemId: string;
 	loadMedrecFromBTF: boolean;
-	moatTracking: boolean;
 	newTakeoverConfig: boolean;
 	player: string;
 	resolvedStateAspectRatio: number;
@@ -100,10 +100,6 @@ export interface UapParams {
 
 function getUapId(): string {
 	return uapId;
-}
-
-function getCreativeId(): string {
-	return uapCreativeId;
 }
 
 function setIds(lineItemId, creativeId): void {
@@ -179,6 +175,8 @@ function isFanTakeoverLoaded(): boolean {
 export const universalAdPackage = {
 	...constants,
 	init(params: UapParams, slotsToEnable: string[] = [], slotsToDisable: string[] = []): void {
+		runtimeVariableSetter.addVariable('disableBtf', true);
+
 		let adProduct = 'uap';
 
 		if (this.isVideoEnabled(params)) {
@@ -196,9 +194,7 @@ export const universalAdPackage = {
 			initSlot(params);
 		}
 	},
-	initSlot,
 	isFanTakeoverLoaded,
-	getCreativeId,
 	getType,
 	getUapId,
 	isVideoEnabled(params): boolean {
@@ -208,7 +204,6 @@ export const universalAdPackage = {
 		return !!params.videoAspectRatio && (params.videoPlaceholderElement || triggersArrayIsNotEmpty);
 	},
 	reset,
-	setType,
 	updateSlotsTargeting,
 };
 

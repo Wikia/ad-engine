@@ -61,10 +61,6 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		);
 		context.set('options.video.iasTracking.enabled', this.instantConfig.get('icIASVideoTracking'));
 		context.set(
-			'options.video.moatTracking.enabledForArticleVideos',
-			this.instantConfig.get('icFeaturedVideoMoatTracking'),
-		);
-		context.set(
 			'options.video.comscoreJwpTracking',
 			this.instantConfig.get('icComscoreJwpTracking'),
 		);

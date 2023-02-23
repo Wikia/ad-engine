@@ -54,13 +54,7 @@ export default customContext = {
 				key: 'audio',
 			},
 		},
-		video: {
-			moatTracking: {
-				enabled: false,
-				partnerCode: 'foo',
-				sampling: 1
-			},
-		},
+		video: {},
 		customAdLoader: {
 			globalMethodName: 'loadCustomAd',
 		},
@@ -276,7 +270,6 @@ Name: **bfaa**
     isSticky: boolean;
     lineItemId: string;
     loadMedrecFromBTF: boolean;
-    moatTracking: boolean;
     player: HTMLElement;
     resolvedStateAspectRatio: number;
     resolvedStateAutoPlay: boolean;

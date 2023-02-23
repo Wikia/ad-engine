@@ -1,4 +1,4 @@
-import { context, Dictionary, slotService, SlotTargeting } from '@ad-engine/core';
+import { context, Dictionary, SlotTargeting } from '@ad-engine/core';
 import { VpaidMode } from './porvata';
 
 export interface PorvataParams extends Dictionary {
@@ -7,7 +7,6 @@ export interface PorvataParams extends Dictionary {
 	container: HTMLElement;
 	height?: number;
 	iasTracking?: boolean;
-	moatTracking?: boolean;
 	restartOnUnmute?: boolean;
 	slotName: string;
 	src: string;
@@ -16,18 +15,6 @@ export interface PorvataParams extends Dictionary {
 	vastTargeting?: SlotTargeting;
 	vastUrl?: string;
 	vpaidMode?: google.ima.ImaSdkSettings.VpaidMode;
-}
-
-function getMoatTrackingStatus(params: PorvataParams): boolean {
-	if (!slotService.get(params.slotName)?.getConfigProperty('isVideo')) {
-		return false;
-	}
-
-	if (typeof params.moatTracking === 'boolean') {
-		return params.moatTracking;
-	}
-
-	return !!context.get('options.video.moatTracking.enabledForPorvata');
 }
 
 function getIasTrackingStatus(params: PorvataParams): boolean {
@@ -45,7 +32,6 @@ export class PorvataSettings {
 
 	private readonly adProduct: string;
 	private readonly iasTracking: boolean;
-	private readonly moatTracking: boolean;
 	private readonly playerContainer: HTMLElement;
 	private readonly restartOnMute: boolean;
 	private readonly slotName: string;
@@ -59,7 +45,6 @@ export class PorvataSettings {
 		this.autoPlay = !!params.autoPlay;
 		this.height = params.height;
 		this.iasTracking = getIasTrackingStatus(params);
-		this.moatTracking = getMoatTrackingStatus(params);
 		this.playerContainer = params.container;
 		this.restartOnMute = !!params.restartOnUnmute;
 		this.slotName = params.slotName;
@@ -112,10 +97,6 @@ export class PorvataSettings {
 
 	isIasTrackingEnabled(): boolean {
 		return this.iasTracking;
-	}
-
-	isMoatTrackingEnabled(): boolean {
-		return this.moatTracking;
 	}
 
 	isAutoPlay(): boolean | undefined {
