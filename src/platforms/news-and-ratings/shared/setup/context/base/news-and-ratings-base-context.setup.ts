@@ -34,6 +34,7 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 	}
 
 	private setupServicesOptions() {
+		context.set('services.captify.propertyId', 13061);
 		context.set('services.confiant.propertyId', 'IOegabOoWb7FyEI1AmEa9Ki-5AY');
 	}
 
