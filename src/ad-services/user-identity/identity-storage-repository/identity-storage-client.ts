@@ -19,7 +19,7 @@ class IdentityStorageClient {
 		})
 			.then((response) => {
 				clearTimeout(timeoutId);
-				if (response.status === 200) {
+				if (response.status === 200 || response.status === 202) {
 					return response.json();
 				} else {
 					return this.createFallbackResponse();
