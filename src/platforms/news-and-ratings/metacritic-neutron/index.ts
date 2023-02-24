@@ -6,3 +6,4 @@ import './styles.scss';
 const platform = container.resolve(MetacriticNeutronPlatform);
 
 platform.execute();
+platform.setupPageChangeWatcher(container);
