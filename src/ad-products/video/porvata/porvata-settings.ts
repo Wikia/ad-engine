@@ -7,7 +7,6 @@ export interface PorvataParams extends Dictionary {
 	container: HTMLElement;
 	height?: number;
 	iasTracking?: boolean;
-	restartOnUnmute?: boolean;
 	slotName: string;
 	src: string;
 	type?: string;
@@ -33,7 +32,6 @@ export class PorvataSettings {
 	private readonly adProduct: string;
 	private readonly iasTracking: boolean;
 	private readonly playerContainer: HTMLElement;
-	private readonly restartOnMute: boolean;
 	private readonly slotName: string;
 	private readonly src: string;
 	private readonly vastUrl: string | undefined;
@@ -46,7 +44,6 @@ export class PorvataSettings {
 		this.height = params.height;
 		this.iasTracking = getIasTrackingStatus(params);
 		this.playerContainer = params.container;
-		this.restartOnMute = !!params.restartOnUnmute;
 		this.slotName = params.slotName;
 		this.src = params.src;
 		this.width = params.width;
@@ -113,9 +110,5 @@ export class PorvataSettings {
 
 	getVastUrl(): string | undefined {
 		return this.vastUrl;
-	}
-
-	shouldRestartOnMute(): boolean {
-		return this.restartOnMute;
 	}
 }

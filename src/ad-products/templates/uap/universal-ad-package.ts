@@ -10,7 +10,6 @@ import {
 	context,
 	runtimeVariableSetter,
 	slotService,
-	SlotTargeting,
 	targetingService,
 	utils,
 } from '@ad-engine/core';
@@ -51,51 +50,24 @@ export interface UapImage {
 export interface UapParams {
 	adContainer: HTMLElement;
 	adProduct: string;
-	aspectRatio: number;
 	autoPlay: boolean;
-	backgroundColor: string;
-	blockOutOfViewportPausing: boolean;
 	clickThroughURL: string;
 	config: UapConfig;
 	container: HTMLElement;
 	creativeId: string;
-	fullscreenable: boolean;
-	fullscreenAllowed: boolean;
 	image1: UapImage;
 	image2?: UapImage;
 	isDarkTheme: boolean;
 	isMobile: boolean;
-	isSticky: boolean;
 	lineItemId: string;
-	loadMedrecFromBTF: boolean;
 	newTakeoverConfig: boolean;
-	player: string;
-	resolvedStateAspectRatio: number;
-	resolvedStateAutoPlay: boolean;
-	resolvedStateForced?: boolean;
-	restartOnUnmute: boolean;
 	sequentialUapConfig: boolean;
 	slotName: string;
-	splitLayoutVideoPosition: string;
 	src: string;
-	stickyAdditionalTime: number;
-	stickyUntilSlotViewed: boolean;
-	stickyUntilVideoViewed: boolean;
-	theme: string;
-	thumbnail: HTMLElement;
-	uap: string;
-	videoAspectRatio: number;
-	videoPlaceholderElement: HTMLElement;
-	videoTriggers: any[];
-
-	// Video
-	vastTargeting: SlotTargeting;
-	videoTriggerElement: HTMLVideoElement;
-	type: string;
-	useVideoSpecialAdUnit: boolean;
-
 	height: number;
 	width: number;
+	thumbnail: HTMLElement;
+	useVideoSpecialAdUnit: boolean;
 }
 
 function getUapId(): string {
@@ -185,7 +157,7 @@ export const universalAdPackage = {
 
 		params.adProduct = params.adProduct || adProduct;
 
-		setIds(params.uap, params.creativeId);
+		setIds(params.lineItemId, params.creativeId);
 		disableSlots(slotsToDisable);
 		enableSlots(slotsToEnable);
 		setType(params.adProduct);
@@ -198,10 +170,7 @@ export const universalAdPackage = {
 	getType,
 	getUapId,
 	isVideoEnabled(params): boolean {
-		const triggersArrayIsNotEmpty =
-			Array.isArray(params.videoTriggers) && params.videoTriggers.length > 0;
-
-		return !!params.videoAspectRatio && (params.videoPlaceholderElement || triggersArrayIsNotEmpty);
+		return params.thumbnail;
 	},
 	reset,
 	updateSlotsTargeting,

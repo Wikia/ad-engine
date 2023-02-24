@@ -11,7 +11,6 @@ describe('Porvata Settings wrapper', () => {
 			autoPlay: false,
 			container: document.createElement('div'),
 			height: 7,
-			restartOnUnmute: false,
 			slotName: 'foo',
 			src: 'gpt',
 			width: 3,
@@ -25,7 +24,6 @@ describe('Porvata Settings wrapper', () => {
 		assert.equal(porvataSettings.getAdProduct(), 'hivi');
 		assert.isFalse(porvataSettings.isAutoPlay());
 		assert.equal(porvataSettings.getHeight(), 7);
-		assert.isFalse(porvataSettings.shouldRestartOnMute());
 		assert.equal(porvataSettings.getSlotName(), 'foo');
 		assert.equal(porvataSettings.getWidth(), 3);
 		assert.equal(porvataSettings.getVastUrl(), 'http://example.com/foo');

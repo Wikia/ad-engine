@@ -18,23 +18,20 @@ export class StickinessTimeout {
 	}
 
 	private fallbackTimeout: number;
-	private shouldStickUntillSlotViewed: boolean;
 
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(TEMPLATE.PARAMS) params: UapParams,
 		defaultTimeout: number,
 	) {
-		this.fallbackTimeout =
-			params.stickyAdditionalTime !== undefined ? params.stickyAdditionalTime : defaultTimeout;
-		this.shouldStickUntillSlotViewed = params.stickyUntilSlotViewed;
+		this.fallbackTimeout = defaultTimeout;
 	}
 
 	isViewedAndDelayed(): Observable<boolean> {
 		const bootstrap$ = of(false);
 		const completed$ = from(
 			this.adSlot.loaded
-				.then(() => (this.shouldStickUntillSlotViewed ? this.adSlot.viewed : Promise.resolve()))
+				.then(() => this.adSlot.viewed)
 				.then(() => utils.wait(this.fallbackTimeout)),
 		).pipe(map(() => true));
 
