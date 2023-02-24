@@ -27,6 +27,7 @@ class IdentityStorageClient {
 			})
 			.catch((reason) => {
 				utils.logger(this.logGroup, 'Loading Identity Storage data failed', reason);
+				return this.createFallbackResponse();
 			});
 	}
 
