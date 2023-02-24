@@ -91,7 +91,6 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 			mpu_bottom: {
 				code: 'mpu_bottom',
 				defaultSizes: [[300, 250]],
-				lazyLoad: true,
 				targeting: {
 					pos_nr: 'bottom',
 				},
@@ -102,7 +101,6 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[728, 90],
 					[970, 66],
 				],
-				lazyLoad: true,
 				targeting: {
 					pos_nr: 'bottom',
 				},
@@ -250,7 +248,6 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[320, 50],
 					[5, 5],
 				],
-				lazyLoad: true,
 				incremental: true,
 				targeting: {
 					pos_nr: 'inc',
@@ -262,7 +259,6 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[300, 250],
 					[320, 50],
 				],
-				lazyLoad: true,
 				incremental: true,
 				targeting: {
 					pos_nr: 'inc',
@@ -275,7 +271,6 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[728, 90],
 					[5, 5],
 				],
-				lazyLoad: true,
 				incremental: true,
 				targeting: {
 					pos_nr: 'inc',
@@ -287,7 +282,6 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[970, 66],
 					[728, 90],
 				],
-				lazyLoad: true,
 				incremental: true,
 				targeting: {
 					pos_nr: 'inc',
