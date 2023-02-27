@@ -1,4 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { InstantConfigCacheStorageService } from '@wikia/instant-config-loader';
 import { deserializeCache, serializeCache } from './instant-config-cache-storage-serializer';
 import { SessionCookie } from './session-cookie';
 
@@ -14,7 +15,7 @@ export interface CacheData {
 	withCookie?: boolean;
 }
 
-export class InstantConfigCacheStorage {
+export class InstantConfigCacheStorage implements InstantConfigCacheStorageService {
 	private static instance: InstantConfigCacheStorage;
 
 	static make(): InstantConfigCacheStorage {
