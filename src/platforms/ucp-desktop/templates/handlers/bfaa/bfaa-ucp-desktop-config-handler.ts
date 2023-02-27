@@ -39,5 +39,9 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 			'bottom_leaderboard',
 			universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop,
 		);
+		slotsContext.setSlotSize(
+			'bottom_leaderboard',
+			universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.unified,
+		);
 	}
 }

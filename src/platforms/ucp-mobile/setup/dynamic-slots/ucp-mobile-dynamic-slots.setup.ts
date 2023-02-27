@@ -95,6 +95,10 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				'top_leaderboard',
 				universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile,
 			);
+			slotsContext.addSlotSize(
+				'top_leaderboard',
+				universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.unified,
+			);
 
 			context.push('slots.top_leaderboard.defaultTemplates', 'stickyTlb');
 		}
