@@ -4,7 +4,7 @@ type QueryValue = boolean | string | string[] | number | number[] | object | nul
 
 class QueryString {
 	getValues(input?: string): Dictionary<string> {
-		const path: string = input || window.location.search.substr(1);
+		const path: string = input || window.location.search.substring(1);
 		const queryStringParameters: string[] = path.split('&');
 		const queryParameters: Dictionary<string> = {};
 
@@ -17,6 +17,12 @@ class QueryString {
 		});
 
 		return queryParameters;
+	}
+
+	getURLSearchParams(input?: string): URLSearchParams {
+		const path: string = input || window.location.search.substring(1);
+
+		return new URLSearchParams(path);
 	}
 
 	get(key: string): string {
@@ -42,9 +48,6 @@ class QueryString {
 		try {
 			return JSON.parse(value);
 		} catch (ignore) {
-			if (value.startsWith('[') && value.endsWith(']')) {
-				return value.slice(1, -1).split(',');
-			}
 			return value || null;
 		}
 	}

@@ -6,6 +6,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@master
+      - uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.INSTANT_CONFIG_LOADER_REPO_SSH_KEY }}
       - name: Install dependencies
         shell: bash -l {0}
         run: |

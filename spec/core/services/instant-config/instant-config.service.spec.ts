@@ -1,8 +1,11 @@
 import { communicationService, eventsRepository } from '@wikia/communication';
-import { InstantConfigInterpreter } from '@wikia/core/services/instant-config/instant-config.interpreter';
-import { instantConfigLoader } from '@wikia/core/services/instant-config/instant-config.loader';
-import { InstantConfigOverrider } from '@wikia/core/services/instant-config/instant-config.overrider';
+import { utils } from '@wikia/core';
 import { InstantConfigService } from '@wikia/core/services/instant-config/instant-config.service';
+import {
+	InstantConfigInterpreter,
+	InstantConfigLoader,
+	InstantConfigOverrider,
+} from '@wikia/instant-config-loader';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
@@ -13,7 +16,7 @@ describe('Instant Config Service', () => {
 	let overrideStub: sinon.SinonStub;
 
 	beforeEach(() => {
-		getConfigStub = global.sandbox.stub(instantConfigLoader, 'getConfig');
+		getConfigStub = global.sandbox.stub(InstantConfigLoader.prototype, 'getConfig');
 		initInterpreterStub = global.sandbox
 			.stub(InstantConfigInterpreter.prototype, 'init')
 			.returnsThis();
@@ -36,29 +39,34 @@ describe('Instant Config Service', () => {
 
 			await new InstantConfigService().init();
 
-			expect(overrideStub.firstCall.args).to.deep.equal([{ config: true }]);
+			expect(overrideStub.firstCall.args[1]).to.deep.equal({ config: true });
 		});
 
 		it('should pass InstantConfig to InstantConfigInterpreter', async () => {
 			getConfigStub.returns(Promise.resolve({ config: true }));
 			getValuesStub.returns({});
-			overrideStub.callsFake((input) => input);
+			overrideStub.callsFake((_, input) => input);
 
 			await new InstantConfigService().init();
 
-			expect(initInterpreterStub.firstCall.args).to.deep.equal([{ config: true }, {}]);
+			expect(initInterpreterStub.firstCall.args).to.deep.equal([
+				{ config: true },
+				{},
+				utils.geoService.isProperGeo,
+			]);
 		});
 
 		it('should pass InstantConfig and InstantGlobals to InstantConfigInterpreter', async () => {
 			getConfigStub.returns(Promise.resolve({ config: true }));
 			getValuesStub.returns({});
-			overrideStub.callsFake((input) => input);
+			overrideStub.callsFake((_, input) => input);
 
 			await new InstantConfigService().init({ globals: true });
 
 			expect(initInterpreterStub.firstCall.args).to.deep.equal([
 				{ config: true },
 				{ globals: true },
+				utils.geoService.isProperGeo,
 			]);
 		});
 
