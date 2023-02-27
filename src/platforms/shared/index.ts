@@ -33,7 +33,6 @@ export * from './templates/handlers/close-to-transition-button-handler';
 export * from './templates/handlers/debug-transition-handler';
 export * from './templates/handlers/dom-cleanup-handler';
 export * from './templates/handlers/interstitial/interstitial-bootstrap-handler';
-export * from './templates/handlers/logo-replacement/logo-replacement-params';
 export * from './templates/handlers/prevent-scrolling-handler';
 export * from './templates/handlers/roadblock/roadblock-handler';
 export * from './templates/handlers/roadblock/roadblock-params';
@@ -50,8 +49,6 @@ export * from './templates/handlers/slot/slot-size-resolved-with-placeholder-han
 export * from './templates/handlers/slot/slot-state-sticked-handler';
 export * from './templates/handlers/slot/slot-transition-handler';
 export * from './templates/handlers/slot/slot-transition-ihi-handler';
-export * from './templates/handlers/sponsored-logo/sponsored-logo-handler';
-export * from './templates/handlers/sponsored-text-logo/sponsored-text-logo-handler';
 export * from './templates/handlers/sticky-tlb/sticky-tlb-blocking-handler';
 export * from './templates/handlers/sticky-tlb/sticky-tlb-bootstrap-handler';
 export * from './templates/handlers/sticky-tlb/sticky-tlb-config-handler';
