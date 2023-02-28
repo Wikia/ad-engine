@@ -18,6 +18,12 @@ export class SeamlessContentObserverSetup implements DiProcess {
 			return;
 		}
 
+		if (this.elementToObserveMutationSelector === 'title') {
+			// register first page after load
+			this.currentPath = location.pathname;
+			this.seamlessContentLoaded[location.pathname] = true;
+		}
+
 		const observer = new MutationObserver(() => this.handleMutation());
 		observer.observe(elementToObserveMutation, config);
 	}
