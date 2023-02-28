@@ -394,6 +394,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 			},
 			'mobile-incontent-plus': {
+				bidderAlias: 'mobile-incontent-plus',
 				defaultSizes: [
 					[300, 250],
 					[320, 50],
