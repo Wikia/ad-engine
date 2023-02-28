@@ -55,6 +55,11 @@ function getAdSlotFromEvent(
 function configure(): void {
 	const tag = window.googletag.pubads();
 
+	if (context.get('options.video.uapJWPCompanions')) {
+		googletag.companionAds().setRefreshUnfilledSlots(true);
+		tag.enableVideoAds();
+	}
+
 	tag.disableInitialLoad();
 
 	tag.addEventListener('slotRequested', (event: googletag.events.SlotRequestedEvent) => {
@@ -244,6 +249,10 @@ export class GptProvider implements Provider {
 		const targeting = adSlot.getTargeting();
 		const sizeMap = new GptSizeMap(adSlot.getSizes());
 		const gptSlot = this.createGptSlot(adSlot, sizeMap);
+
+		if (context.get('options.video.uapJWPCompanions')) {
+			gptSlot.addService(googletag.companionAds());
+		}
 
 		gptSlot.addService(window.googletag.pubads()).setCollapseEmptyDiv(true);
 

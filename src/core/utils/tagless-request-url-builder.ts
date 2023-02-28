@@ -84,7 +84,6 @@ export function buildVastUrl(
 		'unviewed_position_start=1',
 		`url=${encodeURIComponent(window.location.href)}`,
 		`description_url=${encodeURIComponent(window.location.href)}`,
-		`correlator=${correlator}`,
 	];
 	const slot: AdSlot = slotService.get(slotName);
 	const ppid = targetingService.get('ppid');
