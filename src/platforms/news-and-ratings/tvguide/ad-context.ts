@@ -3,7 +3,13 @@ export const basicContext = {
 	adUnitId: '/{custom.dfpId}/{custom.device}{custom.region}-{custom.property}{custom.pagePath}',
 	bidders: {
 		bidsRefreshing: {
-			slots: ['mpu-plus-top', 'mpu-middle', 'mpu-bottom', 'incontent-leader-plus-bottom'],
+			slots: [
+				'mpu-plus-top',
+				'mpu-middle',
+				'mpu-bottom',
+				'incontent-leader-plus-bottom',
+				'incontent-leader-plus-inc',
+			],
 		},
 	},
 	custom: {
