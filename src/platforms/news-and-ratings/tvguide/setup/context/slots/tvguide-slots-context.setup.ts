@@ -244,6 +244,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 			},
 			'incontent-leader-plus-bottom': {
+				bidderAlias: 'incontent-leader-plus-bottom',
 				defaultSizes: [
 					[728, 90],
 					[970, 250],
@@ -295,6 +296,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 			},
 			'mpu-plus-top': {
+				bidderAlias: 'mpu-plus-top',
 				defaultSizes: [
 					[300, 250],
 					[300, 600],
@@ -312,6 +314,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 			},
 			'mpu-middle': {
+				bidderAlias: 'mpu-middle',
 				defaultSizes: [[300, 250]],
 				incremental: true,
 				targeting: {
@@ -319,6 +322,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 			},
 			'mpu-bottom': {
+				bidderAlias: 'mpu-bottom',
 				defaultSizes: [[300, 250]],
 				incremental: true,
 				targeting: {
