@@ -11,19 +11,16 @@ export class SeamlessContentObserverSetup implements DiProcess {
 	private seamlessAdsAdded = {};
 
 	execute(): void {
-		const config = { subtree: false, childList: true };
+		// register first page after load
+		this.currentPath = location.pathname;
+		this.seamlessContentLoaded[location.pathname] = true;
 
 		const elementToObserveMutation = document.querySelector(this.elementToObserveMutationSelector);
 		if (!elementToObserveMutation) {
 			return;
 		}
 
-		if (this.elementToObserveMutationSelector === 'title') {
-			// register first page after load
-			this.currentPath = location.pathname;
-			this.seamlessContentLoaded[location.pathname] = true;
-		}
-
+		const config = { subtree: false, childList: true };
 		const observer = new MutationObserver(() => this.handleMutation());
 		observer.observe(elementToObserveMutation, config);
 	}
