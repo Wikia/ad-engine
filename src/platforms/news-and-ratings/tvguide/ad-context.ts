@@ -7,6 +7,7 @@ export const basicContext = {
 				'mpu-plus-top',
 				'mpu-middle',
 				'mpu-bottom',
+				'mobile-incontent-plus',
 				'incontent-leader-plus-bottom',
 				'incontent-leader-plus-inc',
 			],
