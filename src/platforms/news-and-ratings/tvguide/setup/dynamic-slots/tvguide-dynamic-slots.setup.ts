@@ -5,6 +5,7 @@ import {
 	DiProcess,
 	eventsRepository,
 	slotService,
+	targetingService,
 	utils,
 } from '@wikia/ad-engine';
 
@@ -79,17 +80,21 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 	private injectNextSlot(slotName, slotNameBase = '') {
 		const adSlot = slotService.get(slotName);
 		const nextIndex = adSlot.getConfigProperty('repeat.index') + 1;
-		const nextSlotName = `${slotNameBase || slotName}-${nextIndex}`;
+		const slotId = slotNameBase || slotName;
+		const nextSlotName = `${slotId}-${nextIndex}`;
 		const nextSlotPlace = document.querySelector(
-			`.c-adDisplay_container > div[data-ad="${slotNameBase || slotName}"]:not(.gpt-ad)`,
+			`.c-adDisplay_container > div[data-ad="${slotId}"]:not(.gpt-ad)`,
 		);
 
 		if (!nextSlotPlace) {
 			return;
 		}
 
-		this.setupRepeatableSlot(nextSlotName, slotNameBase || slotName);
+		this.setupRepeatableSlot(nextSlotName, slotId);
 		nextSlotPlace.id = nextSlotName;
+
+		const basePosNr = targetingService.get('pos_nr', slotId);
+		targetingService.set('pos_nr', basePosNr, nextSlotName);
 		context.push('state.adStack', { id: nextSlotName });
 	}
 
