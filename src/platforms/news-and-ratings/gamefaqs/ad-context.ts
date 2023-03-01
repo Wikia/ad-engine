@@ -45,7 +45,4 @@ export const basicContext = {
 	},
 	slots: {},
 	src: ['gamefaqs'],
-	vast: {
-		adUnitId: '/{custom.dfpId}/{custom.region}-{custom.property}/video',
-	},
 };
