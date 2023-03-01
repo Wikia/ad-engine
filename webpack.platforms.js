@@ -32,6 +32,11 @@ const platforms = ({ entry }) => ({
 	},
 
 	devServer: {
+		allowedHosts: 'all', // FIXME: maybe specify platform subdomains?
+		headers: {
+			'Access-Control-Allow-Origin': '*',
+		},
+		host: 'localhost',
 		port: 9000,
 		static: `dist/platforms`,
 	},
