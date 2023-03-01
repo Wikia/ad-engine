@@ -1,29 +1,22 @@
 import { selectTemplate } from '@wikia/ad-products';
+import { CloseButton } from '@wikia/ad-products/templates/interface/video/close-button';
+import { PlayerOverlay } from '@wikia/ad-products/templates/interface/video/player-overlay';
 import { UapVideoSettings } from '@wikia/ad-products/templates/uap/uap-video-settings';
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
-import { CloseButton } from '../../../../../src/ad-products/templates/interface/video/close-button';
-import { PlayerOverlay } from '../../../../../src/ad-products/templates/interface/video/player-overlay';
 
 function getContainer(): HTMLDivElement {
 	return document.createElement('div');
 }
 
 describe('UITemplate', () => {
-	const sandbox = createSandbox();
-
-	afterEach(() => {
-		sandbox.restore();
-	});
-
 	it('Should show close button element if there is no autoplay and there is no split screen', () => {
 		const videoSettings = new UapVideoSettings({
 			autoPlay: true,
 			container: getContainer(),
 		} as any);
 
-		sandbox.stub(videoSettings, 'isAutoPlay').returns(false);
-		sandbox.stub(videoSettings, 'isSplitLayout').returns(false);
+		global.sandbox.stub(videoSettings, 'isAutoPlay').returns(false);
+		global.sandbox.stub(videoSettings, 'isSplitLayout').returns(false);
 
 		expect(selectTemplate(videoSettings).includes(CloseButton)).to.equal(true);
 		expect(selectTemplate(videoSettings).includes(PlayerOverlay)).to.equal(false);
@@ -32,8 +25,8 @@ describe('UITemplate', () => {
 	it('Should hide close button element if there is autoplay for not split ad', () => {
 		const videoSettings = new UapVideoSettings({ container: getContainer() } as any);
 
-		sandbox.stub(videoSettings, 'isAutoPlay').returns(true);
-		sandbox.stub(videoSettings, 'isSplitLayout').returns(false);
+		global.sandbox.stub(videoSettings, 'isAutoPlay').returns(true);
+		global.sandbox.stub(videoSettings, 'isSplitLayout').returns(false);
 
 		expect(selectTemplate(videoSettings).includes(CloseButton)).to.equal(false);
 		expect(selectTemplate(videoSettings).includes(PlayerOverlay)).to.equal(false);
@@ -42,8 +35,8 @@ describe('UITemplate', () => {
 	it('Should hide close button element if there is auto play for split ad', () => {
 		const videoSettings = new UapVideoSettings({ container: getContainer() } as any);
 
-		sandbox.stub(videoSettings, 'isAutoPlay').returns(true);
-		sandbox.stub(videoSettings, 'isSplitLayout').returns(true);
+		global.sandbox.stub(videoSettings, 'isAutoPlay').returns(true);
+		global.sandbox.stub(videoSettings, 'isSplitLayout').returns(true);
 
 		expect(selectTemplate(videoSettings).includes(CloseButton)).to.equal(false);
 		expect(selectTemplate(videoSettings).includes(PlayerOverlay)).to.equal(true);
@@ -52,8 +45,8 @@ describe('UITemplate', () => {
 	it('Should show replay button and close for click to play and split', () => {
 		const videoSettings = new UapVideoSettings({ container: getContainer() } as any);
 
-		sandbox.stub(videoSettings, 'isAutoPlay').returns(false);
-		sandbox.stub(videoSettings, 'isSplitLayout').returns(true);
+		global.sandbox.stub(videoSettings, 'isAutoPlay').returns(false);
+		global.sandbox.stub(videoSettings, 'isSplitLayout').returns(true);
 
 		expect(selectTemplate(videoSettings).includes(CloseButton)).to.equal(true);
 		expect(selectTemplate(videoSettings).includes(PlayerOverlay)).to.equal(true);

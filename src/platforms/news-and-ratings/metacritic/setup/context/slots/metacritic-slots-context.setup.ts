@@ -1,4 +1,4 @@
-import { context, DiProcess } from '@wikia/ad-engine';
+import { context, DiProcess, universalAdPackage } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -6,12 +6,10 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 	execute(): void {
 		const slots = {
 			nav_ad_omni: {
-				defaultSizes: [
-					[5, 5],
-					[6, 6],
-				],
+				defaultSizes: [[5, 5], [6, 6], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
 				targeting: {
-					pos: 'nav',
+					pos_nr: 'nav',
+					loc: 'top',
 				},
 			},
 			leader_plus_top: {
@@ -21,7 +19,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					[970, 66],
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			leader_top: {
@@ -31,7 +29,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					[728, 91],
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			native_top: {
@@ -40,7 +38,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					// fluid
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			mpu_plus_top: {
@@ -49,13 +47,13 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					[300, 600],
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			mpu_bottom: {
 				defaultSizes: [[300, 250]],
 				targeting: {
-					pos: 'bottom',
+					pos_nr: 'bottom',
 				},
 			},
 			leader_bottom: {
@@ -65,13 +63,13 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					[970, 66],
 				],
 				targeting: {
-					pos: 'bottom',
+					pos_nr: 'bottom',
 				},
 			},
 			recirculation_ad: {
 				defaultSizes: [[300, 249]],
 				targeting: {
-					pos: 'recirculation',
+					pos_nr: 'recirculation',
 				},
 			},
 			leader_middle: {
@@ -81,7 +79,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					[728, 93],
 				],
 				targeting: {
-					pos: 'middle',
+					pos_nr: 'middle',
 				},
 			},
 			leader_middle2: {
@@ -91,7 +89,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					[728, 93],
 				],
 				targeting: {
-					pos: 'middle2',
+					pos_nr: 'middle2',
 				},
 			},
 			incontent_plus_top: {
@@ -102,7 +100,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			mobile_nav_ad_omni: {
@@ -111,7 +109,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					[6, 6],
 				],
 				targeting: {
-					pos: 'nav',
+					pos_nr: 'nav',
 				},
 			},
 			mobile_banner_top: {
@@ -121,7 +119,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					[320, 480],
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			mobile_native_top: {
@@ -130,7 +128,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					// fluid
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			mobile_incontent_plus_top: {
@@ -141,7 +139,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			mobile_banner_plus_middle: {
@@ -150,7 +148,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					[320, 50],
 				],
 				targeting: {
-					pos: 'middle',
+					pos_nr: 'middle',
 				},
 			},
 			mobile_incontent_plus_middle2: {
@@ -160,7 +158,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					pos: 'middle2',
+					pos_nr: 'middle2',
 				},
 			},
 			mobile_mpu_banner_bottom: {
@@ -169,7 +167,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					[320, 50],
 				],
 				targeting: {
-					pos: 'bottom',
+					pos_nr: 'bottom',
 				},
 			},
 			mobile_gallery_banner_plus_1: {
@@ -179,7 +177,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					[320, 480],
 				],
 				targeting: {
-					pos: 'middle',
+					pos_nr: 'middle',
 				},
 			},
 			mobile_gallery_banner_plus_2: {
@@ -189,7 +187,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					[320, 480],
 				],
 				targeting: {
-					pos: 'middle',
+					pos_nr: 'middle',
 				},
 			},
 			mobile_gallery_banner_plus_3: {
@@ -199,7 +197,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					[320, 480],
 				],
 				targeting: {
-					pos: 'middle',
+					pos_nr: 'middle',
 				},
 			},
 			mobile_gallery_banner_plus_4: {
@@ -209,7 +207,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					[320, 480],
 				],
 				targeting: {
-					pos: 'middle',
+					pos_nr: 'middle',
 				},
 			},
 			mobile_gallery_banner_plus_5: {
@@ -219,7 +217,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					[320, 480],
 				],
 				targeting: {
-					pos: 'middle',
+					pos_nr: 'middle',
 				},
 			},
 			mobile_gallery_banner_plus_6: {
@@ -229,7 +227,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					[320, 480],
 				],
 				targeting: {
-					pos: 'middle',
+					pos_nr: 'middle',
 				},
 			},
 			mobile_gallery_banner_plus_7: {
@@ -239,7 +237,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					[320, 480],
 				],
 				targeting: {
-					pos: 'middle',
+					pos_nr: 'middle',
 				},
 			},
 			mobile_gallery_banner_plus_8: {
@@ -249,7 +247,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					[320, 480],
 				],
 				targeting: {
-					pos: 'middle',
+					pos_nr: 'middle',
 				},
 			},
 			mobile_gallery_banner_plus_9: {
@@ -259,7 +257,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					[320, 480],
 				],
 				targeting: {
-					pos: 'middle',
+					pos_nr: 'middle',
 				},
 			},
 			mobile_gallery_banner_plus_10: {
@@ -269,7 +267,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					[320, 480],
 				],
 				targeting: {
-					pos: 'middle',
+					pos_nr: 'middle',
 				},
 			},
 			mobile_gallery_banner_plus_11: {
@@ -279,7 +277,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					[320, 480],
 				],
 				targeting: {
-					pos: 'middle',
+					pos_nr: 'middle',
 				},
 			},
 			mobile_gallery_banner_plus_12: {
@@ -289,7 +287,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					[320, 480],
 				],
 				targeting: {
-					pos: 'middle',
+					pos_nr: 'middle',
 				},
 			},
 			mobile_gallery_banner_plus_13: {
@@ -299,17 +297,18 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					[320, 480],
 				],
 				targeting: {
-					pos: 'middle',
+					pos_nr: 'middle',
 				},
 			},
 			'mobile-nav-ad-plus-banner': {
-				defaultSizes: [
-					[5, 5],
-					[320, 50],
-				],
+				defaultSizes: [[5, 5], [320, 50], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
 				targeting: {
-					pos: 'nav',
+					pos_nr: 'nav',
+					loc: 'top',
 				},
+			},
+			video: {
+				isVideo: true,
 			},
 		};
 

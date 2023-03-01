@@ -1,5 +1,5 @@
-import { BaseServiceSetup, context, tcf, utils } from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { BaseServiceSetup, targetingService, tcf, utils } from '@ad-engine/core';
 
 const logGroup = 'eyeota';
 const pid = 'r8rcb20';
@@ -16,9 +16,9 @@ export function parseContextTags(tags: TaxonomyTags): string {
 	return urlParams;
 }
 
-class Eyeota extends BaseServiceSetup {
+export class Eyeota extends BaseServiceSetup {
 	async call(): Promise<void> {
-		if (!this.isEnabled('services.eyeota.enabled')) {
+		if (!this.isEnabled('icEyeota')) {
 			utils.logger(logGroup, 'disabled');
 
 			return Promise.resolve();
@@ -39,7 +39,7 @@ class Eyeota extends BaseServiceSetup {
 
 	async createScriptSource(): Promise<string> {
 		const tcfData = await tcf.getTCData();
-		const s0v = context.get('targeting.s0v');
+		const s0v = targetingService.get('s0v');
 
 		const url = new URL('https://ps.eyeota.net/pixel');
 		url.searchParams.append('pid', pid);
@@ -61,5 +61,3 @@ class Eyeota extends BaseServiceSetup {
 		return url.toString() + contextTags;
 	}
 }
-
-export const eyeota = new Eyeota();

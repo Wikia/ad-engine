@@ -1,4 +1,4 @@
-import { context, DiProcess } from '@wikia/ad-engine';
+import { context, DiProcess, universalAdPackage } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -6,10 +6,10 @@ export class GiantbombSlotsContextSetup implements DiProcess {
 	execute(): void {
 		const slots = {
 			'skybox-nav': {
-				defaultSizes: [[5, 5]],
+				defaultSizes: [[5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
 				targeting: {
-					sl: '',
-					pos: 'nav',
+					pos_nr: 'nav',
+					loc: 'top',
 				},
 			},
 			leader_plus_top: {
@@ -20,8 +20,7 @@ export class GiantbombSlotsContextSetup implements DiProcess {
 					[970, 250],
 				],
 				targeting: {
-					sl: '',
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			leader_top: {
@@ -30,22 +29,19 @@ export class GiantbombSlotsContextSetup implements DiProcess {
 					[970, 66],
 				],
 				targeting: {
-					sl: '',
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			mpu_top: {
 				defaultSizes: [[300, 250]],
 				targeting: {
-					sl: '',
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			mpu_bottom: {
 				defaultSizes: [[300, 250]],
 				targeting: {
-					sl: '',
-					pos: 'bottom',
+					pos_nr: 'bottom',
 				},
 			},
 			leader_bottom: {
@@ -54,15 +50,13 @@ export class GiantbombSlotsContextSetup implements DiProcess {
 					[970, 66],
 				],
 				targeting: {
-					sl: '',
-					pos: 'bottom',
+					pos_nr: 'bottom',
 				},
 			},
 			logo_top: {
 				defaultSizes: [[160, 70]],
 				targeting: {
-					sl: '',
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			overlay_leader_top: {
@@ -71,15 +65,13 @@ export class GiantbombSlotsContextSetup implements DiProcess {
 					[970, 66],
 				],
 				targeting: {
-					sl: '',
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			overlay_mpu_top: {
 				defaultSizes: [[300, 250]],
 				targeting: {
-					sl: '',
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			interstitial: {
@@ -92,8 +84,7 @@ export class GiantbombSlotsContextSetup implements DiProcess {
 					// fluid
 				],
 				targeting: {
-					sl: '',
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'sky-leader-plus-top': {
@@ -104,18 +95,14 @@ export class GiantbombSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					sl: '',
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'mobile-skybox-nav': {
-				defaultSizes: [
-					[6, 6],
-					[5, 5],
-				],
+				defaultSizes: [[6, 6], [5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
 				targeting: {
-					sl: '',
-					pos: 'nav',
+					pos_nr: 'nav',
+					loc: 'top',
 				},
 			},
 			'mobile-native': {
@@ -125,8 +112,7 @@ export class GiantbombSlotsContextSetup implements DiProcess {
 					// fluid
 				],
 				targeting: {
-					sl: '',
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'mobile-mpu-banner-bottom': {
@@ -135,8 +121,7 @@ export class GiantbombSlotsContextSetup implements DiProcess {
 					[320, 50],
 				],
 				targeting: {
-					sl: '',
-					pos: 'bottom',
+					pos_nr: 'bottom',
 				},
 			},
 			'mobile-highimpact-plus': {
@@ -146,8 +131,7 @@ export class GiantbombSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					sl: '',
-					pos: 'plus',
+					pos_nr: 'plus',
 				},
 			},
 			'incontent-mobile-flex': {
@@ -156,15 +140,13 @@ export class GiantbombSlotsContextSetup implements DiProcess {
 					[320, 50],
 				],
 				targeting: {
-					sl: '',
-					pos: '1',
+					pos_nr: '1',
 				},
 			},
 			'mobile-banner': {
 				defaultSizes: [[320, 50]],
 				targeting: {
-					sl: '',
-					pos: '1',
+					pos_nr: '1',
 				},
 			},
 			'mobile-banner-plus': {
@@ -173,16 +155,17 @@ export class GiantbombSlotsContextSetup implements DiProcess {
 					[320, 50],
 				],
 				targeting: {
-					sl: '',
-					pos: '1',
+					pos_nr: '1',
 				},
 			},
 			'mobile-mpu': {
 				defaultSizes: [[300, 250]],
 				targeting: {
-					sl: '',
-					pos: '1',
+					pos_nr: '1',
 				},
+			},
+			video: {
+				isVideo: true,
 			},
 		};
 

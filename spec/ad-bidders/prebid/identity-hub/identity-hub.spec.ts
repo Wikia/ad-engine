@@ -1,24 +1,20 @@
-import { identityHub } from '@wikia/ad-bidders';
+import { IdentityHub } from '@wikia/ad-bidders';
 import { context, utils } from '@wikia/core';
-import { assert, createSandbox, SinonSandbox } from 'sinon';
+import { assert } from 'sinon';
 
 describe('Pubmatic IdentityHub', () => {
-	const sandbox: SinonSandbox = createSandbox();
+	const identityHub = new IdentityHub();
 	let loadScriptSpy;
 	let contextStub;
 
 	beforeEach(() => {
-		loadScriptSpy = sandbox.stub(utils.scriptLoader, 'loadScript');
+		loadScriptSpy = global.sandbox.stub(utils.scriptLoader, 'loadScript');
 		loadScriptSpy.resolvesThis();
-		contextStub = sandbox.stub(context);
+		contextStub = global.sandbox.stub(context);
 		contextStub.get.withArgs('pubmatic.identityHub.enabled').returns(true);
 		contextStub.get.withArgs('options.trackingOptIn').returns(true);
 		contextStub.get.withArgs('options.optOutSale').returns(false);
 		contextStub.get.withArgs('wiki.targeting.directedAtChildren').returns(false);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
 	});
 
 	it('pwt.js is called', async () => {

@@ -1,10 +1,10 @@
-import { BaseServiceSetup, context, utils } from '@ad-engine/core';
-import { IdentityRepositories, IdentityRepositoryInterface } from './identity-repositories';
-import { localStorageRepository } from './local-storage-repository';
-import { admsIdentityRepository } from './adms-identity-repository';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { identityStorageRepository } from './identity-storage-repository';
+import { BaseServiceSetup, context, targetingService, utils } from '@ad-engine/core';
+import { admsIdentityRepository } from './adms-identity-repository';
 import { globalIdentityStorage } from './global-identity-repository';
+import { IdentityRepositories, IdentityRepositoryInterface } from './identity-repositories';
+import { identityStorageRepository } from './identity-storage-repository';
+import { localStorageRepository } from './local-storage-repository';
 
 export class UserIdentity extends BaseServiceSetup {
 	public static logGroup = 'user-identity';
@@ -32,7 +32,7 @@ export class UserIdentity extends BaseServiceSetup {
 				partnerName: 'Google',
 				partnerIdentityId: ppid,
 			});
-			context.set('targeting.ppid', ppid);
+			targetingService.set('ppid', ppid);
 			utils.logger(UserIdentity.logGroup, 'Passed PPID to page-level targeting');
 		} catch (e) {
 			utils.logger(UserIdentity.logGroup, 'Setting up PPID has failed!', e);
@@ -48,5 +48,3 @@ export class UserIdentity extends BaseServiceSetup {
 		}
 	}
 }
-
-export const userIdentity = new UserIdentity();

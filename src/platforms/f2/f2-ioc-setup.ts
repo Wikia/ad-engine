@@ -1,7 +1,7 @@
 import { communicationService, DiProcess, ofType } from '@wikia/ad-engine';
 import { Container, Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
-import { F2_ENV, f2Ready } from './setup-f2';
+import { f2Ready, F2_ENV } from './setup-f2';
 import { getF2StateBinder } from './utils/f2-state-binder';
 
 @Injectable()

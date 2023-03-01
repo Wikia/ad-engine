@@ -1,6 +1,6 @@
+import { AdSlot, communicationService, eventsRepository } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { DataWarehouseTracker } from './data-warehouse';
-import { AdSlot, communicationService, eventsRepository } from '@wikia/ad-engine';
 
 /**
  * Wrapper for ad size tracking
@@ -32,7 +32,7 @@ export class AdSizeTracker {
 				slot_id: slot.getUid() || '',
 				creative_id: slot.creativeId || '',
 				line_item_id: slot.lineItemId || '',
-				rv: slot.getConfigProperty('targeting.rv') || '',
+				rv: slot.getTargetingProperty('rv') || '',
 				position: slot.getMainPositionName(),
 				slot_size: slot.getCreativeSize() || '',
 			},

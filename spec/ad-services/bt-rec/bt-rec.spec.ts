@@ -1,22 +1,18 @@
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
 
-import { context, utils } from '@wikia/core';
 import { btRec } from '@wikia/ad-services';
+import { context, utils } from '@wikia/core';
 
 describe('BlockThrough recovery', () => {
-	const sandbox = createSandbox();
-
 	let loadScriptStub;
 
 	beforeEach(() => {
-		loadScriptStub = sandbox.stub(utils.scriptLoader, 'loadScript');
+		loadScriptStub = global.sandbox.stub(utils.scriptLoader, 'loadScript');
 		context.set('options.wad.btRec.enabled', true);
 		context.set('options.wad.blocking', true);
 	});
 
 	afterEach(() => {
-		sandbox.restore();
 		loadScriptStub.resetHistory();
 
 		context.remove('options.wad.btRec.enabled');

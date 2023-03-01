@@ -9,6 +9,7 @@ let isBabInitialised = false;
 let operatingSystem: string = null;
 
 export type DeviceType = 'tablet' | 'smartphone' | 'desktop';
+export type DeviceMode = 'desktop' | 'mobile';
 
 function setupBab(): void {
 	bab = new BlockAdBlock({
@@ -77,6 +78,10 @@ class Client {
 		return 'desktop';
 	}
 
+	getDeviceMode(): DeviceMode {
+		return window.matchMedia('(max-width: 840px)').matches ? 'mobile' : 'desktop';
+	}
+
 	getOperatingSystem(): string {
 		if (operatingSystem !== null) {
 			return operatingSystem;
@@ -115,7 +120,7 @@ class Client {
 			userAgent.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
 
 		if (/trident/i.test(matches[1])) {
-			temp = /\brv[ :]+(\d+)/g.exec(userAgent) || [];
+			temp = /\brv[ :]+(\d+)/g.exec(userAgent) || [''];
 			browser = `IE ${temp[1] || ''}`;
 
 			return browser;
@@ -143,12 +148,6 @@ class Client {
 		const { userAgent } = window.navigator;
 
 		return userAgent.toLowerCase().indexOf('steam') > -1;
-	}
-
-	isMobileSkin(skin: string): boolean {
-		const mobileSkins = ['fandom_mobile', 'fc_mobile', 'turf_mobile', 'fandommobile', 'ucp_mobile'];
-
-		return mobileSkins.includes(skin);
 	}
 }
 

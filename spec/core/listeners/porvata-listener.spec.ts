@@ -1,10 +1,10 @@
-import { context, slotService, VideoData, VideoEventListener } from '@wikia/core';
 import {
 	PorvataListener,
 	PorvataListenerParams,
 } from '@wikia/ad-products/video/porvata/porvata-listener';
+import { context, slotService, VideoData, VideoEventListener } from '@wikia/core';
 import { expect } from 'chai';
-import { createSandbox, spy } from 'sinon';
+import { spy } from 'sinon';
 
 interface PorvataEventTestListener extends VideoEventListener {
 	dispatchedEvents: [];
@@ -24,21 +24,14 @@ function getListener(): PorvataEventTestListener {
 }
 
 let customListener;
-let sandbox;
-
 describe('porvata-listener', () => {
 	beforeEach(() => {
-		sandbox = createSandbox();
 		customListener = getListener();
 		context.extend({
 			listeners: {
 				porvata: [customListener],
 			},
 		});
-	});
-
-	afterEach(() => {
-		sandbox.restore();
 	});
 
 	it('dispatch Porvata event with all basic data', () => {
@@ -90,7 +83,7 @@ describe('porvata-listener', () => {
 
 		const adSlotMock = { emit: spy(), getSlotName: () => {} };
 
-		sandbox.stub(slotService, 'get').returns(adSlotMock);
+		global.sandbox.stub(slotService, 'get').returns(adSlotMock);
 
 		listener.dispatch(PorvataListener.EVENTS.viewable_impression);
 

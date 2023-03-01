@@ -1,8 +1,7 @@
 import { resolvedState } from '@wikia/ad-products';
 import { resolvedStateSwitch } from '@wikia/ad-products/templates/uap/resolved-state-switch';
+import { utils } from '@wikia/core';
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
-import { utils } from '../../../../src/core';
 
 interface ImageParams {
 	element: {
@@ -113,15 +112,9 @@ function createCorrectParamsWithTwoAssets(): Params {
 }
 
 describe('ResolvedState', () => {
-	const sandbox = createSandbox();
-
-	afterEach(() => {
-		sandbox.restore();
-	});
-
 	blockingUrlParams.forEach((param) => {
 		it(`Should not be in resolved state when is not blocked by query param ${param}`, () => {
-			sandbox.stub(utils.queryString, 'get').returns(param as any);
+			global.sandbox.stub(utils.queryString, 'get').returns(param as any);
 
 			expect(resolvedState.isResolvedState(createCorrectParams())).to.equal(false);
 		});
@@ -129,20 +122,20 @@ describe('ResolvedState', () => {
 
 	forcingUrlParams.forEach((param) => {
 		it(`Should be in resolved state when is forced by query param ${param}`, () => {
-			sandbox.stub(utils.queryString, 'get').returns(param as any);
+			global.sandbox.stub(utils.queryString, 'get').returns(param as any);
 
 			expect(resolvedState.isResolvedState(createCorrectParams())).to.equal(true);
 		});
 	});
 
 	it('Should not be in resolved state when no information about seen ad was stored', () => {
-		sandbox.stub(resolvedStateSwitch, 'wasDefaultStateSeen').returns(false);
+		global.sandbox.stub(resolvedStateSwitch, 'wasDefaultStateSeen').returns(false);
 
 		expect(resolvedState.isResolvedState(createCorrectParams())).to.equal(false);
 	});
 
 	it('Should be in resolved state when information about seen ad was stored', () => {
-		sandbox.stub(resolvedStateSwitch, 'wasDefaultStateSeen').returns(true);
+		global.sandbox.stub(resolvedStateSwitch, 'wasDefaultStateSeen').returns(true);
 
 		expect(resolvedState.isResolvedState(createCorrectParams())).to.equal(true);
 	});
@@ -150,7 +143,7 @@ describe('ResolvedState', () => {
 	it('Should not modify params if template does not support resolved state', () => {
 		const params = createIncorrectParams();
 
-		sandbox.stub(stubs.videoSettings, 'getParams').returns(params);
+		global.sandbox.stub(stubs.videoSettings, 'getParams').returns(params);
 
 		resolvedState.setImage(stubs.videoSettings);
 
@@ -161,8 +154,8 @@ describe('ResolvedState', () => {
 	it('Should use default state resources when no information about seen ad was stored for add with one image', () => {
 		const params = createCorrectParams();
 
-		sandbox.stub(stubs.videoSettings, 'isResolvedState').returns(false);
-		sandbox.stub(stubs.videoSettings, 'getParams').returns(params);
+		global.sandbox.stub(stubs.videoSettings, 'isResolvedState').returns(false);
+		global.sandbox.stub(stubs.videoSettings, 'getParams').returns(params);
 
 		resolvedState.setImage(stubs.videoSettings);
 
@@ -173,8 +166,8 @@ describe('ResolvedState', () => {
 	it('Should use resolved state resources when information about seen ad was stored for add with one image', () => {
 		const params = createCorrectParams();
 
-		sandbox.stub(stubs.videoSettings, 'isResolvedState').returns(true);
-		sandbox.stub(stubs.videoSettings, 'getParams').returns(params);
+		global.sandbox.stub(stubs.videoSettings, 'isResolvedState').returns(true);
+		global.sandbox.stub(stubs.videoSettings, 'getParams').returns(params);
 
 		resolvedState.setImage(stubs.videoSettings);
 
@@ -185,8 +178,8 @@ describe('ResolvedState', () => {
 	it('should use default state resources when no information about seen ad was stored using split template', () => {
 		const params = createCorrectParamsWithTwoAssets();
 
-		sandbox.stub(stubs.videoSettings, 'isResolvedState').returns(false);
-		sandbox.stub(stubs.videoSettings, 'getParams').returns(params);
+		global.sandbox.stub(stubs.videoSettings, 'isResolvedState').returns(false);
+		global.sandbox.stub(stubs.videoSettings, 'getParams').returns(params);
 
 		resolvedState.setImage(stubs.videoSettings);
 
@@ -198,8 +191,8 @@ describe('ResolvedState', () => {
 	it('should use resolved state resources when information about seen ad was stored using split template', () => {
 		const params = createCorrectParamsWithTwoAssets();
 
-		sandbox.stub(stubs.videoSettings, 'isResolvedState').returns(true);
-		sandbox.stub(stubs.videoSettings, 'getParams').returns(params);
+		global.sandbox.stub(stubs.videoSettings, 'isResolvedState').returns(true);
+		global.sandbox.stub(stubs.videoSettings, 'getParams').returns(params);
 
 		resolvedState.setImage(stubs.videoSettings);
 
@@ -209,7 +202,7 @@ describe('ResolvedState', () => {
 	});
 
 	it('should support hivi template in resolved state', () => {
-		sandbox.stub(resolvedStateSwitch, 'wasDefaultStateSeen').returns(true);
+		global.sandbox.stub(resolvedStateSwitch, 'wasDefaultStateSeen').returns(true);
 
 		const params = {
 			theme: 'hivi',
@@ -219,7 +212,7 @@ describe('ResolvedState', () => {
 	});
 
 	it('should not support non existing template in resolved state', () => {
-		sandbox.stub(resolvedStateSwitch, 'wasDefaultStateSeen').returns(true);
+		global.sandbox.stub(resolvedStateSwitch, 'wasDefaultStateSeen').returns(true);
 
 		const params = {
 			theme: 'non-existing-template',

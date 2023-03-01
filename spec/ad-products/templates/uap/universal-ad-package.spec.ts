@@ -1,26 +1,24 @@
+import { registerUapListener, universalAdPackage } from '@wikia/ad-products';
 import { communicationService, eventsRepository } from '@wikia/communication';
+import { AdSlot, Context, context, TargetingService, targetingService } from '@wikia/core';
 import { expect } from 'chai';
 import { BehaviorSubject } from 'rxjs';
-import { createSandbox, SinonSandbox, SinonSpy, SinonStubbedInstance } from 'sinon';
-import { AdSlot, Context, context } from '@wikia/core';
-import { registerUapListener, universalAdPackage } from '@wikia/ad-products';
+import { SinonSpy, SinonStubbedInstance } from 'sinon';
 
 describe('UniversalAdPackage', () => {
 	const UAP_ID = 666;
 	const UAP_CREATIVE_ID = 333;
 	const UAP_STANDARD_AD_PRODUCT = 'uap';
-	const sandbox: SinonSandbox = createSandbox();
 	let contextStub: SinonStubbedInstance<Context>;
+	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 	const uapLoadStatus = communicationService.getGlobalAction(
 		eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
 	);
 
-	afterEach(() => {
-		sandbox.restore();
-	});
-
 	beforeEach(() => {
-		contextStub = sandbox.stub(context);
+		targetingServiceStub = global.sandbox.stub(targetingService);
+
+		contextStub = global.sandbox.stub(context);
 		contextStub.get.withArgs('slots').returns({ top_leaderboard: {}, top_boxad: {} });
 	});
 
@@ -30,17 +28,15 @@ describe('UniversalAdPackage', () => {
 			creativeId: UAP_CREATIVE_ID,
 		} as any);
 
-		expect(contextStub.set.calledWith('slots.top_leaderboard.targeting.uap', UAP_ID)).to.equal(
-			true,
-		);
+		expect(targetingServiceStub.set.calledWith('uap', UAP_ID, 'top_leaderboard')).to.equal(true);
 		expect(
-			contextStub.set.calledWith('slots.top_leaderboard.targeting.uap_c', UAP_CREATIVE_ID),
+			targetingServiceStub.set.calledWith('uap_c', UAP_CREATIVE_ID, 'top_leaderboard'),
 		).to.equal(true);
-		expect(contextStub.set.calledWith('slots.top_boxad.targeting.uap', UAP_ID)).to.equal(true);
-		expect(contextStub.set.calledWith('slots.top_boxad.targeting.uap_c', UAP_CREATIVE_ID)).to.equal(
+		expect(targetingServiceStub.set.calledWith('uap', UAP_ID, 'top_boxad')).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('uap_c', UAP_CREATIVE_ID, 'top_boxad')).to.equal(
 			true,
 		);
-		expect(contextStub.set.callCount).to.equal(4);
+		expect(targetingServiceStub.set.callCount).to.equal(4);
 	});
 
 	it.skip("should use slot's default video ad unit with default settings from GAM", () => {
@@ -53,7 +49,7 @@ describe('UniversalAdPackage', () => {
 		} as any);
 
 		expect(
-			contextStub.set.calledWith('slots.top_leaderboard.videoAdUnit', 'special_ad_unit'),
+			targetingServiceStub.set.calledWith('special_ad_unit', 'slots.top_leaderboard.videoAdUnit'),
 		).to.equal(false);
 	});
 
@@ -66,9 +62,9 @@ describe('UniversalAdPackage', () => {
 			useVideoSpecialAdUnit: true,
 		} as any);
 
-		expect(contextStub.set.calledWith('slots.top_leaderboard.videoAdUnit', '/5441/uap')).to.equal(
-			true,
-		);
+		expect(
+			targetingServiceStub.set.calledWith('videoAdUnit', '/5441/uap', 'top_leaderboard'),
+		).to.equal(true);
 	});
 
 	describe('registerUapListener (UAP Load Status listener - side effect)', () => {
@@ -77,17 +73,17 @@ describe('UniversalAdPackage', () => {
 		let dispatch: SinonSpy;
 
 		beforeEach(() => {
-			dispatch = sandbox.spy(communicationService, 'dispatch');
+			dispatch = global.sandbox.spy(communicationService, 'dispatch');
 			contextStub.get.withArgs('slots.Slot1.firstCall').returns(true);
-			sandbox.stub(universalAdPackage, 'isFanTakeoverLoaded').returns(isFanTakeoverLoaded);
+			global.sandbox.stub(universalAdPackage, 'isFanTakeoverLoaded').returns(isFanTakeoverLoaded);
 		});
 
 		afterEach(() => {
-			sandbox.reset();
+			global.sandbox.reset();
 		});
 
 		it('should emit event with load status if slot collapsed', () => {
-			sandbox.stub(communicationService, 'action$').value(
+			global.sandbox.stub(communicationService, 'action$').value(
 				new BehaviorSubject(
 					communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
 						adSlotName,
@@ -108,7 +104,7 @@ describe('UniversalAdPackage', () => {
 		});
 
 		it('should emit event with load status if slot forcibly collapsed', () => {
-			sandbox.stub(communicationService, 'action$').value(
+			global.sandbox.stub(communicationService, 'action$').value(
 				new BehaviorSubject(
 					communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
 						adSlotName,
@@ -129,7 +125,7 @@ describe('UniversalAdPackage', () => {
 		});
 
 		it('should emit event with load status when templates are loaded', () => {
-			sandbox.stub(communicationService, 'action$').value(
+			global.sandbox.stub(communicationService, 'action$').value(
 				new BehaviorSubject(
 					communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
 						adSlotName,

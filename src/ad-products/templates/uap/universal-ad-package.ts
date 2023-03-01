@@ -4,7 +4,15 @@ import {
 	eventsRepository,
 	ofType,
 } from '@ad-engine/communication';
-import { AdSlot, btfBlockerService, context, slotService, Targeting, utils } from '@ad-engine/core';
+import {
+	AdSlot,
+	btfBlockerService,
+	context,
+	slotService,
+	SlotTargeting,
+	targetingService,
+	utils,
+} from '@ad-engine/core';
 import { filter, take } from 'rxjs/operators';
 import * as constants from './constants';
 
@@ -37,11 +45,6 @@ export interface UapConfig {
 export interface UapImage {
 	element: HTMLImageElement;
 	background?: string;
-}
-
-export interface VideoSize {
-	height: number;
-	width: number;
 }
 
 export interface UapParams {
@@ -86,7 +89,7 @@ export interface UapParams {
 	videoTriggers: any[];
 
 	// Video
-	vastTargeting: Targeting;
+	vastTargeting: SlotTargeting;
 	videoTriggerElement: HTMLVideoElement;
 	type: string;
 	useVideoSpecialAdUnit: boolean;
@@ -122,8 +125,8 @@ function updateSlotsTargeting(lineItemId, creativeId): void {
 	const slots = context.get('slots') || {};
 
 	Object.keys(slots).forEach((slotId) => {
-		context.set(`slots.${slotId}.targeting.uap`, lineItemId);
-		context.set(`slots.${slotId}.targeting.uap_c`, creativeId);
+		targetingService.set('uap', lineItemId, slotId);
+		targetingService.set('uap_c', creativeId, slotId);
 	});
 }
 

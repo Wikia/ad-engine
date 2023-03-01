@@ -3,24 +3,15 @@ import {
 	AdStackPayload,
 	insertMethodType,
 	SlotPlaceholderContextConfig,
+	SlotTargeting,
 	slotTweaker,
+	targetingService,
 	utils,
 } from '../';
 import { ADX, GptSizeMapping } from '../providers';
 import { context, slotDataParamsUpdater, templateService } from '../services';
 import { AD_LABEL_CLASS, getTopOffset, logger, stringBuilder } from '../utils';
 import { Dictionary } from './dictionary';
-
-export interface Targeting {
-	amznbid?: string;
-	hb_bidder?: string;
-	hb_pb?: string;
-	src?: string;
-	pos?: string;
-	loc?: string;
-	rv?: string | string[];
-	[key: string]: googletag.NamedSize | number;
-}
 
 export interface RepeatConfig {
 	index: number;
@@ -47,7 +38,7 @@ export interface SlotConfig {
 	parentContainerSelector?: string;
 	insertIntoParentContainerMethod?: insertMethodType;
 
-	targeting: Targeting;
+	targeting: SlotTargeting;
 	videoAdUnit?: string;
 	repeat?: RepeatConfig;
 	adUnit?: string;
@@ -150,9 +141,8 @@ export class AdSlot {
 
 		this.config.slotName = this.config.slotName || ad.id;
 		this.config.slotNameSuffix = this.config.slotNameSuffix || '';
-		this.config.targeting = this.config.targeting || ({} as Targeting);
-		this.config.targeting.src = this.config.targeting.src || context.get('src');
-		this.config.targeting.pos = this.config.targeting.pos || this.getSlotName();
+		this.setUpSlotTargeting();
+		delete this.config.targeting;
 
 		this.requested = new Promise<void>((resolve) => {
 			communicationService.onSlotEvent(
@@ -211,6 +201,14 @@ export class AdSlot {
 		if (!this.enabled) {
 			this.hide();
 		}
+	}
+
+	private setUpSlotTargeting() {
+		const targetingData = this.config.targeting || ({} as SlotTargeting);
+		targetingData.src = targetingData.src || context.get('src');
+		targetingData.pos = targetingData.pos || this.getSlotName();
+		targetingData.rv = targetingData.rv || '1';
+		targetingService.extend(targetingData, this.getSlotName());
 	}
 
 	private logger = (...args: any[]) => logger(AdSlot.LOG_GROUP, ...args);
@@ -309,7 +307,7 @@ export class AdSlot {
 
 	// Main position is the first value defined in the "pos" key-value (targeting)
 	getMainPositionName(): string {
-		const { pos = '' } = this.targeting;
+		const { pos = '' } = targetingService.dump(this.getSlotName());
 
 		return (Array.isArray(pos) ? pos : pos.split(','))[0].toLowerCase();
 	}
@@ -330,15 +328,15 @@ export class AdSlot {
 	 * Convenient property to get targeting.
 	 * @returns {Object}
 	 */
-	get targeting(): Targeting {
-		return this.config.targeting;
+	get targeting(): SlotTargeting {
+		return targetingService.dump<SlotTargeting>(this.getSlotName());
 	}
 
-	getTargeting(): Targeting {
-		return this.parseTargetingParams(this.config.targeting);
+	getTargeting(): SlotTargeting {
+		return this.parseTargetingParams(targetingService.dump<SlotTargeting>(this.getSlotName()));
 	}
 
-	private parseTargetingParams(targetingParams: Dictionary): Targeting {
+	private parseTargetingParams(targetingParams: Dictionary): SlotTargeting {
 		const result: Dictionary = {};
 
 		Object.keys(targetingParams).forEach((key) => {
@@ -353,7 +351,7 @@ export class AdSlot {
 			}
 		});
 
-		return result as Targeting;
+		return result as SlotTargeting;
 	}
 
 	getDefaultSizes(): number[][] {
@@ -448,8 +446,16 @@ export class AdSlot {
 		return context.get(`slots.${this.config.slotName}.${key}`);
 	}
 
+	getTargetingProperty(key: string): any {
+		return targetingService.get(key, this.getSlotName());
+	}
+
 	setConfigProperty(key: string, value: any): void {
 		context.set(`slots.${this.config.slotName}.${key}`, value);
+	}
+
+	setTargetingConfigProperty(key: string, value: any): void {
+		targetingService.set(key, value, this.config.slotName);
 	}
 
 	success(status: string = AdSlot.STATUS_SUCCESS): void {
@@ -472,6 +478,20 @@ export class AdSlot {
 			name: this.getSlotName(),
 			state: AdSlot.STATUS_SUCCESS,
 		});
+
+		this.setupDelayedCollapse();
+	}
+
+	private setupDelayedCollapse() {
+		communicationService.on(
+			eventsRepository.GAM_AD_DELAYED_COLLAPSE,
+			(payload) => {
+				if (payload.source.includes(this.getSlotName())) {
+					this.collapse();
+				}
+			},
+			false,
+		);
 	}
 
 	collapse(status: string = AdSlot.STATUS_COLLAPSE): void {
@@ -485,10 +505,10 @@ export class AdSlot {
 	}
 
 	updateWinningPbBidderDetails(): void {
-		if (this.targeting.hb_bidder && this.targeting.hb_pb) {
+		if (this.getTargetingProperty('hb_bidder') && this.getTargetingProperty('hb_pb')) {
 			this.winningBidderDetails = {
-				name: this.targeting.hb_bidder,
-				price: this.targeting.hb_pb,
+				name: this.getTargetingProperty('hb_bidder'),
+				price: this.getTargetingProperty('hb_pb'),
 			};
 		} else {
 			this.winningBidderDetails = null;
@@ -496,10 +516,10 @@ export class AdSlot {
 	}
 
 	updateWinningA9BidderDetails(): void {
-		if (this.targeting.amznbid) {
+		if (this.getTargetingProperty('amznbid')) {
 			this.winningBidderDetails = {
 				name: 'a9',
-				price: this.targeting.amznbid,
+				price: this.getTargetingProperty('amznbid'),
 			};
 		} else {
 			this.winningBidderDetails = null;
@@ -655,7 +675,6 @@ export class AdSlot {
 		const adFrame = this.getIframe();
 
 		if (adFrame && adType.includes('success') && window['ResizeObserver']) {
-			//@ts-ignore ResizeObserver is a native module in most of the modern browsers
 			const resizeObserver = new ResizeObserver((entries) => {
 				for (const entry of entries) {
 					const width = Math.floor(entry.target.clientWidth);

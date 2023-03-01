@@ -1,0 +1,36 @@
+@import '../shared/styles/uap-styles.scss';
+
+body {
+	@include uap-styles();
+
+	&.has-uap {
+		.c-siteHeader {
+			z-index: 201;
+		}
+
+		.c-layoutDefault:has(.c-searchBox_autoSuggest.isActive) #mobile-omni-skybox-plus-sticky {
+			display: none;
+		}
+	}
+}
+
+.gpt-ad {
+	text-align: center;
+
+	&.hide,
+	& .hide {
+		display: none !important;
+	}
+
+	& > div > iframe {
+		display: block;
+		margin: 0 auto;
+	}
+}
+
+body:not(.skybox-loaded) {
+	.c-adSkyBox,
+	.c-adSkyBox .c-adDisplay_container {
+		min-height: 0 !important;
+	}
+}

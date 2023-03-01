@@ -1,4 +1,4 @@
-import { AdSlot, context, vastDebugger, VastParams, utils } from '@ad-engine/core';
+import { AdSlot, context, utils, vastDebugger, VastParams } from '@ad-engine/core';
 import { iasVideoTracker } from '../../porvata/plugins/ias/ias-video-tracker';
 import { JWPlayer, JWPlayerEventParams } from '../external-types/jwplayer';
 import { VideoTargeting } from '../jwplayer-actions';
@@ -94,7 +94,7 @@ export class JWPlayerHelper {
 
 	updateVideoProperties(state: JwpState): void {
 		this.adSlot.setConfigProperty('videoDepth', state.depth);
-		this.adSlot.setConfigProperty('targeting.rv', state.rv);
+		this.adSlot.setTargetingConfigProperty('rv', state.rv);
 	}
 
 	shouldPlayPreroll(videoPlaylistOrderNumber: number, currentMediaId: string = null): boolean {

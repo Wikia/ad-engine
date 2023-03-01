@@ -1,19 +1,18 @@
-import { NewsAndRatingsTargetingSetup } from '@wikia/platforms/news-and-ratings/shared/setup/context/targeting/news-and-ratings-targeting.setup';
 import { utils } from '@wikia/core';
+import { NewsAndRatingsTargetingSetup } from '@wikia/platforms/news-and-ratings/shared/setup/context/targeting/news-and-ratings-targeting.setup';
 
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
 
 describe('News and Ratings Targeting Setup', () => {
-	const sandbox = createSandbox();
 	let queryStringGetStub;
+	let newsAndRatingsTargetingSetup;
 
 	beforeEach(() => {
-		queryStringGetStub = sandbox.stub(utils.queryString, 'get');
+		queryStringGetStub = global.sandbox.stub(utils.queryString, 'get');
+		newsAndRatingsTargetingSetup = new NewsAndRatingsTargetingSetup();
 	});
 
 	afterEach(() => {
-		sandbox.restore();
 		queryStringGetStub.resetHistory();
 	});
 
@@ -64,6 +63,58 @@ describe('News and Ratings Targeting Setup', () => {
 			expect(targetingSetup.getForcedCampaignsTargeting()).to.be.deep.eq({
 				cid: 'test-campaign',
 			});
+		});
+	});
+
+	describe('parseAdTags()', () => {
+		it('parseAdTags correctly parses ad tags string to object', () => {
+			const adTagsString =
+				'game=test-game&franchise=test-franchise&genre=test-genre&user=test-user';
+			const expectedParsedAdTags = {
+				game: 'test-game',
+				franchise: 'test-franchise',
+				genre: 'test-genre',
+				user: 'test-user',
+			};
+
+			const parsedAdTags = newsAndRatingsTargetingSetup.parseAdTags(adTagsString);
+
+			expect(parsedAdTags).to.be.deep.eq(expectedParsedAdTags);
+		});
+
+		it('parseAdTags correctly decodes encoded values', () => {
+			const adTagsString = 'game=test-game&genre=Role-Playing%2CAction+RPG%2CBattle+Royale';
+
+			const expectedParsedAdTags = {
+				game: 'test-game',
+				genre: 'Role-Playing,Action RPG,Battle Royale',
+			};
+
+			const parsedAdTags = newsAndRatingsTargetingSetup.parseAdTags(adTagsString);
+
+			expect(parsedAdTags).to.be.deep.eq(expectedParsedAdTags);
+		});
+
+		it('getMappedAdTags correctly maps N&R specific targeting key names to match Fandom convention', () => {
+			const parsedAdTags = {
+				cid: 'test-cid',
+				con: 'test-con',
+				genre: 'test-genre',
+				network: 'test-network',
+				user: 'test-user',
+			};
+
+			const expectedMappedAdTags = {
+				contentid_nr: 'test-cid',
+				pform: 'test-con',
+				gnre: 'test-genre',
+				tv: 'test-network',
+				user: 'test-user',
+			};
+
+			const mappedAdTags = newsAndRatingsTargetingSetup.getMappedAdTags(parsedAdTags);
+
+			expect(mappedAdTags).to.be.deep.eq(expectedMappedAdTags);
 		});
 	});
 });

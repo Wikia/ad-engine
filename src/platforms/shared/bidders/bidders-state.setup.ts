@@ -8,6 +8,8 @@ export class BiddersStateSetup implements DiProcess {
 		appnexus: 'icPrebidAppNexus',
 		appnexusAst: 'icPrebidAppNexusAst',
 		appnexusNative: 'icPrebidAppNexusNative',
+		criteo: 'icPrebidCriteo',
+		freewheel: 'icPrebidFreewheel',
 		gumgum: 'icPrebidGumGum',
 		indexExchange: 'icPrebidIndexExchange',
 		kargo: 'icPrebidKargo',
@@ -22,6 +24,7 @@ export class BiddersStateSetup implements DiProcess {
 		rubicon: 'icPrebidRubicon',
 		triplelift: 'icPrebidTriplelift',
 		verizon: 'icPrebidVerizon',
+		yahoossp: 'icPrebidYahooSsp',
 	};
 
 	constructor(private instantConfig: InstantConfigService) {
@@ -37,6 +40,7 @@ export class BiddersStateSetup implements DiProcess {
 
 		if (this.instantConfig.get('icA9Bidder')) {
 			context.set('bidders.a9.enabled', true);
+			context.set('bidders.coppaA9', this.instantConfig.get('icCoppaA9'));
 			context.set(
 				'bidders.a9.videoEnabled',
 				this.instantConfig.get('icA9VideoBidder') && hasFeaturedVideo,

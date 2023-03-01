@@ -10,6 +10,7 @@ import {
 	Dictionary,
 	SlotConfig,
 	slotService,
+	targetingService,
 	Usp,
 	usp,
 	utils,
@@ -62,6 +63,12 @@ export class A9Provider extends BidderProvider {
 			size: bid.amznsz,
 			slotName: getSlotNameByBidderAlias(slotName),
 		};
+	}
+
+	public static isEnabled(): boolean {
+		const enabled = context.get('bidders.a9.enabled');
+		const coppaA9 = context.get('bidders.coppaA9');
+		return enabled && (coppaA9 ? !context.get('wiki.targeting.directedAtChildren') : true);
 	}
 
 	private loaded = false;
@@ -133,7 +140,7 @@ export class A9Provider extends BidderProvider {
 
 	private invalidateSlotTargeting(adSlot: AdSlot): void {
 		const expirationDate = Date.parse(
-			context.get(`slots.${adSlot.getSlotName()}.targeting.amznExpirationDate`),
+			targetingService.get('amznExpirationDate', adSlot.getSlotName()),
 		);
 		const currentDate = new Date().getTime();
 
@@ -141,7 +148,7 @@ export class A9Provider extends BidderProvider {
 			const slotAlias = this.getSlotAlias(adSlot.getSlotName());
 			delete this.bids[slotAlias];
 			this.targetingKeys.forEach((key: string) => {
-				context.remove(`slots.${adSlot.getSlotName()}.targeting.${key}`);
+				targetingService.remove(key, adSlot.getSlotName());
 			});
 		}
 	}

@@ -19,8 +19,6 @@ Import everything from `@wikia/ad-engine`. Dead code should be eliminated during
 
 After running `npm run buid:platforms` a set of packages for each platform will be available in `dist/platforms/`.
 
-To compile it in your desired application import `getAdEngineLoader` from `configs/webpack-app.config.js` and add to your webpack loaders array.
-
 ## Context
 
 Context is the ad-engine's store of custom global configuration. To get to know how to set and use it see `src/ad-engine/services/context-service.ts`.
@@ -29,7 +27,7 @@ Context is the ad-engine's store of custom global configuration. To get to know 
 
 ### Load GPT library
 
-Follow [DoubleClick for Publishers instructions](https://support.google.com/dfp_premium/answer/1638622?hl=en).
+Follow [Google Publisher Tag instructions](https://support.google.com/admanager/answer/1638622?hl=en).
 
 ### Prepare configuration
 
@@ -174,7 +172,7 @@ context.set('state.isMobile', true);
 context.set('custom.namespace', 'article');
 
 // Setup GPT targeting
-context.set('targeting.post_id', 123);
+targetingService.set('post_id', 123);
 
 new AdEngine().init();
 ```

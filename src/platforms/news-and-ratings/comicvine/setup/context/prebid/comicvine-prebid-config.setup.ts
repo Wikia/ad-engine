@@ -1,29 +1,38 @@
 import {
-	bidders,
+	Bidders,
 	communicationService,
 	context,
 	DiProcess,
 	eventsRepository,
-	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 import { getAppnexusContext } from '../../../bidders/appnexus';
-import { getWikiaContext } from '../../../bidders/wikia';
+import { getCriteoContext } from '../../../bidders/criteo';
+import { getIndexExchangeContext } from '../../../bidders/index-exchange';
+import { getKargoContext } from '../../../bidders/kargo';
+import { getMedianetContext } from '../../../bidders/medianet';
 import { getPubmaticContext } from '../../../bidders/pubmatic';
+import { getRubiconDisplayContext } from '../../../bidders/rubicon-display';
+import { getWikiaContext } from '../../../bidders/wikia';
+import { getYahooSspContext } from '../../../bidders/yahoossp';
 
 @Injectable()
 export class ComicvinePrebidConfigSetup implements DiProcess {
-	execute(): void {
-		const isDesktop = utils.client.isDesktop();
+	constructor(private bidders: Bidders) {}
 
-		if (!this.isPrebidEnabled()) {
-			return;
-		}
+	execute(): void {
+		const isDesktop = !context.get('state.isMobile');
 
 		context.set('bidders.prebid.appnexus', getAppnexusContext(isDesktop));
+		context.set('bidders.prebid.criteo', getCriteoContext(isDesktop));
+		context.set('bidders.prebid.indexExchange', getIndexExchangeContext(isDesktop));
+		context.set('bidders.prebid.kargo', getKargoContext(isDesktop));
+		context.set('bidders.prebid.medianet', getMedianetContext(isDesktop));
 		context.set('bidders.prebid.pubmatic', getPubmaticContext(isDesktop));
+		context.set('bidders.prebid.rubicon_display', getRubiconDisplayContext(isDesktop));
 		context.set('bidders.prebid.wikia', getWikiaContext());
+		context.set('bidders.prebid.yahoossp', getYahooSspContext(isDesktop));
 
 		this.registerListeners();
 	}
@@ -32,13 +41,9 @@ export class ComicvinePrebidConfigSetup implements DiProcess {
 		communicationService.on(
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
 			({ slot }) => {
-				bidders.updateSlotTargeting(slot.getSlotName());
+				this.bidders.updateSlotTargeting(slot.getSlotName());
 			},
 			false,
 		);
-	}
-
-	private isPrebidEnabled() {
-		return !!context.get('bidders.prebid');
 	}
 }

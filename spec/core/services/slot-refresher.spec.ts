@@ -1,6 +1,6 @@
+import { AdSlot } from '@wikia/core';
 import { slotRefresher } from '@wikia/core/services/slot-refresher';
 import sinon, { assert } from 'sinon';
-import { AdSlot } from '@wikia/core';
 
 describe('slot-refresher', () => {
 	const basicConfig = { slots: ['test_slot'] };
@@ -15,13 +15,12 @@ describe('slot-refresher', () => {
 		getCreativeSizeAsArray: () => [0, 0],
 	};
 
-	const sandbox = sinon.createSandbox();
 	let clock;
 	let originalGoogletag;
 
-	const loggerSpy = sandbox.spy();
-	const refreshSpy = sandbox.spy();
-	const addEventListenerSpy = sandbox.spy();
+	let loggerSpy;
+	let refreshSpy;
+	let addEventListenerSpy;
 
 	before(function () {
 		clock = sinon.useFakeTimers({
@@ -43,16 +42,15 @@ describe('slot-refresher', () => {
 	});
 
 	beforeEach(() => {
+		loggerSpy = global.sandbox.spy();
+		refreshSpy = global.sandbox.spy();
+		addEventListenerSpy = global.sandbox.spy();
 		slotRefresher.slotsInTheViewport = ['test_slot'];
 	});
 
 	after(function () {
 		window.googletag = originalGoogletag;
 		clock.restore();
-	});
-
-	afterEach(function () {
-		sandbox.resetHistory();
 	});
 
 	it('should be enabled if there is no UAP', () => {

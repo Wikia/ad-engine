@@ -4,10 +4,9 @@ import {
 	slotPlaceholderInjector,
 } from '@wikia/core';
 import { expect } from 'chai';
-import { createSandbox, SinonStub } from 'sinon';
+import { SinonStub } from 'sinon';
 
 describe('Slot placeholder injector', () => {
-	const sandbox = createSandbox();
 	let parent: HTMLDivElement;
 	let anchorElement0: HTMLElement;
 	let anchorElement1: HTMLElement;
@@ -16,22 +15,22 @@ describe('Slot placeholder injector', () => {
 	let querySelectorAll: SinonStub;
 
 	const setViewPortHeight = (height: number): void => {
-		sandbox.stub(document.documentElement, 'clientHeight').value(height);
-		sandbox.stub(window, 'innerHeight').value(height);
+		global.sandbox.stub(document.documentElement, 'clientHeight').value(height);
+		global.sandbox.stub(window, 'innerHeight').value(height);
 	};
 
 	const setScrollPosition = (position: number): void => {
-		sandbox.stub(window, 'scrollY').value(position);
+		global.sandbox.stub(window, 'scrollY').value(position);
 	};
 
 	const setElementTopOffset = (element: HTMLElement, top: number): void => {
 		const scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
 
-		sandbox.stub(element, 'getBoundingClientRect').returns({ top: top - scrollTop } as any);
+		global.sandbox.stub(element, 'getBoundingClientRect').returns({ top: top - scrollTop } as any);
 	};
 
 	const setElementOffsetHeight = (element: HTMLElement, height: number): void => {
-		sandbox.stub(element, 'offsetHeight').value(height);
+		global.sandbox.stub(element, 'offsetHeight').value(height);
 	};
 
 	beforeEach(() => {
@@ -48,14 +47,10 @@ describe('Slot placeholder injector', () => {
 		conflictingElement = document.createElement('div');
 		conflictingElement.id = 'conflict';
 		parent.append(anchorElement0, conflictingElement, anchorElement1, anchorElement2);
-		querySelectorAll = sandbox.stub(document, 'querySelectorAll');
+		querySelectorAll = global.sandbox.stub(document, 'querySelectorAll');
 		querySelectorAll.withArgs('.anchor').returns([anchorElement0, anchorElement1, anchorElement2]);
 		querySelectorAll.withArgs('#conflict').returns([conflictingElement]);
 		querySelectorAll.withArgs('#anchorElementDoesNotExist').returns([]);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
 	});
 
 	it('should not inject slot placeholder if no anchor element found', () => {

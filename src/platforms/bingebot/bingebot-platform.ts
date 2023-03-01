@@ -3,6 +3,7 @@ import {
 	bootstrapAndGetConsent,
 	InstantConfigSetup,
 	NoAdsDetector,
+	NoAdsMode,
 } from '@platforms/shared';
 import {
 	communicationService,
@@ -14,7 +15,6 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
-import { BingeBotIocSetup } from './bingebot-ioc-setup';
 import { BingeBotAdsMode } from './modes/bingebot-ads.mode';
 import { BingeBotSlotsContextSetup } from './setup/context/slots/bingebot-slots-context.setup';
 import { BingeBotTargetingSetup } from './setup/context/targeting/bingebot-targeting.setup';
@@ -31,7 +31,6 @@ export class BingeBotPlatform {
 		this.pipeline.add(
 			() => context.extend(basicContext),
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
-			BingeBotIocSetup,
 			BaseContextSetup,
 			BingeBotSlotsContextSetup,
 			BingeBotTargetingSetup,
@@ -45,6 +44,7 @@ export class BingeBotPlatform {
 		this.pipeline.add(
 			conditional(() => this.noAdsDetector.isAdsMode(), {
 				yes: BingeBotAdsMode,
+				no: NoAdsMode,
 			}),
 		);
 

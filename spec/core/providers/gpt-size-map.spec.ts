@@ -1,10 +1,10 @@
+import { targetingService } from '@wikia/core';
+import { GptSizeMap } from '@wikia/core/providers/gpt-size-map';
 import { expect } from 'chai';
-import { GptSizeMap } from '../../../src/core/providers/gpt-size-map';
-import { context } from '../../../src/core/services/context-service';
 
 describe('gpt-size-map', () => {
-	after(() => {
-		context.removeListeners('targeting');
+	beforeEach(() => {
+		global.sandbox.stub(targetingService);
 	});
 
 	it('provides information about emptiness', () => {

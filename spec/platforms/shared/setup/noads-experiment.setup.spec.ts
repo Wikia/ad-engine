@@ -1,12 +1,12 @@
-import sinon, { assert } from 'sinon';
+import { context } from '@wikia/index';
+import { slotsContext } from '@wikia/platforms/shared';
 import {
 	blockUAP,
 	getUnitNameToDisable,
 	NoAdsExperimentSetup,
-} from '../../../../src/platforms/shared/setup/noads-experiment.setup';
+} from '@wikia/platforms/shared/setup/noads-experiment.setup';
 import { expect } from 'chai';
-import { slotsContext } from '../../../../src/platforms/shared';
-import { context } from '../../../../src';
+import { assert } from 'sinon';
 
 describe('NoAdsExperimentSetup', () => {
 	const instantConfig = {
@@ -17,13 +17,15 @@ describe('NoAdsExperimentSetup', () => {
 		getItem: () => '',
 	} as any;
 
-	const sandbox = sinon.createSandbox();
+	let configGetSpy;
+	let cookieGetSpy;
 
-	const configGetSpy = sandbox.spy(instantConfig, 'get');
-	const cookieGetSpy = sandbox.spy(cookieAdapter, 'getItem');
+	beforeEach(function () {
+		configGetSpy = global.sandbox.spy(instantConfig, 'get');
+		cookieGetSpy = global.sandbox.spy(cookieAdapter, 'getItem');
+	});
 
 	afterEach(function () {
-		sandbox.restore();
 		context.remove('state.noAdsExperiment.unitName');
 	});
 
@@ -37,7 +39,7 @@ describe('NoAdsExperimentSetup', () => {
 	});
 
 	it('should remove UAP sizes from top_leaderboard slotContext', () => {
-		const slotsContextSub = sandbox.stub(slotsContext, 'removeSlotSize');
+		const slotsContextSub = global.sandbox.stub(slotsContext, 'removeSlotSize');
 
 		blockUAP(true);
 		assert.calledOnce(slotsContextSub.withArgs('top_leaderboard', [2, 2]));

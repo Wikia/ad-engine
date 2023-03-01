@@ -1,6 +1,6 @@
 import {
 	adClickTracker,
-	bidders,
+	Bidders,
 	bidderTracker,
 	communicationService,
 	context,
@@ -14,15 +14,16 @@ import {
 	porvataTracker,
 	PostmessageTracker,
 	slotTracker,
+	targetingService,
 	TrackingMessage,
 	TrackingTarget,
 	viewabilityTracker,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { DataWarehouseTracker } from './data-warehouse';
-import { AdSizeTracker } from './ad-size-tracker';
-import { LabradorTracker } from './labrador-tracker';
 import { props } from 'ts-action';
+import { AdSizeTracker } from './ad-size-tracker';
+import { DataWarehouseTracker } from './data-warehouse';
+import { LabradorTracker } from './labrador-tracker';
 
 const bidderTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengbidders';
 const slotTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengadinfo';
@@ -39,6 +40,7 @@ export class TrackingSetup {
 		private labradorTracker: LabradorTracker,
 		private adSizeTracker: AdSizeTracker,
 		private dwTracker: DataWarehouseTracker,
+		private bidders: Bidders,
 	) {}
 
 	execute(): void {
@@ -72,7 +74,7 @@ export class TrackingSetup {
 		let withBidders = null;
 
 		if (context.get('bidders.prebid.enabled') || context.get('bidders.a9.enabled')) {
-			withBidders = bidders;
+			withBidders = this.bidders;
 		}
 
 		slotTracker.onChangeStatusToTrack.push('top-conflict');
@@ -179,7 +181,7 @@ export class TrackingSetup {
 	}
 
 	private keyValsTracker(): void {
-		const keyVals = { ...context.get('targeting') };
+		const keyVals = { ...targetingService.dump() };
 
 		// Remove Audigent segments
 		delete keyVals.AU_SEG;

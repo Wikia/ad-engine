@@ -4,10 +4,13 @@ import {
 	CookieStorageAdapter,
 	DiProcess,
 	eventsRepository,
+	setupNpaContext,
+	setupRdpContext,
+	targetingService,
 	utils,
 } from '@wikia/ad-engine';
-import { TargetingParams, CookieBasedTargetingParams } from './interfaces/targeting-params';
 import isMatch from 'lodash/isMatch.js';
+import { CookieBasedTargetingParams, TargetingParams } from './interfaces/targeting-params';
 
 export class NewsAndRatingsTargetingSetup implements DiProcess {
 	execute(): void {
@@ -16,62 +19,97 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 		const targeting = {
 			...this.getPageLevelTargeting(),
 			...this.getCookieBasedTargeting(customConfig),
+			...this.getViewGuid(),
 			...this.getForcedCampaignsTargeting(),
 		};
 
 		this.setSlotLevelTargeting(targeting, customConfig);
 
-		context.set('targeting', {
-			...context.get('targeting'),
+		targetingService.extend({
+			...targetingService.dump(),
 			...targeting,
+			is_mobile: context.get('state.isMobile') ? '1' : '0',
+			uap: 'none',
+			uap_c: 'none',
 		});
+
+		setupNpaContext();
+		setupRdpContext();
 	}
 
 	getPageLevelTargeting(): TargetingParams {
-		const targetParams = this.getMetadataTargetingParams();
-		const utagData = window.utag_data;
+		const adTags = this.getAdTags();
+		const parsedAdTags = this.parseAdTags(adTags);
 
-		let targeting: TargetingParams = {};
-
-		if (targetParams) {
-			for (const [key, value] of Object.entries(targetParams)) {
-				targeting[key] = value;
-			}
-		}
-
-		targeting = {
-			...targeting,
-			ptype: utagData?.pageType,
-			user: utagData?.userType,
-			vguid: this.getViewGuid(),
-		};
-
-		return targeting;
+		return this.getMappedAdTags(parsedAdTags);
 	}
 
-	getMetadataTargetingParams(): TargetingParams {
-		const dataSettingsElement = document.head
-			.querySelector('[id=ad-settings]')
-			?.getAttribute('data-settings');
+	getAdTags(): string {
+		return document.head.querySelector('[name=adtags]')?.getAttribute('content');
+	}
 
-		if (dataSettingsElement) {
-			return JSON.parse(dataSettingsElement)?.target_params;
+	parseAdTags(adTags: string): object {
+		if (!adTags) {
+			return;
 		}
 
-		return null;
+		return Object.fromEntries(new URLSearchParams(adTags));
+	}
+
+	getMappedAdTags(adTagsToMap: object): TargetingParams {
+		if (!adTagsToMap) {
+			return;
+		}
+
+		const mappedAdTags = {};
+
+		for (const [key, value] of Object.entries(adTagsToMap)) {
+			if (key === 'cid') {
+				mappedAdTags['contentid_nr'] = value;
+				continue;
+			}
+
+			if (key === 'con') {
+				mappedAdTags['pform'] = value;
+				continue;
+			}
+
+			if (key === 'genre') {
+				mappedAdTags['gnre'] = value;
+				continue;
+			}
+
+			if (key === 'network') {
+				mappedAdTags['tv'] = value;
+				continue;
+			}
+
+			mappedAdTags[key] = value;
+		}
+
+		return mappedAdTags;
 	}
 
 	getViewGuid() {
+		const pageViewGuid = this.getViewGuidFromUtagData() || this.getViewGuidFromMetaTag();
+		return { vguid: pageViewGuid };
+	}
+
+	getViewGuidFromUtagData() {
+		return window.utag_data?.pageViewGuid;
+	}
+
+	getViewGuidFromMetaTag() {
 		const el = document.getElementById('view-guid-meta');
 		const key = 'content';
 
-		let guid;
+		let pageViewGuid = '';
 
 		if (el && el.hasAttribute(key)) {
-			guid = el.getAttribute(key);
+			pageViewGuid = el.getAttribute(key);
 		}
 
-		return guid;
+		return pageViewGuid;
 	}
 
 	// Transfered from: https://github.com/Wikia/player1-ads-adlibrary/blob/0df200c535adf3599c7de9e99b719953af2784e1/core/targeting.js#L205
@@ -155,8 +193,8 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 		const dailySessionData = this.isJsonString(bbCookies[1]) ? JSON.parse(bbCookies[1]) : {};
 
 		const result: CookieBasedTargetingParams = {
-			ttag: dailySessionData.ttag || existingCookies.ttag,
-			ftag: dailySessionData.ftag || existingCookies.ftag,
+			ttag: dailySessionData.ttag || existingCookies.ttag || '',
+			ftag: dailySessionData.ftag || existingCookies.ftag || '',
 			session: browserSessionData.session || existingCookies.session,
 			subses: browserSessionData.subses || existingCookies.subses,
 			pv: dailySessionData.pv || existingCookies.pv || '0',
@@ -227,8 +265,8 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 		communicationService.on(
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
 			({ slot: adSlot }) => {
-				adSlot.config.targeting.sl = this.getSlValue(adSlot, customConfig);
-				adSlot.config.targeting.iid = this.getIidValue(adSlot, targeting);
+				adSlot.setTargetingConfigProperty('sl', this.getSlValue(adSlot, customConfig));
+				adSlot.setTargetingConfigProperty('iid', this.getIidValue(adSlot, targeting));
 			},
 			false,
 		);

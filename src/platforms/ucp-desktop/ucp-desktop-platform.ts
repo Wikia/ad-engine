@@ -2,14 +2,14 @@ import {
 	AdEngineRunnerSetup,
 	bootstrapAndGetConsent,
 	InstantConfigSetup,
-	NoAdsExperimentSetup,
 	LabradorSetup,
 	LoadTimesSetup,
+	NoAdsExperimentSetup,
+	PlatformContextSetup,
 	shouldUseAdLayouts,
 	TrackingParametersSetup,
 	TrackingSetup,
 	UcpTargetingSetup,
-	PlatformContextSetup,
 } from '@platforms/shared';
 import {
 	communicationService,
@@ -18,18 +18,18 @@ import {
 	eventsRepository,
 	parallel,
 	ProcessPipeline,
+	UserIdentity,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
 import { UcpDesktopBaseContextSetup } from './setup/context/base/ucp-desktop-base-context.setup';
 import { UcpDesktopSlotsContextSetup } from './setup/context/slots/ucp-desktop-slots-context.setup';
-import { UcpDesktopIocSetup } from './ucp-desktop-ioc-setup';
 import { UcpDesktopAdLayoutSetup } from './ucp-desktop-ad-layout-setup';
 import { UcpDesktopLegacySetup } from './ucp-desktop-legacy-setup';
 
 @Injectable()
 export class UcpDesktopPlatform {
-	constructor(private pipeline: ProcessPipeline) {}
+	constructor(private pipeline: ProcessPipeline, private userIdentity: UserIdentity) {}
 
 	execute(): void {
 		// Config
@@ -39,7 +39,6 @@ export class UcpDesktopPlatform {
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
 			TrackingParametersSetup,
 			LoadTimesSetup,
-			UcpDesktopIocSetup,
 			UcpDesktopBaseContextSetup,
 			UcpDesktopSlotsContextSetup,
 			UcpTargetingSetup,
@@ -49,6 +48,8 @@ export class UcpDesktopPlatform {
 			}),
 			NoAdsExperimentSetup,
 			LabradorSetup,
+			// ToDo: Remove after ADEN-12559.
+			() => this.userIdentity.call(),
 			TrackingSetup,
 			AdEngineRunnerSetup,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),

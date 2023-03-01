@@ -1,6 +1,8 @@
+import { TargetingObject, TargetingService, targetingService } from '@wikia/core';
+import { context } from '@wikia/core/services/context-service';
+import { vastParser } from '@wikia/core/video/vast-parser';
 import { expect } from 'chai';
-import { context } from '../../../src/core/services/context-service';
-import { vastParser } from '../../../src/core/video/vast-parser';
+import { SinonStubbedInstance } from 'sinon';
 
 const dummyVast =
 	'dummy.vast?sz=640x480&foo=bar&cust_params=foo1%3Dbar1%26foo2%3Dbar2' +
@@ -22,17 +24,25 @@ function getImaAd(
 }
 
 describe('vast-parser', () => {
+	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
+	const targetingData = {
+		uno: 'foo',
+		due: 15,
+		tre: ['bar', 'zero'],
+		quattro: null,
+	};
+
 	beforeEach(() => {
 		context.extend({
 			vast: {
 				adUnitId: '/5441/wka.fandom/{src}/{pos}',
 			},
-			targeting: {
-				uno: 'foo',
-				due: 15,
-				tre: ['bar', 'zero'],
-				quattro: null,
-			},
+		});
+
+		targetingServiceStub = global.sandbox.stub(targetingService);
+		targetingServiceStub.dump.returns(targetingData);
+		targetingServiceStub.extend.callsFake((newTargeting: TargetingObject) => {
+			Object.assign(targetingData, newTargeting);
 		});
 	});
 

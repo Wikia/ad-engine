@@ -1,19 +1,13 @@
 import { PrebidNativeProvider } from '@wikia/ad-bidders';
-import { createSandbox } from 'sinon';
 import { context } from '@wikia/core';
 import { expect } from 'chai';
 
 describe('Prebid native provider', () => {
-	const sandbox = createSandbox();
 	const prebidNativeProvider = new PrebidNativeProvider();
 	let contextStub;
 
 	beforeEach(() => {
-		contextStub = sandbox.stub(context);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
+		contextStub = global.sandbox.stub(context);
 	});
 
 	it('Prebid native provider is disabled by feature flag', () => {

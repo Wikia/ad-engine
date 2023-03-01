@@ -1,9 +1,9 @@
-import { context, DiProcess } from '@wikia/ad-engine';
+import { context, DiProcess, universalAdPackage } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class MetacriticNeutronSlotsContextSetup implements DiProcess {
-	// TODO: Refactor - wait for decision on ADEN-12650 
+	// TODO: Refactor - wait for decision on ADEN-12650
 	execute(): void {
 		const slots = {
 			'omni-skybox-leader-nav': {
@@ -12,11 +12,13 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 					[5, 5],
 					[970, 66],
 					[728, 90],
+					universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop,
 				],
 				incremental: true,
 				collapseEmptyDiv: [true],
 				targeting: {
-					pos: 'nav',
+					pos_nr: 'nav',
+					loc: 'top',
 				},
 			},
 			'omni-skybox-leaderboard-nav': {
@@ -28,7 +30,7 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 				incremental: true,
 				collapseEmptyDiv: [true],
 				targeting: {
-					pos: 'nav',
+					pos_nr: 'nav',
 				},
 			},
 			'incontent-leader-plus-bottom': {
@@ -41,7 +43,7 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 				incremental: true,
 				collapseEmptyDiv: [true],
 				targeting: {
-					pos: 'bottom',
+					pos_nr: 'bottom',
 				},
 			},
 			'incontent-leaderboard-bottom': {
@@ -52,7 +54,7 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 				incremental: true,
 				collapseEmptyDiv: [true],
 				targeting: {
-					pos: 'bottom',
+					pos_nr: 'bottom',
 				},
 			},
 			'mpu-plus-top': {
@@ -63,7 +65,7 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 				incremental: true,
 				collapseEmptyDiv: [true],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'mpu-top': {
@@ -71,7 +73,7 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 				incremental: true,
 				collapseEmptyDiv: [true],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'mpu-middle': {
@@ -79,7 +81,7 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 				incremental: true,
 				collapseEmptyDiv: [true],
 				targeting: {
-					pos: 'middle',
+					pos_nr: 'middle',
 				},
 			},
 			'mpu-bottom': {
@@ -87,7 +89,7 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 				incremental: true,
 				collapseEmptyDiv: [true],
 				targeting: {
-					pos: 'bottom',
+					pos_nr: 'bottom',
 				},
 			},
 			'mobile-omni-skybox-plus-nav': {
@@ -95,11 +97,13 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 					[6, 6],
 					[5, 5],
 					[320, 50],
+					universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile,
 				],
 				incremental: true,
 				collapseEmptyDiv: [true],
 				targeting: {
-					pos: 'nav',
+					pos_nr: 'nav',
+					loc: 'top',
 				},
 			},
 			'mobile-banner-plus': {
@@ -110,7 +114,7 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 				incremental: true,
 				collapseEmptyDiv: [true],
 				targeting: {
-					pos: 'increment',
+					pos_nr: 'increment',
 				},
 			},
 			'mobile-incontent-plus': {
@@ -122,7 +126,7 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 				incremental: true,
 				collapseEmptyDiv: [true],
 				targeting: {
-					pos: 'increment',
+					pos_nr: 'increment',
 				},
 			},
 			'mobile-incontent-plus-bottom': {
@@ -134,7 +138,7 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 				incremental: true,
 				collapseEmptyDiv: [true],
 				targeting: {
-					pos: 'bottom',
+					pos_nr: 'bottom',
 				},
 			},
 			'leaderboard-middle': {
@@ -142,7 +146,7 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 				incremental: true,
 				collapseEmptyDiv: [true],
 				targeting: {
-					pos: 'middle',
+					pos_nr: 'middle',
 				},
 			},
 			'incontent-leader-plus-top': {
@@ -155,7 +159,7 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 				incremental: true,
 				collapseEmptyDiv: [true],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'incontent-leaderboard-top': {
@@ -166,7 +170,7 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 				incremental: true,
 				collapseEmptyDiv: [true],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'incontent-all-top': {
@@ -178,7 +182,7 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 					[8, 8],
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'nav-ad-plus-leader': {
@@ -188,7 +192,7 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					pos: 'nav',
+					pos_nr: 'nav',
 				},
 			},
 			'incontent-ad-plus-billboard-middle': {
@@ -200,7 +204,7 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 				],
 				incremental: true,
 				targeting: {
-					pos: 'middle',
+					pos_nr: 'middle',
 				},
 			},
 			'incontent-leaderboard-middle': {
@@ -210,7 +214,7 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 				],
 				incremental: true,
 				targeting: {
-					pos: 'middle',
+					pos_nr: 'middle',
 				},
 			},
 			'incontent-narrow-all-top': {
@@ -221,7 +225,7 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 				],
 				incremental: true,
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'mobile-nav-ad-plus-banner': {
@@ -231,7 +235,7 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 				],
 				incremental: false,
 				targeting: {
-					pos: 'nav',
+					pos_nr: 'nav',
 				},
 			},
 			'skybox-leaderboard-nav': {
@@ -240,7 +244,7 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 					[728, 90],
 				],
 				targeting: {
-					pos: 'nav',
+					pos_nr: 'nav',
 				},
 			},
 			'mobile-incontent-mpu-plus': {
@@ -251,7 +255,7 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 				],
 				incremental: true,
 				targeting: {
-					pos: 'increment',
+					pos_nr: 'increment',
 				},
 			},
 			'mobile-incontent-all': {
@@ -263,7 +267,7 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 				],
 				incremental: true,
 				targeting: {
-					pos: 'increment',
+					pos_nr: 'increment',
 				},
 			},
 			'mobile-incontent-ad-plus': {
@@ -273,8 +277,11 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 				],
 				incremental: true,
 				targeting: {
-					pos: 'increment',
+					pos_nr: 'increment',
 				},
+			},
+			video: {
+				isVideo: true,
 			},
 		};
 

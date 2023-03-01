@@ -1,5 +1,12 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, BaseServiceSetup, context, Dictionary, utils } from '@ad-engine/core';
+import {
+	AdSlot,
+	BaseServiceSetup,
+	context,
+	Dictionary,
+	targetingService,
+	utils,
+} from '@ad-engine/core';
 import { A9Provider } from './a9';
 import { PrebidProvider } from './prebid';
 
@@ -10,12 +17,13 @@ interface BiddersProviders {
 
 const logGroup = 'bidders';
 
-class Bidders extends BaseServiceSetup {
+export class Bidders extends BaseServiceSetup {
 	private biddersProviders: BiddersProviders = {};
 	private realSlotPrices = {};
 
 	constructor() {
 		super();
+
 		communicationService.onSlotEvent(AdSlot.VIDEO_AD_REQUESTED, ({ slot }) => {
 			slot.updateWinningPbBidderDetails();
 		});
@@ -40,9 +48,7 @@ class Bidders extends BaseServiceSetup {
 	}
 
 	applyTargetingParams(slotName, targeting): void {
-		Object.keys(targeting).forEach((key) =>
-			context.set(`slots.${slotName}.targeting.${key}`, targeting[key]),
-		);
+		Object.keys(targeting).forEach((key) => targetingService.set(key, targeting[key], slotName));
 	}
 
 	getBiddersProviders(): (A9Provider | PrebidProvider)[] {
@@ -90,7 +96,7 @@ class Bidders extends BaseServiceSetup {
 	resetTargetingKeys(slotName): void {
 		this.getBiddersProviders().forEach((provider) => {
 			provider.getTargetingKeys(slotName).forEach((key) => {
-				context.remove(`slots.${slotName}.targeting.${key}`);
+				targetingService.remove(key, slotName);
 			});
 		});
 
@@ -105,8 +111,10 @@ class Bidders extends BaseServiceSetup {
 			this.biddersProviders.prebid = new PrebidProvider(config.prebid, config.timeout);
 		}
 
-		if (config.a9 && config.a9.enabled) {
+		if (A9Provider.isEnabled()) {
 			this.biddersProviders.a9 = new A9Provider(config.a9, config.timeout);
+		} else {
+			utils.logger(logGroup, 'A9 has been disabled');
 		}
 
 		if (!this.getBiddersProviders().length) {
@@ -118,7 +126,7 @@ class Bidders extends BaseServiceSetup {
 			provider.addResponseListener(() => {
 				if (this.hasAllResponses()) {
 					utils.logger(logGroup, 'resolving call() promise because of having all responses');
-					promise.resolve();
+					promise.resolve(null);
 				}
 			});
 
@@ -161,10 +169,8 @@ class Bidders extends BaseServiceSetup {
 	}
 }
 
-export const bidders = new Bidders();
-
-export * from './wrappers';
 export * from './prebid/ats';
-export * from './prebid/live-ramp';
 export * from './prebid/identity-hub';
+export * from './prebid/live-ramp';
 export * from './prebid/native';
+export * from './wrappers';

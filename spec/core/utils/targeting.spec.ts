@@ -1,26 +1,17 @@
+import { TargetingService, targetingService } from '@wikia/core';
+import { targeting } from '@wikia/core/utils/targeting';
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
-import { context } from '../../../src/core';
-import { targeting } from '../../../src/core/utils/targeting';
-
-let sandbox;
+import { SinonStubbedInstance } from 'sinon';
 
 describe('targeting', () => {
+	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
+
 	beforeEach(() => {
-		sandbox = createSandbox();
-	});
-
-	afterEach(() => {
-		context.remove('targeting.bundles');
-		context.remove('targeting.rating');
-		context.remove('targeting.s1');
-		context.remove('targeting.skin');
-
-		sandbox.restore();
+		targetingServiceStub = global.sandbox.stub(targetingService);
 	});
 
 	it('getHostnamePrefix properly detects current environment', () => {
-		sandbox.stub(window, 'location').value({
+		global.sandbox.stub(window, 'location').value({
 			hostname: 'project43.preview.fandom.com',
 		});
 
@@ -32,9 +23,9 @@ describe('targeting', () => {
 	});
 
 	it('getTargetingBundles returns filtered bundles', () => {
-		context.set('targeting.s1', '_harrypotter');
-		context.set('targeting.rating', ['esrb:teen', 'esrb:adult']);
-		context.set('targeting.skin', 'fandom_desktop');
+		targetingServiceStub.get.withArgs('s1').returns('_harrypotter');
+		targetingServiceStub.get.withArgs('rating').returns(['esrb:teen', 'esrb:adult']);
+		targetingServiceStub.get.withArgs('skin').returns('fandom_desktop');
 
 		expect(
 			targeting.getTargetingBundles({
@@ -79,8 +70,8 @@ describe('targeting', () => {
 	});
 
 	it('getTargetingBundles will not add VIDEO_TIER_3_BUNDLE for tier 1 and 2', () => {
-		context.set('targeting.s1', '_project34');
-		context.set('targeting.skin', 'ucp_desktop');
+		targetingServiceStub.get.withArgs('s1').returns('_project34');
+		targetingServiceStub.get.withArgs('skin').returns('ucp_desktop');
 
 		expect(
 			targeting.getTargetingBundles({
@@ -108,9 +99,9 @@ describe('targeting', () => {
 	});
 
 	it('getTargetingBundles returns backend, frontent and code bundles', () => {
-		context.set('targeting.bundles', ['backend_bundle']);
-		context.set('targeting.s1', '_harrypotter');
-		context.set('targeting.skin', 'ucp_desktop');
+		targetingServiceStub.get.withArgs('bundles').returns(['backend_bundle']);
+		targetingServiceStub.get.withArgs('s1').returns('_harrypotter');
+		targetingServiceStub.get.withArgs('skin').returns('ucp_desktop');
 
 		expect(
 			targeting.getTargetingBundles({
@@ -125,8 +116,8 @@ describe('targeting', () => {
 	});
 
 	it('getTargetingBundles should not overwrite existing bundles', () => {
-		context.set('targeting.bundles', ['existing_bundle']);
-		context.set('targeting.s1', '_harrypotter');
+		targetingServiceStub.get.withArgs('bundles').returns(['existing_bundle']);
+		targetingServiceStub.get.withArgs('s1').returns('_harrypotter');
 
 		expect(
 			targeting.getTargetingBundles({
@@ -147,13 +138,13 @@ describe('targeting', () => {
 	});
 
 	it('getTargetingBundles returns short_page bundle', () => {
-		context.set('targeting.word_count', 20);
+		targetingServiceStub.get.withArgs('word_count').returns(20);
 
 		expect(targeting.getTargetingBundles({})).to.deep.equal(['short_page']);
 	});
 
 	it('getTargetingBundles returns an empty array if the page is long', () => {
-		context.set('targeting.word_count', 2000);
+		targetingServiceStub.get.withArgs('word_count').returns(2000);
 
 		expect(targeting.getTargetingBundles({})).to.deep.equal([]);
 	});

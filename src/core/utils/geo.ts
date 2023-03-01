@@ -1,6 +1,5 @@
 import Cookies from 'js-cookie';
-import { context } from '../services/context-service';
-import { CacheData, InstantConfigCacheStorage } from '../services/instant-config-cache-storage';
+import { CacheData, context, InstantConfigCacheStorage } from '../services';
 
 const cacheMarker = '-cached';
 const earth = 'XX';

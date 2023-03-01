@@ -1,14 +1,24 @@
-import { expect } from 'chai';
+import { TargetingObject, TargetingService, targetingService } from '@wikia/core';
 import { AdSlot } from '@wikia/core/models/ad-slot';
 import { context } from '@wikia/core/services/context-service';
 import { slotService } from '@wikia/core/services/slot-service';
 import {
-	buildVastUrl,
 	buildTaglessRequestUrl,
+	buildVastUrl,
 } from '@wikia/core/utils/tagless-request-url-builder';
+import { expect } from 'chai';
+import { SinonStubbedInstance } from 'sinon';
 
 describe('tagless-request-url-builder', () => {
 	let lisAdSlot;
+	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
+	const targetingData = {
+		s0: '000',
+		uno: 'foo',
+		due: 15,
+		tre: ['bar', 'zero'],
+		quattro: null,
+	};
 
 	beforeEach(() => {
 		context.extend({
@@ -31,16 +41,15 @@ describe('tagless-request-url-builder', () => {
 				},
 				top_leaderboard: {},
 			},
-			targeting: {
-				s0: '000',
-				uno: 'foo',
-				due: 15,
-				tre: ['bar', 'zero'],
-				quattro: null,
-			},
 			options: {
 				trackingOptIn: false,
 			},
+		});
+
+		targetingServiceStub = global.sandbox.stub(targetingService);
+		targetingServiceStub.dump.returns(targetingData);
+		targetingServiceStub.extend.callsFake((newTargeting: TargetingObject) => {
+			Object.assign(targetingData, newTargeting);
 		});
 
 		lisAdSlot = new AdSlot({ id: 'layout_initializer' });

@@ -1,7 +1,6 @@
 import { AdSlot, context } from '@wikia/core';
+import { MessageBoxService } from '@wikia/platforms/shared';
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
-import { MessageBoxService } from '../../../../../src/platforms/shared';
 
 describe('Message Box Service', () => {
 	function getMockElement(): HTMLElement {
@@ -15,7 +14,6 @@ describe('Message Box Service', () => {
 	}
 
 	describe('Test shouldAddMessageBox() method', () => {
-		const sandbox = createSandbox();
 		let messageBoxService: MessageBoxService;
 		let actionEventMock: string;
 
@@ -26,14 +24,12 @@ describe('Message Box Service', () => {
 
 		afterEach(() => {
 			context.remove('services.sailthru.enabled');
-
-			sandbox.restore();
 		});
 
 		it('MB is added - when slot is collapsed, is not a top/bottom leaderboard and does not include message box already', () => {
-			sandbox.stub(messageBoxService, 'isTopLeaderboard').returns(false);
-			sandbox.stub(messageBoxService, 'isBottomLeaderoard').returns(false);
-			sandbox.stub(messageBoxService, 'hasAlreadyMessageBox').returns(false);
+			global.sandbox.stub(messageBoxService, 'isTopLeaderboard').returns(false);
+			global.sandbox.stub(messageBoxService, 'isBottomLeaderoard').returns(false);
+			global.sandbox.stub(messageBoxService, 'hasAlreadyMessageBox').returns(false);
 
 			expect(messageBoxService.shouldAddMessageBox(actionEventMock, getMockElement())).to.equal(
 				true,
@@ -43,9 +39,9 @@ describe('Message Box Service', () => {
 		it("MB is not added - when slot status is different than 'collapse'", () => {
 			actionEventMock = 'success';
 
-			sandbox.stub(messageBoxService, 'isTopLeaderboard').returns(false);
-			sandbox.stub(messageBoxService, 'isBottomLeaderoard').returns(false);
-			sandbox.stub(messageBoxService, 'hasAlreadyMessageBox').returns(false);
+			global.sandbox.stub(messageBoxService, 'isTopLeaderboard').returns(false);
+			global.sandbox.stub(messageBoxService, 'isBottomLeaderoard').returns(false);
+			global.sandbox.stub(messageBoxService, 'hasAlreadyMessageBox').returns(false);
 
 			expect(messageBoxService.shouldAddMessageBox(actionEventMock, getMockElement())).to.equal(
 				false,
@@ -53,9 +49,9 @@ describe('Message Box Service', () => {
 		});
 
 		it('MB is not added - when collapsed slot is top_leaderboard', () => {
-			sandbox.stub(messageBoxService, 'isTopLeaderboard').returns(true);
-			sandbox.stub(messageBoxService, 'isBottomLeaderoard').returns(false);
-			sandbox.stub(messageBoxService, 'hasAlreadyMessageBox').returns(false);
+			global.sandbox.stub(messageBoxService, 'isTopLeaderboard').returns(true);
+			global.sandbox.stub(messageBoxService, 'isBottomLeaderoard').returns(false);
+			global.sandbox.stub(messageBoxService, 'hasAlreadyMessageBox').returns(false);
 
 			expect(messageBoxService.shouldAddMessageBox(actionEventMock, getMockElement())).to.equal(
 				false,
@@ -63,9 +59,9 @@ describe('Message Box Service', () => {
 		});
 
 		it('MB is not added - when collapsed slot is bottom_leaderboard', () => {
-			sandbox.stub(messageBoxService, 'isTopLeaderboard').returns(false);
-			sandbox.stub(messageBoxService, 'isBottomLeaderoard').returns(true);
-			sandbox.stub(messageBoxService, 'hasAlreadyMessageBox').returns(false);
+			global.sandbox.stub(messageBoxService, 'isTopLeaderboard').returns(false);
+			global.sandbox.stub(messageBoxService, 'isBottomLeaderoard').returns(true);
+			global.sandbox.stub(messageBoxService, 'hasAlreadyMessageBox').returns(false);
 
 			expect(messageBoxService.shouldAddMessageBox(actionEventMock, getMockElement())).to.equal(
 				false,
@@ -73,9 +69,9 @@ describe('Message Box Service', () => {
 		});
 
 		it('MB is not added - when the placeholder has already message-box class', () => {
-			sandbox.stub(messageBoxService, 'isTopLeaderboard').returns(false);
-			sandbox.stub(messageBoxService, 'isBottomLeaderoard').returns(false);
-			sandbox.stub(messageBoxService, 'hasAlreadyMessageBox').returns(true);
+			global.sandbox.stub(messageBoxService, 'isTopLeaderboard').returns(false);
+			global.sandbox.stub(messageBoxService, 'isBottomLeaderoard').returns(false);
+			global.sandbox.stub(messageBoxService, 'hasAlreadyMessageBox').returns(true);
 
 			expect(messageBoxService.shouldAddMessageBox(actionEventMock, getMockElement())).to.equal(
 				false,
@@ -85,9 +81,9 @@ describe('Message Box Service', () => {
 		it('MB is not added - when the feature is disabled', () => {
 			messageBoxService = new MessageBoxService(false);
 
-			sandbox.stub(messageBoxService, 'isTopLeaderboard').returns(false);
-			sandbox.stub(messageBoxService, 'isBottomLeaderoard').returns(false);
-			sandbox.stub(messageBoxService, 'hasAlreadyMessageBox').returns(false);
+			global.sandbox.stub(messageBoxService, 'isTopLeaderboard').returns(false);
+			global.sandbox.stub(messageBoxService, 'isBottomLeaderoard').returns(false);
+			global.sandbox.stub(messageBoxService, 'hasAlreadyMessageBox').returns(false);
 
 			expect(messageBoxService.shouldAddMessageBox(actionEventMock, getMockElement())).to.equal(
 				false,

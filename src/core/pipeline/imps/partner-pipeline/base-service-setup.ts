@@ -1,16 +1,20 @@
+import { Injectable } from '@wikia/dependency-injection';
+import { context, InstantConfigService } from '../../../services';
 import {
 	PartnerInitializationProcess,
 	PartnerInitializationProcessOptions,
 } from './partner-pipeline-types';
-import { context } from '../../../services';
 
+@Injectable()
 export class BaseServiceSetup implements PartnerInitializationProcess {
 	options: PartnerInitializationProcessOptions;
 	initializationTimeout;
 	resolve: () => void;
-	initialized: Promise<void> = new Promise<void>((resolve) => {
-		this.resolve = resolve;
-	});
+	initialized: Promise<void>;
+
+	constructor(protected instantConfig: InstantConfigService = null) {
+		this.resetInitialized();
+	}
 
 	private getContextVariablesValue(contextVariables: string | string[]): boolean {
 		if (typeof contextVariables === 'string') {
@@ -22,19 +26,22 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 		}
 	}
 
-	public isEnabled(contextVariables: string | string[], trackingRequired = true): boolean {
-		const contextVariablesValue = this.getContextVariablesValue(contextVariables);
+	public isEnabled(configVariable: string | string[], trackingRequired = true): boolean {
+		const variableValue =
+			typeof configVariable === 'string' && configVariable.startsWith('ic')
+				? (this.instantConfig.get(configVariable) as boolean)
+				: this.getContextVariablesValue(configVariable);
 
 		if (trackingRequired) {
 			return (
-				contextVariablesValue &&
+				variableValue &&
 				context.get('options.trackingOptIn') &&
 				!context.get('options.optOutSale') &&
 				!context.get('wiki.targeting.directedAtChildren')
 			);
 		}
 
-		return contextVariablesValue;
+		return variableValue;
 	}
 
 	setOptions(opt: PartnerInitializationProcessOptions): PartnerInitializationProcess {
@@ -45,6 +52,12 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 	setInitialized(): void {
 		this.resolve();
 		clearTimeout(this.initializationTimeout);
+	}
+
+	public resetInitialized(): void {
+		this.initialized = new Promise<void>((resolve) => {
+			this.resolve = resolve;
+		});
 	}
 
 	getDelayTimeoutInMs(): number {

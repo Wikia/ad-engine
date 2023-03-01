@@ -1,10 +1,15 @@
+import { IasPublisherOptimization } from '@wikia/ad-services';
+import {
+	context,
+	InstantConfigService,
+	TargetingService,
+	targetingService,
+	utils,
+} from '@wikia/core';
 import { expect } from 'chai';
-import { createSandbox, spy } from 'sinon';
-import { context, utils } from '../../../src/core';
-import { iasPublisherOptimization } from '@wikia/ad-services';
+import { SinonStubbedInstance, spy } from 'sinon';
 
 describe('IAS Publisher Optimization', () => {
-	const sandbox = createSandbox();
 	const iasData =
 		'{"brandSafety":' +
 		'{"adt":"veryLow",' +
@@ -19,15 +24,23 @@ describe('IAS Publisher Optimization', () => {
 		'},' +
 		'"fr":"false",' +
 		'"slots":{"top_leaderboard":{"id":"68f5088c-9c44-11eb-b40e","grm":["40"],"vw":"false"}}}';
-	let loadScriptStub;
+	let iasPublisherOptimization: IasPublisherOptimization;
+	let loadScriptStub, instantConfigStub;
 	let clock;
+	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 
 	beforeEach(() => {
-		loadScriptStub = sandbox
+		loadScriptStub = global.sandbox
 			.stub(utils.scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
-		clock = sandbox.useFakeTimers();
-		context.set('services.iasPublisherOptimization.enabled', true);
+		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
+		instantConfigStub.get.withArgs('icIASPublisherOptimization').returns(true);
+
+		clock = global.sandbox.useFakeTimers();
+		iasPublisherOptimization = new IasPublisherOptimization(instantConfigStub);
+
+		targetingServiceStub = global.sandbox.stub(targetingService);
+
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);
 		context.set('wiki.targeting.directedAtChildren', false);
@@ -44,11 +57,10 @@ describe('IAS Publisher Optimization', () => {
 
 	afterEach(() => {
 		clock.tick(5);
-		sandbox.restore();
 	});
 
 	it('IAS Publisher Optimization can be disabled', async () => {
-		context.set('services.iasPublisherOptimization.enabled', false);
+		instantConfigStub.get.withArgs('icIASPublisherOptimization').returns(false);
 
 		await iasPublisherOptimization.call();
 
@@ -80,7 +92,6 @@ describe('IAS Publisher Optimization', () => {
 	});
 
 	it('IAS Publisher Optimization is called', async () => {
-		context.set('services.iasPublisherOptimization.enabled', true);
 		context.set('services.iasPublisherOptimization.slots', ['top_leaderboard']);
 		await iasPublisherOptimization.call();
 
@@ -91,22 +102,23 @@ describe('IAS Publisher Optimization', () => {
 	});
 
 	it('IAS Publisher Optimization properly updates a targeting', async () => {
-		context.set('services.iasPublisherOptimization.enabled', true);
 		context.set('services.iasPublisherOptimization.slots', ['top_leaderboard']);
 		await iasPublisherOptimization.call();
 
 		window.__iasPET.queue[0].dataHandler(iasData);
 
-		expect(context.get('targeting.fr')).to.equal('false');
-		expect(context.get('targeting.adt')).to.equal('veryLow');
-		expect(context.get('targeting.alc')).to.equal('medium');
-		expect(context.get('targeting.dlm')).to.equal('veryLow');
-		expect(context.get('targeting.drg')).to.equal('high');
-		expect(context.get('targeting.hat')).to.equal('veryLow');
-		expect(context.get('targeting.off')).to.equal('medium');
-		expect(context.get('targeting.vio')).to.equal('veryLow');
-		expect(context.get('targeting.b_ias')).to.equal('high');
-		expect(context.get('targeting.ias-kw')).to.deep.equal(['IAS_12345', 'IAS_67890']);
-		expect(context.get('slots.top_leaderboard.targeting.vw')).to.equal('false');
+		expect(targetingServiceStub.set.calledWith('fr', 'false')).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('adt', 'veryLow')).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('alc', 'medium')).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('dlm', 'veryLow')).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('drg', 'high')).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('hat', 'veryLow')).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('off', 'medium')).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('vio', 'veryLow')).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('b_ias', 'high')).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('ias-kw', ['IAS_12345', 'IAS_67890'])).to.equal(
+			true,
+		);
+		expect(targetingServiceStub.set.calledWith('vw', 'false', 'top_leaderboard')).to.equal(true);
 	});
 });

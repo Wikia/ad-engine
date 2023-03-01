@@ -297,6 +297,11 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Ad intervention',
 		payload: props<AdIntervention>(),
 	},
+	GAM_AD_DELAYED_COLLAPSE: {
+		category: '[GAM iframe]',
+		name: 'Delayed collapse',
+		payload: props<{ source: string }>(),
+	},
 	GAM_INTERSTITIAL_LOADED: {
 		category: '[GAM iframe]',
 		name: 'Interstitial loaded',

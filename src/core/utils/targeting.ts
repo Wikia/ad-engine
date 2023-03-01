@@ -1,7 +1,7 @@
 import { Dictionary } from '../models';
+import { CookieStorageAdapter, targetingService } from '../services/';
 import { context } from '../services/context-service';
 import { logger } from './logger';
-import { CookieStorageAdapter } from '../services/';
 
 /*
  *  ToDo: Development improvement refactor
@@ -37,7 +37,7 @@ class Targeting {
 	}
 
 	getTargetingBundles(bundles: Dictionary<Dictionary<string[]>>): string[] {
-		const targetingBundles = context.get('targeting.bundles') || [];
+		const targetingBundles = targetingService.get('bundles') || [];
 
 		try {
 			const selectedBundles = [];
@@ -71,7 +71,7 @@ class Targeting {
 		if (cookieAdapter.getItem('_ae_intrsttl_imp')) {
 			bundles.push('interstitial_disabled');
 		}
-		const skin = context.get('targeting.skin');
+		const skin = targetingService.get('skin');
 
 		if (
 			skin &&
@@ -81,7 +81,7 @@ class Targeting {
 			bundles.push('VIDEO_TIER_3_BUNDLE');
 		}
 
-		const wordCount = context.get('targeting.word_count') || -1;
+		const wordCount = targetingService.get('word_count') || -1;
 
 		if (wordCount > -1 && wordCount <= shortPageWordsLimit) {
 			bundles.push('short_page');
@@ -93,14 +93,13 @@ class Targeting {
 
 	private matchesTargetingBundle(bundle: Dictionary<string[]>): boolean {
 		return !Object.keys(bundle).some((key) => {
-			const acceptedValues = context.get(`targeting.${key}`);
+			const acceptedValues = targetingService.get(key);
 
 			if (!acceptedValues) {
 				return true;
 			}
 
 			if (Array.isArray(acceptedValues)) {
-				// @ts-ignore we check if it's an array so using .some() is OK here
 				if (!bundle[key].some((find) => acceptedValues.includes(find))) {
 					return true;
 				}

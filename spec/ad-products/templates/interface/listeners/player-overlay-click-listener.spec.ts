@@ -1,30 +1,23 @@
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
 
-import { onVideoOverlayClick } from '../../../../../src/ad-products/templates/interface/listeners/player-overlay-click-listener';
+import { onVideoOverlayClick } from '@wikia/ad-products/templates/interface/listeners/player-overlay-click-listener';
 
 describe('Player click listener', () => {
-	const sandbox = createSandbox();
-
 	let playerStub;
 	let communicationServiceStub;
 
 	beforeEach(() => {
 		playerStub = {
-			play: sandbox.stub(),
-			getPlayCounter: sandbox.stub(),
+			play: global.sandbox.stub(),
+			getPlayCounter: global.sandbox.stub(),
 			settings: {
-				getSlotName: sandbox.stub(),
+				getSlotName: global.sandbox.stub(),
 			},
 		};
 
 		communicationServiceStub = {
-			emit: sandbox.stub(),
+			emit: global.sandbox.stub(),
 		};
-	});
-
-	afterEach(() => {
-		sandbox.restore();
 	});
 
 	it('Should not emit event when first play (autoplay or click-to-play)', () => {

@@ -1,12 +1,18 @@
-import { communicationService, context, resolvedState, utils } from '@wikia/ad-engine';
+import {
+	communicationService,
+	context,
+	resolvedState,
+	targetingService,
+	utils,
+} from '@wikia/ad-engine';
 import Cookies from 'js-cookie';
-import { SequenceContinuationHandler } from './domain/sequence-continuation-handler';
-import { SequenceStartHandler } from './domain/sequence-start-handler';
-import { UserSequentialMessageStateStore } from './infrastructure/user-sequential-message-state-store';
-import { GamTargetingManager } from './infrastructure/gam-targeting-manager';
 import { slotsContext } from '../slots/slots-context';
+import { SequenceContinuationHandler } from './domain/sequence-continuation-handler';
 import { SequenceEndHandler } from './domain/sequence-end-handler';
+import { SequenceStartHandler } from './domain/sequence-start-handler';
+import { GamTargetingManager } from './infrastructure/gam-targeting-manager';
 import { SequenceEventTypes } from './infrastructure/sequence-event-types';
+import { UserSequentialMessageStateStore } from './infrastructure/user-sequential-message-state-store';
 import { KibanaLogger } from './kibana-logger';
 
 function kibanaLogger() {
@@ -75,6 +81,7 @@ export class SequentialMessagingSetup {
 		const targetingManager = new GamTargetingManager(
 			context,
 			slotsContext,
+			targetingService,
 			SequentialMessagingSetup.baseTargetingSize,
 			resolvedState.forceUapResolveState,
 		);

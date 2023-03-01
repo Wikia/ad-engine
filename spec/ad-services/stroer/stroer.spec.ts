@@ -1,31 +1,29 @@
-import { stroer } from '@wikia/ad-services';
+import { Stroer } from '@wikia/ad-services';
+import { InstantConfigService, utils } from '@wikia/core';
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
-import { context, utils } from '../../../src/core/index';
 
 describe('Stroer', () => {
-	const sandbox = createSandbox();
-	let loadScriptStub;
+	let stroer: Stroer;
+	let loadScriptStub, instantConfigStub;
 
 	beforeEach(() => {
-		loadScriptStub = sandbox
+		loadScriptStub = global.sandbox
 			.stub(utils.scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
-	});
-
-	afterEach(() => {
-		sandbox.restore();
+		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
+		stroer = new Stroer(instantConfigStub);
 	});
 
 	it('Stroer is created', async () => {
-		context.set('services.stroer.enabled', true);
+		instantConfigStub.get.withArgs('icStroer').returns(true);
+
 		await stroer.call();
 
 		expect(loadScriptStub.called).to.equal(true);
 	});
 
 	it('Stroer is disabled', async () => {
-		context.set('services.stroer.enabled', false);
+		instantConfigStub.get.withArgs('icStroer').returns(false);
 
 		await stroer.call();
 

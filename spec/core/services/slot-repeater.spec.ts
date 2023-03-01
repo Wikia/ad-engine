@@ -1,26 +1,19 @@
-import { AdSlot } from '@wikia/core/index';
-import { communicationService } from '@wikia/communication/index';
+import { communicationService } from '@wikia/communication';
+import { AdSlot } from '@wikia/core';
+import { context, slotInjector, slotRepeater } from '@wikia/core/services';
 import { expect } from 'chai';
-import * as sinon from 'sinon';
-import { context, slotInjector, slotRepeater } from '../../../src/core/services';
 import { adSlotFake } from '../ad-slot-fake';
 
 describe('slot-repeater', () => {
 	let adSlot;
 	let injectedContainer;
 	let handleSlotRepeating;
-	let sandbox;
-
-	afterEach(() => {
-		sandbox.restore();
-	});
 
 	beforeEach(() => {
-		sandbox = sinon.createSandbox();
 		injectedContainer = {};
 		handleSlotRepeating = null;
-		sandbox.stub(slotInjector, 'inject').callsFake(() => injectedContainer);
-		sandbox.stub(communicationService, 'onSlotEvent').callsFake((key, callback) => {
+		global.sandbox.stub(slotInjector, 'inject').callsFake(() => injectedContainer);
+		global.sandbox.stub(communicationService, 'onSlotEvent').callsFake((key, callback) => {
 			handleSlotRepeating = callback;
 		});
 		adSlot = { ...adSlotFake };

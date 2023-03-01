@@ -1,5 +1,5 @@
+import { client } from '@wikia/core/utils/client';
 import { expect } from 'chai';
-import { client } from '../../../src/core/utils/client';
 
 describe('client', () => {
 	it('checkBlocking works correctly', async () => {
@@ -19,10 +19,5 @@ describe('client', () => {
 		// by disabling import
 		expect(blocker).to.equal(true);
 		expect(notBlocked).to.equal(false);
-	});
-
-	it('isMobileSkin properly detects mobile skins', () => {
-		expect(client.isMobileSkin('fandom_mobile')).to.equal(true);
-		expect(client.isMobileSkin('anything_else')).to.equal(false);
 	});
 });

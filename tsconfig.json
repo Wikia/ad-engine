@@ -1,7 +1,5 @@
 {
-	"extends": "./configs/tsconfig.json",
 	"compilerOptions": {
-		"outDir": "dist",
 		"sourceMap": true,
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
@@ -9,12 +7,34 @@
 		"allowSyntheticDefaultImports": true,
 		"downlevelIteration": true,
 		"noImplicitAny": false,
-		"baseUrl": ".",
 		"noUnusedLocals": true,
 		"keyofStringsOnly": true,
 		"skipLibCheck": true,
-		"typeRoots": ["node_modules/@types", "@types"]
+		"declaration": true,
+		"declarationDir": "dist/types",
+		"baseUrl": ".",
+		"module": "ESNext",
+		"moduleResolution": "node",
+		"target": "es5",
+		"lib": ["ESNext", "dom"],
+		"outDir": "dist",
+		"typeRoots": ["node_modules/@types", "node_modules/@alugha/ima", "@types"],
+		"paths": {
+			// Unit tests
+			"@wikia/*": ["src/*"],
+			// Core
+			"@ad-engine/core": ["src/core/index.ts"],
+			"@ad-engine/communication": ["src/communication/index.ts"],
+			// Packages
+			"@ad-engine/bidders": ["src/ad-bidders/index.ts"],
+			"@ad-engine/products": ["src/ad-products/index.ts"],
+			"@ad-engine/services": ["src/ad-services/index.ts"],
+			"@ad-engine/tracking": ["src/ad-tracking/index.ts"],
+			// Platforms
+			"@wikia/ad-engine": ["src/index.ts"],
+			"@platforms/shared": ["src/platforms/shared/index.ts"]
+		}
 	},
 	"include": ["src", "spec"],
-	"exclude": ["**/dist/**/*"]
+	"exclude": ["@types", "node_modules", "**/dist/**/*"]
 }

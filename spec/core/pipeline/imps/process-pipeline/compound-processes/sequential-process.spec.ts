@@ -2,12 +2,10 @@ import { ProcessPipeline, sequential } from '@wikia/core';
 import { wait } from '@wikia/core/utils';
 import { Container } from '@wikia/dependency-injection';
 import { expect } from 'chai';
-import { createSandbox, SinonFakeTimers, SinonSpy } from 'sinon';
+import { SinonSpy } from 'sinon';
 
 describe('SequentialProcess', () => {
-	const sandbox = createSandbox();
 	let spy: SinonSpy;
-	let clock: SinonFakeTimers;
 	let pipeline: ProcessPipeline;
 
 	const funcProcess = () => spy('func');
@@ -21,13 +19,8 @@ describe('SequentialProcess', () => {
 	beforeEach(() => {
 		const container = new Container();
 
-		spy = sandbox.spy();
-		clock = sandbox.useFakeTimers();
+		spy = global.sandbox.spy();
 		pipeline = container.get(ProcessPipeline);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
 	});
 
 	it('should work', async () => {
@@ -37,7 +30,7 @@ describe('SequentialProcess', () => {
 					funcProcess,
 					ClassProcess,
 					async () => {
-						await wait(200);
+						await wait(20);
 						spy('async');
 					},
 					sequential(() => spy('other')),
@@ -46,9 +39,9 @@ describe('SequentialProcess', () => {
 			)
 			.execute();
 
-		await progress();
+		await progress(0);
 		expect(spy.getCalls().map((call) => call.args[0])).to.deep.equal(['func', 'class']);
-		await progress(200);
+		await progress(20);
 		assertResults();
 		await promise;
 		assertResults();
@@ -64,10 +57,7 @@ describe('SequentialProcess', () => {
 		]);
 	}
 
-	async function progress(ms?: number): Promise<void> {
-		if (ms) {
-			clock.tick(ms);
-		}
-		await new Promise((resolve) => setImmediate(resolve));
+	async function progress(ms: number): Promise<void> {
+		await new Promise((resolve) => setTimeout(resolve, ms));
 	}
 });

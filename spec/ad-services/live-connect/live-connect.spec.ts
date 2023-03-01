@@ -1,8 +1,8 @@
-import { expect } from 'chai';
-import { createSandbox, SinonSpy } from 'sinon';
-import { context, utils } from '../../../src/core';
-import { liveConnect } from '@wikia/ad-services';
+import { LiveConnect } from '@wikia/ad-services';
 import { communicationService, eventsRepository } from '@wikia/communication';
+import { context, utils } from '@wikia/core';
+import { expect } from 'chai';
+import { SinonSpy } from 'sinon';
 
 const mockedStorageStrategyVariable = {
 	ttl: 300000,
@@ -11,7 +11,7 @@ const mockedStorageStrategyVariable = {
 };
 
 describe('LiveConnect', () => {
-	const sandbox = createSandbox();
+	const liveConnect = new LiveConnect();
 	let loadScriptStub;
 
 	before(() => {
@@ -19,17 +19,13 @@ describe('LiveConnect', () => {
 	});
 
 	beforeEach(() => {
-		loadScriptStub = sandbox
+		loadScriptStub = global.sandbox
 			.stub(utils.scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
 		context.set('services.liveConnect.enabled', true);
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);
 		context.set('wiki.targeting.directedAtChildren', false);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
 	});
 
 	after(() => {
@@ -78,10 +74,10 @@ describe('LiveConnect', () => {
 		let emitSpy: SinonSpy;
 
 		beforeEach(() => {
-			emitSpy = sandbox.spy(communicationService, 'emit');
+			emitSpy = global.sandbox.spy(communicationService, 'emit');
 		});
 
-		afterEach(() => sandbox.restore());
+		afterEach(() => global.sandbox.restore());
 
 		it('valid id is resolved', async () => {
 			liveConnect.resolveId('md5', 'liveconnect-md5')({ md5: '123' });

@@ -1,6 +1,6 @@
+import { getTopOffset } from '@wikia/core/utils';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { getTopOffset } from '../../../src/core/utils';
 
 function getMockElement(top: number, left = 0, hidden = false): HTMLElement {
 	return {
@@ -18,15 +18,9 @@ function getMockElement(top: number, left = 0, hidden = false): HTMLElement {
 }
 
 describe('dimensions', () => {
-	const sandbox = sinon.createSandbox();
-
 	beforeEach(() => {
-		sandbox.stub(window, 'pageXOffset').value(0);
-		sandbox.stub(window, 'pageYOffset').value(200);
-	});
-
-	afterEach(() => {
-		sandbox.restore();
+		global.sandbox.stub(window, 'pageXOffset').value(0);
+		global.sandbox.stub(window, 'pageYOffset').value(200);
 	});
 
 	it('getTopOffset of single element', () => {

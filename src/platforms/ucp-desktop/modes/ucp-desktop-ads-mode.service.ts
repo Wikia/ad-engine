@@ -1,63 +1,78 @@
-import { Injectable } from '@wikia/dependency-injection';
+import { AnyclipPlayerSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
-	audigent,
-	bidders,
-	captify,
+	Ats,
+	Audigent,
+	Bidders,
+	Captify,
 	communicationService,
-	confiant,
+	Confiant,
 	DiProcess,
-	durationMedia,
+	DurationMedia,
 	eventsRepository,
-	eyeota,
-	facebookPixel,
-	iasPublisherOptimization,
-	identityHub,
-	liveConnect,
-	nielsen,
-	PartnerPipeline,
-	prebidNativeProvider,
-	stroer,
-	userIdentity,
-	ats,
+	Eyeota,
+	IasPublisherOptimization,
+	IdentityHub,
 	jwPlayerInhibitor,
-	liveRampPixel,
+	LiveConnect,
+	LiveRampPixel,
+	Nielsen,
+	PartnerPipeline,
+	PrebidNativeProvider,
+	Stroer,
 } from '@wikia/ad-engine';
-import { wadRunner, playerSetup, gptSetup, anyclipPlayerSetup } from '@platforms/shared';
+import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpDesktopAdsMode implements DiProcess {
-	constructor(private pipeline: PartnerPipeline) {}
+	constructor(
+		private pipeline: PartnerPipeline,
+		private anyclipPlayerSetup: AnyclipPlayerSetup,
+		private ats: Ats,
+		private audigent: Audigent,
+		private bidders: Bidders,
+		private captify: Captify,
+		private confiant: Confiant,
+		private durationMedia: DurationMedia,
+		private eyeota: Eyeota,
+		private gptSetup: GptSetup,
+		private iasPublisherOptimization: IasPublisherOptimization,
+		private identityHub: IdentityHub,
+		private liveConnect: LiveConnect,
+		private liveRampPixel: LiveRampPixel,
+		private nielsen: Nielsen,
+		private playerSetup: PlayerSetup,
+		private prebidNativeProvider: PrebidNativeProvider,
+		private stroer: Stroer,
+		private wadRunner: WadRunner,
+	) {}
 
 	execute(): void {
 		this.pipeline
 			.add(
-				userIdentity,
-				liveRampPixel.setOptions({ dependencies: [userIdentity.initialized] }),
-				anyclipPlayerSetup,
-				ats,
-				audigent,
-				bidders,
-				liveConnect,
-				facebookPixel,
-				wadRunner,
-				eyeota,
-				iasPublisherOptimization,
-				confiant,
-				durationMedia,
-				stroer,
-				identityHub,
-				captify,
-				nielsen,
-				prebidNativeProvider,
-				playerSetup.setOptions({
-					dependencies: [bidders.initialized, wadRunner.initialized],
+				this.liveRampPixel,
+				this.anyclipPlayerSetup,
+				this.ats,
+				this.audigent,
+				this.bidders,
+				this.liveConnect,
+				this.wadRunner,
+				this.eyeota,
+				this.iasPublisherOptimization,
+				this.confiant,
+				this.durationMedia,
+				this.stroer,
+				this.identityHub,
+				this.captify,
+				this.nielsen,
+				this.prebidNativeProvider,
+				this.playerSetup.setOptions({
+					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
 				}),
-				gptSetup.setOptions({
+				this.gptSetup.setOptions({
 					dependencies: [
-						userIdentity.initialized,
-						playerSetup.initialized,
+						this.playerSetup.initialized,
 						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
-						iasPublisherOptimization.IASReady,
+						this.iasPublisherOptimization.IASReady,
 					],
 					timeout: jwPlayerInhibitor.isRequiredToRun()
 						? jwPlayerInhibitor.getDelayTimeoutInMs()

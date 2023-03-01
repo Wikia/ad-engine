@@ -1,13 +1,11 @@
-import { context, PrebidiumProvider } from '@wikia/core';
-import { IframeBuilder } from '@wikia/core/utils';
 import { communicationService, eventsRepository } from '@wikia/communication';
+import { PrebidiumProvider, targetingService } from '@wikia/core';
+import { IframeBuilder } from '@wikia/core/utils';
 import { assert } from 'chai';
 import { BehaviorSubject } from 'rxjs';
-import { createSandbox, SinonSandbox } from 'sinon';
 import { PbjsStub, stubPbjs } from '../services/pbjs.stub';
 
 describe('PrebidiumProvider', () => {
-	let sandbox: SinonSandbox;
 	let prebidiumProvider: PrebidiumProvider;
 	const contextStub = {
 		get: undefined,
@@ -21,16 +19,11 @@ describe('PrebidiumProvider', () => {
 	};
 
 	beforeEach(() => {
-		sandbox = createSandbox();
 		prebidiumProvider = new PrebidiumProvider();
 
 		stubIframeBuilder();
-		contextStub.get = sandbox.stub(context, 'get').returns(mock.adId);
-		pbjsStub = stubPbjs(sandbox).pbjsStub;
-	});
-
-	afterEach(() => {
-		sandbox.restore();
+		contextStub.get = global.sandbox.stub(targetingService, 'get').returns(mock.adId);
+		pbjsStub = stubPbjs(global.sandbox).pbjsStub;
 	});
 
 	describe('fillIn', () => {
@@ -46,7 +39,7 @@ describe('PrebidiumProvider', () => {
 				},
 			};
 
-			sandbox.stub(communicationService, 'action$').value(
+			global.sandbox.stub(communicationService, 'action$').value(
 				new BehaviorSubject(
 					communicationService.getGlobalAction(eventsRepository.BIDDERS_BIDDING_DONE)({
 						slotName: mock.slotName,
@@ -68,15 +61,16 @@ describe('PrebidiumProvider', () => {
 		});
 
 		it('should call context get with correct argument', () => {
-			const argument = contextStub.get.getCall(0).args[0];
+			const callArguments = contextStub.get.getCall(0).args;
 
 			assert(contextStub.get.calledOnce);
-			assert.equal(argument, `slots.${mock.slotName}.targeting.hb_adid`);
+			assert.equal(callArguments[0], 'hb_adid');
+			assert.equal(callArguments[1], mock.slotName);
 		});
 	});
 
 	function stubIframeBuilder(): void {
-		sandbox.stub(IframeBuilder.prototype, 'create').returns({
+		global.sandbox.stub(IframeBuilder.prototype, 'create').returns({
 			contentWindow: {
 				document: mock.doc,
 			},

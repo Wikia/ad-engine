@@ -1,4 +1,4 @@
-import { context, DiProcess } from '@wikia/ad-engine';
+import { context, DiProcess, universalAdPackage } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -17,17 +17,15 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					pos: 'nav',
+					pos_nr: 'nav',
 				},
 			},
 			'skybox-nav': {
 				code: 'skybox-nav',
-				defaultSizes: [
-					[6, 6],
-					[5, 5],
-				],
+				defaultSizes: [[6, 6], [5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
 				targeting: {
-					pos: 'nav',
+					loc: 'top',
+					pos_nr: 'nav',
 				},
 			},
 			'native-top': {
@@ -37,7 +35,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[11, 11],
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'incontent-ad': {
@@ -49,7 +47,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			leader_plus_top: {
@@ -60,7 +58,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[970, 66],
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			leader_top: {
@@ -70,14 +68,14 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[970, 66],
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			mpu_top: {
 				code: 'mpu_top',
 				defaultSizes: [[300, 250]],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			mpu_plus_top: {
@@ -87,15 +85,14 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[300, 600],
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			mpu_bottom: {
 				code: 'mpu_bottom',
 				defaultSizes: [[300, 250]],
-				lazyLoad: true,
 				targeting: {
-					pos: 'bottom',
+					pos_nr: 'bottom',
 				},
 			},
 			leader_bottom: {
@@ -104,9 +101,8 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[728, 90],
 					[970, 66],
 				],
-				lazyLoad: true,
 				targeting: {
-					pos: 'bottom',
+					pos_nr: 'bottom',
 				},
 			},
 			'mobile-omni-skybox-nav': {
@@ -116,17 +112,15 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					pos: 'nav',
+					pos_nr: 'nav',
 				},
 			},
 			'mobile-skybox-nav': {
 				code: 'mobile-skybox-nav',
-				defaultSizes: [
-					[6, 6],
-					[5, 5],
-				],
+				defaultSizes: [[6, 6], [5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
 				targeting: {
-					pos: 'nav',
+					pos_nr: 'nav',
+					loc: 'top',
 				},
 			},
 			'mobile-native-top': {
@@ -138,7 +132,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[11, 11],
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'mobile-incontent-ad': {
@@ -150,7 +144,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					// 'fluid'
 				],
 				targeting: {
-					pos: 'incontent',
+					pos_nr: 'incontent',
 				},
 			},
 			'mobile-mpu-banner-bottom': {
@@ -160,7 +154,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[320, 50],
 				],
 				targeting: {
-					pos: 'bottom',
+					pos_nr: 'bottom',
 				},
 			},
 			'mobile-native-plus-top': {
@@ -172,7 +166,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[11, 11],
 				],
 				targeting: {
-					pos: 'top',
+					pos_nr: 'top',
 				},
 			},
 			'mobile-highimpact-plus': {
@@ -183,7 +177,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[5, 5],
 				],
 				targeting: {
-					pos: 'plus',
+					pos_nr: 'plus',
 				},
 			},
 			'incontent-mobile-flex': {
@@ -194,7 +188,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 				],
 				incremental: true,
 				targeting: {
-					pos: '1',
+					pos_nr: '1',
 				},
 			},
 			'mobile-banner': {
@@ -202,7 +196,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 				defaultSizes: [[320, 50]],
 				incremental: true,
 				targeting: {
-					pos: '1',
+					pos_nr: '1',
 				},
 			},
 			'mobile-mpu': {
@@ -210,7 +204,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 				defaultSizes: [[300, 250]],
 				incremental: true,
 				targeting: {
-					pos: '1',
+					pos_nr: '1',
 				},
 			},
 			'nav-ad-plus': {
@@ -222,7 +216,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 				],
 				collapseEmptyDiv: [true],
 				targeting: {
-					pos: 'nav',
+					pos_nr: 'nav',
 				},
 			},
 			'mobile-nav-ad-plus': {
@@ -233,7 +227,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 				],
 				collapseEmptyDiv: [true],
 				targeting: {
-					pos: 'nav',
+					pos_nr: 'nav',
 				},
 			},
 			'mobile-banner-plus-inc': {
@@ -244,7 +238,7 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 				],
 				collapseEmptyDiv: [true],
 				targeting: {
-					pos: 'inc',
+					pos_nr: 'inc',
 				},
 			},
 			'mobile-incontent-ad-plus': {
@@ -254,10 +248,9 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[320, 50],
 					[5, 5],
 				],
-				lazyLoad: true,
 				incremental: true,
 				targeting: {
-					pos: 'inc',
+					pos_nr: 'inc',
 				},
 			},
 			'mobile-banner-mpu': {
@@ -266,10 +259,9 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[300, 250],
 					[320, 50],
 				],
-				lazyLoad: true,
 				incremental: true,
 				targeting: {
-					pos: 'inc',
+					pos_nr: 'inc',
 				},
 			},
 			'incontent-ad-plus': {
@@ -279,10 +271,9 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[728, 90],
 					[5, 5],
 				],
-				lazyLoad: true,
 				incremental: true,
 				targeting: {
-					pos: 'inc',
+					pos_nr: 'inc',
 				},
 			},
 			'incontent-leader-middle': {
@@ -291,24 +282,12 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[970, 66],
 					[728, 90],
 				],
-				lazyLoad: true,
 				incremental: true,
 				targeting: {
-					pos: 'inc',
+					pos_nr: 'inc',
 				},
 			},
-			'video-rectangle': {
-				code: 'video-rectangle',
-				defaultSizes: [[640, 480]],
-				lazyLoad: false,
-				incremental: false,
-				isVideo: true,
-			},
-			'video-rectangle2': {
-				code: 'video-rectangle2',
-				defaultSizes: [[640, 480]],
-				lazyLoad: false,
-				incremental: false,
+			video: {
 				isVideo: true,
 			},
 		};

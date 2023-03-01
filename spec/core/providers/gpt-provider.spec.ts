@@ -1,19 +1,22 @@
+import { context, GptProvider, targetingService } from '@wikia/core';
 import { expect } from 'chai';
 import { spy, stub } from 'sinon';
-import { context, GptProvider } from '@wikia/core';
 
 let provider;
 let pubads;
 let isInitializedCb;
 
 describe('gpt-provider', () => {
+	beforeEach(() => {
+		global.sandbox.stub(targetingService);
+	});
+
 	before(() => {
 		isInitializedCb = stub(GptProvider.prototype, 'isInitialized');
 	});
 
 	after(() => {
 		isInitializedCb.reset();
-		context.removeListeners('targeting');
 	});
 
 	beforeEach(() => {

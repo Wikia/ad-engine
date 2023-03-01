@@ -46,6 +46,14 @@ export class PlaceholderServiceHelper {
 	hidePlaceholder = (placeholder: HTMLElement): void => {
 		if (this.shouldHidePlaceholder) {
 			placeholder.classList.add('hide');
+
+			this.hideWrapperIfExists(placeholder);
+		}
+	};
+
+	hideWrapperIfExists = (placeholder: HTMLElement): void => {
+		if (placeholder?.parentElement?.className.includes('-ads-container')) {
+			placeholder.parentElement.classList.add('hide');
 		}
 	};
 

@@ -1,8 +1,8 @@
-import { admsService } from './adms-service';
-import { ActionType, IdentityAction } from './adms-actions';
-import { IdentityRepositoryInterface } from '../identity-repositories';
 import { UniversalStorage, utils } from '@ad-engine/core';
 import { UserIdentity } from '../';
+import { IdentityRepositoryInterface } from '../identity-repositories';
+import { ActionType, IdentityAction } from './adms-actions';
+import { admsService } from './adms-service';
 
 class AdmsIdentityRepository implements IdentityRepositoryInterface {
 	constructor(private storage: UniversalStorage) {}

@@ -1,7 +1,7 @@
-import { context, Dictionary } from '@ad-engine/core';
+import { context, Dictionary, targetingService } from '@ad-engine/core';
+import { PrebidNativeConfig } from '../native';
 import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
-import { PrebidNativeProvider, PrebidNativeConfig } from '../native';
 
 export class Appnexus extends PrebidAdapter {
 	static bidderName = 'appnexus';
@@ -26,11 +26,7 @@ export class Appnexus extends PrebidAdapter {
 		{ sizes, placementId, position = 'mobile' }: PrebidAdSlotConfig,
 	): PrebidAdUnit {
 		if (context.get(`slots.${code}.isNative`)) {
-			const prebidNativeProvider = new PrebidNativeProvider();
-			if (
-				prebidNativeProvider.isEnabled('bidders.prebid.native.enabled', false) &&
-				this.isNativeModeOn()
-			) {
+			if (context.get('bidders.prebid.native.enabled') && this.isNativeModeOn()) {
 				return this.prepareNativeConfig(code, { sizes, placementId, position });
 			}
 		}
@@ -90,7 +86,7 @@ export class Appnexus extends PrebidAdapter {
 		let placement = position;
 
 		if (position === 'mobile') {
-			const vertical = context.get('targeting.mappedVerticalName');
+			const vertical = targetingService.get('mappedVerticalName');
 
 			placement = vertical && this.placements[vertical] ? vertical : 'other';
 		}

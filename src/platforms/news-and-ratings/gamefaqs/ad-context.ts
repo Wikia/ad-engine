@@ -1,5 +1,6 @@
 export const basicContext = {
-	adUnitId: '/{custom.dfpId}/{custom.region}-{custom.property}',
+	// based on https://github.com/Wikia/player1-ads-adlibrary/blob/REVSYS-1890_MoarPurge/docs/guides/getting-started.md#the-dfp-path-property
+	adUnitId: '/{custom.dfpId}/{custom.device}{custom.region}-{custom.property}{custom.pagePath}',
 	custom: {
 		dfpId: '5441',
 		region: 'aw',
@@ -25,16 +26,17 @@ export const basicContext = {
 		},
 	},
 	services: {
-		confiant: {
+		anyclip: {
 			enabled: false,
-			propertyId: 'd-aIf3ibf0cYxCLB1HTWfBQOFEA',
+			pubname: '1999',
+			widgetname: '001w000001Y8ud2AAB_M7309',
+			libraryUrl: '//player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/acins.js',
+			loadOnPageLoad: true,
 		},
 		durationMedia: {
-			enabled: false,
-			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',
+			libraryUrl: '//tag.durationmedia.net/sites/11354/dm.js',
 		},
 		iasPublisherOptimization: {
-			pubId: '930616',
 			slots: ['mpu_top'],
 		},
 		instantConfig: {
@@ -43,4 +45,7 @@ export const basicContext = {
 	},
 	slots: {},
 	src: ['gamefaqs'],
+	vast: {
+		adUnitId: '/{custom.dfpId}/{custom.region}-{custom.property}/video',
+	},
 };

@@ -1,0 +1,26 @@
+@import '../shared/styles/uap-styles.scss';
+
+body {
+	@include uap-styles();
+}
+
+.gpt-ad {
+	text-align: center;
+
+	&.hide,
+	& .hide {
+		display: none !important;
+	}
+
+	& > div > iframe {
+		display: block;
+		margin: 0 auto;
+	}
+}
+
+body:not(.skybox-loaded) {
+	.c-adSkyBox,
+	.c-adSkyBox .c-adDisplay_container {
+		min-height: 0 !important;
+	}
+}
