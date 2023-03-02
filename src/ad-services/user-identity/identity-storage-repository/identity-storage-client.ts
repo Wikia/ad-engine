@@ -9,17 +9,25 @@ class IdentityStorageClient {
 	storage = new UniversalStorage();
 
 	fetchData(): Promise<IdentityStorageDto> {
+		const controller = new AbortController();
+		const timeoutId = setTimeout(() => controller.abort(), 1000);
+
 		return fetch(this.ISUrl, {
 			mode: 'cors',
 			credentials: 'include',
+			signal: controller.signal,
 		})
 			.then((response) => {
-				if (response.status === 200) {
+				clearTimeout(timeoutId);
+				if (response.status === 200 || response.status === 202) {
 					return response.json();
+				} else {
+					return this.createFallbackResponse();
 				}
 			})
 			.catch((reason) => {
 				utils.logger(this.logGroup, 'Loading Identity Storage data failed', reason);
+				return this.createFallbackResponse();
 			});
 	}
 
@@ -41,6 +49,15 @@ class IdentityStorageClient {
 
 	setLocalData(data: Partial<IdentityStorageDto>): void {
 		this.storage.setItem(this.IdentityStorageKey, data);
+	}
+
+	private createFallbackResponse(): IdentityStorageDto {
+		return {
+			timestamp: Date.now(),
+			over18: false,
+			synced: false,
+			ppid: utils.uuid.v4(),
+		};
 	}
 }
 

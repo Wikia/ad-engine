@@ -2,6 +2,7 @@ import { context, DiProcess } from '@wikia/ad-engine';
 import { injectable } from 'tsyringe';
 import { getAppnexusContext } from '../../../bidders/prebid/appnexus';
 import { getAppnexusAstContext } from '../../../bidders/prebid/appnexus-ast';
+import { getFreewheelContext } from '../../../bidders/prebid/freewheel';
 import { getIndexExchangeContext } from '../../../bidders/prebid/index-exchange';
 import { getMedianetContext } from '../../../bidders/prebid/medianet';
 import { getNobidContext } from '../../../bidders/prebid/nobid';
@@ -22,6 +23,7 @@ export class UcpDesktopPrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.appnexus', getAppnexusContext());
 		context.set('bidders.prebid.appnexusAst', getAppnexusAstContext());
 		context.set('bidders.prebid.indexExchange', getIndexExchangeContext());
+		context.set('bidders.prebid.freewheel', getFreewheelContext());
 		context.set('bidders.prebid.medianet', getMedianetContext());
 		context.set('bidders.prebid.nobid', getNobidContext());
 		context.set('bidders.prebid.onevideo', getOneVideoContext());
