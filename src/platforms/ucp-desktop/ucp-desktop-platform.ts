@@ -12,6 +12,7 @@ import {
 	SequentialMessagingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
+	UcpIncontentPlayerStateSetup,
 	UcpTargetingSetup,
 } from '@platforms/shared';
 import {
@@ -31,7 +32,6 @@ import { UcpDesktopBaseContextSetup } from './setup/context/base/ucp-desktop-bas
 import { UcpDesktopPrebidConfigSetup } from './setup/context/prebid/ucp-desktop-prebid-config.setup';
 import { UcpDesktopSlotsContextSetup } from './setup/context/slots/ucp-desktop-slots-context.setup';
 import { UcpDesktopDynamicSlotsSetup } from './setup/dynamic-slots/ucp-desktop-dynamic-slots.setup';
-import { UcpDesktopSlotsStateSetup } from './setup/state/slots/ucp-desktop-slots-state-setup';
 import { UcpDesktopTemplatesSetup } from './templates/ucp-desktop-templates.setup';
 
 @Injectable()
@@ -56,7 +56,7 @@ export class UcpDesktopPlatform {
 			UcpDesktopPrebidConfigSetup,
 			UcpDesktopA9ConfigSetup,
 			UcpDesktopDynamicSlotsSetup,
-			UcpDesktopSlotsStateSetup,
+			UcpIncontentPlayerStateSetup,
 			UcpDesktopTemplatesSetup,
 			SequentialMessagingSetup,
 			BiddersStateSetup,

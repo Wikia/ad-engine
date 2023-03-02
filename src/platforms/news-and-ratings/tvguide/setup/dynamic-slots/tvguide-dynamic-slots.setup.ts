@@ -34,16 +34,19 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 			const adWrapper = placeholder.firstElementChild;
 
 			if (!adWrapper) {
+				utils.logger('setup', 'No ad wrapper found for potential ad slot', placeholder);
 				return;
 			}
 
 			const adSlotName = adWrapper.getAttribute('data-ad');
 
 			if (!this.isSlotDefinedInContext(adSlotName)) {
+				utils.logger('setup', 'Slot not defined in the context', adSlotName);
 				return;
 			}
 
 			if (pushedSlots.includes(adSlotName)) {
+				utils.logger('setup', 'Slot already pushed', adSlotName, pushedSlots);
 				return;
 			}
 

@@ -35,7 +35,7 @@ export const basicContext = {
 			ids: [],
 		},
 		pushAfterRendered: {
-			top_boxad: ['incontent_player'],
+			top_boxad: [],
 		},
 	},
 	slots: {},
@@ -57,6 +57,12 @@ export const basicContext = {
 	},
 	templates: {},
 	services: {
+		anyclip: {
+			pubname: 'fandomcom',
+			widgetname: '001w000001Y8ud2AAB_M6237',
+			libraryUrl: 'https://player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/lre.js',
+			latePageInject: true,
+		},
 		durationMedia: {
 			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',
 		},

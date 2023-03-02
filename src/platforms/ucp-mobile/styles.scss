@@ -216,6 +216,12 @@ body.bab-detected {
 	}
 }
 
+body:has(.notifications-box > .marketing-notifications > div) {
+	.ac-player-wrapper.ac-floated-player:not(.ac-floated-page-width-theme) {
+		bottom: 100px !important;
+	}
+}
+
 .message-box {
 	color: white;
 	display: flex;

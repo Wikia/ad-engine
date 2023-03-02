@@ -9,7 +9,7 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		this.setBaseState();
 		this.setupIdentityOptions();
 		this.setupServicesOptions();
-		this.setupVideoOptions();
+		this.setupVideo();
 	}
 
 	private setBaseState(): void {
@@ -39,7 +39,9 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		context.set('services.confiant.propertyId', 'IOegabOoWb7FyEI1AmEa9Ki-5AY');
 	}
 
-	private setupVideoOptions() {
+	private setupVideo() {
+		context.set('vast.adUnitId', this.buildVastAdUnit());
+
 		context.set(
 			'options.video.playAdsOnNextVideo',
 			!!this.instantConfig.get('icFeaturedVideoAdsFrequency'),
@@ -84,6 +86,16 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 				!!this.getDataSettingsFromMetaTag()?.target_params?.anyclip
 			);
 		});
+	}
+
+	private buildVastAdUnit(): string {
+		const dfpId = context.get('custom.dfpId');
+		const region = context.get('custom.region');
+		const property = context.get('custom.property');
+		const device = context.get('custom.device') === 'm' ? 'mobile' : 'desktop';
+		const pagePath = context.get('custom.pagePath');
+
+		return `${dfpId}/v${region}-${property}/${device}${pagePath}`;
 	}
 
 	private shouldSwitchGamToRV() {
