@@ -3,6 +3,7 @@ import {
 	NoAdsDetector,
 	NoAdsMode,
 	SequentialMessagingSetup,
+	UcpIncontentPlayerStateSetup,
 } from '@platforms/shared';
 import { conditional, ProcessPipeline } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -21,6 +22,7 @@ export class UcpMobileLegacySetup {
 			UcpMobilePrebidConfigSetup,
 			UcpMobileA9ConfigSetup,
 			UcpMobileDynamicSlotsSetup,
+			UcpIncontentPlayerStateSetup,
 			UcpMobileTemplatesSetup,
 			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM will break
 			BiddersStateSetup,
