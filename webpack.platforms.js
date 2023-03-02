@@ -32,7 +32,7 @@ const platforms = ({ entry }) => ({
 	},
 
 	devServer: {
-		allowedHosts: 'all', // FIXME: maybe specify platform subdomains?
+		allowedHosts: 'all',
 		headers: {
 			'Access-Control-Allow-Origin': '*',
 		},
