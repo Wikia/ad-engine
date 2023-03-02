@@ -24,6 +24,7 @@ import { props } from 'ts-action';
 import { AdSizeTracker } from './ad-size-tracker';
 import { DataWarehouseTracker } from './data-warehouse';
 import { LabradorTracker } from './labrador-tracker';
+import { Monitoring } from "../../../core/services/monitoring";
 
 const bidderTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengbidders';
 const slotTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengadinfo';
@@ -36,6 +37,9 @@ const adClickedAction = globalAction('[AdEngine] Ad clicked', props<Dictionary>(
 
 @Injectable()
 export class TrackingSetup {
+	// @ts-ignore
+	private monitoring: Monitoring = new Monitoring();
+
 	constructor(
 		private labradorTracker: LabradorTracker,
 		private adSizeTracker: AdSizeTracker,
