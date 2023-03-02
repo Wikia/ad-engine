@@ -4,6 +4,8 @@ import {
 	CookieStorageAdapter,
 	DiProcess,
 	eventsRepository,
+	setupNpaContext,
+	setupRdpContext,
 	targetingService,
 	utils,
 } from '@wikia/ad-engine';
@@ -30,6 +32,9 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 			uap: 'none',
 			uap_c: 'none',
 		});
+
+		setupNpaContext();
+		setupRdpContext();
 	}
 
 	getPageLevelTargeting(): TargetingParams {
