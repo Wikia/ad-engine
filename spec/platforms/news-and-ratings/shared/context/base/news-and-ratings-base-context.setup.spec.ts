@@ -8,17 +8,21 @@ describe('News and Ratings base context setup', () => {
 
 	beforeEach(() => {
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
-		context.set('custom.property', 'test');
+		context.set('custom.region', 'testr');
+		context.set('custom.property', 'testp');
 		context.set('custom.device', undefined);
 	});
 
 	afterEach(() => {
 		global.sandbox.restore();
 		context.remove('state.isMobile');
+		context.remove('custom.dfpId');
+		context.remove('custom.region');
 		context.remove('custom.property');
 		context.remove('custom.device');
 		context.remove('custom.pagePath');
 		context.remove('services.anyclip.isApplicable');
+		context.remove('vast.adUnitId');
 	});
 
 	describe('setBaseState()', () => {
@@ -44,7 +48,7 @@ describe('News and Ratings base context setup', () => {
 				baseContextSetup,
 				'getDataSettingsFromMetaTag',
 			);
-			getDataSettingsFromMetaTagStub.returns({ unit_name: '/123/aw-test/home' });
+			getDataSettingsFromMetaTagStub.returns({ unit_name: '/123/testr-testp/home' });
 
 			baseContextSetup.execute();
 
@@ -57,7 +61,7 @@ describe('News and Ratings base context setup', () => {
 				baseContextSetup,
 				'getDataSettingsFromMetaTag',
 			);
-			getDataSettingsFromMetaTagStub.returns({ unit_name: '/123/aw-test' });
+			getDataSettingsFromMetaTagStub.returns({ unit_name: '/123/testr-testp' });
 
 			baseContextSetup.execute();
 
@@ -70,7 +74,7 @@ describe('News and Ratings base context setup', () => {
 				baseContextSetup,
 				'getDataSettingsFromMetaTag',
 			);
-			getDataSettingsFromMetaTagStub.returns({ unit_name: '/123/aw-test/playstation/home' });
+			getDataSettingsFromMetaTagStub.returns({ unit_name: '/123/testr-testp/playstation/home' });
 
 			baseContextSetup.execute();
 
@@ -195,6 +199,30 @@ describe('News and Ratings base context setup', () => {
 			const isApplicable = context.get('services.anyclip.isApplicable');
 
 			expect(isApplicable()).to.be.false;
+		});
+
+		it('sets up proper VAST ad unit for mobile', () => {
+			// given
+			context.set('state.isMobile', true);
+
+			// when
+			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
+			baseContextSetup.execute();
+
+			// then
+			expect(context.get('vast.adUnitId')).to.equal('5441/vtestr-testp/mobile');
+		});
+
+		it('sets up proper VAST ad unit for desktop', () => {
+			// given
+			context.set('state.isMobile', false);
+
+			// when
+			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
+			baseContextSetup.execute();
+
+			// then
+			expect(context.get('vast.adUnitId')).to.equal('5441/vtestr-testp/desktop');
 		});
 	});
 });
