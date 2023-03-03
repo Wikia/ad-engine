@@ -9,22 +9,47 @@ import {
 } from '@wikia/ad-engine';
 
 export class TvGuideDynamicSlotsSetup implements DiProcess {
+	private PLACEHOLDER_SELECTOR = '.c-adDisplay_container';
+
 	execute(): void {
 		communicationService.on(
 			eventsRepository.AD_ENGINE_PARTNERS_READY,
 			() => {
-				const adPlaceholders = document.querySelectorAll('.c-adDisplay_container');
+				this.injectStandardSlots();
 
-				if (!adPlaceholders) {
-					return;
+				if (this.isListingsPageType()) {
+					this.injectListingSlots();
 				}
-
-				new utils.WaitFor(() => this.adDivsReady(adPlaceholders), 10, 100)
-					.until()
-					.then(() => this.injectSlots(adPlaceholders));
 			},
 			false,
 		);
+	}
+
+	private injectStandardSlots() {
+		const adPlaceholders = document.querySelectorAll(this.PLACEHOLDER_SELECTOR);
+
+		if (!adPlaceholders) {
+			return;
+		}
+
+		new utils.WaitFor(() => this.adDivsReady(adPlaceholders), 10, 100)
+			.until()
+			.then(() => this.injectSlots(adPlaceholders));
+	}
+
+	private injectListingSlots() {
+		this.PLACEHOLDER_SELECTOR = '.c-tvListingsSchedule_adRow';
+
+		new utils.WaitFor(
+			() => {
+				const adPlaceholders = document.querySelectorAll(this.PLACEHOLDER_SELECTOR);
+				return adPlaceholders?.length > 0;
+			},
+			10,
+			100,
+		)
+			.until()
+			.then(() => this.injectSlots(document.querySelectorAll(this.PLACEHOLDER_SELECTOR)));
 	}
 
 	private injectSlots(adPlaceholders): void {
@@ -81,7 +106,7 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 		const nextIndex = adSlot.getConfigProperty('repeat.index') + 1;
 		const nextSlotName = `${slotNameBase || slotName}-${nextIndex}`;
 		const nextSlotPlace = document.querySelector(
-			`.c-adDisplay_container > div[data-ad="${slotNameBase || slotName}"]:not(.gpt-ad)`,
+			`${this.PLACEHOLDER_SELECTOR} > div[data-ad="${slotNameBase || slotName}"]:not(.gpt-ad)`,
 		);
 
 		if (!nextSlotPlace) {
@@ -95,6 +120,10 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 
 	private isSlotDefinedInContext(slotName: string): boolean {
 		return Object.keys(context.get('slots')).includes(slotName);
+	}
+
+	private isListingsPageType(): boolean {
+		return window.utag_data?.pageType === 'listings';
 	}
 
 	// TODO: This is temporary workaround. Change it for the proper event informing that ad placeholders

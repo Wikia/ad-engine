@@ -103,13 +103,23 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 			},
 			'leader-inc': {
+				bidderAlias: 'leader-inc',
 				defaultSizes: [
 					[728, 90],
 					[970, 66],
 				],
-				incremental: true,
 				targeting: {
 					pos_nr: 'inc',
+				},
+				repeat: {
+					index: 1,
+					limit: 10,
+					additionalClasses: ['leader-inc'],
+					slotNamePattern: `{slotConfig.bidderAlias}-{slotConfig.repeat.index}`,
+					updateProperties: {
+						adProduct: '{slotConfig.slotName}',
+						'targeting.pos': '{slotConfig.slotName}',
+					},
 				},
 			},
 			'leader-middle': {
@@ -197,14 +207,24 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 			},
 			'incontent-leader-inc': {
+				bidderAlias: 'incontent-leader-inc',
 				defaultSizes: [
 					[728, 90],
 					[970, 66],
 					[5, 5],
 				],
-				incremental: true,
 				targeting: {
 					pos_nr: 'inc',
+				},
+				repeat: {
+					index: 1,
+					limit: 10,
+					additionalClasses: ['incontent-leader-inc'],
+					slotNamePattern: `{slotConfig.bidderAlias}-{slotConfig.repeat.index}`,
+					updateProperties: {
+						adProduct: '{slotConfig.slotName}',
+						'targeting.pos': '{slotConfig.slotName}',
+					},
 				},
 			},
 			'incontent-leader-plus-top': {
