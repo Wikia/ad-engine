@@ -1,7 +1,6 @@
 import { Confiant } from '@wikia/ad-services';
 import { context, InstantConfigService, utils } from '@wikia/core';
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
 
 describe('Confiant', () => {
 	const DEFAULT_CONFIANT_LIB_URL =
@@ -9,15 +8,12 @@ describe('Confiant', () => {
 	const TEST_CONFIANT_LIB_URL =
 		'//cdn.confiant-integrations.net/TEST_PROPERTY_ID/gpt_and_prebid/config.js';
 
-	const sandbox = createSandbox();
-
 	let loadScriptStub, instantConfigStub;
 	let confiant: Confiant;
 
 	beforeEach(() => {
-		instantConfigStub = sandbox.createStubInstance(InstantConfigService);
-
-		loadScriptStub = sandbox
+		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
+		loadScriptStub = global.sandbox
 			.stub(utils.scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
 
@@ -25,8 +21,8 @@ describe('Confiant', () => {
 	});
 
 	afterEach(() => {
-		sandbox.restore();
 		loadScriptStub.resetHistory();
+		global.sandbox.restore();
 
 		context.remove('services.confiant.propertyId');
 	});
