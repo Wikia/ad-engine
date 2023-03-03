@@ -40,14 +40,7 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 	private injectListingSlots() {
 		this.PLACEHOLDER_SELECTOR = '.c-tvListingsSchedule_adRow';
 
-		new utils.WaitFor(
-			() => {
-				const adPlaceholders = document.querySelectorAll(this.PLACEHOLDER_SELECTOR);
-				return adPlaceholders?.length > 0;
-			},
-			10,
-			100,
-		)
+		new utils.WaitFor(() => document.querySelectorAll(this.PLACEHOLDER_SELECTOR)?.length > 0, 10, 100)
 			.until()
 			.then(() => this.injectSlots(document.querySelectorAll(this.PLACEHOLDER_SELECTOR)));
 	}
