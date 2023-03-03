@@ -9,7 +9,8 @@ export class TrackingParametersSetup implements DiProcess {
 
 	private getLegacyTrackingParameters(): ITrackingParameters {
 		const cookies = Cookies.get();
-		const wikiContext = {
+
+		return {
 			beaconId:
 				getMediaWikiVariable('beaconId') ||
 				window.beaconId ||
@@ -27,19 +28,15 @@ export class TrackingParametersSetup implements DiProcess {
 				window.session_id ||
 				cookies['tracking_session_id'],
 		};
-
-		return wikiContext;
 	}
 
 	private async getNewTrackingParameters(): Promise<ITrackingParameters> {
 		await new utils.WaitFor(() => !!window.fandomContext?.tracking, 10, 100).until();
 
-		const wikiContext = {
+		return {
 			...window.fandomContext.tracking,
 			pvUID: getMediaWikiVariable('pvUID') || window.pvUID,
 		};
-
-		return wikiContext;
 	}
 
 	private async getTrackingParameters(legacyEnabled: boolean): Promise<ITrackingParameters> {
