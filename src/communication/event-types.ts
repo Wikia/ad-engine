@@ -164,6 +164,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		payload: props<Dictionary>(),
 	},
 	// Integrated partners events //
+	ANYCLIP_LATE_INJECT: {
+		name: 'Anyclip late inject',
+	},
 	AUDIGENT_SEGMENT_LIBRARY_LOADED: {
 		name: 'Audigent segment library loaded',
 	},

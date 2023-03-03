@@ -2,15 +2,35 @@ export const basicContext = {
 	// based on https://github.com/Wikia/player1-ads-adlibrary/blob/REVSYS-1890_MoarPurge/docs/guides/getting-started.md#the-dfp-path-property
 	adUnitId: '/{custom.dfpId}/{custom.device}{custom.region}-{custom.property}{custom.pagePath}',
 	bidders: {
-		bidsRefreshing: {
-			slots: [
-				'mpu-plus-top',
-				'mpu-middle',
-				'mpu-bottom',
-				'mobile-incontent-plus',
-				'incontent-leader-plus-bottom',
-				'incontent-leader-plus-inc',
-			],
+		enabled: false,
+		timeout: 2000,
+		a9: {
+			enabled: false,
+			videoEnabled: false,
+			amazonId: '3115',
+			bidsRefreshing: {
+				slots: [
+					'mpu-plus-top',
+					'mpu-middle',
+					'mpu-bottom',
+					'mobile-incontent-plus',
+					'incontent-leader-plus-bottom',
+					'incontent-leader-plus-inc',
+				],
+			},
+		},
+		prebid: {
+			enabled: false,
+			bidsRefreshing: {
+				slots: [
+					'mpu-plus-top',
+					'mpu-middle',
+					'mpu-bottom',
+					'mobile-incontent-plus',
+					'incontent-leader-plus-bottom',
+					'incontent-leader-plus-inc',
+				],
+			},
 		},
 	},
 	custom: {
@@ -50,7 +70,4 @@ export const basicContext = {
 	},
 	slots: {},
 	src: ['tvguide'],
-	vast: {
-		adUnitId: '/{custom.dfpId}/{custom.region}-{custom.property}/video',
-	},
 };

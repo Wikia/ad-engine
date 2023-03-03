@@ -32,6 +32,11 @@ const platforms = ({ entry }) => ({
 	},
 
 	devServer: {
+		allowedHosts: 'all',
+		headers: {
+			'Access-Control-Allow-Origin': '*',
+		},
+		host: 'localhost',
 		port: 9000,
 		static: `dist/platforms`,
 	},
