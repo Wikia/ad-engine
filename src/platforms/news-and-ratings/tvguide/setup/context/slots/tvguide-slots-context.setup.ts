@@ -405,13 +405,23 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 			},
 			'mobile-banner-plus-inc': {
+				bidderAlias: 'mobile-banner-plus-inc',
 				defaultSizes: [
 					[300, 250],
 					[320, 50],
 				],
-				incremental: true,
 				targeting: {
 					pos_nr: 'inc',
+				},
+				repeat: {
+					index: 1,
+					limit: 10,
+					additionalClasses: ['mobile-banner-plus-inc'],
+					slotNamePattern: `{slotConfig.bidderAlias}-{slotConfig.repeat.index}`,
+					updateProperties: {
+						adProduct: '{slotConfig.slotName}',
+						'targeting.pos': '{slotConfig.slotName}',
+					},
 				},
 			},
 			'mobile-incontent-plus': {
@@ -438,14 +448,24 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 			},
 			'mobile-incontent-plus-inc': {
+				bidderAlias: 'mobile-incontent-plus-inc',
 				defaultSizes: [
 					[300, 250],
 					[320, 50],
 					[5, 5],
 				],
-				incremental: true,
 				targeting: {
 					pos_nr: 'inc',
+				},
+				repeat: {
+					index: 1,
+					limit: 10,
+					additionalClasses: ['mobile-incontent-plus-inc'],
+					slotNamePattern: `{slotConfig.bidderAlias}-{slotConfig.repeat.index}`,
+					updateProperties: {
+						adProduct: '{slotConfig.slotName}',
+						'targeting.pos': '{slotConfig.slotName}',
+					},
 				},
 			},
 			'mobile-masthead-button-inc': {
