@@ -46,13 +46,11 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 			100,
 		)
 			.until()
-			.then(() => {
-				this.injectSlots(document.querySelectorAll(this.PLACEHOLDER_SELECTOR));
-				this.PLACEHOLDER_SELECTOR = '.c-adDisplay_container';
-			});
+			.then(() => this.injectSlots(document.querySelectorAll(this.PLACEHOLDER_SELECTOR)))
+			.then(() => (this.PLACEHOLDER_SELECTOR = '.c-adDisplay_container'));
 	}
 
-	private injectSlots(adPlaceholders): void {
+	private injectSlots(adPlaceholders): Promise<void> {
 		const pushedSlots = [];
 
 		adPlaceholders.forEach((placeholder) => {
@@ -84,6 +82,8 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 
 			context.push('state.adStack', { id: adSlotName });
 		});
+
+		return Promise.resolve();
 	}
 
 	private setupRepeatableSlot(slotName, slotNameBase = '') {
