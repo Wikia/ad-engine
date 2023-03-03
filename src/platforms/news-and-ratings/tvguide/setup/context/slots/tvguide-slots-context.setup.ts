@@ -394,6 +394,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 			},
 			'mobile-banner-plus': {
+				bidderAlias: 'mobile-banner-plus',
 				defaultSizes: [
 					[300, 250],
 					[320, 50],
