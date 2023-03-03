@@ -149,6 +149,7 @@ export class UcpDesktopPerformanceAdsDefinitionRepository {
 		title.innerHTML = this.widgetData.data.title;
 
 		if (wide) {
+			this.othersLikeYouElement.nextSibling?.remove();
 			this.othersLikeYouElement.setAttribute('style', 'width: 200px;');
 			image.setAttribute(
 				'style',
