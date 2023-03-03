@@ -1,4 +1,5 @@
 import { context, DomListener } from '@wikia/core';
+import { WaitFor } from '@wikia/core/utils';
 import {
 	NativoSlotsDefinitionRepository,
 	QuizSlotsDefinitionRepository,
@@ -16,13 +17,15 @@ describe('floor_adhesion on ucp-mobile', () => {
 	const nativoDefinitionRepositoryMock = new NativoSlotsDefinitionRepository(new DomListener());
 	const quizDefinitionRepositoryMock = new QuizSlotsDefinitionRepository();
 
-	beforeEach(() => {
+	before(() => {
 		context.set('slots.mobile_prefooter', {});
+		global.sandbox.stub(WaitFor.prototype, 'until').returns(Promise.resolve());
 	});
 
 	after(() => {
 		context.remove('custom.hasFeaturedVideo');
 		context.remove('slots.mobile_prefooter');
+		global.sandbox.restore();
 	});
 
 	it('is inserted right away on page load when there is no featured video on page', () => {

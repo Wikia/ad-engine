@@ -1,21 +1,18 @@
-import { expect } from 'chai';
-import { createSandbox } from 'sinon';
-
 import { context } from '@wikia/core';
 import { AnyclipPlayerSetup } from '@wikia/platforms/shared';
+import { expect } from 'chai';
 
 describe('AnyclipPlayerSetup', () => {
 	const anyclipPlayerSetup = new AnyclipPlayerSetup();
-
-	const sandbox = createSandbox();
-	const mockedIsApplicable = sandbox.spy();
+	let mockedIsApplicable;
 
 	beforeEach(() => {
+		mockedIsApplicable = global.sandbox.spy();
 		context.set('services.anyclip.isApplicable', mockedIsApplicable);
 	});
 
 	afterEach(function () {
-		sandbox.restore();
+		global.sandbox.restore();
 		context.remove('services.anyclip.enabled');
 		context.remove('services.anyclip.isApplicable');
 		context.remove('services.anyclip.loadOnPageLoad');
