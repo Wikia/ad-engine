@@ -7,6 +7,7 @@ import {
 	targetingService,
 	utils,
 } from '@wikia/core';
+import { WaitFor } from '@wikia/core/utils';
 import { expect } from 'chai';
 import { SinonStubbedInstance } from 'sinon';
 
@@ -28,6 +29,7 @@ describe('Audigent', () => {
 		instantConfigStub.get.withArgs('icAudigentTrackingSampling').returns(0);
 
 		targetingServiceStub = global.sandbox.stub(targetingService);
+		global.sandbox.stub(WaitFor.prototype, 'until').returns(Promise.resolve());
 
 		audigent = new Audigent(instantConfigStub);
 
@@ -46,6 +48,7 @@ describe('Audigent', () => {
 
 		loadScriptStub.resetHistory();
 		audigent.resetLoadedState();
+		global.sandbox.restore();
 
 		window['au_seg'] = undefined;
 
