@@ -382,7 +382,10 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 			},
 			'masthead-button-inc': {
-				defaultSizes: [[270, 100]],
+				defaultSizes: [
+					[320, 50],
+					[320, 100],
+				],
 				incremental: true,
 				targeting: {
 					pos_nr: 'inc',
@@ -501,7 +504,10 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 			},
 			'mobile-masthead-button-inc': {
-				defaultSizes: [[270, 100]],
+				defaultSizes: [
+					[320, 50],
+					[320, 100],
+				],
 				incremental: true,
 				targeting: {
 					pos_nr: 'inc',
