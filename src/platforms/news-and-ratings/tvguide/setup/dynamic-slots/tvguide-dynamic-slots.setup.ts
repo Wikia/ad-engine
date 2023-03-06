@@ -40,7 +40,11 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 	private injectListingSlots() {
 		this.PLACEHOLDER_SELECTOR = '.c-tvListingsSchedule_adRow';
 
-		new utils.WaitFor(() => document.querySelectorAll(this.PLACEHOLDER_SELECTOR)?.length > 0, 10, 100)
+		new utils.WaitFor(
+			() => document.querySelectorAll(this.PLACEHOLDER_SELECTOR)?.length > 0,
+			10,
+			100,
+		)
 			.until()
 			.then(() => this.injectSlots(document.querySelectorAll(this.PLACEHOLDER_SELECTOR)));
 	}
@@ -123,7 +127,7 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 	//  are ready to inject the ad slots (event should be ready after RV code freeze is over).
 	private adDivsReady(adPlaceholders) {
 		const firstPlaceholder = adPlaceholders[0];
-		const adDiv = firstPlaceholder.firstElementChild;
+		const adDiv = firstPlaceholder?.firstElementChild;
 
 		return !!adDiv;
 	}
