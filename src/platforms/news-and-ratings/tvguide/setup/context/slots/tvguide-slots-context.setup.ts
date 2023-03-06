@@ -404,6 +404,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[6, 6],
 					[320, 50],
+					[320, 100],
 					[5, 5],
 					universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile,
 				],
@@ -416,6 +417,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[6, 6],
 					[320, 50],
+					[320, 100],
 				],
 				targeting: {
 					pos_nr: 'sticky',
@@ -433,6 +435,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[300, 250],
 					[320, 50],
+					[320, 100],
 				],
 				incremental: true,
 				targeting: {
@@ -444,6 +447,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[300, 250],
 					[320, 50],
+					[320, 100],
 				],
 				targeting: {
 					pos_nr: 'inc',
@@ -464,6 +468,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[300, 250],
 					[320, 50],
+					[320, 100],
 					[5, 5],
 				],
 				incremental: true,
@@ -475,6 +480,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[300, 250],
 					[320, 50],
+					[320, 100],
 					[5, 5],
 				],
 				incremental: true,
@@ -487,6 +493,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[300, 250],
 					[320, 50],
+					[320, 100],
 					[5, 5],
 				],
 				targeting: {
@@ -517,6 +524,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[5, 5],
 					[320, 50],
+					[320, 100],
 				],
 				targeting: {
 					pos_nr: 'nav',
