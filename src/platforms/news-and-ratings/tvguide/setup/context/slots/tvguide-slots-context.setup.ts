@@ -16,6 +16,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 					[6, 6],
 					[728, 90],
 					[970, 66],
+					[970, 250],
 					[5, 5],
 					universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop,
 				],
@@ -28,6 +29,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[6, 6],
 					[728, 90],
+					[970, 250],
 					[5, 5],
 				],
 				targeting: {
@@ -48,6 +50,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 					[6, 6],
 					[728, 90],
 					[970, 66],
+					[970, 250],
 				],
 				targeting: {
 					pos_nr: 'sticky',
@@ -57,6 +60,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[6, 6],
 					[728, 90],
+					[970, 250],
 				],
 				targeting: {
 					pos_nr: 'sticky',
@@ -66,6 +70,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[728, 90],
 					[970, 66],
+					[970, 250],
 					[5, 5],
 				],
 				targeting: {
@@ -76,6 +81,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[728, 90],
 					[970, 66],
+					[970, 250],
 					[5, 5],
 				],
 				targeting: {
@@ -86,6 +92,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[728, 90],
 					[970, 66],
+					[970, 250],
 					[5, 5],
 				],
 				targeting: {
@@ -96,6 +103,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[728, 90],
 					[970, 66],
+					[970, 250],
 				],
 				incremental: true,
 				targeting: {
@@ -107,6 +115,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[728, 90],
 					[970, 66],
+					[970, 250],
 				],
 				targeting: {
 					pos_nr: 'inc',
@@ -126,6 +135,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[728, 90],
 					[970, 66],
+					[970, 250],
 				],
 				incremental: true,
 				targeting: {
@@ -136,6 +146,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[728, 90],
 					[970, 66],
+					[970, 250],
 				],
 				incremental: true,
 				targeting: {
@@ -163,34 +174,49 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 			},
 			'leaderboard-top': {
-				defaultSizes: [[728, 90]],
+				defaultSizes: [
+					[728, 90],
+					[970, 250],
+				],
 				targeting: {
 					pos_nr: 'top',
 				},
 			},
 			'leaderboard-middle': {
-				defaultSizes: [[728, 90]],
+				defaultSizes: [
+					[728, 90],
+					[970, 250],
+				],
 				incremental: true,
 				targeting: {
 					pos_nr: 'middle',
 				},
 			},
 			'leaderboard-middle2': {
-				defaultSizes: [[728, 90]],
+				defaultSizes: [
+					[728, 90],
+					[970, 250],
+				],
 				incremental: true,
 				targeting: {
 					pos_nr: 'middle2',
 				},
 			},
 			'leaderboard-inc': {
-				defaultSizes: [[728, 90]],
+				defaultSizes: [
+					[728, 90],
+					[970, 250],
+				],
 				incremental: true,
 				targeting: {
 					pos_nr: 'inc',
 				},
 			},
 			'leaderboard-bottom': {
-				defaultSizes: [[728, 90]],
+				defaultSizes: [
+					[728, 90],
+					[970, 250],
+				],
 				targeting: {
 					pos_nr: 'bottom',
 				},
@@ -199,6 +225,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[728, 90],
 					[970, 66],
+					[970, 250],
 					[5, 5],
 				],
 				incremental: true,
@@ -211,6 +238,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[728, 90],
 					[970, 66],
+					[970, 250],
 					[5, 5],
 				],
 				targeting: {
@@ -279,6 +307,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 			'incontent-leaderboard-top': {
 				defaultSizes: [
 					[728, 90],
+					[970, 250],
 					[5, 5],
 				],
 				incremental: true,
@@ -289,6 +318,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 			'incontent-leaderboard-middle': {
 				defaultSizes: [
 					[728, 90],
+					[970, 250],
 					[5, 5],
 				],
 				targeting: {
@@ -298,6 +328,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 			'incontent-leaderboard-inc': {
 				defaultSizes: [
 					[728, 90],
+					[970, 250],
 					[5, 5],
 				],
 				incremental: true,
@@ -308,6 +339,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 			'incontent-leaderboard-bottom': {
 				defaultSizes: [
 					[728, 90],
+					[970, 250],
 					[5, 5],
 				],
 				incremental: true,
@@ -533,6 +565,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 			'incontent-narrow-all-top': {
 				defaultSizes: [
 					[728, 90],
+					[970, 250],
 					[5, 5],
 					[8, 8],
 				],
