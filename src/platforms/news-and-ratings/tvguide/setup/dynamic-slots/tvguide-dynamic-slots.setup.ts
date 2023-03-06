@@ -9,8 +9,6 @@ import {
 } from '@wikia/ad-engine';
 
 export class TvGuideDynamicSlotsSetup implements DiProcess {
-	private PLACEHOLDER_SELECTOR = '.c-adDisplay_container';
-
 	execute(): void {
 		communicationService.on(
 			eventsRepository.AD_ENGINE_PARTNERS_READY,
@@ -26,30 +24,27 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 	}
 
 	private injectStandardSlots() {
-		const adPlaceholders = document.querySelectorAll(this.PLACEHOLDER_SELECTOR);
+		const selector = '.c-adDisplay_container';
 
-		if (!adPlaceholders) {
-			return;
-		}
-
-		new utils.WaitFor(() => this.adDivsReady(adPlaceholders), 10, 100)
+		new utils.WaitFor(() => this.adDivsReady(selector), 10, 100)
 			.until()
-			.then(() => this.injectSlots(adPlaceholders));
+			.then(() => this.injectSlots(selector));
 	}
 
 	private injectListingSlots() {
-		this.PLACEHOLDER_SELECTOR = '.c-tvListingsSchedule_adRow';
+		const selector = '.c-tvListingsSchedule_adRow';
 
-		new utils.WaitFor(() => document.querySelectorAll(this.PLACEHOLDER_SELECTOR)?.length > 0, 10, 100)
+		new utils.WaitFor(() => this.adDivsReady(selector), 10, 100)
 			.until()
-			.then(() => this.injectSlots(document.querySelectorAll(this.PLACEHOLDER_SELECTOR)));
+			.then(() => this.injectSlots(selector));
 	}
 
-	private injectSlots(adPlaceholders): void {
+	private injectSlots(placeholderSelector): void {
+		const adPlaceholders = document.querySelectorAll(placeholderSelector);
 		const pushedSlots = [];
 
 		adPlaceholders.forEach((placeholder) => {
-			const adWrapper = placeholder.firstElementChild;
+			const adWrapper = placeholder?.firstElementChild;
 
 			if (!adWrapper) {
 				utils.logger('setup', 'No ad wrapper found for potential ad slot', placeholder);
@@ -69,7 +64,7 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 			}
 
 			if (context.get(`slots.${adSlotName}.repeat`)) {
-				this.setupRepeatableSlot(adSlotName);
+				this.setupRepeatableSlot(adSlotName, placeholderSelector);
 			}
 
 			pushedSlots.push(adSlotName);
@@ -79,34 +74,38 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 		});
 	}
 
-	private setupRepeatableSlot(slotName, slotNameBase = '') {
+	private setupRepeatableSlot(slotName, placeholderSelector, slotNameBase = '') {
 		communicationService.onSlotEvent(
 			AdSlot.STATUS_SUCCESS,
-			() => this.injectNextSlot(slotName, slotNameBase),
+			() => this.injectNextSlot(slotName, placeholderSelector, slotNameBase),
 			slotName,
 			true,
 		);
 		communicationService.onSlotEvent(
 			AdSlot.STATUS_COLLAPSE,
-			() => this.injectNextSlot(slotName, slotNameBase),
+			() => this.injectNextSlot(slotName, placeholderSelector, slotNameBase),
 			slotName,
 			true,
 		);
 	}
 
-	private injectNextSlot(slotName, slotNameBase = '') {
+	private injectNextSlot(slotName, placeholderSelector, slotNameBase = '') {
 		const adSlot = slotService.get(slotName);
+		if (!adSlot) {
+			return;
+		}
+
 		const nextIndex = adSlot.getConfigProperty('repeat.index') + 1;
 		const nextSlotName = `${slotNameBase || slotName}-${nextIndex}`;
 		const nextSlotPlace = document.querySelector(
-			`${this.PLACEHOLDER_SELECTOR} > div[data-ad="${slotNameBase || slotName}"]:not(.gpt-ad)`,
+			`${placeholderSelector} > div[data-ad="${slotNameBase || slotName}"]:not(.gpt-ad)`,
 		);
 
 		if (!nextSlotPlace) {
 			return;
 		}
 
-		this.setupRepeatableSlot(nextSlotName, slotNameBase || slotName);
+		this.setupRepeatableSlot(nextSlotName, placeholderSelector, slotNameBase || slotName);
 		nextSlotPlace.id = nextSlotName;
 		context.push('state.adStack', { id: nextSlotName });
 	}
@@ -121,9 +120,15 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 
 	// TODO: This is temporary workaround. Change it for the proper event informing that ad placeholders
 	//  are ready to inject the ad slots (event should be ready after RV code freeze is over).
-	private adDivsReady(adPlaceholders) {
+	private adDivsReady(selector) {
+		const adPlaceholders = document.querySelectorAll(selector);
+
+		if (!adPlaceholders) {
+			return false;
+		}
+
 		const firstPlaceholder = adPlaceholders[0];
-		const adDiv = firstPlaceholder.firstElementChild;
+		const adDiv = firstPlaceholder?.firstElementChild;
 
 		return !!adDiv;
 	}
