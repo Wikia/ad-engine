@@ -13,14 +13,15 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 	private pushedSlots = [];
 
 	execute(): void {
+		const waitForInstance = new utils.WaitFor(() => this.injectSlotsIntoPlacements(), 10, 200);
+
 		communicationService.on(
 			eventsRepository.AD_ENGINE_PARTNERS_READY,
 			() => {
 				this.pushedSlots = [];
+				waitForInstance.reset();
 
-				new utils.WaitFor(() => this.injectSlotsIntoPlacements(), 10, 200)
-					.until()
-					.then(() => utils.logger('setup', 'injecting slots finished'));
+				waitForInstance.until().then(() => utils.logger('setup', 'slot injection finished'));
 			},
 			false,
 		);
