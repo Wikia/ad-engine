@@ -1,11 +1,20 @@
 import { context, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import Cookies from 'js-cookie';
+import { v4 } from 'uuid';
 import { getMediaWikiVariable } from '../utils/get-media-wiki-variable';
 
 @Injectable()
 export class TrackingParametersSetup implements DiProcess {
 	constructor(private instantConfig: InstantConfigService) {}
+
+	private getPvUniqueId() {
+		return (
+			getMediaWikiVariable('pvUID') || // UCP
+			window.pvUID || // F2
+			v4() // N+R
+		);
+	}
 
 	private getLegacyTrackingParameters(): ITrackingParameters {
 		const cookies = Cookies.get();
@@ -21,7 +30,7 @@ export class TrackingParametersSetup implements DiProcess {
 				getMediaWikiVariable('pvNumberGlobal') ||
 				window.pvNumberGlobal ||
 				cookies['pv_number_global'],
-			pvUID: getMediaWikiVariable('pvUID') || window.pvUID,
+			pvUID: this.getPvUniqueId(),
 			sessionId:
 				getMediaWikiVariable('sessionId') ||
 				window.sessionId ||
@@ -35,7 +44,7 @@ export class TrackingParametersSetup implements DiProcess {
 
 		return {
 			...window.fandomContext.tracking,
-			pvUID: getMediaWikiVariable('pvUID') || window.pvUID,
+			pvUID: this.getPvUniqueId(),
 		};
 	}
 
