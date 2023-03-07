@@ -3,6 +3,7 @@ import {
 	NoAdsDetector,
 	NoAdsMode,
 	SequentialMessagingSetup,
+	UcpIncontentPlayerStateSetup,
 } from '@platforms/shared';
 import { conditional, ProcessPipeline } from '@wikia/ad-engine';
 import { injectable } from 'tsyringe';
@@ -10,7 +11,6 @@ import { UcpDesktopAdsMode } from './modes/ucp-desktop-ads-mode.service';
 import { UcpDesktopA9ConfigSetup } from './setup/context/a9/ucp-desktop-a9-config.setup';
 import { UcpDesktopPrebidConfigSetup } from './setup/context/prebid/ucp-desktop-prebid-config.setup';
 import { UcpDesktopDynamicSlotsSetup } from './setup/dynamic-slots/ucp-desktop-dynamic-slots.setup';
-import { UcpDesktopSlotsStateSetup } from './setup/state/slots/ucp-desktop-slots-state-setup';
 import { UcpDesktopTemplatesSetup } from './templates/ucp-desktop-templates.setup';
 
 @injectable()
@@ -22,7 +22,7 @@ export class UcpDesktopLegacySetup {
 			UcpDesktopPrebidConfigSetup,
 			UcpDesktopA9ConfigSetup,
 			UcpDesktopDynamicSlotsSetup,
-			UcpDesktopSlotsStateSetup,
+			UcpIncontentPlayerStateSetup,
 			UcpDesktopTemplatesSetup,
 			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM might break
 			BiddersStateSetup,

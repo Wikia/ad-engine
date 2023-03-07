@@ -1,4 +1,4 @@
-import { GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
+import { AnyclipPlayerSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
 	Ats,
 	Audigent,
@@ -27,6 +27,7 @@ import { injectable } from 'tsyringe';
 export class UcpMobileAdsMode implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,
+		private anyclipPlayerSetup: AnyclipPlayerSetup,
 		private ats: Ats,
 		private audigent: Audigent,
 		private bidders: Bidders,
@@ -50,6 +51,7 @@ export class UcpMobileAdsMode implements DiProcess {
 		this.pipeline
 			.add(
 				this.liveRampPixel,
+				this.anyclipPlayerSetup,
 				this.ats,
 				this.audigent,
 				this.bidders,

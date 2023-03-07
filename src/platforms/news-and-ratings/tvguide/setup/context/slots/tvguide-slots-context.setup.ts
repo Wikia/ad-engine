@@ -16,6 +16,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 					[6, 6],
 					[728, 90],
 					[970, 66],
+					[970, 250],
 					[5, 5],
 					universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop,
 				],
@@ -28,6 +29,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[6, 6],
 					[728, 90],
+					[970, 250],
 					[5, 5],
 				],
 				targeting: {
@@ -48,6 +50,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 					[6, 6],
 					[728, 90],
 					[970, 66],
+					[970, 250],
 				],
 				targeting: {
 					pos_nr: 'sticky',
@@ -57,6 +60,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[6, 6],
 					[728, 90],
+					[970, 250],
 				],
 				targeting: {
 					pos_nr: 'sticky',
@@ -66,6 +70,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[728, 90],
 					[970, 66],
+					[970, 250],
 					[5, 5],
 				],
 				targeting: {
@@ -76,6 +81,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[728, 90],
 					[970, 66],
+					[970, 250],
 					[5, 5],
 				],
 				targeting: {
@@ -86,6 +92,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[728, 90],
 					[970, 66],
+					[970, 250],
 					[5, 5],
 				],
 				targeting: {
@@ -96,6 +103,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[728, 90],
 					[970, 66],
+					[970, 250],
 				],
 				incremental: true,
 				targeting: {
@@ -103,19 +111,31 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 			},
 			'leader-inc': {
+				bidderAlias: 'leader-inc',
 				defaultSizes: [
 					[728, 90],
 					[970, 66],
+					[970, 250],
 				],
-				incremental: true,
 				targeting: {
 					pos_nr: 'inc',
+				},
+				repeat: {
+					index: 1,
+					limit: 10,
+					additionalClasses: ['leader-inc'],
+					slotNamePattern: `{slotConfig.bidderAlias}-{slotConfig.repeat.index}`,
+					updateProperties: {
+						adProduct: '{slotConfig.slotName}',
+						'targeting.pos': '{slotConfig.slotName}',
+					},
 				},
 			},
 			'leader-middle': {
 				defaultSizes: [
 					[728, 90],
 					[970, 66],
+					[970, 250],
 				],
 				incremental: true,
 				targeting: {
@@ -126,6 +146,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[728, 90],
 					[970, 66],
+					[970, 250],
 				],
 				incremental: true,
 				targeting: {
@@ -153,34 +174,49 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 			},
 			'leaderboard-top': {
-				defaultSizes: [[728, 90]],
+				defaultSizes: [
+					[728, 90],
+					[970, 250],
+				],
 				targeting: {
 					pos_nr: 'top',
 				},
 			},
 			'leaderboard-middle': {
-				defaultSizes: [[728, 90]],
+				defaultSizes: [
+					[728, 90],
+					[970, 250],
+				],
 				incremental: true,
 				targeting: {
 					pos_nr: 'middle',
 				},
 			},
 			'leaderboard-middle2': {
-				defaultSizes: [[728, 90]],
+				defaultSizes: [
+					[728, 90],
+					[970, 250],
+				],
 				incremental: true,
 				targeting: {
 					pos_nr: 'middle2',
 				},
 			},
 			'leaderboard-inc': {
-				defaultSizes: [[728, 90]],
+				defaultSizes: [
+					[728, 90],
+					[970, 250],
+				],
 				incremental: true,
 				targeting: {
 					pos_nr: 'inc',
 				},
 			},
 			'leaderboard-bottom': {
-				defaultSizes: [[728, 90]],
+				defaultSizes: [
+					[728, 90],
+					[970, 250],
+				],
 				targeting: {
 					pos_nr: 'bottom',
 				},
@@ -189,6 +225,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[728, 90],
 					[970, 66],
+					[970, 250],
 					[5, 5],
 				],
 				incremental: true,
@@ -197,14 +234,25 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 			},
 			'incontent-leader-inc': {
+				bidderAlias: 'incontent-leader-inc',
 				defaultSizes: [
 					[728, 90],
 					[970, 66],
+					[970, 250],
 					[5, 5],
 				],
-				incremental: true,
 				targeting: {
 					pos_nr: 'inc',
+				},
+				repeat: {
+					index: 1,
+					limit: 10,
+					additionalClasses: ['incontent-leader-inc'],
+					slotNamePattern: `{slotConfig.bidderAlias}-{slotConfig.repeat.index}`,
+					updateProperties: {
+						adProduct: '{slotConfig.slotName}',
+						'targeting.pos': '{slotConfig.slotName}',
+					},
 				},
 			},
 			'incontent-leader-plus-top': {
@@ -259,6 +307,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 			'incontent-leaderboard-top': {
 				defaultSizes: [
 					[728, 90],
+					[970, 250],
 					[5, 5],
 				],
 				incremental: true,
@@ -269,6 +318,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 			'incontent-leaderboard-middle': {
 				defaultSizes: [
 					[728, 90],
+					[970, 250],
 					[5, 5],
 				],
 				targeting: {
@@ -278,6 +328,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 			'incontent-leaderboard-inc': {
 				defaultSizes: [
 					[728, 90],
+					[970, 250],
 					[5, 5],
 				],
 				incremental: true,
@@ -288,6 +339,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 			'incontent-leaderboard-bottom': {
 				defaultSizes: [
 					[728, 90],
+					[970, 250],
 					[5, 5],
 				],
 				incremental: true,
@@ -330,7 +382,10 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 			},
 			'masthead-button-inc': {
-				defaultSizes: [[270, 100]],
+				defaultSizes: [
+					[320, 50],
+					[320, 100],
+				],
 				incremental: true,
 				targeting: {
 					pos_nr: 'inc',
@@ -349,6 +404,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[6, 6],
 					[320, 50],
+					[320, 100],
 					[5, 5],
 					universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile,
 				],
@@ -361,6 +417,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[6, 6],
 					[320, 50],
+					[320, 100],
 				],
 				targeting: {
 					pos_nr: 'sticky',
@@ -374,9 +431,11 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 			},
 			'mobile-banner-plus': {
+				bidderAlias: 'mobile-banner-plus',
 				defaultSizes: [
 					[300, 250],
 					[320, 50],
+					[320, 100],
 				],
 				incremental: true,
 				targeting: {
@@ -384,13 +443,24 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 			},
 			'mobile-banner-plus-inc': {
+				bidderAlias: 'mobile-banner-plus-inc',
 				defaultSizes: [
 					[300, 250],
 					[320, 50],
+					[320, 100],
 				],
-				incremental: true,
 				targeting: {
 					pos_nr: 'inc',
+				},
+				repeat: {
+					index: 1,
+					limit: 10,
+					additionalClasses: ['mobile-banner-plus-inc'],
+					slotNamePattern: `{slotConfig.bidderAlias}-{slotConfig.repeat.index}`,
+					updateProperties: {
+						adProduct: '{slotConfig.slotName}',
+						'targeting.pos': '{slotConfig.slotName}',
+					},
 				},
 			},
 			'mobile-incontent-plus': {
@@ -398,6 +468,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[300, 250],
 					[320, 50],
+					[320, 100],
 					[5, 5],
 				],
 				incremental: true,
@@ -409,6 +480,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[300, 250],
 					[320, 50],
+					[320, 100],
 					[5, 5],
 				],
 				incremental: true,
@@ -417,18 +489,32 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 			},
 			'mobile-incontent-plus-inc': {
+				bidderAlias: 'mobile-incontent-plus-inc',
 				defaultSizes: [
 					[300, 250],
 					[320, 50],
+					[320, 100],
 					[5, 5],
 				],
-				incremental: true,
 				targeting: {
 					pos_nr: 'inc',
 				},
+				repeat: {
+					index: 1,
+					limit: 10,
+					additionalClasses: ['mobile-incontent-plus-inc'],
+					slotNamePattern: `{slotConfig.bidderAlias}-{slotConfig.repeat.index}`,
+					updateProperties: {
+						adProduct: '{slotConfig.slotName}',
+						'targeting.pos': '{slotConfig.slotName}',
+					},
+				},
 			},
 			'mobile-masthead-button-inc': {
-				defaultSizes: [[270, 100]],
+				defaultSizes: [
+					[320, 50],
+					[320, 100],
+				],
 				incremental: true,
 				targeting: {
 					pos_nr: 'inc',
@@ -438,6 +524,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				defaultSizes: [
 					[5, 5],
 					[320, 50],
+					[320, 100],
 				],
 				targeting: {
 					pos_nr: 'nav',
@@ -492,6 +579,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 			'incontent-narrow-all-top': {
 				defaultSizes: [
 					[728, 90],
+					[970, 250],
 					[5, 5],
 					[8, 8],
 				],

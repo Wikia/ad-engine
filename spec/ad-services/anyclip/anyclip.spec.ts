@@ -1,12 +1,9 @@
-import { expect } from 'chai';
-import { createSandbox } from 'sinon';
-
 import { Anyclip } from '@wikia/ad-services';
 import { utils } from '@wikia/core';
+import { WaitFor } from '@wikia/core/utils';
+import { expect } from 'chai';
 
 describe('Anyclip', () => {
-	const sandbox = createSandbox();
-
 	const MOCKED_PUBNAME = 'test';
 	const MOCKED_WIDGETNAME = 'test';
 	const MOCKED_LIBRARY_URL = '//fandom.com/test';
@@ -17,12 +14,13 @@ describe('Anyclip', () => {
 	let loadScriptStub;
 
 	beforeEach(() => {
-		loadScriptStub = sandbox.spy(utils.scriptLoader, 'loadScript');
+		loadScriptStub = global.sandbox.spy(utils.scriptLoader, 'loadScript');
+		global.sandbox.stub(WaitFor.prototype, 'until').returns(Promise.resolve());
 	});
 
 	afterEach(() => {
-		sandbox.restore();
 		loadScriptStub.resetHistory();
+		global.sandbox.restore();
 	});
 
 	it('loads the script when isApplicable is not a function', () => {

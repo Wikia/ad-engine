@@ -1,18 +1,18 @@
+import { WaitFor } from '@wikia/core/utils';
 import { TrackingParametersSetup } from '@wikia/platforms/shared';
 import Cookies from 'js-cookie';
-import Sinon, { assert } from 'sinon';
+import sinon, { assert } from 'sinon';
 
 describe('TrackingParametersSetup', () => {
-	let sandbox: sinon.SinonSandbox;
 	let cookiesGetStub: sinon.SinonStub;
 
 	beforeEach(() => {
-		sandbox = Sinon.createSandbox();
-		cookiesGetStub = sandbox.stub(Cookies, 'get');
+		cookiesGetStub = global.sandbox.stub(Cookies, 'get');
+		global.sandbox.stub(WaitFor.prototype, 'until').returns(Promise.resolve());
 	});
 
 	afterEach(() => {
-		sandbox.restore();
+		global.sandbox.restore();
 	});
 
 	it('should set legacy context when flag is set to false', () => {

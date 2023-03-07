@@ -2,7 +2,7 @@ import { context, DiProcess, getAdUnitString, globalRuntimeVariableSetter } from
 import { injectable } from 'tsyringe';
 
 @injectable()
-export class UcpDesktopSlotsStateSetup implements DiProcess {
+export class UcpIncontentPlayerStateSetup implements DiProcess {
 	execute(): void {
 		if (context.get('services.anyclip.enabled')) {
 			this.disableIncontentPlayerSlot();
