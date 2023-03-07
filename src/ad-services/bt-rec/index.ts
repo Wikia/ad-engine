@@ -19,13 +19,11 @@ class BTRec {
 		this.insertSideUnits();
 
 		utils.logger(logGroup, 'loading');
-		if (context.get('options.wad.btRec.CoppaMode') === 'context') {
-			globalContextService.setValue(GlobalContextCategories.partners, {
-				blockthrough: {
-					directedAtChildren: !!context.get('wiki.targeting.directedAtChildren'),
-				},
-			});
-		}
+		globalContextService.setValue(GlobalContextCategories.partners, {
+			blockthrough: {
+				directedAtChildren: !!context.get('wiki.targeting.directedAtChildren'),
+			},
+		});
 		await this.loadScript().then(() => {
 			utils.logger(logGroup, 'ready');
 		});
@@ -50,9 +48,6 @@ class BTRec {
 			'text/javascript',
 			true,
 			document.head.lastChild as HTMLElement,
-			context.get('options.wad.btRec.CoppaMode') === 'parameter'
-				? { coppa: context.get('wiki.targeting.directedAtChildren') }
-				: undefined,
 		);
 	}
 
