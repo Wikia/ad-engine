@@ -53,4 +53,20 @@ describe('BlockThrough recovery', () => {
 			expect(loadScriptStub.called).to.equal(false);
 		});
 	});
+
+	it('BlockThrough has directedAtChildren:true in context on directedAtChildren wiki', async () => {
+		loadScriptStub.returns(Promise.resolve());
+		context.set('wiki.targeting.directedAtChildren', true);
+		await btRec.run().then(() => {
+			expect(window.fandomContext.partners.blockthrough.directedAtChildren).to.equal(true);
+		});
+	});
+
+	it('BlockThrough has directedAtChildren:false in context on wiki without directedAtChildren variable', async () => {
+		context.remove('wiki.targeting.directedAtChildren');
+		loadScriptStub.returns(Promise.resolve());
+		await btRec.run().then(() => {
+			expect(window.fandomContext.partners.blockthrough.directedAtChildren).to.equal(false);
+		});
+	});
 });

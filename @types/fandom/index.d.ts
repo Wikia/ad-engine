@@ -41,8 +41,17 @@ interface IPageParameters {
 	wordCount: number;
 }
 
+interface IBlockthroughParameters {
+	directedAtChildren: boolean;
+}
+
+interface IPartnersParameters {
+	blockthrough: IBlockthroughParameters;
+}
+
 interface WindowFandomContext {
 	site: ISiteParameters;
 	page: IPageParameters;
 	tracking?: ITrackingParameters;
+	partners?: IPartnersParameters;
 }

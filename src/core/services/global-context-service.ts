@@ -22,6 +22,7 @@ export class GlobalContextService {
 			site: {} as ISiteParameters,
 			page: {} as IPageParameters,
 			tracking: {} as ITrackingParameters,
+			partners: {} as IPartnersParameters,
 		};
 	}
 
@@ -48,9 +49,9 @@ export class GlobalContextService {
 
 	setValue(category: GlobalContextCategories, value: { [key: string]: unknown }): void {
 		if (!window.fandomContext[category]) {
-			window.fandomContext[category] = {};
+			window.fandomContext[category] = {} as any;
 		}
-		window.fandomContext[category] = this.merge(window.fandomContext[category], value);
+		window.fandomContext[category] = this.merge(window.fandomContext[category], value) as any;
 	}
 
 	getValue(category: GlobalContextCategories, key?: string): unknown {
