@@ -1,7 +1,6 @@
 import { context, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import Cookies from 'js-cookie';
-import { v4 } from 'uuid';
 import { getMediaWikiVariable } from '../utils/get-media-wiki-variable';
 
 @Injectable()
@@ -12,7 +11,7 @@ export class TrackingParametersSetup implements DiProcess {
 		return (
 			getMediaWikiVariable('pvUID') || // UCP
 			window.pvUID || // F2
-			v4() // N+R
+			window.fandomContext.tracking.pvUID // N+R
 		);
 	}
 
