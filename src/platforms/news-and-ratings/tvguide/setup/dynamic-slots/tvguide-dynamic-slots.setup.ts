@@ -10,22 +10,44 @@ import {
 } from '@wikia/ad-engine';
 
 export class TvGuideDynamicSlotsSetup implements DiProcess {
+	private PLACEHOLDER_SELECTOR = '.c-adDisplay_container';
+
 	execute(): void {
 		communicationService.on(
 			eventsRepository.AD_ENGINE_PARTNERS_READY,
 			() => {
-				const adPlaceholders = document.querySelectorAll('.c-adDisplay_container');
+				this.injectStandardSlots();
 
-				if (!adPlaceholders) {
-					return;
+				if (this.isListingsPageType()) {
+					this.injectListingSlots();
 				}
-
-				new utils.WaitFor(() => this.adDivsReady(adPlaceholders), 10, 100)
-					.until()
-					.then(() => this.injectSlots(adPlaceholders));
 			},
 			false,
 		);
+	}
+
+	private injectStandardSlots() {
+		const adPlaceholders = document.querySelectorAll(this.PLACEHOLDER_SELECTOR);
+
+		if (!adPlaceholders) {
+			return;
+		}
+
+		new utils.WaitFor(() => this.adDivsReady(adPlaceholders), 10, 100)
+			.until()
+			.then(() => this.injectSlots(adPlaceholders));
+	}
+
+	private injectListingSlots() {
+		this.PLACEHOLDER_SELECTOR = '.c-tvListingsSchedule_adRow';
+
+		new utils.WaitFor(
+			() => document.querySelectorAll(this.PLACEHOLDER_SELECTOR)?.length > 0,
+			10,
+			100,
+		)
+			.until()
+			.then(() => this.injectSlots(document.querySelectorAll(this.PLACEHOLDER_SELECTOR)));
 	}
 
 	private injectSlots(adPlaceholders): void {
@@ -100,6 +122,10 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 
 	private isSlotDefinedInContext(slotName: string): boolean {
 		return Object.keys(context.get('slots')).includes(slotName);
+	}
+
+	private isListingsPageType(): boolean {
+		return window.utag_data?.pageType === 'listings';
 	}
 
 	// TODO: This is temporary workaround. Change it for the proper event informing that ad placeholders

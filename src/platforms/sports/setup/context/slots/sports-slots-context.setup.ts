@@ -81,6 +81,28 @@ export class SportsSlotsContextSetup implements DiProcess {
 				defaultSizes: [[728, 90]],
 				group: '04_BLB',
 				bidderAlias: '04_BLB',
+				sizes: [
+					{
+						viewportSize: [970, 200],
+						sizes: [
+							[728, 90],
+							[970, 150],
+							[970, 250],
+						],
+					},
+					{
+						viewportSize: [840, 200],
+						sizes: [[728, 90]],
+					},
+					{
+						viewportSize: [0, 0],
+						sizes: [
+							[320, 50],
+							[320, 100],
+						],
+						mobileViewport: true,
+					},
+				],
 				targeting: {
 					loc: 'middle',
 					zne: '04',

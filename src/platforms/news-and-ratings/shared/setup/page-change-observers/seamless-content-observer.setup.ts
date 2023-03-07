@@ -6,14 +6,13 @@ export class SeamlessContentObserverSetup implements DiProcess {
 	protected dataAdAttribute = 'data-ad-type';
 	protected useParentAsAdPlaceholder = true;
 
-	private currentUrl = '';
+	private currentPath = '';
 	private seamlessContentLoaded = {};
 	private seamlessAdsAdded = {};
 
 	execute(): void {
-		const config = { subtree: false, childList: true };
 		// register first page after load
-		this.currentUrl = location.href;
+		this.currentPath = location.pathname;
 		this.seamlessContentLoaded[location.pathname] = true;
 
 		const elementToObserveMutation = document.querySelector(this.elementToObserveMutationSelector);
@@ -21,8 +20,8 @@ export class SeamlessContentObserverSetup implements DiProcess {
 			return;
 		}
 
+		const config = { subtree: false, childList: true };
 		const observer = new MutationObserver(() => this.handleMutation());
-
 		observer.observe(elementToObserveMutation, config);
 	}
 
@@ -30,19 +29,14 @@ export class SeamlessContentObserverSetup implements DiProcess {
 		utils.logger(
 			'pageChangeWatcher',
 			'observer init',
-			this.currentUrl,
+			this.currentPath,
 			location.pathname,
 			this.seamlessContentLoaded,
 		);
 
-		if (!this.currentUrl) {
-			this.currentUrl = location.href;
-			return;
-		}
-
-		if (this.currentUrl !== location.href) {
-			utils.logger('pageChangeWatcher', 'url changed', location.href);
-			this.currentUrl = location.href;
+		if (this.currentPath !== location.pathname) {
+			utils.logger('pageChangeWatcher', 'url changed', location.pathname);
+			this.currentPath = location.pathname;
 
 			if (this.seamlessContentLoaded[location.pathname]) {
 				utils.logger(

@@ -18,6 +18,7 @@ import {
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { UcpDesktopPerformanceAdsDefinitionRepository } from './ucp-desktop-performance-ads-definition-repository';
 import { UcpDesktopSlotsDefinitionRepository } from './ucp-desktop-slots-definition-repository';
 
 @Injectable()
@@ -25,6 +26,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	constructor(
 		private slotsDefinitionRepository: UcpDesktopSlotsDefinitionRepository,
 		private nativoSlotDefinitionRepository: NativoSlotsDefinitionRepository,
+		private performanceAdsDefinitionRepository: UcpDesktopPerformanceAdsDefinitionRepository,
 		private quizSlotsDefinitionRepository: QuizSlotsDefinitionRepository,
 	) {}
 
@@ -52,6 +54,10 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 		communicationService.on(eventsRepository.RAIL_READY, () => {
 			insertSlots([this.slotsDefinitionRepository.getIncontentBoxadConfig()]);
+
+			communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+				this.performanceAdsDefinitionRepository.setup();
+			});
 		});
 		communicationService.on(
 			eventsRepository.QUIZ_AD_INJECTED,
