@@ -25,11 +25,11 @@ export class GlobalContextService {
 		};
 	}
 
-	isObject(item: any): boolean {
+	private isObject(item: any): boolean {
 		return typeof item === 'object' && !Array.isArray(item);
 	}
 
-	merge<A = unknown, B = unknown>(target: A, source: B): A & B {
+	private merge<A = unknown, B = unknown>(target: A, source: B): A & B {
 		const isDeep = (prop: string) =>
 			this.isObject(source[prop]) &&
 			Object.prototype.hasOwnProperty.call(target, prop) &&
