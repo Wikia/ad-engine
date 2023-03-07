@@ -161,6 +161,7 @@ export class BaseContextSetup implements DiProcess {
 		context.set('services.sailthru.enabled', this.instantConfig.get('icSailthru'));
 		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
 		context.set('services.ppidRepository', this.instantConfig.get('icPpidRepository'));
+		context.set('services.identityTtl', this.instantConfig.get('icIdentityTtl'));
 
 		context.set(
 			'services.messageBox.enabled',
@@ -176,6 +177,7 @@ export class BaseContextSetup implements DiProcess {
 		this.instantConfig.get('icLABradorTest');
 
 		context.set('options.initCall', this.instantConfig.get('icLayoutInitializerSlot'));
+		context.set('options.performanceAds', this.instantConfig.get('icPerformanceAds'));
 		context.set('pubmatic.identityHub.enabled', this.instantConfig.get('icPubmaticIdentityHub'));
 
 		const priceFloorRule = this.instantConfig.get<object>('icPrebidSizePriceFloorRule');

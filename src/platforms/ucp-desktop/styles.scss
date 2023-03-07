@@ -214,6 +214,29 @@ body.is-content-expanded {
 	}
 }
 
+.render-wiki-recommendations-right-rail .performance-ad > div:not(.recommendations__article-title) {
+	svg {
+		display: none;
+	}
+
+	> div {
+		&:before {
+			content: 'AD';
+		}
+
+		bottom: unset;
+		left: unset;
+		right: 3px;
+		top: 0;
+		background-color: unset;
+		color: #ffffff;
+		font-size: 10px;
+		font-weight: 600;
+		height: fit-content;
+		width: fit-content;
+	}
+}
+
 .main-page-tag-rcs {
 	display: flex;
 	flex-direction: column;

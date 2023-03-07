@@ -9,7 +9,7 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		this.setBaseState();
 		this.setupIdentityOptions();
 		this.setupServicesOptions();
-		this.setupVideoOptions();
+		this.setupVideo();
 	}
 
 	private setBaseState(): void {
@@ -31,13 +31,17 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 
 		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
 		context.set('services.ppidRepository', this.instantConfig.get('icPpidRepository'));
+		context.set('services.identityTtl', this.instantConfig.get('icIdentityTtl'));
 	}
 
 	private setupServicesOptions() {
+		context.set('services.captify.propertyId', 13061);
 		context.set('services.confiant.propertyId', 'IOegabOoWb7FyEI1AmEa9Ki-5AY');
 	}
 
-	private setupVideoOptions() {
+	private setupVideo() {
+		context.set('vast.adUnitId', this.buildVastAdUnit());
+
 		context.set(
 			'options.video.playAdsOnNextVideo',
 			!!this.instantConfig.get('icFeaturedVideoAdsFrequency'),
@@ -72,9 +76,30 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 
 		context.set('services.anyclip.enabled', this.instantConfig.get('icAnyclipPlayer'));
 		context.set('services.anyclip.isApplicable', () => {
-			this.log('Anyclip setting:', this.getDataSettingsFromMetaTag()?.target_params?.anyclip);
-			return this.getDataSettingsFromMetaTag()?.target_params?.anyclip;
+			this.log(
+				'Anyclip settings - ad settings param: ',
+				this.getDataSettingsFromMetaTag()?.anyclip,
+			);
+			// TODO: once backend responses in unified way let's remove the logic and the tests connected to the targeting param (ADEN-12794)
+			this.log(
+				'Anyclip settings - targeting param: ',
+				this.getDataSettingsFromMetaTag()?.target_params?.anyclip,
+			);
+			return (
+				!!this.getDataSettingsFromMetaTag()?.anyclip ||
+				!!this.getDataSettingsFromMetaTag()?.target_params?.anyclip
+			);
 		});
+	}
+
+	private buildVastAdUnit(): string {
+		const dfpId = context.get('custom.dfpId');
+		const region = context.get('custom.region');
+		const property = context.get('custom.property');
+		const device = context.get('custom.device') === 'm' ? 'mobile' : 'desktop';
+		const pagePath = context.get('custom.pagePath');
+
+		return `${dfpId}/v${region}-${property}/${device}${pagePath}`;
 	}
 
 	private shouldSwitchGamToRV() {
