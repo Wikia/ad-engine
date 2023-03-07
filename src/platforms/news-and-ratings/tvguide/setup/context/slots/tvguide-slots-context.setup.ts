@@ -120,16 +120,6 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				targeting: {
 					pos_nr: 'inc',
 				},
-				repeat: {
-					index: 1,
-					limit: 10,
-					additionalClasses: ['leader-inc'],
-					slotNamePattern: `{slotConfig.bidderAlias}-{slotConfig.repeat.index}`,
-					updateProperties: {
-						adProduct: '{slotConfig.slotName}',
-						'targeting.pos': '{slotConfig.slotName}',
-					},
-				},
 			},
 			'leader-middle': {
 				defaultSizes: [
@@ -244,16 +234,6 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				targeting: {
 					pos_nr: 'inc',
 				},
-				repeat: {
-					index: 1,
-					limit: 10,
-					additionalClasses: ['incontent-leader-inc'],
-					slotNamePattern: `{slotConfig.bidderAlias}-{slotConfig.repeat.index}`,
-					updateProperties: {
-						adProduct: '{slotConfig.slotName}',
-						'targeting.pos': '{slotConfig.slotName}',
-					},
-				},
 			},
 			'incontent-leader-plus-top': {
 				defaultSizes: [
@@ -266,7 +246,6 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 					pos_nr: 'top',
 				},
 			},
-			// as this slot can be repeated many, it uses bidderAlias incontent-leader-plus-inc
 			'incontent-leader-plus-inc': {
 				bidderAlias: 'incontent-leader-plus-inc',
 				defaultClasses: ['hide'],
@@ -279,16 +258,6 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				targeting: {
 					pos_nr: 'inc',
 					loc: 'middle',
-				},
-				repeat: {
-					index: 1,
-					limit: 10,
-					additionalClasses: ['incontent-leader-plus-inc'],
-					slotNamePattern: `{slotConfig.bidderAlias}-{slotConfig.repeat.index}`,
-					updateProperties: {
-						adProduct: '{slotConfig.slotName}',
-						'targeting.pos': '{slotConfig.slotName}',
-					},
 				},
 			},
 			'incontent-leader-plus-bottom': {
@@ -452,16 +421,6 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				targeting: {
 					pos_nr: 'inc',
 				},
-				repeat: {
-					index: 1,
-					limit: 10,
-					additionalClasses: ['mobile-banner-plus-inc'],
-					slotNamePattern: `{slotConfig.bidderAlias}-{slotConfig.repeat.index}`,
-					updateProperties: {
-						adProduct: '{slotConfig.slotName}',
-						'targeting.pos': '{slotConfig.slotName}',
-					},
-				},
 			},
 			'mobile-incontent-plus': {
 				bidderAlias: 'mobile-incontent-plus',
@@ -498,16 +457,6 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				],
 				targeting: {
 					pos_nr: 'inc',
-				},
-				repeat: {
-					index: 1,
-					limit: 10,
-					additionalClasses: ['mobile-incontent-plus-inc'],
-					slotNamePattern: `{slotConfig.bidderAlias}-{slotConfig.repeat.index}`,
-					updateProperties: {
-						adProduct: '{slotConfig.slotName}',
-						'targeting.pos': '{slotConfig.slotName}',
-					},
 				},
 			},
 			'mobile-masthead-button-inc': {

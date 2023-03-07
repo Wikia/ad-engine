@@ -22,20 +22,16 @@ import {
 	NewsAndRatingsWadSetup,
 } from '../shared';
 import { basicContext } from './ad-context';
+import { TvGuidePageChangeAdsObserver } from './modes/tvguide-page-change-ads.observer';
 import { TvGuideA9ConfigSetup } from './setup/context/a9/tvguide-a9-config.setup';
 import { TvGuidePrebidConfigSetup } from './setup/context/prebid/tvguide-prebid-config-setup.service';
 import { TvGuideSlotsContextSetup } from './setup/context/slots/tvguide-slots-context.setup';
 import { TvGuideTargetingSetup } from './setup/context/targeting/tvguide-targeting.setup';
 import { TvGuideDynamicSlotsSetup } from './setup/dynamic-slots/tvguide-dynamic-slots.setup';
-import { TvGuidePageChangeAdsObserver } from './setup/page-change-observers/tvguide-page-change-ads-observer';
-import { TvGuideSeamlessContentObserverSetup } from './setup/page-change-observers/tvguide-seamless-content-observer.setup';
 import { TvGuideTemplatesSetup } from './templates/tvguide-templates.setup';
 
 @Injectable()
 export class TvGuidePlatform {
-	private currentUrl = '';
-	private currentPageViewGuid;
-
 	constructor(private pipeline: ProcessPipeline) {}
 
 	execute(): void {
@@ -58,51 +54,106 @@ export class TvGuidePlatform {
 			TvGuideTemplatesSetup,
 			NewsAndRatingsAdsMode,
 			TrackingSetup,
-			TvGuideSeamlessContentObserverSetup,
 		);
 
 		this.pipeline.execute();
+
+		// ToDo: Remove this test code
+		window.addEventListener(
+			'keypress',
+			(event) => {
+				if (event.code === 'Digit1') {
+					communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
+						placementId: 'omni-skybox-leader-sticky',
+					});
+					communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
+						placementId: 'incontent-leader-plus-top',
+					});
+					communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
+						placementId: 'incontent-leader-plus-inc',
+					});
+					communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
+						placementId: 'incontent-leader-plus-inc',
+					});
+					communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
+						placementId: 'incontent-leader-plus-inc',
+					});
+					communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
+						placementId: 'incontent-leader-plus-inc',
+					});
+				}
+
+				if (event.code === 'Digit2') {
+					communicationService.emit(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
+				}
+
+				if (event.code === 'Digit3') {
+					communicationService.emit(eventsRepository.PLATFORM_PAGE_CHANGED);
+				}
+
+				if (event.code === 'Digit4') {
+					communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
+						placementId: 'omni-skybox-leader-sticky',
+					});
+					communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
+						placementId: 'mpu-plus-top',
+					});
+					communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
+						placementId: 'mpu-middle',
+					});
+					communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
+						placementId: 'mpu-bottom',
+					});
+					communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
+						placementId: 'incontent-leader-plus-bottom',
+					});
+				}
+
+				if (event.code === 'Digit5') {
+					communicationService.emit(eventsRepository.PLATFORM_PAGE_EXTENDED);
+				}
+			},
+			false,
+		);
 	}
 
 	setupPageChangeWatcher(container: Container) {
-		const config = { subtree: false, childList: true };
-		const observer = new MutationObserver(() => {
-			if (!this.currentPageViewGuid) {
-				this.currentPageViewGuid = window.utag_data?.pageViewGuid;
-			}
+		communicationService.on(eventsRepository.PLATFORM_PAGE_CHANGED, () => {
+			utils.logger('SPA', 'SPA', 'url changed', location.href);
 
-			if (!this.currentUrl) {
-				this.currentUrl = location.href;
-				return;
-			}
+			// ToDo: Emit this if PLATFORM_BEFORE_PAGE_CHANGE won't be emitted by TVGuide app
+			// communicationService.emit(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
 
-			if (
-				this.currentUrl !== location.href &&
-				this.currentPageViewGuid !== window.utag_data?.pageViewGuid
-			) {
-				utils.logger('pageChangeWatcher', 'SPA', 'url changed', location.href);
+			targetingService.clear();
 
-				this.currentUrl = location.href;
-				this.currentPageViewGuid = window.utag_data?.pageViewGuid;
-
-				communicationService.emit(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
-				targetingService.clear();
-
-				const refreshPipeline = new ProcessPipeline(container);
-				refreshPipeline
-					.add(
-						() => utils.logger('SPA', 'starting pipeline refresh', location.href),
-						NewsAndRatingsBaseContextSetup,
-						TvGuideTargetingSetup,
-						NewsAndRatingsTargetingSetup,
-						TvGuideSlotsContextSetup,
-						TvGuidePageChangeAdsObserver,
-						TvGuideSeamlessContentObserverSetup,
-					)
-					.execute();
-			}
+			const refreshPipeline = new ProcessPipeline(container);
+			refreshPipeline
+				.add(
+					() => utils.logger('SPA', 'starting pipeline refresh'),
+					NewsAndRatingsBaseContextSetup,
+					TvGuideTargetingSetup,
+					NewsAndRatingsTargetingSetup,
+					TvGuideSlotsContextSetup,
+					TvGuidePageChangeAdsObserver,
+				)
+				.execute();
 		});
 
-		observer.observe(document.querySelector('title'), config);
+		communicationService.on(eventsRepository.PLATFORM_PAGE_EXTENDED, () => {
+			utils.logger('SPA', 'SPA', 'page extended', location.href);
+
+			targetingService.clear();
+
+			const refreshPipeline = new ProcessPipeline(container);
+			refreshPipeline
+				.add(
+					() => utils.logger('SPA', 'starting pipeline refresh'),
+					NewsAndRatingsBaseContextSetup,
+					TvGuideTargetingSetup,
+					NewsAndRatingsTargetingSetup,
+					TvGuidePageChangeAdsObserver,
+				)
+				.execute();
+		});
 	}
 }
