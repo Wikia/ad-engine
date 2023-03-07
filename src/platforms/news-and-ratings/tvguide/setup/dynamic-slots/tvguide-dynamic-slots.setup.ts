@@ -26,11 +26,11 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 		);
 	}
 
-	private injectSlotsIntoPlacements() {
+	private injectSlotsIntoPlacements(): boolean {
 		const adPlacements = document.querySelectorAll(this.PLACEMENT_SELECTOR);
 
 		if (!adPlacements) {
-			return;
+			return false;
 		}
 
 		this.injectSlots(adPlacements);
