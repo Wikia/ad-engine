@@ -7,7 +7,7 @@ import {
 } from '@platforms/shared';
 import { conditional, ProcessPipeline } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { UcpMobileAdsMode } from './modes/ucp-mobile-ads-mode.service';
+import { UcpMobileAdsMode } from './modes/ucp-mobile-ads.mode';
 import { UcpMobileA9ConfigSetup } from './setup/context/a9/ucp-mobile-a9-config.setup';
 import { UcpMobilePrebidConfigSetup } from './setup/context/prebid/ucp-mobile-prebid-config.setup';
 import { UcpMobileDynamicSlotsSetup } from './setup/dynamic-slots/ucp-mobile-dynamic-slots.setup';

@@ -21,8 +21,8 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
-import { F2IocSetup } from './f2-ioc-setup';
-import { F2AdsMode } from './modes/f2-ads-mode.service';
+import { F2IocSetup } from './f2-ioc.setup';
+import { F2AdsMode } from './modes/f2-ads.mode';
 import { F2Environment } from './setup-f2';
 import { F2BaseContextSetup } from './setup/context/base/f2-base-context.setup';
 import { F2SlotsContextSetup } from './setup/context/slots/f2-slots-context.setup';

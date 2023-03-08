@@ -6,4 +6,4 @@ const container = new Container();
 const platform = container.get(TvGuidePlatform);
 
 platform.execute();
-platform.setupPageChangeWatcher(container);
+platform.setupSinglePageAppWatchers(container);

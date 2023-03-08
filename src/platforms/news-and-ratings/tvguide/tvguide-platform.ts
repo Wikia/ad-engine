@@ -22,9 +22,9 @@ import {
 	NewsAndRatingsWadSetup,
 } from '../shared';
 import { basicContext } from './ad-context';
-import { TvGuidePageChangeAdsObserver } from './modes/tvguide-page-change-ads.observer';
+import { TvGuideNextPageAdsMode } from './modes/tvguide-next-page-ads.mode';
 import { TvGuideA9ConfigSetup } from './setup/context/a9/tvguide-a9-config.setup';
-import { TvGuidePrebidConfigSetup } from './setup/context/prebid/tvguide-prebid-config-setup.service';
+import { TvGuidePrebidConfigSetup } from './setup/context/prebid/tvguide-prebid-config.setup';
 import { TvGuideSlotsContextSetup } from './setup/context/slots/tvguide-slots-context.setup';
 import { TvGuideTargetingSetup } from './setup/context/targeting/tvguide-targeting.setup';
 import { TvGuideDynamicSlotsSetup } from './setup/dynamic-slots/tvguide-dynamic-slots.setup';
@@ -117,7 +117,7 @@ export class TvGuidePlatform {
 		);
 	}
 
-	setupPageChangeWatcher(container: Container) {
+	setupSinglePageAppWatchers(container: Container) {
 		communicationService.on(eventsRepository.PLATFORM_PAGE_CHANGED, () => {
 			utils.logger('SPA', 'SPA', 'url changed', location.href);
 
@@ -134,7 +134,7 @@ export class TvGuidePlatform {
 					TvGuideTargetingSetup,
 					NewsAndRatingsTargetingSetup,
 					TvGuideSlotsContextSetup,
-					TvGuidePageChangeAdsObserver,
+					TvGuideNextPageAdsMode,
 				)
 				.execute();
 		});
@@ -151,7 +151,7 @@ export class TvGuidePlatform {
 					NewsAndRatingsBaseContextSetup,
 					TvGuideTargetingSetup,
 					NewsAndRatingsTargetingSetup,
-					TvGuidePageChangeAdsObserver,
+					TvGuideNextPageAdsMode,
 				)
 				.execute();
 		});

@@ -1,6 +1,6 @@
 import { context, DiProcess, utils } from '@wikia/ad-engine';
 
-export class SeamlessContentObserverSetup implements DiProcess {
+export class GamespotSeamlessContentObserverSetup implements DiProcess {
 	protected notRequestedSlotWrapperSelector = '.mapped-ad > .ad-wrap:not(.gpt-ad)';
 	protected elementToObserveMutationSelector = 'title';
 	protected dataAdAttribute = 'data-ad-type';
