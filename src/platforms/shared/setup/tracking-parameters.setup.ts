@@ -43,7 +43,6 @@ export class TrackingParametersSetup implements DiProcess {
 
 		return {
 			...window.fandomContext.tracking,
-			pvUID: this.getPvUniqueId(),
 		};
 	}
 
