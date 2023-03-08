@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "130.6.3",
+	"version": "130.6.4",
 	"description": "Wikia AdEngine",
 	"license": "Apache-2.0",
 	"repository": {
@@ -9,7 +9,7 @@
 	},
 	"dependencies": {
 		"@wikia/dependency-injection": "2.2.3",
-		"@wikia/instant-config-loader": "github:Wikia/instant-config-loader#semver:0.2.1",
+		"@wikia/instant-config-loader": "github:Wikia/instant-config-loader#semver:0.3.0",
 		"@wikia/post-quecast": "2.0.1",
 		"blockadblock": "3.2.1",
 		"core-decorators": "0.20.0",
