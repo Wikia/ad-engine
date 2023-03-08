@@ -9,44 +9,47 @@ import {
 } from '@wikia/ad-engine';
 
 export class TvGuideDynamicSlotsSetup implements DiProcess {
+	private PLACEMENT_SELECTOR = '.c-adDisplay';
+	private pushedSlots = [];
+
 	execute(): void {
+		const waitForInstance = new utils.WaitFor(() => this.injectSlotsIntoPlacements(), 10, 200);
+
 		communicationService.on(
 			eventsRepository.AD_ENGINE_PARTNERS_READY,
 			() => {
-				const adPlaceholders = document.querySelectorAll('.c-adDisplay_container');
+				this.pushedSlots = [];
+				waitForInstance.reset();
 
-				if (!adPlaceholders) {
-					return;
-				}
-
-				new utils.WaitFor(() => this.adDivsReady(adPlaceholders), 10, 100)
-					.until()
-					.then(() => this.injectSlots(adPlaceholders));
+				waitForInstance.until().then(() => utils.logger('setup', 'slot injection finished'));
 			},
 			false,
 		);
 	}
 
-	private injectSlots(adPlaceholders): void {
-		const pushedSlots = [];
+	private injectSlotsIntoPlacements(): boolean {
+		const adPlacements = document.querySelectorAll(this.PLACEMENT_SELECTOR);
 
-		adPlaceholders.forEach((placeholder) => {
-			const adWrapper = placeholder.firstElementChild;
+		if (!adPlacements) {
+			return false;
+		}
 
-			if (!adWrapper) {
-				utils.logger('setup', 'No ad wrapper found for potential ad slot', placeholder);
-				return;
-			}
+		this.injectSlots(adPlacements);
 
-			const adSlotName = adWrapper.getAttribute('data-ad');
+		return false;
+	}
+
+	private injectSlots(adPlacements): void {
+		adPlacements.forEach((placement) => {
+			const adSlotName = placement.getAttribute('data-ad');
 
 			if (!this.isSlotDefinedInContext(adSlotName)) {
 				utils.logger('setup', 'Slot not defined in the context', adSlotName);
 				return;
 			}
 
-			if (pushedSlots.includes(adSlotName)) {
-				utils.logger('setup', 'Slot already pushed', adSlotName, pushedSlots);
+			if (this.pushedSlots.includes(adSlotName)) {
+				utils.logger('setup', 'Slot already pushed', adSlotName, this.pushedSlots);
 				return;
 			}
 
@@ -54,8 +57,8 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 				this.setupRepeatableSlot(adSlotName);
 			}
 
-			pushedSlots.push(adSlotName);
-			adWrapper.id = adSlotName;
+			this.pushedSlots.push(adSlotName);
+			placement.id = adSlotName;
 
 			context.push('state.adStack', { id: adSlotName });
 		});
@@ -81,7 +84,7 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 		const nextIndex = adSlot.getConfigProperty('repeat.index') + 1;
 		const nextSlotName = `${slotNameBase || slotName}-${nextIndex}`;
 		const nextSlotPlace = document.querySelector(
-			`.c-adDisplay_container > div[data-ad="${slotNameBase || slotName}"]:not(.gpt-ad)`,
+			`div[data-ad="${slotNameBase || slotName}"]:not(.gpt-ad)`,
 		);
 
 		if (!nextSlotPlace) {
@@ -95,14 +98,5 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 
 	private isSlotDefinedInContext(slotName: string): boolean {
 		return Object.keys(context.get('slots')).includes(slotName);
-	}
-
-	// TODO: This is temporary workaround. Change it for the proper event informing that ad placeholders
-	//  are ready to inject the ad slots (event should be ready after RV code freeze is over).
-	private adDivsReady(adPlaceholders) {
-		const firstPlaceholder = adPlaceholders[0];
-		const adDiv = firstPlaceholder.firstElementChild;
-
-		return !!adDiv;
 	}
 }
