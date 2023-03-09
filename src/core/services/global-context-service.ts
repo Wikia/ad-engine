@@ -52,7 +52,7 @@ export class GlobalContextService {
 		value: V,
 	): void {
 		if (!window.fandomContext[category]) {
-			window.fandomContext[category] = {} as any;
+			window.fandomContext[category] = {};
 		}
 		window.fandomContext[category] = this.merge(window.fandomContext[category], value);
 	}
