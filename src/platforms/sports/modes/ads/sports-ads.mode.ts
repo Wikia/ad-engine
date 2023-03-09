@@ -12,7 +12,6 @@ import {
 	LiveConnect,
 	LiveRampPixel,
 	PartnerPipeline,
-	UserIdentity,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -29,17 +28,13 @@ export class SportsAdsMode implements DiProcess {
 		private iasPublisherOptimization: IasPublisherOptimization,
 		private liveConnect: LiveConnect,
 		private liveRampPixel: LiveRampPixel,
-		private userIdentity: UserIdentity,
 		private wadRunner: WadRunner,
 	) {}
 
 	execute(): void {
 		this.pipeline
 			.add(
-				this.userIdentity,
-				this.liveRampPixel.setOptions({
-					dependencies: [this.userIdentity.initialized],
-				}),
+				this.liveRampPixel,
 				this.liveConnect,
 				this.bidders,
 				this.captify,
@@ -51,7 +46,6 @@ export class SportsAdsMode implements DiProcess {
 				this.gptSetup.setOptions({
 					dependencies: [
 						this.bidders.initialized,
-						this.userIdentity.initialized,
 						this.wadRunner.initialized,
 						this.iasPublisherOptimization.IASReady,
 					],

@@ -12,7 +12,6 @@ import {
 	LiveRampPixel,
 	Nielsen,
 	PartnerPipeline,
-	UserIdentity,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -28,17 +27,13 @@ export class F2AdsMode implements DiProcess {
 		private liveRampPixel: LiveRampPixel,
 		private nielsen: Nielsen,
 		private playerSetup: PlayerSetup,
-		private userIdentity: UserIdentity,
 		private wadRunner: WadRunner,
 	) {}
 
 	execute(): void {
 		this.pipeline
 			.add(
-				this.userIdentity,
-				this.liveRampPixel.setOptions({
-					dependencies: [this.userIdentity.initialized],
-				}),
+				this.liveRampPixel,
 				this.audigent,
 				this.captify,
 				this.liveConnect,
@@ -51,7 +46,6 @@ export class F2AdsMode implements DiProcess {
 				}),
 				this.gptSetup.setOptions({
 					dependencies: [
-						this.userIdentity.initialized,
 						this.playerSetup.initialized,
 						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
 						this.iasPublisherOptimization.IASReady,

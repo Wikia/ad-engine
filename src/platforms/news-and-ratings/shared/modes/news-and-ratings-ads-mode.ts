@@ -12,7 +12,6 @@ import {
 	LiveConnect,
 	LiveRampPixel,
 	PartnerPipeline,
-	UserIdentity,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -30,7 +29,6 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 		private iasPublisherOptimization: IasPublisherOptimization,
 		private liveConnect: LiveConnect,
 		private liveRampPixel: LiveRampPixel,
-		private userIdentity: UserIdentity,
 		private playerSetup: PlayerSetup,
 		private wadRunner: WadRunner,
 	) {}
@@ -41,8 +39,7 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 				this.anyclipPlayerSetup,
 				this.bidders,
 				this.wadRunner,
-				this.userIdentity,
-				this.liveRampPixel.setOptions({ dependencies: [this.userIdentity.initialized] }),
+				this.liveRampPixel,
 				this.liveConnect,
 				this.audigent,
 				this.confiant,
