@@ -64,6 +64,7 @@ export interface UapParams {
 	sequentialUapConfig: boolean;
 	slotName: string;
 	src: string;
+	uap: string;
 	height: number;
 	width: number;
 	thumbnail: HTMLElement;
@@ -157,7 +158,7 @@ export const universalAdPackage = {
 
 		params.adProduct = params.adProduct || adProduct;
 
-		setIds(params.lineItemId, params.creativeId);
+		setIds(params.lineItemId || params.uap, params.creativeId);
 		disableSlots(slotsToDisable);
 		enableSlots(slotsToEnable);
 		setType(params.adProduct);
