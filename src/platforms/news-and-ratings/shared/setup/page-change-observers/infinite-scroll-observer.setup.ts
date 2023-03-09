@@ -1,4 +1,4 @@
-import { context, DiProcess, utils } from '@wikia/ad-engine';
+import { context, DiProcess, targetingService, utils } from '@wikia/ad-engine';
 
 export class InfiniteScrollObserverSetup implements DiProcess {
 	private NOT_REQUESTED_SLOT_WRAPPER_SELECTOR = '.mapped-ad > .ad-wrap:not(.gpt-ad)';
@@ -86,7 +86,16 @@ export class InfiniteScrollObserverSetup implements DiProcess {
 	private updateSlotContext(baseSlotName: string, slotName: string) {
 		context.set(`slots.${slotName}`, { ...context.get(`slots.${baseSlotName}`) });
 		context.set(`slots.${slotName}.slotName`, slotName);
-		context.set(`slots.${slotName}.targeting.pos`, slotName);
-		utils.logger('pageChangeWatcher', 'new slot config: ', context.get(`slots.${slotName}`));
+
+		targetingService.set('pos', slotName, slotName);
+		targetingService.set('pos_nr', targetingService.get('pos_nr', baseSlotName), slotName);
+
+		utils.logger(
+			'pageChangeWatcher',
+			'new slot config: ',
+			context.get(`slots.${slotName}`),
+			'based on: ',
+			context.get(`slots.${baseSlotName}`),
+		);
 	}
 }
