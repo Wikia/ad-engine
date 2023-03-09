@@ -14,9 +14,7 @@ import {
 	CookieStorageAdapter,
 	DiProcess,
 	eventsRepository,
-	fillerService,
 	Nativo,
-	PorvataFiller,
 	slotImpactWatcher,
 	slotService,
 	universalAdPackage,
@@ -128,11 +126,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		} else {
 			context.push('events.pushAfterRendered.top_boxad', icpSlotName);
 		}
-
-		context.set(`slots.${icpSlotName}.customFiller`, 'porvata');
-		context.set(`slots.${icpSlotName}.customFillerOptions`, {});
-
-		fillerService.register(new PorvataFiller());
 
 		communicationService.on(
 			eventsRepository.AD_ENGINE_SLOT_ADDED,

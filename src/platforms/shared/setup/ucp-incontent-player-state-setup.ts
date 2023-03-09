@@ -1,13 +1,9 @@
-import { context, DiProcess, getAdUnitString, runtimeVariableSetter } from '@wikia/ad-engine';
+import { DiProcess, getAdUnitString, runtimeVariableSetter } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpIncontentPlayerStateSetup implements DiProcess {
 	execute(): void {
-		if (context.get('services.anyclip.enabled')) {
-			this.disableIncontentPlayerSlot();
-		}
-
 		this.setCustomPlayerRuntimeAdUnit();
 	}
 
@@ -20,9 +16,5 @@ export class UcpIncontentPlayerStateSetup implements DiProcess {
 		const adUnit = getAdUnitString(slotName, params);
 
 		runtimeVariableSetter.addVariable('video', { adUnit });
-	}
-
-	private disableIncontentPlayerSlot(): void {
-		context.set('slots.incontent_player.disabled', true);
 	}
 }

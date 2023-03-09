@@ -99,10 +99,13 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			},
 			incontent_player: {
 				adProduct: 'incontent_player',
-				avoidConflictWith: '.ad-slot,#incontent_boxad_1',
 				autoplay: true,
 				audio: false,
+				disabled: true,
+				isVideo: true,
+				trackEachStatus: true,
 				insertBeforeSelector: '.mw-parser-output > h2',
+				avoidConflictWith: '.ad-slot,#incontent_boxad_1',
 				parentContainerSelector: '.incontent-boxad',
 				defaultClasses: ['hide'],
 				group: 'HiVi',
@@ -111,7 +114,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					loc: 'middle',
 					pos: ['outstream'],
 				},
-				isVideo: true,
 			},
 			mobile_prefooter: {
 				adProduct: 'mobile_prefooter',

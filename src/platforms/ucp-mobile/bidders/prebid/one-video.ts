@@ -5,9 +5,6 @@ export function getOneVideoContext(): object {
 			featured: {
 				pubId: 'FandomIS',
 			},
-			incontent_player: {
-				pubId: 'FandomOS',
-			},
 		},
 	};
 }

@@ -8,11 +8,6 @@ export function getRubiconContext(): object {
 				sizeId: '201',
 				zoneId: '699374',
 			},
-			incontent_player: {
-				siteId: '55412',
-				sizeId: '203',
-				zoneId: '260296',
-			},
 		},
 	};
 }

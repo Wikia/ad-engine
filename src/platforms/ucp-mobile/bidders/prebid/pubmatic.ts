@@ -7,10 +7,6 @@ export function getPubmaticContext(): object {
 				sizes: [[0, 0]],
 				ids: ['1636187@0x0'],
 			},
-			incontent_player: {
-				sizes: [[0, 0]],
-				ids: ['1636188@0x0'],
-			},
 			interstitial: {
 				sizes: [[320, 480]],
 				ids: ['Fandom_Mobile_Interstitial'],
