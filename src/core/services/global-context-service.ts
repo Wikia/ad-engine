@@ -57,7 +57,10 @@ export class GlobalContextService {
 		window.fandomContext[category] = this.merge(window.fandomContext[category], value);
 	}
 
-	getValue(category: GlobalContextCategories, key?: string): unknown {
+	getValue<K extends keyof WindowFandomContext, I extends keyof WindowFandomContext[K]>(
+		category: K,
+		key?: I,
+	): WindowFandomContext[K][I] | undefined {
 		const categoryObj = window.fandomContext[category];
 		if (categoryObj) {
 			return categoryObj[key];
