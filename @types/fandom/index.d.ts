@@ -52,6 +52,6 @@ interface IPartnersParameters {
 interface WindowFandomContext {
 	site: ISiteParameters;
 	page: IPageParameters;
-	tracking?: ITrackingParameters;
-	partners?: IPartnersParameters;
+	tracking: Partial<ITrackingParameters>;
+	partners: Partial<IPartnersParameters>;
 }

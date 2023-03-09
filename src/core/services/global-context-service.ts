@@ -47,7 +47,10 @@ export class GlobalContextService {
 		} as A & B;
 	}
 
-	setValue(category: GlobalContextCategories, value: { [key: string]: unknown }): void {
+	setValue<K extends keyof WindowFandomContext, V extends Required<WindowFandomContext[K]>>(
+		category: K,
+		value: V,
+	): void {
 		if (!window.fandomContext[category]) {
 			window.fandomContext[category] = {} as any;
 		}
