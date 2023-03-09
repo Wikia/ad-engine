@@ -54,7 +54,7 @@ export class GlobalContextService {
 		if (!window.fandomContext[category]) {
 			window.fandomContext[category] = {} as any;
 		}
-		window.fandomContext[category] = this.merge(window.fandomContext[category], value) as any;
+		window.fandomContext[category] = this.merge(window.fandomContext[category], value);
 	}
 
 	getValue(category: GlobalContextCategories, key?: string): unknown {
