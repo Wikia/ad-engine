@@ -55,12 +55,12 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 	}
 
 	private getSlotConfig(slotName: string, baseSlotName = ''): SlotSetupDefinition {
-		const domSlotElement: HTMLElement = document.querySelector(
-			`div[data-ad="${baseSlotName || slotName}"]:not(.gpt-ad)`,
-		);
+		const domSlotElement: HTMLElement =
+			document.getElementById(slotName) ||
+			document.querySelector(`div[data-ad="${baseSlotName || slotName}"]:not(.gpt-ad)`);
 
 		if (!domSlotElement || !this.isSlotApplicable(slotName)) {
-			utils.logger('setup', 'Slot already pushed or is not applicable', slotName);
+			utils.logger('setup', 'Slot is not applicable or placement not exists', slotName);
 			return null;
 		}
 

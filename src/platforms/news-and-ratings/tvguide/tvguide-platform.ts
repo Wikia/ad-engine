@@ -63,53 +63,50 @@ export class TvGuidePlatform {
 			'keypress',
 			(event) => {
 				if (event.code === 'Digit1') {
-					communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
-						placementId: 'omni-skybox-leader-sticky',
-					});
-					communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
-						placementId: 'incontent-leader-plus-top',
-					});
-					communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
-						placementId: 'incontent-leader-plus-inc',
-					});
-					communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
-						placementId: 'incontent-leader-plus-inc',
-					});
-					communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
-						placementId: 'incontent-leader-plus-inc',
-					});
-					communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
-						placementId: 'incontent-leader-plus-inc',
+					console.log('debug', 'attempting to load all slots (including destroyed)');
+
+					document.querySelectorAll('div[data-ad]').forEach((placementId: HTMLElement) => {
+						if (!placementId.dataset.ad) return;
+
+						console.log('debug', 'slot placement fill requested', placementId.dataset.ad);
+
+						communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
+							placementId: placementId.dataset.ad,
+						});
 					});
 				}
 
 				if (event.code === 'Digit2') {
-					communicationService.emit(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
+					console.log('debug', 'attempting to load new slots');
+
+					document
+						.querySelectorAll('div[data-ad]:not(.gpt-ad)')
+						.forEach((placementId: HTMLElement) => {
+							if (!placementId.dataset.ad) return;
+
+							console.log('debug', 'slot placement fill requested', placementId.dataset.ad);
+
+							communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
+								placementId: placementId.dataset.ad,
+							});
+						});
 				}
 
 				if (event.code === 'Digit3') {
-					communicationService.emit(eventsRepository.PLATFORM_PAGE_CHANGED);
+					console.log('debug', 'emitting PLATFORM_BEFORE_PAGE_CHANGE');
+
+					communicationService.emit(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
 				}
 
 				if (event.code === 'Digit4') {
-					communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
-						placementId: 'omni-skybox-leader-sticky',
-					});
-					communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
-						placementId: 'mpu-plus-top',
-					});
-					communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
-						placementId: 'mpu-middle',
-					});
-					communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
-						placementId: 'mpu-bottom',
-					});
-					communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
-						placementId: 'incontent-leader-plus-bottom',
-					});
+					console.log('debug', 'emitting PLATFORM_PAGE_CHANGED');
+
+					communicationService.emit(eventsRepository.PLATFORM_PAGE_CHANGED);
 				}
 
 				if (event.code === 'Digit5') {
+					console.log('debug', 'emitting PLATFORM_PAGE_EXTENDED');
+
 					communicationService.emit(eventsRepository.PLATFORM_PAGE_EXTENDED);
 				}
 			},
@@ -119,7 +116,7 @@ export class TvGuidePlatform {
 
 	setupSinglePageAppWatchers(container: Container) {
 		communicationService.on(eventsRepository.PLATFORM_PAGE_CHANGED, () => {
-			utils.logger('SPA', 'SPA', 'url changed', location.href);
+			utils.logger('SPA', 'url changed', location.href);
 
 			// ToDo: Emit this if PLATFORM_BEFORE_PAGE_CHANGE won't be emitted by TVGuide app
 			// communicationService.emit(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
@@ -140,7 +137,7 @@ export class TvGuidePlatform {
 		});
 
 		communicationService.on(eventsRepository.PLATFORM_PAGE_EXTENDED, () => {
-			utils.logger('SPA', 'SPA', 'page extended', location.href);
+			utils.logger('SPA', 'page extended', location.href);
 
 			targetingService.clear();
 
