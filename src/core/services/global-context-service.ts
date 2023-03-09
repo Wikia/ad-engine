@@ -19,10 +19,10 @@ export class GlobalContextService {
 	private createEmptyContext(): void {
 		utils.logger(this.logGroup, 'Creating empty fandomContext');
 		window.fandomContext = {
-			site: {} as ISiteParameters,
-			page: {} as IPageParameters,
+			site: {},
+			page: {},
 			tracking: {},
-			partners: {} as IPartnersParameters,
+			partners: {},
 		};
 	}
 
