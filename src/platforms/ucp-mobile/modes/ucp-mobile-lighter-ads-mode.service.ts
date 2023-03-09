@@ -16,7 +16,6 @@ import {
 	Nielsen,
 	PartnerPipeline,
 	Stroer,
-	UserIdentity,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -36,14 +35,12 @@ export class UcpMobileLighterAds implements DiProcess {
 		private nielsen: Nielsen,
 		private playerSetup: PlayerSetup,
 		private stroer: Stroer,
-		private userIdentity: UserIdentity,
 	) {}
 
 	execute(): void {
 		this.pipeline
 			.add(
-				this.userIdentity,
-				this.liveRampPixel.setOptions({ dependencies: [this.userIdentity.initialized] }),
+				this.liveRampPixel,
 				this.ats,
 				this.audigent,
 				this.iasPublisherOptimization,
@@ -59,7 +56,6 @@ export class UcpMobileLighterAds implements DiProcess {
 				}),
 				this.gptSetup.setOptions({
 					dependencies: [
-						this.userIdentity.initialized,
 						this.playerSetup.initialized,
 						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
 						this.iasPublisherOptimization.IASReady,
