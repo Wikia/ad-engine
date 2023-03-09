@@ -95,7 +95,12 @@ describe('Eyeota', () => {
 	});
 
 	it('constructs proper url with context', async () => {
-		window.fandomContext = { site: null, page: null } as FandomContext;
+		window.fandomContext = {
+			site: null,
+			page: null,
+			tracking: null,
+			partners: null,
+		} as FandomContext;
 		const mockedTags = {
 			gnre: ['1', '2', '3'],
 			pub: ['test'],
