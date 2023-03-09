@@ -50,8 +50,8 @@ interface IPartnersParameters {
 }
 
 interface WindowFandomContext {
-	site: ISiteParameters;
-	page: IPageParameters;
+	site: Partial<ISiteParameters>;
+	page: Partial<IPageParameters>;
 	tracking: Partial<ITrackingParameters>;
 	partners: Partial<IPartnersParameters>;
 }
