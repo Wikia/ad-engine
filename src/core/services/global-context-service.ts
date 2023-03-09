@@ -21,7 +21,7 @@ export class GlobalContextService {
 		window.fandomContext = {
 			site: {} as ISiteParameters,
 			page: {} as IPageParameters,
-			tracking: {} as ITrackingParameters,
+			tracking: {},
 			partners: {} as IPartnersParameters,
 		};
 	}
