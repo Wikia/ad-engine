@@ -381,16 +381,6 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 					pos_nr: 'bottom',
 				},
 			},
-			'masthead-button-inc': {
-				defaultSizes: [
-					[320, 50],
-					[320, 100],
-				],
-				incremental: true,
-				targeting: {
-					pos_nr: 'inc',
-				},
-			},
 			'mobile-nav-ad-plus': {
 				defaultSizes: [
 					[7, 7],
@@ -508,16 +498,6 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 						adProduct: '{slotConfig.slotName}',
 						'targeting.pos': '{slotConfig.slotName}',
 					},
-				},
-			},
-			'mobile-masthead-button-inc': {
-				defaultSizes: [
-					[320, 50],
-					[320, 100],
-				],
-				incremental: true,
-				targeting: {
-					pos_nr: 'inc',
 				},
 			},
 			'mobile-nav-ad-plus-banner': {

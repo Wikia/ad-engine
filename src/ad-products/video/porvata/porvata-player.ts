@@ -266,10 +266,6 @@ export class PorvataPlayer {
 
 	unmute(): void {
 		this.setVolume(DEFAULT_VOLUME);
-
-		if (this.settings.isAutoPlay() && this.settings.shouldRestartOnMute()) {
-			this.rewind();
-		}
 	}
 
 	setVolume(volume: number): void {

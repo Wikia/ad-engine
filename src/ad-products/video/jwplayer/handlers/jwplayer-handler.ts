@@ -75,8 +75,6 @@ export class JWPlayerHandler {
 				this.helper.emitVideoAdImpression();
 				jwPlayerInhibitor.resolve(state.vastParams.lineItemId, state.vastParams.creativeId);
 			}),
-			filter(() => this.helper.isMoatTrackingEnabled()),
-			tap(({ payload }) => this.helper.trackMoat(payload)),
 		);
 	}
 

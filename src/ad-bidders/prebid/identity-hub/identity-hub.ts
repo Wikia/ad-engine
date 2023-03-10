@@ -10,7 +10,7 @@ export class IdentityHub extends BaseServiceSetup {
 	private identityHubScriptSrc = `https://ads.pubmatic.com/AdServer/js/pwt/${pubId}/${profileId}/pwt.js`;
 
 	call(): Promise<void> {
-		if (!this.isEnabled('pubmatic.identityHub.enabled')) {
+		if (!this.isEnabled('bidders.identityHub.enabled')) {
 			utils.logger(logGroup, 'disabled');
 			return;
 		}
