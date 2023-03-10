@@ -32,9 +32,5 @@ export class BfaaUcpMobileConfigHandler implements TemplateStateHandler {
 			'bottom_leaderboard',
 			universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile,
 		);
-		slotsContext.addSlotSize(
-			'bottom_leaderboard',
-			universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.unified,
-		);
 	}
 }

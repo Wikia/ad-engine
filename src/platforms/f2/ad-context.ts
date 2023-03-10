@@ -23,6 +23,12 @@ export const basicContext = {
 			},
 		},
 		video: {
+			moatTracking: {
+				enabled: false,
+				jwplayerPluginUrl: 'https://z.moatads.com/jwplayerplugin0938452/moatplugin.js',
+				partnerCode: 'wikiajwint101173217941',
+				sampling: 100,
+			},
 			iasTracking: {
 				enabled: false,
 				config: {
@@ -43,6 +49,9 @@ export const basicContext = {
 			endpoint: 'https://services.fandom.com',
 			appName: 'f2',
 			fallback: 'https://script.wikia.nocookie.net/fandom-ae-assets/icbm/prod/icbm_state_f2.json',
+		},
+		moatYi: {
+			partnerCode: 'wikiaprebidheader490634422386',
 		},
 		nielsen: {
 			customSection: 'news_and_stories',

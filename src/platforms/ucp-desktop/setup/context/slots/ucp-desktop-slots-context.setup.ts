@@ -136,6 +136,15 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				defaultTemplates: ['floorAdhesion'],
 				defaultSizes: [[728, 90]],
 			},
+			invisible_high_impact_2: {
+				adProduct: 'invisible_high_impact_2',
+				group: 'PX',
+				options: {},
+				outOfPage: true,
+				targeting: {
+					loc: 'hivi',
+				},
+			},
 			featured: {
 				adProduct: 'featured',
 				group: 'VIDEO',

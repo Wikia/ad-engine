@@ -1,6 +1,7 @@
 import { AdSlot, slotService, utils } from '@ad-engine/core';
 import { GoogleImaWrapper } from './google-ima-wrapper';
 import { iasVideoTracker } from './plugins/ias/ias-video-tracker';
+import { moatVideoTracker } from './plugins/moat/moat-video-tracker';
 import { PorvataPlugin } from './plugins/porvata-plugin';
 import { PorvataPlayer } from './porvata-player';
 import { PorvataSettings } from './porvata-settings';
@@ -21,7 +22,7 @@ function setSlotProperties(slot: AdSlot, videoSettings: PorvataSettings): void {
 }
 
 function getPlugins(settings: PorvataSettings): PorvataPlugin[] {
-	const imaPlugins: PorvataPlugin[] = [iasVideoTracker];
+	const imaPlugins: PorvataPlugin[] = [iasVideoTracker, moatVideoTracker];
 
 	return imaPlugins.filter((plugin) => plugin.isEnabled(settings));
 }

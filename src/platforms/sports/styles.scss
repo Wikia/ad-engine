@@ -2,6 +2,8 @@
 @import '../shared/styles/mixin';
 @import '../shared/styles/uap-porvata/porvata';
 
+@include logo-replacement(40px, 0, 5px);
+
 .gdm__wrapper {
 	text-align: center;
 }

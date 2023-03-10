@@ -52,6 +52,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			this.slotsDefinitionRepository.getIncontentBoxadConfig(),
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
 			this.slotsDefinitionRepository.getMobilePrefooterConfig(),
+			this.slotsDefinitionRepository.getInvisibleHighImpactConfig(),
 			this.slotsDefinitionRepository.getInterstitialConfig(),
 			this.nativoSlotDefinitionRepository.getNativoFeedAdConfig({
 				slotName: Nativo.FEED_AD_SLOT_NAME,
@@ -94,10 +95,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			slotsContext.addSlotSize(
 				'top_leaderboard',
 				universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile,
-			);
-			slotsContext.addSlotSize(
-				'top_leaderboard',
-				universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.unified,
 			);
 
 			context.push('slots.top_leaderboard.defaultTemplates', 'stickyTlb');

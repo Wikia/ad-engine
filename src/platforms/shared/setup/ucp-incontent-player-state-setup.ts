@@ -1,4 +1,4 @@
-import { context, DiProcess, getAdUnitString, runtimeVariableSetter } from '@wikia/ad-engine';
+import { context, DiProcess, getAdUnitString, globalRuntimeVariableSetter } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -19,7 +19,7 @@ export class UcpIncontentPlayerStateSetup implements DiProcess {
 		};
 		const adUnit = getAdUnitString(slotName, params);
 
-		runtimeVariableSetter.addVariable('video', { adUnit });
+		globalRuntimeVariableSetter.addNewVariableToRuntime('video', { adUnit });
 	}
 
 	private disableIncontentPlayerSlot(): void {

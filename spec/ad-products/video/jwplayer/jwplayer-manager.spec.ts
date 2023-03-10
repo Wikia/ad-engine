@@ -33,7 +33,7 @@ describe('JWPlayerManager', () => {
 	beforeEach(() => {
 		loadScriptStub = global.sandbox.stub(utils.scriptLoader, 'loadScript');
 		window['fakePlayer'] = fakePlayerStub;
-		context.set('options.video.iasTracking.enabled', false);
+		context.set('options.video.moatTracking.jwplayerPluginUrl', undefined);
 
 		communicationService.emit(
 			{
@@ -47,18 +47,18 @@ describe('JWPlayerManager', () => {
 	afterEach(() => {
 		loadScriptStub.resetHistory();
 		window['fakePlayer'] = undefined;
-		context.remove('options.video.iasTracking.enabled');
+		context.remove('options.video.moatTracking.jwplayerPluginUrl');
 	});
 
-	it('does not load IAS when plugin is not enabled', () => {
+	it('does not load MOAT when plugin URL is not defined', () => {
 		const jwpManager = new JWPlayerManager();
 		jwpManager.manage();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
-	it('loads IAS when plugin is enabled', () => {
-		context.set('options.video.iasTracking.enabled', true);
+	it('loads MOAT when plugin URL is defined', () => {
+		context.set('options.video.moatTracking.jwplayerPluginUrl', 'https://fake-url.com');
 		const jwpManager = new JWPlayerManager();
 		jwpManager.manage();
 

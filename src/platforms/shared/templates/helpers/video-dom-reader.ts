@@ -51,10 +51,9 @@ export class VideoDomReader {
 		if (!this.params.config) {
 			return;
 		}
-		const videoAspectRatio = 16 / 9;
 		const percentage = this.getPercentage(progress, this.params.config.state.height);
 		const height = slotHeight * (percentage / 100);
-		const width = height * videoAspectRatio;
+		const width = height * this.params.videoAspectRatio;
 
 		return { height, width };
 	}
