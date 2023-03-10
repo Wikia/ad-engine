@@ -29,7 +29,7 @@ import { MetacriticNeutronSlotsContextSetup } from './setup/context/slots/metacr
 import { MetacriticNeutronTargetingSetup } from './setup/context/targeting/metacritic-neutron-targeting.setup';
 import { MetacriticNeutronDynamicSlotsSetup } from './setup/dynamic-slots/metacritic-neutron-dynamic-slots.setup';
 import { MetacriticNeutronPageChangeAdsObserver } from './setup/page-change-observers/metacritic-neutron-page-change-ads-observer.service';
-import { MetacriticNeutronSeamlessContentObserverSetup } from './setup/page-change-observers/metacritic-neutron-seamless-content-observer.setup';
+import { MetacriticNeutronSeeMoreClickObserverSetup } from './setup/page-change-observers/see-more-click-observer.setup';
 import { MetacriticNeutronTemplatesSetup } from './templates/metacritic-neutron-templates.setup';
 
 @Injectable()
@@ -59,7 +59,7 @@ export class MetacriticNeutronPlatform {
 			MetacriticNeutronTemplatesSetup,
 			NewsAndRatingsAdsMode,
 			TrackingSetup,
-			MetacriticNeutronSeamlessContentObserverSetup,
+			MetacriticNeutronSeeMoreClickObserverSetup,
 		);
 
 		this.pipeline.execute();
