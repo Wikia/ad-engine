@@ -9,5 +9,5 @@ export interface CommonTargetingParams {
 	s1?: string;
 	s2?: string;
 	wpage?: string;
-	word_count?: number;
+	word_count?: string;
 }

@@ -1,56 +1,28 @@
 import { context, DiProcess, targetingService, utils } from '@wikia/ad-engine';
 
-export class SeamlessContentObserverSetup implements DiProcess {
-	protected notRequestedSlotWrapperSelector = '.mapped-ad > .ad-wrap:not(.gpt-ad)';
-	protected elementToObserveMutationSelector = 'title';
-	protected dataAdAttribute = 'data-ad-type';
-	protected useParentAsAdPlaceholder = true;
+export class MetacriticNeutronSeeMoreButtonClickListenerSetup implements DiProcess {
+	private notRequestedSlotWrapperSelector = '.c-adDisplay_container > .c-adDisplay:not(.gpt-ad)';
+	private dataAdAttribute = 'data-ad';
+	private useParentAsAdPlaceholder = false;
 
-	private currentPath = '';
-	private seamlessContentLoaded = {};
 	private seamlessAdsAdded = {};
 
 	execute(): void {
-		// register first page after load
-		this.currentPath = location.pathname;
-		this.seamlessContentLoaded[location.pathname] = true;
+		const seeMoreButton = document.querySelector('.c-pageArticleListings_seeMore');
 
-		const elementToObserveMutation = document.querySelector(this.elementToObserveMutationSelector);
-		if (!elementToObserveMutation) {
+		if (!seeMoreButton) {
 			return;
 		}
 
-		const config = { subtree: false, childList: true };
-		const observer = new MutationObserver(() => this.handleMutation());
-		observer.observe(elementToObserveMutation, config);
-	}
-
-	private handleMutation() {
-		utils.logger(
-			'pageChangeWatcher',
-			'observer init',
-			this.currentPath,
-			location.pathname,
-			this.seamlessContentLoaded,
-		);
-
-		if (this.currentPath !== location.pathname) {
-			utils.logger('pageChangeWatcher', 'url changed', location.pathname);
-			this.currentPath = location.pathname;
-
-			if (this.seamlessContentLoaded[location.pathname]) {
-				utils.logger(
-					'pageChangeWatcher',
-					'ads already loaded for this content',
-					location.href,
-					this.seamlessContentLoaded,
-				);
-				return;
-			}
-
-			this.seamlessContentLoaded[location.pathname] = true;
-			this.requestAdForUnfilledSlots();
-		}
+		seeMoreButton.addEventListener('click', () => {
+			new utils.WaitFor(
+				() => document.querySelectorAll(this.notRequestedSlotWrapperSelector)?.length > 0,
+				10,
+				50,
+			)
+				.until()
+				.then(() => this.requestAdForUnfilledSlots());
+		});
 	}
 
 	private requestAdForUnfilledSlots() {
