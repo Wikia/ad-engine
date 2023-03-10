@@ -159,8 +159,6 @@ export class UcpDesktopSlotsDefinitionRepository {
 			activator: () => {
 				if (context.get('services.anyclip.enabled')) {
 					context.push('state.adStack', { id: slotName });
-				} else {
-					context.push('events.pushOnScroll.ids', slotName);
 				}
 			},
 		};
