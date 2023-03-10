@@ -27,8 +27,6 @@ interface Window {
 	googletag: googletag.Googletag;
 	headertag?: any;
 	liQ?: LiQ;
-	moatjw?: MoatJW;
-	moatPrebidApi?: MoatPrebidApi;
 	mw?: MediaWiki;
 	ntv?: NativoApi;
 	NOLBUNDLE?: any;

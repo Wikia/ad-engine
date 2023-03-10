@@ -24,7 +24,7 @@ describe('UniversalAdPackage', () => {
 
 	it('should update every slots context when uap is updated', () => {
 		universalAdPackage.init({
-			uap: UAP_ID,
+			lineItemId: UAP_ID,
 			creativeId: UAP_CREATIVE_ID,
 		} as any);
 
@@ -42,7 +42,7 @@ describe('UniversalAdPackage', () => {
 	it.skip("should use slot's default video ad unit with default settings from GAM", () => {
 		// ToDo: broken after ad-engine to core rename
 		universalAdPackage.init({
-			uap: UAP_ID,
+			lineItemId: UAP_ID,
 			creativeId: UAP_CREATIVE_ID,
 			slotName: 'top_leaderboard',
 			useVideoSpecialAdUnit: false,
@@ -56,7 +56,7 @@ describe('UniversalAdPackage', () => {
 	it.skip('should use special ad video unit with the right settings from GAM', () => {
 		// ToDo: broken after ad-engine to core rename
 		universalAdPackage.init({
-			uap: UAP_ID,
+			lineItemId: UAP_ID,
 			creativeId: UAP_CREATIVE_ID,
 			slotName: 'top_leaderboard',
 			useVideoSpecialAdUnit: true,
