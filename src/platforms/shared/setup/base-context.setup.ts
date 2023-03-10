@@ -114,14 +114,6 @@ export class BaseContextSetup implements DiProcess {
 			'options.video.uapJWPLineItemIds',
 			this.instantConfig.get('icUAPJWPlayerLineItemIds'),
 		);
-		context.set(
-			'options.video.moatTracking.enabledForArticleVideos',
-			this.instantConfig.get('icFeaturedVideoMoatTracking'),
-		);
-		context.set(
-			'options.video.moatTracking.enabledForPorvata',
-			this.instantConfig.get('icPorvataMoatTracking'),
-		);
 		context.set('options.video.pauseJWPlayerAd', this.instantConfig.get('icPauseJWPlayerAd'));
 		context.set(
 			'options.video.comscoreJwpTracking',
@@ -175,12 +167,9 @@ export class BaseContextSetup implements DiProcess {
 	private setMiscContext(): void {
 		this.instantConfig.get('icLABradorTest');
 
-		context.set('options.initCall', this.instantConfig.get('icLayoutInitializerSlot'));
-		context.set('options.performanceAds', this.instantConfig.get('icPerformanceAds'));
-		context.set('pubmatic.identityHub.enabled', this.instantConfig.get('icPubmaticIdentityHub'));
-
 		const priceFloorRule = this.instantConfig.get<object>('icPrebidSizePriceFloorRule');
 		context.set('bidders.prebid.priceFloor', priceFloorRule || null);
+		context.set('bidders.identityHub.enabled', this.instantConfig.get('icPubmaticIdentityHub'));
 		context.set('bidders.liveRampId.enabled', this.instantConfig.get('icLiveRampId'));
 		context.set('bidders.liveRampATS.enabled', this.instantConfig.get('icLiveRampATS'));
 		context.set(
@@ -188,15 +177,6 @@ export class BaseContextSetup implements DiProcess {
 			this.instantConfig.get('icLiveRampATSAnalytics'),
 		);
 		context.set('bidders.prebid.native.enabled', this.instantConfig.get('icPrebidNative'));
-
-		context.set(
-			'templates.safeFanTakeoverElement.lineItemIds',
-			this.instantConfig.get('icSafeFanTakeoverLineItemIds'),
-		);
-		context.set(
-			'templates.safeFanTakeoverElement.unstickTimeout',
-			this.instantConfig.get('icSafeFanTakeoverUnstickTimeout'),
-		);
 		context.set(
 			'templates.sizeOverwritingMap',
 			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes,

@@ -354,30 +354,6 @@ export class UcpMobileSlotsDefinitionRepository {
 		return this.instantConfig.get('icInterstitial') && !cookieAdapter.getItem('_ae_intrsttl_imp');
 	}
 
-	getInvisibleHighImpactConfig(): SlotSetupDefinition {
-		if (!this.isInvisibleHighImpactApplicable()) {
-			return;
-		}
-
-		const slotName = 'invisible_high_impact_2';
-
-		return {
-			slotCreatorConfig: {
-				slotName,
-				anchorSelector: '#fandom-mobile-wrapper',
-				insertMethod: 'after',
-				classList: ['hide', 'ad-slot'],
-			},
-			activator: () => {
-				context.push('state.adStack', { id: slotName });
-			},
-		};
-	}
-
-	private isInvisibleHighImpactApplicable(): boolean {
-		return !this.instantConfig.get('icFloorAdhesion') && !context.get('custom.hasFeaturedVideo');
-	}
-
 	private pushWaitingSlot(slotName: string): void {
 		communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
 			if (action.isLoaded) {
