@@ -44,6 +44,9 @@ export function getPubmaticContext(isDesktop: boolean): object {
 			],
 			ids: ['4856974', '4856975'],
 		},
+		video: {
+			siteId: '4923778',
+		},
 	};
 
 	const mobileSlots = {
@@ -176,6 +179,9 @@ export function getPubmaticContext(isDesktop: boolean): object {
 		'mobile-nav-ad-plus-banner': {
 			sizes: [[320, 50]],
 			ids: ['4857012'],
+		},
+		video: {
+			siteId: '4923779',
 		},
 	};
 

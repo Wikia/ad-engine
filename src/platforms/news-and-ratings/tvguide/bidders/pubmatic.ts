@@ -142,6 +142,9 @@ export function getPubmaticContext(isDesktop: boolean): object {
 			sizes: [[300, 250]],
 			ids: ['4857049'],
 		},
+		video: {
+			siteId: '4923780',
+		},
 	};
 
 	const mobileSlots = {
@@ -215,6 +218,9 @@ export function getPubmaticContext(isDesktop: boolean): object {
 		'incontent-narrow-all-top': {
 			sizes: [[728, 90]],
 			ids: ['4857068'],
+		},
+		video: {
+			siteId: '4923781',
 		},
 	};
 
