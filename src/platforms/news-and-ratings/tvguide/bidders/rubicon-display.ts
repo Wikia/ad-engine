@@ -173,6 +173,9 @@ export function getRubiconDisplayContext(isDesktop: boolean): object {
 			siteId: '462852',
 			zoneId: '2720188',
 		},
+		video: {
+			siteId: '462852',
+		},
 	};
 
 	const mobileSlots = {
@@ -260,6 +263,9 @@ export function getRubiconDisplayContext(isDesktop: boolean): object {
 			sizes: [[728, 90]],
 			siteId: '462854',
 			zoneId: '2720216',
+		},
+		video: {
+			siteId: '462854',
 		},
 	};
 
