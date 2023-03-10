@@ -38,6 +38,9 @@ export function getAppnexusContext(isDesktop: boolean): object {
 			sizes: [[728, 90]],
 			placementId: ['28574403'],
 		},
+		video: {
+			siteId: '29038681',
+		},
 	};
 
 	const mobileSlots = {
@@ -119,6 +122,9 @@ export function getAppnexusContext(isDesktop: boolean): object {
 		'incontent-ad-plus': {
 			sizes: [[728, 90]],
 			placementId: ['28574411'],
+		},
+		video: {
+			siteId: '29038704',
 		},
 	};
 
