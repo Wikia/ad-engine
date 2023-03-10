@@ -1,6 +1,6 @@
 import { context, DiProcess, targetingService, utils } from '@wikia/ad-engine';
 
-export class MetacriticNeutronSeeMoreClickObserverSetup implements DiProcess {
+export class MetacriticNeutronSeeMoreButtonClickListenerSetup implements DiProcess {
 	private notRequestedSlotWrapperSelector = '.c-adDisplay_container > .c-adDisplay:not(.gpt-ad)';
 	private dataAdAttribute = 'data-ad';
 	private useParentAsAdPlaceholder = false;
@@ -26,7 +26,6 @@ export class MetacriticNeutronSeeMoreClickObserverSetup implements DiProcess {
 	}
 
 	private requestAdForUnfilledSlots() {
-		console.log('===== REQUEST UNFILLED SLOTS');
 		const adSlotsToFill = document.querySelectorAll(this.notRequestedSlotWrapperSelector);
 		utils.logger('pageChangeWatcher', 'adSlotsToFill: ', adSlotsToFill);
 		adSlotsToFill.forEach((adWrapper: Element) => {
