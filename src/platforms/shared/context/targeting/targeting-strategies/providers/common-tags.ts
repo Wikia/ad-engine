@@ -32,7 +32,7 @@ export class CommonTags implements TargetingProvider<Partial<SlotTargeting>> {
 		};
 
 		const commonContextParams: CommonTargetingParams = {
-			artid: this.fandomContext.page.articleId?.toString() || '',
+			artid: this.fandomContext.page.articleId ? this.fandomContext.page.articleId.toString() : '',
 			kid_wiki: this.fandomContext.site.directedAtChildren ? '1' : '0',
 			lang: this.fandomContext.page.lang || 'unknown',
 			s0: this.fandomContext.site.taxonomy?.[0],
@@ -41,8 +41,8 @@ export class CommonTags implements TargetingProvider<Partial<SlotTargeting>> {
 			s0v: this.fandomContext.site.taxonomy?.[1] || wiki.targeting.wikiVertical,
 			s1: utils.targeting.getRawDbName(this.fandomContext.site.siteName),
 			s2: this.getAdLayout(this.fandomContext.page.pageType || 'article'),
-			wpage: this.fandomContext.page.pageName?.toLowerCase(),
-			word_count: this.fandomContext.page.wordCount?.toString() || '',
+			wpage: this.fandomContext.page.pageName && this.fandomContext.page.pageName.toLowerCase(),
+			word_count: this.fandomContext.page.wordCount,
 		};
 
 		return {

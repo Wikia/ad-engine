@@ -1,4 +1,4 @@
-# Ad unit for LIS (Layout Initializer request)
+# Ad unit for LIS (Layout Initializer requeSt)
 
 Date: 2022-03-11
 

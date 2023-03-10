@@ -54,7 +54,13 @@ export default customContext = {
 				key: 'audio',
 			},
 		},
-		video: {},
+		video: {
+			moatTracking: {
+				enabled: false,
+				partnerCode: 'foo',
+				sampling: 1
+			},
+		},
 		customAdLoader: {
 			globalMethodName: 'loadCustomAd',
 		},
@@ -219,7 +225,9 @@ Name: **bfaa**
     handleNavbar: false,
     autoPlayAllowed: true,
     defaultStateAllowed: true,
+    fullscreenAllowed: true,
     stickinessAllowed: true,
+    stickyUntilSlotViewed: true,
     slotSibling: '.topic-header',
     slotsToEnable: ['bottom_leaderboard', 'incontent_boxad', 'top_boxad'],
     onInit: () => {},
@@ -241,7 +249,9 @@ Name: **bfaa**
 - handleNavbar - decides whether template should adjust navbar
 - autoPlayAllowed - decides whether video can be autoplayed
 - defaultStateAllowed - decides whether BFAA impact state is allowed
+- fullscreenAllowed - decides whether video can be displayed on full screen
 - stickinessAllowed - decides whether the slot can be sticky
+- stickyUntilSlotViewed - decides whether the slot should be sticky untill viewability is counted
 - slotSibling - DOM sibling element next to BFAA slot
 - slotsToEnable - decides which slots should be enabled on Fan Takeover load
 
@@ -251,18 +261,38 @@ Name: **bfaa**
     adProduct: string;
     aspectRatio: number;
     autoPlay: boolean;
+    backgroundColor: string;
+    blockOutOfViewportPausing: boolean;
     clickThroughURL: string;
     config: UapConfig;
     container: HTMLElement;
     creativeId: string;
+    fullscreenable: boolean;
+    fullscreenAllowed: boolean;
     image1: UapImage;
     image2?: UapImage;
     isDarkTheme: boolean;
     isMobile: boolean;
+    isSticky: boolean;
     lineItemId: string;
+    loadMedrecFromBTF: boolean;
+    moatTracking: boolean;
+    player: HTMLElement;
+    resolvedStateAspectRatio: number;
+    resolvedStateAutoPlay: boolean;
+    resolvedStateForced?: boolean;
+    restartOnUnmute: boolean;
     slotName: string;
+    splitLayoutVideoPosition: string;
     src: string;
+    stickyAdditionalTime: number;
+    stickyUntilVideoViewed: boolean;
+    theme: string;
     thumbnail: HTMLElement;
+    uap: string;
+    videoAspectRatio: number;
+    videoPlaceholderElement: HTMLElement;
+    videoTriggers: any[];
 
 ### Big Fancy Ad Below
 
@@ -274,7 +304,9 @@ Name: **bfab**
 {
   autoPlayAllowed: true,
   defaultStateAllowed: true,
+  fullscreenAllowed: true,
   stickinessAllowed: false,
+  stickyUntilSlotViewed: true,
   bfaaSlotName: 'top_leaderboard',
   unstickInstantlyBelowPosition: 500,
   topThreshold: 55,
@@ -286,7 +318,9 @@ Name: **bfab**
 
 - autoPlayAllowed - decides whether video can be autoplayed
 - defaultStateAllowed - decides whether BFAA impact state is allowed
+- fullscreenAllowed - decides whether video can be displayed on full screen
 - stickinessAllowed - decides whether the slot can be sticky
+- stickyUntilSlotViewed - decides whether the slot should be sticky untill viewability is counted
 - bfaaSlotName - name of BFAA slot - if BFAA is sticky, BFAB can't stick
 - unstickInstantlyBelowPosition - below given offset BFAB is always unsticked
 - topThreshold - number of pixels from the top edge of BFAA slot when it's sticky to the top edge of its nearest positioned ancestor
@@ -326,8 +360,47 @@ See: BFAA Template parameters.
     src: string;
     autoPlay: boolean;
     vastTargeting: Targeting;
+    blockOutOfViewportPausing: boolean;
     startInViewportOnly: boolean;
     onReady: (player: PorvataPlayer) => void;
+
+### Floating rail
+
+Name: **floatingRail**
+
+#### Default config:
+
+```json
+{
+	"enabled": true,
+	"railSelector": "#rail",
+	"wrapperSelector": "#rail-wrapper",
+	"startOffset": 0
+}
+```
+
+##### Description:
+
+- enabled - decides whether template is usable or not
+- railSelector - selector of element which is going to have `position: fixed`
+- wrapperSelector - rail wrapper DOM element selector
+- startOffset - decides when rail starts floating
+
+##### Template parameters:
+
+- offset - how long (in px) rail is going to be fixed
+
+#### Creative usage:
+
+```html
+<script>
+	top.loadCustomAd &&
+		top.loadCustomAd({
+			type: 'floatingRail',
+			offset: 500,
+		});
+</script>
+```
 
 ### Debug mode
 

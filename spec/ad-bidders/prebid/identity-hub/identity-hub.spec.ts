@@ -11,7 +11,7 @@ describe('Pubmatic IdentityHub', () => {
 		loadScriptSpy = global.sandbox.stub(utils.scriptLoader, 'loadScript');
 		loadScriptSpy.resolvesThis();
 		contextStub = global.sandbox.stub(context);
-		contextStub.get.withArgs('bidders.identityHub.enabled').returns(true);
+		contextStub.get.withArgs('pubmatic.identityHub.enabled').returns(true);
 		contextStub.get.withArgs('options.trackingOptIn').returns(true);
 		contextStub.get.withArgs('options.optOutSale').returns(false);
 		contextStub.get.withArgs('wiki.targeting.directedAtChildren').returns(false);
@@ -24,7 +24,7 @@ describe('Pubmatic IdentityHub', () => {
 	});
 
 	it('IdentityHub is disabled by feature flag', async () => {
-		contextStub.get.withArgs('bidders.identityHub.enabled').returns(false);
+		contextStub.get.withArgs('pubmatic.identityHub.enabled').returns(false);
 
 		await identityHub.call();
 

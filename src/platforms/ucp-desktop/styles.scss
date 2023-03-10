@@ -66,6 +66,7 @@ $sticky-navigation-height: 46px;
 
 @include ucp-desktop-uap-styles();
 @include out-of-page-styles();
+@include logo-replacement(55px, 0, 0, 93px, 27px);
 
 // #######################################
 

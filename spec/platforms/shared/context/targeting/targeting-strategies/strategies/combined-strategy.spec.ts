@@ -29,7 +29,7 @@ describe('CombinedStrategy', () => {
 		skin: 'ucp_desktop',
 		uap: 'none',
 		uap_c: 'none',
-		word_count: '546',
+		word_count: 546,
 		wpage: 'test',
 	};
 

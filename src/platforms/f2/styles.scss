@@ -242,4 +242,5 @@ body:not(.uap-sticked) {
 }
 
 @include f2-uap-styles();
+@include logo-replacement(56px, 0, 0, 93px, 27px);
 @include out-of-page-styles();

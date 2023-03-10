@@ -49,7 +49,7 @@ export class DataWarehouseTracker {
 			lc: context.get('wiki.wgUserLanguage') || 'unknown',
 			s: targetingService.get('skin') || 'unknown',
 			ua: window.navigator.userAgent,
-			u: trackingOptIn.isOptedIn() ? context.get('options.userId') || 0 : -1,
+			u: trackingOptIn.isOptedIn() ? context.get('userId') || 0 : -1,
 			a: parseInt(targetingService.get('artid') || -1),
 			x: context.get('wiki.wgDBname') || 'unknown',
 			n: context.get('wiki.wgNamespaceNumber') || -1,

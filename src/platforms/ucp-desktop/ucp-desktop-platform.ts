@@ -1,18 +1,14 @@
 import {
 	AdEngineRunnerSetup,
-	BiddersStateSetup,
 	bootstrapAndGetConsent,
 	InstantConfigSetup,
 	LabradorSetup,
 	LoadTimesSetup,
-	NoAdsDetector,
 	NoAdsExperimentSetup,
-	NoAdsMode,
 	PlatformContextSetup,
-	SequentialMessagingSetup,
+	shouldUseAdLayouts,
 	TrackingParametersSetup,
 	TrackingSetup,
-	UcpIncontentPlayerStateSetup,
 	UcpTargetingSetup,
 } from '@platforms/shared';
 import {
@@ -26,21 +22,14 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
-import { UcpDesktopAdsMode } from './modes/ucp-desktop-ads-mode.service';
-import { UcpDesktopA9ConfigSetup } from './setup/context/a9/ucp-desktop-a9-config.setup';
 import { UcpDesktopBaseContextSetup } from './setup/context/base/ucp-desktop-base-context.setup';
-import { UcpDesktopPrebidConfigSetup } from './setup/context/prebid/ucp-desktop-prebid-config.setup';
 import { UcpDesktopSlotsContextSetup } from './setup/context/slots/ucp-desktop-slots-context.setup';
-import { UcpDesktopDynamicSlotsSetup } from './setup/dynamic-slots/ucp-desktop-dynamic-slots.setup';
-import { UcpDesktopTemplatesSetup } from './templates/ucp-desktop-templates.setup';
+import { UcpDesktopAdLayoutSetup } from './ucp-desktop-ad-layout-setup';
+import { UcpDesktopLegacySetup } from './ucp-desktop-legacy-setup';
 
 @Injectable()
 export class UcpDesktopPlatform {
-	constructor(
-		private pipeline: ProcessPipeline,
-		private noAdsDetector: NoAdsDetector,
-		private userIdentity: UserIdentity,
-	) {}
+	constructor(private pipeline: ProcessPipeline, private userIdentity: UserIdentity) {}
 
 	execute(): void {
 		// Config
@@ -53,20 +42,13 @@ export class UcpDesktopPlatform {
 			UcpDesktopBaseContextSetup,
 			UcpDesktopSlotsContextSetup,
 			UcpTargetingSetup,
-			UcpDesktopPrebidConfigSetup,
-			UcpDesktopA9ConfigSetup,
-			UcpDesktopDynamicSlotsSetup,
-			UcpIncontentPlayerStateSetup,
-			UcpDesktopTemplatesSetup,
-			SequentialMessagingSetup,
-			BiddersStateSetup,
-			conditional(() => this.noAdsDetector.isAdsMode(), {
-				yes: UcpDesktopAdsMode,
-				no: NoAdsMode,
+			conditional(shouldUseAdLayouts, {
+				yes: UcpDesktopAdLayoutSetup,
+				no: UcpDesktopLegacySetup,
 			}),
 			NoAdsExperimentSetup,
 			LabradorSetup,
-			// ToDo: Remove after ADEN-12559
+			// ToDo: Remove after ADEN-12559.
 			() => this.userIdentity.call(),
 			TrackingSetup,
 			AdEngineRunnerSetup,
