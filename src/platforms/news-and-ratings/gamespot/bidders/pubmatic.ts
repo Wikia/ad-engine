@@ -113,7 +113,7 @@ export function getPubmaticContext(isDesktop: boolean): object {
 			ids: ['4856885'],
 		},
 		video: {
-			siteId: '4923774',
+			ids: ['4923774'],
 		},
 	};
 
@@ -243,7 +243,7 @@ export function getPubmaticContext(isDesktop: boolean): object {
 			ids: ['4856925'],
 		},
 		video: {
-			siteId: '4923775',
+			ids: ['4923775'],
 		},
 	};
 
