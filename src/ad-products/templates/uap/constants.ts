@@ -22,6 +22,7 @@ export interface UapAdditionalSizes {
 	bfaSize: {
 		desktop: [number, number];
 		mobile: [number, number];
+		unified: [number, number];
 	};
 	companionSizes: {
 		[key: string]: {
@@ -35,6 +36,7 @@ export const UAP_ADDITIONAL_SIZES: UapAdditionalSizes = {
 	bfaSize: {
 		desktop: [3, 3],
 		mobile: [2, 2],
+		unified: [2, 3],
 	},
 	companionSizes: {
 		'4x4': {
