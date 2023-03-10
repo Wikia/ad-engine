@@ -10,15 +10,13 @@ export class IdentitySetup extends BaseServiceSetup {
 	}, 2500);
 
 	call(): Promise<void> {
-		const identityPromise = new Promise<void>((res) => {
-			this.identityReady = res;
-		});
-
 		communicationService.on(eventsRepository.IDENTITY_ENGINE_READY, () => {
 			this.identityReady();
 			clearTimeout(this.fallback);
 			utils.logger(this.logGroup, 'initialized');
 		});
-		return identityPromise;
+		return new Promise<void>((res) => {
+			this.identityReady = res;
+		});
 	}
 }
