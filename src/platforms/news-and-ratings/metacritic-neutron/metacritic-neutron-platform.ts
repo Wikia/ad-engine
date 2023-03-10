@@ -98,6 +98,7 @@ export class MetacriticNeutronPlatform {
 						NewsAndRatingsTargetingSetup,
 						MetacriticNeutronSlotsContextSetup,
 						MetacriticNeutronPageChangeAdsObserver,
+						MetacriticNeutronSeeMoreButtonClickListenerSetup,
 					)
 					.execute();
 			}
