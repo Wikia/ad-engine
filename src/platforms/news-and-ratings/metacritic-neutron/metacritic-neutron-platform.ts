@@ -29,11 +29,13 @@ import { MetacriticNeutronSlotsContextSetup } from './setup/context/slots/metacr
 import { MetacriticNeutronTargetingSetup } from './setup/context/targeting/metacritic-neutron-targeting.setup';
 import { MetacriticNeutronDynamicSlotsSetup } from './setup/dynamic-slots/metacritic-neutron-dynamic-slots.setup';
 import { MetacriticNeutronPageChangeAdsObserver } from './setup/page-change-observers/metacritic-neutron-page-change-ads-observer.service';
+import { MetacriticNeutronSeamlessContentObserverSetup } from './setup/page-change-observers/metacritic-neutron-seamless-content-observer.setup';
 import { MetacriticNeutronTemplatesSetup } from './templates/metacritic-neutron-templates.setup';
 
 @Injectable()
 export class MetacriticNeutronPlatform {
-	private currentPath = '';
+	private currentUrl = '';
+	private currentPageViewGuid;
 
 	constructor(private pipeline: ProcessPipeline) {}
 
@@ -57,6 +59,7 @@ export class MetacriticNeutronPlatform {
 			MetacriticNeutronTemplatesSetup,
 			NewsAndRatingsAdsMode,
 			TrackingSetup,
+			MetacriticNeutronSeamlessContentObserverSetup,
 		);
 
 		this.pipeline.execute();
@@ -64,33 +67,24 @@ export class MetacriticNeutronPlatform {
 
 	setupPageChangeWatcher(container: Container) {
 		const config = { subtree: false, childList: true };
-
-		utils.logger(
-			'pageChangeWatcher',
-			'SPA',
-			'setupPageChangeWatcher',
-			location.href,
-			window.utag_data?.pageViewGuid,
-		);
-
-		if (!this.currentPath) {
-			this.currentPath = location.pathname;
-		}
-
 		const observer = new MutationObserver(() => {
-			utils.logger(
-				'pageChangeWatcher',
-				'SPA',
-				'MutationObserver init',
-				this.currentPath,
-				location.pathname,
-				window.utag_data?.pageViewGuid,
-			);
+			if (!this.currentPageViewGuid) {
+				this.currentPageViewGuid = window.utag_data?.pageViewGuid;
+			}
 
-			if (this.currentPath !== location.pathname) {
-				utils.logger('pageChangeWatcher', 'SPA', 'url changed', location.pathname);
+			if (!this.currentUrl) {
+				this.currentUrl = location.href;
+				return;
+			}
 
-				this.currentPath = location.pathname;
+			if (
+				this.currentUrl !== location.href &&
+				this.currentPageViewGuid !== window.utag_data?.pageViewGuid
+			) {
+				utils.logger('pageChangeWatcher', 'SPA', 'url changed', location.href);
+
+				this.currentUrl = location.href;
+				this.currentPageViewGuid = window.utag_data?.pageViewGuid;
 
 				communicationService.emit(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
 				targetingService.clear();
