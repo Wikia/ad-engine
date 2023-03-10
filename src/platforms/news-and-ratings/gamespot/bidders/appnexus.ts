@@ -112,6 +112,9 @@ export function getAppnexusContext(isDesktop: boolean): object {
 			sizes: [[728, 90]],
 			placementId: ['28574446'],
 		},
+		video: {
+			siteId: '29038722',
+		},
 	};
 
 	const mobileSlots = {
@@ -238,6 +241,9 @@ export function getAppnexusContext(isDesktop: boolean): object {
 		'incontent-narrow-all-top': {
 			sizes: [[728, 90]],
 			placementId: ['28574486'],
+		},
+		video: {
+			siteId: '29038735',
 		},
 	};
 
