@@ -10,6 +10,7 @@ import {
 	eventsRepository,
 	IasPublisherOptimization,
 	IdentityHub,
+	IdentitySetup,
 	jwPlayerInhibitor,
 	LiveConnect,
 	LiveRampPixel,
@@ -35,6 +36,7 @@ export class UcpMobileLighterAds implements DiProcess {
 		private nielsen: Nielsen,
 		private playerSetup: PlayerSetup,
 		private stroer: Stroer,
+		private identitySetup: IdentitySetup,
 	) {}
 
 	execute(): void {
@@ -50,6 +52,7 @@ export class UcpMobileLighterAds implements DiProcess {
 				this.stroer,
 				this.nielsen,
 				this.identityHub,
+				this.identitySetup,
 				this.playerSetup.setOptions({
 					dependencies: [],
 					timeout: context.get('options.maxDelayTimeout'),

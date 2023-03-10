@@ -9,6 +9,7 @@ import {
 	DurationMedia,
 	eventsRepository,
 	IasPublisherOptimization,
+	IdentitySetup,
 	LiveConnect,
 	LiveRampPixel,
 	PartnerPipeline,
@@ -29,6 +30,7 @@ export class SportsAdsMode implements DiProcess {
 		private liveConnect: LiveConnect,
 		private liveRampPixel: LiveRampPixel,
 		private wadRunner: WadRunner,
+		private identitySetup: IdentitySetup,
 	) {}
 
 	execute(): void {
@@ -43,6 +45,7 @@ export class SportsAdsMode implements DiProcess {
 				this.iasPublisherOptimization,
 				this.confiant,
 				this.durationMedia,
+				this.identitySetup,
 				this.gptSetup.setOptions({
 					dependencies: [
 						this.bidders.initialized,

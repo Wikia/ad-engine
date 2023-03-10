@@ -7,6 +7,7 @@ import {
 	DiProcess,
 	eventsRepository,
 	IasPublisherOptimization,
+	IdentitySetup,
 	jwPlayerInhibitor,
 	LiveConnect,
 	LiveRampPixel,
@@ -28,6 +29,7 @@ export class F2AdsMode implements DiProcess {
 		private nielsen: Nielsen,
 		private playerSetup: PlayerSetup,
 		private wadRunner: WadRunner,
+		private identitySetup: IdentitySetup,
 	) {}
 
 	execute(): void {
@@ -40,6 +42,7 @@ export class F2AdsMode implements DiProcess {
 				this.iasPublisherOptimization,
 				this.nielsen,
 				this.wadRunner,
+				this.identitySetup,
 				this.playerSetup.setOptions({
 					dependencies: [this.wadRunner.initialized],
 					timeout: context.get('options.jwpMaxDelayTimeout'),

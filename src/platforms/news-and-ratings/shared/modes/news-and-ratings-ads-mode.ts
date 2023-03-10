@@ -9,6 +9,7 @@ import {
 	DurationMedia,
 	eventsRepository,
 	IasPublisherOptimization,
+	IdentitySetup,
 	LiveConnect,
 	LiveRampPixel,
 	PartnerPipeline,
@@ -31,6 +32,7 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 		private liveRampPixel: LiveRampPixel,
 		private playerSetup: PlayerSetup,
 		private wadRunner: WadRunner,
+		private identitySetup: IdentitySetup,
 	) {}
 
 	execute(): void {
@@ -47,6 +49,7 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 				this.captify,
 				this.durationMedia,
 				this.playerSetup,
+				this.identitySetup,
 				this.gptSetup.setOptions({
 					dependencies: [this.wadRunner.initialized, this.bidders.initialized],
 				}),
