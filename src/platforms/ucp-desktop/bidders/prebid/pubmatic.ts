@@ -7,6 +7,10 @@ export function getPubmaticContext(): object {
 				sizes: [[0, 0]],
 				ids: ['1636185@0x0'],
 			},
+			incontent_player: {
+				sizes: [[0, 0]],
+				ids: ['1636186@0x0'],
+			},
 			top_leaderboard: {
 				sizes: [
 					[728, 90],
