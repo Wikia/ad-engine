@@ -2,6 +2,7 @@ import { StickedBoxadHelper } from '@platforms/shared';
 import {
 	context,
 	DiProcess,
+	FloatingRail,
 	logTemplates,
 	TemplateRegistry,
 	templateService,
@@ -11,6 +12,7 @@ import { merge } from 'rxjs';
 import { registerBfaaTemplate } from './bfaa-template';
 import { registerBfabTemplate } from './bfab-template';
 import { registerFloorAdhesionTemplate } from './floor-adhesion-template';
+import { registerLogoReplacementTemplate } from './logo-replacement-template';
 import { registerRoadblockTemplate } from './roadblock-template';
 import { registerStickyTlbTemplate } from './sticky-tlb-template';
 
@@ -26,8 +28,13 @@ export class F2TemplatesSetup implements DiProcess {
 		const stickyTlb$ = registerStickyTlbTemplate(this.registry);
 		const roadblock$ = registerRoadblockTemplate(this.registry);
 		const floorAdhesion$ = registerFloorAdhesionTemplate(this.registry);
+		const logoReplacement$ = registerLogoReplacementTemplate(this.registry);
 
-		logTemplates(merge(bfaa$, bfab$, stickyTlb$, roadblock$, floorAdhesion$));
+		logTemplates(merge(bfaa$, bfab$, stickyTlb$, roadblock$, floorAdhesion$, logoReplacement$));
+
+		templateService.register(FloatingRail, {
+			enabled: false,
+		});
 
 		if (!context.get('state.isMobile')) {
 			this.stickedBoxadHelper.initialize({

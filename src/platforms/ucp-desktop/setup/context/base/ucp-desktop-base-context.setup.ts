@@ -13,7 +13,7 @@ export class UcpDesktopBaseContextSetup extends BaseContextSetup {
 		);
 		// sourced from front/scripts/shared/tracking/Tracker.js getUserIdForInternalTracking()
 		context.set(
-			'options.userId',
+			'userId',
 			(window.mw as any).config.get('wgTrackID') || (window.mw as any).config.get('wgUserId'),
 		);
 		context.set(

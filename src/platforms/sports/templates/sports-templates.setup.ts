@@ -3,6 +3,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
 import { registerBfaaTemplate } from './bfaa-template';
 import { registerBfabTemplate } from './bfab-template';
+import { registerLogoReplacementTemplate } from './logo-replacement-template';
 
 @Injectable()
 export class SportsTemplatesSetup implements DiProcess {
@@ -13,7 +14,8 @@ export class SportsTemplatesSetup implements DiProcess {
 	execute(): void {
 		const bfaa$ = registerBfaaTemplate(this.registry);
 		const bfab$ = registerBfabTemplate(this.registry);
+		const logoReplacement$ = registerLogoReplacementTemplate(this.registry);
 
-		logTemplates(merge(bfaa$, bfab$));
+		logTemplates(merge(bfaa$, bfab$, logoReplacement$));
 	}
 }

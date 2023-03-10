@@ -15,6 +15,7 @@ import { PorvataSettings } from './porvata-settings';
 export interface PorvataTemplateParams {
 	adProduct: string;
 	autoPlay: boolean;
+	blockOutOfViewportPausing: boolean;
 	container: HTMLDivElement;
 	enableInContentFloating?: boolean;
 	hideWhenPlaying: HTMLElement;
@@ -32,6 +33,7 @@ export interface PorvataTemplateParams {
 export interface PorvataGamParams {
 	adProduct: string;
 	autoPlay: boolean;
+	blockOutOfViewportPausing: boolean;
 	container: HTMLElement;
 	creativeId: string;
 	enableInContentFloating: boolean;
@@ -41,6 +43,7 @@ export interface PorvataGamParams {
 	slotName: string;
 	src: string;
 	startInViewportOnly: boolean;
+	theme: string;
 	trackingDisabled: boolean;
 	type: string;
 	vastTargeting: SlotTargeting;
@@ -69,9 +72,11 @@ export class PorvataFiller implements SlotFiller {
 		container: null,
 		slotName: '',
 		type: 'porvata3',
+		theme: 'hivi',
 		adProduct: 'incontent_veles',
 		autoPlay: true,
 		startInViewportOnly: true,
+		blockOutOfViewportPausing: true,
 		enableInContentFloating: false,
 		width: 1,
 		height: 1,
@@ -158,6 +163,7 @@ export class Porvata {
 		});
 
 		let isFirstPlay = true;
+		let autoPaused = false;
 		let autoPlayed = false;
 		let viewportListenerId: string = null;
 
@@ -183,13 +189,22 @@ export class Porvata {
 					player.play();
 					autoPlayed = true;
 					// Don't resume when video was paused manually
+				} else if (isVisible && autoPaused) {
+					player.resume();
+					// Pause video once it's out of viewport and set autoPaused to distinguish manual
+					// and auto pause
+				} else if (!isVisible && player.isPlaying() && !params.blockOutOfViewportPausing) {
+					player.pause();
+					autoPaused = true;
 				}
 			}
 
 			function setupAutoPlayMethod(): void {
-				if (!params.startInViewportOnly && params.autoPlay && !autoPlayed) {
-					autoPlayed = true;
-					player.play();
+				if (params.blockOutOfViewportPausing && !params.startInViewportOnly) {
+					if (params.autoPlay && !autoPlayed) {
+						autoPlayed = true;
+						player.play();
+					}
 				} else {
 					viewportListenerId = Porvata.addOnViewportChangeListener(params, inViewportCallback);
 				}
@@ -227,6 +242,7 @@ export class Porvata {
 			});
 			player.addEventListener('resume', () => {
 				player.dispatchEvent('wikiaAdPlay');
+				autoPaused = false;
 			});
 			player.addEventListener('pause', () => {
 				player.dispatchEvent('wikiaAdPause');

@@ -56,6 +56,10 @@ export const basicContext = {
 	},
 	templates: {
 		ignoreNavbarHeight: true,
+		safeFanTakeoverElement: {
+			boxadSlotNames: ['top_boxad', 'incontent_boxad_1'],
+			boxadSize: [300, 601],
+		},
 	},
 	services: {
 		durationMedia: {
@@ -90,6 +94,13 @@ export const basicContext = {
 			globalMethodName: 'loadCustomAd',
 		},
 		video: {
+			moatTracking: {
+				articleVideosPartnerCode: 'wikiajwint101173217941',
+				enabled: false,
+				jwplayerPluginUrl: 'https://z.moatads.com/jwplayerplugin0938452/moatplugin.js',
+				partnerCode: 'wikiaimajsint377461931603',
+				sampling: 0,
+			},
 			iasTracking: {
 				enabled: false,
 				config: {

@@ -82,7 +82,11 @@ export class VideoBootstrapHandler implements TemplateStateHandler {
 
 	private adjustUI(player: PorvataPlayer, params: PorvataTemplateParams): void {
 		ProgressBar.add(player, player.dom.getInterfaceContainer());
-		createBottomPanel().add(player, player.dom.getInterfaceContainer(), params);
+		createBottomPanel({ fullscreenAllowed: this.params.fullscreenAllowed, theme: 'hivi' }).add(
+			player,
+			player.dom.getInterfaceContainer(),
+			params,
+		);
 		ToggleUI.add(player, player.dom.getInterfaceContainer(), params);
 		ToggleVideo.add(player, params.container.parentElement);
 		ToggleThumbnail.add(player, undefined, params);

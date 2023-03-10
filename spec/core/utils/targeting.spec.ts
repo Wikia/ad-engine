@@ -138,13 +138,13 @@ describe('targeting', () => {
 	});
 
 	it('getTargetingBundles returns short_page bundle', () => {
-		targetingServiceStub.get.withArgs('word_count').returns('20');
+		targetingServiceStub.get.withArgs('word_count').returns(20);
 
 		expect(targeting.getTargetingBundles({})).to.deep.equal(['short_page']);
 	});
 
 	it('getTargetingBundles returns an empty array if the page is long', () => {
-		targetingServiceStub.get.withArgs('word_count').returns('2000');
+		targetingServiceStub.get.withArgs('word_count').returns(2000);
 
 		expect(targeting.getTargetingBundles({})).to.deep.equal([]);
 	});

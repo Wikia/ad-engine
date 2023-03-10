@@ -36,7 +36,7 @@ export class PlayerRegistry {
 			vastTargeting: {},
 			autoPlay: this.isAutoPlayEnabled(),
 			container: this.createPlayerContainer(),
-			hideWhenPlaying: this.params.thumbnail,
+			hideWhenPlaying: this.params.videoPlaceholderElement,
 		};
 	}
 
@@ -51,7 +51,7 @@ export class PlayerRegistry {
 	private isAutoPlayEnabled(): boolean {
 		const isResolvedState = !resolvedState.isResolvedState(this.params);
 		const defaultStateAutoPlay = this.params.autoPlay && !isResolvedState;
-		const resolvedStateAutoPlay = this.params.autoPlay && isResolvedState;
+		const resolvedStateAutoPlay = this.params.resolvedStateAutoPlay && isResolvedState;
 
 		return Boolean(defaultStateAutoPlay || resolvedStateAutoPlay);
 	}
