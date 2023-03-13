@@ -1,6 +1,6 @@
-import { SponsoredLogoHandler } from '@platforms/shared';
 import { TemplateAction, TemplateRegistry } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
+import { SponsoredLogoHandler } from './handlers/sponsored-logo/sponsored-logo-handler';
 
 export function registerSponsoredLogoTemplate(
 	registry: TemplateRegistry,
