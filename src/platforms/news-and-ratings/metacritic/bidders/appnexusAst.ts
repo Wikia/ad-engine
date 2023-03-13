@@ -1,7 +1,7 @@
 export function getAppnexusAstContext(isDesktop: boolean): object {
 	const desktopSlots = {
 		slots: {
-			incontent_player: {
+			video: {
 				placementId: '29038919',
 			},
 		},
@@ -9,7 +9,7 @@ export function getAppnexusAstContext(isDesktop: boolean): object {
 
 	const mobileSlots = {
 		slots: {
-			incontent_player: {
+			video: {
 				placementId: '29038936',
 			},
 		},
