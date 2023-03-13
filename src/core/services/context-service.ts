@@ -36,13 +36,6 @@ const contextObject: ContextObject = {
 			globalMethodName: 'loadCustomAd',
 		},
 		maxDelayTimeout: 2000,
-		video: {
-			moatTracking: {
-				enabled: true,
-				partnerCode: 'wikiaimajsint377461931603',
-				sampling: 1,
-			},
-		},
 		optOutSale: false,
 		trackingOptIn: false,
 		isSubjectToCcpa: false,

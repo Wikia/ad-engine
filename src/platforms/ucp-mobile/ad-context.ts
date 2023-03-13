@@ -55,12 +55,7 @@ export const basicContext = {
 			'/{targeting.skin}-{targeting.original_host}-{targeting.s2}' +
 			'/{custom.dbNameForAdUnit}-{targeting.s0}',
 	},
-	templates: {
-		safeFanTakeoverElement: {
-			boxadSlotNames: ['top_boxad', 'mobile_prefooter'],
-			boxadSize: [300, 251],
-		},
-	},
+	templates: {},
 	services: {
 		anyclip: {
 			pubname: 'fandomcom',
@@ -104,13 +99,6 @@ export const basicContext = {
 			globalMethodName: 'loadCustomAd',
 		},
 		video: {
-			moatTracking: {
-				articleVideosPartnerCode: 'wikiajwint101173217941',
-				enabled: false,
-				jwplayerPluginUrl: 'https://z.moatads.com/jwplayerplugin0938452/moatplugin.js',
-				partnerCode: 'wikiaimajsint377461931603',
-				sampling: 0,
-			},
 			iasTracking: {
 				enabled: false,
 				config: {

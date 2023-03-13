@@ -41,7 +41,7 @@ class BtfBlockerService {
 	init(): void {
 		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot: adSlot }) => {
 			logger(logGroup, adSlot.getSlotName(), 'Slot rendered');
-			if (!this.firstCallEnded && adSlot.isFirstCall() && !this.isSafeFanTakeover(adSlot)) {
+			if (!this.firstCallEnded && adSlot.isFirstCall()) {
 				this.finishFirstCall();
 			}
 		});
@@ -53,12 +53,6 @@ class BtfBlockerService {
 		if (enabledFirstCallSlots.length === 0) {
 			this.finishFirstCall();
 		}
-	}
-
-	private isSafeFanTakeover(adSlot: AdSlot): boolean {
-		const lineItemIds: string[] = context.get('templates.safeFanTakeoverElement.lineItemIds') || [];
-
-		return lineItemIds.includes(adSlot.lineItemId?.toString());
 	}
 
 	finishFirstCall(): void {

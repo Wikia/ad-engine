@@ -206,16 +206,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					createLabel: true,
 				},
 			},
-			invisible_high_impact_2: {
-				adProduct: 'invisible_high_impact_2',
-				defaultClasses: ['hide'],
-				group: 'PX',
-				options: {},
-				outOfPage: true,
-				targeting: {
-					loc: 'hivi',
-				},
-			},
 			featured: {
 				adProduct: 'featured',
 				group: 'VIDEO',

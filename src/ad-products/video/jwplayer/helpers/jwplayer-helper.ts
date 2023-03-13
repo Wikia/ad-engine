@@ -20,22 +20,6 @@ export class JWPlayerHelper {
 
 	private calledOnce = false;
 
-	isMoatTrackingEnabled(): boolean {
-		return context.get('options.video.moatTracking.enabledForArticleVideos') && !!window.moatjw;
-	}
-
-	trackMoat(payload: JWPlayerEventParams['adImpression']): void {
-		const partnerCode =
-			context.get('options.video.moatTracking.articleVideosPartnerCode') ||
-			context.get('options.video.moatTracking.partnerCode');
-
-		window.moatjw.add({
-			partnerCode,
-			player: this.jwplayer,
-			adImpressionEvent: payload,
-		});
-	}
-
 	async awaitIasTracking<T>(payload: T): Promise<T> {
 		if (!this.isIasTrackingEnabled()) {
 			return payload;

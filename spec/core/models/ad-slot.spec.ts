@@ -53,9 +53,9 @@ describe('ad-slot', () => {
 
 	it('with other ad unit', () => {
 		context.set('custom.pageType', 'other');
-		const adSlot = createAdSlot('invisible_high_impact_2');
+		const adSlot = createAdSlot('floor_adhesion');
 
-		expect(adSlot.getAdUnit()).to.equal('/5441/something/_other/invisible_high_impact_2');
+		expect(adSlot.getAdUnit()).to.equal('/5441/something/_other/floor_adhesion');
 	});
 
 	it('config property getter and setter', () => {

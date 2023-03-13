@@ -75,31 +75,23 @@ export class PlayerOverlay {
 			forceRepaint(container);
 		});
 
-		if (
-			(video.params && video.params.theme && video.params.theme === 'hivi') ||
-			(params.theme && params.theme === 'hivi')
-		) {
-			const replayIcon = addReplayIcon(overlay);
+		const replayIcon = addReplayIcon(overlay);
 
-			if (!params.autoPlay) {
-				const playIcon = addPlayIcon(overlay);
+		if (!params.autoPlay) {
+			const playIcon = addPlayIcon(overlay);
 
-				replayIcon.style.display = 'none';
+			replayIcon.style.display = 'none';
 
-				video.addEventListener('start', () => {
-					replayIcon.style.display = '';
-					playIcon.style.display = 'none';
-				});
-			}
-
-			const newContainer =
-				video.params && video.params.thumbnail ? video.params.thumbnail : params.thumbnail;
-			newContainer.appendChild(overlay);
-			forceRepaint(newContainer);
-		} else {
-			container.parentElement.insertBefore(overlay, container);
+			video.addEventListener('start', () => {
+				replayIcon.style.display = '';
+				playIcon.style.display = 'none';
+			});
 		}
 
+		const newContainer =
+			video.params && video.params.thumbnail ? video.params.thumbnail : params.thumbnail;
+		newContainer.appendChild(overlay);
+		forceRepaint(newContainer);
 		forceRepaint(container);
 	}
 }
