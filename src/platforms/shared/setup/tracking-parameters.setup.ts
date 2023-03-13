@@ -39,7 +39,7 @@ export class TrackingParametersSetup implements DiProcess {
 		};
 	}
 
-	private async getNewTrackingParameters(): Promise<ITrackingParameters> {
+	private async getNewTrackingParameters(): Promise<Partial<ITrackingParameters>> {
 		await new utils.WaitFor(() => !!window.fandomContext?.tracking, 10, 100).until();
 
 		return {
@@ -48,7 +48,9 @@ export class TrackingParametersSetup implements DiProcess {
 		};
 	}
 
-	private async getTrackingParameters(legacyEnabled: boolean): Promise<ITrackingParameters> {
+	private async getTrackingParameters(
+		legacyEnabled: boolean,
+	): Promise<Partial<ITrackingParameters>> {
 		return legacyEnabled
 			? this.getLegacyTrackingParameters()
 			: await this.getNewTrackingParameters();
