@@ -115,8 +115,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 			incontent_player: {
 				adProduct: 'incontent_player',
-				autoplay: true,
-				audio: false,
+				disabled: true,
 				isVideo: true,
 				trackEachStatus: true,
 				insertBeforeSelector: '#mw-content-text > div > h2',

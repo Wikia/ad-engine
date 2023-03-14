@@ -81,7 +81,6 @@ export class NoAdsExperimentSetup implements DiProcess {
 				blockUAP(isMobile);
 				context.set(`slots.${unitName}.disabled`, true);
 				return;
-			case 'incontent_player':
 			default:
 				context.set(`slots.${unitName}.disabled`, true);
 				return;

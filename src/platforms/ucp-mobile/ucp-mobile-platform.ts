@@ -12,7 +12,6 @@ import {
 	SequentialMessagingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
-	UcpIncontentPlayerStateSetup,
 	UcpTargetingSetup,
 } from '@platforms/shared';
 import {
@@ -57,7 +56,6 @@ export class UcpMobilePlatform {
 			UcpMobilePrebidConfigSetup,
 			UcpMobileA9ConfigSetup,
 			UcpMobileDynamicSlotsSetup,
-			UcpIncontentPlayerStateSetup,
 			UcpMobileTemplatesSetup,
 			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM will break
 			BiddersStateSetup,

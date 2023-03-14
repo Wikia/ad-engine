@@ -115,22 +115,25 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		);
 	}
 
-	private configureIncontentPlayer(): void {
-		const icpSlotName = 'incontent_player';
+	private isIncontentPlayerApplicable(): boolean {
+		return (
+			context.get('custom.hasIncontentPlayer') && context.get('wiki.targeting.pageType') !== 'home'
+		);
+	}
 
-		if (
-			!context.get('custom.hasIncontentPlayer') ||
-			context.get('wiki.targeting.pageType') === 'home'
-		) {
-			context.set(`slots.${icpSlotName}.disabled`, true);
-		} else {
-			context.push('events.pushAfterRendered.top_boxad', icpSlotName);
+	private configureIncontentPlayer(): void {
+		if (!this.isIncontentPlayerApplicable()) {
+			return;
 		}
+
+		const slotName = 'incontent_player';
+
+		context.push('events.pushAfterRendered.top_boxad', slotName);
 
 		communicationService.on(
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
 			({ slot }) => {
-				if (slot.getSlotName() === icpSlotName) {
+				if (slot.getSlotName() === slotName) {
 					slot.getPlaceholder()?.classList.remove('is-loading');
 
 					const noTries = 2500;
@@ -140,7 +143,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 						.until()
 						.then(() => {
 							slotImpactWatcher.request({
-								id: 'incontent_player',
+								id: slotName,
 								priority: 6,
 								breakCallback: () => slot.getPlaceholder()?.classList.add('hide'),
 							});

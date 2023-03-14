@@ -3,7 +3,9 @@ import {
 	context,
 	DiProcess,
 	eventsRepository,
+	getAdUnitString,
 	InstantConfigService,
+	runtimeVariableSetter,
 	targetingService,
 	UapLoadStatus,
 	utils,
@@ -49,6 +51,8 @@ export class UcpTargetingSetup implements DiProcess {
 			'bundles',
 			utils.targeting.getTargetingBundles(this.instantConfig.get('icTargetingBundles')),
 		);
+
+		this.setCustomPlayerRuntimeAdUnit();
 	}
 
 	private getPageLevelTargeting(): TargetingTags {
@@ -57,5 +61,16 @@ export class UcpTargetingSetup implements DiProcess {
 		utils.logger('Targeting', `Selected targeting priority strategy: ${selectedStrategy}`);
 
 		return createSelectedStrategy(selectedStrategy, createFandomContext()).get();
+	}
+
+	private setCustomPlayerRuntimeAdUnit(slotName = 'incontent_player'): void {
+		const params = {
+			group: 'VIDEO',
+			adProduct: 'incontent_video',
+			slotNameSuffix: '',
+		};
+		const adUnit = getAdUnitString(slotName, params);
+
+		runtimeVariableSetter.addVariable('video', { adUnit });
 	}
 }

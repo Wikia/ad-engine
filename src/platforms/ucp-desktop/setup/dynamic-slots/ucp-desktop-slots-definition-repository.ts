@@ -144,10 +144,11 @@ export class UcpDesktopSlotsDefinitionRepository {
 	}
 
 	getIncontentPlayerConfig(): SlotSetupDefinition {
+		const slotName = 'incontent_player';
+
 		if (!this.isIncontentPlayerApplicable()) {
 			return;
 		}
-		const slotName = 'incontent_player';
 
 		return {
 			slotCreatorConfig: {

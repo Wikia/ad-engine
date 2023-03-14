@@ -33,7 +33,9 @@ export class Anyclip extends BaseServiceSetup {
 			return;
 		}
 
-		this.loadOnUapReadyStatus();
+		if (context.get('custom.hasIncontentPlayer')) {
+			this.loadOnUapReadyStatus();
+		}
 	}
 
 	get params(): Record<string, string> {
@@ -55,19 +57,18 @@ export class Anyclip extends BaseServiceSetup {
 		utils.logger(logGroup, 'initialized', this.pubname, this.widgetname, this.libraryUrl);
 	}
 
-	private loadPlayerAsset() {
+	private loadPlayerAsset(playerContainer: HTMLElement = null) {
 		if (typeof this.isApplicable === 'function' && !this.isApplicable()) {
 			utils.logger(logGroup, 'not applicable - aborting');
 			return;
 		}
 
 		utils.logger(logGroup, 'loading Anyclip asset', this.libraryUrl);
-		const incontentPlayerContainer = document.getElementById('incontent_player');
 
 		return utils.scriptLoader
-			.loadScript(this.libraryUrl, 'text/javascript', true, incontentPlayerContainer, this.params)
+			.loadScript(this.libraryUrl, 'text/javascript', true, playerContainer, this.params)
 			.then(() => {
-				incontentPlayerContainer?.classList.remove('hide');
+				playerContainer?.classList.remove('hide');
 				utils.logger(logGroup, 'ready');
 
 				this.waitForSubscribeReady().then((isSubscribeReady) => {
@@ -86,33 +87,34 @@ export class Anyclip extends BaseServiceSetup {
 	}
 
 	private loadOnUapReadyStatus() {
-		const slotName = 'incontent_player';
-
 		communicationService.on(
 			eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
 			({ isLoaded, adProduct }: UapLoadStatus) => {
 				if (!isLoaded && adProduct !== 'ruap') {
 					if (!context.get('services.anyclip.latePageInject')) {
-						this.initIncontentPlayer(slotService.get(slotName));
+						this.initIncontentPlayer();
 						return;
 					}
 
 					communicationService.on(eventsRepository.ANYCLIP_LATE_INJECT, () => {
-						this.initIncontentPlayer(slotService.get(slotName));
+						this.initIncontentPlayer();
 					});
 				}
 			},
 		);
 	}
 
-	private initIncontentPlayer(incontentPlayer) {
-		if (!incontentPlayer) {
+	private initIncontentPlayer() {
+		const slotName = 'incontent_player';
+		const playerAdSlot = slotService.get(slotName);
+
+		if (!playerAdSlot) {
 			utils.logger(logGroup, 'No incontent player - aborting');
 			return;
 		}
 
-		slotDataParamsUpdater.updateOnCreate(incontentPlayer);
-		this.loadPlayerAsset();
+		slotDataParamsUpdater.updateOnCreate(playerAdSlot);
+		this.loadPlayerAsset(playerAdSlot.getElement());
 	}
 
 	private waitForSubscribeReady(): Promise<boolean> {

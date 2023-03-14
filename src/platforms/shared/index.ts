@@ -21,7 +21,6 @@ export * from './setup/noads-experiment.setup';
 export * from './setup/platform-context.setup';
 export * from './setup/player.setup';
 export * from './setup/tracking-parameters.setup';
-export * from './setup/ucp-incontent-player-state-setup';
 export * from './slots/slots-context';
 export * from './templates/configs/uap-dom-elements';
 export * from './templates/handlers/advertisement-label-handler';

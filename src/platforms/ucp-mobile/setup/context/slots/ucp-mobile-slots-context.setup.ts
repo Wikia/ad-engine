@@ -99,14 +99,12 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			},
 			incontent_player: {
 				adProduct: 'incontent_player',
-				autoplay: true,
-				audio: false,
+				disabled: true,
 				isVideo: true,
 				trackEachStatus: true,
 				insertBeforeSelector: '.mw-parser-output > h2',
 				avoidConflictWith: '.ad-slot,#incontent_boxad_1',
 				parentContainerSelector: '.incontent-boxad',
-				defaultClasses: ['hide'],
 				group: 'HiVi',
 				defaultSizes: [[1, 1]],
 				targeting: {

@@ -12,7 +12,6 @@ import {
 	SequentialMessagingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
-	UcpIncontentPlayerStateSetup,
 	UcpTargetingSetup,
 } from '@platforms/shared';
 import {
@@ -56,7 +55,6 @@ export class UcpDesktopPlatform {
 			UcpDesktopPrebidConfigSetup,
 			UcpDesktopA9ConfigSetup,
 			UcpDesktopDynamicSlotsSetup,
-			UcpIncontentPlayerStateSetup,
 			UcpDesktopTemplatesSetup,
 			SequentialMessagingSetup,
 			BiddersStateSetup,
