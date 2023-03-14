@@ -1,4 +1,4 @@
-import { context, utils } from '@ad-engine/core';
+import { context, GlobalContextCategories, globalContextService, utils } from '@ad-engine/core';
 
 const logGroup = 'bt-loader';
 
@@ -19,7 +19,11 @@ class BTRec {
 		this.insertSideUnits();
 
 		utils.logger(logGroup, 'loading');
-
+		globalContextService.setValue(GlobalContextCategories.partners, {
+			blockthrough: {
+				directedAtChildren: !!context.get('wiki.targeting.directedAtChildren'),
+			},
+		});
 		await this.loadScript().then(() => {
 			utils.logger(logGroup, 'ready');
 		});
