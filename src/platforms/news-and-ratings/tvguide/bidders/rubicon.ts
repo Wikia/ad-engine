@@ -1,31 +1,15 @@
 export function getRubiconContext(isDesktop: boolean): object {
 	const desktopSlots = {
-		slots: {
-			featured: {
-				siteId: '462852',
-				sizeId: '201',
-				zoneId: '2742560',
-			},
-			incontent_player: {
-				siteId: '462852',
-				sizeId: '203',
-				zoneId: '2742560',
-			},
+		featured: {
+			siteId: '462852',
+			zoneId: '2742560',
 		},
 	};
 
 	const mobileSlots = {
-		slots: {
-			featured: {
-				siteId: '462854',
-				sizeId: '201',
-				zoneId: '2742562',
-			},
-			incontent_player: {
-				siteId: '462854',
-				sizeId: '203',
-				zoneId: '2742562',
-			},
+		featured: {
+			siteId: '462854',
+			zoneId: '2742562',
 		},
 	};
 

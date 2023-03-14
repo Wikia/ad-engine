@@ -1,24 +1,18 @@
 export function getAppnexusAstContext(isDesktop: boolean): object {
 	const desktopSlots = {
-		slots: {
-			video: {
-				placementId: '29038722',
-			},
+		video: {
+			placementId: '29038862',
 		},
 	};
 
 	const mobileSlots = {
-		slots: {
-			video: {
-				placementId: '29038735',
-			},
+		video: {
+			placementId: '29038899',
 		},
 	};
 
 	return {
 		enabled: false,
-		accountId: 7450,
-		debugPlacementId: '5768085',
 		slots: isDesktop ? desktopSlots : mobileSlots,
 	};
 }

@@ -7,7 +7,7 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { getAppnexusContext } from '../../../bidders/appnexus';
-import { getAppnexusAstContext } from '../../../bidders/appnexusAst';
+import { getAppnexusAstContext } from '../../../bidders/appnexus-ast';
 import { getCriteoContext } from '../../../bidders/criteo';
 import { getIndexExchangeContext } from '../../../bidders/index-exchange';
 import { getKargoContext } from '../../../bidders/kargo';

@@ -54,6 +54,7 @@ export class PrebidProvider extends BidderProvider {
 	prebidConfig: Dictionary;
 	bidsRefreshing: BidsRefreshing;
 	isATSAnalyticsEnabled = false;
+	enableSendAllBids = true;
 
 	constructor(public bidderConfig: PrebidConfig, public timeout = DEFAULT_MAX_DELAY) {
 		super('prebid', bidderConfig, timeout);
@@ -62,6 +63,7 @@ export class PrebidProvider extends BidderProvider {
 		this.adUnits = setupAdUnits();
 		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
 		this.isATSAnalyticsEnabled = context.get('bidders.liveRampATSAnalytics.enabled');
+		this.enableSendAllBids = !context.get('bidders.prebid.disableSendAllBids');
 
 		this.prebidConfig = {
 			bidderSequence: 'random',
@@ -70,7 +72,7 @@ export class PrebidProvider extends BidderProvider {
 				url: 'https://prebid.adnxs.com/pbc/v1/cache',
 			},
 			debug: ['1', 'true'].includes(utils.queryString.get('pbjs_debug')),
-			enableSendAllBids: true,
+			enableSendAllBids: this.enableSendAllBids,
 			rubicon: {
 				singleRequest: true,
 			},
