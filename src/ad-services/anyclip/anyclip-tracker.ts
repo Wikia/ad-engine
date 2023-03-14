@@ -1,6 +1,4 @@
-import { utils, VideoData, VideoTracker } from '@ad-engine/core';
-import { PlayerEventEmitter } from '../player-event-emitter';
-import { VideoEventDataProvider } from '../video-event-data-provider';
+import { utils, VideoData, VideoEventProvider, VideoTracker } from '@ad-engine/core';
 
 const logGroup = 'Anyclip';
 
@@ -41,7 +39,7 @@ export class AnyclipTracker implements VideoTracker {
 	}
 
 	private track(eventName: string, eventData) {
-		const dataForDataWarehouse = VideoEventDataProvider.getEventData(this.getVideoData(eventName));
+		const dataForDataWarehouse = VideoEventProvider.getEventData(this.getVideoData(eventName));
 
 		utils.logger(
 			logGroup,
@@ -51,8 +49,8 @@ export class AnyclipTracker implements VideoTracker {
 			dataForDataWarehouse,
 		);
 
-		PlayerEventEmitter.emit(dataForDataWarehouse);
-		PlayerEventEmitter.emitVideoEvent(dataForDataWarehouse);
+		VideoEventProvider.emit(dataForDataWarehouse);
+		VideoEventProvider.emitVideoEvent(dataForDataWarehouse);
 	}
 
 	private getVideoData(eventName: string): VideoData {

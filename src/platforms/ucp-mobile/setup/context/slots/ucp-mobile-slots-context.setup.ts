@@ -101,7 +101,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				adProduct: 'incontent_player',
 				autoplay: true,
 				audio: false,
-				disabled: true,
 				isVideo: true,
 				trackEachStatus: true,
 				insertBeforeSelector: '.mw-parser-output > h2',

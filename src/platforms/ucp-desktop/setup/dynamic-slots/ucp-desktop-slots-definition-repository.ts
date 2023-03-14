@@ -157,9 +157,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 				insertMethod: 'before',
 			},
 			activator: () => {
-				if (context.get('services.anyclip.enabled')) {
-					context.push('state.adStack', { id: slotName });
-				}
+				context.push('state.adStack', { id: slotName });
 			},
 		};
 	}

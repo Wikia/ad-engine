@@ -1,14 +1,10 @@
-import {
-	AdSlot,
-	context,
-	slotService,
-	targetingService,
-	utils,
-	VideoData,
-	VideoEventData,
-} from '@ad-engine/core';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { utils } from '../index';
+import { VideoData, VideoEventData } from '../listeners';
+import { AdSlot } from '../models';
+import { context, slotService, targetingService } from '../services';
 
-export class VideoEventDataProvider {
+export class VideoEventProvider {
 	/**
 	 * Prepares data object for video events tracking
 	 */
@@ -42,5 +38,20 @@ export class VideoEventDataProvider {
 			video_id: videoData.video_id || '',
 			video_number: videoData.video_number || '',
 		};
+	}
+
+	/**
+	 * Emit single event
+	 */
+	static emit(eventInfo: VideoEventData): void {
+		if (!eventInfo.ad_product || !eventInfo.player || !eventInfo.event_name) {
+			return;
+		}
+
+		communicationService.emit(eventsRepository.VIDEO_PLAYER_TRACKING, { eventInfo });
+	}
+
+	static emitVideoEvent(videoEvent): void {
+		communicationService.emit(eventsRepository.VIDEO_EVENT, { videoEvent });
 	}
 }

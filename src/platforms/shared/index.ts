@@ -13,7 +13,6 @@ export * from './sequential-messaging/sequential-messaging.setup';
 export * from './services/no-ads-detector';
 export * from './services/wad-runner';
 export * from './setup/ad-engine-runner.setup';
-export * from './setup/anyclip-player.setup';
 export * from './setup/base-context.setup';
 export * from './setup/gpt.setup';
 export * from './setup/labrador.setup';
