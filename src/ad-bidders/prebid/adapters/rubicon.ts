@@ -51,7 +51,6 @@ export class Rubicon extends PrebidAdapter {
 				{
 					bidder: this.bidderName,
 					params: {
-						position,
 						siteId,
 						zoneId,
 						accountId: this.accountId,
