@@ -1,5 +1,10 @@
 export class FandomContext {
-	constructor(public readonly site: Site, public readonly page: Page) {}
+	constructor(
+		public readonly site: Site,
+		public readonly page: Page,
+		public tracking: Partial<Tracking> = {},
+		public partners: unknown = {},
+	) {}
 }
 
 export class Site {
@@ -54,5 +59,27 @@ export class Page {
 		this.pageType = typeof pageType === 'string' ? pageType : null;
 		this.tags = typeof tags === 'object' ? tags : null;
 		this.wordCount = typeof wordCount === 'number' ? wordCount : -1;
+	}
+}
+
+export class Tracking {
+	public readonly beaconId: string;
+	public readonly pvNumber: number;
+	public readonly pvNumberGlobal: number;
+	public readonly sessionId: string;
+	public readonly pvUID: string;
+
+	constructor(
+		beaconId: string,
+		pvNumber: number,
+		pvNumberGlobal: number,
+		sessionId: string,
+		pvUID: string,
+	) {
+		this.beaconId = typeof beaconId === 'string' ? beaconId : null;
+		this.pvNumber = typeof pvNumber === 'number' ? pvNumber : null;
+		this.pvNumberGlobal = typeof pvNumberGlobal === 'number' ? pvNumberGlobal : null;
+		this.sessionId = typeof sessionId === 'string' ? sessionId : null;
+		this.pvUID = typeof pvUID === 'string' ? pvUID : null;
 	}
 }
