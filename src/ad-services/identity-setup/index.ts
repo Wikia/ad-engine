@@ -7,7 +7,7 @@ export class IdentitySetup extends BaseServiceSetup {
 	private fallback = setTimeout(() => {
 		utils.logger(this.logGroup, 'Fallback launched');
 		this.identityReady();
-	}, 2500);
+	}, 2000);
 
 	call(): Promise<void> {
 		communicationService.on(eventsRepository.IDENTITY_ENGINE_READY, () => {
