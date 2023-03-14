@@ -1,13 +1,13 @@
 export function getRubiconContext(isDesktop: boolean): object {
 	const desktopSlots = {
-		featured: {
+		video: {
 			siteId: '462828',
 			zoneId: '2742538',
 		},
 	};
 
 	const mobileSlots = {
-		featured: {
+		video: {
 			siteId: '462830',
 			zoneId: '2742540',
 		},
