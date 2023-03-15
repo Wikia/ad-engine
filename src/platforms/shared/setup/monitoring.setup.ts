@@ -1,12 +1,18 @@
 import { context, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
+export function isLocal(): boolean {
+	const urlSearchParamsEntries = new URLSearchParams(window.location.search).entries();
+	const queryParams = Object.fromEntries(urlSearchParamsEntries);
+
+	return queryParams.adengine_version === 'local';
+}
+
 @Injectable()
 export class MonitoringSetup implements DiProcess {
 	constructor(private instantConfig: InstantConfigService) {}
 
 	async execute() {
-		context.set('services.monitoring.local', this.isLocal());
 		context.set('services.monitoring.endpoint', this.getServiceBaseURL());
 		context.set('services.monitoring.service', this.getServiceName());
 		context.set(
@@ -15,18 +21,11 @@ export class MonitoringSetup implements DiProcess {
 		);
 	}
 
-	private isLocal(): boolean {
-		const urlSearchParamsEntries = new URLSearchParams(window.location.search).entries();
-		const queryParams = Object.fromEntries(urlSearchParamsEntries);
-
-		return queryParams.adengine_version === 'local';
-	}
-
 	private getServiceName(): string {
-		return this.isLocal() ? '' : 'icbm';
+		return isLocal() ? '' : 'icbm';
 	}
 
 	private getServiceBaseURL(): string {
-		return this.isLocal() ? 'http://localhost:8080' : utils.getServicesBaseURL();
+		return isLocal() ? 'http://localhost:8080' : utils.getServicesBaseURL();
 	}
 }

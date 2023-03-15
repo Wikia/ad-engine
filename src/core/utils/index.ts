@@ -9,6 +9,7 @@ export * from './i18n';
 export * from './iframe-builder';
 export * from './lazy-queue';
 export * from './logger';
+export * from './outbound-traffic-restrict';
 export * from './promised-timeout';
 export * from './query-string';
 export * from './sampler';

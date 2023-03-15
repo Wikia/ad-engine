@@ -6,30 +6,11 @@ interface EndpointInfo {
 	appName?: string;
 }
 
-class MonitoringFilter {
-	private static MIN = 0;
-	private static MAX = 100;
-	private static DEFAULT_THRESHOLD = 10;
-	public shouldSendMeteringData(): boolean {
-		if (context.get('services.monitoring.local')) {
-			return true;
-		}
-		return (
-			this.getSeed() <
-			(context.get('services.monitoring.threshold') || MonitoringFilter.DEFAULT_THRESHOLD)
-		);
-	}
-
-	private getSeed(): number {
-		return Math.random() * (MonitoringFilter.MAX - MonitoringFilter.MIN) + MonitoringFilter.MIN;
-	}
-}
-
 export class Monitoring {
 	private readonly isActive: boolean;
 
 	constructor() {
-		this.isActive = new MonitoringFilter().shouldSendMeteringData();
+		this.isActive = utils.outboundTrafficRestrict.isOutboundTrafficAllowed('monitoring');
 	}
 
 	execute() {
@@ -41,7 +22,7 @@ export class Monitoring {
 		this.trackGamSlotRendered();
 		this.trackSlotClicked();
 		this.clickHookOnIframe = this.clickHookOnIframe.bind(this);
-		this.clickHookOnIframe('');
+		this.clickHookOnIframe();
 		this.trackLibInitialization();
 	}
 
@@ -95,7 +76,7 @@ export class Monitoring {
 			.join('/');
 	}
 
-	private clickHookOnIframe(prevTriggeredId: string): void {
+	private clickHookOnIframe(prevTriggeredId: null | string = null): void {
 		const monitor = setInterval(() => {
 			const elem = document.activeElement;
 			if (!elem || elem.tagName !== 'IFRAME') {
