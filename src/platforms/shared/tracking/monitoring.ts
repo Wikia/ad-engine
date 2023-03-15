@@ -83,7 +83,7 @@ export class Monitoring {
 				return;
 			}
 
-			const id: null | string = this.extractSlotId(elem);
+			const id: null | string = elem.closest('div[id]:not([id*="/"])')?.id ?? null;
 			if (!id || id === prevTriggeredId) {
 				return;
 			}
@@ -92,19 +92,5 @@ export class Monitoring {
 			clearInterval(monitor);
 			this.clickHookOnIframe(id);
 		}, 250);
-	}
-
-	private extractSlotId(element): null | string {
-		let i = 1;
-		let currentElement = element;
-		while (i <= 3) {
-			i++;
-			currentElement = currentElement.parentElement;
-			if (currentElement && currentElement.id && currentElement.id.split('/').length > 1) {
-				continue;
-			}
-			return currentElement.id;
-		}
-		return null;
 	}
 }
