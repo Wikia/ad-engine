@@ -25,9 +25,10 @@ export class GamespotTargetingSetup implements DiProcess {
 
 		if (utagData.siteSection === 'news' || utagData.siteSection === 'reviews') {
 			if (
-				!utagData.topicName ||
-				utagData.topicName?.includes('Games') ||
-				utagData.topicName?.includes('Game Review')
+				!Array.isArray(utagData.topicName) ||
+				utagData.topicName.length === 0 ||
+				utagData.topicName.includes('Games') ||
+				utagData.topicName.includes('Game Review')
 			) {
 				return 'gaming';
 			}
