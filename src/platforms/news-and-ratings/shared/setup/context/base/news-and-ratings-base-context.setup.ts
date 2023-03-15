@@ -35,6 +35,10 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 	}
 
 	private setupServicesOptions() {
+		context.set(
+			'bidders.prebid.disableSendAllBids',
+			this.instantConfig.get('icPrebidDisableSendAllBids'),
+		);
 		context.set('services.captify.propertyId', 13061);
 		context.set('services.confiant.propertyId', 'IOegabOoWb7FyEI1AmEa9Ki-5AY');
 	}
