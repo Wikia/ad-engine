@@ -18,6 +18,7 @@ interface ITrackingParameters {
 	pvNumberGlobal: number;
 	sessionId: string;
 	pvUID: string;
+	ppid?: string;
 }
 
 interface ISiteParameters {
