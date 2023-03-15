@@ -30,6 +30,30 @@ describe('Gamespot Targeting Setup', () => {
 			expect(verticalName).to.equal('ent');
 		});
 
+		it('returns "gaming" on siteSection=news when topicName is not available', () => {
+			// given
+			const gamespotTargetingSetup = new GamespotTargetingSetup();
+			window.utag_data = { siteSection: 'news' };
+
+			//when
+			const verticalName = gamespotTargetingSetup.getVerticalName();
+
+			//then
+			expect(verticalName).to.equal('gaming');
+		});
+
+		it('returns "gaming" on siteSection=news when topicName is empty array', () => {
+			// given
+			const gamespotTargetingSetup = new GamespotTargetingSetup();
+			window.utag_data = { siteSection: 'news' };
+
+			//when
+			const verticalName = gamespotTargetingSetup.getVerticalName();
+
+			//then
+			expect(verticalName).to.equal('gaming');
+		});
+
 		it('returns "gaming" on siteSection=news when topicName array include "Games"', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
@@ -52,18 +76,6 @@ describe('Gamespot Targeting Setup', () => {
 
 			//then
 			expect(verticalName).to.equal('ent');
-		});
-
-		it('returns "gaming" on siteSection=news when topicName is not available', () => {
-			// given
-			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.utag_data = { siteSection: 'news' };
-
-			//when
-			const verticalName = gamespotTargetingSetup.getVerticalName();
-
-			//then
-			expect(verticalName).to.equal('gaming');
 		});
 
 		it('returns "gaming" on siteSection=reviews when topicName array include "Games"', () => {
