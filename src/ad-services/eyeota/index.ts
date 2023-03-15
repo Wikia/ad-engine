@@ -17,6 +17,9 @@ export function parseContextTags(tags: TaxonomyTags): string {
 }
 
 export class Eyeota extends BaseServiceSetup {
+	constructor(props) {
+		super(props);
+	}
 	async call(): Promise<void> {
 		if (!this.isEnabled('icEyeota')) {
 			utils.logger(logGroup, 'disabled');
