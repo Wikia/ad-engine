@@ -5,7 +5,7 @@ import {
 	VideoEventProvider,
 	VideoTracker,
 } from '@ad-engine/core';
-import { PorvataEventListener, PorvataListenerParams } from '../../video/porvata/porvata-listener';
+import { PorvataEventListener, PorvataListenerParams } from './porvata-listener';
 
 /**
  * Ads tracker for Porvata
