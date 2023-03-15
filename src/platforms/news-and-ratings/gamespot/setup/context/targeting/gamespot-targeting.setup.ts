@@ -16,7 +16,7 @@ export class GamespotTargetingSetup implements DiProcess {
 	getVerticalName(): 'gaming' | 'ent' {
 		const utagData = window.utag_data;
 		if (!utagData) {
-			return;
+			return 'gaming';
 		}
 
 		if (utagData.siteSection === 'entertainment') {
@@ -24,7 +24,11 @@ export class GamespotTargetingSetup implements DiProcess {
 		}
 
 		if (utagData.siteSection === 'news' || utagData.siteSection === 'reviews') {
-			if (utagData.topicName?.includes('Games') || utagData.topicName?.includes('Game Review')) {
+			if (
+				!utagData.topicName ||
+				utagData.topicName?.includes('Games') ||
+				utagData.topicName?.includes('Game Review')
+			) {
 				return 'gaming';
 			}
 
