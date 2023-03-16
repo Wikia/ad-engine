@@ -50,11 +50,9 @@ async function markWinningVideoBidAsUsed(adSlot: AdSlot): Promise<void> {
 
 export class PrebidProvider extends BidderProvider {
 	adUnits: PrebidAdUnit[];
-	tcf: Tcf = tcf;
-	prebidConfig: Dictionary;
 	bidsRefreshing: BidsRefreshing;
-	isATSAnalyticsEnabled = false;
-	enableSendAllBids = true;
+	prebidConfig: Dictionary;
+	tcf: Tcf = tcf;
 
 	constructor(public bidderConfig: PrebidConfig, public timeout = DEFAULT_MAX_DELAY) {
 		super('prebid', bidderConfig, timeout);
@@ -62,8 +60,6 @@ export class PrebidProvider extends BidderProvider {
 
 		this.adUnits = setupAdUnits();
 		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
-		this.isATSAnalyticsEnabled = context.get('bidders.liveRampATSAnalytics.enabled');
-		this.enableSendAllBids = !context.get('bidders.prebid.disableSendAllBids');
 
 		this.prebidConfig = {
 			bidderSequence: 'random',
@@ -72,18 +68,8 @@ export class PrebidProvider extends BidderProvider {
 				url: 'https://prebid.adnxs.com/pbc/v1/cache',
 			},
 			debug: ['1', 'true'].includes(utils.queryString.get('pbjs_debug')),
-			enableSendAllBids: this.enableSendAllBids,
 			rubicon: {
 				singleRequest: true,
-			},
-			sendBidsControl: {
-				bidLimit: 2,
-				dealPrioritization: true,
-			},
-			targetingControls: {
-				alwaysIncludeDeals: true,
-				allowTargetingKeys: ['AD_ID', 'PRICE_BUCKET', 'UUID', 'SIZE', 'DEAL'],
-				allowSendAllBidsTargetingKeys: ['AD_ID', 'PRICE_BUCKET', 'UUID', 'SIZE', 'DEAL'],
 			},
 			userSync: {
 				filterSettings: {
@@ -125,6 +111,7 @@ export class PrebidProvider extends BidderProvider {
 
 		this.prebidConfig = {
 			...this.prebidConfig,
+			...this.configureTargeting(),
 			...this.configureLiveRamp(),
 			...this.configureTCF(),
 		};
@@ -136,6 +123,31 @@ export class PrebidProvider extends BidderProvider {
 		this.enableATSAnalytics();
 
 		utils.logger(logGroup, 'prebid created', this.prebidConfig);
+	}
+
+	private configureTargeting(): object {
+		if (context.get('bidders.prebid.disableSendAllBids')) {
+			return {
+				enableSendAllBids: false,
+				targetingControls: {
+					alwaysIncludeDeals: true,
+					allowTargetingKeys: ['AD_ID', 'BIDDER', 'DEAL', 'PRICE_BUCKET', 'SIZE', 'UUID'],
+				},
+			};
+		}
+
+		return {
+			enableSendAllBids: true,
+			sendBidsControl: {
+				bidLimit: 2,
+				dealPrioritization: true,
+			},
+			targetingControls: {
+				alwaysIncludeDeals: true,
+				allowTargetingKeys: ['AD_ID', 'PRICE_BUCKET', 'UUID', 'SIZE', 'DEAL'],
+				allowSendAllBidsTargetingKeys: ['AD_ID', 'PRICE_BUCKET', 'UUID', 'SIZE', 'DEAL'],
+			},
+		};
 	}
 
 	private configureLiveRamp(): object {
@@ -302,7 +314,7 @@ export class PrebidProvider extends BidderProvider {
 	}
 
 	private enableATSAnalytics(): void {
-		if (this.isATSAnalyticsEnabled) {
+		if (context.get('bidders.liveRampATSAnalytics.enabled')) {
 			utils.logger(logGroup, 'prebid enabling ATS Analytics');
 
 			(window as any).pbjs.que.push(() => {
