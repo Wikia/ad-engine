@@ -91,24 +91,6 @@ export class PrebidProvider extends BidderProvider {
 			this.prebidConfig.coppa = true;
 		}
 
-		if (context.get('bidders.prebid.rubicon_pg.enabled')) {
-			this.prebidConfig.s2sConfig = {
-				accountId: '7450',
-				bidders: ['pgRubicon'],
-				coopSync: true,
-				defaultVendor: 'rubicon',
-				enabled: true,
-				extPrebid: {
-					aliases: {
-						pgRubicon: 'rubicon',
-					},
-					aliasgvlids: { pgRubicon: 52 },
-				},
-				timeout: Math.round(this.timeout * 0.75),
-				userSyncLimit: 1,
-			};
-		}
-
 		this.prebidConfig = {
 			...this.prebidConfig,
 			...this.configureTargeting(),
