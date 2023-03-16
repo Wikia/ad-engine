@@ -9,6 +9,7 @@ import {
 	LiveConnect,
 	LiveRampPixel,
 	PartnerPipeline,
+	UserIdentity,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { NoAdsDetector } from '../../services/no-ads-detector';
@@ -23,6 +24,7 @@ export class NoAdsMode implements DiProcess {
 		private identityHub: IdentityHub,
 		private liveConnect: LiveConnect,
 		private liveRampPixel: LiveRampPixel,
+		private userIdentity: UserIdentity,
 	) {}
 
 	execute(): void {
@@ -31,7 +33,14 @@ export class NoAdsMode implements DiProcess {
 		this.dispatchJWPlayerSetupAction();
 
 		this.pipeline
-			.add(this.liveRampPixel, this.ats, this.audigent, this.liveConnect, this.identityHub)
+			.add(
+				this.userIdentity,
+				this.liveRampPixel.setOptions({ dependencies: [this.userIdentity.initialized] }),
+				this.ats,
+				this.audigent,
+				this.liveConnect,
+				this.identityHub,
+			)
 			.execute()
 			.then(() => {
 				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);

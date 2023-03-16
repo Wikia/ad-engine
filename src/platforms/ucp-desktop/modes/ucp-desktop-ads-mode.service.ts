@@ -12,7 +12,6 @@ import {
 	Eyeota,
 	IasPublisherOptimization,
 	IdentityHub,
-	IdentitySetup,
 	jwPlayerInhibitor,
 	LiveConnect,
 	LiveRampPixel,
@@ -45,7 +44,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 		private prebidNativeProvider: PrebidNativeProvider,
 		private stroer: Stroer,
 		private wadRunner: WadRunner,
-		private identitySetup: IdentitySetup,
 	) {}
 
 	execute(): void {
@@ -67,7 +65,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 				this.captify,
 				this.nielsen,
 				this.prebidNativeProvider,
-				this.identitySetup,
 				this.playerSetup.setOptions({
 					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
 				}),

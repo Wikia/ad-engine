@@ -3,7 +3,7 @@ import { BaseServiceSetup, utils } from '@ad-engine/core';
 
 export class LiveRampPixel extends BaseServiceSetup {
 	private PIXEL_ID = 712315;
-	private logGroup = 'LiveRamp pixel';
+	private logGroup = 'LiveRamp';
 	private PIXEL_URL = `https://idsync.rlcdn.com/${this.PIXEL_ID}.gif?partner_uid=`;
 
 	insertLiveRampPixel(token): void {
