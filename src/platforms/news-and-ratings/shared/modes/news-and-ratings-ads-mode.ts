@@ -9,10 +9,10 @@ import {
 	DurationMedia,
 	eventsRepository,
 	IasPublisherOptimization,
+	IdentitySetup,
 	LiveConnect,
 	LiveRampPixel,
 	PartnerPipeline,
-	UserIdentity,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -30,9 +30,9 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 		private iasPublisherOptimization: IasPublisherOptimization,
 		private liveConnect: LiveConnect,
 		private liveRampPixel: LiveRampPixel,
-		private userIdentity: UserIdentity,
 		private playerSetup: PlayerSetup,
 		private wadRunner: WadRunner,
+		private identitySetup: IdentitySetup,
 	) {}
 
 	execute(): void {
@@ -41,8 +41,7 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 				this.anyclipPlayerSetup,
 				this.bidders,
 				this.wadRunner,
-				this.userIdentity,
-				this.liveRampPixel.setOptions({ dependencies: [this.userIdentity.initialized] }),
+				this.liveRampPixel,
 				this.liveConnect,
 				this.audigent,
 				this.confiant,
@@ -50,6 +49,7 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 				this.captify,
 				this.durationMedia,
 				this.playerSetup,
+				this.identitySetup,
 				this.gptSetup.setOptions({
 					dependencies: [this.wadRunner.initialized, this.bidders.initialized],
 				}),
