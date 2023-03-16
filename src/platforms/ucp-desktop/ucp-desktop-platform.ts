@@ -22,6 +22,7 @@ import {
 	eventsRepository,
 	parallel,
 	ProcessPipeline,
+	UserIdentity,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
@@ -35,7 +36,11 @@ import { UcpDesktopTemplatesSetup } from './templates/ucp-desktop-templates.setu
 
 @Injectable()
 export class UcpDesktopPlatform {
-	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
+	constructor(
+		private pipeline: ProcessPipeline,
+		private noAdsDetector: NoAdsDetector,
+		private userIdentity: UserIdentity,
+	) {}
 
 	execute(): void {
 		// Config
@@ -61,6 +66,8 @@ export class UcpDesktopPlatform {
 			}),
 			NoAdsExperimentSetup,
 			LabradorSetup,
+			// ToDo: Remove after ADEN-12559
+			() => this.userIdentity.call(),
 			TrackingSetup,
 			AdEngineRunnerSetup,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
