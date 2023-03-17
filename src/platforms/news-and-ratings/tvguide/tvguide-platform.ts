@@ -60,6 +60,51 @@ export class TvGuidePlatform {
 
 		this.pipeline.execute();
 
+		// ToDo: Remove debug
+		const debugGroup = 'tvguideDebug';
+		console.log(debugGroup, 'AdEngine loaded and starting');
+
+		// Listeners
+		communicationService.on(
+			eventsRepository.PLATFORM_AD_PLACEMENT_READY,
+			({ placementId }) => {
+				console.log(debugGroup, 'AdPlacementReady received', placementId);
+			},
+			false,
+		);
+		communicationService.on(
+			eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE,
+			() => {
+				console.log(debugGroup, 'BeforePageChange received');
+			},
+			false,
+		);
+		window.addEventListener('message', (message) => {
+			console.log(debugGroup, 'Message logger', message.data, { full: message });
+		});
+
+		// Triggers
+		console.log(debugGroup, 'Example AdPlacementReady emitted');
+		// AE Communicator
+		communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
+			placementId: 'example-slot',
+		});
+		// Vanilla
+		top.postMessage(
+			{
+				action: {
+					type: '[Platform] Ad placement ready',
+					placementId: 'example-slot',
+					timestamp: Date.now(),
+					__global: true,
+				},
+				channelId: 'default',
+				private: true,
+				libId: '@wikia/post-quecast',
+			},
+			'*',
+		);
+
 		// ToDo: Remove this test code
 		window.addEventListener(
 			'keypress',
