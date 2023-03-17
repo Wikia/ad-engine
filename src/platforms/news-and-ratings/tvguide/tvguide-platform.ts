@@ -24,6 +24,7 @@ import {
 } from '../shared';
 import { basicContext } from './ad-context';
 import { TvGuideA9ConfigSetup } from './setup/context/a9/tvguide-a9-config.setup';
+import { TvGuideA9VideoConfigSetup } from './setup/context/a9/tvguide-a9-video-config.setup';
 import { TvGuidePrebidConfigSetup } from './setup/context/prebid/tvguide-prebid-config-setup.service';
 import { TvGuideSlotsContextSetup } from './setup/context/slots/tvguide-slots-context.setup';
 import { TvGuideTargetingSetup } from './setup/context/targeting/tvguide-targeting.setup';
@@ -56,6 +57,7 @@ export class TvGuidePlatform {
 			TvGuideDynamicSlotsSetup,
 			TvGuidePrebidConfigSetup,
 			TvGuideA9ConfigSetup,
+			TvGuideA9VideoConfigSetup,
 			BiddersStateSetup,
 			TvGuideTemplatesSetup,
 			NewsAndRatingsAdsMode,
