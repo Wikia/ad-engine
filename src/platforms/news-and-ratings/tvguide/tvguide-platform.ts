@@ -82,6 +82,18 @@ export class TvGuidePlatform {
 		window.addEventListener('message', (message) => {
 			console.log(debugGroup, 'Message logger', message.data, { full: message });
 		});
+		// Late listener
+		window.addEventListener('keypress', (event) => {
+			if (event.code === 'Digit7') {
+				communicationService.on(
+					eventsRepository.PLATFORM_AD_PLACEMENT_READY,
+					({ placementId }) => {
+						console.log(debugGroup, 'AdPlacementReady received', placementId);
+					},
+					false,
+				);
+			}
+		});
 
 		// Triggers
 		console.log(debugGroup, 'Example AdPlacementReady emitted');
