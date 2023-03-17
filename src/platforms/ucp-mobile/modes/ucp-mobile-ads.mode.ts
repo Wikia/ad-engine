@@ -13,6 +13,7 @@ import {
 	Eyeota,
 	IasPublisherOptimization,
 	IdentityHub,
+	IdentitySetup,
 	jwPlayerInhibitor,
 	LiveConnect,
 	LiveRampPixel,
@@ -45,6 +46,7 @@ export class UcpMobileAdsMode implements DiProcess {
 		private prebidNativeProvider: PrebidNativeProvider,
 		private stroer: Stroer,
 		private wadRunner: WadRunner,
+		private identitySetup: IdentitySetup,
 	) {}
 
 	execute(): void {
@@ -66,6 +68,7 @@ export class UcpMobileAdsMode implements DiProcess {
 				this.identityHub,
 				this.nielsen,
 				this.prebidNativeProvider,
+				this.identitySetup,
 				this.playerSetup.setOptions({
 					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
 					timeout: context.get('options.jwpMaxDelayTimeout'),
