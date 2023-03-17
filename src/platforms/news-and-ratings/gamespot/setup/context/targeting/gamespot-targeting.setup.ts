@@ -24,18 +24,21 @@ export class GamespotTargetingSetup implements DiProcess {
 		}
 
 		if (utagData.siteSection === 'news' || utagData.siteSection === 'reviews') {
-			if (
-				!Array.isArray(utagData.topicName) ||
-				utagData.topicName.length === 0 ||
-				utagData.topicName.includes('Games') ||
-				utagData.topicName.includes('Game Review')
-			) {
-				return 'gaming';
-			}
-
-			return 'ent';
+			return this.getVerticalNameBasedOnTopicName(utagData.topicName);
 		}
 
 		return 'gaming';
+	}
+
+	private getVerticalNameBasedOnTopicName(topicName: string[]): 'gaming' | 'ent' {
+		if (!Array.isArray(topicName) || topicName.length === 0) {
+			return 'gaming';
+		}
+
+		if (topicName.includes('Games') || topicName.includes('Game Review')) {
+			return 'gaming';
+		}
+
+		return 'ent';
 	}
 }
