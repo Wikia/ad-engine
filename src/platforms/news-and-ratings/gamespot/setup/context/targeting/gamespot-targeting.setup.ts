@@ -19,7 +19,7 @@ export class GamespotTargetingSetup implements DiProcess {
 			return 'gaming';
 		}
 
-		if (utagData.siteSection === 'entertainment') {
+		if (this.isEntertainmentSite()) {
 			return 'ent';
 		}
 
@@ -28,6 +28,10 @@ export class GamespotTargetingSetup implements DiProcess {
 		}
 
 		return 'gaming';
+	}
+
+	isEntertainmentSite(): boolean {
+		return location.pathname.includes('entertainment');
 	}
 
 	private getVerticalNameBasedOnTopicName(topicName: string[]): 'gaming' | 'ent' {

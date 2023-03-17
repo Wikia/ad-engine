@@ -18,10 +18,11 @@ describe('Gamespot Targeting Setup', () => {
 			expect(verticalName).to.equal('gaming');
 		});
 
-		it('returns "ent" on siteSection=entertainment', () => {
+		it('returns "ent" when isEnterteinmentSite() returns true', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.utag_data = { siteSection: 'entertainment' };
+			window.utag_data = {};
+			global.sandbox.stub(gamespotTargetingSetup, 'isEntertainmentSite').returns(true);
 
 			//when
 			const verticalName = gamespotTargetingSetup.getVerticalName();
