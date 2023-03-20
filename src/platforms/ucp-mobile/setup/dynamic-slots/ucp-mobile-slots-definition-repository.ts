@@ -93,7 +93,7 @@ export class UcpMobileSlotsDefinitionRepository {
 
 	private slotCreatorInsertionParams(): SlotCreatorInsertionParamsType {
 		let params: SlotCreatorInsertionParamsType = {
-			anchorSelector: '.mw-parser-output > h2',
+			anchorSelector: this.incontentsAnchorSelector,
 			insertMethod: 'before',
 		};
 
