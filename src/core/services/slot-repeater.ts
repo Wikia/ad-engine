@@ -1,7 +1,6 @@
 import { communicationService } from '@ad-engine/communication';
 import { AdSlot } from '../models';
-import { generateUniqueId, logger } from '../utils';
-import { stringBuilder } from '../utils/string-builder';
+import { generateUniqueId, logger, stringBuilder } from '../utils';
 import { context } from './context-service';
 import { slotInjector } from './slot-injector';
 import { targetingService } from './targeting-service';

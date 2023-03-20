@@ -40,11 +40,10 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 	private injectSlots(): void {
 		insertSlots([
-			this.nativoSlotDefinitionRepository.getNativoIncontentAdConfig(2),
 			this.nativoSlotDefinitionRepository.getNativoFeedAdConfig(),
 			this.slotsDefinitionRepository.getTopLeaderboardConfig(),
 			this.slotsDefinitionRepository.getTopBoxadConfig(),
-			this.slotsDefinitionRepository.getIncontentLeaderboardConfig(2),
+			this.slotsDefinitionRepository.getIncontentLeaderboardConfig(),
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
 			this.slotsDefinitionRepository.getIncontentPlayerConfig(),
 			this.slotsDefinitionRepository.getFloorAdhesionConfig(),

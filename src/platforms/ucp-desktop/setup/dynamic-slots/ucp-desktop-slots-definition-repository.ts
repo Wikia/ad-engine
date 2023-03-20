@@ -54,17 +54,13 @@ export class UcpDesktopSlotsDefinitionRepository {
 	}
 
 	private isIncontentLeaderboardApplicable(): boolean {
-		if (!context.get('services.nativo.gamIncontentEnabled')) {
-			return false;
-		}
-
 		const icLbMaxWidth = 768;
 		const pageContentSelector = 'main.page__main #content';
 
 		return utils.getWidth(document.querySelector(pageContentSelector)) >= icLbMaxWidth;
 	}
 
-	getIncontentLeaderboardConfig(headerPosition: number): SlotSetupDefinition {
+	getIncontentLeaderboardConfig(): SlotSetupDefinition {
 		if (!this.isIncontentLeaderboardApplicable()) {
 			return;
 		}
@@ -74,9 +70,23 @@ export class UcpDesktopSlotsDefinitionRepository {
 		return {
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: `.mw-parser-output > h2:nth-of-type(${headerPosition})`,
+				anchorSelector:
+					'.mw-parser-output > h2,.mw-parser-output > h3,.mw-parser-output > h4,.mw-parser-output > h5',
+				anchorPosition: 'belowFirstViewport',
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
+				repeat: {
+					additionalClasses: 'hide',
+					index: 1,
+					limit: 20,
+					slotNamePattern: `${slotName}_{slotConfig.repeat.index}`,
+					updateProperties: {
+						adProduct: '{slotConfig.slotName}',
+						'targeting.rv': '{slotConfig.repeat.index}',
+						'targeting.pos': [slotName],
+					},
+					insertBelowScrollPosition: true,
+				},
 			},
 			activator: () => {
 				context.push('events.pushOnScroll.ids', slotName);

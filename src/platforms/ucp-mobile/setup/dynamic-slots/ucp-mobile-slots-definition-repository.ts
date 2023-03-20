@@ -19,7 +19,8 @@ import { Injectable } from '@wikia/dependency-injection';
 export class UcpMobileSlotsDefinitionRepository {
 	constructor(protected instantConfig: InstantConfigService) {}
 
-	private incontentAnchorsSelector = '.mw-parser-output > h2,.mw-parser-output > section > h3';
+	private incontentAnchorsSelector =
+		'.mw-parser-output > h2,.mw-parser-output > section > h3,.mw-parser-output > section > h4,.mw-parser-output > section > h5';
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
 		if (!this.isTopLeaderboardApplicable()) {

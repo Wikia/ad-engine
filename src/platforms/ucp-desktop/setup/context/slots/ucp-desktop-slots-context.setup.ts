@@ -57,6 +57,12 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 			incontent_leaderboard: {
 				adProduct: 'incontent_leaderboard',
+				bidderAlias: 'incontent_leaderboard',
+				// ToDo: cleanup
+				insertBeforeSelector:
+					'.mw-parser-output > h2,.mw-parser-output > h3,.mw-parser-output > h4,.mw-parser-output > h5',
+				// ToDo: add custom class
+				avoidConflictWith: '.ad-slot',
 				group: 'ILB',
 				options: {},
 				defaultSizes: [[728, 90]],
@@ -143,11 +149,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				trackEachStatus: true,
 				trackingKey: 'featured-video',
 				isVideo: true,
-			},
-			ntv_ad: {
-				providers: ['nativo'],
-				trackEachStatus: true,
-				isNative: true,
 			},
 			ntv_feed_ad: {
 				providers: ['nativo'],
