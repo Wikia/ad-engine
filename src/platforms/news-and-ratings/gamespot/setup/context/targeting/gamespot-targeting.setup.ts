@@ -19,7 +19,7 @@ export class GamespotTargetingSetup implements DiProcess {
 			return 'gaming';
 		}
 
-		if (this.isEntertainmentSite()) {
+		if (this.isEntertainmentSite(utagData['dom.pathname'])) {
 			return 'ent';
 		}
 
@@ -30,8 +30,12 @@ export class GamespotTargetingSetup implements DiProcess {
 		return 'gaming';
 	}
 
-	isEntertainmentSite(): boolean {
-		return location.pathname.includes('entertainment');
+	isEntertainmentSite(pathname: string): boolean {
+		if (!pathname) {
+			return false;
+		}
+
+		return pathname.includes('entertainment');
 	}
 
 	private getVerticalNameBasedOnTopicName(topicName: string[]): 'gaming' | 'ent' {

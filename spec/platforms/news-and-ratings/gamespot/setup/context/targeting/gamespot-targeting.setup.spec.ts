@@ -21,8 +21,7 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "ent" when isEnterteinmentSite() returns true', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.utag_data = {};
-			global.sandbox.stub(gamespotTargetingSetup, 'isEntertainmentSite').returns(true);
+			window.utag_data = { 'dom.pathname': '/entertainment' };
 
 			//when
 			const verticalName = gamespotTargetingSetup.getVerticalName();
