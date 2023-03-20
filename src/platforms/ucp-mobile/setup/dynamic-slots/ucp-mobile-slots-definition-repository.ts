@@ -29,6 +29,7 @@ export class UcpMobileSlotsDefinitionRepository {
 		// TODO: remove once ADEN-12936 is closed
 		if (location.host.includes('harrypotter')) {
 			this.incontentsAnchorSelector = '.mw-parser-output > h2, .mw-parser-output > section > h3';
+			context.set('slots.incontent_player.insertBeforeSelector', this.incontentsAnchorSelector);
 		}
 	}
 
