@@ -24,7 +24,7 @@ export class GamespotTargetingSetup implements DiProcess {
 		}
 
 		if (utagData.siteSection === 'news' || utagData.siteSection === 'reviews') {
-			return this.getVerticalNameBasedOnTopicName(utagData.topicName);
+			return this.getVerticalNameBasedOnTopicName(utagData);
 		}
 
 		return 'gaming';
@@ -38,12 +38,19 @@ export class GamespotTargetingSetup implements DiProcess {
 		return pathname.includes('entertainment');
 	}
 
-	private getVerticalNameBasedOnTopicName(topicName: string[]): 'gaming' | 'ent' {
+	private getVerticalNameBasedOnTopicName(utagData): 'gaming' | 'ent' {
+		const topicName = utagData.topicName;
+		const contentTopicName = utagData.contentTopicName;
+
 		if (!Array.isArray(topicName) || topicName.length === 0) {
 			return 'gaming';
 		}
 
 		if (topicName.includes('Games') || topicName.includes('Game Review')) {
+			return 'gaming';
+		}
+
+		if (contentTopicName && contentTopicName.includes('gaming')) {
 			return 'gaming';
 		}
 

@@ -66,6 +66,22 @@ describe('Gamespot Targeting Setup', () => {
 			expect(verticalName).to.equal('gaming');
 		});
 
+		it('returns "gaming" on siteSection=news when topicName does not include "Games" but contentTopicId does', () => {
+			// given
+			const gamespotTargetingSetup = new GamespotTargetingSetup();
+			window.utag_data = {
+				siteSection: 'news',
+				topicName: ['Tech'],
+				contentTopicName: 'gaming-tech',
+			};
+
+			//when
+			const verticalName = gamespotTargetingSetup.getVerticalName();
+
+			//then
+			expect(verticalName).to.equal('gaming');
+		});
+
 		it('returns "ent" on siteSection=news when topicName array does not include "Games"', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
