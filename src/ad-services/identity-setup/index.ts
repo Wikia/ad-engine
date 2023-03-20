@@ -22,6 +22,14 @@ export class IdentitySetup extends BaseServiceSetup {
 			utils.logger(this.logGroup, 'initialized');
 			this.identityReady();
 		});
+
+		communicationService.on(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, () => {
+			const over18 = window.fandomContext.tracking.over_18;
+
+			if (over18) {
+				targetingService.set('over_18', over18);
+			}
+		});
 		return identityPromise;
 	}
 }
