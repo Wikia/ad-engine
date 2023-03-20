@@ -35,7 +35,7 @@ import { TvGuideTemplatesSetup } from './templates/tvguide-templates.setup';
 export class TvGuidePlatform {
 	constructor(private pipeline: ProcessPipeline) {}
 
-	execute(): void {
+	execute(container: Container): void {
 		this.pipeline.add(
 			() => context.extend(basicContext),
 			() => context.set('state.isMobile', !utils.client.isDesktop()),
@@ -59,157 +59,58 @@ export class TvGuidePlatform {
 		);
 
 		this.pipeline.execute();
-
-		// ToDo: Remove debug
-		const debugGroup = 'tvguideDebug';
-		console.log(debugGroup, 'AdEngine loaded and starting');
-
-		// Listeners
-		communicationService.on(
-			eventsRepository.PLATFORM_AD_PLACEMENT_READY,
-			({ placementId }) => {
-				console.log(debugGroup, 'AdPlacementReady received', placementId);
-			},
-			false,
-		);
-		communicationService.on(
-			eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE,
-			() => {
-				console.log(debugGroup, 'BeforePageChange received');
-			},
-			false,
-		);
-		window.addEventListener('message', (message) => {
-			console.log(debugGroup, 'Message logger', message.data, { full: message });
-		});
-		// Late listener
-		window.addEventListener('keypress', (event) => {
-			if (event.code === 'Digit7') {
-				communicationService.on(
-					eventsRepository.PLATFORM_AD_PLACEMENT_READY,
-					({ placementId }) => {
-						console.log(debugGroup, 'AdPlacementReady received', placementId);
-					},
-					false,
-				);
-			}
-		});
-
-		// Triggers
-		console.log(debugGroup, 'Example AdPlacementReady emitted');
-		// AE Communicator
-		communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
-			placementId: 'example-slot',
-		});
-		// Vanilla
-		top.postMessage(
-			{
-				action: {
-					type: '[Platform] Ad placement ready',
-					placementId: 'example-slot',
-					timestamp: Date.now(),
-					__global: true,
-				},
-				channelId: 'default',
-				private: true,
-				libId: '@wikia/post-quecast',
-			},
-			'*',
-		);
-
-		// ToDo: Remove this test code
-		window.addEventListener(
-			'keypress',
-			(event) => {
-				if (event.code === 'Digit1') {
-					console.log('debug', 'attempting to load all slots (including destroyed)');
-
-					document.querySelectorAll('div[data-ad]').forEach((placementId: HTMLElement) => {
-						if (!placementId.dataset.ad) return;
-
-						console.log('debug', 'slot placement fill requested', placementId.dataset.ad);
-
-						communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
-							placementId: placementId.dataset.ad,
-						});
-					});
-				}
-
-				if (event.code === 'Digit2') {
-					console.log('debug', 'attempting to load new slots');
-
-					document
-						.querySelectorAll('div[data-ad]:not(.gpt-ad)')
-						.forEach((placementId: HTMLElement) => {
-							if (!placementId.dataset.ad) return;
-
-							console.log('debug', 'slot placement fill requested', placementId.dataset.ad);
-
-							communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
-								placementId: placementId.dataset.ad,
-							});
-						});
-				}
-
-				if (event.code === 'Digit3') {
-					console.log('debug', 'emitting PLATFORM_BEFORE_PAGE_CHANGE');
-
-					communicationService.emit(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
-				}
-
-				if (event.code === 'Digit4') {
-					console.log('debug', 'emitting PLATFORM_PAGE_CHANGED');
-
-					communicationService.emit(eventsRepository.PLATFORM_PAGE_CHANGED);
-				}
-
-				if (event.code === 'Digit5') {
-					console.log('debug', 'emitting PLATFORM_PAGE_EXTENDED');
-
-					communicationService.emit(eventsRepository.PLATFORM_PAGE_EXTENDED);
-				}
-			},
-			false,
-		);
+		this.setupSinglePageAppWatchers(container);
 	}
 
-	setupSinglePageAppWatchers(container: Container) {
-		communicationService.on(eventsRepository.PLATFORM_PAGE_CHANGED, () => {
-			utils.logger('SPA', 'url changed', location.href);
+	private setupSinglePageAppWatchers(container: Container) {
+		let firstPageview = true;
 
-			// ToDo: Emit this if PLATFORM_BEFORE_PAGE_CHANGE won't be emitted by TVGuide app
-			// communicationService.emit(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
+		communicationService.on(
+			eventsRepository.PLATFORM_PAGE_CHANGED,
+			() => {
+				if (firstPageview) {
+					firstPageview = false;
+					return;
+				}
 
-			targetingService.clear();
+				utils.logger('SPA', 'url changed', location.href);
 
-			const refreshPipeline = new ProcessPipeline(container);
-			refreshPipeline
-				.add(
-					() => utils.logger('SPA', 'starting pipeline refresh'),
-					NewsAndRatingsBaseContextSetup,
-					TvGuideTargetingSetup,
-					NewsAndRatingsTargetingSetup,
-					TvGuideSlotsContextSetup,
-					TvGuideNextPageAdsMode,
-				)
-				.execute();
-		});
+				targetingService.clear();
 
-		communicationService.on(eventsRepository.PLATFORM_PAGE_EXTENDED, () => {
-			utils.logger('SPA', 'page extended', location.href);
+				const refreshPipeline = new ProcessPipeline(container);
+				refreshPipeline
+					.add(
+						() => utils.logger('SPA', 'starting pipeline refresh'),
+						NewsAndRatingsBaseContextSetup,
+						TvGuideTargetingSetup,
+						NewsAndRatingsTargetingSetup,
+						TvGuideSlotsContextSetup,
+						TvGuideNextPageAdsMode,
+					)
+					.execute();
+			},
+			false,
+		);
 
-			targetingService.clear();
+		communicationService.on(
+			eventsRepository.PLATFORM_PAGE_EXTENDED,
+			() => {
+				utils.logger('SPA', 'page extended', location.href);
 
-			const refreshPipeline = new ProcessPipeline(container);
-			refreshPipeline
-				.add(
-					() => utils.logger('SPA', 'starting pipeline refresh'),
-					NewsAndRatingsBaseContextSetup,
-					TvGuideTargetingSetup,
-					NewsAndRatingsTargetingSetup,
-					TvGuideNextPageAdsMode,
-				)
-				.execute();
-		});
+				targetingService.clear();
+
+				const refreshPipeline = new ProcessPipeline(container);
+				refreshPipeline
+					.add(
+						() => utils.logger('SPA', 'starting pipeline refresh'),
+						NewsAndRatingsBaseContextSetup,
+						TvGuideTargetingSetup,
+						NewsAndRatingsTargetingSetup,
+						TvGuideNextPageAdsMode,
+					)
+					.execute();
+			},
+			false,
+		);
 	}
 }

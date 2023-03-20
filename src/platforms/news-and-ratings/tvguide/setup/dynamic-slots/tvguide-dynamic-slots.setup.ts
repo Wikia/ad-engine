@@ -14,9 +14,12 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 
 	execute(): void {
 		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+			console.log('spa stack start');
 			communicationService.on(
 				eventsRepository.PLATFORM_AD_PLACEMENT_READY,
 				({ placementId }) => {
+					utils.logger('spa setup', 'Ad placement rendered', placementId);
+					console.log('spa', this.repeatedSlotsCounter);
 					if (this.repeatedSlotsCounter[placementId]) {
 						this.scheduleRepeatedSlotInjection(placementId);
 						return;
@@ -29,9 +32,22 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 			);
 		});
 
-		communicationService.on(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE, () => {
-			this.repeatedSlotsCounter = {};
-		});
+		communicationService.on(
+			eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE,
+			() => {
+				console.log('spa cleaning');
+				this.repeatedSlotsCounter = {};
+			},
+			false,
+		);
+
+		communicationService.on(
+			eventsRepository.PLATFORM_PAGE_CHANGED,
+			() => {
+				this.refreshStaleSlots();
+			},
+			false,
+		);
 	}
 
 	private scheduleRepeatedSlotInjection(placementId: string): void {
@@ -40,14 +56,28 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 			counter === 1
 				? [placementId, `${placementId}-2`]
 				: [`${placementId}-${counter}`, `${placementId}-${counter + 1}`];
-
-		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot }) => {
-			if (slot.getSlotName() === currentSlotName) {
+		console.log('spa schedule', placementId, currentSlotName, nextSlotName);
+		communicationService.onSlotEvent(
+			AdSlot.SLOT_RENDERED_EVENT,
+			() => {
 				insertSlots([this.getSlotConfig(nextSlotName, placementId)]);
-			}
-		});
+			},
+			currentSlotName,
+			true,
+		);
 
 		this.repeatedSlotsCounter[placementId] = counter + 1;
+	}
+
+	private refreshStaleSlots(): void {
+		const domSlotsElements = document.querySelectorAll('div[data-slot-loaded="true"].gpt-ad');
+
+		domSlotsElements.forEach((slot) => {
+			console.log('spa reinjecting', slot.getAttribute('data-ad'));
+			communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
+				placementId: slot.getAttribute('data-ad'),
+			});
+		});
 	}
 
 	private isSlotApplicable(slotName: string): boolean {
@@ -83,6 +113,7 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 	}
 
 	private setupSlotRepeatContext(slotName: string): void {
+		context.set(`slots.${slotName}.bidderAlias`, slotName);
 		context.set(`slots.${slotName}.repeat`, {
 			...context.get(`slots.${slotName}.repeat`),
 			index: 1,
