@@ -102,7 +102,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				avoidConflictWith: '.ad-slot,#incontent_boxad_1',
 				autoplay: true,
 				audio: false,
-				insertBeforeSelector: '.mw-parser-output > h2',
+				insertBeforeSelector: '.mw-parser-output > h2,.mw-parser-output > section > h3',
 				parentContainerSelector: '.incontent-boxad',
 				defaultClasses: ['hide'],
 				group: 'HiVi',

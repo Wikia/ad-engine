@@ -5,7 +5,6 @@ import {
 	context,
 	CookieStorageAdapter,
 	eventsRepository,
-	insertMethodType,
 	InstantConfigService,
 	RepeatableSlotPlaceholderConfig,
 	scrollListener,
@@ -16,14 +15,11 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
-interface SlotCreatorInsertionParamsType {
-	anchorSelector: string;
-	insertMethod: insertMethodType;
-}
-
 @Injectable()
 export class UcpMobileSlotsDefinitionRepository {
 	constructor(protected instantConfig: InstantConfigService) {}
+
+	private incontentAnchorsSelector = '.mw-parser-output > h2,.mw-parser-output > section > h3';
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
 		if (!this.isTopLeaderboardApplicable()) {
@@ -66,12 +62,16 @@ export class UcpMobileSlotsDefinitionRepository {
 		const slotName = 'top_boxad';
 		const wrapperClassList = ['ad-slot-placeholder', 'top-boxad', 'is-loading'];
 		const placeholderConfig = context.get(`slots.${slotName}.placeholder`);
+		const isHome = context.get('wiki.targeting.pageType') === 'home';
 
 		return {
 			slotCreatorConfig: {
 				slotName,
 				placeholderConfig,
-				...this.slotCreatorInsertionParams(),
+				anchorSelector: isHome
+					? '.mobile-main-page__wiki-description'
+					: this.incontentAnchorsSelector,
+				insertMethod: isHome ? 'after' : 'before',
 				classList: ['hide', 'ad-slot'],
 				avoidConflictWith: ['.ntv-ad'],
 			},
@@ -82,22 +82,6 @@ export class UcpMobileSlotsDefinitionRepository {
 				this.pushWaitingSlot(slotName);
 			},
 		};
-	}
-
-	private slotCreatorInsertionParams(): SlotCreatorInsertionParamsType {
-		let params: SlotCreatorInsertionParamsType = {
-			anchorSelector: '.mw-parser-output > h2',
-			insertMethod: 'before',
-		};
-
-		if (context.get('wiki.targeting.pageType') === 'home') {
-			params = {
-				anchorSelector: '.mobile-main-page__wiki-description',
-				insertMethod: 'after',
-			};
-		}
-
-		return params;
 	}
 
 	getIncontentBoxadConfig(): SlotSetupDefinition {
@@ -114,7 +98,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			slotCreatorConfig: {
 				slotName,
 				placeholderConfig,
-				anchorSelector: '.mw-parser-output > h2',
+				anchorSelector: this.incontentAnchorsSelector,
 				avoidConflictWith: [
 					'.ad-slot-placeholder',
 					'.ad-slot',
@@ -167,7 +151,7 @@ export class UcpMobileSlotsDefinitionRepository {
 		const adSlotCategory = 'incontent';
 		const icbPlaceholderConfig: RepeatableSlotPlaceholderConfig = {
 			classList: ['ad-slot-placeholder', 'incontent-boxad', 'is-loading'],
-			anchorSelector: '.mw-parser-output > h2',
+			anchorSelector: this.incontentAnchorsSelector,
 			insertMethod: 'before',
 			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder', 'incontent-boxad'],
 			repeatStart: 1,
