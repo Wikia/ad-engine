@@ -13,7 +13,8 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 			'omni-skybox-nav': {
 				code: 'omni-skybox-nav',
 				defaultSizes: [
-					[6, 6],
+					[728, 90],
+					[970, 66],
 					[5, 5],
 				],
 				targeting: {
@@ -22,7 +23,12 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 			},
 			'skybox-nav': {
 				code: 'skybox-nav',
-				defaultSizes: [[6, 6], [5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
+				defaultSizes: [
+					[728, 90],
+					[970, 66],
+					[5, 5],
+					universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop,
+				],
 				targeting: {
 					loc: 'top',
 					pos_nr: 'nav',
@@ -108,7 +114,8 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 			'mobile-omni-skybox-nav': {
 				code: 'mobile-omni-skybox-nav',
 				defaultSizes: [
-					[6, 6],
+					[320, 100],
+					[320, 50],
 					[5, 5],
 				],
 				targeting: {
@@ -117,7 +124,12 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 			},
 			'mobile-skybox-nav': {
 				code: 'mobile-skybox-nav',
-				defaultSizes: [[6, 6], [5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
+				defaultSizes: [
+					[320, 100],
+					[320, 50],
+					[5, 5],
+					universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile,
+				],
 				targeting: {
 					pos_nr: 'nav',
 					loc: 'top',
