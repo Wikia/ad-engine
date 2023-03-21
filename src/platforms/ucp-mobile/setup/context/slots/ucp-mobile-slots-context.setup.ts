@@ -67,12 +67,9 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			// as this slot can be repeated many, it uses bidderAlias mobile_in_content
 			incontent_boxad_1: {
 				adProduct: 'incontent_boxad_1',
-				avoidConflictWith: '.ad-slot,#incontent_player',
 				bidderAlias: 'mobile_in_content',
-				defaultClasses: ['hide', 'ad-slot'],
 				group: 'HiVi',
 				options: {},
-				parentContainerSelector: '.incontent-boxad',
 				sizes: [
 					{
 						viewportSize: [BIG_VIEWPORT_SIZE.width, BIG_VIEWPORT_SIZE.height],
@@ -92,9 +89,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'middle',
 					pos: ['incontent_boxad'],
-				},
-				placeholder: {
-					createLabel: true,
 				},
 			},
 			incontent_player: {

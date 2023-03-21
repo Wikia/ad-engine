@@ -92,20 +92,15 @@ export class UcpMobileSlotsDefinitionRepository {
 
 		const slotNamePrefix = 'incontent_boxad_';
 		const slotName = `${slotNamePrefix}1`;
-		const wrapperClassList = ['ad-slot-placeholder', 'incontent-boxad', 'is-loading'];
-		const placeholderConfig = context.get(`slots.${slotName}.placeholder`);
 
 		return {
 			slotCreatorConfig: {
 				slotName,
-				placeholderConfig,
+				placeholderConfig: {
+					createLabel: true,
+				},
 				anchorSelector: this.incontentAnchorsSelector,
-				avoidConflictWith: [
-					'.ad-slot-placeholder',
-					'.ad-slot',
-					'.incontent-boxad',
-					'#incontent_player',
-				],
+				avoidConflictWith: ['.ad-slot', '#incontent_player'],
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
 				repeat: {
@@ -116,13 +111,20 @@ export class UcpMobileSlotsDefinitionRepository {
 						adProduct: '{slotConfig.slotName}',
 						'targeting.rv': '{slotConfig.repeat.index}',
 						'targeting.pos': ['incontent_boxad'],
-						'placeholder.createLabel': false,
+					},
+					updateCreator: {
+						anchorSelector: '.incontent-boxad',
+						anchorPosition: 'belowScrollPosition',
+						insertMethod: 'append',
+						placeholderConfig: {
+							createLabel: false,
+						},
 					},
 					insertBelowScrollPosition: true,
 				},
 			},
 			slotCreatorWrapperConfig: {
-				classList: wrapperClassList,
+				classList: ['ad-slot-placeholder', 'incontent-boxad', 'is-loading'],
 			},
 			activator: () => {
 				communicationService.on(

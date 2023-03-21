@@ -1,7 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import {
 	AdStackPayload,
-	insertMethodType,
 	SlotPlaceholderContextConfig,
 	SlotTargeting,
 	slotTweaker,
@@ -18,8 +17,9 @@ export interface RepeatConfig {
 	slotNamePattern: string;
 	limit: number;
 	updateProperties: Dictionary;
-	additionalClasses?: string;
+	updateCreator?: Dictionary;
 	disablePushOnScroll?: boolean;
+	// ToDo: delete
 	insertBelowScrollPosition?: boolean;
 }
 
@@ -36,7 +36,6 @@ export interface SlotConfig {
 	insertBeforeSelector?: string;
 	insertAfterSelector?: string;
 	parentContainerSelector?: string;
-	insertIntoParentContainerMethod?: insertMethodType;
 
 	targeting: SlotTargeting;
 	videoAdUnit?: string;
@@ -46,7 +45,6 @@ export interface SlotConfig {
 	videoSizes?: number[][];
 	defaultSizes?: any;
 	viewportConflicts?: string[];
-	insertBelowFirstViewport?: boolean;
 	avoidConflictWith?: string;
 	outOfPage?: any;
 	isVideo?: boolean;
@@ -650,14 +648,6 @@ export class AdSlot {
 		if (eventName !== null) {
 			this.emit(AdSlot.CUSTOM_EVENT, { status: eventName });
 		}
-	}
-
-	/**
-	 * Return names of slots which should be injected into DOM
-	 * and pushed into ad stack queue after slot is created.
-	 */
-	getSlotsToPushAfterCreated(): string[] {
-		return context.get(`events.pushAfterCreated.${this.getSlotName()}`) || [];
 	}
 
 	/**

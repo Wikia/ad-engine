@@ -1,5 +1,6 @@
+import { communicationService } from '@ad-engine/communication';
 import { Injectable } from '@wikia/dependency-injection';
-import { RepeatConfig } from '../models';
+import { AdSlot, RepeatConfig } from '../models';
 import {
 	AD_LABEL_CLASS,
 	getTopOffset,
@@ -9,11 +10,12 @@ import {
 	logger,
 } from '../utils';
 import { context } from './context-service';
-export type insertMethodType = 'append' | 'prepend' | 'after' | 'before';
+import { SlotRepeater } from './slot-repeater';
+export type InsertMethodType = 'append' | 'prepend' | 'after' | 'before';
 
 export interface SlotCreatorConfig {
 	slotName: string;
-	insertMethod: insertMethodType;
+	insertMethod: InsertMethodType;
 	anchorSelector: string;
 	/**
 	 * @default firstViable
@@ -39,6 +41,8 @@ const groupName = 'slot-creator';
 
 @Injectable()
 export class SlotCreator {
+	private slotRepeater = new SlotRepeater();
+
 	createSlot(
 		slotLooseConfig: SlotCreatorConfig,
 		wrapperLooseConfig?: SlotCreatorWrapperConfig,
@@ -61,7 +65,7 @@ export class SlotCreator {
 		}
 
 		if (slotConfig.repeat) {
-			context.set(`slots.${slotConfig.slotName}.repeat`, slotConfig.repeat);
+			this.setupSlotRepeat(slotConfig);
 		}
 
 		return slot;
@@ -166,6 +170,45 @@ export class SlotCreator {
 		div.innerText = getTranslation('advertisement');
 		div.dataset.slotName = slotName;
 		placeholder.appendChild(div);
+	}
+
+	private setupSlotRepeat(slotConfig: Required<SlotCreatorConfig>): void {
+		communicationService.onSlotEvent(
+			AdSlot.SLOT_RENDERED_EVENT,
+			({ slot }) => {
+				logger(groupName, `Repeating: ${slotConfig.slotName}`);
+
+				slotConfig.repeat.index += 1;
+
+				const newSlotName = this.slotRepeater.repeatSlot(slot, slotConfig.repeat);
+
+				if (!newSlotName) {
+					return;
+				}
+
+				const updatedSlotConfig = {
+					...slotConfig,
+					...(slotConfig.repeat.updateCreator || {}),
+					slotName: newSlotName,
+				};
+
+				try {
+					this.createSlot(updatedSlotConfig);
+				} catch (e) {
+					logger(groupName, `There is not enough space for ${newSlotName}`);
+
+					return;
+				}
+
+				logger(groupName, 'Injecting slot:', newSlotName);
+
+				if (slotConfig.repeat.disablePushOnScroll !== true) {
+					context.push('events.pushOnScroll.ids', newSlotName);
+				}
+			},
+			slotConfig.slotName,
+			true,
+		);
 	}
 
 	private throwNoPlaceToInsertError(slotName: string): void {

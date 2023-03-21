@@ -7,7 +7,6 @@ import {
 	context,
 	messageBus,
 	registerCustomAdLoader,
-	slotRepeater,
 	slotService,
 	slotTweaker,
 	templateService,
@@ -63,7 +62,6 @@ export class AdEngine {
 		this.runAdQueue();
 
 		scrollListener.init();
-		slotRepeater.init();
 		slotRefresher.init();
 
 		this.setupPushOnScrollQueue();

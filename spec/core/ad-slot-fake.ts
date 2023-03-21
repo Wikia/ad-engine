@@ -104,9 +104,6 @@ export const adSlotFake = {
 	setOffsetTop(offset): void {
 		offsetTop = offset;
 	},
-	getSlotsToPushAfterCreated(): [] {
-		return [];
-	},
 	getSlotsToInjectAfterRendered(): [] {
 		return [];
 	},

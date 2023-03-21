@@ -3,32 +3,14 @@ import { AdSlot, SlotConfig } from '../models';
 import { logger } from '../utils';
 import { context } from './context-service';
 import { SlotCreator, SlotCreatorConfig } from './slot-creator';
-import { slotService } from './slot-service';
 
 const logGroup = 'slot-injector';
 
+// ToDo: get rid of this class
 class SlotInjector {
 	private slotCreator = new SlotCreator();
 
 	constructor() {
-		communicationService.on(
-			eventsRepository.AD_ENGINE_SLOT_ADDED,
-			({ slot: adSlot }) => {
-				const slotsToPush: string[] = adSlot.getSlotsToPushAfterCreated();
-
-				slotsToPush.forEach((slotName: string) => {
-					const slotElement = this.inject(slotName, true);
-
-					if (slotElement) {
-						slotService.pushSlot(slotElement);
-					} else {
-						logger(logGroup, `Could not push slot ${slotName}.`);
-					}
-				});
-			},
-			false,
-		);
-
 		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
 			communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot: adSlot }) => {
 				const slotsToInject: string[] = adSlot.getSlotsToInjectAfterRendered();
@@ -40,21 +22,15 @@ class SlotInjector {
 		});
 	}
 
-	inject(slotName: string, disablePushOnScroll?: boolean): HTMLElement | null {
+	inject(slotName: string): HTMLElement | null {
 		let container: HTMLElement;
 		const config: SlotConfig = context.get(`slots.${slotName}`);
 		const slotConfig: SlotCreatorConfig = {
 			slotName,
 			anchorSelector: config.parentContainerSelector || config.insertBeforeSelector,
-			insertMethod: config.parentContainerSelector
-				? config.insertIntoParentContainerMethod || 'append'
-				: 'before',
+			insertMethod: config.parentContainerSelector ? 'append' : 'before',
 			placeholderConfig: config.placeholder,
 		};
-
-		if (config.insertBelowFirstViewport) {
-			slotConfig.anchorPosition = 'belowFirstViewport';
-		}
 
 		if (config.repeat && config.repeat.insertBelowScrollPosition) {
 			slotConfig.anchorPosition = 'belowScrollPosition';
@@ -72,21 +48,13 @@ class SlotInjector {
 			return null;
 		}
 
-		if (this.getDisablePushOnScroll(disablePushOnScroll, config) === false) {
+		if (!!config?.repeat.disablePushOnScroll === false) {
 			context.push('events.pushOnScroll.ids', slotName);
 		}
 
 		logger(logGroup, 'Inject slot', slotName);
 
 		return container;
-	}
-
-	private getDisablePushOnScroll(input: boolean | undefined, config: SlotConfig): boolean {
-		if (typeof input === 'boolean') {
-			return input;
-		}
-
-		return config.repeat ? !!config.repeat.disablePushOnScroll : false;
 	}
 }
 

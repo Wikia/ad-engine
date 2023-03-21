@@ -1,79 +1,52 @@
-import { communicationService } from '@ad-engine/communication';
-import { AdSlot } from '../models';
+import { AdSlot, RepeatConfig } from '../models';
 import { generateUniqueId, logger, stringBuilder } from '../utils';
 import { context } from './context-service';
-import { slotInjector } from './slot-injector';
 import { targetingService } from './targeting-service';
 
 const logGroup = 'slot-repeater';
 
-interface SlotDefinition {
-	[key: string]: any;
-}
-
-function buildString(pattern: string, definition: SlotDefinition): string {
-	return stringBuilder.build(pattern, {
-		slotConfig: definition,
-	});
-}
-
-function repeatSlot(adSlot: AdSlot): boolean {
-	const newSlotDefinition = adSlot.getCopy();
-	const repeatConfig = newSlotDefinition.repeat;
-
-	repeatConfig.index += 1;
-
-	const slotName = buildString(repeatConfig.slotNamePattern, newSlotDefinition);
-
-	newSlotDefinition.slotName = slotName;
-
-	if (repeatConfig.limit !== null && repeatConfig.index > repeatConfig.limit) {
-		logger(logGroup, `Limit reached for ${slotName}`);
-
-		return false;
-	}
-
-	context.set(`slots.${slotName}`, newSlotDefinition);
-
-	if (repeatConfig.updateProperties) {
-		Object.keys(repeatConfig.updateProperties).forEach((key) => {
-			const value =
-				typeof repeatConfig.updateProperties[key] === 'string'
-					? buildString(repeatConfig.updateProperties[key], newSlotDefinition)
-					: repeatConfig.updateProperties[key];
-
-			if (key.startsWith('targeting.')) {
-				targetingService.set(key.replace('targeting.', ''), value, slotName);
-			} else {
-				context.set(`slots.${slotName}.${key}`, value);
-			}
+export class SlotRepeater {
+	repeatSlot(adSlot: AdSlot, repeatConfig: RepeatConfig): string {
+		const newSlotDefinition = adSlot.getCopy();
+		const slotName = stringBuilder.build(repeatConfig.slotNamePattern, {
+			slotConfig: {
+				...newSlotDefinition,
+				repeat: repeatConfig,
+			},
 		});
+
+		newSlotDefinition.slotName = slotName;
+
+		if (repeatConfig.limit !== null && repeatConfig.index > repeatConfig.limit) {
+			logger(logGroup, `Limit reached for ${slotName}`);
+
+			return;
+		}
+
+		context.set(`slots.${slotName}`, newSlotDefinition);
+		context.set(`slots.${slotName}.uid`, generateUniqueId());
+
+		if (repeatConfig.updateProperties) {
+			Object.keys(repeatConfig.updateProperties).forEach((key) => {
+				let value = repeatConfig.updateProperties[key];
+
+				if (typeof value === 'string') {
+					value = stringBuilder.build(value, {
+						slotConfig: {
+							...newSlotDefinition,
+							repeat: repeatConfig,
+						},
+					});
+				}
+
+				if (key.startsWith('targeting.')) {
+					targetingService.set(key.replace('targeting.', ''), value, slotName);
+				} else {
+					context.set(`slots.${slotName}.${key}`, value);
+				}
+			});
+		}
+
+		return slotName;
 	}
-
-	context.set(`slots.${slotName}.uid`, generateUniqueId());
-
-	const container = slotInjector.inject(slotName);
-	const additionalClasses = repeatConfig.additionalClasses || '';
-
-	if (container !== null) {
-		container.className = `${adSlot.getElement().className} ${additionalClasses}`;
-
-		return true;
-	}
-
-	return false;
 }
-
-class SlotRepeater {
-	init(): void {
-		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot }) => {
-			if (slot.isEnabled() && slot.isRepeatable()) {
-				return repeatSlot(slot);
-			}
-
-			return false;
-		});
-	}
-}
-
-export const slotRepeater = new SlotRepeater();

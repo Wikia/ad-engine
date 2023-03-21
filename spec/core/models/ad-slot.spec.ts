@@ -180,35 +180,6 @@ describe('ad-slot', () => {
 		});
 	});
 
-	describe('getSlotsToPushAfterCreated', () => {
-		let adSlot: AdSlot;
-
-		beforeEach(() => {
-			adSlot = createAdSlot('top_leaderboard');
-		});
-
-		afterEach(() => {
-			context.remove('events.pushAfterCreated');
-		});
-
-		it('should return an empty array if slots are not defined', () => {
-			context.remove('events.pushAfterCreated');
-
-			const result = adSlot.getSlotsToPushAfterCreated();
-
-			assert.deepEqual(result, []);
-		});
-
-		it('should return slots defined in context at events.pushAfterCreated.top_leaderboard', () => {
-			const expectedValue = ['foo', 'bar'];
-			context.set('events.pushAfterCreated.top_leaderboard', ['foo', 'bar']);
-
-			const result = adSlot.getSlotsToPushAfterCreated();
-
-			assert.deepEqual(result, expectedValue);
-		});
-	});
-
 	describe('getSlotsToInjectAfterRendered', () => {
 		let adSlot: AdSlot;
 

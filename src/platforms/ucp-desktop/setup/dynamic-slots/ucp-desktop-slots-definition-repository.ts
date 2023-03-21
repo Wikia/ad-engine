@@ -76,7 +76,6 @@ export class UcpDesktopSlotsDefinitionRepository {
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
 				repeat: {
-					additionalClasses: 'hide',
 					index: 1,
 					limit: 20,
 					slotNamePattern: `${slotName}_{slotConfig.repeat.index}`,
@@ -109,7 +108,6 @@ export class UcpDesktopSlotsDefinitionRepository {
 				insertMethod: 'append',
 				classList: ['hide', 'ad-slot'],
 				repeat: {
-					additionalClasses: 'hide',
 					index: 1,
 					limit: 20,
 					slotNamePattern: `${slotNamePrefix}{slotConfig.repeat.index}`,
