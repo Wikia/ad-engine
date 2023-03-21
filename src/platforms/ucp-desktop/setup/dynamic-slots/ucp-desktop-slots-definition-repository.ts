@@ -152,10 +152,11 @@ export class UcpDesktopSlotsDefinitionRepository {
 	}
 
 	getIncontentPlayerConfig(): SlotSetupDefinition {
+		const slotName = 'incontent_player';
+
 		if (!this.isIncontentPlayerApplicable()) {
 			return;
 		}
-		const slotName = 'incontent_player';
 
 		return {
 			slotCreatorConfig: {
@@ -165,11 +166,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 				insertMethod: 'before',
 			},
 			activator: () => {
-				if (context.get('services.anyclip.enabled')) {
-					context.push('state.adStack', { id: slotName });
-				} else {
-					context.push('events.pushOnScroll.ids', slotName);
-				}
+				context.push('state.adStack', { id: slotName });
 			},
 		};
 	}

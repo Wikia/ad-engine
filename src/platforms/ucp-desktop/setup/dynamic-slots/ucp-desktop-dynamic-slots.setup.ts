@@ -11,9 +11,6 @@ import {
 	context,
 	DiProcess,
 	eventsRepository,
-	fillerService,
-	PorvataFiller,
-	PorvataGamParams,
 	slotService,
 	universalAdPackage,
 } from '@wikia/ad-engine';
@@ -33,7 +30,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	execute(): void {
 		this.injectSlots();
 		this.configureTopLeaderboardAndCompanions();
-		this.configureIncontentPlayerFiller();
 		this.configureFloorAdhesionCodePriority();
 		this.registerAdPlaceholderService();
 	}
@@ -108,18 +104,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
 			);
 		}
-	}
-
-	private configureIncontentPlayerFiller(): void {
-		const icpSlotName = 'incontent_player';
-		const fillerOptions: Partial<PorvataGamParams> = {
-			enableInContentFloating: true,
-		};
-
-		context.set(`slots.${icpSlotName}.customFiller`, 'porvata');
-		context.set(`slots.${icpSlotName}.customFillerOptions`, fillerOptions);
-
-		fillerService.register(new PorvataFiller());
 	}
 
 	private configureFloorAdhesionCodePriority(): void {

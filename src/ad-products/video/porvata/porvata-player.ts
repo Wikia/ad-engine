@@ -11,8 +11,6 @@ const VIDEO_FULLSCREEN_CLASS_NAME = 'video-player-fullscreen';
 const STOP_SCROLLING_CLASS_NAME = 'stop-scrolling';
 
 export const DEFAULT_VOLUME = 0.75;
-export const DEFAULT_VIDEO_ASPECT_RATIO = 640 / 360;
-export const FLOATING_VIDEO_ASPECT_RATIO = 640 / 480;
 
 export class PorvataPlayer {
 	/**
@@ -20,8 +18,6 @@ export class PorvataPlayer {
 	 * It's used in old PorvataListener only
 	 */
 	container: HTMLElement;
-	// @TODO: Consider better place for isFloating flag
-	isFloating = false;
 
 	private state: VideoState = null;
 	private playCounter: number;
@@ -229,12 +225,6 @@ export class PorvataPlayer {
 
 	resume(): void {
 		this.adsManager.resume();
-	}
-
-	rewind(): void {
-		this.setAutoPlay(false);
-		this.dispatchEvent('wikiaAdRestart');
-		this.play();
 	}
 
 	pause(): void {

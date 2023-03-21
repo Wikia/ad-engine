@@ -23,8 +23,6 @@ export function getAdProductInfo(slotName, loadedTemplate, loadedProduct): AdPro
 
 	if (FAN_TAKEOVER_TYPES.includes(loadedProduct)) {
 		product = `UAP_${loadedTemplate.toUpperCase()}`;
-	} else if (loadedProduct === 'incontent_veles') {
-		product = 'OUTSTREAM';
 	}
 
 	return {

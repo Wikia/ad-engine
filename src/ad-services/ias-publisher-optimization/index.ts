@@ -19,7 +19,7 @@ const brandSafetyValuesLevel: Dictionary<number> = {
 };
 
 type BrandSafetyValue = 'veryLow' | 'low' | 'medium' | 'high';
-type BrandSafetyKey = typeof brandSafetyKeys[number];
+type BrandSafetyKey = (typeof brandSafetyKeys)[number];
 type BrandSafetyData = Partial<Record<BrandSafetyKey, BrandSafetyValue>>;
 
 interface IasTargetingSlotData {
