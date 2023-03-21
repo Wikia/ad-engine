@@ -23,7 +23,11 @@ export class GamespotTargetingSetup implements DiProcess {
 			return 'ent';
 		}
 
-		if (utagData.siteSection === 'news' || utagData.siteSection === 'reviews') {
+		if (
+			utagData.siteSection === 'news' ||
+			utagData.siteSection === 'reviews' ||
+			utagData.siteSection === 'galleries'
+		) {
 			return this.getVerticalNameBasedOnTopicName(utagData);
 		}
 

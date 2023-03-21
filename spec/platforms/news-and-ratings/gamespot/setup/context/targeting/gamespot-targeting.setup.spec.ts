@@ -130,6 +130,30 @@ describe('Gamespot Targeting Setup', () => {
 			expect(verticalName).to.equal('ent');
 		});
 
+		it('returns "gaming" on siteSection=galleries when topicName array include "Games"', () => {
+			// given
+			const gamespotTargetingSetup = new GamespotTargetingSetup();
+			window.utag_data = { siteSection: 'galleries', topicName: ['Games'] };
+
+			//when
+			const verticalName = gamespotTargetingSetup.getVerticalName();
+
+			//then
+			expect(verticalName).to.equal('gaming');
+		});
+
+		it('returns "ent" on siteSection=galleries when topicName array does not include "Games"', () => {
+			// given
+			const gamespotTargetingSetup = new GamespotTargetingSetup();
+			window.utag_data = { siteSection: 'galleries', topicName: ['TV'] };
+
+			//when
+			const verticalName = gamespotTargetingSetup.getVerticalName();
+
+			//then
+			expect(verticalName).to.equal('ent');
+		});
+
 		it('returns "gaming" on siteSection=reviews when topicName is not available', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
