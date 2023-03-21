@@ -250,6 +250,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 		};
 
 		slotsContext.setupSlotVideoContext();
+		slotsContext.setupCustomPlayerAdUnit();
 
 		context.set('slots', slots);
 		context.set('slots.featured.videoAdUnit', context.get('vast.adUnitIdWithDbName'));

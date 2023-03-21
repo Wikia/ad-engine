@@ -14,10 +14,21 @@ const SUBSCRIBE_FUNC_NAME = 'lreSubscribe';
 const isSubscribeReady = () => typeof window[SUBSCRIBE_FUNC_NAME] !== 'undefined';
 
 export class Anyclip extends BaseServiceSetup {
-	private pubname: string;
-	private widgetname: string;
-	private libraryUrl: string;
-	private isApplicable: () => boolean | null;
+	private get pubname(): string {
+		return context.get('services.anyclip.pubname') || 'fandomcom';
+	}
+	private get widgetname(): string {
+		return context.get('services.anyclip.widgetname') || '001w000001Y8ud2_19593';
+	}
+	private get libraryUrl(): string {
+		return (
+			context.get('services.anyclip.libraryUrl') ||
+			'//player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/lre.js'
+		);
+	}
+	private get isApplicable(): () => boolean | null {
+		return context.get('services.anyclip.isApplicable');
+	}
 	private tracker: VideoTracker;
 
 	call() {
@@ -26,7 +37,9 @@ export class Anyclip extends BaseServiceSetup {
 			return;
 		}
 
-		this.setupConfig();
+		utils.logger(logGroup, 'initialized', this.pubname, this.widgetname, this.libraryUrl);
+
+		this.tracker = new AnyclipTracker(SUBSCRIBE_FUNC_NAME);
 
 		if (context.get('services.anyclip.loadOnPageLoad')) {
 			this.loadPlayerAsset();
@@ -34,7 +47,10 @@ export class Anyclip extends BaseServiceSetup {
 		}
 
 		if (context.get('custom.hasIncontentPlayer')) {
-			this.loadOnUapReadyStatus();
+			communicationService.on(
+				eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+				this.loadOnUapStatus.bind(this),
+			);
 		}
 	}
 
@@ -43,18 +59,6 @@ export class Anyclip extends BaseServiceSetup {
 			pubname: this.pubname,
 			widgetname: this.widgetname,
 		};
-	}
-
-	private setupConfig() {
-		this.pubname = context.get('services.anyclip.pubname') || 'fandomcom';
-		this.widgetname = context.get('services.anyclip.widgetname') || '001w000001Y8ud2_19593';
-		this.libraryUrl =
-			context.get('services.anyclip.libraryUrl') ||
-			'//player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/lre.js';
-		this.isApplicable = context.get('services.anyclip.isApplicable');
-		this.tracker = new AnyclipTracker(SUBSCRIBE_FUNC_NAME);
-
-		utils.logger(logGroup, 'initialized', this.pubname, this.widgetname, this.libraryUrl);
 	}
 
 	private loadPlayerAsset(playerContainer: HTMLElement = null) {
@@ -86,22 +90,17 @@ export class Anyclip extends BaseServiceSetup {
 			});
 	}
 
-	private loadOnUapReadyStatus() {
-		communicationService.on(
-			eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
-			({ isLoaded, adProduct }: UapLoadStatus) => {
-				if (!isLoaded && adProduct !== 'ruap') {
-					if (!context.get('services.anyclip.latePageInject')) {
-						this.initIncontentPlayer();
-						return;
-					}
+	private loadOnUapStatus({ isLoaded, adProduct }: UapLoadStatus) {
+		if (!isLoaded && adProduct !== 'ruap') {
+			if (!context.get('services.anyclip.latePageInject')) {
+				this.initIncontentPlayer();
+				return;
+			}
 
-					communicationService.on(eventsRepository.ANYCLIP_LATE_INJECT, () => {
-						this.initIncontentPlayer();
-					});
-				}
-			},
-		);
+			communicationService.on(eventsRepository.ANYCLIP_LATE_INJECT, () => {
+				this.initIncontentPlayer();
+			});
+		}
 	}
 
 	private initIncontentPlayer() {

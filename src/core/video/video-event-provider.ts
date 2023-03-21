@@ -5,9 +5,6 @@ import { AdSlot } from '../models';
 import { context, slotService, targetingService } from '../services';
 
 export class VideoEventProvider {
-	/**
-	 * Prepares data object for video events tracking
-	 */
 	static getEventData(videoData: VideoData): VideoEventData {
 		const now: Date = new Date();
 		const slot: AdSlot = slotService.get(videoData.position);
@@ -40,9 +37,6 @@ export class VideoEventProvider {
 		};
 	}
 
-	/**
-	 * Emit single event
-	 */
 	static emit(eventInfo: VideoEventData): void {
 		if (!eventInfo.ad_product || !eventInfo.player || !eventInfo.event_name) {
 			return;
