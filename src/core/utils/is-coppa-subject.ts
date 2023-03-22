@@ -8,9 +8,7 @@ interface AgeGateResult {
 
 export function isCoppaSubject(): boolean {
 	try {
-		const localStorageValue = localStorage.getItem('age_gate');
-		const ageGateResult = JSON.parse(localStorageValue) as AgeGateResult;
-		console.log('AgeGateResult: ', ageGateResult);
+		const ageGateResult = JSON.parse(localStorage.getItem('age_gate')) as AgeGateResult;
 		return ageGateResult?.dialogShown
 			? !ageGateResult.adult
 			: context.get('wiki.targeting.directedAtChildren');
