@@ -4,6 +4,7 @@ import {
 	BiddersStateSetup,
 	bootstrapAndGetConsent,
 	InstantConfigSetup,
+	LoadTimesSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
@@ -47,6 +48,7 @@ export class MetacriticNeutronPlatform {
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
 			TrackingParametersSetup,
+			LoadTimesSetup,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			NewsAndRatingsTargetingSetup,
