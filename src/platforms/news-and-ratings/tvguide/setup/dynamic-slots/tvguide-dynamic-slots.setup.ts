@@ -9,17 +9,19 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 
+const logGroup = 'dynamic-slots';
+
 export class TvGuideDynamicSlotsSetup implements DiProcess {
 	private repeatedSlotsCounter: Dictionary<number> = {};
+	private repeatedSlotsRendered: string[] = [];
+	private repeatedSlotsQueue: Dictionary<[string, string]> = {};
 
 	execute(): void {
 		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
-			console.log('spa stack start');
 			communicationService.on(
 				eventsRepository.PLATFORM_AD_PLACEMENT_READY,
 				({ placementId }) => {
-					utils.logger('spa setup', 'Ad placement rendered', placementId);
-					console.log('spa', this.repeatedSlotsCounter);
+					utils.logger(logGroup, 'Ad placement rendered', placementId);
 					if (this.repeatedSlotsCounter[placementId]) {
 						this.scheduleRepeatedSlotInjection(placementId);
 						return;
@@ -30,13 +32,24 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 				},
 				false,
 			);
+
+			communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ adSlotName }) => {
+				this.repeatedSlotsRendered.push(adSlotName);
+
+				if (this.repeatedSlotsQueue[adSlotName]) {
+					const [nextSlotName, placementId] = this.repeatedSlotsQueue[adSlotName];
+					insertSlots([this.getSlotConfig(nextSlotName, placementId)]);
+				}
+			});
 		});
 
 		communicationService.on(
 			eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE,
 			() => {
-				console.log('spa cleaning');
+				utils.logger(logGroup, 'Cleaning slots repositories');
 				this.repeatedSlotsCounter = {};
+				this.repeatedSlotsRendered = [];
+				this.repeatedSlotsQueue = {};
 			},
 			false,
 		);
@@ -56,24 +69,23 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 			counter === 1
 				? [placementId, `${placementId}-2`]
 				: [`${placementId}-${counter}`, `${placementId}-${counter + 1}`];
-		console.log('spa schedule', placementId, currentSlotName, nextSlotName);
-		communicationService.onSlotEvent(
-			AdSlot.SLOT_RENDERED_EVENT,
-			() => {
-				insertSlots([this.getSlotConfig(nextSlotName, placementId)]);
-			},
-			currentSlotName,
-			true,
-		);
 
 		this.repeatedSlotsCounter[placementId] = counter + 1;
+
+		if (this.repeatedSlotsRendered.includes(currentSlotName)) {
+			insertSlots([this.getSlotConfig(nextSlotName, placementId)]);
+			utils.logger(logGroup, 'Injecting repeated slot', nextSlotName);
+		} else {
+			this.repeatedSlotsQueue[currentSlotName] = [nextSlotName, placementId];
+			utils.logger(logGroup, 'Scheduling repeated slot injection', nextSlotName);
+		}
 	}
 
 	private refreshStaleSlots(): void {
 		const domSlotsElements = document.querySelectorAll('div[data-slot-loaded="true"].gpt-ad');
 
 		domSlotsElements.forEach((slot) => {
-			console.log('spa reinjecting', slot.getAttribute('data-ad'));
+			utils.logger(logGroup, 'Reinjecting stale slot', slot.getAttribute('data-ad'));
 			communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
 				placementId: slot.getAttribute('data-ad'),
 			});
@@ -90,7 +102,7 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 			document.querySelector(`div[data-ad="${baseSlotName || slotName}"]:not(.gpt-ad)`);
 
 		if (!domSlotElement || !this.isSlotApplicable(slotName)) {
-			utils.logger('setup', 'Slot is not applicable or placement not exists', slotName);
+			utils.logger(logGroup, 'Slot is not applicable or placement not exists', slotName);
 			return null;
 		}
 
