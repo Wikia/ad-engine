@@ -2,7 +2,7 @@ import { context } from '../services';
 
 interface AgeGateResult {
 	dialogShown: boolean;
-	adult: boolean;
+	adult?: boolean;
 	timestamp: number;
 }
 
