@@ -35,7 +35,6 @@ export interface SlotConfig {
 	slotNameSuffix: string;
 	insertBeforeSelector?: string;
 	insertAfterSelector?: string;
-	parentContainerSelector?: string;
 
 	targeting: SlotTargeting;
 	videoAdUnit?: string;
@@ -398,10 +397,6 @@ export class AdSlot {
 		return this.slotViewed;
 	}
 
-	isRepeatable(): boolean {
-		return !!this.config.repeat;
-	}
-
 	isOutOfPage(): boolean {
 		return !!this.config.outOfPage;
 	}
@@ -648,14 +643,6 @@ export class AdSlot {
 		if (eventName !== null) {
 			this.emit(AdSlot.CUSTOM_EVENT, { status: eventName });
 		}
-	}
-
-	/**
-	 * Return names of slots which should be injected into DOM
-	 * after slot is rendered.
-	 */
-	getSlotsToInjectAfterRendered(): string[] {
-		return context.get(`events.pushAfterRendered.${this.getSlotName()}`) || [];
 	}
 
 	/**

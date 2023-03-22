@@ -114,8 +114,8 @@ export class UcpDesktopSlotsDefinitionRepository {
 					updateProperties: {
 						adProduct: '{slotConfig.slotName}',
 						'targeting.rv': '{slotConfig.repeat.index}',
+						'targeting.pos': ['incontent_boxad'],
 					},
-					insertBelowScrollPosition: false,
 					disablePushOnScroll: true,
 				},
 			},

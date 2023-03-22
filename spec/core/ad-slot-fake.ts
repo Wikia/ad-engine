@@ -104,9 +104,6 @@ export const adSlotFake = {
 	setOffsetTop(offset): void {
 		offsetTop = offset;
 	},
-	getSlotsToInjectAfterRendered(): [] {
-		return [];
-	},
 	emit(event): void {
 		communicationService.emit(eventsRepository.AD_ENGINE_SLOT_EVENT, {
 			event,

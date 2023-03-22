@@ -74,7 +74,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'incontent_boxad_1',
 				bidderAlias: 'incontent_boxad_1',
 				group: 'HiVi',
-				insertBeforeSelector: '#incontent_boxad_1',
 				recirculationElementSelector: '#recirculation-rail',
 				options: {},
 				sizes: [],
@@ -144,11 +143,11 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 			featured: {
 				adProduct: 'featured',
+				isVideo: true,
 				group: 'VIDEO',
 				videoSizes: [[640, 480]],
 				trackEachStatus: true,
 				trackingKey: 'featured-video',
-				isVideo: true,
 			},
 			ntv_feed_ad: {
 				providers: ['nativo'],

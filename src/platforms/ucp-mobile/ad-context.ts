@@ -34,9 +34,6 @@ export const basicContext = {
 		pushOnScroll: {
 			ids: [],
 		},
-		pushAfterRendered: {
-			top_boxad: [],
-		},
 	},
 	slots: {},
 	vast: {

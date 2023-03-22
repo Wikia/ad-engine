@@ -36,7 +36,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			},
 			top_boxad: {
 				adProduct: 'top_boxad',
-				avoidConflictWith: '.ad-slot,.ntv-ad',
 				bidderAlias: 'mobile_in_content',
 				group: 'MR',
 				options: {},
@@ -60,11 +59,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					loc: 'top',
 					pos: ['top_boxad'],
 				},
-				placeholder: {
-					createLabel: true,
-				},
 			},
-			// as this slot can be repeated many, it uses bidderAlias mobile_in_content
 			incontent_boxad_1: {
 				adProduct: 'incontent_boxad_1',
 				bidderAlias: 'mobile_in_content',
@@ -96,10 +91,9 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				disabled: true,
 				isVideo: true,
 				trackEachStatus: true,
+				// ToDo: remove
 				insertBeforeSelector:
 					'.mw-parser-output > h2,.mw-parser-output > section > h3,.mw-parser-output > section > h4,.mw-parser-output > section > h5',
-				avoidConflictWith: '.ad-slot,#incontent_boxad_1',
-				parentContainerSelector: '.incontent-boxad',
 				group: 'HiVi',
 				defaultSizes: [[1, 1]],
 				targeting: {
@@ -121,13 +115,9 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'footer',
 				},
-				placeholder: {
-					createLabel: true,
-				},
 			},
 			interstitial: {
 				adProduct: 'interstitial',
-				defaultClasses: ['hide'],
 				group: 'IU',
 				options: {},
 				outOfPage: true,
@@ -138,7 +128,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			},
 			floor_adhesion: {
 				adProduct: 'floor_adhesion',
-				defaultClasses: ['hide'],
 				group: 'PF',
 				options: {},
 				outOfPage: false,
@@ -195,9 +184,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'footer',
 					pos: ['bottom_leaderboard', 'mobile_prefooter'],
-				},
-				placeholder: {
-					createLabel: true,
 				},
 			},
 			featured: {

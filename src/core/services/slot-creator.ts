@@ -176,6 +176,10 @@ export class SlotCreator {
 		communicationService.onSlotEvent(
 			AdSlot.SLOT_RENDERED_EVENT,
 			({ slot }) => {
+				if (!slot.isEnabled()) {
+					return;
+				}
+
 				logger(groupName, `Repeating: ${slotConfig.slotName}`);
 
 				slotConfig.repeat.index += 1;

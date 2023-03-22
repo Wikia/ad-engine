@@ -128,7 +128,14 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 		const slotName = 'incontent_player';
 
-		context.push('events.pushAfterRendered.top_boxad', slotName);
+		communicationService.onSlotEvent(
+			AdSlot.SLOT_RENDERED_EVENT,
+			() => {
+				insertSlots([this.slotsDefinitionRepository.getIncontentPlayerConfig()]);
+			},
+			'top_boxad',
+			true,
+		);
 
 		communicationService.on(
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
