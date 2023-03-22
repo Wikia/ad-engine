@@ -7,6 +7,7 @@ import {
 } from '@platforms/shared';
 import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { SlotsConfigurationExtender } from '../../shared/setup/slots.config.extender';
 import {
 	InfiniteScrollObserverSetup,
 	LazyLoadedSlotsContextSetup,
@@ -41,6 +42,7 @@ export class GameSpotPlatform {
 			NewsAndRatingsTargetingSetup,
 			GamespotTargetingSetup,
 			GamespotSlotsContextSetup,
+			SlotsConfigurationExtender,
 			LazyLoadedSlotsContextSetup,
 			GamespotDynamicSlotsSetup,
 			GamespotPrebidConfigSetup,

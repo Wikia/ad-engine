@@ -6,13 +6,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 	execute(): void {
 		const slots = {
 			nav_ad_omni: {
-				defaultSizes: [
-					[728, 90],
-					[970, 66],
-					[5, 5],
-					[6, 6],
-					universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop,
-				],
+				defaultSizes: [[5, 5], [6, 6], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
 				targeting: {
 					pos_nr: 'nav',
 					loc: 'top',
@@ -110,12 +104,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 				},
 			},
 			mobile_nav_ad_omni: {
-				defaultSizes: [
-					[320, 100],
-					[320, 50],
-					[5, 5],
-					[6, 6],
-				],
+				defaultSizes: [[5, 5]],
 				targeting: {
 					pos_nr: 'nav',
 				},
