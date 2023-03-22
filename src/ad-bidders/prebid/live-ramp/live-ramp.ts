@@ -39,7 +39,7 @@ class LiveRamp {
 		return (
 			context.get('bidders.liveRampId.enabled') &&
 			!context.get('options.optOutSale') &&
-			!context.get('wiki.targeting.directedAtChildren')
+			!utils.isCoppaSubject()
 		);
 	}
 }

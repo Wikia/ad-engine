@@ -1,7 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { decorate } from 'core-decorators';
 import { getAdStack } from '../ad-engine';
-import { utils } from '../index';
 import { AdSlot, Dictionary } from '../models';
 import {
 	btfBlockerService,
@@ -14,6 +13,7 @@ import {
 	trackingOptIn,
 } from '../services';
 import { defer, logger } from '../utils';
+import { isCoppaSubject } from '../utils/is-coppa-subject';
 import { GptSizeMap } from './gpt-size-map';
 import { setupGptTargeting } from './gpt-targeting';
 import { Provider } from './provider';
@@ -212,7 +212,7 @@ export class GptProvider implements Provider {
 			restrictDataProcessing: trackingOptIn.isOptOutSale(),
 		};
 
-		if (config.rollout.coppaFlag().gam && utils.targeting.isWikiDirectedAtChildren()) {
+		if (config.rollout.coppaFlag().gam && isCoppaSubject()) {
 			settings.childDirectedTreatment = true;
 		}
 

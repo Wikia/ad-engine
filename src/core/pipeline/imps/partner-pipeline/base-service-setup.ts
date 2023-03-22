@@ -1,5 +1,6 @@
 import { Injectable } from '@wikia/dependency-injection';
 import { context, InstantConfigService } from '../../../services';
+import { isCoppaSubject } from '../../../utils/is-coppa-subject';
 import {
 	PartnerInitializationProcess,
 	PartnerInitializationProcessOptions,
@@ -37,7 +38,7 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 				variableValue &&
 				context.get('options.trackingOptIn') &&
 				!context.get('options.optOutSale') &&
-				!context.get('wiki.targeting.directedAtChildren')
+				!isCoppaSubject()
 			);
 		}
 
