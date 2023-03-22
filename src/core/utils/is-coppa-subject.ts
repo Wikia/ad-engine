@@ -8,10 +8,13 @@ interface AgeGateResult {
 
 export function isCoppaSubject(): boolean {
 	try {
-		const ageGateResult = JSON.parse(localStorage.getItem('age_gate')) as AgeGateResult;
-		return ageGateResult?.dialogShown
-			? !ageGateResult.adult
-			: context.get('wiki.targeting.directedAtChildren');
+		const ageGateResult = localStorage.getItem('age_gate');
+		if (ageGateResult) {
+			const parsedAgeGateResult = JSON.parse(ageGateResult) as AgeGateResult;
+			return parsedAgeGateResult?.dialogShown
+				? !parsedAgeGateResult.adult
+				: context.get('wiki.targeting.directedAtChildren');
+		}
 	} catch (e) {
 		return context.get('wiki.targeting.directedAtChildren');
 	}
