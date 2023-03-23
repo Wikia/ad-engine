@@ -17,7 +17,14 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpMobileSlotsDefinitionRepository {
-	constructor(protected instantConfig: InstantConfigService) {}
+	protected incontentsAnchorSelector = '.mw-parser-output > h2';
+
+	constructor(protected instantConfig: InstantConfigService) {
+		// TODO: remove once ADEN-12936 is closed
+		if (location.host.includes('harrypotter')) {
+			this.incontentsAnchorSelector = '.mw-parser-output > h2, .mw-parser-output > section > h3';
+		}
+	}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
 		if (!this.isTopLeaderboardApplicable()) {
@@ -148,6 +155,7 @@ export class UcpMobileSlotsDefinitionRepository {
 
 	private injectIncontentAdsPlaceholders(): void {
 		const adSlotCategory = 'incontent';
+
 		const icbPlaceholderConfig: RepeatableSlotPlaceholderConfig = {
 			classList: ['ad-slot-placeholder', 'incontent-boxad', 'is-loading'],
 			anchorSelector: context.get('templates.incontentAnchorSelector'),

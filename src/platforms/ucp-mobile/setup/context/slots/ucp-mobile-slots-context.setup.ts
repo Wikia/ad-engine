@@ -230,6 +230,12 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 		slotsContext.setupSlotVideoContext();
 		slotsContext.setupCustomPlayerAdUnit();
 
+		// TODO: remove once ADEN-12936 is closed
+		if (location.host.includes('harrypotter')) {
+			slots.incontent_player.insertBeforeSelector =
+				'.mw-parser-output > h2, .mw-parser-output > section > h3';
+		}
+
 		context.set('slots', slots);
 		context.set('slots.featured.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
 		context.set('slots.incontent_player.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
