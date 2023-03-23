@@ -57,6 +57,10 @@ export class SlotCreator {
 		const slotConfig = this.fillSlotConfig(slotLooseConfig);
 		const slot = this.makeSlot(slotConfig, slotLooseConfig.anchorElement);
 
+		if (slotConfig.repeat) {
+			this.setupSlotRepeat(slotConfig);
+		}
+
 		if (slotLooseConfig.insertMethod === 'alter') {
 			return slot;
 		}
@@ -68,10 +72,6 @@ export class SlotCreator {
 
 		if (slotConfig.placeholderConfig?.createLabel) {
 			this.addAdLabel(slot.parentElement, slotConfig.slotName);
-		}
-
-		if (slotConfig.repeat) {
-			this.setupSlotRepeat(slotConfig);
 		}
 
 		return slot;
@@ -149,6 +149,10 @@ export class SlotCreator {
 		domSlotElement: HTMLElement = null,
 	): HTMLElement {
 		const slot = domSlotElement || document.createElement('div');
+
+		if (!slot) {
+			return;
+		}
 
 		slot.id = slotConfig.slotName;
 		slot.classList.add('gpt-ad', ...slotConfig.classList);

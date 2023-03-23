@@ -19,7 +19,11 @@ export class SlotRepeater {
 
 		if (repeatConfig.limit !== null && repeatConfig.index > repeatConfig.limit) {
 			logger(logGroup, `Limit reached for ${slotName}`);
+			return;
+		}
 
+		if (context.get(`slots.${slotName}.uid`)) {
+			logger(logGroup, `Slot already repeated: ${slotName}`);
 			return;
 		}
 
