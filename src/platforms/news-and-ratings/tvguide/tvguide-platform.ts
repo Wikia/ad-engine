@@ -87,7 +87,6 @@ export class TvGuidePlatform {
 				this.currentUrl = location.href;
 				this.currentPageViewGuid = window.utag_data?.pageViewGuid;
 
-				communicationService.emit(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
 				targetingService.clear();
 
 				const refreshPipeline = new ProcessPipeline(container);
