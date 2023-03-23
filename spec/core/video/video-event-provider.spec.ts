@@ -1,8 +1,8 @@
-import { VideoEventDataProvider } from '@wikia/ad-products/tracking/video/video-event-data-provider';
 import { AdSlot, context, slotService, TargetingService, targetingService } from '@wikia/core';
+import { VideoEventProvider } from '@wikia/core/video/video-event-provider';
 import { assert } from 'chai';
 import { SinonStubbedInstance } from 'sinon';
-import { configMock } from '../../../core/config-mock';
+import { configMock } from '../config-mock';
 
 describe('Video event data provider', () => {
 	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
@@ -37,7 +37,7 @@ describe('Video event data provider', () => {
 			user_block_autoplay: -1,
 			video_id: 'bar',
 		};
-		const data = VideoEventDataProvider.getEventData(videoData);
+		const data = VideoEventProvider.getEventData(videoData);
 
 		assert.equal(data.ad_error_code, 900);
 		assert.equal(data.ad_product, 'foo');

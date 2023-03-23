@@ -2,7 +2,6 @@ import { communicationService, eventsRepository } from '@ad-engine/communication
 import { AdSlot, Dictionary, SlotConfig } from '../models';
 import { LazyQueue, logger } from '../utils';
 import { context } from './context-service';
-import { fillerService } from './filler-service';
 import { slotService } from './slot-service';
 
 type FillInCallback = (adSlot: AdSlot) => void;
@@ -108,16 +107,6 @@ class BtfBlockerService {
 	private fillInSlotIfEnabled(adSlot: AdSlot, fillInCallback: FillInCallback): void {
 		if (!adSlot.isEnabled()) {
 			logger(logGroup, adSlot.getSlotName(), 'Slot blocked', adSlot.getStatus());
-
-			return;
-		}
-
-		if (adSlot.getConfigProperty('customFiller')) {
-			const fillerName = adSlot.getConfigProperty('customFiller');
-
-			fillerService.apply(adSlot, fillerName);
-
-			logger(logGroup, adSlot.getSlotName(), 'Custom filler', fillerName);
 
 			return;
 		}

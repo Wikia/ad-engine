@@ -6,6 +6,7 @@ import {
 	getAdProductInfo,
 	getAdUnitString,
 	PorvataParams,
+	runtimeVariableSetter,
 	slotService,
 } from '@wikia/ad-engine';
 
@@ -75,6 +76,17 @@ class SlotsContext implements SlotsContextInterface {
 			},
 			false,
 		);
+	}
+
+	setupCustomPlayerAdUnit(slotName = 'incontent_player'): void {
+		const params = {
+			group: 'VIDEO',
+			adProduct: 'incontent_video',
+			slotNameSuffix: '',
+		};
+		const adUnit = getAdUnitString(slotName, params);
+
+		runtimeVariableSetter.addVariable('video', { adUnit });
 	}
 
 	setupSlotVideoAdUnit(adSlot: AdSlot, params: PorvataParams): void {

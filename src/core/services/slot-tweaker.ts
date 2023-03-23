@@ -1,6 +1,5 @@
 import { AdSlot } from '../models';
 import { isIframe, logger } from '../utils';
-import { fillerService } from './filler-service';
 import { messageBus } from './message-bus';
 import { slotService } from './slot-service';
 
@@ -91,17 +90,6 @@ export class SlotTweaker {
 			}
 
 			return iframe;
-		}
-
-		function getContainer(fillerName: string): HTMLElement {
-			return fillerService.get(fillerName).getContainer();
-		}
-
-		if (adSlot.getConfigProperty('customFiller')) {
-			return new Promise<HTMLElement>((resolve) => {
-				const container = getContainer(adSlot.getConfigProperty('customFiller'));
-				resolve(container);
-			});
 		}
 
 		if (adSlot.getConfigProperty('useGptOnloadEvent')) {

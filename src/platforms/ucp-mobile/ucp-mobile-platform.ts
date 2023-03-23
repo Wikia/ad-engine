@@ -12,7 +12,6 @@ import {
 	SequentialMessagingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
-	UcpIncontentPlayerStateSetup,
 	UcpTargetingSetup,
 } from '@platforms/shared';
 import {
@@ -25,7 +24,7 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
-import { UcpMobileAdsMode } from './modes/ucp-mobile-ads-mode.service';
+import { UcpMobileAdsMode } from './modes/ucp-mobile-ads.mode';
 import { UcpMobileA9ConfigSetup } from './setup/context/a9/ucp-mobile-a9-config.setup';
 import { UcpMobileBaseContextSetup } from './setup/context/base/ucp-mobile-base-context.setup';
 import { UcpMobilePrebidConfigSetup } from './setup/context/prebid/ucp-mobile-prebid-config.setup';
@@ -52,7 +51,6 @@ export class UcpMobilePlatform {
 			UcpMobilePrebidConfigSetup,
 			UcpMobileA9ConfigSetup,
 			UcpMobileDynamicSlotsSetup,
-			UcpIncontentPlayerStateSetup,
 			UcpMobileTemplatesSetup,
 			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM will break
 			BiddersStateSetup,

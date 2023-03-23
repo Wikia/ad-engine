@@ -1,36 +1,51 @@
-import { AnyclipPlayerSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
+import { GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
+	Anyclip,
+	Ats,
 	Audigent,
 	Bidders,
 	Captify,
 	communicationService,
 	Confiant,
+	context,
 	DiProcess,
 	DurationMedia,
 	eventsRepository,
+	Eyeota,
 	IasPublisherOptimization,
+	IdentityHub,
 	IdentitySetup,
+	jwPlayerInhibitor,
 	LiveConnect,
 	LiveRampPixel,
+	Nielsen,
 	PartnerPipeline,
+	PrebidNativeProvider,
+	Stroer,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class NewsAndRatingsAdsMode implements DiProcess {
+export class UcpMobileAdsMode implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,
-		private anyclipPlayerSetup: AnyclipPlayerSetup,
+		private anyclip: Anyclip,
+		private ats: Ats,
 		private audigent: Audigent,
 		private bidders: Bidders,
 		private captify: Captify,
 		private confiant: Confiant,
 		private durationMedia: DurationMedia,
+		private eyeota: Eyeota,
 		private gptSetup: GptSetup,
 		private iasPublisherOptimization: IasPublisherOptimization,
+		private identityHub: IdentityHub,
 		private liveConnect: LiveConnect,
 		private liveRampPixel: LiveRampPixel,
+		private nielsen: Nielsen,
 		private playerSetup: PlayerSetup,
+		private prebidNativeProvider: PrebidNativeProvider,
+		private stroer: Stroer,
 		private wadRunner: WadRunner,
 		private identitySetup: IdentitySetup,
 	) {}
@@ -38,29 +53,37 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 	execute(): void {
 		this.pipeline
 			.add(
-				this.anyclipPlayerSetup,
-				this.bidders,
-				this.wadRunner,
 				this.liveRampPixel,
-				this.liveConnect,
+				this.anyclip,
+				this.ats,
 				this.audigent,
-				this.confiant,
-				this.iasPublisherOptimization,
+				this.bidders,
 				this.captify,
+				this.liveConnect,
+				this.wadRunner,
+				this.eyeota,
+				this.iasPublisherOptimization,
+				this.confiant,
 				this.durationMedia,
-				this.playerSetup,
+				this.stroer,
+				this.identityHub,
+				this.nielsen,
+				this.prebidNativeProvider,
 				this.identitySetup,
+				this.playerSetup.setOptions({
+					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
+					timeout: context.get('options.jwpMaxDelayTimeout'),
+				}),
 				this.gptSetup.setOptions({
-					dependencies: [this.wadRunner.initialized, this.bidders.initialized],
+					dependencies: [
+						this.playerSetup.initialized,
+						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
+						this.iasPublisherOptimization.IASReady,
+					],
 				}),
 			)
 			.execute()
 			.then(() => {
-				// TODO: we could remove Phoenix lines below once we introduce communicationService on the platforms
-				if (window?.Phoenix?.Events?.trigger) {
-					window.Phoenix.Events.trigger('ads_initialized');
-				}
-
 				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);
 			});
 	}
