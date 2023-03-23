@@ -24,12 +24,12 @@ import {
 	NewsAndRatingsWadSetup,
 } from '../shared';
 import { basicContext } from './ad-context';
+import { MetacriticNeutronNextPageAdsMode } from './modes/metacritic-neutron-next-page-ads.mode';
 import { MetacriticNeutronA9ConfigSetup } from './setup/context/a9/metacritic-neutron-a9-config.setup';
 import { MetacriticNeutronPrebidConfigSetup } from './setup/context/prebid/metacritic-neutron-prebid-config.setup';
 import { MetacriticNeutronSlotsContextSetup } from './setup/context/slots/metacritic-neutron-slots-context.setup';
 import { MetacriticNeutronTargetingSetup } from './setup/context/targeting/metacritic-neutron-targeting.setup';
 import { MetacriticNeutronDynamicSlotsSetup } from './setup/dynamic-slots/metacritic-neutron-dynamic-slots.setup';
-import { MetacriticNeutronPageChangeAdsObserver } from './setup/page-change-observers/metacritic-neutron-page-change-ads-observer.service';
 import { MetacriticNeutronSeeMoreButtonClickListenerSetup } from './setup/page-change-observers/metacritic-neutron-see-more-button-click-listener.setup';
 import { MetacriticNeutronTemplatesSetup } from './templates/metacritic-neutron-templates.setup';
 
@@ -99,7 +99,7 @@ export class MetacriticNeutronPlatform {
 						MetacriticNeutronTargetingSetup,
 						NewsAndRatingsTargetingSetup,
 						MetacriticNeutronSlotsContextSetup,
-						MetacriticNeutronPageChangeAdsObserver,
+						MetacriticNeutronNextPageAdsMode,
 						MetacriticNeutronSeeMoreButtonClickListenerSetup,
 					)
 					.execute();
