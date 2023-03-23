@@ -17,7 +17,7 @@ export class SlotsConfigurationExtender implements DiProcess {
 		if (slotsConfig) {
 			SlotsConfigurationExtender.extendSlotsConfiguration(context.get('slots'), slotsConfig);
 		}
-		return undefined;
+		return Promise.resolve();
 	}
 
 	private static extendSlotsConfiguration(

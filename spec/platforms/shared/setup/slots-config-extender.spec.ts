@@ -1,5 +1,5 @@
 import { BaseSlotConfig, context, Dictionary, InstantConfigService } from '@wikia/core';
-import { SlotsConfigurationExtender } from '@wikia/platforms/shared/setup/slots.config.extender';
+import { SlotsConfigurationExtender } from '@wikia/platforms/shared/setup/slots-config-extender';
 import { expect } from 'chai';
 
 function mockSlotConfig(slotsConfig: Dictionary<BaseSlotConfig>): InstantConfigService {
@@ -11,6 +11,10 @@ function mockSlotConfig(slotsConfig: Dictionary<BaseSlotConfig>): InstantConfigS
 }
 
 describe('SlotsConfigurationExtender', () => {
+	afterEach(() => {
+		context.remove('slots');
+	});
+
 	it('should not change slots if extension does not match', () => {
 		// given
 		const slots: Dictionary<BaseSlotConfig> = {

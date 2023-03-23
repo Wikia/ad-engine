@@ -7,7 +7,7 @@ import {
 } from '@platforms/shared';
 import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { SlotsConfigurationExtender } from '../../shared/setup/slots.config.extender';
+import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
 import {
 	LazyLoadedSlotsContextSetup,
 	NewsAndRatingsAdsMode,
