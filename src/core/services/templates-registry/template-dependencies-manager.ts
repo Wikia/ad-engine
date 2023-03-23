@@ -1,4 +1,4 @@
-import { container, DependencyContainer, injectable, isNormalToken } from 'tsyringe';
+import { container, DependencyContainer, injectable, isNormalToken, Lifecycle } from 'tsyringe';
 import {
 	AdSlot,
 	Dictionary,
@@ -34,6 +34,7 @@ export class TemplateDependenciesManager {
 	}
 
 	resetDependencies(): void {
+		this.container.clearInstances();
 		this.container.reset();
 	}
 
@@ -57,6 +58,10 @@ export class TemplateDependenciesManager {
 			return;
 		}
 
-		this.container.register(dependency, { useClass: dependency });
+		this.container.register(
+			dependency,
+			{ useClass: dependency },
+			{ lifecycle: Lifecycle.ContainerScoped },
+		);
 	}
 }

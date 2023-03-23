@@ -149,6 +149,11 @@ export class PorvataPlayer {
 			this.settings.setWidth(width);
 		}
 		if (!this.settings.getWidth() || !this.settings.getHeight() || this.isFullscreen()) {
+			console.log(
+				'XXX',
+				this.dom.getPlayerContainer().offsetWidth,
+				this.dom.getPlayerContainer().offsetHeight,
+			);
 			this.settings.setHeight(this.dom.getPlayerContainer().offsetHeight);
 			this.settings.setWidth(this.dom.getPlayerContainer().offsetWidth);
 		}
@@ -157,6 +162,7 @@ export class PorvataPlayer {
 
 		// https://developers.google.com/interactive-media-ads/docs/sdks/html5/v3/apis#ima.AdDisplayContainer.initialize
 		this.adDisplayContainer.initialize();
+		console.log('XXX', Math.round(this.settings.getWidth()), Math.round(this.settings.getHeight()));
 		this.adsManager.init(
 			Math.round(this.settings.getWidth()),
 			Math.round(this.settings.getHeight()),

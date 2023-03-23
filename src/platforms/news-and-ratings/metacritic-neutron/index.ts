@@ -1,4 +1,4 @@
-import 'reflect-metadata';
+import '@abraham/reflection';
 import { container } from 'tsyringe';
 import { MetacriticNeutronPlatform } from './metacritic-neutron-platform';
 import './styles.scss';

@@ -1,4 +1,4 @@
-import 'reflect-metadata';
+import '@abraham/reflection';
 import { container } from 'tsyringe';
 import { GiantbombPlatform } from './giantbomb-platform';
 import './styles.scss';

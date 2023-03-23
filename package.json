@@ -8,13 +8,13 @@
 		"url": "https://github.com/Wikia/AdEngine"
 	},
 	"dependencies": {
+		"@abraham/reflection": "0.12.0",
 		"@wikia/instant-config-loader": "github:Wikia/instant-config-loader#semver:0.3.0",
 		"@wikia/post-quecast": "2.0.1",
 		"blockadblock": "3.2.1",
 		"core-decorators": "0.20.0",
 		"current-device": "0.10.2",
 		"js-cookie": "3.0.1",
-		"reflect-metadata": "0.1.13",
 		"rxjs": "7.8.0",
 		"ts-action": "11.0.0",
 		"ts-action-operators": "9.1.2",

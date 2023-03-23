@@ -1,4 +1,4 @@
-import 'reflect-metadata';
+import '@abraham/reflection';
 import * as utils from './utils';
 
 export * from './ad-engine';

@@ -1,4 +1,4 @@
-import 'reflect-metadata';
+import '@abraham/reflection';
 import { container } from 'tsyringe';
 import { GameSpotPlatform } from './gamespot-platform';
 import './styles.scss';

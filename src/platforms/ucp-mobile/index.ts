@@ -1,4 +1,4 @@
-import 'reflect-metadata';
+import '@abraham/reflection';
 import { container } from 'tsyringe';
 import './styles.scss';
 import { UcpMobilePlatform } from './ucp-mobile-platform';

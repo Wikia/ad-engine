@@ -1,4 +1,4 @@
-import 'reflect-metadata';
+import '@abraham/reflection';
 import { container } from 'tsyringe';
 import { SportsPlatform } from './sports-platform';
 import './styles.scss';
