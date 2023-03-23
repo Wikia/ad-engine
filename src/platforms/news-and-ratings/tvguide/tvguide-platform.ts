@@ -7,9 +7,7 @@ import {
 	TrackingSetup,
 } from '@platforms/shared';
 import {
-	communicationService,
 	context,
-	eventsRepository,
 	ProcessPipeline,
 	targetingService,
 	utils,
