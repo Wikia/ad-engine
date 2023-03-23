@@ -21,7 +21,10 @@ export function insertSlots(slotsToInsert: SlotSetupDefinition[]): void {
 				}
 			} catch (e) {
 				utils.logger(logGroup, e.message);
-				slotsContext.setState(slotCreatorConfig.slotName, false);
+
+				if (slotCreatorConfig?.slotName) {
+					slotsContext.setState(slotCreatorConfig.slotName, false);
+				}
 			}
 		});
 }

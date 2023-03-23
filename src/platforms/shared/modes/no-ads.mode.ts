@@ -11,7 +11,7 @@ import {
 	PartnerPipeline,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { NoAdsDetector } from '../../services/no-ads-detector';
+import { NoAdsDetector } from '../services/no-ads-detector';
 
 @Injectable()
 export class NoAdsMode implements DiProcess {

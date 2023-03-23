@@ -11,12 +11,13 @@ import {
 } from '../utils';
 import { context } from './context-service';
 import { SlotRepeater } from './slot-repeater';
-export type InsertMethodType = 'append' | 'prepend' | 'after' | 'before';
+export type InsertMethodType = 'alter' | 'append' | 'prepend' | 'after' | 'before';
 
 export interface SlotCreatorConfig {
 	slotName: string;
 	insertMethod: InsertMethodType;
 	anchorSelector: string;
+	anchorElement?: HTMLElement;
 	/**
 	 * @default firstViable
 	 */
@@ -54,7 +55,12 @@ export class SlotCreator {
 		logger(groupName, `Creating: ${slotLooseConfig.slotName}`, slotLooseConfig, wrapperLooseConfig);
 
 		const slotConfig = this.fillSlotConfig(slotLooseConfig);
-		const slot = this.makeSlot(slotConfig);
+		const slot = this.makeSlot(slotConfig, slotLooseConfig.anchorElement);
+
+		if (slotLooseConfig.insertMethod === 'alter') {
+			return slot;
+		}
+
 		const wrapper = this.wrapSlot(slot, wrapperLooseConfig);
 		const anchorElement = this.getAnchorElement(slotConfig);
 
@@ -74,6 +80,7 @@ export class SlotCreator {
 	private fillSlotConfig(slotLooseConfig: SlotCreatorConfig): Required<SlotCreatorConfig> {
 		return {
 			...slotLooseConfig,
+			anchorElement: slotLooseConfig.anchorElement || null,
 			anchorPosition: slotLooseConfig.anchorPosition ?? 'firstViable',
 			avoidConflictWith: slotLooseConfig.avoidConflictWith || [],
 			classList: slotLooseConfig.classList || [],
@@ -137,8 +144,11 @@ export class SlotCreator {
 		return elements;
 	}
 
-	private makeSlot(slotConfig: Required<SlotCreatorConfig>): HTMLElement {
-		const slot = document.createElement('div');
+	private makeSlot(
+		slotConfig: Required<SlotCreatorConfig>,
+		domSlotElement: HTMLElement = null,
+	): HTMLElement {
+		const slot = domSlotElement || document.createElement('div');
 
 		slot.id = slotConfig.slotName;
 		slot.classList.add('gpt-ad', ...slotConfig.classList);

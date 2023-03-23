@@ -24,7 +24,7 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
-import { UcpDesktopAdsMode } from './modes/ucp-desktop-ads-mode.service';
+import { UcpDesktopAdsMode } from './modes/ucp-desktop-ads.mode';
 import { UcpDesktopA9ConfigSetup } from './setup/context/a9/ucp-desktop-a9-config.setup';
 import { UcpDesktopBaseContextSetup } from './setup/context/base/ucp-desktop-base-context.setup';
 import { UcpDesktopPrebidConfigSetup } from './setup/context/prebid/ucp-desktop-prebid-config.setup';
