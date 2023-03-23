@@ -1,10 +1,8 @@
-import { AdSlot, VideoData, VideoEventData } from '@ad-engine/core';
+import { AdSlot, VideoData, VideoEventData, VideoEventProvider } from '@ad-engine/core';
 import Cookies from 'js-cookie';
 import { Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 import { injectable } from 'tsyringe';
-import { PlayerEventEmitter } from '../../../tracking';
-import { VideoEventDataProvider } from '../../../tracking/video/video-event-data-provider';
 import { PlayerReadyResult } from '../helpers/player-ready-result';
 import { JwpEventKey } from '../streams/jwplayer-events';
 import { JwpEvent } from '../streams/jwplayer-stream';
@@ -52,10 +50,10 @@ export class JWPlayerTrackingHandler {
 
 	private track(event: JwpEvent<TrackingEvent>): void {
 		const videoData = this.getVideoData(event);
-		const eventInfo: VideoEventData = VideoEventDataProvider.getEventData(videoData);
+		const eventInfo: VideoEventData = VideoEventProvider.getEventData(videoData);
 
-		PlayerEventEmitter.emit(eventInfo);
-		PlayerEventEmitter.emitVideoEvent(event);
+		VideoEventProvider.emit(eventInfo);
+		VideoEventProvider.emitVideoEvent(event);
 	}
 
 	private isTrackingEvent(event: JwpEvent<JwpEventKey>): event is JwpEvent<TrackingEvent> {

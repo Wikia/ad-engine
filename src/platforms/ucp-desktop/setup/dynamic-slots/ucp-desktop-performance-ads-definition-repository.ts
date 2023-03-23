@@ -1,5 +1,5 @@
 import { context, targetingService, utils } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
 const POPULAR_PAGES_SELECTOR =
 	'#recirculation-rail .rail-module__list .popular-pages__item a.sponsored-content';
@@ -20,7 +20,7 @@ interface WidgetAdPayload {
 	};
 }
 
-@Injectable()
+@injectable()
 export class UcpDesktopPerformanceAdsDefinitionRepository {
 	private widgetData: WidgetAdPayload = null;
 	private popularPagesElement: HTMLElement;

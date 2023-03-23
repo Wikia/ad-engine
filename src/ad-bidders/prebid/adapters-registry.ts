@@ -15,14 +15,13 @@ import {
 	Roundel,
 	Rubicon,
 	RubiconDisplay,
-	RubiconPG,
 	TestBidder,
 	Triplelift,
 	Verizon,
 	Wikia,
 	WikiaVideo,
+	YahooSsp,
 } from './adapters';
-import { YahooSsp } from './adapters/yahoossp';
 import { PrebidAdapter } from './prebid-adapter';
 import { isPrebidAdapterConfig } from './prebid-helper';
 import { PrebidConfig } from './prebid-models';
@@ -45,7 +44,6 @@ class AdaptersRegistry {
 		Roundel,
 		Rubicon,
 		RubiconDisplay,
-		RubiconPG,
 		TestBidder,
 		Triplelift,
 		Verizon,

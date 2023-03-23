@@ -17,7 +17,6 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		context.set('custom.dfpId', this.shouldSwitchGamToRV() ? 22309610186 : 5441);
 		context.set('custom.pagePath', this.getPagePath());
 		context.set('src', this.shouldSwitchSrcToTest() ? ['test'] : context.get('src'));
-		context.set('options.tracking.slot.status', this.instantConfig.get('icSlotTracking'));
 	}
 
 	private setupIdentityOptions() {
@@ -35,6 +34,10 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 	}
 
 	private setupServicesOptions() {
+		context.set(
+			'bidders.prebid.disableSendAllBids',
+			this.instantConfig.get('icPrebidDisableSendAllBids'),
+		);
 		context.set('services.captify.propertyId', 13061);
 		context.set('services.confiant.propertyId', 'IOegabOoWb7FyEI1AmEa9Ki-5AY');
 	}
@@ -65,16 +68,11 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		);
 		context.set('options.video.iasTracking.enabled', this.instantConfig.get('icIASVideoTracking'));
 		context.set(
-			'options.video.moatTracking.enabledForArticleVideos',
-			this.instantConfig.get('icFeaturedVideoMoatTracking'),
-		);
-		context.set(
 			'options.video.comscoreJwpTracking',
 			this.instantConfig.get('icComscoreJwpTracking'),
 		);
 		context.set('options.video.pauseJWPlayerAd', this.instantConfig.get('icPauseJWPlayerAd'));
 
-		context.set('services.anyclip.enabled', this.instantConfig.get('icAnyclipPlayer'));
 		context.set('services.anyclip.isApplicable', () => {
 			this.log(
 				'Anyclip settings - ad settings param: ',

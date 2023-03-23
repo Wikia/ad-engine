@@ -3,7 +3,6 @@ import { merge } from 'rxjs';
 import { injectable } from 'tsyringe';
 import { registerBfaaTemplate } from './bfaa-template';
 import { registerBfabTemplate } from './bfab-template';
-import { registerLogoReplacementTemplate } from './logo-replacement-template';
 
 @injectable()
 export class SportsTemplatesSetup implements DiProcess {
@@ -14,8 +13,7 @@ export class SportsTemplatesSetup implements DiProcess {
 	execute(): void {
 		const bfaa$ = registerBfaaTemplate(this.registry);
 		const bfab$ = registerBfabTemplate(this.registry);
-		const logoReplacement$ = registerLogoReplacementTemplate(this.registry);
 
-		logTemplates(merge(bfaa$, bfab$, logoReplacement$));
+		logTemplates(merge(bfaa$, bfab$));
 	}
 }

@@ -1,5 +1,5 @@
 import { communicationService, ofType } from '@ad-engine/communication';
-import { AdSlot, context, slotService, tapOnce, utils } from '@ad-engine/core';
+import { AdSlot, context, slotService, tapOnce } from '@ad-engine/core';
 import { merge, Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { injectable } from 'tsyringe';
@@ -32,7 +32,6 @@ export class JWPlayerManager {
 		return communicationService.action$.pipe(
 			ofType(jwpReady),
 			tapOnce(() => {
-				this.loadMoatPlugin();
 				this.loadIasTrackerIfEnabled();
 			}),
 			map(({ options, targeting, playerKey }) => {
@@ -59,14 +58,6 @@ export class JWPlayerManager {
 		}
 
 		return adSlot;
-	}
-
-	private loadMoatPlugin(): void {
-		const moatTrackingUrl = context.get('options.video.moatTracking.jwplayerPluginUrl');
-
-		if (moatTrackingUrl) {
-			utils.scriptLoader.loadScript(context.get('options.video.moatTracking.jwplayerPluginUrl'));
-		}
 	}
 
 	private loadIasTrackerIfEnabled(): void {

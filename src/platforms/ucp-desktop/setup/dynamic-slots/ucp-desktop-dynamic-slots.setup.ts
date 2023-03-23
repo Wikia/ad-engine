@@ -11,9 +11,6 @@ import {
 	context,
 	DiProcess,
 	eventsRepository,
-	fillerService,
-	PorvataFiller,
-	PorvataGamParams,
 	slotService,
 	universalAdPackage,
 } from '@wikia/ad-engine';
@@ -33,14 +30,12 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	execute(): void {
 		this.injectSlots();
 		this.configureTopLeaderboardAndCompanions();
-		this.configureIncontentPlayerFiller();
 		this.configureFloorAdhesionCodePriority();
 		this.registerAdPlaceholderService();
 	}
 
 	private injectSlots(): void {
 		insertSlots([
-			this.slotsDefinitionRepository.getLayoutInitializerConfig(),
 			this.nativoSlotDefinitionRepository.getNativoIncontentAdConfig(2),
 			this.nativoSlotDefinitionRepository.getNativoFeedAdConfig(),
 			this.slotsDefinitionRepository.getTopLeaderboardConfig(),
@@ -49,7 +44,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
 			this.slotsDefinitionRepository.getIncontentPlayerConfig(),
 			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
-			this.slotsDefinitionRepository.getInvisibleHighImpactConfig(),
 		]);
 
 		communicationService.on(eventsRepository.RAIL_READY, () => {
@@ -91,6 +85,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		if (!context.get('custom.hasFeaturedVideo')) {
 			if (context.get('wiki.targeting.pageType') !== 'special') {
 				slotsContext.addSlotSize(slotName, universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop);
+				slotsContext.addSlotSize(slotName, universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.unified);
 			}
 
 			slotsContext.addSlotSize(
@@ -110,18 +105,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
 			);
 		}
-	}
-
-	private configureIncontentPlayerFiller(): void {
-		const icpSlotName = 'incontent_player';
-		const fillerOptions: Partial<PorvataGamParams> = {
-			enableInContentFloating: true,
-		};
-
-		context.set(`slots.${icpSlotName}.customFiller`, 'porvata');
-		context.set(`slots.${icpSlotName}.customFillerOptions`, fillerOptions);
-
-		fillerService.register(new PorvataFiller());
 	}
 
 	private configureFloorAdhesionCodePriority(): void {

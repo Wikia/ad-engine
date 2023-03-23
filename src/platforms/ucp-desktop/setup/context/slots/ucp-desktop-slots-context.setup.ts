@@ -115,9 +115,9 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 			incontent_player: {
 				adProduct: 'incontent_player',
-				autoplay: true,
-				audio: false,
+				disabled: true,
 				isVideo: true,
+				trackEachStatus: true,
 				insertBeforeSelector: '#mw-content-text > div > h2',
 				group: 'HiVi',
 				defaultSizes: [[1, 1]],
@@ -135,15 +135,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				},
 				defaultTemplates: ['floorAdhesion'],
 				defaultSizes: [[728, 90]],
-			},
-			invisible_high_impact_2: {
-				adProduct: 'invisible_high_impact_2',
-				group: 'PX',
-				options: {},
-				outOfPage: true,
-				targeting: {
-					loc: 'hivi',
-				},
 			},
 			featured: {
 				adProduct: 'featured',
@@ -199,6 +190,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 		};
 
 		slotsContext.setupSlotVideoContext();
+		slotsContext.setupCustomPlayerAdUnit();
 
 		context.set('slots', slots);
 		context.set('slots.featured.videoAdUnit', context.get('vast.adUnitIdWithDbName'));

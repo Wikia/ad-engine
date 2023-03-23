@@ -4,6 +4,7 @@ import {
 	BiddersStateSetup,
 	bootstrapAndGetConsent,
 	InstantConfigSetup,
+	LoadTimesSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
@@ -23,17 +24,19 @@ import {
 	NewsAndRatingsWadSetup,
 } from '../shared';
 import { basicContext } from './ad-context';
+import { MetacriticNeutronNextPageAdsMode } from './modes/metacritic-neutron-next-page-ads.mode';
 import { MetacriticNeutronA9ConfigSetup } from './setup/context/a9/metacritic-neutron-a9-config.setup';
 import { MetacriticNeutronPrebidConfigSetup } from './setup/context/prebid/metacritic-neutron-prebid-config.setup';
 import { MetacriticNeutronSlotsContextSetup } from './setup/context/slots/metacritic-neutron-slots-context.setup';
 import { MetacriticNeutronTargetingSetup } from './setup/context/targeting/metacritic-neutron-targeting.setup';
 import { MetacriticNeutronDynamicSlotsSetup } from './setup/dynamic-slots/metacritic-neutron-dynamic-slots.setup';
-import { MetacriticNeutronPageChangeAdsObserver } from './setup/page-change-observers/metacritic-neutron-page-change-ads-observer.service';
+import { MetacriticNeutronSeeMoreButtonClickListenerSetup } from './setup/page-change-observers/metacritic-neutron-see-more-button-click-listener.setup';
 import { MetacriticNeutronTemplatesSetup } from './templates/metacritic-neutron-templates.setup';
 
 @injectable()
 export class MetacriticNeutronPlatform {
-	private currentPath = '';
+	private currentUrl = '';
+	private currentPageViewGuid;
 
 	constructor(private pipeline: ProcessPipeline) {}
 
@@ -45,6 +48,7 @@ export class MetacriticNeutronPlatform {
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
 			TrackingParametersSetup,
+			LoadTimesSetup,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			NewsAndRatingsTargetingSetup,
@@ -57,6 +61,7 @@ export class MetacriticNeutronPlatform {
 			MetacriticNeutronTemplatesSetup,
 			NewsAndRatingsAdsMode,
 			TrackingSetup,
+			MetacriticNeutronSeeMoreButtonClickListenerSetup,
 		);
 
 		this.pipeline.execute();
@@ -64,33 +69,24 @@ export class MetacriticNeutronPlatform {
 
 	setupPageChangeWatcher() {
 		const config = { subtree: false, childList: true };
-
-		utils.logger(
-			'pageChangeWatcher',
-			'SPA',
-			'setupPageChangeWatcher',
-			location.href,
-			window.utag_data?.pageViewGuid,
-		);
-
-		if (!this.currentPath) {
-			this.currentPath = location.pathname;
-		}
-
 		const observer = new MutationObserver(() => {
-			utils.logger(
-				'pageChangeWatcher',
-				'SPA',
-				'MutationObserver init',
-				this.currentPath,
-				location.pathname,
-				window.utag_data?.pageViewGuid,
-			);
+			if (!this.currentPageViewGuid) {
+				this.currentPageViewGuid = window.utag_data?.pageViewGuid;
+			}
 
-			if (this.currentPath !== location.pathname) {
-				utils.logger('pageChangeWatcher', 'SPA', 'url changed', location.pathname);
+			if (!this.currentUrl) {
+				this.currentUrl = location.href;
+				return;
+			}
 
-				this.currentPath = location.pathname;
+			if (
+				this.currentUrl !== location.href &&
+				this.currentPageViewGuid !== window.utag_data?.pageViewGuid
+			) {
+				utils.logger('pageChangeWatcher', 'SPA', 'url changed', location.href);
+
+				this.currentUrl = location.href;
+				this.currentPageViewGuid = window.utag_data?.pageViewGuid;
 
 				communicationService.emit(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
 				targetingService.clear();
@@ -103,7 +99,8 @@ export class MetacriticNeutronPlatform {
 						MetacriticNeutronTargetingSetup,
 						NewsAndRatingsTargetingSetup,
 						MetacriticNeutronSlotsContextSetup,
-						MetacriticNeutronPageChangeAdsObserver,
+						MetacriticNeutronNextPageAdsMode,
+						MetacriticNeutronSeeMoreButtonClickListenerSetup,
 					)
 					.execute();
 			}

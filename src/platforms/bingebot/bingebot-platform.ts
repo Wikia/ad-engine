@@ -20,7 +20,7 @@ import { BingeBotSlotsContextSetup } from './setup/context/slots/bingebot-slots-
 import { BingeBotTargetingSetup } from './setup/context/targeting/bingebot-targeting.setup';
 import { BingeBotTrackingSetup } from './setup/context/tracking/bingebot-tracking.setup';
 import { BingeBotDynamicSlotsSetup } from './setup/dynamic-slots/bingebot-dynamic-slots.setup';
-import { BingeBotBeforeViewChangeSetup } from './setup/hooks/bingebot-before-view-change-setup';
+import { BingeBotBeforeViewChangeSetup } from './setup/hooks/bingebot-before-view-change.setup';
 import { BingeBotTemplatesSetup } from './templates/bingebot-templates.setup';
 
 @injectable()

@@ -15,24 +15,6 @@ import { injectable } from 'tsyringe';
 export class UcpDesktopSlotsDefinitionRepository {
 	constructor(protected instantConfig: InstantConfigService) {}
 
-	getLayoutInitializerConfig(): SlotSetupDefinition {
-		if (!this.isLayoutInitializerApplicable()) {
-			return;
-		}
-
-		const slotName = 'layout_initializer';
-
-		return {
-			activator: () => {
-				context.set('state.initSlot', slotName);
-			},
-		};
-	}
-
-	private isLayoutInitializerApplicable(): boolean {
-		return context.get('options.initCall');
-	}
-
 	getTopLeaderboardConfig(): SlotSetupDefinition {
 		const slotName = 'top_leaderboard';
 		const placeholderConfig = context.get(`slots.${slotName}.placeholder`);
@@ -162,10 +144,11 @@ export class UcpDesktopSlotsDefinitionRepository {
 	}
 
 	getIncontentPlayerConfig(): SlotSetupDefinition {
+		const slotName = 'incontent_player';
+
 		if (!this.isIncontentPlayerApplicable()) {
 			return;
 		}
-		const slotName = 'incontent_player';
 
 		return {
 			slotCreatorConfig: {
@@ -175,11 +158,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 				insertMethod: 'before',
 			},
 			activator: () => {
-				if (context.get('services.anyclip.enabled')) {
-					context.push('state.adStack', { id: slotName });
-				} else {
-					context.push('events.pushOnScroll.ids', slotName);
-				}
+				context.push('state.adStack', { id: slotName });
 			},
 		};
 	}
@@ -218,29 +197,5 @@ export class UcpDesktopSlotsDefinitionRepository {
 
 	private isFloorAdhesionApplicable(): boolean {
 		return this.instantConfig.get('icFloorAdhesion') && !context.get('custom.hasFeaturedVideo');
-	}
-
-	getInvisibleHighImpactConfig(): SlotSetupDefinition {
-		if (!this.isInvisibleHighImpactApplicable()) {
-			return;
-		}
-
-		const slotName = 'invisible_high_impact_2';
-
-		return {
-			slotCreatorConfig: {
-				slotName,
-				anchorSelector: '.page',
-				insertMethod: 'before',
-				classList: ['hide', 'ad-slot'],
-			},
-			activator: () => {
-				context.push('state.adStack', { id: slotName });
-			},
-		};
-	}
-
-	private isInvisibleHighImpactApplicable(): boolean {
-		return !this.instantConfig.get('icFloorAdhesion') && !context.get('custom.hasFeaturedVideo');
 	}
 }

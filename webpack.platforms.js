@@ -37,6 +37,8 @@ const platforms = ({ entry }) => ({
 			'Access-Control-Allow-Origin': '*',
 		},
 		host: 'localhost',
+		hot: false,
+		liveReload: false,
 		port: 9000,
 		static: `dist/platforms`,
 	},

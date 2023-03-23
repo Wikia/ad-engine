@@ -1,7 +1,6 @@
 import { context, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
 import Cookies from 'js-cookie';
 import { injectable } from 'tsyringe';
-import { v4 } from 'uuid';
 import { getMediaWikiVariable } from '../utils/get-media-wiki-variable';
 
 @injectable()
@@ -12,7 +11,7 @@ export class TrackingParametersSetup implements DiProcess {
 		return (
 			getMediaWikiVariable('pvUID') || // UCP
 			window.pvUID || // F2
-			v4() // N+R
+			window.fandomContext.tracking.pvUID // N+R
 		);
 	}
 
@@ -39,16 +38,17 @@ export class TrackingParametersSetup implements DiProcess {
 		};
 	}
 
-	private async getNewTrackingParameters(): Promise<ITrackingParameters> {
+	private async getNewTrackingParameters(): Promise<Partial<ITrackingParameters>> {
 		await new utils.WaitFor(() => !!window.fandomContext?.tracking, 10, 100).until();
 
 		return {
 			...window.fandomContext.tracking,
-			pvUID: this.getPvUniqueId(),
 		};
 	}
 
-	private async getTrackingParameters(legacyEnabled: boolean): Promise<ITrackingParameters> {
+	private async getTrackingParameters(
+		legacyEnabled: boolean,
+	): Promise<Partial<ITrackingParameters>> {
 		return legacyEnabled
 			? this.getLegacyTrackingParameters()
 			: await this.getNewTrackingParameters();

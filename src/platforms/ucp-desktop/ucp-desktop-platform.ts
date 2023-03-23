@@ -1,12 +1,15 @@
 import {
 	AdEngineRunnerSetup,
+	BiddersStateSetup,
 	bootstrapAndGetConsent,
 	InstantConfigSetup,
 	LabradorSetup,
 	LoadTimesSetup,
+	NoAdsDetector,
 	NoAdsExperimentSetup,
+	NoAdsMode,
 	PlatformContextSetup,
-	shouldUseAdLayouts,
+	SequentialMessagingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 	UcpTargetingSetup,
@@ -18,18 +21,20 @@ import {
 	eventsRepository,
 	parallel,
 	ProcessPipeline,
-	UserIdentity,
 } from '@wikia/ad-engine';
 import { injectable } from 'tsyringe';
 import { basicContext } from './ad-context';
+import { UcpDesktopAdsMode } from './modes/ucp-desktop-ads.mode';
+import { UcpDesktopA9ConfigSetup } from './setup/context/a9/ucp-desktop-a9-config.setup';
 import { UcpDesktopBaseContextSetup } from './setup/context/base/ucp-desktop-base-context.setup';
+import { UcpDesktopPrebidConfigSetup } from './setup/context/prebid/ucp-desktop-prebid-config.setup';
 import { UcpDesktopSlotsContextSetup } from './setup/context/slots/ucp-desktop-slots-context.setup';
-import { UcpDesktopAdLayoutSetup } from './ucp-desktop-ad-layout-setup';
-import { UcpDesktopLegacySetup } from './ucp-desktop-legacy-setup';
+import { UcpDesktopDynamicSlotsSetup } from './setup/dynamic-slots/ucp-desktop-dynamic-slots.setup';
+import { UcpDesktopTemplatesSetup } from './templates/ucp-desktop-templates.setup';
 
 @injectable()
 export class UcpDesktopPlatform {
-	constructor(private pipeline: ProcessPipeline, private userIdentity: UserIdentity) {}
+	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
 	execute(): void {
 		// Config
@@ -42,14 +47,18 @@ export class UcpDesktopPlatform {
 			UcpDesktopBaseContextSetup,
 			UcpDesktopSlotsContextSetup,
 			UcpTargetingSetup,
-			conditional(shouldUseAdLayouts, {
-				yes: UcpDesktopAdLayoutSetup,
-				no: UcpDesktopLegacySetup,
+			UcpDesktopPrebidConfigSetup,
+			UcpDesktopA9ConfigSetup,
+			UcpDesktopDynamicSlotsSetup,
+			UcpDesktopTemplatesSetup,
+			SequentialMessagingSetup,
+			BiddersStateSetup,
+			conditional(() => this.noAdsDetector.isAdsMode(), {
+				yes: UcpDesktopAdsMode,
+				no: NoAdsMode,
 			}),
 			NoAdsExperimentSetup,
 			LabradorSetup,
-			// ToDo: Remove after ADEN-12559.
-			() => this.userIdentity.call(),
 			TrackingSetup,
 			AdEngineRunnerSetup,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
