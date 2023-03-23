@@ -25,11 +25,6 @@ export class MetacriticPageChangeGalleryObserver implements DiProcess {
 	}
 
 	private handleMutation() {
-		if (!this.currentUrl) {
-			this.currentUrl = location.href;
-			return;
-		}
-
 		if (this.currentUrl === location.href) {
 			return;
 		}
