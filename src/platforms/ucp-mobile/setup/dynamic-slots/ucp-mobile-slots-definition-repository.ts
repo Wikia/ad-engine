@@ -23,7 +23,14 @@ interface SlotCreatorInsertionParamsType {
 
 @Injectable()
 export class UcpMobileSlotsDefinitionRepository {
-	constructor(protected instantConfig: InstantConfigService) {}
+	protected incontentsAnchorSelector = '.mw-parser-output > h2';
+
+	constructor(protected instantConfig: InstantConfigService) {
+		// TODO: remove once ADEN-12936 is closed
+		if (location.host.includes('harrypotter')) {
+			this.incontentsAnchorSelector = '.mw-parser-output > h2, .mw-parser-output > section > h3';
+		}
+	}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
 		if (!this.isTopLeaderboardApplicable()) {
@@ -86,7 +93,7 @@ export class UcpMobileSlotsDefinitionRepository {
 
 	private slotCreatorInsertionParams(): SlotCreatorInsertionParamsType {
 		let params: SlotCreatorInsertionParamsType = {
-			anchorSelector: '.mw-parser-output > h2',
+			anchorSelector: this.incontentsAnchorSelector,
 			insertMethod: 'before',
 		};
 
@@ -114,7 +121,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			slotCreatorConfig: {
 				slotName,
 				placeholderConfig,
-				anchorSelector: '.mw-parser-output > h2',
+				anchorSelector: this.incontentsAnchorSelector,
 				avoidConflictWith: [
 					'.ad-slot-placeholder',
 					'.ad-slot',
@@ -165,9 +172,10 @@ export class UcpMobileSlotsDefinitionRepository {
 
 	private injectIncontentAdsPlaceholders(): void {
 		const adSlotCategory = 'incontent';
+
 		const icbPlaceholderConfig: RepeatableSlotPlaceholderConfig = {
 			classList: ['ad-slot-placeholder', 'incontent-boxad', 'is-loading'],
-			anchorSelector: '.mw-parser-output > h2',
+			anchorSelector: this.incontentsAnchorSelector,
 			insertMethod: 'before',
 			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder', 'incontent-boxad'],
 			repeatStart: 1,

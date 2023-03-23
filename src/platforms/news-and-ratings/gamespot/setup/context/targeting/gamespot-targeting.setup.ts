@@ -19,27 +19,42 @@ export class GamespotTargetingSetup implements DiProcess {
 			return 'gaming';
 		}
 
-		if (this.isEntertainmentSite()) {
+		if (this.isEntertainmentSite(utagData['dom.pathname'])) {
 			return 'ent';
 		}
 
-		if (utagData.siteSection === 'news' || utagData.siteSection === 'reviews') {
-			return this.getVerticalNameBasedOnTopicName(utagData.topicName);
+		if (
+			utagData.siteSection === 'news' ||
+			utagData.siteSection === 'reviews' ||
+			utagData.siteSection === 'galleries'
+		) {
+			return this.getVerticalNameBasedOnTopicName(utagData);
 		}
 
 		return 'gaming';
 	}
 
-	isEntertainmentSite(): boolean {
-		return location.pathname.includes('entertainment');
+	isEntertainmentSite(pathname: string): boolean {
+		if (!pathname) {
+			return false;
+		}
+
+		return pathname.includes('entertainment');
 	}
 
-	private getVerticalNameBasedOnTopicName(topicName: string[]): 'gaming' | 'ent' {
+	private getVerticalNameBasedOnTopicName(utagData): 'gaming' | 'ent' {
+		const topicName = utagData.topicName;
+		const contentTopicName = utagData.contentTopicName;
+
 		if (!Array.isArray(topicName) || topicName.length === 0) {
 			return 'gaming';
 		}
 
 		if (topicName.includes('Games') || topicName.includes('Game Review')) {
+			return 'gaming';
+		}
+
+		if (contentTopicName && contentTopicName.includes('gaming')) {
 			return 'gaming';
 		}
 
