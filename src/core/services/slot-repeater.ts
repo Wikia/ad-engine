@@ -39,10 +39,10 @@ export class SlotRepeater {
 					});
 				}
 
+				context.set(`slots.${slotName}.${key}`, value);
+
 				if (key.startsWith('targeting.')) {
 					targetingService.set(key.replace('targeting.', ''), value, slotName);
-				} else {
-					context.set(`slots.${slotName}.${key}`, value);
 				}
 			});
 		}
