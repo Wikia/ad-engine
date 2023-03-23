@@ -2,6 +2,7 @@ import {
 	BiddersStateSetup,
 	bootstrapAndGetConsent,
 	InstantConfigSetup,
+	LoadTimesSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
@@ -33,6 +34,7 @@ export class GiantbombPlatform {
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
 			TrackingParametersSetup,
+			LoadTimesSetup,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			NewsAndRatingsTargetingSetup,
