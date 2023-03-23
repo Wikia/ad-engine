@@ -4,12 +4,12 @@ import {
 	communicationService,
 	context,
 	eventsRepository,
-	FmrRotator,
 	InstantConfigService,
 	scrollListener,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { FmrRotator } from '../../utils/fmr-rotator';
 
 @Injectable()
 export class UcpDesktopSlotsDefinitionRepository {
@@ -73,8 +73,9 @@ export class UcpDesktopSlotsDefinitionRepository {
 				anchorSelector:
 					'.mw-parser-output > h2,.mw-parser-output > h3,.mw-parser-output > h4,.mw-parser-output > h5',
 				anchorPosition: 'belowFirstViewport',
+				avoidConflictWith: ['.incontent-leaderboard'],
 				insertMethod: 'before',
-				classList: ['hide', 'ad-slot'],
+				classList: ['hide', 'ad-slot', 'incontent-leaderboard'],
 				repeat: {
 					index: 1,
 					limit: 20,

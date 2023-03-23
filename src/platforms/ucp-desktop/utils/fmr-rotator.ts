@@ -1,6 +1,13 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, context, scrollListener, slotService, utils } from '@ad-engine/core';
-import { universalAdPackage } from '../templates';
+import {
+	AdSlot,
+	communicationService,
+	context,
+	eventsRepository,
+	scrollListener,
+	slotService,
+	universalAdPackage,
+	utils,
+} from '@wikia/ad-engine';
 
 export class FmrRotator {
 	private nextSlotName: string;
@@ -29,7 +36,7 @@ export class FmrRotator {
 			this.initializeStandardRotation();
 		}
 	}
-	// ToDo: move to UCP-Desktop
+
 	private initializeStandardRotation(): void {
 		communicationService.on(
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
@@ -182,7 +189,7 @@ export class FmrRotator {
 	}
 
 	private isRefreshLimitAvailable(): boolean {
-		return this.refreshInfo.repeatIndex < this.refreshInfo.repeatLimit;
+		return this.refreshInfo.repeatIndex <= this.refreshInfo.repeatLimit;
 	}
 
 	private tryPushNextSlot(): void {
