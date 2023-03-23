@@ -126,7 +126,6 @@ export class UcpMobileSlotsDefinitionRepository {
 				communicationService.on(
 					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
 					(action: UapLoadStatus) => {
-						// ToDo: check work with UAP
 						context.push('events.pushOnScroll.ids', slotName);
 						if (!action.isLoaded) {
 							this.injectIncontentAdsPlaceholders();

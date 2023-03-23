@@ -47,7 +47,6 @@ export class MetacriticNeutronDynamicSlotsSetup implements DiProcess {
 				return;
 			}
 
-			// ToDo: fix
 			if (context.get(`slots.${adSlotName}.repeat`)) {
 				this.setupRepeatableSlot(adSlotName);
 			}
