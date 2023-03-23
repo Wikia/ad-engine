@@ -1,55 +1,69 @@
 import { Anyclip } from '@wikia/ad-services';
-import { utils } from '@wikia/core';
+import { context, InstantConfigService, utils } from '@wikia/core';
 import { WaitFor } from '@wikia/core/utils';
 import { expect } from 'chai';
 
 describe('Anyclip', () => {
-	const MOCKED_PUBNAME = 'test';
-	const MOCKED_WIDGETNAME = 'test';
-	const MOCKED_LIBRARY_URL = '//fandom.com/test';
-
+	let anyclip: Anyclip;
+	let mockedIsApplicable;
 	const mockIsApplicable = () => true;
 	const mockIsNotApplicable = () => false;
 
-	let loadScriptStub;
+	let loadScriptStub, instantConfigStub;
 
 	beforeEach(() => {
-		loadScriptStub = global.sandbox.spy(utils.scriptLoader, 'loadScript');
 		global.sandbox.stub(WaitFor.prototype, 'until').returns(Promise.resolve());
+		loadScriptStub = global.sandbox.spy(utils.scriptLoader, 'loadScript');
+		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
+		instantConfigStub.get.withArgs('icAnyclipPlayer').returns(true);
+		mockedIsApplicable = global.sandbox.spy();
+		anyclip = new Anyclip(instantConfigStub);
+
+		context.set('custom.hasFeaturedVideo', false);
+		context.set('services.anyclip.loadOnPageLoad', true);
 	});
 
 	afterEach(() => {
 		loadScriptStub.resetHistory();
 		global.sandbox.restore();
+
+		context.remove('custom.hasFeaturedVideo');
+		context.remove('services.anyclip.loadOnPageLoad');
+		context.remove('services.anyclip.isApplicable');
+	});
+
+	it('does not load the player when disabled in the instant-config', () => {
+		instantConfigStub.get.withArgs('icAnyclipPlayer').returns(false);
+		context.set('services.anyclip.isApplicable', mockedIsApplicable);
+
+		anyclip.call();
+		expect(mockedIsApplicable.called).to.equal(false);
 	});
 
 	it('loads the script when isApplicable is not a function', () => {
-		const anyclip = new Anyclip(MOCKED_PUBNAME, MOCKED_WIDGETNAME, MOCKED_LIBRARY_URL, null, null);
-		anyclip.loadPlayerAsset();
+		anyclip.call();
 		expect(loadScriptStub.called).to.equal(true);
 	});
 
 	it('loads the script when isApplicable is a function and returns true', () => {
-		const anyclip = new Anyclip(
-			MOCKED_PUBNAME,
-			MOCKED_WIDGETNAME,
-			MOCKED_LIBRARY_URL,
-			mockIsApplicable,
-			null,
-		);
-		anyclip.loadPlayerAsset();
+		context.set('services.anyclip.isApplicable', mockIsApplicable);
+
+		anyclip.call();
 		expect(loadScriptStub.called).to.equal(true);
 	});
 
 	it('does not load the script when isApplicable is a function and returns false', () => {
-		const anyclip = new Anyclip(
-			MOCKED_PUBNAME,
-			MOCKED_WIDGETNAME,
-			MOCKED_LIBRARY_URL,
-			mockIsNotApplicable,
-			null,
-		);
-		anyclip.loadPlayerAsset();
+		context.set('services.anyclip.isApplicable', mockIsNotApplicable);
+
+		anyclip.call();
 		expect(loadScriptStub.called).to.equal(false);
+	});
+
+	it('does not load the player when it is supposed to wait for UAP load event that never happens', () => {
+		context.set('services.anyclip.loadOnPageLoad', false);
+		context.set('services.anyclip.isApplicable', mockedIsApplicable);
+
+		anyclip.call();
+		expect(mockedIsApplicable.called).to.equal(false);
 	});
 });

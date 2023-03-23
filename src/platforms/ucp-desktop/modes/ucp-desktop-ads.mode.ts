@@ -1,5 +1,6 @@
-import { AnyclipPlayerSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
+import { GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
+	Anyclip,
 	Ats,
 	Audigent,
 	Bidders,
@@ -27,7 +28,7 @@ import { Injectable } from '@wikia/dependency-injection';
 export class UcpDesktopAdsMode implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,
-		private anyclipPlayerSetup: AnyclipPlayerSetup,
+		private anyclip: Anyclip,
 		private ats: Ats,
 		private audigent: Audigent,
 		private bidders: Bidders,
@@ -52,7 +53,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 		this.pipeline
 			.add(
 				this.liveRampPixel,
-				this.anyclipPlayerSetup,
+				this.anyclip,
 				this.ats,
 				this.audigent,
 				this.bidders,

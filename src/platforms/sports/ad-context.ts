@@ -28,7 +28,7 @@ const basicContext = {
 	},
 	slots: {},
 	slotGroups: {
-		VIDEO: ['FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
+		VIDEO: ['FEATURED', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
 	},
 	src: ['sports'],
 	templates: {},
