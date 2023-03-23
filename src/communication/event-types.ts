@@ -255,6 +255,19 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		category: '[Platform]',
 		name: 'Before page change',
 	},
+	PLATFORM_PAGE_CHANGED: {
+		category: '[Platform]',
+		name: 'Page changed',
+	},
+	PLATFORM_PAGE_EXTENDED: {
+		category: '[Platform]',
+		name: 'Page extended',
+	},
+	PLATFORM_AD_PLACEMENT_READY: {
+		category: '[Platform]',
+		name: 'Ad placement ready',
+		payload: props<{ placementId: string }>(),
+	},
 	RAIL_READY: {
 		category: '[Rail]',
 		name: 'Ready',
