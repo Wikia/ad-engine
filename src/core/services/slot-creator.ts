@@ -225,7 +225,6 @@ export class SlotCreator {
 				}
 			},
 			slotConfig.slotName,
-			true,
 		);
 	}
 
