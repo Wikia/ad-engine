@@ -5,11 +5,12 @@ import {
 	DiProcess,
 	eventsRepository,
 	PartnerPipeline,
+	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class TvGuidePageChangeAdsObserver implements DiProcess {
+export class TvGuideNextPageAdsMode implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,
 		private bidders: Bidders,
@@ -24,6 +25,7 @@ export class TvGuidePageChangeAdsObserver implements DiProcess {
 			.execute()
 			.then(() => {
 				this.bidders.initialized.then(() => {
+					utils.logger('SPA', 'pipeline refreshed');
 					communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);
 				});
 			});
