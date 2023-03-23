@@ -91,9 +91,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				disabled: true,
 				isVideo: true,
 				trackEachStatus: true,
-				// ToDo: remove
-				insertBeforeSelector:
-					'.mw-parser-output > h2,.mw-parser-output > section > h3,.mw-parser-output > section > h4,.mw-parser-output > section > h5',
 				group: 'HiVi',
 				defaultSizes: [[1, 1]],
 				targeting: {

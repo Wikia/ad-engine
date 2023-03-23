@@ -19,16 +19,12 @@ import { Injectable } from '@wikia/dependency-injection';
 export class UcpMobileSlotsDefinitionRepository {
 	constructor(protected instantConfig: InstantConfigService) {}
 
-	private incontentAnchorsSelector =
-		'.mw-parser-output > h2,.mw-parser-output > section > h3,.mw-parser-output > section > h4,.mw-parser-output > section > h5';
-
 	getTopLeaderboardConfig(): SlotSetupDefinition {
 		if (!this.isTopLeaderboardApplicable()) {
 			return;
 		}
 
 		const slotName = 'top_leaderboard';
-		// ToDo: remove too
 		const placeholderConfig = context.get(`slots.${slotName}.placeholder`);
 		const activator = () => {
 			context.push('state.adStack', { id: slotName });
@@ -72,7 +68,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				},
 				anchorSelector: isHome
 					? '.mobile-main-page__wiki-description'
-					: this.incontentAnchorsSelector,
+					: context.get('templates.incontentAnchorSelector'),
 				insertMethod: isHome ? 'after' : 'before',
 				classList: ['hide', 'ad-slot'],
 				avoidConflictWith: ['.ntv-ad'],
@@ -100,7 +96,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				placeholderConfig: {
 					createLabel: true,
 				},
-				anchorSelector: this.incontentAnchorsSelector,
+				anchorSelector: context.get('templates.incontentAnchorSelector'),
 				avoidConflictWith: ['.ad-slot', '#incontent_player'],
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
@@ -121,8 +117,6 @@ export class UcpMobileSlotsDefinitionRepository {
 							createLabel: false,
 						},
 					},
-					// ToDo: fix or check
-					insertBelowScrollPosition: true,
 				},
 			},
 			slotCreatorWrapperConfig: {
@@ -157,7 +151,7 @@ export class UcpMobileSlotsDefinitionRepository {
 		const adSlotCategory = 'incontent';
 		const icbPlaceholderConfig: RepeatableSlotPlaceholderConfig = {
 			classList: ['ad-slot-placeholder', 'incontent-boxad', 'is-loading'],
-			anchorSelector: this.incontentAnchorsSelector,
+			anchorSelector: context.get('templates.incontentAnchorSelector'),
 			insertMethod: 'before',
 			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder', 'incontent-boxad'],
 			repeatStart: 1,

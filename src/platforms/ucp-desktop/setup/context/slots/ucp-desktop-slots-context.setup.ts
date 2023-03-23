@@ -58,11 +58,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			incontent_leaderboard: {
 				adProduct: 'incontent_leaderboard',
 				bidderAlias: 'incontent_leaderboard',
-				// ToDo: cleanup
-				insertBeforeSelector:
-					'.mw-parser-output > h2,.mw-parser-output > h3,.mw-parser-output > h4,.mw-parser-output > h5',
-				// ToDo: add custom class
-				avoidConflictWith: '.ad-slot',
 				group: 'ILB',
 				options: {},
 				defaultSizes: [[728, 90]],
@@ -123,7 +118,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				disabled: true,
 				isVideo: true,
 				trackEachStatus: true,
-				insertBeforeSelector: '#mw-content-text > div > h2',
 				group: 'HiVi',
 				defaultSizes: [[1, 1]],
 				targeting: {

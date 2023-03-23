@@ -19,8 +19,6 @@ export interface RepeatConfig {
 	updateProperties: Dictionary;
 	updateCreator?: Dictionary;
 	disablePushOnScroll?: boolean;
-	// ToDo: delete
-	insertBelowScrollPosition?: boolean;
 }
 
 export interface SlotConfig {
@@ -28,13 +26,10 @@ export interface SlotConfig {
 	adProduct: string;
 	bidderAlias: string;
 	disabled?: boolean;
-	disableExpandAnimation?: boolean;
 	firstCall?: boolean;
 	aboveTheFold?: boolean;
 	slotName?: string;
 	slotNameSuffix: string;
-	insertBeforeSelector?: string;
-	insertAfterSelector?: string;
 
 	targeting: SlotTargeting;
 	videoAdUnit?: string;

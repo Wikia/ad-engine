@@ -70,10 +70,9 @@ export class UcpDesktopSlotsDefinitionRepository {
 		return {
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector:
-					'.mw-parser-output > h2,.mw-parser-output > h3,.mw-parser-output > h4,.mw-parser-output > h5',
+				anchorSelector: context.get('templates.incontentAnchorSelector'),
 				anchorPosition: 'belowFirstViewport',
-				avoidConflictWith: ['.incontent-leaderboard'],
+				avoidConflictWith: ['.incontent-leaderboard', '#incontent_player'],
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot', 'incontent-leaderboard'],
 				repeat: {
@@ -85,7 +84,6 @@ export class UcpDesktopSlotsDefinitionRepository {
 						'targeting.rv': '{slotConfig.repeat.index}',
 						'targeting.pos': [slotName],
 					},
-					insertBelowScrollPosition: true,
 				},
 			},
 			activator: () => {
@@ -162,7 +160,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 		return {
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: context.get(`slots.${slotName}.insertBeforeSelector`),
+				anchorSelector: context.get('templates.incontentAnchorSelector'),
 				anchorPosition: 'belowFirstViewport',
 				insertMethod: 'before',
 			},

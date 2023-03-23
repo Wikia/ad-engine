@@ -56,6 +56,8 @@ export const basicContext = {
 	},
 	templates: {
 		ignoreNavbarHeight: true,
+		incontentAnchorSelector:
+			'.mw-parser-output > h2,.mw-parser-output > h3,.mw-parser-output > h4,.mw-parser-output > h5',
 	},
 	services: {
 		durationMedia: {
