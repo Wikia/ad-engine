@@ -50,7 +50,7 @@
 		"prettier": "2.8.4",
 		"prettier-plugin-organize-imports": "3.2.2",
 		"process": "0.11.10",
-		"sass-loader": "13.2.0",
+		"sass-loader": "13.2.1",
 		"sinon": "15.0.1",
 		"string-replace-loader": "3.1.0",
 		"tsconfig-paths-webpack-plugin": "4.0.1",
