@@ -75,13 +75,8 @@ export class BiddersStateSetup implements DiProcess {
 	}
 
 	private isAnyVideo(): boolean {
-		// Is there a FeaturedVideo on UCP?
-		const hasFeaturedVideo = context.get('custom.hasFeaturedVideo');
-
-		// Is there a video on News&Ratings?
-		const ptypeIncludesVideo = targetingService.get('ptype')?.includes('video_');
-
-		return Boolean(hasFeaturedVideo || ptypeIncludesVideo);
+		if (context.get('custom.hasFeaturedVideo')) return true;
+		return !!targetingService.get('ptype')?.includes('video_');
 	}
 
 	private enableIfApplicable(name: string, icKey: string): void {
