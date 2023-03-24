@@ -99,19 +99,18 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			},
 			incontent_player: {
 				adProduct: 'incontent_player',
-				avoidConflictWith: '.ad-slot,#incontent_boxad_1',
-				autoplay: true,
-				audio: false,
+				disabled: true,
+				isVideo: true,
+				trackEachStatus: true,
 				insertBeforeSelector: '.mw-parser-output > h2',
+				avoidConflictWith: '.ad-slot,#incontent_boxad_1',
 				parentContainerSelector: '.incontent-boxad',
-				defaultClasses: ['hide'],
 				group: 'HiVi',
 				defaultSizes: [[1, 1]],
 				targeting: {
 					loc: 'middle',
 					pos: ['outstream'],
 				},
-				isVideo: true,
 			},
 			mobile_prefooter: {
 				adProduct: 'mobile_prefooter',
@@ -251,6 +250,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 		};
 
 		slotsContext.setupSlotVideoContext();
+		slotsContext.setupCustomPlayerAdUnit();
 
 		// TODO: remove once ADEN-12936 is closed
 		if (location.host.includes('harrypotter')) {

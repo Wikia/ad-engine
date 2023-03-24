@@ -1,5 +1,5 @@
 import { communicationService } from '@ad-engine/communication';
-import { AdSlot, context } from '@ad-engine/core';
+import { AdSlot } from '@ad-engine/core';
 import { BaseTracker, BaseTrackerInterface } from './base-tracker';
 import {
 	pageTrackingCompiler,
@@ -28,7 +28,7 @@ class SlotTracker extends BaseTracker implements BaseTrackerInterface {
 	compilers = [slotPropertiesTrackingCompiler, slotTrackingCompiler, pageTrackingCompiler];
 
 	isEnabled(): boolean {
-		return context.get('options.tracking.slot.status');
+		return true;
 	}
 
 	register(callback, { bidders }): void {
