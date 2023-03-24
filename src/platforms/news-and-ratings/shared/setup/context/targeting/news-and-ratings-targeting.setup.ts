@@ -6,7 +6,6 @@ import {
 	eventsRepository,
 	setupNpaContext,
 	setupRdpContext,
-	setupVideoContext,
 	targetingService,
 	utils,
 } from '@wikia/ad-engine';
@@ -36,7 +35,7 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 
 		setupNpaContext();
 		setupRdpContext();
-		setupVideoContext();
+		this.setupVideoContext();
 	}
 
 	getPageLevelTargeting(): TargetingParams {
@@ -309,5 +308,10 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 			return false;
 		}
 		return true;
+	}
+
+	setupVideoContext(): void {
+		const isVideo = !!targetingService.get('ptype')?.includes('video_');
+		context.set('custom.hasFeaturedVideo', isVideo);
 	}
 }
