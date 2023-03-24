@@ -48,7 +48,7 @@ export class BiddersStateSetup implements DiProcess {
 			context.set('bidders.coppaA9', this.instantConfig.get('icCoppaA9'));
 			context.set(
 				'bidders.a9.videoEnabled',
-				this.instantConfig.get('icA9VideoBidder') && isAnyVideo(),
+				this.instantConfig.get('icA9VideoBidder') && this.isAnyVideo(),
 			);
 		}
 
@@ -73,16 +73,16 @@ export class BiddersStateSetup implements DiProcess {
 			'bidders.enabled',
 			context.get('bidders.prebid.enabled') || context.get('bidders.a9.enabled'),
 		);
+	}
 
-		function isAnyVideo(): boolean {
-			// Is there a FeaturedVideo on UCP?
-			const hasFeaturedVideo = context.get('custom.hasFeaturedVideo');
+	private isAnyVideo(): boolean {
+		// Is there a FeaturedVideo on UCP?
+		const hasFeaturedVideo = context.get('custom.hasFeaturedVideo');
 
-			// Is there a video on News&Ratings?
-			const ptypeIncludesVideo = targetingService.get('ptype')?.includes('video_');
+		// Is there a video on News&Ratings?
+		const ptypeIncludesVideo = targetingService.get('ptype')?.includes('video_');
 
-			return Boolean(hasFeaturedVideo || ptypeIncludesVideo);
-		}
+		return Boolean(hasFeaturedVideo || ptypeIncludesVideo);
 	}
 
 	private enableIfApplicable(name: string, icKey: string): void {
