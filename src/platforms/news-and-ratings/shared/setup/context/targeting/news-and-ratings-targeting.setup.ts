@@ -6,6 +6,7 @@ import {
 	eventsRepository,
 	setupNpaContext,
 	setupRdpContext,
+	setupVideoContext,
 	targetingService,
 	utils,
 } from '@wikia/ad-engine';
@@ -35,6 +36,7 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 
 		setupNpaContext();
 		setupRdpContext();
+		setupVideoContext();
 	}
 
 	getPageLevelTargeting(): TargetingParams {

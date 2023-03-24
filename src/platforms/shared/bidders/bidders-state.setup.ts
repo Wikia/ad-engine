@@ -1,11 +1,4 @@
-import {
-	context,
-	Dictionary,
-	DiProcess,
-	InstantConfigService,
-	targetingService,
-	utils,
-} from '@wikia/ad-engine';
+import { context, Dictionary, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -42,12 +35,14 @@ export class BiddersStateSetup implements DiProcess {
 	}
 
 	setupBidders(): void {
+		const hasFeaturedVideo = context.get('custom.hasFeaturedVideo');
+
 		if (this.instantConfig.get('icA9Bidder')) {
 			context.set('bidders.a9.enabled', true);
 			context.set('bidders.coppaA9', this.instantConfig.get('icCoppaA9'));
 			context.set(
 				'bidders.a9.videoEnabled',
-				this.instantConfig.get('icA9VideoBidder') && this.isAnyVideo(),
+				this.instantConfig.get('icA9VideoBidder') && hasFeaturedVideo,
 			);
 		}
 
@@ -72,11 +67,6 @@ export class BiddersStateSetup implements DiProcess {
 			'bidders.enabled',
 			context.get('bidders.prebid.enabled') || context.get('bidders.a9.enabled'),
 		);
-	}
-
-	private isAnyVideo(): boolean {
-		if (context.get('custom.hasFeaturedVideo')) return true;
-		return !!targetingService.get('ptype')?.includes('video_');
 	}
 
 	private enableIfApplicable(name: string, icKey: string): void {
