@@ -162,6 +162,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: context.get('templates.incontentAnchorSelector'),
 				anchorPosition: 'belowFirstViewport',
+				avoidConflictWith: ['.incontent-leaderboard'],
 				insertMethod: 'before',
 			},
 			activator: () => {
