@@ -75,7 +75,7 @@ export class BiddersStateSetup implements DiProcess {
 		);
 
 		function isAnyVideo(): boolean {
-			// Is there is a FeaturedVideo on UCP?
+			// Is there a FeaturedVideo on UCP?
 			const hasFeaturedVideo = context.get('custom.hasFeaturedVideo');
 
 			// Is there a video on News&Ratings?
