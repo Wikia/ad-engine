@@ -2,19 +2,18 @@ import {
 	BiddersStateSetup,
 	bootstrapAndGetConsent,
 	InstantConfigSetup,
+	LoadTimesSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
 import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import {
-	InfiniteScrollObserverSetup,
 	LazyLoadedSlotsContextSetup,
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsTargetingSetup,
 	NewsAndRatingsWadSetup,
-	SeamlessContentObserverSetup,
 } from '../shared';
 import { basicContext } from './ad-context';
 import { GamespotA9ConfigSetup } from './setup/context/a9/gamespot-a9-config.setup';
@@ -22,6 +21,8 @@ import { GamespotDynamicSlotsSetup } from './setup/context/dynamic-slots/gamespo
 import { GamespotPrebidConfigSetup } from './setup/context/prebid/gamespot-prebid-config.setup';
 import { GamespotSlotsContextSetup } from './setup/context/slots/gamespot-slots-context.setup';
 import { GamespotTargetingSetup } from './setup/context/targeting/gamespot-targeting.setup';
+import { GamespotInfiniteScrollObserverSetup } from './setup/page-change-observers/gamespot-infinite-scroll-observer.setup';
+import { GamespotSeamlessContentObserverSetup } from './setup/page-change-observers/gamespot-seamless-content-observer.setup';
 import { GamespotTemplatesSetup } from './templates/gamespot-templates.setup';
 
 @Injectable()
@@ -36,6 +37,7 @@ export class GameSpotPlatform {
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
 			TrackingParametersSetup,
+			LoadTimesSetup,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			NewsAndRatingsTargetingSetup,
@@ -49,8 +51,8 @@ export class GameSpotPlatform {
 			GamespotTemplatesSetup,
 			NewsAndRatingsAdsMode,
 			TrackingSetup,
-			SeamlessContentObserverSetup,
-			InfiniteScrollObserverSetup,
+			GamespotSeamlessContentObserverSetup,
+			GamespotInfiniteScrollObserverSetup,
 		);
 
 		this.pipeline.execute();

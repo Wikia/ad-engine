@@ -185,6 +185,10 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	EYEOTA_FAILED: {
 		name: 'Eyeota loading failed',
 	},
+	IDENTITY_ENGINE_READY: {
+		category: '[IdentityEngine]',
+		name: 'Identity ready',
+	},
 	IDENTITY_PARTNER_DATA_OBTAINED: {
 		name: 'Identity partner data obtained',
 		payload: payload<IdentityDataPayload>(),
@@ -250,6 +254,19 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	PLATFORM_BEFORE_PAGE_CHANGE: {
 		category: '[Platform]',
 		name: 'Before page change',
+	},
+	PLATFORM_PAGE_CHANGED: {
+		category: '[Platform]',
+		name: 'Page changed',
+	},
+	PLATFORM_PAGE_EXTENDED: {
+		category: '[Platform]',
+		name: 'Page extended',
+	},
+	PLATFORM_AD_PLACEMENT_READY: {
+		category: '[Platform]',
+		name: 'Ad placement ready',
+		payload: props<{ placementId: string }>(),
 	},
 	RAIL_READY: {
 		category: '[Rail]',

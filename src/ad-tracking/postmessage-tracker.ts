@@ -1,4 +1,4 @@
-import { context, Dictionary, FuncPipeline, FuncPipelineStep, messageBus } from '@ad-engine/core';
+import { Dictionary, FuncPipeline, FuncPipelineStep, messageBus } from '@ad-engine/core';
 
 export const TrackingTarget = {
 	DataWarehouse: 'DW',
@@ -59,6 +59,6 @@ export class PostmessageTracker {
 	}
 
 	private isEnabled(): boolean {
-		return !!context.get('options.tracking.postmessage');
+		return true;
 	}
 }

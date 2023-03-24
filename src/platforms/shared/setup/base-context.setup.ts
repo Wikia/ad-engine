@@ -65,14 +65,6 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setOptionsContext(): void {
-		context.set('options.tracking.kikimora.player', this.instantConfig.get('icPlayerTracking'));
-		context.set('options.tracking.slot.status', this.instantConfig.get('icSlotTracking'));
-		context.set(
-			'options.tracking.slot.viewability',
-			this.instantConfig.get('icViewabilityTracking'),
-		);
-		context.set('options.tracking.slot.bidder', this.instantConfig.get('icBidsTracking'));
-		context.set('options.tracking.postmessage', this.instantConfig.get('icPostmessageTracking'));
 		context.set('options.performanceAds', this.instantConfig.get('icPerformanceAds'));
 		context.set('options.stickyTbExperiment', this.instantConfig.get('icStickyTbExperiment'));
 		context.set(
@@ -139,7 +131,6 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setServicesContext(): void {
-		context.set('services.anyclip.enabled', this.instantConfig.get('icAnyclipPlayer'));
 		context.set(
 			'services.interventionTracker.enabled',
 			this.instantConfig.get('icInterventionTracking'),
