@@ -36,7 +36,8 @@ export class BiddersStateSetup implements DiProcess {
 	}
 
 	setupBidders(): void {
-		const hasFeaturedVideo = context.get('custom.hasFeaturedVideo');
+		const hasFeaturedVideo =
+			context.get('custom.hasFeaturedVideo') || context.get('slots.video.isVideo');
 
 		if (this.instantConfig.get('icA9Bidder')) {
 			context.set('bidders.a9.enabled', true);
