@@ -16,6 +16,7 @@ import {
 } from '@wikia/ad-engine';
 import { Container, Injectable } from '@wikia/dependency-injection';
 
+import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
 import {
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
@@ -49,6 +50,7 @@ export class TvGuidePlatform {
 			TvGuideTargetingSetup,
 			NewsAndRatingsTargetingSetup,
 			TvGuideSlotsContextSetup,
+			SlotsConfigurationExtender,
 			TvGuideDynamicSlotsSetup,
 			TvGuidePrebidConfigSetup,
 			TvGuideA9ConfigSetup,

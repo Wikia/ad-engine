@@ -99,7 +99,7 @@ export class GiantbombSlotsContextSetup implements DiProcess {
 				},
 			},
 			'mobile-skybox-nav': {
-				defaultSizes: [[6, 6], [5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
+				defaultSizes: [[5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
 				targeting: {
 					pos_nr: 'nav',
 					loc: 'top',
