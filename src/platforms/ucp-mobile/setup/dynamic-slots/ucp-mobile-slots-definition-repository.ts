@@ -255,8 +255,8 @@ export class UcpMobileSlotsDefinitionRepository {
 			slotCreatorConfig: {
 				slotName,
 				anchorSelector: '.incontent-boxad',
-				anchorPosition: 'belowFirstViewport',
-				insertMethod: 'before',
+				anchorPosition: 'belowScrollPosition',
+				insertMethod: 'prepend',
 				avoidConflictWith: ['.ad-slot', '#incontent_boxad_1'],
 			},
 			activator: () => {
