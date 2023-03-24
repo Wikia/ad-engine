@@ -2,6 +2,7 @@ import {
 	BiddersStateSetup,
 	bootstrapAndGetConsent,
 	InstantConfigSetup,
+	LoadTimesSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
@@ -34,6 +35,7 @@ export class GamefaqsPlatform {
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
 			TrackingParametersSetup,
+			LoadTimesSetup,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			NewsAndRatingsTargetingSetup,

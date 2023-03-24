@@ -12,7 +12,7 @@ export function registerRoadblockTemplate(registry: TemplateRegistry): Observabl
 		[
 			RoadblockHandler.config({
 				enabledSlots: ['top_boxad'],
-				disableSlots: ['incontent_player', 'floor_adhesion'],
+				disableSlots: ['floor_adhesion'],
 			}),
 		],
 	);
