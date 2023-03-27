@@ -1,4 +1,11 @@
-import { AdSlot, communicationService, context, DiProcess, slotService } from '@wikia/ad-engine';
+import {
+	AdSlot,
+	communicationService,
+	context,
+	DiProcess,
+	eventsRepository,
+	slotService,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -32,14 +39,26 @@ export class MetacriticPageChangeGalleryObserver implements DiProcess {
 		this.currentUrl = location.href;
 
 		this.slotsNamesToHandle.forEach((slotNameToHandle) => {
-			slotService.get(slotNameToHandle).destroy();
-		});
+			slotService.remove(slotService.get(slotNameToHandle));
 
-		communicationService.onSlotEvent(AdSlot.DESTROYED_EVENT, ({ slot }) => {
-			if (!this.slotsNamesToHandle.includes(slot.getSlotName())) {
-				return;
-			}
-			context.push('state.adStack', { id: slot.getSlotName() });
+			communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+				communicationService.onSlotEvent(
+					AdSlot.DESTROYED_EVENT,
+					this.handleSlotDestroyed.bind(this),
+					slotNameToHandle,
+					true,
+				);
+			});
 		});
+	}
+
+	private handleSlotDestroyed(eventData) {
+		const { slot } = eventData;
+		if (!this.slotsNamesToHandle.includes(slot.getSlotName())) {
+			return;
+		}
+
+		context.push('state.adStack', { id: slot.getSlotName() });
+		communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);
 	}
 }
