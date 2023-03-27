@@ -31,7 +31,7 @@ export class MetacriticPageChangeGalleryObserver implements DiProcess {
 		observer.observe(elementToObserveMutation, config);
 	}
 
-	private handleMutation() {
+	private handleMutation(): void {
 		if (this.currentUrl === location.href) {
 			return;
 		}
@@ -52,8 +52,8 @@ export class MetacriticPageChangeGalleryObserver implements DiProcess {
 		});
 	}
 
-	private handleSlotDestroyed(eventData) {
-		const { slot } = eventData;
+	private handleSlotDestroyed(eventData): void {
+		const slot: AdSlot = eventData.slot;
 		if (!this.slotsNamesToHandle.includes(slot.getSlotName())) {
 			return;
 		}
