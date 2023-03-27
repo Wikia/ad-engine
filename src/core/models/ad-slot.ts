@@ -21,7 +21,12 @@ export interface RepeatConfig {
 	disablePushOnScroll?: boolean;
 }
 
-export interface SlotConfig {
+export interface BaseSlotConfig {
+	defaultSizes?: any;
+	targeting?: SlotTargeting;
+}
+
+export interface SlotConfig extends BaseSlotConfig {
 	uid: string;
 	adProduct: string;
 	bidderAlias: string;
@@ -31,13 +36,11 @@ export interface SlotConfig {
 	slotName?: string;
 	slotNameSuffix: string;
 
-	targeting: SlotTargeting;
 	videoAdUnit?: string;
 	repeat?: RepeatConfig;
 	adUnit?: string;
 	sizes?: GptSizeMapping[];
 	videoSizes?: number[][];
-	defaultSizes?: any;
 	viewportConflicts?: string[];
 	avoidConflictWith?: string;
 	outOfPage?: any;

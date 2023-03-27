@@ -13,7 +13,6 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 			},
 			'omni-skybox-leader-sticky': {
 				defaultSizes: [
-					[6, 6],
 					[728, 90],
 					[970, 66],
 					[970, 250],
@@ -27,7 +26,6 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 			},
 			'omni-skybox-leaderboard-sticky': {
 				defaultSizes: [
-					[6, 6],
 					[728, 90],
 					[970, 250],
 					[5, 5],
@@ -37,17 +35,13 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 			},
 			'omni-skybox-sticky': {
-				defaultSizes: [
-					[6, 6],
-					[5, 5],
-				],
+				defaultSizes: [[5, 5]],
 				targeting: {
 					pos_nr: 'sticky',
 				},
 			},
 			'omni-leader-sticky': {
 				defaultSizes: [
-					[6, 6],
 					[728, 90],
 					[970, 66],
 					[970, 250],
@@ -58,7 +52,6 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 			},
 			'omni-leaderboard-sticky': {
 				defaultSizes: [
-					[6, 6],
 					[728, 90],
 					[970, 250],
 				],
@@ -354,7 +347,6 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 			},
 			'mobile-omni-skybox-plus-sticky': {
 				defaultSizes: [
-					[6, 6],
 					[320, 50],
 					[320, 100],
 					[5, 5],
@@ -367,7 +359,6 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 			},
 			'mobile-omni-plus-sticky': {
 				defaultSizes: [
-					[6, 6],
 					[320, 50],
 					[320, 100],
 				],
