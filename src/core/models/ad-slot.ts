@@ -23,7 +23,12 @@ export interface RepeatConfig {
 	insertBelowScrollPosition?: boolean;
 }
 
-export interface SlotConfig {
+export interface BaseSlotConfig {
+	defaultSizes?: any;
+	targeting?: SlotTargeting;
+}
+
+export interface SlotConfig extends BaseSlotConfig {
 	uid: string;
 	adProduct: string;
 	bidderAlias: string;
@@ -38,13 +43,11 @@ export interface SlotConfig {
 	parentContainerSelector?: string;
 	insertIntoParentContainerMethod?: insertMethodType;
 
-	targeting: SlotTargeting;
 	videoAdUnit?: string;
 	repeat?: RepeatConfig;
 	adUnit?: string;
 	sizes?: GptSizeMapping[];
 	videoSizes?: number[][];
-	defaultSizes?: any;
 	viewportConflicts?: string[];
 	insertBelowFirstViewport?: boolean;
 	avoidConflictWith?: string;
