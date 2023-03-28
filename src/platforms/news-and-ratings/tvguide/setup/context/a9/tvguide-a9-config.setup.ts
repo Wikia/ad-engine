@@ -120,6 +120,9 @@ export class TvGuideA9ConfigSetup implements DiProcess {
 			'mpu-bottom': {
 				sizes: [[300, 250]],
 			},
+			video: {
+				type: 'video',
+			},
 		};
 
 		const mobileSlots = {
@@ -179,6 +182,9 @@ export class TvGuideA9ConfigSetup implements DiProcess {
 			},
 			'incontent-narrow-all-top': {
 				sizes: [[728, 90]],
+			},
+			video: {
+				type: 'video',
 			},
 		};
 
