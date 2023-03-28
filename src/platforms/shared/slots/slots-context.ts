@@ -79,14 +79,16 @@ class SlotsContext implements SlotsContextInterface {
 	}
 
 	setupCustomPlayerAdUnit(slotName = 'incontent_player'): void {
-		const params = {
-			group: 'VIDEO',
-			adProduct: 'incontent_video',
-			slotNameSuffix: '',
-		};
-		const adUnit = getAdUnitString(slotName, params);
+		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+			const params = {
+				group: 'VIDEO',
+				adProduct: 'incontent_video',
+				slotNameSuffix: '',
+			};
+			const adUnit = getAdUnitString(slotName, params);
 
-		runtimeVariableSetter.addVariable('video', { adUnit });
+			runtimeVariableSetter.addVariable('video', { adUnit });
+		});
 	}
 
 	setupSlotVideoAdUnit(adSlot: AdSlot, params: PorvataParams): void {
