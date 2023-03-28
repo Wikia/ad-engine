@@ -1,4 +1,5 @@
 import { Dictionary } from '@ad-engine/core';
+import { OpenRtb2Object } from '../../platforms/shared';
 import { BidderConfig, BidsRefreshing } from '../bidder-provider';
 
 export type PriceMap = Dictionary<string>;
@@ -7,6 +8,9 @@ export interface ApstagConfig extends Partial<A9CCPA> {
 	pubID: string;
 	videoAdServer: 'DFP';
 	deals: boolean;
+	signals: {
+		ortb2: OpenRtb2Object;
+	};
 }
 
 export interface A9CCPA {
