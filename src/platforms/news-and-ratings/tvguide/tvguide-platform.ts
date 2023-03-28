@@ -16,7 +16,9 @@ import {
 } from '@wikia/ad-engine';
 import { injectable } from 'tsyringe';
 
+import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
 import {
+	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsTargetingSetup,
@@ -49,10 +51,12 @@ export class TvGuidePlatform {
 			TvGuideTargetingSetup,
 			NewsAndRatingsTargetingSetup,
 			TvGuideSlotsContextSetup,
+			SlotsConfigurationExtender,
 			TvGuideDynamicSlotsSetup,
 			TvGuidePrebidConfigSetup,
 			TvGuideA9ConfigSetup,
 			BiddersStateSetup,
+			BiddersStateOverwriteSetup,
 			TvGuideTemplatesSetup,
 			NewsAndRatingsAdsMode,
 			TrackingSetup,

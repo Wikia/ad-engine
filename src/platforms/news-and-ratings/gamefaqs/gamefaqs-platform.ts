@@ -8,7 +8,9 @@ import {
 } from '@platforms/shared';
 import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
 import { injectable } from 'tsyringe';
+import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
 import {
+	BiddersStateOverwriteSetup,
 	LazyLoadedSlotsContextSetup,
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
@@ -41,11 +43,13 @@ export class GamefaqsPlatform {
 			NewsAndRatingsTargetingSetup,
 			GamefaqsTargetingSetup,
 			GamefaqsSlotsContextSetup,
+			SlotsConfigurationExtender,
 			LazyLoadedSlotsContextSetup,
 			NewsAndRatingsDynamicSlotsSetup,
 			GamefaqsPrebidConfigSetup,
 			GamefaqsA9ConfigSetup,
 			BiddersStateSetup,
+			BiddersStateOverwriteSetup,
 			GamefaqsTemplatesSetup,
 			NewsAndRatingsAdsMode,
 			TrackingSetup,

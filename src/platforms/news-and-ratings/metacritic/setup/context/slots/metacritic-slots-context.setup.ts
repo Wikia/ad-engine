@@ -104,10 +104,7 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 				},
 			},
 			mobile_nav_ad_omni: {
-				defaultSizes: [
-					[5, 5],
-					[6, 6],
-				],
+				defaultSizes: [[5, 5]],
 				targeting: {
 					pos_nr: 'nav',
 				},

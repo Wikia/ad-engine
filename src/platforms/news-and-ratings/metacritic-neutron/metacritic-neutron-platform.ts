@@ -17,7 +17,9 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 
+import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
 import {
+	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsTargetingSetup,
@@ -54,10 +56,12 @@ export class MetacriticNeutronPlatform {
 			NewsAndRatingsTargetingSetup,
 			MetacriticNeutronTargetingSetup,
 			MetacriticNeutronSlotsContextSetup,
+			SlotsConfigurationExtender,
 			MetacriticNeutronDynamicSlotsSetup,
 			MetacriticNeutronPrebidConfigSetup,
 			MetacriticNeutronA9ConfigSetup,
 			BiddersStateSetup,
+			BiddersStateOverwriteSetup,
 			MetacriticNeutronTemplatesSetup,
 			NewsAndRatingsAdsMode,
 			TrackingSetup,

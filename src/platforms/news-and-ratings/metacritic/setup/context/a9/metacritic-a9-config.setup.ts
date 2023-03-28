@@ -45,6 +45,9 @@ export class MetacriticA9ConfigSetup implements DiProcess {
 					[970, 250],
 				],
 			},
+			video: {
+				type: 'video',
+			},
 		};
 
 		const mobileSlots = {
@@ -158,6 +161,9 @@ export class MetacriticA9ConfigSetup implements DiProcess {
 			},
 			'mobile-nav-ad-plus-banner': {
 				sizes: [[320, 50]],
+			},
+			video: {
+				type: 'video',
 			},
 		};
 

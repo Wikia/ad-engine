@@ -39,6 +39,9 @@ export class GiantbombA9ConfigSetup implements DiProcess {
 					[970, 250],
 				],
 			},
+			video: {
+				type: 'video',
+			},
 		};
 
 		const mobileSlots = {
@@ -74,6 +77,9 @@ export class GiantbombA9ConfigSetup implements DiProcess {
 			},
 			'mobile-mpu': {
 				sizes: [[300, 250]],
+			},
+			video: {
+				type: 'video',
 			},
 		};
 
