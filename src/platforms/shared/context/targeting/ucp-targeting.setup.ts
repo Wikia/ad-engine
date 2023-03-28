@@ -54,8 +54,7 @@ export class UcpTargetingSetup implements DiProcess {
 			utils.targeting.getTargetingBundles(this.instantConfig.get('icTargetingBundles')),
 		);
 
-		// At the moment, only A9 uses OpenRTB2.5 standard
-		if (context.get('bidders.a9.enabled')) {
+		if (this.instantConfig.get<boolean>('icOpenRtb2Context')) {
 			targetingService.set('openrtb2', createOpenRtb2Context(fandomContext));
 		}
 	}
