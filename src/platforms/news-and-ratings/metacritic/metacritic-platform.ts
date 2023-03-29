@@ -12,6 +12,7 @@ import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
 
 import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
 import {
+	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsTargetingSetup,
@@ -49,6 +50,7 @@ export class MetacriticPlatform {
 			MetacriticPrebidConfigSetup,
 			MetacriticA9ConfigSetup,
 			BiddersStateSetup,
+			BiddersStateOverwriteSetup,
 			MetacriticTemplatesSetup,
 			NewsAndRatingsAdsMode,
 			TrackingSetup,

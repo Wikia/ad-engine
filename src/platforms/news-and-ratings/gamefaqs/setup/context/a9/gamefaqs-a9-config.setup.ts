@@ -39,7 +39,11 @@ export class GamefaqsA9ConfigSetup implements DiProcess {
 			'nav-ad-plus': {
 				sizes: [[728, 90]],
 			},
+			video: {
+				type: 'video',
+			},
 		};
+
 		const mobileSlots = {
 			'mobile-native-top': {
 				sizes: [
@@ -106,6 +110,9 @@ export class GamefaqsA9ConfigSetup implements DiProcess {
 			},
 			'incontent-ad-plus': {
 				sizes: [[728, 90]],
+			},
+			video: {
+				type: 'video',
 			},
 		};
 
