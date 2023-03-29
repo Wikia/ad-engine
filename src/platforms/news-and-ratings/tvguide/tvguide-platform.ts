@@ -18,6 +18,7 @@ import { Container, Injectable } from '@wikia/dependency-injection';
 
 import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
 import {
+	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsTargetingSetup,
@@ -55,6 +56,7 @@ export class TvGuidePlatform {
 			TvGuidePrebidConfigSetup,
 			TvGuideA9ConfigSetup,
 			BiddersStateSetup,
+			BiddersStateOverwriteSetup,
 			TvGuideTemplatesSetup,
 			NewsAndRatingsAdsMode,
 			TrackingSetup,
