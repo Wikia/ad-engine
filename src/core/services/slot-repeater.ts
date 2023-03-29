@@ -1,4 +1,4 @@
-import { AdSlot, RepeatConfig } from '../models';
+import { AdSlot, RepeatConfig, SlotConfig } from '../models';
 import { generateUniqueId, logger, stringBuilder } from '../utils';
 import { context } from './context-service';
 import { targetingService } from './targeting-service';
@@ -30,6 +30,12 @@ export class SlotRepeater {
 		context.set(`slots.${slotName}`, newSlotDefinition);
 		context.set(`slots.${slotName}.uid`, generateUniqueId());
 
+		this.updateProperties(repeatConfig, newSlotDefinition);
+
+		return slotName;
+	}
+
+	private updateProperties(repeatConfig: RepeatConfig, newSlotDefinition: SlotConfig) {
 		if (repeatConfig.updateProperties) {
 			Object.keys(repeatConfig.updateProperties).forEach((key) => {
 				let value = repeatConfig.updateProperties[key];
@@ -43,14 +49,12 @@ export class SlotRepeater {
 					});
 				}
 
-				context.set(`slots.${slotName}.${key}`, value);
+				context.set(`slots.${newSlotDefinition.slotName}.${key}`, value);
 
 				if (key.startsWith('targeting.')) {
-					targetingService.set(key.replace('targeting.', ''), value, slotName);
+					targetingService.set(key.replace('targeting.', ''), value, newSlotDefinition.slotName);
 				}
 			});
 		}
-
-		return slotName;
 	}
 }

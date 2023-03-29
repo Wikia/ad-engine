@@ -42,7 +42,7 @@ const groupName = 'slot-creator';
 
 @Injectable()
 export class SlotCreator {
-	private slotRepeater = new SlotRepeater();
+	constructor(private slotRepeater = new SlotRepeater()) {}
 
 	createSlot(
 		slotLooseConfig: SlotCreatorConfig,
