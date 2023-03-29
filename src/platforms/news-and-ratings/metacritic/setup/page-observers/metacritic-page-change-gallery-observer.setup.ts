@@ -54,10 +54,6 @@ export class MetacriticPageChangeGalleryObserver implements DiProcess {
 
 	private handleSlotDestroyed(eventData): void {
 		const slot: AdSlot = eventData.slot;
-		if (!this.slotsNamesToHandle.includes(slot.getSlotName())) {
-			return;
-		}
-
 		context.push('state.adStack', { id: slot.getSlotName() });
 		communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);
 	}
