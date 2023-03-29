@@ -2,12 +2,15 @@ import {
 	BiddersStateSetup,
 	bootstrapAndGetConsent,
 	InstantConfigSetup,
+	LoadTimesSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
 import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
 import {
+	BiddersStateOverwriteSetup,
 	LazyLoadedSlotsContextSetup,
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
@@ -34,16 +37,19 @@ export class GamefaqsPlatform {
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
 			TrackingParametersSetup,
+			LoadTimesSetup,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			NewsAndRatingsTargetingSetup,
 			GamefaqsTargetingSetup,
 			GamefaqsSlotsContextSetup,
+			SlotsConfigurationExtender,
 			LazyLoadedSlotsContextSetup,
 			NewsAndRatingsDynamicSlotsSetup,
 			GamefaqsPrebidConfigSetup,
 			GamefaqsA9ConfigSetup,
 			BiddersStateSetup,
+			BiddersStateOverwriteSetup,
 			GamefaqsTemplatesSetup,
 			NewsAndRatingsAdsMode,
 			TrackingSetup,

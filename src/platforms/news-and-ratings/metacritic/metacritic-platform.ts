@@ -4,12 +4,15 @@ import {
 	BiddersStateSetup,
 	bootstrapAndGetConsent,
 	InstantConfigSetup,
+	LoadTimesSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
 import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
 
+import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
 import {
+	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsTargetingSetup,
@@ -21,6 +24,7 @@ import { MetacriticPrebidConfigSetup } from './setup/context/prebid/metacritic-p
 import { MetacriticSlotsContextSetup } from './setup/context/slots/metacritic-slots-context.setup';
 import { MetacriticTargetingSetup } from './setup/context/targeting/metacritic-targeting.setup';
 import { MetacriticDynamicSlotsSetup } from './setup/dynamic-slots/metacritic-dynamic-slots.setup';
+import { MetacriticPageChangeGalleryObserver } from './setup/page-observers/metacritic-page-change-gallery-observer.setup';
 import { MetacriticTemplatesSetup } from './templates/metacritic-templates.setup';
 
 @Injectable()
@@ -35,18 +39,22 @@ export class MetacriticPlatform {
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
 			TrackingParametersSetup,
+			LoadTimesSetup,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			NewsAndRatingsTargetingSetup,
 			MetacriticTargetingSetup,
 			MetacriticDynamicSlotsSetup,
 			MetacriticSlotsContextSetup,
+			SlotsConfigurationExtender,
 			MetacriticPrebidConfigSetup,
 			MetacriticA9ConfigSetup,
 			BiddersStateSetup,
+			BiddersStateOverwriteSetup,
 			MetacriticTemplatesSetup,
 			NewsAndRatingsAdsMode,
 			TrackingSetup,
+			MetacriticPageChangeGalleryObserver,
 		);
 
 		this.pipeline.execute();

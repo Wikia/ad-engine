@@ -16,30 +16,28 @@ import {
 } from '@wikia/ad-engine';
 import { Container, Injectable } from '@wikia/dependency-injection';
 
+import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
 import {
+	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsTargetingSetup,
 	NewsAndRatingsWadSetup,
 } from '../shared';
 import { basicContext } from './ad-context';
+import { TvGuideNextPageAdsMode } from './modes/tvguide-next-page-ads.mode';
 import { TvGuideA9ConfigSetup } from './setup/context/a9/tvguide-a9-config.setup';
-import { TvGuidePrebidConfigSetup } from './setup/context/prebid/tvguide-prebid-config-setup.service';
+import { TvGuidePrebidConfigSetup } from './setup/context/prebid/tvguide-prebid-config.setup';
 import { TvGuideSlotsContextSetup } from './setup/context/slots/tvguide-slots-context.setup';
 import { TvGuideTargetingSetup } from './setup/context/targeting/tvguide-targeting.setup';
 import { TvGuideDynamicSlotsSetup } from './setup/dynamic-slots/tvguide-dynamic-slots.setup';
-import { TvGuidePageChangeAdsObserver } from './setup/page-change-observers/tvguide-page-change-ads-observer';
-import { TvGuideSeamlessContentObserverSetup } from './setup/page-change-observers/tvguide-seamless-content-observer.setup';
 import { TvGuideTemplatesSetup } from './templates/tvguide-templates.setup';
 
 @Injectable()
 export class TvGuidePlatform {
-	private currentUrl = '';
-	private currentPageViewGuid;
-
 	constructor(private pipeline: ProcessPipeline) {}
 
-	execute(): void {
+	execute(container: Container): void {
 		this.pipeline.add(
 			() => context.extend(basicContext),
 			() => context.set('state.isMobile', !utils.client.isDesktop()),
@@ -53,58 +51,70 @@ export class TvGuidePlatform {
 			TvGuideTargetingSetup,
 			NewsAndRatingsTargetingSetup,
 			TvGuideSlotsContextSetup,
+			SlotsConfigurationExtender,
 			TvGuideDynamicSlotsSetup,
 			TvGuidePrebidConfigSetup,
 			TvGuideA9ConfigSetup,
 			BiddersStateSetup,
+			BiddersStateOverwriteSetup,
 			TvGuideTemplatesSetup,
 			NewsAndRatingsAdsMode,
 			TrackingSetup,
-			TvGuideSeamlessContentObserverSetup,
 		);
 
 		this.pipeline.execute();
+		this.setupSinglePageAppWatchers(container);
 	}
 
-	setupPageChangeWatcher(container: Container) {
-		const config = { subtree: false, childList: true };
-		const observer = new MutationObserver(() => {
-			if (!this.currentPageViewGuid) {
-				this.currentPageViewGuid = window.utag_data?.pageViewGuid;
-			}
+	private setupSinglePageAppWatchers(container: Container) {
+		let firstPageview = true;
 
-			if (!this.currentUrl) {
-				this.currentUrl = location.href;
-				return;
-			}
+		communicationService.on(
+			eventsRepository.PLATFORM_PAGE_CHANGED,
+			() => {
+				if (firstPageview) {
+					firstPageview = false;
+					return;
+				}
 
-			if (
-				this.currentUrl !== location.href &&
-				this.currentPageViewGuid !== window.utag_data?.pageViewGuid
-			) {
-				utils.logger('pageChangeWatcher', 'SPA', 'url changed', location.href);
+				utils.logger('SPA', 'url changed', location.href);
 
-				this.currentUrl = location.href;
-				this.currentPageViewGuid = window.utag_data?.pageViewGuid;
-
-				communicationService.emit(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
 				targetingService.clear();
 
 				const refreshPipeline = new ProcessPipeline(container);
 				refreshPipeline
 					.add(
-						() => utils.logger('SPA', 'starting pipeline refresh', location.href),
+						() => utils.logger('SPA', 'starting pipeline refresh'),
 						NewsAndRatingsBaseContextSetup,
 						TvGuideTargetingSetup,
 						NewsAndRatingsTargetingSetup,
 						TvGuideSlotsContextSetup,
-						TvGuidePageChangeAdsObserver,
-						TvGuideSeamlessContentObserverSetup,
+						TvGuideNextPageAdsMode,
 					)
 					.execute();
-			}
-		});
+			},
+			false,
+		);
 
-		observer.observe(document.querySelector('title'), config);
+		communicationService.on(
+			eventsRepository.PLATFORM_PAGE_EXTENDED,
+			() => {
+				utils.logger('SPA', 'page extended', location.href);
+
+				targetingService.clear();
+
+				const refreshPipeline = new ProcessPipeline(container);
+				refreshPipeline
+					.add(
+						() => utils.logger('SPA', 'starting pipeline refresh'),
+						NewsAndRatingsBaseContextSetup,
+						TvGuideTargetingSetup,
+						NewsAndRatingsTargetingSetup,
+						TvGuideNextPageAdsMode,
+					)
+					.execute();
+			},
+			false,
+		);
 	}
 }

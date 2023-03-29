@@ -1,7 +1,6 @@
+import { AnyclipTracker } from '@wikia/ad-services/anyclip/anyclip-tracker';
 import { expect } from 'chai';
 import { spy } from 'sinon';
-
-import { AnyclipTracker } from '@wikia/ad-products';
 
 describe('AnyclipTracker', () => {
 	afterEach(() => {

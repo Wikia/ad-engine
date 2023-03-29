@@ -9,7 +9,7 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class MetacriticNeutronPageChangeAdsObserver implements DiProcess {
+export class MetacriticNeutronNextPageAdsMode implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,
 		private bidders: Bidders,

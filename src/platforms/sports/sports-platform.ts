@@ -30,7 +30,6 @@ import { SportsPrebidConfigSetup } from './setup/context/prebid/sports-prebid-co
 import { SportsSlotsContextSetup } from './setup/context/slots/sports-slots-context.setup';
 import { SportsTargetingSetup } from './setup/context/targeting/sports-targeting.setup';
 import { SportsDynamicSlotsSetup } from './setup/dynamic-slots/sports-dynamic-slots.setup';
-import { SportsIocSetup } from './sports-ioc-setup';
 import { SportsTemplatesSetup } from './templates/sports-templates.setup';
 import { selectApplication } from './utils/application-helper';
 
@@ -47,7 +46,6 @@ export class SportsPlatform {
 			() => ensureGeoCookie(),
 			PlatformContextSetup,
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
-			SportsIocSetup,
 			TrackingParametersSetup,
 			SportsTargetingSetup,
 			LoadTimesSetup,

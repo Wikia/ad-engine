@@ -93,7 +93,7 @@ function configure(): void {
 		function (event: googletag.events.SlotVisibilityChangedEvent) {
 			const adSlot = getAdSlotFromEvent(event);
 
-			return adSlot.emit(AdSlot.SLOT_VISIBILITY_CHANGED, event);
+			return adSlot?.emit(AdSlot.SLOT_VISIBILITY_CHANGED, event);
 		},
 	);
 
@@ -103,7 +103,7 @@ function configure(): void {
 			const adSlot = getAdSlotFromEvent(event);
 
 			if (event.inViewPercentage > 50) {
-				return adSlot.emit(AdSlot.SLOT_BACK_TO_VIEWPORT, event);
+				return adSlot?.emit(AdSlot.SLOT_BACK_TO_VIEWPORT, event);
 			}
 		},
 	);
@@ -114,7 +114,7 @@ function configure(): void {
 			const adSlot = getAdSlotFromEvent(event);
 
 			if (event.inViewPercentage < 50) {
-				return adSlot.emit(AdSlot.SLOT_LEFT_VIEWPORT, event);
+				return adSlot?.emit(AdSlot.SLOT_LEFT_VIEWPORT, event);
 			}
 		},
 	);
@@ -200,8 +200,9 @@ export class GptProvider implements Provider {
 			() => this.updateCorrelator(),
 			false,
 		);
-		communicationService.onSlotEvent(AdSlot.DESTROYED_EVENT, ({ slot }) => {
+		communicationService.onSlotEvent(AdSlot.DESTROY_EVENT, ({ slot }) => {
 			this.destroySlot(slot.getSlotName());
+			slot.emit(AdSlot.DESTROYED_EVENT);
 		});
 		initialized = true;
 	}
