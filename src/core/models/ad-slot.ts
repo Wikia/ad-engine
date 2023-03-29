@@ -70,6 +70,7 @@ export class AdSlot {
 	static SLOT_LEFT_VIEWPORT = 'slotLeftViewport';
 	static SLOT_STATUS_CHANGED = 'slotStatusChanged';
 	static DESTROYED_EVENT = 'slotDestroyed';
+	static DESTROY_EVENT = 'slotDestroy';
 	static HIDDEN_EVENT = 'slotHidden';
 	static SHOWED_EVENT = 'slotShowed';
 
@@ -430,7 +431,7 @@ export class AdSlot {
 
 	destroy(): void {
 		this.disable();
-		this.emit(AdSlot.DESTROYED_EVENT);
+		this.emit(AdSlot.DESTROY_EVENT);
 	}
 
 	getConfigProperty(key: string): any {
