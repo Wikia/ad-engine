@@ -29,11 +29,9 @@ export class StickinessTimeout {
 
 	isViewedAndDelayed(): Observable<boolean> {
 		const bootstrap$ = of(false);
-		const completed$ = from(
-			this.adSlot.loaded
-				.then(() => this.adSlot.viewed)
-				.then(() => utils.wait(this.fallbackTimeout)),
-		).pipe(map(() => true));
+		const completed$ = from(this.adSlot.loaded.then(() => utils.wait(this.fallbackTimeout))).pipe(
+			map(() => true),
+		);
 
 		return merge(bootstrap$, completed$);
 	}
