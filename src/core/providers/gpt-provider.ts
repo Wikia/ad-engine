@@ -200,8 +200,9 @@ export class GptProvider implements Provider {
 			() => this.updateCorrelator(),
 			false,
 		);
-		communicationService.onSlotEvent(AdSlot.DESTROYED_EVENT, ({ slot }) => {
+		communicationService.onSlotEvent(AdSlot.DESTROY_EVENT, ({ slot }) => {
 			this.destroySlot(slot.getSlotName());
+			slot.emit(AdSlot.DESTROYED_EVENT);
 		});
 		initialized = true;
 	}

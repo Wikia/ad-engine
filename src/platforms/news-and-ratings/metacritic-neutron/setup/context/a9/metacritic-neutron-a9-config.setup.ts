@@ -36,6 +36,9 @@ export class MetacriticNeutronA9ConfigSetup implements DiProcess {
 			'mpu-bottom': {
 				sizes: [[300, 250]],
 			},
+			video: {
+				type: 'video',
+			},
 		};
 
 		const mobileSlots = {
@@ -71,6 +74,9 @@ export class MetacriticNeutronA9ConfigSetup implements DiProcess {
 			},
 			'incontent-leaderboard-top': {
 				sizes: [[728, 90]],
+			},
+			video: {
+				type: 'video',
 			},
 		};
 

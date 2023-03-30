@@ -159,6 +159,9 @@ export class A9Provider extends BidderProvider {
 			videoAdServer: 'DFP',
 			deals: true,
 			...A9Provider.getCcpaIfApplicable(signalData),
+			signals: {
+				ortb2: targetingService.get('openrtb2'),
+			},
 		};
 	}
 

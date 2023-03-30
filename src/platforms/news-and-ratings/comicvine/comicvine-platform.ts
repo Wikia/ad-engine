@@ -8,7 +8,9 @@ import {
 } from '@platforms/shared';
 import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
 import {
+	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsDynamicSlotsSetup,
@@ -41,9 +43,11 @@ export class ComicvinePlatform {
 			ComicvineTargetingSetup,
 			NewsAndRatingsDynamicSlotsSetup,
 			ComicvineSlotsContextSetup,
+			SlotsConfigurationExtender,
 			ComicvinePrebidConfigSetup,
 			ComicvineA9ConfigSetup,
 			BiddersStateSetup,
+			BiddersStateOverwriteSetup,
 			ComicvineTemplatesSetup,
 			NewsAndRatingsAdsMode,
 			TrackingSetup,

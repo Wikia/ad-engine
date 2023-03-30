@@ -23,7 +23,12 @@ export interface RepeatConfig {
 	insertBelowScrollPosition?: boolean;
 }
 
-export interface SlotConfig {
+export interface BaseSlotConfig {
+	defaultSizes?: any;
+	targeting?: SlotTargeting;
+}
+
+export interface SlotConfig extends BaseSlotConfig {
 	uid: string;
 	adProduct: string;
 	bidderAlias: string;
@@ -38,13 +43,11 @@ export interface SlotConfig {
 	parentContainerSelector?: string;
 	insertIntoParentContainerMethod?: insertMethodType;
 
-	targeting: SlotTargeting;
 	videoAdUnit?: string;
 	repeat?: RepeatConfig;
 	adUnit?: string;
 	sizes?: GptSizeMapping[];
 	videoSizes?: number[][];
-	defaultSizes?: any;
 	viewportConflicts?: string[];
 	insertBelowFirstViewport?: boolean;
 	avoidConflictWith?: string;
@@ -75,6 +78,7 @@ export class AdSlot {
 	static SLOT_LEFT_VIEWPORT = 'slotLeftViewport';
 	static SLOT_STATUS_CHANGED = 'slotStatusChanged';
 	static DESTROYED_EVENT = 'slotDestroyed';
+	static DESTROY_EVENT = 'slotDestroy';
 	static HIDDEN_EVENT = 'slotHidden';
 	static SHOWED_EVENT = 'slotShowed';
 
@@ -439,7 +443,7 @@ export class AdSlot {
 
 	destroy(): void {
 		this.disable();
-		this.emit(AdSlot.DESTROYED_EVENT);
+		this.emit(AdSlot.DESTROY_EVENT);
 	}
 
 	getConfigProperty(key: string): any {
