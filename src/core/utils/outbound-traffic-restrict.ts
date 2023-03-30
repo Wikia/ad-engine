@@ -2,7 +2,6 @@ import { utils } from '../index';
 import { context } from '../services';
 
 class OutboundTrafficRestrict {
-	private static MIN = 0;
 	private static MAX = 100;
 	private static DEFAULT_THRESHOLD = 2;
 
@@ -28,10 +27,7 @@ class OutboundTrafficRestrict {
 	}
 
 	private getSeed(): number {
-		return (
-			Math.random() * (OutboundTrafficRestrict.MAX - OutboundTrafficRestrict.MIN) +
-			OutboundTrafficRestrict.MIN
-		);
+		return Math.random() * OutboundTrafficRestrict.MAX;
 	}
 }
 

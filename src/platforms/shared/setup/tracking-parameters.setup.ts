@@ -5,6 +5,8 @@ import { getMediaWikiVariable } from '../utils/get-media-wiki-variable';
 
 @Injectable()
 export class TrackingParametersSetup implements DiProcess {
+	private static DEFAULT_DW_TRACK_THRESHOLD = 50;
+
 	constructor(private instantConfig: InstantConfigService) {}
 
 	private getPvUniqueId() {
@@ -62,7 +64,8 @@ export class TrackingParametersSetup implements DiProcess {
 
 		context.set(
 			'services.dw-tracker.threshold',
-			this.instantConfig.get('icDwTrackerTrafficThreshold') ?? 50,
+			this.instantConfig.get('icDwTrackerTrafficThreshold') ??
+				TrackingParametersSetup.DEFAULT_DW_TRACK_THRESHOLD,
 		);
 	}
 }
