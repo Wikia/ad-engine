@@ -1,7 +1,7 @@
 import { context, CookieStorageAdapter } from '../services';
 
 export function isCoppaSubject(): boolean {
-	if (!context.get('services.ageGate')) {
+	if (!context.get('services.ageGateHandling')) {
 		return context.get('wiki.targeting.directedAtChildren');
 	} else {
 		try {
