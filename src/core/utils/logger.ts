@@ -15,7 +15,7 @@ export function getTimeDelta(): number {
 	return currentTimeStamp - originTime;
 }
 
-export function getTimeDeltaInSeconds(): string {
+export function getTimeDeltaFixed(): string {
 	const delta = getTimeDelta();
 	const secondsResult = delta / 1000;
 
@@ -28,7 +28,7 @@ export function logger(logGroup: string, ...logValues: any[]): void {
 	}
 
 	if (debugGroup === '1' || groups.indexOf(logGroup) !== -1) {
-		window.console.info(`${getTimeDeltaInSeconds()}s\t\t ${logGroup}`, logValues);
+		window.console.info(`${getTimeDeltaFixed()}s\t\t ${logGroup}`, logValues);
 	}
 }
 
