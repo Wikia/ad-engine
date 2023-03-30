@@ -10,17 +10,21 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { createFandomContext } from './targeting-strategies/factories/create-fandom-context';
+import { createOpenRtb2Context } from './targeting-strategies/factories/create-open-rtb2-context';
 import { createSelectedStrategy } from './targeting-strategies/factories/create-selected-strategy';
 import { TargetingTags } from './targeting-strategies/interfaces/taxonomy-tags';
+import { FandomContext } from './targeting-strategies/models/fandom-context';
 
 @Injectable()
 export class UcpTargetingSetup implements DiProcess {
 	constructor(protected instantConfig: InstantConfigService) {}
 
 	execute(): void {
+		const fandomContext = createFandomContext();
+
 		targetingService.extend({
 			...targetingService.dump(),
-			...this.getPageLevelTargeting(),
+			...this.getPageLevelTargeting(fandomContext),
 		});
 
 		if (context.get('wiki.opts.isAdTestWiki') && context.get('wiki.targeting.testSrc')) {
@@ -49,13 +53,17 @@ export class UcpTargetingSetup implements DiProcess {
 			'bundles',
 			utils.targeting.getTargetingBundles(this.instantConfig.get('icTargetingBundles')),
 		);
+
+		if (this.instantConfig.get<boolean>('icOpenRtb2Context')) {
+			targetingService.set('openrtb2', createOpenRtb2Context(fandomContext));
+		}
 	}
 
-	private getPageLevelTargeting(): TargetingTags {
+	private getPageLevelTargeting(fandomContext: FandomContext): TargetingTags {
 		const selectedStrategy: string = this.instantConfig.get('icTargetingStrategy');
 
 		utils.logger('Targeting', `Selected targeting priority strategy: ${selectedStrategy}`);
 
-		return createSelectedStrategy(selectedStrategy, createFandomContext()).get();
+		return createSelectedStrategy(selectedStrategy, fandomContext).get();
 	}
 }

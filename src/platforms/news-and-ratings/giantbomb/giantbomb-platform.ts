@@ -8,7 +8,9 @@ import {
 } from '@platforms/shared';
 import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
 import {
+	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsDynamicSlotsSetup,
@@ -40,10 +42,12 @@ export class GiantbombPlatform {
 			NewsAndRatingsTargetingSetup,
 			GiantbombTargetingSetup,
 			GiantbombSlotsContextSetup,
+			SlotsConfigurationExtender,
 			NewsAndRatingsDynamicSlotsSetup,
 			GiantbombPrebidConfigSetup,
 			GiantbombA9ConfigSetup,
 			BiddersStateSetup,
+			BiddersStateOverwriteSetup,
 			GiantbombTemplatesSetup,
 			NewsAndRatingsAdsMode,
 			TrackingSetup,

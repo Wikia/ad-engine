@@ -39,6 +39,9 @@ export class ComicvineA9ConfigSetup implements DiProcess {
 			overlay_mpu_top: {
 				sizes: [[300, 250]],
 			},
+			video: {
+				type: 'video',
+			},
 		};
 
 		const mobileSlots = {
@@ -68,6 +71,9 @@ export class ComicvineA9ConfigSetup implements DiProcess {
 			},
 			'mobile-banner': {
 				sizes: [[300, 250]],
+			},
+			video: {
+				type: 'video',
 			},
 		};
 
