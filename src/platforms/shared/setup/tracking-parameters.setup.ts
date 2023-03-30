@@ -59,5 +59,10 @@ export class TrackingParametersSetup implements DiProcess {
 		const trackingParameters = await this.getTrackingParameters(legacyEnabled);
 
 		context.set('wiki', { ...context.get('wiki'), ...trackingParameters });
+
+		context.set(
+			'services.dw-tracker.threshold',
+			this.instantConfig.get('icDwTrackerTrafficThreshold') ?? 50,
+		);
 	}
 }

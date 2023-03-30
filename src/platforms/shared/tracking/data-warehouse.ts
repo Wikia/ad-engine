@@ -19,6 +19,10 @@ export class DataWarehouseTracker {
 	 * Call all of the setup trackers
 	 */
 	track(options: TrackingParams, trackingURL?: string): void {
+		if (!utils.outboundTrafficRestrict.isOutboundTrafficAllowed('dw-tracker')) {
+			return;
+		}
+
 		const params: TrackingParams = {
 			...this.getDataWarehouseParams(),
 			...options,
