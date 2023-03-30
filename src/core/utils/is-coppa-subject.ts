@@ -1,9 +1,8 @@
+import { utils } from '../index';
 import { context, CookieStorageAdapter } from '../services';
 
 export function isCoppaSubject(): boolean {
-	if (!context.get('services.ageGateHandling')) {
-		return context.get('wiki.targeting.directedAtChildren');
-	} else {
+	if (context.get('services.ageGateHandling')) {
 		try {
 			const cookieStorage = new CookieStorageAdapter();
 			const ageGateResult = cookieStorage.getItem('age_gate');
@@ -12,7 +11,9 @@ export function isCoppaSubject(): boolean {
 				return dialogShown ? adult === '0' : context.get('wiki.targeting.directedAtChildren');
 			}
 		} catch (e) {
-			return context.get('wiki.targeting.directedAtChildren');
+			utils.logger('age-gate', 'Error while reading age gate cookie');
 		}
 	}
+
+	return context.get('wiki.targeting.directedAtChildren');
 }
