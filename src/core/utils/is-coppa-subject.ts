@@ -1,21 +1,18 @@
-import { context } from '../services';
-
-interface AgeGateResult {
-	dialogShown: boolean;
-	adult?: boolean;
-	timestamp: number;
-}
+import { context, CookieStorageAdapter } from '../services';
 
 export function isCoppaSubject(): boolean {
-	try {
-		const ageGateResult = localStorage.getItem('age_gate');
-		if (ageGateResult) {
-			const parsedAgeGateResult = JSON.parse(ageGateResult) as AgeGateResult;
-			return parsedAgeGateResult?.dialogShown
-				? !parsedAgeGateResult.adult
-				: context.get('wiki.targeting.directedAtChildren');
-		}
-	} catch (e) {
+	if (!context.get('services.ageGate')) {
 		return context.get('wiki.targeting.directedAtChildren');
+	} else {
+		try {
+			const cookieStorage = new CookieStorageAdapter();
+			const ageGateResult = cookieStorage.getItem('age_gate');
+			if (ageGateResult) {
+				const [dialogShown, adult] = ageGateResult.split('|');
+				return dialogShown ? adult === '0' : context.get('wiki.targeting.directedAtChildren');
+			}
+		} catch (e) {
+			return context.get('wiki.targeting.directedAtChildren');
+		}
 	}
 }
