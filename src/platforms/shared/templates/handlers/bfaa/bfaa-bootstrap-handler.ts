@@ -24,7 +24,6 @@ export class BfaaBootstrapHandler implements TemplateStateHandler {
 		this.adSlot.addClass('slot-responsive');
 		this.adSlot.addClass('theme-hivi'); // Required by replay-overlay
 		this.adSlot.getAdContainer().classList.add('iframe-container');
-		this.ensureImage();
 
 		await slotTweaker.onReady(this.adSlot);
 		await this.awaitVisibleDOM();
@@ -50,6 +49,7 @@ export class BfaaBootstrapHandler implements TemplateStateHandler {
 	}
 
 	async onLeave(): Promise<void> {
+		this.ensureImage();
 		this.adSlot.show();
 		document.body.classList.add('has-uap');
 	}
