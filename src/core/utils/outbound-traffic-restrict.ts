@@ -3,7 +3,7 @@ import { context } from '../services';
 
 class OutboundTrafficRestrict {
 	private readonly MAX = 100;
-	private readonly DEFAULT_THRESHOLD = 100;
+	private readonly ALWAYS_ALLOWED_THRESHOLD = 100;
 
 	public isOutboundTrafficAllowed(serviceName = 'default'): boolean {
 		const isAllowedFromContext = context.get(`services.${serviceName}.allowed`);
@@ -11,9 +11,10 @@ class OutboundTrafficRestrict {
 			return isAllowedFromContext;
 		}
 
-		const threshold = context.get(`services.${serviceName}.threshold`) || this.DEFAULT_THRESHOLD;
+		const threshold =
+			context.get(`services.${serviceName}.threshold`) || this.ALWAYS_ALLOWED_THRESHOLD;
 		let isAllowed = true;
-		if (threshold !== this.DEFAULT_THRESHOLD) {
+		if (threshold !== this.ALWAYS_ALLOWED_THRESHOLD) {
 			isAllowed = this.getSeed() < threshold;
 		}
 
