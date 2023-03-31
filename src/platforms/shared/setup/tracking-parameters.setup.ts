@@ -78,16 +78,9 @@ export class TrackingParametersSetup implements DiProcess {
 			const dwTrackServiceLowercase = dwTrackService.toLowerCase();
 			context.set(
 				`services.dw-tracker-${dwTrackServiceLowercase}.threshold`,
-				this.getQueryParamsThresholdOverwrites(`dw_tracker_${dwTrackServiceLowercase}`) ??
+				utils.queryString.get(`dw_tracker_${dwTrackServiceLowercase}_threshold`) ??
 					this.instantConfig.get(`icDwTrackerTraffic${dwTrackService}Threshold`),
 			);
 		});
-	}
-
-	private getQueryParamsThresholdOverwrites(service: string): string | null {
-		const urlSearchParamsEntries = new URLSearchParams(window.location.search).entries();
-		const queryParams = Object.fromEntries(urlSearchParamsEntries);
-
-		return queryParams[`${service}_threshold`];
 	}
 }
