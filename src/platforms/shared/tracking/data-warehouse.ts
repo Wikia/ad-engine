@@ -39,8 +39,8 @@ export class DataWarehouseTracker {
 		}
 	}
 
-	private getTrackerNameFromUrl(trackingURL: string): string {
-		return trackingURL.split('/').at(-1);
+	private getTrackerNameFromUrl(trackingURL?: string): string {
+		return trackingURL ? trackingURL.split('/').at(-1) : 'default';
 	}
 
 	/**
