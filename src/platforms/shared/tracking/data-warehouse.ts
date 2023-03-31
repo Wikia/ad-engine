@@ -19,7 +19,11 @@ export class DataWarehouseTracker {
 	 * Call all of the setup trackers
 	 */
 	track(options: TrackingParams, trackingURL?: string): void {
-		if (!utils.outboundTrafficRestrict.isOutboundTrafficAllowed('dw-tracker')) {
+		if (
+			!utils.outboundTrafficRestrict.isOutboundTrafficAllowed(
+				`dw-tracker-${this.getTrackerNameFromUrl(trackingURL)}`,
+			)
+		) {
 			return;
 		}
 
@@ -33,6 +37,10 @@ export class DataWarehouseTracker {
 		} else {
 			this.sendTrackEvent(params);
 		}
+	}
+
+	private getTrackerNameFromUrl(trackingURL: string): string {
+		return trackingURL.split('/').at(-1);
 	}
 
 	/**

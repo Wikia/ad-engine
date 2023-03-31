@@ -2,8 +2,8 @@ import { utils } from '../index';
 import { context } from '../services';
 
 class OutboundTrafficRestrict {
-	private static MAX = 100;
-	private static DEFAULT_THRESHOLD = 2;
+	private readonly MAX = 100;
+	private readonly DEFAULT_THRESHOLD = 100;
 
 	public isOutboundTrafficAllowed(serviceName = 'default'): boolean {
 		const isAllowedFromContext = context.get(`services.${serviceName}.allowed`);
@@ -11,14 +11,16 @@ class OutboundTrafficRestrict {
 			return isAllowedFromContext;
 		}
 
-		const isAllowed =
-			this.getSeed() <
-			(context.get(`services.${serviceName}.threshold`) ||
-				OutboundTrafficRestrict.DEFAULT_THRESHOLD);
+		const threshold = context.get(`services.${serviceName}.threshold`) || this.DEFAULT_THRESHOLD;
+		let isAllowed = true;
+		if (threshold !== this.DEFAULT_THRESHOLD) {
+			isAllowed = this.getSeed() < threshold;
+		}
 
 		utils.logger(
 			'outbound-traffic-restrict',
 			`Outbound traffic for: "${serviceName}" is allowed: ${isAllowed}`,
+			`Threshold: ${threshold}`,
 		);
 
 		context.set(`services.${serviceName}.allowed`, isAllowed);
@@ -27,7 +29,7 @@ class OutboundTrafficRestrict {
 	}
 
 	private getSeed(): number {
-		return Math.random() * OutboundTrafficRestrict.MAX;
+		return Math.random() * this.MAX;
 	}
 }
 

@@ -5,8 +5,6 @@ import { getMediaWikiVariable } from '../utils/get-media-wiki-variable';
 
 @Injectable()
 export class TrackingParametersSetup implements DiProcess {
-	private static DEFAULT_DW_TRACK_THRESHOLD = 50;
-
 	constructor(private instantConfig: InstantConfigService) {}
 
 	private getPvUniqueId() {
@@ -62,10 +60,34 @@ export class TrackingParametersSetup implements DiProcess {
 
 		context.set('wiki', { ...context.get('wiki'), ...trackingParameters });
 
-		context.set(
-			'services.dw-tracker.threshold',
-			this.instantConfig.get('icDwTrackerTrafficThreshold') ??
-				TrackingParametersSetup.DEFAULT_DW_TRACK_THRESHOLD,
-		);
+		const dwTracks = [
+			'AdEngLoadTimes',
+			'AdEngBidders',
+			'AdEngAdInfo',
+			'AdEngViewability',
+			'AdEngPlayerInfo',
+			'IdentityInfo',
+			'KeyVals',
+			'TrackingEvent',
+			'VideoPlayerEvent',
+			'AdEngAdSizeInfo',
+			'AdEngLabradorInfo',
+		];
+
+		dwTracks.forEach((dwTrackService) => {
+			const dwTrackServiceLowercase = dwTrackService.toLowerCase();
+			context.set(
+				`services.dw-tracker-${dwTrackServiceLowercase}.threshold`,
+				this.getQueryParamsThresholdOverwrites(`dw_tracker_${dwTrackServiceLowercase}`) ??
+					this.instantConfig.get(`icDwTrackerTraffic${dwTrackService}Threshold`),
+			);
+		});
+	}
+
+	private getQueryParamsThresholdOverwrites(service: string): string | null {
+		const urlSearchParamsEntries = new URLSearchParams(window.location.search).entries();
+		const queryParams = Object.fromEntries(urlSearchParamsEntries);
+
+		return queryParams[`${service}_threshold`];
 	}
 }
