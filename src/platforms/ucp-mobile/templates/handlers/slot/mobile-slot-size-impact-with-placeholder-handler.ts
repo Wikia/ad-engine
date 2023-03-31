@@ -1,5 +1,5 @@
 import { UapDomManager } from '@platforms/shared';
-import { DomListener, tapOnce, TemplateStateHandler } from '@wikia/ad-engine';
+import { DomListener, TemplateStateHandler } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil, tap } from 'rxjs/operators';
@@ -14,7 +14,6 @@ export class MobileSlotSizeImpactWithPlaceholderHandler implements TemplateState
 		this.domListener.resize$
 			.pipe(
 				startWith({}),
-				tapOnce(() => this.manager.setImpactImage()),
 				tap(() => {
 					this.manager.setSlotHeightImpact();
 					this.manager.setPlaceholderHeightImpact();
