@@ -1,5 +1,5 @@
 import { UapDomManager } from '@platforms/shared';
-import { DomListener, TemplateStateHandler } from '@wikia/ad-engine';
+import { DomListener, tapOnce, TemplateStateHandler } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge, Subject } from 'rxjs';
 import { startWith, takeUntil, tap } from 'rxjs/operators';
@@ -16,6 +16,14 @@ export class MobileSlotSizeImpactToResolvedHandler implements TemplateStateHandl
 				startWith({}),
 				tap(() => this.manager.setSlotHeightImpactToResolved()),
 				takeUntil(this.unsubscribe$),
+			)
+			.subscribe();
+
+		this.domListener.scroll$
+			.pipe(
+				tapOnce(() => {
+					this.manager.setImpactImage();
+				}),
 			)
 			.subscribe();
 	}
