@@ -3,6 +3,7 @@ import {
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
+	UapParams,
 	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
@@ -19,12 +20,14 @@ export class SlotTransitionHandler implements TemplateStateHandler {
 
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
+		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 		private scrollCorrector: ScrollCorrector,
 		private manipulator: DomManipulator,
 		private reader: UapDomReader,
 	) {}
 
 	async onEnter(transition: TemplateTransition<'resolved'>): Promise<void> {
+		this.ensureImage();
 		this.animate()
 			.pipe(
 				tap(() => {
@@ -36,6 +39,12 @@ export class SlotTransitionHandler implements TemplateStateHandler {
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
+	}
+
+	private ensureImage(): void {
+		if (!(this.params.image2 && this.params.image2.background)) {
+			this.params.image1.element.classList.remove('hidden-state');
+		}
 	}
 
 	private animate(): Observable<unknown> {

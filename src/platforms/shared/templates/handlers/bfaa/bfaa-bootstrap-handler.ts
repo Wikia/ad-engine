@@ -36,12 +36,6 @@ export class BfaaBootstrapHandler implements TemplateStateHandler {
 		}
 	}
 
-	private ensureImage(): void {
-		if (!(this.params.image2 && this.params.image2.background)) {
-			this.params.image1.element.classList.remove('hidden-state');
-		}
-	}
-
 	private async awaitVisibleDOM(): Promise<void> {
 		if (document.hidden) {
 			await utils.once(window, 'visibilitychange');
@@ -49,7 +43,6 @@ export class BfaaBootstrapHandler implements TemplateStateHandler {
 	}
 
 	async onLeave(): Promise<void> {
-		this.ensureImage();
 		this.adSlot.show();
 		document.body.classList.add('has-uap');
 	}
