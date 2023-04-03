@@ -77,6 +77,11 @@ export class TrackingParametersSetup implements DiProcess {
 				utils.queryString.get(`dw_tracker_${dwTrackServiceLowercase}_threshold`) ??
 					this.instantConfig.get(`icDwTrackerTraffic${dwTrackService}Threshold`),
 			);
+			context.set(
+				`services.dw-tracker-${dwTrackServiceLowercase}.aggregate`,
+				utils.queryString.get(`dw_tracker_${dwTrackServiceLowercase}_aggregate`) ??
+					this.instantConfig.get(`icDwTrackerTraffic${dwTrackService}Aggregate`),
+			);
 		});
 	}
 }

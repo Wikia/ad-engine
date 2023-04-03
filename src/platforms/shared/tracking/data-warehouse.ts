@@ -11,7 +11,7 @@ export interface TimeBasedParams {
 	url: string;
 }
 
-type DataWarehouseParams = TrackingParams & TimeBasedParams;
+export type DataWarehouseParams = TrackingParams & TimeBasedParams;
 
 @Injectable()
 export class DataWarehouseTracker {
@@ -76,6 +76,14 @@ export class DataWarehouseTracker {
 			...options,
 			...this.getTimeBasedParams(),
 		};
+
+		if (
+			context.get(`services.dw-tracker-${this.getTrackerNameFromUrl(trackingURL)}.aggregate`) &&
+			utils.dwTrafficAggregator.isAggregatorActive()
+		) {
+			utils.dwTrafficAggregator.push(this.getTrackerNameFromUrl(trackingURL), trackingURL, params);
+		}
+
 		const url = this.buildDataWarehouseUrl(params, trackingURL);
 
 		this.sendRequest(url, params);
