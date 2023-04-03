@@ -63,13 +63,9 @@ export class TrackingParametersSetup implements DiProcess {
 		const dwTracks = [
 			'AdEngLoadTimes',
 			'AdEngBidders',
-			'AdEngAdInfo',
 			'AdEngViewability',
 			'AdEngPlayerInfo',
-			'IdentityInfo',
 			'KeyVals',
-			'TrackingEvent',
-			'VideoPlayerEvent',
 			'AdEngAdSizeInfo',
 			'AdEngLabradorInfo',
 		];
