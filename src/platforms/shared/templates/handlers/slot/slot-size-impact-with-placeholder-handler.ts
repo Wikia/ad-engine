@@ -1,4 +1,4 @@
-import { DomListener, TemplateStateHandler } from '@wikia/ad-engine';
+import { context, DomListener, tapOnce, TemplateStateHandler } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil, tap } from 'rxjs/operators';
@@ -11,7 +11,19 @@ export class SlotSizeImpactWithPlaceholderHandler implements TemplateStateHandle
 	constructor(private domListener: DomListener, private manager: UapDomManager) {}
 
 	async onEnter(): Promise<void> {
-		this.manager.setImpactImage();
+		if (context.get('state.isMobile')) {
+			this.domListener.scroll$
+				.pipe(
+					tapOnce(() => {
+						this.manager.setImpactImage();
+					}),
+					takeUntil(this.unsubscribe$),
+				)
+				.subscribe();
+		} else {
+			this.manager.setImpactImage();
+		}
+
 		this.domListener.resize$
 			.pipe(
 				startWith({}),

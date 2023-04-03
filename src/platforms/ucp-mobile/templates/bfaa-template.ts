@@ -11,6 +11,8 @@ import {
 	SlotDecisionImpactToResolvedHandler,
 	SlotDecisionTimeoutHandler,
 	SlotHeightClippingHandler,
+	SlotSizeImpactToResolvedHandler,
+	SlotSizeImpactWithPlaceholderHandler,
 	SlotSizeResolvedWithPlaceholderHandler,
 	SlotStateStickedHandler,
 	SlotTransitionHandler,
@@ -31,8 +33,6 @@ import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-
 import { Observable } from 'rxjs';
 import { registerUcpMobileUapDomElements } from './configs/register-ucp-mobile-uap-dom-elements';
 import { BfaaUcpMobileConfigHandler } from './handlers/bfaa/bfaa-ucp-mobile-config-handler';
-import { MobileSlotSizeImpactToResolvedHandler } from './handlers/slot/mobile-slot-size-impact-to-resolved-handler';
-import { MobileSlotSizeImpactWithPlaceholderHandler } from './handlers/slot/mobile-slot-size-impact-with-placeholder-handler';
 
 export function registerBfaaTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(
@@ -48,8 +48,8 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 				DebugTransitionHandler,
 			],
 			impact: [
-				MobileSlotSizeImpactWithPlaceholderHandler,
-				MobileSlotSizeImpactToResolvedHandler,
+				SlotSizeImpactWithPlaceholderHandler,
+				SlotSizeImpactToResolvedHandler,
 				SlotDecisionImpactToResolvedHandler,
 				VideoSizeImpactToResolvedHandler,
 				VideoCompletedHandler,
