@@ -1,5 +1,6 @@
 import { AdSlot, communicationService, eventsRepository } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { trackingUrls } from '../setup/tracking-urls';
 import { DataWarehouseTracker } from './data-warehouse';
 
 /**
@@ -23,8 +24,6 @@ export class AdSizeTracker {
 	 * Track ad size
 	 */
 	track(slot: AdSlot, ad_width: number, ad_height: number): void {
-		const trackingURL = 'https://beacon.wikia-services.com/__track/special/adengadsizeinfo';
-
 		this.dwTracker.track(
 			{
 				ad_width: ad_width,
@@ -36,7 +35,7 @@ export class AdSizeTracker {
 				position: slot.getMainPositionName(),
 				slot_size: slot.getCreativeSize() || '',
 			},
-			trackingURL,
+			trackingUrls.AD_ENG_AD_SIZE_INFO.url,
 		);
 	}
 }

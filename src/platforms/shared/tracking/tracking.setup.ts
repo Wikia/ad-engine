@@ -21,16 +21,17 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { props } from 'ts-action';
+import { trackingUrls } from '../setup/tracking-urls';
 import { AdSizeTracker } from './ad-size-tracker';
 import { DataWarehouseTracker } from './data-warehouse';
 import { LabradorTracker } from './labrador-tracker';
 
-const bidderTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengbidders';
-const slotTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengadinfo';
-const viewabilityUrl = 'https://beacon.wikia-services.com/__track/special/adengviewability';
-const porvataUrl = 'https://beacon.wikia-services.com/__track/special/adengplayerinfo';
-const identityTrackingUrl = 'https://beacon.wikia-services.com/__track/special/identityinfo';
-const trackingKeyValsUrl = 'https://beacon.wikia-services.com/__track/special/keyvals';
+const bidderTrackingUrl = trackingUrls.AD_ENG_BIDDERS.url;
+const slotTrackingUrl = trackingUrls.AD_ENG_AD_INFO.url;
+const viewabilityUrl = trackingUrls.AD_ENG_VIEWABILITY.url;
+const porvataUrl = trackingUrls.AD_ENG_PLAYER_INFO.url;
+const identityTrackingUrl = trackingUrls.IDENTITY_INFO.url;
+const trackingKeyValsUrl = trackingUrls.KEY_VALS.url;
 
 const adClickedAction = globalAction('[AdEngine] Ad clicked', props<Dictionary>());
 

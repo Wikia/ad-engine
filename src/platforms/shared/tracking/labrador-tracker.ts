@@ -1,4 +1,5 @@
 import { Injectable } from '@wikia/dependency-injection';
+import { trackingUrls } from '../setup/tracking-urls';
 import { DataWarehouseTracker } from './data-warehouse';
 
 /**
@@ -13,15 +14,13 @@ export class LabradorTracker {
 	 */
 	track(value: string): void {
 		const now = new Date();
-		const trackingURL = 'https://beacon.wikia-services.com/__track/special/adenglabradorinfo';
-
 		this.dwTracker.track(
 			{
 				prop_value: value,
 				timestamp: now.getTime(),
 				tz_offset: now.getTimezoneOffset(),
 			},
-			trackingURL,
+			trackingUrls.AD_ENG_LABRADOR_INFO.url,
 		);
 	}
 }

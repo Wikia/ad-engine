@@ -1,10 +1,11 @@
 import { context, targetingService, trackingOptIn, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { trackingUrls } from '../setup/tracking-urls';
 import { TrackingParams } from './models/tracking-params';
 
 const logGroup = 'data-warehouse-trackingParams';
-const eventUrl = 'https://beacon.wikia-services.com/__track/special/trackingevent';
-const videoEventUrl = 'https://beacon.wikia-services.com/__track/special/videoplayerevent';
+const eventUrl = trackingUrls.TRACKING_EVENT.url;
+const videoEventUrl = trackingUrls.VIDEO_PLAYER_EVENT.url;
 
 export interface TimeBasedParams {
 	cb: number;

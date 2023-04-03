@@ -23,12 +23,12 @@ class DwTrafficAggregator {
 		this.start();
 	}
 
-	isAggregatorActive(): boolean {
+	public isAggregatorActive(): boolean {
 		return this.enabled;
 	}
 
-	push(track: string, url: string, element: DataWarehouseParams) {
-		if (!this.findInQueue(track)) {
+	public push(track: string, url: string, element: DataWarehouseParams): void {
+		if (!this.queue[track]) {
 			this.queue[track] = {
 				url: url,
 				params: [],
@@ -37,13 +37,7 @@ class DwTrafficAggregator {
 		this.queue[track].params.push(element);
 	}
 
-	findInQueue(track: string) {
-		const keys = Object.keys(this.queue);
-
-		return keys.filter((queueTrack) => queueTrack === track).length > 0;
-	}
-
-	fireAggregatedQueue() {
+	private fireAggregatedQueue(): void {
 		const keys = Object.keys(this.queue);
 		keys.forEach((queueKey) => {
 			const paramsAggregated = [];
@@ -58,7 +52,7 @@ class DwTrafficAggregator {
 		});
 	}
 
-	sendTrackData(trackingUrl: string, paramsAggregated: DataWarehouseParams[]): void {
+	private sendTrackData(trackingUrl: string, paramsAggregated: DataWarehouseParams[]): void {
 		const dwTrackingUrlV2 = `${trackingUrl}_v2`;
 		this.sendRequest(dwTrackingUrlV2, paramsAggregated);
 	}
@@ -76,7 +70,7 @@ class DwTrafficAggregator {
 		});
 	}
 
-	start() {
+	private start(): void {
 		const interval = setInterval(() => {
 			this.fireAggregatedQueue();
 			this.count++;

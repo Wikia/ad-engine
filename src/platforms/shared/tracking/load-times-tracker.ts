@@ -1,7 +1,7 @@
 import { communicationService, eventsRepository, utils } from '@wikia/ad-engine';
+import { trackingUrls } from '../setup/tracking-urls';
 import { DataWarehouseTracker } from './data-warehouse';
 
-const loadTimeTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengloadtimes';
 const eventsToTrack = {
 	ad_engine_configured: eventsRepository.AD_ENGINE_CONFIGURED,
 	ad_engine_stack_start: eventsRepository.AD_ENGINE_STACK_START,
@@ -84,7 +84,7 @@ export class LoadTimesTracker {
 				tz_offset: this.getTimezoneOffset(),
 				country: utils.geoService.getCountryCode() || '',
 			},
-			loadTimeTrackingUrl,
+			trackingUrls.AD_ENG_LOAD_TIMES.url,
 		);
 	}
 }

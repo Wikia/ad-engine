@@ -2,6 +2,7 @@ import { context, DiProcess, InstantConfigService, utils } from '@wikia/ad-engin
 import { Injectable } from '@wikia/dependency-injection';
 import Cookies from 'js-cookie';
 import { getMediaWikiVariable } from '../utils/get-media-wiki-variable';
+import { trackingUrls } from './tracking-urls';
 
 @Injectable()
 export class TrackingParametersSetup implements DiProcess {
@@ -60,27 +61,19 @@ export class TrackingParametersSetup implements DiProcess {
 
 		context.set('wiki', { ...context.get('wiki'), ...trackingParameters });
 
-		const dwTracks = [
-			'AdEngLoadTimes',
-			'AdEngBidders',
-			'AdEngViewability',
-			'AdEngPlayerInfo',
-			'KeyVals',
-			'AdEngAdSizeInfo',
-			'AdEngLabradorInfo',
-		];
-
-		dwTracks.forEach((dwTrackService) => {
-			const dwTrackServiceLowercase = dwTrackService.toLowerCase();
+		Object.values(trackingUrls).forEach((trackingUrlConfig) => {
+			const dwTrackServiceLowercase = trackingUrlConfig.name.toLowerCase();
 			context.set(
 				`services.dw-tracker-${dwTrackServiceLowercase}.threshold`,
-				utils.queryString.get(`dw_tracker_${dwTrackServiceLowercase}_threshold`) ??
-					this.instantConfig.get(`icDwTrackerTraffic${dwTrackService}Threshold`),
+				trackingUrlConfig.config.threshold
+					? this.instantConfig.get(`icDwTrackerTraffic${trackingUrlConfig.name}Threshold`)
+					: false,
 			);
 			context.set(
 				`services.dw-tracker-${dwTrackServiceLowercase}.aggregate`,
-				utils.queryString.get(`dw_tracker_${dwTrackServiceLowercase}_aggregate`) ??
-					this.instantConfig.get(`icDwTrackerTraffic${dwTrackService}Aggregate`),
+				trackingUrlConfig.config.aggregation
+					? this.instantConfig.get(`icDwTrackerTraffic${trackingUrlConfig.name}Aggregate`)
+					: false,
 			);
 		});
 	}
