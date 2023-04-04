@@ -222,7 +222,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		const disableFloorAdhesion = () => {
 			slotService.disable(slotName);
 			slotImpactWatcher.disable([slotName]);
-			document.getElementById('floor_adhesion_anchor').classList.add('hide');
+			document.getElementById('floor_adhesion_anchor')?.classList.add('hide');
 		};
 
 		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {
