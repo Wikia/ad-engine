@@ -229,16 +229,26 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			ntcOverride = true;
 		});
 
+		slotImpactWatcher.request({
+			id: slotName,
+			priority: 4,
+			breakCallback: disableFloorAdhesion,
+		});
+
+		communicationService.onSlotEvent(
+			AdSlot.STATUS_COLLAPSE,
+			() => slotImpactWatcher.disable([slotName]),
+			slotName,
+		);
+		communicationService.onSlotEvent(
+			AdSlot.STATUS_FORCED_COLLAPSE,
+			() => slotImpactWatcher.disable([slotName]),
+			slotName,
+		);
 		communicationService.onSlotEvent(
 			AdSlot.STATUS_SUCCESS,
 			() => {
 				codePriorityActive = true;
-
-				slotImpactWatcher.request({
-					id: slotName,
-					priority: 4,
-					breakCallback: disableFloorAdhesion,
-				});
 
 				communicationService.on(
 					eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED,
