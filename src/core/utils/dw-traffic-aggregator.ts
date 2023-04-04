@@ -92,6 +92,12 @@ class DwTrafficAggregator {
 				clearInterval(interval);
 			}
 		}, this.SEND_DATA_INTERVAL);
+
+		window.addEventListener('visibilitychange', () => {
+			if (document.hidden) {
+				this.fireAggregatedQueue();
+			}
+		});
 	}
 }
 
