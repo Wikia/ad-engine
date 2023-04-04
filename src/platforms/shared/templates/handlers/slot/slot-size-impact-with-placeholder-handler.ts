@@ -12,14 +12,7 @@ export class SlotSizeImpactWithPlaceholderHandler implements TemplateStateHandle
 
 	async onEnter(): Promise<void> {
 		if (context.get('state.isMobile')) {
-			this.domListener.scroll$
-				.pipe(
-					tapOnce(() => {
-						this.manager.setImpactImage();
-					}),
-					takeUntil(this.unsubscribe$),
-				)
-				.subscribe();
+			this.setImpactSizeOnScroll();
 		} else {
 			this.manager.setImpactImage();
 		}
@@ -38,5 +31,16 @@ export class SlotSizeImpactWithPlaceholderHandler implements TemplateStateHandle
 
 	async onLeave(): Promise<void> {
 		this.unsubscribe$.next();
+	}
+	
+	private setImpactSizeOnScroll(): void {
+		this.domListener.scroll$
+			.pipe(
+				tapOnce(() => {
+					this.manager.setImpactImage();
+				}),
+				takeUntil(this.unsubscribe$),
+			)
+			.subscribe();
 	}
 }
