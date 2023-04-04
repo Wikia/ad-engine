@@ -63,12 +63,13 @@ export class TrackingParametersSetup implements DiProcess {
 
 		Object.values(trackingUrls).forEach((trackingUrlConfig) => {
 			const dwTrackServiceLowercase = trackingUrlConfig.name.toLowerCase();
-			context.set(
-				`services.dw-tracker-${dwTrackServiceLowercase}.threshold`,
-				trackingUrlConfig.config.threshold
-					? this.instantConfig.get(`icDwTrackerTraffic${trackingUrlConfig.name}Threshold`)
-					: false,
-			);
+			if (trackingUrlConfig.config.threshold) {
+				context.set(
+					`services.dw-tracker-${dwTrackServiceLowercase}.threshold`,
+					this.instantConfig.get(`icDwTrackerTraffic${trackingUrlConfig.name}Threshold`),
+				);
+			}
+
 			context.set(
 				`services.dw-tracker-${dwTrackServiceLowercase}.aggregate`,
 				trackingUrlConfig.config.aggregation
