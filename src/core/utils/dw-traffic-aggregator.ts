@@ -10,6 +10,7 @@ interface AggregateQueue {
 class DwTrafficAggregator {
 	private readonly AGGREGATION_SECONDS_OFF = 5;
 	private readonly SEND_DATA_INTERVAL = 1000;
+	private readonly AGGREGATION_LIMIT_PER_TRACK = 5;
 
 	private queue: Dictionary<AggregateQueue>;
 	private enabled: boolean;
@@ -35,21 +36,32 @@ class DwTrafficAggregator {
 			};
 		}
 		this.queue[track].params.push(element);
+
+		if (this.queue[track].params.length >= this.AGGREGATION_LIMIT_PER_TRACK) {
+			this.fireAggregatedQueueByTrack(track);
+		}
 	}
 
 	private fireAggregatedQueue(): void {
 		const keys = Object.keys(this.queue);
 		keys.forEach((queueKey) => {
-			const paramsAggregated = [];
-			this.queue[queueKey]?.params?.forEach((options) => paramsAggregated.push(options));
-			if (paramsAggregated.length > 0) {
-				this.sendTrackData(this.queue[queueKey].url, paramsAggregated);
-				this.queue[queueKey] = {
-					url: this.queue[queueKey].url,
-					params: [],
-				};
-			}
+			this.fireAggregatedQueueByTrack(queueKey);
 		});
+	}
+
+	private fireAggregatedQueueByTrack(track: string): void {
+		const paramsAggregated = [];
+		this.queue[track]?.params?.forEach((options) => paramsAggregated.push(options));
+
+		if (paramsAggregated.length === 0) {
+			return;
+		}
+
+		this.sendTrackData(this.queue[track].url, paramsAggregated);
+		this.queue[track] = {
+			url: this.queue[track].url,
+			params: [],
+		};
 	}
 
 	private sendTrackData(trackingUrl: string, paramsAggregated: DataWarehouseParams[]): void {
