@@ -6,7 +6,7 @@ export class TrackingParametersSetup implements DiProcess {
 	private async getTrackingParameters(): Promise<Partial<ITrackingParameters>> {
 		await new utils.WaitFor(() => !!window.fandomContext?.tracking, 10, 100).until();
 
-		return window.fandomContext.tracking;
+		return { ...window.fandomContext.tracking };
 	}
 
 	async execute() {
