@@ -153,16 +153,12 @@ export class UcpMobileSlotsDefinitionRepository {
 			classList: ['ad-slot-placeholder', 'incontent-boxad', 'is-loading'],
 			anchorSelector: context.get('templates.incontentAnchorSelector'),
 			insertMethod: 'before',
-			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder', 'incontent-boxad'],
+			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder', '.incontent-boxad'],
 			repeatStart: 1,
 			repeatLimit: 20,
 		};
 
-		communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
-			if (!action.isLoaded) {
-				slotPlaceholderInjector.injectAndRepeat(icbPlaceholderConfig, adSlotCategory);
-			}
-		});
+		slotPlaceholderInjector.injectAndRepeat(icbPlaceholderConfig, adSlotCategory);
 	}
 
 	getMobilePrefooterConfig(): SlotSetupDefinition {

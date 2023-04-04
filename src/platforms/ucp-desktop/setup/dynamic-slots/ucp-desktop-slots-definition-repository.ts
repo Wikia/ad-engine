@@ -5,7 +5,10 @@ import {
 	context,
 	eventsRepository,
 	InstantConfigService,
+	RepeatableSlotPlaceholderConfig,
 	scrollListener,
+	slotPlaceholderInjector,
+	UapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -70,11 +73,14 @@ export class UcpDesktopSlotsDefinitionRepository {
 		return {
 			slotCreatorConfig: {
 				slotName,
+				placeholderConfig: {
+					createLabel: true,
+				},
 				anchorSelector: context.get('templates.incontentAnchorSelector'),
 				anchorPosition: 'belowFirstViewport',
-				avoidConflictWith: ['.incontent-leaderboard', '#incontent_player'],
+				avoidConflictWith: ['.ad-slot-icl', '#incontent_player'],
 				insertMethod: 'before',
-				classList: ['hide', 'ad-slot', 'incontent-leaderboard'],
+				classList: ['hide', 'ad-slot', 'ad-slot-icl'],
 				repeat: {
 					index: 1,
 					limit: 20,
@@ -84,12 +90,45 @@ export class UcpDesktopSlotsDefinitionRepository {
 						'targeting.rv': '{slotConfig.repeat.index}',
 						'targeting.pos': [slotName],
 					},
+					updateCreator: {
+						anchorSelector: '.incontent-leaderboard',
+						insertMethod: 'append',
+						placeholderConfig: {
+							createLabel: false,
+						},
+					},
 				},
 			},
+			slotCreatorWrapperConfig: {
+				classList: ['ad-slot-placeholder', 'incontent-leaderboard', 'is-loading'],
+			},
 			activator: () => {
-				context.push('events.pushOnScroll.ids', slotName);
+				communicationService.on(
+					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+					(action: UapLoadStatus) => {
+						context.push('events.pushOnScroll.ids', slotName);
+						if (!action.isLoaded) {
+							this.injectIncontentAdsPlaceholders();
+						}
+					},
+				);
 			},
 		};
+	}
+
+	private injectIncontentAdsPlaceholders(): void {
+		const adSlotCategory = 'incontent';
+
+		const iclPlaceholderConfig: RepeatableSlotPlaceholderConfig = {
+			classList: ['ad-slot-placeholder', 'incontent-leaderboard', 'is-loading'],
+			anchorSelector: context.get('templates.incontentAnchorSelector'),
+			avoidConflictWith: ['.ad-slot-placeholder', '.incontent-leaderboard', '#incontent_player'],
+			insertMethod: 'before',
+			repeatStart: 1,
+			repeatLimit: 19,
+		};
+
+		slotPlaceholderInjector.injectAndRepeat(iclPlaceholderConfig, adSlotCategory);
 	}
 
 	getIncontentBoxadConfig(): SlotSetupDefinition {
