@@ -1,6 +1,7 @@
 export * from './bidders/bidders-state.setup';
 export * from './bidders/wikia-adapter';
 export * from './bootstrap';
+export * from './context/targeting/targeting-strategies/models/open-rtb2';
 export * from './context/targeting/ucp-targeting.setup';
 export * from './dynamic-slots/fan-feed-native-ad-listener';
 export * from './dynamic-slots/nativo-slots-definition-repository';

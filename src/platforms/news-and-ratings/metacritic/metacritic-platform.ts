@@ -24,6 +24,7 @@ import { MetacriticPrebidConfigSetup } from './setup/context/prebid/metacritic-p
 import { MetacriticSlotsContextSetup } from './setup/context/slots/metacritic-slots-context.setup';
 import { MetacriticTargetingSetup } from './setup/context/targeting/metacritic-targeting.setup';
 import { MetacriticDynamicSlotsSetup } from './setup/dynamic-slots/metacritic-dynamic-slots.setup';
+import { MetacriticPageChangeGalleryObserver } from './setup/page-observers/metacritic-page-change-gallery-observer.setup';
 import { MetacriticTemplatesSetup } from './templates/metacritic-templates.setup';
 
 @Injectable()
@@ -53,6 +54,7 @@ export class MetacriticPlatform {
 			MetacriticTemplatesSetup,
 			NewsAndRatingsAdsMode,
 			TrackingSetup,
+			MetacriticPageChangeGalleryObserver,
 		);
 
 		this.pipeline.execute();

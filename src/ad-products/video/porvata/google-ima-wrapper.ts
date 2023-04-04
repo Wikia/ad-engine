@@ -12,9 +12,10 @@ export class GoogleImaWrapper {
 
 		if (slot) {
 			communicationService.onSlotEvent(
-				AdSlot.DESTROYED_EVENT,
+				AdSlot.DESTROY_EVENT,
 				() => {
 					adDisplayContainer.destroy();
+					slot.emit(AdSlot.DESTROYED_EVENT);
 				},
 				slot.getSlotName(),
 			);
