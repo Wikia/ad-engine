@@ -2,7 +2,6 @@ export * from './ad-label-helper';
 export * from './client';
 export * from './dimensions';
 export * from './document';
-export * from './dw-traffic-aggregator';
 export * from './flow-control';
 export * from './generate-unique-id';
 export * from './geo';

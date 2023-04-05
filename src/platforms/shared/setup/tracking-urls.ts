@@ -5,7 +5,7 @@ interface TrackingConfig {
 	aggregation: boolean;
 }
 
-interface TrackingUrl {
+export interface TrackingUrl {
 	name: string;
 	url: string;
 	config: TrackingConfig;

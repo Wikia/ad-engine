@@ -1,6 +1,7 @@
 import { context, targetingService, trackingOptIn, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { trackingUrls } from '../setup/tracking-urls';
+import { TrackingUrl, trackingUrls } from '../setup/tracking-urls';
+import { dwTrafficAggregator } from './data-warehouse-utils/dw-traffic-aggregator';
 import { TrackingParams } from './models/tracking-params';
 
 const logGroup = 'data-warehouse-trackingParams';
@@ -22,7 +23,7 @@ export class DataWarehouseTracker {
 	track(options: TrackingParams, trackingURL?: string): void {
 		if (
 			!utils.outboundTrafficRestrict.isOutboundTrafficAllowed(
-				`dw-tracker-${this.getTrackerNameFromUrl(trackingURL)}`,
+				`dw-tracker-${this.getTrackerFromUrl(trackingURL).name.toLowerCase()}`,
 			)
 		) {
 			return;
@@ -40,8 +41,8 @@ export class DataWarehouseTracker {
 		}
 	}
 
-	private getTrackerNameFromUrl(trackingURL?: string): string {
-		return trackingURL ? trackingURL.split('/').at(-1) : 'default';
+	private getTrackerFromUrl(trackingURL?: string): TrackingUrl {
+		return Object.values(trackingUrls).find((element) => element.url === trackingURL);
 	}
 
 	/**
@@ -79,10 +80,12 @@ export class DataWarehouseTracker {
 		};
 
 		if (
-			context.get(`services.dw-tracker-${this.getTrackerNameFromUrl(trackingURL)}.aggregate`) &&
-			utils.dwTrafficAggregator.isAggregatorActive()
+			context.get(
+				`services.dw-tracker-${this.getTrackerFromUrl(trackingURL).name.toLowerCase()}.aggregate`,
+			) &&
+			dwTrafficAggregator.isAggregatorActive()
 		) {
-			utils.dwTrafficAggregator.push(this.getTrackerNameFromUrl(trackingURL), trackingURL, params);
+			dwTrafficAggregator.push(this.getTrackerFromUrl(trackingURL), params);
 		}
 
 		const url = this.buildDataWarehouseUrl(params, trackingURL);

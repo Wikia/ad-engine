@@ -1,9 +1,9 @@
-import { DataWarehouseParams } from '../../platforms/shared';
-import { utils } from '../index';
-import { Dictionary } from '../models';
+import { Dictionary, utils } from '@wikia/ad-engine';
+import { TrackingUrl } from '../../setup/tracking-urls';
+import { DataWarehouseParams } from '../data-warehouse';
 
 interface AggregateQueue {
-	url: string;
+	track: TrackingUrl;
 	params: DataWarehouseParams[];
 }
 
@@ -28,16 +28,16 @@ class DwTrafficAggregator {
 		return this.enabled;
 	}
 
-	public push(track: string, url: string, element: DataWarehouseParams): void {
-		if (!this.queue[track]) {
-			this.queue[track] = {
-				url: url,
+	public push(track: TrackingUrl, element: DataWarehouseParams): void {
+		if (!this.queue[track.name]) {
+			this.queue[track.name] = {
+				track,
 				params: [],
 			};
 		}
-		this.queue[track].params.push(element);
+		this.queue[track.name].params.push(element);
 
-		if (this.queue[track].params.length >= this.AGGREGATION_LIMIT_PER_TRACK) {
+		if (this.queue[track.name].params.length >= this.AGGREGATION_LIMIT_PER_TRACK) {
 			this.fireAggregatedQueueByTrack(track);
 		}
 	}
@@ -45,21 +45,21 @@ class DwTrafficAggregator {
 	private fireAggregatedQueue(): void {
 		const keys = Object.keys(this.queue);
 		keys.forEach((queueKey) => {
-			this.fireAggregatedQueueByTrack(queueKey);
+			this.fireAggregatedQueueByTrack(this.queue[queueKey].track);
 		});
 	}
 
-	private fireAggregatedQueueByTrack(track: string): void {
+	private fireAggregatedQueueByTrack(track: TrackingUrl): void {
 		const paramsAggregated = [];
-		this.queue[track]?.params?.forEach((options) => paramsAggregated.push(options));
+		this.queue[track.name]?.params?.forEach((options) => paramsAggregated.push(options));
 
 		if (paramsAggregated.length === 0) {
 			return;
 		}
 
-		this.sendTrackData(this.queue[track].url, paramsAggregated);
-		this.queue[track] = {
-			url: this.queue[track].url,
+		this.sendTrackData(this.queue[track.name].track.url, paramsAggregated);
+		this.queue[track.name] = {
+			track,
 			params: [],
 		};
 	}
