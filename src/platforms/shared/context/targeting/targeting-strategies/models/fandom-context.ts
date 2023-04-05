@@ -8,7 +8,7 @@ export class FandomContext {
 }
 
 export class Site {
-	public readonly categories: [];
+	public readonly categories: string[];
 	public readonly directedAtChildren: boolean;
 	public readonly esrbRating: string;
 	public readonly siteName: string;
@@ -18,7 +18,7 @@ export class Site {
 	public readonly mpaRating: string;
 
 	constructor(
-		categories: [],
+		categories: string[],
 		directedAtChildren: boolean,
 		siteName: string,
 		top1000: boolean,
