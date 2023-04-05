@@ -35,7 +35,7 @@ export class AdSizeTracker {
 				position: slot.getMainPositionName(),
 				slot_size: slot.getCreativeSize() || '',
 			},
-			trackingUrls.AD_ENG_AD_SIZE_INFO.url,
+			trackingUrls.AD_ENG_AD_SIZE_INFO,
 		);
 	}
 }

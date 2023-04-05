@@ -20,7 +20,7 @@ export class LabradorTracker {
 				timestamp: now.getTime(),
 				tz_offset: now.getTimezoneOffset(),
 			},
-			trackingUrls.AD_ENG_LABRADOR_INFO.url,
+			trackingUrls.AD_ENG_LABRADOR_INFO,
 		);
 	}
 }

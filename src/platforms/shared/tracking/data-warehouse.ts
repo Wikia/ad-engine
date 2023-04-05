@@ -20,10 +20,10 @@ export class DataWarehouseTracker {
 	/**
 	 * Call all of the setup trackers
 	 */
-	track(options: TrackingParams, trackingURL?: string): void {
+	track(options: TrackingParams, trackingURL?: TrackingUrl): void {
 		if (
 			!utils.outboundTrafficRestrict.isOutboundTrafficAllowed(
-				`dw-tracker-${this.getTrackerFromUrl(trackingURL).name.toLowerCase()}`,
+				`dw-tracker-${trackingURL.name.toLowerCase()}`,
 			)
 		) {
 			return;
@@ -39,10 +39,6 @@ export class DataWarehouseTracker {
 		} else {
 			this.sendTrackEvent(params);
 		}
-	}
-
-	private getTrackerFromUrl(trackingURL?: string): TrackingUrl {
-		return Object.values(trackingUrls).find((element) => element.url === trackingURL);
 	}
 
 	/**
@@ -73,22 +69,20 @@ export class DataWarehouseTracker {
 	/**
 	 * Send single get request to Data Warehouse using custom route name (defined in config)
 	 */
-	private sendCustomEvent(options: TrackingParams, trackingURL: string): void {
+	private sendCustomEvent(options: TrackingParams, trackingURL: TrackingUrl): void {
 		const params: DataWarehouseParams = {
 			...options,
 			...this.getTimeBasedParams(),
 		};
 
 		if (
-			context.get(
-				`services.dw-tracker-${this.getTrackerFromUrl(trackingURL).name.toLowerCase()}.aggregate`,
-			) &&
+			context.get(`services.dw-tracker-${trackingURL.name.toLowerCase()}.aggregate`) &&
 			dwTrafficAggregator.isAggregatorActive()
 		) {
-			dwTrafficAggregator.push(this.getTrackerFromUrl(trackingURL), params);
+			dwTrafficAggregator.push(trackingURL, params);
 		}
 
-		const url = this.buildDataWarehouseUrl(params, trackingURL);
+		const url = this.buildDataWarehouseUrl(params, trackingURL.url);
 
 		this.sendRequest(url, params);
 	}

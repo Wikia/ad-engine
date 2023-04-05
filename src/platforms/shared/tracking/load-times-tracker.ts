@@ -84,7 +84,7 @@ export class LoadTimesTracker {
 				tz_offset: this.getTimezoneOffset(),
 				country: utils.geoService.getCountryCode() || '',
 			},
-			trackingUrls.AD_ENG_LOAD_TIMES.url,
+			trackingUrls.AD_ENG_LOAD_TIMES,
 		);
 	}
 }
