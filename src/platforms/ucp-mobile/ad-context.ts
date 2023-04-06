@@ -34,9 +34,6 @@ export const basicContext = {
 		pushOnScroll: {
 			ids: [],
 		},
-		pushAfterRendered: {
-			top_boxad: [],
-		},
 	},
 	slots: {},
 	vast: {
@@ -55,7 +52,10 @@ export const basicContext = {
 			'/{targeting.skin}-{targeting.original_host}-{targeting.s2}' +
 			'/{custom.dbNameForAdUnit}-{targeting.s0}',
 	},
-	templates: {},
+	templates: {
+		incontentAnchorSelector:
+			'.mw-parser-output > h2,.mw-parser-output > section > h3,.mw-parser-output > section > h4,.mw-parser-output > section > h5',
+	},
 	services: {
 		anyclip: {
 			pubname: 'fandomcom',

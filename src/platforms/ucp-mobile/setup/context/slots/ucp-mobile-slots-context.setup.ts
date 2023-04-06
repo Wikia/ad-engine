@@ -36,7 +36,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			},
 			top_boxad: {
 				adProduct: 'top_boxad',
-				avoidConflictWith: '.ad-slot,.ntv-ad',
 				bidderAlias: 'mobile_in_content',
 				group: 'MR',
 				options: {},
@@ -60,19 +59,12 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					loc: 'top',
 					pos: ['top_boxad'],
 				},
-				placeholder: {
-					createLabel: true,
-				},
 			},
-			// as this slot can be repeated many, it uses bidderAlias mobile_in_content
 			incontent_boxad_1: {
 				adProduct: 'incontent_boxad_1',
-				avoidConflictWith: '.ad-slot,#incontent_player',
 				bidderAlias: 'mobile_in_content',
-				defaultClasses: ['hide', 'ad-slot'],
 				group: 'HiVi',
 				options: {},
-				parentContainerSelector: '.incontent-boxad',
 				sizes: [
 					{
 						viewportSize: [BIG_VIEWPORT_SIZE.width, BIG_VIEWPORT_SIZE.height],
@@ -93,18 +85,12 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					loc: 'middle',
 					pos: ['incontent_boxad'],
 				},
-				placeholder: {
-					createLabel: true,
-				},
 			},
 			incontent_player: {
 				adProduct: 'incontent_player',
 				disabled: true,
 				isVideo: true,
 				trackEachStatus: true,
-				insertBeforeSelector: '.mw-parser-output > h2',
-				avoidConflictWith: '.ad-slot,#incontent_boxad_1',
-				parentContainerSelector: '.incontent-boxad',
 				group: 'HiVi',
 				defaultSizes: [[1, 1]],
 				targeting: {
@@ -126,13 +112,9 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'footer',
 				},
-				placeholder: {
-					createLabel: true,
-				},
 			},
 			interstitial: {
 				adProduct: 'interstitial',
-				defaultClasses: ['hide'],
 				group: 'IU',
 				options: {},
 				outOfPage: true,
@@ -143,7 +125,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			},
 			floor_adhesion: {
 				adProduct: 'floor_adhesion',
-				defaultClasses: ['hide'],
 				group: 'PF',
 				options: {},
 				outOfPage: false,
@@ -201,9 +182,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					loc: 'footer',
 					pos: ['bottom_leaderboard', 'mobile_prefooter'],
 				},
-				placeholder: {
-					createLabel: true,
-				},
 			},
 			featured: {
 				adProduct: 'featured',
@@ -251,12 +229,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 
 		slotsContext.setupSlotVideoContext();
 		slotsContext.setupCustomPlayerAdUnit();
-
-		// TODO: remove once ADEN-12936 is closed
-		if (location.host.includes('harrypotter')) {
-			slots.incontent_player.insertBeforeSelector =
-				'.mw-parser-output > h2, .mw-parser-output > section > h3';
-		}
 
 		context.set('slots', slots);
 		context.set('slots.featured.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
