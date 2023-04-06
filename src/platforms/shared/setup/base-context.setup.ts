@@ -65,7 +65,9 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setOptionsContext(): void {
-		if (!this.instantConfig.get('icIncontentHeadersExperiment')) {
+		if (this.instantConfig.get('icIncontentHeadersExperiment')) {
+			context.set('templates.incontentHeadersExperiment', true);
+		} else {
 			context.set('templates.incontentAnchorSelector', '.mw-parser-output > h2');
 		}
 

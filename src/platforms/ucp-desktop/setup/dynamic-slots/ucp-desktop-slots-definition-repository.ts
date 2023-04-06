@@ -69,8 +69,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 		}
 
 		const slotName = 'incontent_leaderboard';
-
-		return {
+		const slotConfig: SlotSetupDefinition = {
 			slotCreatorConfig: {
 				slotName,
 				placeholderConfig: {
@@ -81,28 +80,36 @@ export class UcpDesktopSlotsDefinitionRepository {
 				avoidConflictWith: ['.ad-slot-icl', '#incontent_player'],
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot', 'ad-slot-icl'],
-				repeat: {
-					index: 1,
-					limit: 20,
-					slotNamePattern: `${slotName}_{slotConfig.repeat.index}`,
-					updateProperties: {
-						adProduct: '{slotConfig.slotName}',
-						'targeting.rv': '{slotConfig.repeat.index}',
-						'targeting.pos': [slotName],
-					},
-					updateCreator: {
-						anchorSelector: '.incontent-leaderboard',
-						insertMethod: 'append',
-						placeholderConfig: {
-							createLabel: false,
-						},
-					},
-				},
 			},
 			slotCreatorWrapperConfig: {
 				classList: ['ad-slot-placeholder', 'incontent-leaderboard', 'is-loading'],
 			},
 			activator: () => {
+				communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, () => {
+					context.push('events.pushOnScroll.ids', slotName);
+				});
+			},
+		};
+
+		if (context.get('templates.incontentHeadersExperiment')) {
+			slotConfig.slotCreatorConfig.repeat = {
+				index: 1,
+				limit: 20,
+				slotNamePattern: `${slotName}_{slotConfig.repeat.index}`,
+				updateProperties: {
+					adProduct: '{slotConfig.slotName}',
+					'targeting.rv': '{slotConfig.repeat.index}',
+					'targeting.pos': [slotName],
+				},
+				updateCreator: {
+					anchorSelector: '.incontent-leaderboard',
+					insertMethod: 'append',
+					placeholderConfig: {
+						createLabel: false,
+					},
+				},
+			};
+			slotConfig.activator = () => {
 				communicationService.on(
 					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
 					(action: UapLoadStatus) => {
@@ -112,8 +119,10 @@ export class UcpDesktopSlotsDefinitionRepository {
 						}
 					},
 				);
-			},
-		};
+			};
+		}
+
+		return slotConfig;
 	}
 
 	private injectIncontentAdsPlaceholders(): void {
