@@ -1,13 +1,10 @@
 import { WaitFor } from '@wikia/core/utils';
-import { TrackingParametersSetup } from '@wikia/platforms/shared';
-import Cookies from 'js-cookie';
-import sinon, { assert } from 'sinon';
+import { TrackingParametersSetupExecutable } from '@wikia/platforms/shared';
+import { expect } from 'chai';
+import * as sinon from 'sinon';
 
 describe('TrackingParametersSetup', () => {
-	let cookiesGetStub: sinon.SinonStub;
-
 	beforeEach(() => {
-		cookiesGetStub = global.sandbox.stub(Cookies, 'get');
 		global.sandbox.stub(WaitFor.prototype, 'until').returns(Promise.resolve());
 	});
 
@@ -15,11 +12,31 @@ describe('TrackingParametersSetup', () => {
 		global.sandbox.restore();
 	});
 
-	it('should always set tracking context', () => {
-		const experimentSetup = new TrackingParametersSetup();
+	it('should always set tracking context', async () => {
+		const fandomContextMock = {
+			tracking: {
+				beaconId: 'beaconId',
+				pvNumber: 'pvNumber',
+				pvNumberGlobal: 'pvNumberGlobal',
+				sessionId: 'sessionId',
+				pvUID: 'pvUID',
+			},
+		} as any;
+		const contextMock = {
+			set: sinon.spy(),
+			get: () => ({ wikiParam: 'hello' }),
+		} as any;
+		const trackingParametersSetup = new TrackingParametersSetupExecutable(
+			fandomContextMock,
+			contextMock,
+		);
+		await trackingParametersSetup.execute();
 
-		experimentSetup.execute();
-
-		assert.notCalled(cookiesGetStub);
+		expect(
+			contextMock.set.calledWith('wiki', {
+				...fandomContextMock.tracking,
+				wikiParam: 'hello',
+			}),
+		).to.be.true;
 	});
 });

@@ -1,17 +1,29 @@
-import { context, DiProcess, utils } from '@wikia/ad-engine';
+import { Context, context, DiProcess, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
-@Injectable()
-export class TrackingParametersSetup implements DiProcess {
+export class TrackingParametersSetupExecutable {
+	constructor(private fandomContext: WindowFandomContext, private context: Context) {}
 	private async getTrackingParameters(): Promise<Partial<ITrackingParameters>> {
-		await new utils.WaitFor(() => !!window.fandomContext?.tracking, 10, 100).until();
+		await new utils.WaitFor(() => !!this.fandomContext?.tracking, 10, 100).until();
 
-		return { ...window.fandomContext.tracking };
+		return { ...this.fandomContext.tracking };
 	}
 
 	async execute() {
 		const trackingParameters = await this.getTrackingParameters();
 
-		context.set('wiki', { ...context.get('wiki'), ...trackingParameters });
+		this.context.set('wiki', { ...this.context.get('wiki'), ...trackingParameters });
+	}
+}
+
+@Injectable()
+export class TrackingParametersSetup implements DiProcess {
+	async execute() {
+		const trackingParametersSetup = new TrackingParametersSetupExecutable(
+			window.fandomContext,
+			context,
+		);
+
+		await trackingParametersSetup.execute();
 	}
 }
