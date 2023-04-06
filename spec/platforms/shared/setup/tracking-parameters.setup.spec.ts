@@ -15,7 +15,7 @@ describe('TrackingParametersSetup', () => {
 		global.sandbox.restore();
 	});
 
-	it('should always set new context', () => {
+	it('should always set tracking context', () => {
 		const experimentSetup = new TrackingParametersSetup();
 
 		experimentSetup.execute();
