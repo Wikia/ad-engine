@@ -38,7 +38,9 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 
 				if (this.repeatedSlotsQueue[adSlotName]) {
 					const [nextSlotName, placementId] = this.repeatedSlotsQueue[adSlotName];
-					insertSlots([this.getSlotConfig(nextSlotName, placementId)]);
+					window.requestAnimationFrame(() => {
+						insertSlots([this.getSlotConfig(nextSlotName, placementId)]);
+					});
 				}
 			});
 		});
@@ -106,11 +108,7 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 			return null;
 		}
 
-		if (!context.get(`slots.${slotName}.repeat`)) {
-			this.setupSlotRepeatContext(slotName);
-		}
-
-		return {
+		const slotConfig: SlotSetupDefinition = {
 			slotCreatorConfig: {
 				slotName,
 				insertMethod: 'alter',
@@ -122,19 +120,24 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 				context.push('state.adStack', { id: slotName });
 			},
 		};
-	}
 
-	private setupSlotRepeatContext(slotName: string): void {
-		context.set(`slots.${slotName}.bidderAlias`, slotName);
-		context.set(`slots.${slotName}.repeat`, {
-			...context.get(`slots.${slotName}.repeat`),
-			index: 1,
-			limit: 10,
-			slotNamePattern: `{slotConfig.bidderAlias}-{slotConfig.repeat.index}`,
-			updateProperties: {
-				adProduct: '{slotConfig.slotName}',
-				'targeting.pos': '{slotConfig.slotName}',
-			},
-		});
+		if (!baseSlotName) {
+			context.set(`slots.${slotName}.bidderAlias`, slotName);
+
+			slotConfig.slotCreatorConfig.repeat = {
+				index: 1,
+				limit: 10,
+				slotNamePattern: `{slotConfig.bidderAlias}-{slotConfig.repeat.index}`,
+				updateProperties: {
+					adProduct: '{slotConfig.slotName}',
+					'targeting.pos': '{slotConfig.slotName}',
+				},
+				updateCreator: {
+					anchorElement: null,
+				},
+			};
+		}
+
+		return slotConfig;
 	}
 }

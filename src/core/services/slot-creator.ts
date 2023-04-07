@@ -1,5 +1,6 @@
+import { communicationService } from '@ad-engine/communication';
 import { Injectable } from '@wikia/dependency-injection';
-import { RepeatConfig } from '../models';
+import { AdSlot, RepeatConfig } from '../models';
 import {
 	AD_LABEL_CLASS,
 	getTopOffset,
@@ -9,11 +10,12 @@ import {
 	logger,
 } from '../utils';
 import { context } from './context-service';
-export type insertMethodType = 'alter' | 'append' | 'prepend' | 'after' | 'before';
+import { SlotRepeater } from './slot-repeater';
+export type InsertMethodType = 'alter' | 'append' | 'prepend' | 'after' | 'before';
 
 export interface SlotCreatorConfig {
 	slotName: string;
-	insertMethod: insertMethodType;
+	insertMethod: InsertMethodType;
 	anchorSelector: string;
 	anchorElement?: HTMLElement;
 	/**
@@ -40,6 +42,8 @@ const groupName = 'slot-creator';
 
 @Injectable()
 export class SlotCreator {
+	constructor(private slotRepeater = new SlotRepeater()) {}
+
 	createSlot(
 		slotLooseConfig: SlotCreatorConfig,
 		wrapperLooseConfig?: SlotCreatorWrapperConfig,
@@ -53,6 +57,10 @@ export class SlotCreator {
 		const slotConfig = this.fillSlotConfig(slotLooseConfig);
 		const slot = this.makeSlot(slotConfig, slotLooseConfig.anchorElement);
 
+		if (slotConfig.repeat) {
+			this.setupSlotRepeat(slotConfig);
+		}
+
 		if (slotLooseConfig.insertMethod === 'alter') {
 			return slot;
 		}
@@ -64,10 +72,6 @@ export class SlotCreator {
 
 		if (slotConfig.placeholderConfig?.createLabel) {
 			this.addAdLabel(slot.parentElement, slotConfig.slotName);
-		}
-
-		if (slotConfig.repeat) {
-			context.set(`slots.${slotConfig.slotName}.repeat`, slotConfig.repeat);
 		}
 
 		return slot;
@@ -146,6 +150,10 @@ export class SlotCreator {
 	): HTMLElement {
 		const slot = domSlotElement || document.createElement('div');
 
+		if (!slot) {
+			return;
+		}
+
 		slot.id = slotConfig.slotName;
 		slot.classList.add('gpt-ad', ...slotConfig.classList);
 
@@ -176,6 +184,48 @@ export class SlotCreator {
 		div.innerText = getTranslation('advertisement');
 		div.dataset.slotName = slotName;
 		placeholder.appendChild(div);
+	}
+
+	private setupSlotRepeat(slotConfig: Required<SlotCreatorConfig>): void {
+		communicationService.onSlotEvent(
+			AdSlot.SLOT_RENDERED_EVENT,
+			({ slot }) => {
+				if (!slot.isEnabled()) {
+					return;
+				}
+
+				logger(groupName, `Repeating: ${slotConfig.slotName}`);
+
+				slotConfig.repeat.index += 1;
+
+				const newSlotName = this.slotRepeater.repeatSlot(slot, slotConfig.repeat);
+
+				if (!newSlotName) {
+					return;
+				}
+
+				const updatedSlotConfig = {
+					...slotConfig,
+					...(slotConfig.repeat.updateCreator || {}),
+					slotName: newSlotName,
+				};
+
+				try {
+					this.createSlot(updatedSlotConfig);
+				} catch (e) {
+					logger(groupName, `There is not enough space for ${newSlotName}`);
+
+					return;
+				}
+
+				logger(groupName, 'Injecting slot:', newSlotName);
+
+				if (slotConfig.repeat.disablePushOnScroll !== true) {
+					context.push('events.pushOnScroll.ids', newSlotName);
+				}
+			},
+			slotConfig.slotName,
+		);
 	}
 
 	private throwNoPlaceToInsertError(slotName: string): void {
