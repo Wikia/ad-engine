@@ -52,8 +52,8 @@ export class Eyeota extends BaseServiceSetup {
 
 		let contextTags = '';
 		if (window.fandomContext?.site?.tags) {
-			const { gnre, pform, pub, tv } = window.fandomContext.site.tags;
-			contextTags = parseContextTags({ gnre, pform, pub, tv });
+			const { gnre, media, pform, pub, theme, tv } = window.fandomContext.site.tags;
+			contextTags = parseContextTags({ gnre, media, pform, pub, theme, tv });
 		}
 
 		if (tcfData.gdprApplies) {
