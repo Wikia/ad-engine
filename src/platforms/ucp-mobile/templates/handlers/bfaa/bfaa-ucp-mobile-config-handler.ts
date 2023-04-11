@@ -26,7 +26,6 @@ export class BfaaUcpMobileConfigHandler implements TemplateStateHandler {
 				(slotName) => !enabledSlots.includes(slotName),
 			),
 		);
-		context.set('slots.incontent_boxad_1.repeat', null);
 
 		slotsContext.setSlotSize(
 			'bottom_leaderboard',
