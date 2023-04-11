@@ -4,6 +4,7 @@ import {
 	context,
 	DiProcess,
 	eventsRepository,
+	SlotRepeater,
 	slotService,
 	utils,
 } from '@wikia/ad-engine';
@@ -59,6 +60,14 @@ export class MetacriticNeutronDynamicSlotsSetup implements DiProcess {
 	}
 
 	private setupRepeatableSlot(slotName, slotNameBase = '') {
+		const slotRepeater = new SlotRepeater();
+
+		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot }) => {
+			if (slot.isEnabled() && slot.getConfigProperty('repeat')) {
+				slotRepeater.repeatSlot(slot, slot.getConfigProperty('repeat'));
+			}
+		});
+
 		communicationService.onSlotEvent(
 			AdSlot.STATUS_SUCCESS,
 			() => this.injectNextSlot(slotName, slotNameBase),
