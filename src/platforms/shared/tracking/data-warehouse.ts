@@ -22,6 +22,7 @@ export class DataWarehouseTracker {
 	 */
 	track(options: TrackingParams, trackingURL?: TrackingUrl): void {
 		if (
+			trackingURL &&
 			!utils.outboundTrafficRestrict.isOutboundTrafficAllowed(
 				`dw-tracker-${trackingURL.name.toLowerCase()}`,
 			)
