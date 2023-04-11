@@ -81,6 +81,8 @@ export class DataWarehouseTracker {
 			dwTrafficAggregator.isAggregatorActive()
 		) {
 			dwTrafficAggregator.push(trackingURL, params);
+
+			// return; // TODO: uncomment in task: ADEN-13038
 		}
 
 		const url = this.buildDataWarehouseUrl(params, trackingURL.url);
