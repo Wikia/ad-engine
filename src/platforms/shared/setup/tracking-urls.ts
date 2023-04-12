@@ -3,6 +3,7 @@ import { Dictionary } from '@wikia/ad-engine';
 interface TrackingConfigOfAllowedOptions {
 	sampling: boolean;
 	aggregation: boolean;
+	aggregationLimit?: number;
 }
 
 export interface TrackingUrl {
@@ -20,6 +21,7 @@ export const trackingUrls: Dictionary<TrackingUrl> = {
 		allowed: {
 			sampling: true,
 			aggregation: true,
+			aggregationLimit: 5,
 		},
 	},
 	AD_ENG_BIDDERS: {

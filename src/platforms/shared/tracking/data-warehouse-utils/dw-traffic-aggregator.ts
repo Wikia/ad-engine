@@ -7,7 +7,7 @@ interface AggregateQueue {
 	params: DataWarehouseParams[];
 }
 
-class DwTrafficAggregator {
+export class DwTrafficAggregator {
 	private readonly AGGREGATION_SECONDS_OFF = 5;
 	private readonly SEND_DATA_INTERVAL = 1000;
 	private readonly AGGREGATION_LIMIT_PER_TRACK = 5;
@@ -37,9 +37,13 @@ class DwTrafficAggregator {
 		}
 		this.tracksQueues[track.name].params.push(element);
 
-		if (this.tracksQueues[track.name].params.length >= this.AGGREGATION_LIMIT_PER_TRACK) {
+		if (this.tracksQueues[track.name].params.length >= this.getAggregationLimit(track)) {
 			this.fireAggregatedQueueByTrack(track);
 		}
+	}
+
+	private getAggregationLimit(track: TrackingUrl): number {
+		return track.allowed.aggregationLimit ?? this.AGGREGATION_LIMIT_PER_TRACK;
 	}
 
 	private fireAggregatedQueue(): void {
