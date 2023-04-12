@@ -4,12 +4,15 @@ import {
 	communicationService,
 	context,
 	eventsRepository,
-	FmrRotator,
 	InstantConfigService,
+	RepeatableSlotPlaceholderConfig,
 	scrollListener,
+	slotPlaceholderInjector,
+	UapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
 import { injectable } from 'tsyringe';
+import { FmrRotator } from '../../utils/fmr-rotator';
 
 @injectable()
 export class UcpDesktopSlotsDefinitionRepository {
@@ -54,34 +57,87 @@ export class UcpDesktopSlotsDefinitionRepository {
 	}
 
 	private isIncontentLeaderboardApplicable(): boolean {
-		if (!context.get('services.nativo.gamIncontentEnabled')) {
-			return false;
-		}
-
 		const icLbMaxWidth = 768;
 		const pageContentSelector = 'main.page__main #content';
 
 		return utils.getWidth(document.querySelector(pageContentSelector)) >= icLbMaxWidth;
 	}
 
-	getIncontentLeaderboardConfig(headerPosition: number): SlotSetupDefinition {
+	getIncontentLeaderboardConfig(): SlotSetupDefinition {
 		if (!this.isIncontentLeaderboardApplicable()) {
 			return;
 		}
 
 		const slotName = 'incontent_leaderboard';
-
-		return {
+		const slotConfig: SlotSetupDefinition = {
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: `.mw-parser-output > h2:nth-of-type(${headerPosition})`,
+				placeholderConfig: {
+					createLabel: true,
+				},
+				anchorSelector: context.get('templates.incontentAnchorSelector'),
+				anchorPosition: 'belowFirstViewport',
+				avoidConflictWith: ['.ad-slot-icl', '#incontent_player'],
 				insertMethod: 'before',
-				classList: ['hide', 'ad-slot'],
+				classList: ['hide', 'ad-slot', 'ad-slot-icl'],
+			},
+			slotCreatorWrapperConfig: {
+				classList: ['ad-slot-placeholder', 'incontent-leaderboard', 'is-loading'],
 			},
 			activator: () => {
-				context.push('events.pushOnScroll.ids', slotName);
+				communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, () => {
+					context.push('events.pushOnScroll.ids', slotName);
+				});
 			},
 		};
+
+		if (context.get('templates.incontentHeadersExperiment')) {
+			slotConfig.slotCreatorConfig.repeat = {
+				index: 1,
+				limit: 20,
+				slotNamePattern: `${slotName}_{slotConfig.repeat.index}`,
+				updateProperties: {
+					adProduct: '{slotConfig.slotName}',
+					'targeting.rv': '{slotConfig.repeat.index}',
+					'targeting.pos': [slotName],
+				},
+				updateCreator: {
+					anchorSelector: '.incontent-leaderboard',
+					insertMethod: 'append',
+					placeholderConfig: {
+						createLabel: false,
+					},
+				},
+			};
+			slotConfig.activator = () => {
+				communicationService.on(
+					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+					(action: UapLoadStatus) => {
+						context.push('events.pushOnScroll.ids', slotName);
+						if (!action.isLoaded) {
+							this.injectIncontentAdsPlaceholders();
+						}
+					},
+				);
+			};
+		}
+
+		return slotConfig;
+	}
+
+	private injectIncontentAdsPlaceholders(): void {
+		const adSlotCategory = 'incontent';
+
+		const iclPlaceholderConfig: RepeatableSlotPlaceholderConfig = {
+			classList: ['ad-slot-placeholder', 'incontent-leaderboard', 'is-loading'],
+			anchorSelector: context.get('templates.incontentAnchorSelector'),
+			avoidConflictWith: ['.ad-slot-placeholder', '.incontent-leaderboard', '#incontent_player'],
+			insertMethod: 'before',
+			repeatStart: 1,
+			repeatLimit: 19,
+		};
+
+		slotPlaceholderInjector.injectAndRepeat(iclPlaceholderConfig, adSlotCategory);
 	}
 
 	getIncontentBoxadConfig(): SlotSetupDefinition {
@@ -99,15 +155,14 @@ export class UcpDesktopSlotsDefinitionRepository {
 				insertMethod: 'append',
 				classList: ['hide', 'ad-slot'],
 				repeat: {
-					additionalClasses: 'hide',
 					index: 1,
 					limit: 20,
 					slotNamePattern: `${slotNamePrefix}{slotConfig.repeat.index}`,
 					updateProperties: {
 						adProduct: '{slotConfig.slotName}',
 						'targeting.rv': '{slotConfig.repeat.index}',
+						'targeting.pos': ['incontent_boxad'],
 					},
-					insertBelowScrollPosition: false,
 					disablePushOnScroll: true,
 				},
 			},
@@ -153,8 +208,9 @@ export class UcpDesktopSlotsDefinitionRepository {
 		return {
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: context.get(`slots.${slotName}.insertBeforeSelector`),
+				anchorSelector: context.get('templates.incontentAnchorSelector'),
 				anchorPosition: 'belowFirstViewport',
+				avoidConflictWith: ['.incontent-leaderboard'],
 				insertMethod: 'before',
 			},
 			activator: () => {

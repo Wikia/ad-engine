@@ -57,6 +57,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 			incontent_leaderboard: {
 				adProduct: 'incontent_leaderboard',
+				bidderAlias: 'incontent_leaderboard',
 				group: 'ILB',
 				options: {},
 				defaultSizes: [[728, 90]],
@@ -68,7 +69,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'incontent_boxad_1',
 				bidderAlias: 'incontent_boxad_1',
 				group: 'HiVi',
-				insertBeforeSelector: '#incontent_boxad_1',
 				recirculationElementSelector: '#recirculation-rail',
 				options: {},
 				sizes: [],
@@ -118,7 +118,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				disabled: true,
 				isVideo: true,
 				trackEachStatus: true,
-				insertBeforeSelector: '#mw-content-text > div > h2',
 				group: 'HiVi',
 				defaultSizes: [[1, 1]],
 				targeting: {
@@ -138,16 +137,11 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 			featured: {
 				adProduct: 'featured',
+				isVideo: true,
 				group: 'VIDEO',
 				videoSizes: [[640, 480]],
 				trackEachStatus: true,
 				trackingKey: 'featured-video',
-				isVideo: true,
-			},
-			ntv_ad: {
-				providers: ['nativo'],
-				trackEachStatus: true,
-				isNative: true,
 			},
 			ntv_feed_ad: {
 				providers: ['nativo'],

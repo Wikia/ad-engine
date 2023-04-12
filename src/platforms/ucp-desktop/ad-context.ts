@@ -14,13 +14,13 @@ export const basicContext = {
 			videoEnabled: false,
 			amazonId: '3115',
 			bidsRefreshing: {
-				slots: ['featured', 'incontent_boxad_1'],
+				slots: ['featured', 'incontent_boxad_1', 'incontent_leaderboard'],
 			},
 		},
 		prebid: {
 			enabled: false,
 			bidsRefreshing: {
-				slots: ['incontent_boxad_1'],
+				slots: ['incontent_boxad_1', 'incontent_leaderboard'],
 			},
 		},
 	},
@@ -56,6 +56,8 @@ export const basicContext = {
 	},
 	templates: {
 		ignoreNavbarHeight: true,
+		incontentAnchorSelector:
+			'.mw-parser-output > h2,.mw-parser-output > h3,.mw-parser-output > h4,.mw-parser-output > h5',
 	},
 	services: {
 		durationMedia: {
@@ -66,6 +68,7 @@ export const basicContext = {
 				'top_leaderboard',
 				'top_boxad',
 				'incontent_boxad_1',
+				'incontent_leaderboard',
 				'bottom_leaderboard',
 				'featured',
 				'incontent_player',

@@ -24,7 +24,6 @@ export class BfaaBootstrapHandler implements TemplateStateHandler {
 		this.adSlot.addClass('slot-responsive');
 		this.adSlot.addClass('theme-hivi'); // Required by replay-overlay
 		this.adSlot.getAdContainer().classList.add('iframe-container');
-		this.ensureImage();
 
 		await slotTweaker.onReady(this.adSlot);
 		await this.awaitVisibleDOM();
@@ -34,12 +33,6 @@ export class BfaaBootstrapHandler implements TemplateStateHandler {
 		} else {
 			resolvedState.updateInformationAboutSeenDefaultStateAd();
 			transition('impact');
-		}
-	}
-
-	private ensureImage(): void {
-		if (!(this.params.image2 && this.params.image2.background)) {
-			this.params.image1.element.classList.remove('hidden-state');
 		}
 	}
 

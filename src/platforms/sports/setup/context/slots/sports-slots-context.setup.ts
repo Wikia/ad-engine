@@ -56,7 +56,6 @@ export class SportsSlotsContextSetup implements DiProcess {
 				aboveTheFold: true,
 				autoplay: true,
 				audio: false,
-				disableExpandAnimation: true,
 				defaultSizes: [
 					[300, 250],
 					[300, 600],
