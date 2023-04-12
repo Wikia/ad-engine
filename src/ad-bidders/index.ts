@@ -7,6 +7,7 @@ import {
 	targetingService,
 	utils,
 } from '@ad-engine/core';
+import { singleton } from 'tsyringe';
 import { A9Provider } from './a9';
 import { PrebidProvider } from './prebid';
 
@@ -17,6 +18,7 @@ interface BiddersProviders {
 
 const logGroup = 'bidders';
 
+@singleton()
 export class Bidders extends BaseServiceSetup {
 	private biddersProviders: BiddersProviders = {};
 	private realSlotPrices = {};
