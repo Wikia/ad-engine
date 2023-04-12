@@ -79,9 +79,9 @@ export class DwTrafficAggregator {
 			body: JSON.stringify(params),
 		}).then((response) => {
 			if (response.status === 200) {
-				utils.logger(`DW - Track Aggregated Success`, { url, params });
+				utils.logger(`dw-track-aggregated`, { status: 'success', url, params });
 			} else {
-				utils.logger(`DW - Track Aggregated Failed`, { url, params });
+				utils.logger(`dw-track-aggregated`, { status: 'failed', url, params });
 			}
 		});
 	}
