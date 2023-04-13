@@ -32,30 +32,31 @@ class AdClickTracker extends BaseTracker implements BaseTrackerInterface {
 	}
 
 	private addClickTrackingListeners(callback: (data: Dictionary) => void, slotName): void {
-		const adSlot = slotService.get(slotName);
-		const iframeElement = adSlot.getIframe();
-		const slotElement = adSlot.getAdContainer();
+		this.clickDetection(slotName, callback);
+	}
 
-		if (!adSlot || !iframeElement) {
-			utils.logger(logGroup, `Slot ${slotName} has no iframe.`);
-			return;
-		}
+	private clickDetection(slotName: string, callback: (data: Dictionary) => void) {
+		const eventHandler = () => {
+			const elem = document.activeElement;
+			if (!elem || elem.tagName !== 'IFRAME') {
+				return;
+			}
 
-		if (adSlot.getFrameType() === 'safe') {
-			utils.logger(logGroup, `Slot ${slotName} is served in safeframe.`);
-			return;
-		}
+			const id: null | string = elem.closest('div[id]:not([id*="/"])')?.id ?? null;
+			if (!id || id !== slotName) {
+				return;
+			}
 
-		const iframeBody = iframeElement?.contentWindow?.document?.body;
+			utils.logger(logGroup, `Click! on slot='${slotName}' is detected.`);
 
-		if (iframeBody && slotElement) {
-			slotElement.firstElementChild.addEventListener('click', () => {
-				this.handleClickEvent(callback, adSlot);
-			});
-			iframeBody.addEventListener('click', (e) => {
-				this.handleClickEvent(callback, adSlot, e);
-			});
-		}
+			const adSlot = slotService.get(slotName);
+			this.handleClickEvent(callback, adSlot);
+			setTimeout(() => {
+				(document.activeElement as HTMLBodyElement).blur();
+			}, 100);
+		};
+
+		window.addEventListener('blur', eventHandler);
 	}
 
 	private handleClickEvent(
