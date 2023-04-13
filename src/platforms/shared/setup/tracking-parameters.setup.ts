@@ -59,5 +59,24 @@ export class TrackingParametersSetup implements DiProcess {
 		const trackingParameters = await this.getTrackingParameters(legacyEnabled);
 
 		context.set('wiki', { ...context.get('wiki'), ...trackingParameters });
+
+		const dwTracks = [
+			'AdEngLoadTimes',
+			'AdEngBidders',
+			'AdEngViewability',
+			'AdEngPlayerInfo',
+			'KeyVals',
+			'AdEngAdSizeInfo',
+			'AdEngLabradorInfo',
+		];
+
+		dwTracks.forEach((dwTrackService) => {
+			const dwTrackServiceLowercase = dwTrackService.toLowerCase();
+			context.set(
+				`services.dw-tracker-${dwTrackServiceLowercase}.threshold`,
+				utils.queryString.get(`dw_tracker_${dwTrackServiceLowercase}_threshold`) ??
+					this.instantConfig.get(`icDwTrackerTraffic${dwTrackService}Threshold`),
+			);
+		});
 	}
 }
