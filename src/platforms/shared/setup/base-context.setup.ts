@@ -65,6 +65,12 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setOptionsContext(): void {
+		if (this.instantConfig.get('icIncontentHeadersExperiment')) {
+			context.set('templates.incontentHeadersExperiment', true);
+		} else {
+			context.set('templates.incontentAnchorSelector', '.mw-parser-output > h2');
+		}
+
 		context.set('options.performanceAds', this.instantConfig.get('icPerformanceAds'));
 		context.set('options.stickyTbExperiment', this.instantConfig.get('icStickyTbExperiment'));
 		context.set(
@@ -145,6 +151,7 @@ export class BaseContextSetup implements DiProcess {
 		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
 		context.set('services.ppidRepository', this.instantConfig.get('icPpidRepository'));
 		context.set('services.identityTtl', this.instantConfig.get('icIdentityTtl'));
+		context.set('services.ageGateHandling', this.instantConfig.get('icAgeGateHandling'));
 
 		context.set(
 			'services.messageBox.enabled',

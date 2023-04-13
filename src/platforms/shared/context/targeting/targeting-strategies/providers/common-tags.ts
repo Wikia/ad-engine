@@ -57,7 +57,7 @@ export class CommonTags implements TargetingProvider<Partial<SlotTargeting>> {
 		const hasFeaturedVideo = !!videoStatus.hasVideoOnPage;
 		const hasIncontentPlayer =
 			!hasFeaturedVideo &&
-			!!document.querySelector(context.get('slots.incontent_player.insertBeforeSelector'));
+			!!document.querySelector(context.get('templates.incontentAnchorSelector'));
 
 		this.updateVideoContext(hasFeaturedVideo, hasIncontentPlayer);
 

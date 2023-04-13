@@ -5,7 +5,6 @@ import {
 	context,
 	CookieStorageAdapter,
 	eventsRepository,
-	insertMethodType,
 	InstantConfigService,
 	RepeatableSlotPlaceholderConfig,
 	scrollListener,
@@ -16,21 +15,9 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
-interface SlotCreatorInsertionParamsType {
-	anchorSelector: string;
-	insertMethod: insertMethodType;
-}
-
 @Injectable()
 export class UcpMobileSlotsDefinitionRepository {
-	protected incontentsAnchorSelector = '.mw-parser-output > h2';
-
-	constructor(protected instantConfig: InstantConfigService) {
-		// TODO: remove once ADEN-12936 is closed
-		if (location.host.includes('harrypotter')) {
-			this.incontentsAnchorSelector = '.mw-parser-output > h2, .mw-parser-output > section > h3';
-		}
-	}
+	constructor(protected instantConfig: InstantConfigService) {}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
 		if (!this.isTopLeaderboardApplicable()) {
@@ -71,40 +58,28 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'top_boxad';
-		const wrapperClassList = ['ad-slot-placeholder', 'top-boxad', 'is-loading'];
-		const placeholderConfig = context.get(`slots.${slotName}.placeholder`);
+		const isHome = context.get('wiki.targeting.pageType') === 'home';
 
 		return {
 			slotCreatorConfig: {
 				slotName,
-				placeholderConfig,
-				...this.slotCreatorInsertionParams(),
+				placeholderConfig: {
+					createLabel: true,
+				},
+				anchorSelector: isHome
+					? '.mobile-main-page__wiki-description'
+					: context.get('templates.incontentAnchorSelector'),
+				insertMethod: isHome ? 'after' : 'before',
 				classList: ['hide', 'ad-slot'],
 				avoidConflictWith: ['.ntv-ad'],
 			},
 			slotCreatorWrapperConfig: {
-				classList: wrapperClassList,
+				classList: ['ad-slot-placeholder', 'top-boxad', 'is-loading'],
 			},
 			activator: () => {
 				this.pushWaitingSlot(slotName);
 			},
 		};
-	}
-
-	private slotCreatorInsertionParams(): SlotCreatorInsertionParamsType {
-		let params: SlotCreatorInsertionParamsType = {
-			anchorSelector: this.incontentsAnchorSelector,
-			insertMethod: 'before',
-		};
-
-		if (context.get('wiki.targeting.pageType') === 'home') {
-			params = {
-				anchorSelector: '.mobile-main-page__wiki-description',
-				insertMethod: 'after',
-			};
-		}
-
-		return params;
 	}
 
 	getIncontentBoxadConfig(): SlotSetupDefinition {
@@ -114,20 +89,15 @@ export class UcpMobileSlotsDefinitionRepository {
 
 		const slotNamePrefix = 'incontent_boxad_';
 		const slotName = `${slotNamePrefix}1`;
-		const wrapperClassList = ['ad-slot-placeholder', 'incontent-boxad', 'is-loading'];
-		const placeholderConfig = context.get(`slots.${slotName}.placeholder`);
 
 		return {
 			slotCreatorConfig: {
 				slotName,
-				placeholderConfig,
-				anchorSelector: this.incontentsAnchorSelector,
-				avoidConflictWith: [
-					'.ad-slot-placeholder',
-					'.ad-slot',
-					'.incontent-boxad',
-					'#incontent_player',
-				],
+				placeholderConfig: {
+					createLabel: true,
+				},
+				anchorSelector: context.get('templates.incontentAnchorSelector'),
+				avoidConflictWith: ['.ad-slot', '#incontent_player'],
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
 				repeat: {
@@ -138,13 +108,19 @@ export class UcpMobileSlotsDefinitionRepository {
 						adProduct: '{slotConfig.slotName}',
 						'targeting.rv': '{slotConfig.repeat.index}',
 						'targeting.pos': ['incontent_boxad'],
-						'placeholder.createLabel': false,
 					},
-					insertBelowScrollPosition: true,
+					updateCreator: {
+						anchorSelector: '.incontent-boxad',
+						anchorPosition: 'belowScrollPosition',
+						insertMethod: 'append',
+						placeholderConfig: {
+							createLabel: false,
+						},
+					},
 				},
 			},
 			slotCreatorWrapperConfig: {
-				classList: wrapperClassList,
+				classList: ['ad-slot-placeholder', 'incontent-boxad', 'is-loading'],
 			},
 			activator: () => {
 				communicationService.on(
@@ -175,18 +151,14 @@ export class UcpMobileSlotsDefinitionRepository {
 
 		const icbPlaceholderConfig: RepeatableSlotPlaceholderConfig = {
 			classList: ['ad-slot-placeholder', 'incontent-boxad', 'is-loading'],
-			anchorSelector: this.incontentsAnchorSelector,
+			anchorSelector: context.get('templates.incontentAnchorSelector'),
 			insertMethod: 'before',
-			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder', 'incontent-boxad'],
+			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder', '.incontent-boxad'],
 			repeatStart: 1,
 			repeatLimit: 20,
 		};
 
-		communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
-			if (!action.isLoaded) {
-				slotPlaceholderInjector.injectAndRepeat(icbPlaceholderConfig, adSlotCategory);
-			}
-		});
+		slotPlaceholderInjector.injectAndRepeat(icbPlaceholderConfig, adSlotCategory);
 	}
 
 	getMobilePrefooterConfig(): SlotSetupDefinition {
@@ -195,12 +167,13 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'mobile_prefooter';
-		const placeholderConfig = context.get(`slots.${slotName}.placeholder`);
 
 		return {
 			slotCreatorConfig: {
 				slotName,
-				placeholderConfig,
+				placeholderConfig: {
+					createLabel: true,
+				},
 				anchorSelector: '.global-footer',
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
@@ -246,12 +219,13 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'bottom_leaderboard';
-		const placeholderConfig = context.get(`slots.${slotName}.placeholder`);
 
 		return {
 			slotCreatorConfig: {
 				slotName,
-				placeholderConfig,
+				placeholderConfig: {
+					createLabel: true,
+				},
 				anchorSelector: '.bottom-leaderboard',
 				insertMethod: 'prepend',
 				classList: ['hide', 'ad-slot'],
@@ -268,6 +242,23 @@ export class UcpMobileSlotsDefinitionRepository {
 			!!document.querySelector('.global-footer') &&
 			context.get('wiki.targeting.pageType') !== 'search'
 		);
+	}
+
+	getIncontentPlayerConfig(): SlotSetupDefinition {
+		const slotName = 'incontent_player';
+
+		return {
+			slotCreatorConfig: {
+				slotName,
+				anchorSelector: '.incontent-boxad',
+				anchorPosition: 'belowScrollPosition',
+				insertMethod: 'prepend',
+				avoidConflictWith: ['.ad-slot', '#incontent_boxad_1'],
+			},
+			activator: () => {
+				context.push('state.adStack', { id: slotName });
+			},
+		};
 	}
 
 	getFloorAdhesionConfig(): SlotSetupDefinition {

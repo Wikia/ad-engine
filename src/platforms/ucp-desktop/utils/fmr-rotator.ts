@@ -1,6 +1,13 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, context, scrollListener, slotService, utils } from '@ad-engine/core';
-import { universalAdPackage } from '../templates/uap';
+import {
+	AdSlot,
+	communicationService,
+	context,
+	eventsRepository,
+	scrollListener,
+	slotService,
+	universalAdPackage,
+	utils,
+} from '@wikia/ad-engine';
 
 export class FmrRotator {
 	private nextSlotName: string;
@@ -10,6 +17,8 @@ export class FmrRotator {
 		recSlotViewed: 2000,
 		refreshDelay: utils.queryString.isUrlParamSet('fmr-debug') ? 2000 : 10000,
 		startPosition: 0,
+		repeatIndex: 1,
+		repeatLimit: 20,
 	};
 	private rotatorListener: string;
 
@@ -144,6 +153,7 @@ export class FmrRotator {
 
 	private pushNextSlot(): void {
 		context.push('state.adStack', { id: this.nextSlotName });
+		this.refreshInfo.repeatIndex++;
 	}
 
 	private hideSlot(): void {
@@ -159,7 +169,7 @@ export class FmrRotator {
 
 	private slotStatusChanged(slotStatus): void {
 		this.currentAdSlot = slotService.get(this.nextSlotName);
-		this.nextSlotName = this.fmrPrefix + (this.currentAdSlot.getConfigProperty('repeat.index') + 1);
+		this.nextSlotName = this.fmrPrefix + this.refreshInfo.repeatIndex;
 
 		if (slotStatus === AdSlot.STATUS_SUCCESS) {
 			this.swapRecirculation(false);
@@ -179,11 +189,7 @@ export class FmrRotator {
 	}
 
 	private isRefreshLimitAvailable(): boolean {
-		return (
-			this.currentAdSlot &&
-			this.currentAdSlot.getConfigProperty('repeat.index') <
-				this.currentAdSlot.getConfigProperty('repeat.limit')
-		);
+		return this.refreshInfo.repeatIndex <= this.refreshInfo.repeatLimit;
 	}
 
 	private tryPushNextSlot(): void {
