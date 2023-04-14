@@ -1,16 +1,19 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
+import type { AdStackPayload } from '../';
 import {
-	AdStackPayload,
 	SlotPlaceholderContextConfig,
 	SlotTargeting,
 	slotTweaker,
 	targetingService,
 	utils,
 } from '../';
-import { ADX, GptSizeMapping } from '../providers';
+import type { GptSizeMapping } from '../providers';
 import { context, slotDataParamsUpdater, templateService } from '../services';
 import { AD_LABEL_CLASS, getTopOffset, logger, stringBuilder } from '../utils';
 import { Dictionary } from './dictionary';
+
+// TODO: cannot reuse the ADX constant from '../providers/gpt-provider' due to a circular dependency.
+const ADX = 'AdX';
 
 export interface RepeatConfig {
 	index: number;

@@ -33,7 +33,7 @@ class UniversalPipelineAdapter<TPayload>
 	}
 
 	private isDiStep(step: UniversalPipelineStep<TPayload>): step is Type<DiPipelineStep<TPayload>> {
-		return typeof step.prototype.execute === 'function';
+		return typeof step.prototype?.execute === 'function';
 	}
 }
 

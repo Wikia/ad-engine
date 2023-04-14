@@ -15,7 +15,7 @@
 		"baseUrl": ".",
 		"module": "ESNext",
 		"moduleResolution": "node",
-		"target": "es5",
+		"target": "es6",
 		"lib": ["ESNext", "dom"],
 		"outDir": "dist",
 		"typeRoots": ["node_modules/@types", "node_modules/@alugha/ima", "@types"],
