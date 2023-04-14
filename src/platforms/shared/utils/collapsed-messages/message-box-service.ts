@@ -1,7 +1,6 @@
-import { AdSlot, sailthru } from '@wikia/ad-engine';
+import { AdSlot, AdSlotStatus, sailthru } from '@wikia/ad-engine';
 import { MessageBoxCreator } from './message-box-creator';
-
-export type MessageBoxType = 'REGISTER' | 'FANLAB' | 'NEWSLETTER_LINK' | 'NEWSLETTER_FORM';
+import type { MessageBoxType } from './message-box-type';
 
 export class MessageBoxService {
 	private messageBoxCreator: MessageBoxCreator;
@@ -49,7 +48,7 @@ export class MessageBoxService {
 			return false;
 		}
 
-		return actionEvent === AdSlot.STATUS_COLLAPSE;
+		return actionEvent === AdSlotStatus.STATUS_COLLAPSE;
 	}
 
 	isTopLeaderboard(placeholder: HTMLElement): boolean {

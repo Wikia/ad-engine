@@ -1,5 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, Dictionary, SlotConfig } from '../models';
+import { AdSlot, AdSlotStatus, Dictionary, SlotConfig } from '../models';
+import { AdSlotEvent } from '../models/ad-slot-event';
 import { LazyQueue, logger } from '../utils';
 import { context } from './context-service';
 import { slotService } from './slot-service';
@@ -38,7 +39,7 @@ class BtfBlockerService {
 	}
 
 	init(): void {
-		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot: adSlot }) => {
+		communicationService.onSlotEvent(AdSlotEvent.SLOT_RENDERED_EVENT, ({ slot: adSlot }) => {
 			logger(logGroup, adSlot.getSlotName(), 'Slot rendered');
 			if (!this.firstCallEnded && adSlot.isFirstCall()) {
 				this.finishFirstCall();
@@ -78,7 +79,7 @@ class BtfBlockerService {
 			const slotConfig = slots[adSlotKey];
 
 			if (!slotConfig.firstCall && unblockedSlots.indexOf(adSlotKey) === -1) {
-				slotService.disable(adSlotKey, AdSlot.STATUS_BLOCKED);
+				slotService.disable(adSlotKey, AdSlotStatus.STATUS_BLOCKED);
 			}
 		});
 	}
@@ -100,7 +101,7 @@ class BtfBlockerService {
 
 	private disableAdSlotIfHasConflict(adSlot: AdSlot): void {
 		if (slotService.hasViewportConflict(adSlot)) {
-			slotService.disable(adSlot.getSlotName(), AdSlot.STATUS_VIEWPORT_CONFLICT);
+			slotService.disable(adSlot.getSlotName(), AdSlotStatus.STATUS_VIEWPORT_CONFLICT);
 		}
 	}
 

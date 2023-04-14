@@ -1,4 +1,4 @@
-import { AdSlot, slotService, SlotTargeting, utils } from '@ad-engine/core';
+import { AdSlotEvent, slotService, SlotTargeting, utils } from '@ad-engine/core';
 import { PorvataFactory } from './porvata-factory';
 import { PorvataListener } from './porvata-listener';
 import { PorvataPlayer } from './porvata-player';
@@ -20,12 +20,6 @@ export interface PorvataTemplateParams {
 	viewportOffsetTop?: number;
 	vpaidMode?: google.ima.ImaSdkSettings.VpaidMode;
 }
-
-export const VpaidMode = {
-	DISABLED: 0,
-	ENABLED: 1,
-	INSECURE: 2,
-};
 
 /**
  * @TODO: Consider reimplementation of this class/logic. In my opinion it conflicts with PorvataFactory.
@@ -111,7 +105,7 @@ export class Porvata {
 
 			player.addEventListener('adCanPlay', () => {
 				player.dispatchEvent('wikiaAdStarted');
-				slotService.get(params.slotName)?.emit(AdSlot.VIDEO_AD_IMPRESSION);
+				slotService.get(params.slotName)?.emit(AdSlotEvent.VIDEO_AD_IMPRESSION);
 			});
 			player.addEventListener('allAdsCompleted', () => {
 				if (player.isFullscreen()) {

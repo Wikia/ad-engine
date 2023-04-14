@@ -1,7 +1,6 @@
 import { AdSlot } from '../models';
 import { isIframe, logger } from '../utils';
 import { messageBus } from './message-bus';
-import { slotService } from './slot-service';
 
 const logGroup = 'slot-tweaker';
 
@@ -129,7 +128,7 @@ export class SlotTweaker {
 		return element;
 	}
 
-	registerMessageListener(): void {
+	registerMessageListener(getAdSlot: (slotName: string) => AdSlot): void {
 		messageBus.register<SlotActionMessage>(
 			{
 				keys: ['action', 'slotName'],
@@ -142,7 +141,7 @@ export class SlotTweaker {
 					return;
 				}
 
-				const adSlot = slotService.get(data.slotName);
+				const adSlot = getAdSlot(data.slotName);
 
 				switch (data.action) {
 					case 'expand':

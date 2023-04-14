@@ -1,5 +1,6 @@
 import {
-	AdSlot,
+	AdSlotEvent,
+	AdSlotStatus,
 	communicationService,
 	context,
 	eventsRepository,
@@ -51,7 +52,7 @@ export class StickedBoxadHelper {
 
 	private registerSuccessListener(): void {
 		communicationService.onSlotEvent(
-			AdSlot.STATUS_SUCCESS,
+			AdSlotStatus.STATUS_SUCCESS,
 			() => {
 				this.registerPusherListener();
 				this.registerViewedListener();
@@ -63,7 +64,7 @@ export class StickedBoxadHelper {
 
 	private registerPusherListener(): void {
 		communicationService.onSlotEvent(
-			AdSlot.CUSTOM_EVENT,
+			AdSlotEvent.CUSTOM_EVENT,
 			({ payload }) => {
 				if (payload.status === universalAdPackage.SLOT_STICKED_STATE) {
 					const tlbHeight =
@@ -83,7 +84,7 @@ export class StickedBoxadHelper {
 		}
 
 		communicationService.onSlotEvent(
-			AdSlot.SLOT_VIEWED_EVENT,
+			AdSlotEvent.SLOT_VIEWED_EVENT,
 			() => {
 				setTimeout(() => {
 					pageElement.classList.add('companion-viewed');

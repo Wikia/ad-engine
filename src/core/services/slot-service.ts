@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { getAdStack, targetingService, utils } from '../';
+import { AdSlotEvent, getAdStack, targetingService, utils } from '../';
 import { AdSlot, Dictionary, SlotConfig } from '../models';
 import { getTopOffset, logger } from '../utils';
 import { context } from './context-service';
@@ -55,7 +55,7 @@ class SlotService {
 		communicationService.emit(eventsRepository.AD_ENGINE_SLOT_ADDED, {
 			name: slotName,
 			slot: adSlot,
-			state: AdSlot.SLOT_ADDED_EVENT,
+			state: AdSlotEvent.SLOT_ADDED_EVENT,
 		});
 	}
 

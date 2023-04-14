@@ -1,5 +1,6 @@
 import {
 	AdSlot,
+	AdSlotEvent,
 	AdSlotEventPayload,
 	communicationService,
 	createBottomPanel,
@@ -71,7 +72,7 @@ export class VideoBootstrapHandler implements TemplateStateHandler {
 				ofType(communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
 				filter(
 					(action: AdSlotEventPayload) =>
-						action.event === AdSlot.CUSTOM_EVENT &&
+						action.event === AdSlotEvent.CUSTOM_EVENT &&
 						action.adSlotName === this.adSlot.getSlotName() &&
 						action.payload?.status === universalAdPackage.SLOT_FORCE_UNSTICK,
 				),

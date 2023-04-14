@@ -1,6 +1,6 @@
 import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
 
-import { AdSlot } from '../../models';
+import { AdSlotStatus } from '../../models';
 import { Context, slotService, targetingService } from '../../services';
 import { logger, scriptLoader } from '../../utils';
 
@@ -97,7 +97,7 @@ export class Nativo {
 	 * @link https://github.com/Wikia/silver-surfer/blob/master/src/pathfinder/modules/AffiliateUnitModule/hooks/useAdConflictListener.ts
 	 */
 	replaceWithAffiliateUnit(): void {
-		this.sendNativoStatus(AdSlot.STATUS_DISABLED);
+		this.sendNativoStatus(AdSlotStatus.STATUS_DISABLED);
 	}
 
 	sendNativoStatus(status: string): void {
@@ -124,7 +124,7 @@ export class Nativo {
 	private watchNtvEvents(): void {
 		window.ntv.Events?.PubSub?.subscribe('noad', (e: NativoNoAdEvent) => {
 			const slotName = Nativo.AD_SLOT_MAP[e.data[0].id];
-			this.handleNtvNativeEvent(e, slotName, AdSlot.STATUS_COLLAPSE);
+			this.handleNtvNativeEvent(e, slotName, AdSlotStatus.STATUS_COLLAPSE);
 			if (slotName == Nativo.INCONTENT_AD_SLOT_NAME) {
 				communicationService.emit(eventsRepository.NO_NATIVO_AD, {
 					slotName: slotName,
@@ -134,7 +134,7 @@ export class Nativo {
 
 		window.ntv.Events?.PubSub?.subscribe('adRenderingComplete', (e: NativoCompleteEvent) => {
 			const slotName = Nativo.extractSlotIdFromNativoCompleteEventData(e);
-			this.handleNtvNativeEvent(e, slotName, AdSlot.STATUS_SUCCESS);
+			this.handleNtvNativeEvent(e, slotName, AdSlotStatus.STATUS_SUCCESS);
 		});
 	}
 
@@ -170,14 +170,14 @@ export class Nativo {
 
 		if (!slot || slot.getSlotName() !== slotName) return;
 
-		if (adStatus === AdSlot.STATUS_COLLAPSE) {
+		if (adStatus === AdSlotStatus.STATUS_COLLAPSE) {
 			slot.hide();
 			if (slotName === Nativo.INCONTENT_AD_SLOT_NAME) {
 				this.replaceWithAffiliateUnit();
 			}
 		}
 
-		if (adStatus === AdSlot.STATUS_SUCCESS && slotName === Nativo.FEED_AD_SLOT_NAME) {
+		if (adStatus === AdSlotStatus.STATUS_SUCCESS && slotName === Nativo.FEED_AD_SLOT_NAME) {
 			this.replaceAndShowSponsoredFanAd();
 		}
 

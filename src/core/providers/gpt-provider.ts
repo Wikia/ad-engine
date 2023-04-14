@@ -1,7 +1,7 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { decorate } from 'core-decorators';
 import { getAdStack } from '../ad-engine';
-import { AdSlot, Dictionary } from '../models';
+import { AdSlotEvent, AdSlotStatus, Dictionary, type AdSlot } from '../models';
 import {
 	btfBlockerService,
 	config,
@@ -12,8 +12,7 @@ import {
 	targetingService,
 	trackingOptIn,
 } from '../services';
-import { defer, logger } from '../utils';
-import { isCoppaSubject } from '../utils/is-coppa-subject';
+import { defer, isCoppaSubject, logger } from '../utils';
 import { GptSizeMap } from './gpt-size-map';
 import { setupGptTargeting } from './gpt-targeting';
 import { Provider } from './provider';
@@ -59,14 +58,14 @@ function configure(): void {
 
 	tag.addEventListener('slotRequested', (event: googletag.events.SlotRequestedEvent) => {
 		const adSlot = getAdSlotFromEvent(event);
-		adSlot.setStatus(AdSlot.STATUS_REQUESTED);
-		adSlot.emit(AdSlot.SLOT_REQUESTED_EVENT);
+		adSlot.setStatus(AdSlotStatus.STATUS_REQUESTED);
+		adSlot.emit(AdSlotEvent.SLOT_REQUESTED_EVENT);
 	});
 
 	tag.addEventListener('slotOnload', (event: googletag.events.SlotOnloadEvent) => {
 		const adSlot = getAdSlotFromEvent(event);
 
-		adSlot.emit(AdSlot.SLOT_LOADED_EVENT);
+		adSlot.emit(AdSlotEvent.SLOT_LOADED_EVENT);
 	});
 
 	tag.addEventListener('slotRenderEnded', (event: googletag.events.SlotRenderEndedEvent) => {
@@ -78,14 +77,14 @@ function configure(): void {
 
 			adjustIframeSize(adSlot);
 
-			return adSlot.emit(AdSlot.SLOT_RENDERED_EVENT, { event, adType }, false);
+			return adSlot.emit(AdSlotEvent.SLOT_RENDERED_EVENT, { event, adType }, false);
 		});
 	});
 
 	tag.addEventListener('impressionViewable', (event: googletag.events.ImpressionViewableEvent) => {
 		const adSlot = getAdSlotFromEvent(event);
 
-		adSlot.emit(AdSlot.SLOT_VIEWED_EVENT);
+		adSlot.emit(AdSlotEvent.SLOT_VIEWED_EVENT);
 	});
 
 	tag.addEventListener(
@@ -93,7 +92,7 @@ function configure(): void {
 		function (event: googletag.events.SlotVisibilityChangedEvent) {
 			const adSlot = getAdSlotFromEvent(event);
 
-			return adSlot?.emit(AdSlot.SLOT_VISIBILITY_CHANGED, event);
+			return adSlot?.emit(AdSlotEvent.SLOT_VISIBILITY_CHANGED, event);
 		},
 	);
 
@@ -103,7 +102,7 @@ function configure(): void {
 			const adSlot = getAdSlotFromEvent(event);
 
 			if (event.inViewPercentage > 50) {
-				return adSlot?.emit(AdSlot.SLOT_BACK_TO_VIEWPORT, event);
+				return adSlot?.emit(AdSlotEvent.SLOT_BACK_TO_VIEWPORT, event);
 			}
 		},
 	);
@@ -114,7 +113,7 @@ function configure(): void {
 			const adSlot = getAdSlotFromEvent(event);
 
 			if (event.inViewPercentage < 50) {
-				return adSlot?.emit(AdSlot.SLOT_LEFT_VIEWPORT, event);
+				return adSlot?.emit(AdSlotEvent.SLOT_LEFT_VIEWPORT, event);
 			}
 		},
 	);
@@ -129,7 +128,7 @@ function getAdType(
 	let isIframeAccessible = false;
 
 	if (event.isEmpty) {
-		return AdSlot.STATUS_COLLAPSE;
+		return AdSlotStatus.STATUS_COLLAPSE;
 	}
 
 	try {
@@ -142,7 +141,7 @@ function getAdType(
 		return iframe.contentWindow.AdEngine_adType;
 	}
 
-	return AdSlot.STATUS_SUCCESS;
+	return AdSlotStatus.STATUS_SUCCESS;
 }
 
 function adjustIframeSize(adSlot: AdSlot): void {
@@ -200,9 +199,9 @@ export class GptProvider implements Provider {
 			() => this.updateCorrelator(),
 			false,
 		);
-		communicationService.onSlotEvent(AdSlot.DESTROY_EVENT, ({ slot }) => {
+		communicationService.onSlotEvent(AdSlotEvent.DESTROY_EVENT, ({ slot }) => {
 			this.destroySlot(slot.getSlotName());
-			slot.emit(AdSlot.DESTROYED_EVENT);
+			slot.emit(AdSlotEvent.DESTROYED_EVENT);
 		});
 		initialized = true;
 	}

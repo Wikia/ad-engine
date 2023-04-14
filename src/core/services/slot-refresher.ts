@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
-import { AdSlot } from '../models';
+import { AdSlot, AdSlotEvent } from '../models';
 import { GptProvider } from '../providers';
 import { logger } from '../utils';
 import { context } from './context-service';
@@ -74,16 +74,16 @@ class SlotRefresher {
 			return;
 		}
 
-		communicationService.onSlotEvent(AdSlot.SLOT_VIEWED_EVENT, ({ adSlotName, slot }) => {
+		communicationService.onSlotEvent(AdSlotEvent.SLOT_VIEWED_EVENT, ({ adSlotName, slot }) => {
 			logger(`${adSlotName} viewed`);
 			this.refreshSlot(slot);
 		});
 
-		communicationService.onSlotEvent(AdSlot.SLOT_BACK_TO_VIEWPORT, ({ adSlotName }) => {
+		communicationService.onSlotEvent(AdSlotEvent.SLOT_BACK_TO_VIEWPORT, ({ adSlotName }) => {
 			this.slotsInTheViewport.push(adSlotName);
 		});
 
-		communicationService.onSlotEvent(AdSlot.SLOT_LEFT_VIEWPORT, ({ adSlotName }) => {
+		communicationService.onSlotEvent(AdSlotEvent.SLOT_LEFT_VIEWPORT, ({ adSlotName }) => {
 			this.slotsInTheViewport = this.slotsInTheViewport.filter(
 				(slotName) => slotName !== adSlotName,
 			);

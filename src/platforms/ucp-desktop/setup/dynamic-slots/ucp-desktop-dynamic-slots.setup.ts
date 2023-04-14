@@ -6,7 +6,8 @@ import {
 	slotsContext,
 } from '@platforms/shared';
 import {
-	AdSlot,
+	AdSlotEvent,
+	AdSlotStatus,
 	communicationService,
 	context,
 	DiProcess,
@@ -111,11 +112,11 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		let porvataClosedActive = false;
 
 		communicationService.onSlotEvent(
-			AdSlot.STATUS_SUCCESS,
+			AdSlotStatus.STATUS_SUCCESS,
 			() => {
 				porvataClosedActive = true;
 
-				communicationService.onSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, () => {
+				communicationService.onSlotEvent(AdSlotEvent.VIDEO_AD_IMPRESSION, () => {
 					if (porvataClosedActive) {
 						porvataClosedActive = false;
 						slotService.disable(slotName);
@@ -126,7 +127,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		);
 
 		communicationService.onSlotEvent(
-			AdSlot.HIDDEN_EVENT,
+			AdSlotEvent.HIDDEN_EVENT,
 			() => {
 				porvataClosedActive = false;
 			},

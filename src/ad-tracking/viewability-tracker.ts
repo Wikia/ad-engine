@@ -1,5 +1,5 @@
 import { communicationService } from '@ad-engine/communication';
-import { AdSlot } from '@ad-engine/core';
+import { AdSlotEvent } from '@ad-engine/core';
 import { BaseTracker, BaseTrackerInterface } from './base-tracker';
 import { viewabilityPropertiesTrackingCompiler, viewabilityTrackingCompiler } from './compilers';
 
@@ -15,7 +15,7 @@ class ViewabilityTracker extends BaseTracker implements BaseTrackerInterface {
 			return;
 		}
 
-		communicationService.onSlotEvent(AdSlot.SLOT_VIEWED_EVENT, ({ slot }) => {
+		communicationService.onSlotEvent(AdSlotEvent.SLOT_VIEWED_EVENT, ({ slot }) => {
 			callback(this.compileData(slot));
 		});
 	}

@@ -1,6 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import {
-	AdSlot,
+	AdSlotEvent,
 	BaseServiceSetup,
 	context,
 	Dictionary,
@@ -24,10 +24,10 @@ export class Bidders extends BaseServiceSetup {
 	constructor() {
 		super();
 
-		communicationService.onSlotEvent(AdSlot.VIDEO_AD_REQUESTED, ({ slot }) => {
+		communicationService.onSlotEvent(AdSlotEvent.VIDEO_AD_REQUESTED, ({ slot }) => {
 			slot.updateWinningPbBidderDetails();
 		});
-		communicationService.onSlotEvent(AdSlot.VIDEO_AD_USED, ({ slot }) => {
+		communicationService.onSlotEvent(AdSlotEvent.VIDEO_AD_USED, ({ slot }) => {
 			this.updateSlotTargeting(slot.getSlotName());
 		});
 		communicationService.on(

@@ -1,6 +1,6 @@
 import { insertSlots, SlotSetupDefinition } from '@platforms/shared';
 import {
-	AdSlot,
+	AdSlotEvent,
 	communicationService,
 	context,
 	Dictionary,
@@ -33,7 +33,7 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 				false,
 			);
 
-			communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ adSlotName }) => {
+			communicationService.onSlotEvent(AdSlotEvent.SLOT_RENDERED_EVENT, ({ adSlotName }) => {
 				this.repeatedSlotsRendered.push(adSlotName);
 
 				if (this.repeatedSlotsQueue[adSlotName]) {

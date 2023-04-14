@@ -1,4 +1,10 @@
-import { AdEngine, AdSlot, BaseServiceSetup, communicationService, utils } from '@wikia/ad-engine';
+import {
+	AdEngine,
+	AdSlotEvent,
+	BaseServiceSetup,
+	communicationService,
+	utils,
+} from '@wikia/ad-engine';
 
 let adEngineInstance: AdEngine;
 
@@ -13,7 +19,7 @@ export class GptSetup extends BaseServiceSetup {
 		adEngineInstance = new AdEngine();
 		adEngineInstance.init();
 
-		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot }) => {
+		communicationService.onSlotEvent(AdSlotEvent.SLOT_RENDERED_EVENT, ({ slot }) => {
 			slot.removeClass('default-height');
 		});
 	}

@@ -1,4 +1,4 @@
-import { AdSlot, Dictionary, utils } from '@ad-engine/core';
+import { AdSlotStatus, Dictionary, utils } from '@ad-engine/core';
 import { GoogleImaWrapper } from './google-ima-wrapper';
 import { NativeFullscreen } from './native-fullscreen';
 import { PorvataDom } from './porvata-dom';
@@ -59,10 +59,10 @@ export class PorvataPlayer {
 
 	private registerStateListeners(): void {
 		this.addEventListener(window.google.ima.AdEvent.Type.LOADED, (event: google.ima.AdEvent) =>
-			this.setAdStatus(AdSlot.STATUS_SUCCESS, event.getAd()),
+			this.setAdStatus(AdSlotStatus.STATUS_SUCCESS, event.getAd()),
 		);
 		this.addEventListener(window.google.ima.AdErrorEvent.Type.AD_ERROR, () =>
-			this.setAdStatus(AdSlot.STATUS_ERROR),
+			this.setAdStatus(AdSlotStatus.STATUS_ERROR),
 		);
 
 		this.addEventListener('resume', () => this.setState('playing'));

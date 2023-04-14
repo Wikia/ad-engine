@@ -1,5 +1,5 @@
-import { AdSlot, communicationService, eventsRepository } from '@wikia/ad-engine';
-import { MessageBoxType } from './message-box-service';
+import { communicationService, eventsRepository, type AdSlot } from '@wikia/ad-engine';
+import type { MessageBoxType } from './message-box-type';
 
 type MessageBoxEvents =
 	| 'cm_register_impression'

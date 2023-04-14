@@ -5,7 +5,7 @@ import {
 	ofType,
 } from '@ad-engine/communication';
 import { tap } from 'rxjs/operators';
-import { AdSlot } from '../models';
+import { AdSlot, AdSlotStatus } from '../models';
 import { context, externalLogger, slotService } from '../services';
 import { logger } from '../utils';
 
@@ -47,9 +47,9 @@ class InterventionTracker {
 	private getInterventionStatus(id: string): string {
 		switch (id) {
 			case heavyAdIntervention:
-				return AdSlot.STATUS_HEAVY_AD_INTERVENTION;
+				return AdSlotStatus.STATUS_HEAVY_AD_INTERVENTION;
 			default:
-				return AdSlot.STATUS_UNKNOWN_INTERVENTION;
+				return AdSlotStatus.STATUS_UNKNOWN_INTERVENTION;
 		}
 	}
 }

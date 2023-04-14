@@ -1,6 +1,13 @@
 import { registerUapListener, universalAdPackage } from '@wikia/ad-products';
 import { communicationService, eventsRepository } from '@wikia/communication';
-import { AdSlot, Context, context, TargetingService, targetingService } from '@wikia/core';
+import {
+	AdSlotEvent,
+	AdSlotStatus,
+	Context,
+	context,
+	TargetingService,
+	targetingService,
+} from '@wikia/core';
 import { expect } from 'chai';
 import { BehaviorSubject } from 'rxjs';
 import { SinonSpy, SinonStubbedInstance } from 'sinon';
@@ -87,7 +94,7 @@ describe('UniversalAdPackage', () => {
 				new BehaviorSubject(
 					communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
 						adSlotName,
-						event: AdSlot.STATUS_COLLAPSE,
+						event: AdSlotStatus.STATUS_COLLAPSE,
 					}),
 				),
 			);
@@ -108,7 +115,7 @@ describe('UniversalAdPackage', () => {
 				new BehaviorSubject(
 					communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
 						adSlotName,
-						event: AdSlot.STATUS_FORCED_COLLAPSE,
+						event: AdSlotStatus.STATUS_FORCED_COLLAPSE,
 					}),
 				),
 			);
@@ -129,7 +136,7 @@ describe('UniversalAdPackage', () => {
 				new BehaviorSubject(
 					communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
 						adSlotName,
-						event: AdSlot.TEMPLATES_LOADED,
+						event: AdSlotEvent.TEMPLATES_LOADED,
 					}),
 				),
 			);

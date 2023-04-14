@@ -23,7 +23,7 @@ import {
 	YahooSsp,
 } from './adapters';
 import { PrebidAdapter } from './prebid-adapter';
-import { isPrebidAdapterConfig } from './prebid-helper';
+import { isPrebidAdapterConfig, isSlotApplicable } from './prebid-helper';
 import { PrebidConfig } from './prebid-models';
 
 class AdaptersRegistry {
@@ -84,6 +84,24 @@ class AdaptersRegistry {
 				this.configureCustomAdapter(adapter.bidderName, adapter);
 			}
 		});
+	}
+
+	setupAdUnits(): PrebidAdUnit[] {
+		const adUnits: PrebidAdUnit[] = [];
+
+		adaptersRegistry.getAdapters().forEach((adapter) => {
+			if (adapter && adapter.enabled) {
+				const adapterAdUnits = adapter.prepareAdUnits();
+
+				adapterAdUnits.forEach((adUnit) => {
+					if (adUnit && isSlotApplicable(adUnit.code)) {
+						adUnits.push(adUnit);
+					}
+				});
+			}
+		});
+
+		return adUnits;
 	}
 
 	private async configureAliases(aliasMap: Aliases): Promise<void> {

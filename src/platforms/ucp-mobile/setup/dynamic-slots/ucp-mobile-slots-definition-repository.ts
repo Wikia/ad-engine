@@ -1,6 +1,6 @@
 import { SlotSetupDefinition } from '@platforms/shared';
 import {
-	AdSlot,
+	AdSlotEvent,
 	communicationService,
 	context,
 	CookieStorageAdapter,
@@ -299,7 +299,7 @@ export class UcpMobileSlotsDefinitionRepository {
 					(action: UapLoadStatus) => {
 						if (action.isLoaded) {
 							communicationService.onSlotEvent(
-								AdSlot.CUSTOM_EVENT,
+								AdSlotEvent.CUSTOM_EVENT,
 								({ payload }) => {
 									if (
 										[

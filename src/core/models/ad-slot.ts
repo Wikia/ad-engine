@@ -1,19 +1,18 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import type { AdStackPayload } from '../';
 import {
+	AdSlotStatus,
 	SlotPlaceholderContextConfig,
 	SlotTargeting,
 	slotTweaker,
 	targetingService,
 	utils,
 } from '../';
-import type { GptSizeMapping } from '../providers';
+import { ADX, type GptSizeMapping } from '../providers';
 import { context, slotDataParamsUpdater, templateService } from '../services';
 import { AD_LABEL_CLASS, getTopOffset, logger, stringBuilder } from '../utils';
+import { AdSlotEvent } from './ad-slot-event';
 import { Dictionary } from './dictionary';
-
-// TODO: cannot reuse the ADX constant from '../providers/gpt-provider' due to a circular dependency.
-const ADX = 'AdX';
 
 export interface RepeatConfig {
 	index: number;
@@ -62,50 +61,11 @@ export interface WinningBidderDetails {
 }
 
 export class AdSlot {
-	static CUSTOM_EVENT = 'customEvent';
-	static SLOT_ADDED_EVENT = 'slotAdded';
-	static SLOT_REQUESTED_EVENT = 'slotRequested';
-	static SLOT_LOADED_EVENT = 'slotLoaded';
-	static SLOT_VIEWED_EVENT = 'slotViewed';
-	static SLOT_RENDERED_EVENT = 'slotRendered';
-	static SLOT_VISIBILITY_CHANGED = 'slotVisibilityChanged';
-	static SLOT_BACK_TO_VIEWPORT = 'slotBackToViewport';
-	static SLOT_LEFT_VIEWPORT = 'slotLeftViewport';
-	static SLOT_STATUS_CHANGED = 'slotStatusChanged';
-	static DESTROYED_EVENT = 'slotDestroyed';
-	static DESTROY_EVENT = 'slotDestroy';
-	static HIDDEN_EVENT = 'slotHidden';
-	static SHOWED_EVENT = 'slotShowed';
-
-	static VIDEO_VIEWED_EVENT = 'videoViewed';
-	static VIDEO_AD_REQUESTED = 'videoAdRequested';
-	static VIDEO_AD_ERROR = 'videoAdError';
-	static VIDEO_AD_IMPRESSION = 'videoAdImpression';
-	static VIDEO_AD_USED = 'videoAdUsed';
-
 	static LOG_GROUP = 'AdSlot';
-
-	static STATUS_BLOCKED = 'blocked';
-	static STATUS_COLLAPSE = 'collapse';
-	static STATUS_DISABLED = 'disabled';
-	static STATUS_FORCED_COLLAPSE = 'forced_collapse';
-	static STATUS_FORCED_SUCCESS = 'forced_success';
-	static STATUS_SKIP_TEMPLATE = 'skip_template';
-	static STATUS_MANUAL = 'manual';
-	static STATUS_REQUESTED = 'requested';
-	static STATUS_ERROR = 'error';
-	static STATUS_SUCCESS = 'success';
-	static STATUS_CLICKED = 'clicked';
-	static STATUS_VIEWPORT_CONFLICT = 'viewport-conflict';
-	static STATUS_HIVI_COLLAPSE = 'hivi-collapse';
-	static STATUS_HEAVY_AD_INTERVENTION = 'heavy-ad-intervention';
-	static STATUS_UNKNOWN_INTERVENTION = 'unknown-intervention';
 
 	static AD_CLASS = 'gpt-ad';
 	static AD_SLOT_PLACEHOLDER_CLASS = 'ad-slot-placeholder';
 	static HIDDEN_CLASS = 'hide';
-
-	static TEMPLATES_LOADED = 'Templates Loaded';
 
 	private customIframe: HTMLIFrameElement = null;
 
@@ -145,7 +105,7 @@ export class AdSlot {
 
 		this.requested = new Promise<void>((resolve) => {
 			communicationService.onSlotEvent(
-				AdSlot.SLOT_REQUESTED_EVENT,
+				AdSlotEvent.SLOT_REQUESTED_EVENT,
 				() => {
 					this.pushTime = new Date().getTime();
 
@@ -156,7 +116,7 @@ export class AdSlot {
 		});
 		this.loaded = new Promise<void>((resolve) => {
 			communicationService.onSlotEvent(
-				AdSlot.SLOT_LOADED_EVENT,
+				AdSlotEvent.SLOT_LOADED_EVENT,
 				() => {
 					slotTweaker.setDataParam(this, 'slotLoaded', true);
 
@@ -167,7 +127,7 @@ export class AdSlot {
 		});
 		this.rendered = new Promise<void>((resolve) => {
 			communicationService.onSlotEvent(
-				AdSlot.SLOT_RENDERED_EVENT,
+				AdSlotEvent.SLOT_RENDERED_EVENT,
 				({ payload }) => {
 					const {
 						event,
@@ -184,7 +144,7 @@ export class AdSlot {
 		});
 		this.viewed = new Promise<void>((resolve) => {
 			communicationService.onSlotEvent(
-				AdSlot.SLOT_VIEWED_EVENT,
+				AdSlotEvent.SLOT_VIEWED_EVENT,
 				() => {
 					slotTweaker.setDataParam(this, 'slotViewed', true);
 
@@ -383,7 +343,7 @@ export class AdSlot {
 			this.emit(status);
 
 			slotTweaker.setDataParam(this, 'slotResult', this.getStatus());
-			this.emit(AdSlot.SLOT_STATUS_CHANGED);
+			this.emit(AdSlotEvent.SLOT_STATUS_CHANGED);
 		}
 	}
 
@@ -434,7 +394,7 @@ export class AdSlot {
 
 	destroy(): void {
 		this.disable();
-		this.emit(AdSlot.DESTROY_EVENT);
+		this.emit(AdSlotEvent.DESTROY_EVENT);
 	}
 
 	getConfigProperty(key: string): any {
@@ -453,7 +413,7 @@ export class AdSlot {
 		targetingService.set(key, value, this.config.slotName);
 	}
 
-	success(status: string = AdSlot.STATUS_SUCCESS): void {
+	success(status: string = AdSlotStatus.STATUS_SUCCESS): void {
 		if (!this.getConfigProperty('showManually')) {
 			this.show();
 		}
@@ -467,11 +427,11 @@ export class AdSlot {
 			templateNames.forEach((templateName: string) => templateService.init(templateName, this));
 		}
 
-		this.emit(AdSlot.TEMPLATES_LOADED, templateNames);
+		this.emit(AdSlotEvent.TEMPLATES_LOADED, templateNames);
 
 		communicationService.emit(eventsRepository.AD_ENGINE_SLOT_LOADED, {
 			name: this.getSlotName(),
-			state: AdSlot.STATUS_SUCCESS,
+			state: AdSlotStatus.STATUS_SUCCESS,
 		});
 
 		this.setupDelayedCollapse();
@@ -489,10 +449,10 @@ export class AdSlot {
 		);
 	}
 
-	collapse(status: string = AdSlot.STATUS_COLLAPSE): void {
+	collapse(status: string = AdSlotStatus.STATUS_COLLAPSE): void {
 		communicationService.emit(eventsRepository.AD_ENGINE_SLOT_LOADED, {
 			name: this.getSlotName(),
-			state: AdSlot.STATUS_COLLAPSE,
+			state: AdSlotStatus.STATUS_COLLAPSE,
 		});
 
 		this.hide();
@@ -555,14 +515,14 @@ export class AdSlot {
 		slotDataParamsUpdater.updateOnRenderEnd(this);
 
 		switch (adType) {
-			case AdSlot.STATUS_COLLAPSE:
-			case AdSlot.STATUS_FORCED_COLLAPSE:
+			case AdSlotStatus.STATUS_COLLAPSE:
+			case AdSlotStatus.STATUS_FORCED_COLLAPSE:
 				this.collapse(adType);
 				break;
-			case AdSlot.STATUS_MANUAL:
+			case AdSlotStatus.STATUS_MANUAL:
 				this.setStatus(adType);
 				break;
-			case AdSlot.STATUS_SKIP_TEMPLATE:
+			case AdSlotStatus.STATUS_SKIP_TEMPLATE:
 				this.setConfigProperty('skipTemplates', true);
 				this.success();
 				break;
@@ -610,7 +570,7 @@ export class AdSlot {
 		const added = this.addClass(AdSlot.HIDDEN_CLASS);
 
 		if (added) {
-			this.emit(AdSlot.HIDDEN_EVENT);
+			this.emit(AdSlotEvent.HIDDEN_EVENT);
 		}
 	}
 
@@ -623,7 +583,7 @@ export class AdSlot {
 		const removed = this.removeClass(AdSlot.HIDDEN_CLASS);
 
 		if (removed) {
-			this.emit(AdSlot.SHOWED_EVENT);
+			this.emit(AdSlotEvent.SHOWED_EVENT);
 		}
 	}
 
@@ -643,7 +603,7 @@ export class AdSlot {
 
 	emitEvent(eventName: null | string = null): void {
 		if (eventName !== null) {
-			this.emit(AdSlot.CUSTOM_EVENT, { status: eventName });
+			this.emit(AdSlotEvent.CUSTOM_EVENT, { status: eventName });
 		}
 	}
 

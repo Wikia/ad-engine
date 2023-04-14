@@ -7,7 +7,8 @@ import {
 	slotsContext,
 } from '@platforms/shared';
 import {
-	AdSlot,
+	AdSlotEvent,
+	AdSlotStatus,
 	btfBlockerService,
 	communicationService,
 	context,
@@ -129,7 +130,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		const slotName = 'incontent_player';
 
 		communicationService.onSlotEvent(
-			AdSlot.SLOT_RENDERED_EVENT,
+			AdSlotEvent.SLOT_RENDERED_EVENT,
 			() => {
 				insertSlots([this.slotsDefinitionRepository.getIncontentPlayerConfig()]);
 			},
@@ -169,7 +170,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		};
 
 		communicationService.onSlotEvent(
-			AdSlot.SLOT_VIEWED_EVENT,
+			AdSlotEvent.SLOT_VIEWED_EVENT,
 			() => {
 				communicationService.emit(eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED);
 				setInterstitialCapping();
@@ -184,7 +185,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 	private waitForFloorAdhesionInjection(): void {
 		communicationService.onSlotEvent(
-			AdSlot.STATUS_SUCCESS,
+			AdSlotStatus.STATUS_SUCCESS,
 			() => {
 				const playerContainer = document.getElementById('featured-video__player-container');
 
@@ -236,17 +237,17 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		});
 
 		communicationService.onSlotEvent(
-			AdSlot.STATUS_COLLAPSE,
+			AdSlotStatus.STATUS_COLLAPSE,
 			() => slotImpactWatcher.disable([slotName]),
 			slotName,
 		);
 		communicationService.onSlotEvent(
-			AdSlot.STATUS_FORCED_COLLAPSE,
+			AdSlotStatus.STATUS_FORCED_COLLAPSE,
 			() => slotImpactWatcher.disable([slotName]),
 			slotName,
 		);
 		communicationService.onSlotEvent(
-			AdSlot.STATUS_SUCCESS,
+			AdSlotStatus.STATUS_SUCCESS,
 			() => {
 				codePriorityActive = true;
 
@@ -265,16 +266,16 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 					false,
 				);
 
-				communicationService.onSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, () => {
+				communicationService.onSlotEvent(AdSlotEvent.VIDEO_AD_IMPRESSION, () => {
 					if (codePriorityActive && !ntcOverride) {
 						disableFloorAdhesion();
 					}
 				});
 
 				communicationService.onSlotEvent(
-					AdSlot.CUSTOM_EVENT,
+					AdSlotEvent.CUSTOM_EVENT,
 					({ payload }) => {
-						if (payload.status === AdSlot.HIDDEN_EVENT) {
+						if (payload.status === AdSlotEvent.HIDDEN_EVENT) {
 							codePriorityActive = false;
 							slotImpactWatcher.disable([slotName, 'interstitial']);
 						}

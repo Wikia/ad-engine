@@ -1,5 +1,5 @@
 import { communicationService } from '@ad-engine/communication';
-import { AdSlot } from '@ad-engine/core';
+import { AdSlotEvent, AdSlotStatus } from '@ad-engine/core';
 import { BaseTracker, BaseTrackerInterface } from './base-tracker';
 import {
 	pageTrackingCompiler,
@@ -9,21 +9,21 @@ import {
 } from './compilers';
 
 class SlotTracker extends BaseTracker implements BaseTrackerInterface {
-	onRenderEndedStatusToTrack = [
-		AdSlot.STATUS_COLLAPSE,
-		AdSlot.STATUS_FORCED_COLLAPSE,
-		AdSlot.STATUS_MANUAL,
-		AdSlot.STATUS_SUCCESS,
+	onRenderEndedStatusToTrack: string[] = [
+		AdSlotStatus.STATUS_COLLAPSE,
+		AdSlotStatus.STATUS_FORCED_COLLAPSE,
+		AdSlotStatus.STATUS_MANUAL,
+		AdSlotStatus.STATUS_SUCCESS,
 	];
-	onChangeStatusToTrack = [
-		AdSlot.STATUS_BLOCKED,
-		AdSlot.STATUS_REQUESTED,
-		AdSlot.STATUS_CLICKED,
-		AdSlot.STATUS_ERROR,
-		AdSlot.STATUS_VIEWPORT_CONFLICT,
-		AdSlot.STATUS_HIVI_COLLAPSE,
-		AdSlot.STATUS_HEAVY_AD_INTERVENTION,
-		AdSlot.STATUS_UNKNOWN_INTERVENTION,
+	onChangeStatusToTrack: string[] = [
+		AdSlotStatus.STATUS_BLOCKED,
+		AdSlotStatus.STATUS_REQUESTED,
+		AdSlotStatus.STATUS_CLICKED,
+		AdSlotStatus.STATUS_ERROR,
+		AdSlotStatus.STATUS_VIEWPORT_CONFLICT,
+		AdSlotStatus.STATUS_HIVI_COLLAPSE,
+		AdSlotStatus.STATUS_HEAVY_AD_INTERVENTION,
+		AdSlotStatus.STATUS_UNKNOWN_INTERVENTION,
 	];
 	compilers = [slotPropertiesTrackingCompiler, slotTrackingCompiler, pageTrackingCompiler];
 
@@ -36,11 +36,11 @@ class SlotTracker extends BaseTracker implements BaseTrackerInterface {
 			return;
 		}
 
-		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot }) => {
+		communicationService.onSlotEvent(AdSlotEvent.SLOT_RENDERED_EVENT, ({ slot }) => {
 			slot.trackStatusAfterRendered = true;
 		});
 
-		communicationService.onSlotEvent(AdSlot.SLOT_STATUS_CHANGED, async ({ slot }) => {
+		communicationService.onSlotEvent(AdSlotEvent.SLOT_STATUS_CHANGED, async ({ slot }) => {
 			const status = slot.getStatus();
 
 			if (slot.trackStatusAfterRendered) {
@@ -63,7 +63,7 @@ class SlotTracker extends BaseTracker implements BaseTrackerInterface {
 			}
 		});
 
-		communicationService.onSlotEvent(AdSlot.CUSTOM_EVENT, async ({ slot, payload }) => {
+		communicationService.onSlotEvent(AdSlotEvent.CUSTOM_EVENT, async ({ slot, payload }) => {
 			callback(
 				await slotBiddersTrackingCompiler(
 					this.compileData(slot, null, { ad_status: payload?.status }),

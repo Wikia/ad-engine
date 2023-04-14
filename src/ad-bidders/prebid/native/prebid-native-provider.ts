@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, BaseServiceSetup, slotService, utils } from '@ad-engine/core';
+import { AdSlotStatus, BaseServiceSetup, slotService, utils } from '@ad-engine/core';
 import { PrebidNativeData } from './native-models';
 import { PrebidNativeConfig } from './prebid-native-config';
 import { PrebidNativeHelper } from './prebid-native-helper';
@@ -38,7 +38,7 @@ export class PrebidNativeProvider extends BaseServiceSetup {
 
 		const currentRv = ntvAdSlot.getTargetingProperty('rv') || 1;
 		ntvAdSlot.setTargetingConfigProperty('rv', currentRv + 1);
-		ntvAdSlot.setStatus(AdSlot.STATUS_SUCCESS);
+		ntvAdSlot.setStatus(AdSlotStatus.STATUS_SUCCESS);
 	}
 
 	private getNativeAdTemplate(data: PrebidNativeData): string {

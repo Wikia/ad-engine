@@ -1,4 +1,4 @@
-import { AdSlot, btfBlockerService, context, Dictionary, SlotConfig } from '@wikia/core';
+import { AdSlotEvent, btfBlockerService, context, Dictionary, SlotConfig } from '@wikia/core';
 import { expect } from 'chai';
 import { spy } from 'sinon';
 import { adSlotFake } from '../ad-slot-fake';
@@ -83,7 +83,7 @@ describe('btf-blocker-service', () => {
 		expect(firstCallFillInSpy.called).to.be.ok;
 		expect(secondCallFillInSpy.called).to.not.be.ok;
 
-		firstCallSlot.emit(AdSlot.SLOT_RENDERED_EVENT);
+		firstCallSlot.emit(AdSlotEvent.SLOT_RENDERED_EVENT);
 		expect(secondCallFillInSpy.called).to.be.ok;
 	});
 
@@ -104,7 +104,7 @@ describe('btf-blocker-service', () => {
 		expect(firstCallFillInSpy.called).to.be.ok;
 		expect(secondCallFillInSpy.called).to.not.be.ok;
 
-		firstCallSlot.emit(AdSlot.SLOT_RENDERED_EVENT);
+		firstCallSlot.emit(AdSlotEvent.SLOT_RENDERED_EVENT);
 		expect(secondCallFillInSpy.called).to.not.be.ok;
 	});
 

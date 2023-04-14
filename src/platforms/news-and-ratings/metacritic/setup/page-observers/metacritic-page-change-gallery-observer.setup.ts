@@ -1,5 +1,6 @@
 import {
 	AdSlot,
+	AdSlotEvent,
 	communicationService,
 	context,
 	DiProcess,
@@ -43,7 +44,7 @@ export class MetacriticPageChangeGalleryObserver implements DiProcess {
 
 			communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
 				communicationService.onSlotEvent(
-					AdSlot.DESTROYED_EVENT,
+					AdSlotEvent.DESTROYED_EVENT,
 					this.handleSlotDestroyed.bind(this),
 					slotNameToHandle,
 					true,

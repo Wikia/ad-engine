@@ -1,5 +1,4 @@
 import { context, Dictionary, SlotTargeting } from '@ad-engine/core';
-import { VpaidMode } from './porvata';
 
 export interface PorvataParams extends Dictionary {
 	adProduct?: string;
@@ -49,7 +48,7 @@ export class PorvataSettings {
 		this.width = params.width;
 		this.vastUrl = params.vastUrl;
 		this.vastTargeting = params.vastTargeting;
-		this.vpaidMode = params.vpaidMode || VpaidMode.ENABLED;
+		this.vpaidMode = params.vpaidMode || google.ima.ImaSdkSettings.VpaidMode.ENABLED;
 	}
 
 	getAdProduct(): string | undefined {
