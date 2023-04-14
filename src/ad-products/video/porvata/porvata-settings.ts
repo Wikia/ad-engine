@@ -1,5 +1,20 @@
 import { context, Dictionary, SlotTargeting } from '@ad-engine/core';
 
+enum VpaidMode {
+	/**
+	 * VPAID ads will not play and an error will be returned.
+	 */
+	DISABLED = 0,
+	/**
+	 * VPAID ads are enabled using a cross domain iframe. The VPAID ad cannot access the site. VPAID ads that depend on friendly iframe access may error. This is the default.
+	 */
+	ENABLED = 1,
+	/**
+	 * VPAID ads are enabled using a friendly iframe. This allows the ad access to the site via JavaScript.
+	 */
+	INSECURE = 2,
+}
+
 export interface PorvataParams extends Dictionary {
 	adProduct?: string;
 	autoPlay?: boolean;
@@ -48,7 +63,7 @@ export class PorvataSettings {
 		this.width = params.width;
 		this.vastUrl = params.vastUrl;
 		this.vastTargeting = params.vastTargeting;
-		this.vpaidMode = params.vpaidMode || google.ima.ImaSdkSettings.VpaidMode.ENABLED;
+		this.vpaidMode = params.vpaidMode || VpaidMode.ENABLED;
 	}
 
 	getAdProduct(): string | undefined {
