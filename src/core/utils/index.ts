@@ -1,5 +1,6 @@
 export * from './ad-label-helper';
 export * from './client';
+export * from './decorate';
 export * from './dimensions';
 export * from './document';
 export * from './flow-control';

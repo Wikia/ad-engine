@@ -1,5 +1,4 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { decorate } from 'core-decorators';
 import { getAdStack } from '../ad-engine';
 import { AdSlotEvent, AdSlotStatus, Dictionary, type AdSlot } from '../models';
 import {
@@ -12,7 +11,7 @@ import {
 	targetingService,
 	trackingOptIn,
 } from '../services';
-import { defer, isCoppaSubject, logger } from '../utils';
+import { decorate, defer, isCoppaSubject, logger } from '../utils';
 import { GptSizeMap } from './gpt-size-map';
 import { setupGptTargeting } from './gpt-targeting';
 import { Provider } from './provider';
@@ -26,7 +25,7 @@ export const GAMOrigins: string[] = [
 ];
 const AllViewportSizes = [0, 0];
 
-export function postponeExecutionUntilGptLoads(method: () => void): any {
+function postponeExecutionUntilGptLoads(method: () => void): any {
 	return function (...args: any): void {
 		setTimeout(() => {
 			window.googletag = window.googletag || ({} as googletag.Googletag);
