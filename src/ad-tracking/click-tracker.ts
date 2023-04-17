@@ -38,12 +38,12 @@ class AdClickTracker extends BaseTracker implements BaseTrackerInterface {
 	private clickDetection(slotName: string, callback: (data: Dictionary) => void) {
 		const eventHandler = () => {
 			const elem = document.activeElement;
-			if (!elem || elem.tagName !== 'IFRAME') {
+			if (!elem) {
 				return;
 			}
 
-			const id: null | string = elem.closest('div[id]:not([id*="/"])')?.id ?? null;
-			if (!id || id !== slotName) {
+			const currentPlacementId = elem.closest(`div#${slotName}`) !== null;
+			if (!currentPlacementId) {
 				return;
 			}
 
@@ -59,22 +59,10 @@ class AdClickTracker extends BaseTracker implements BaseTrackerInterface {
 		window.addEventListener('blur', eventHandler);
 	}
 
-	private handleClickEvent(
-		callback: (data: Dictionary) => void,
-		slot: AdSlot,
-		event?: MouseEvent,
-	): void {
+	private handleClickEvent(callback: (data: Dictionary) => void, slot: AdSlot): void {
 		const data = {
 			ad_status: AdSlot.STATUS_CLICKED,
 		};
-		if (event) {
-			const target = event.target as HTMLElement;
-			const clickData = {
-				click: { x: event.clientX, y: event.clientY },
-				size: { x: target.offsetWidth, y: target.offsetHeight },
-			};
-			data['click_position'] = JSON.stringify(clickData);
-		}
 
 		callback(this.compileData(slot, null, data));
 	}
