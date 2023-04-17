@@ -1,5 +1,12 @@
-import { context, DomListener, tapOnce, TemplateStateHandler, UapParams } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import {
+	context,
+	DomListener,
+	tapOnce,
+	TEMPLATE,
+	TemplateStateHandler,
+	UapParams,
+} from '@wikia/ad-engine';
+import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil, tap } from 'rxjs/operators';
 import { UapDomManager } from '../../helpers/uap-dom-manager';
@@ -9,9 +16,10 @@ export class SlotSizeImpactWithPlaceholderHandler implements TemplateStateHandle
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(
+		@Inject(TEMPLATE.PARAMS) private params: UapParams,
+
 		private domListener: DomListener,
 		private manager: UapDomManager,
-		private params: UapParams,
 	) {}
 
 	async onEnter(): Promise<void> {
