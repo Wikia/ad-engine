@@ -1,6 +1,7 @@
-import { Dictionary, utils } from '@wikia/ad-engine';
+import { Dictionary } from '@wikia/ad-engine';
 import { TrackingUrl } from '../../setup/tracking-urls';
 import { DataWarehouseParams } from '../data-warehouse';
+import { DwTrackSender } from './dw-track-sender';
 
 interface AggregateQueue {
 	track: TrackingUrl;
@@ -15,6 +16,7 @@ export class DwTrafficAggregator {
 	private tracksQueues: Dictionary<AggregateQueue>;
 	private enabled: boolean;
 	private count: number;
+	private sender: DwTrackSender = new DwTrackSender();
 
 	constructor() {
 		this.tracksQueues = {};
@@ -61,29 +63,11 @@ export class DwTrafficAggregator {
 			return;
 		}
 
-		this.sendTrackData(this.tracksQueues[track.name].track.url, paramsAggregated);
+		this.sender.sendTrackData(this.tracksQueues[track.name].track.url, paramsAggregated);
 		this.tracksQueues[track.name] = {
 			track,
 			params: [],
 		};
-	}
-
-	private sendTrackData(trackingUrl: string, paramsAggregated: DataWarehouseParams[]): void {
-		const dwTrackingUrlV2 = `${trackingUrl}_v2`;
-		this.sendRequest(dwTrackingUrlV2, paramsAggregated);
-	}
-
-	private sendRequest(url: string, params: DataWarehouseParams[]): void {
-		fetch(url, {
-			method: 'POST',
-			body: JSON.stringify(params),
-		}).then((response) => {
-			if (response.status === 200) {
-				utils.logger(`dw-track-aggregated`, { status: 'success', url, params });
-			} else {
-				utils.logger(`dw-track-aggregated`, { status: 'failed', url, params });
-			}
-		});
 	}
 
 	private start(): void {

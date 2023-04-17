@@ -27,8 +27,7 @@ describe('dw-traffic-aggregator', () => {
 
 	beforeEach(() => {
 		startStub = sinon.stub(DwTrafficAggregator.prototype, 'start' as any);
-		sendTrackData = sinon.stub(DwTrafficAggregator.prototype, 'sendTrackData' as any);
-		fireAggregatedQueueByTrack = sinon.spy(
+		fireAggregatedQueueByTrack = sinon.stub(
 			DwTrafficAggregator.prototype,
 			'fireAggregatedQueueByTrack' as any,
 		);
@@ -41,7 +40,7 @@ describe('dw-traffic-aggregator', () => {
 
 		expect(dwTrafficAggregator.isAggregatorActive()).to.be.true;
 
-		expect(sendTrackData.callCount).to.be.eq(0);
+		expect(fireAggregatedQueueByTrack.callCount).to.be.eq(0);
 	});
 
 	it('push data once and not fire sending tracking to external service yet', () => {
@@ -50,7 +49,6 @@ describe('dw-traffic-aggregator', () => {
 		dwTrafficAggregator.push(trackingTestUrl, sampleDwParams);
 
 		expect(fireAggregatedQueueByTrack.callCount).to.be.eq(0);
-		expect(sendTrackData.callCount).to.be.eq(0);
 	});
 
 	it('push data at the limit which cause sending tracking to external service yet', () => {
@@ -61,7 +59,6 @@ describe('dw-traffic-aggregator', () => {
 		}
 
 		expect(fireAggregatedQueueByTrack.callCount).to.be.eq(1);
-		expect(sendTrackData.callCount).to.be.eq(1);
 	});
 
 	afterEach(() => {
