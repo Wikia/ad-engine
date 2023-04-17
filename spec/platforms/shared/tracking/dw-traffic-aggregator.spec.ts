@@ -7,7 +7,6 @@ import sinon from 'sinon';
 describe('dw-traffic-aggregator', () => {
 	let dwTrafficAggregator;
 	let startStub;
-	let sendTrackData;
 	let fireAggregatedQueueByTrack;
 
 	const trackingTestUrl: TrackingUrl = {
@@ -63,7 +62,6 @@ describe('dw-traffic-aggregator', () => {
 
 	afterEach(() => {
 		startStub.restore();
-		sendTrackData.restore();
 		fireAggregatedQueueByTrack.restore();
 	});
 });
