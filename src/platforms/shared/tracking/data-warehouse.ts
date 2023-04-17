@@ -42,6 +42,10 @@ export class DataWarehouseTracker {
 		}
 	}
 
+	private getTrackerNameFromUrl(trackingURL?: string): string {
+		return trackingURL ? trackingURL.split('/').at(-1) : 'default';
+	}
+
 	/**
 	 * Get additional params only for DataWarehouse trackingParams
 	 *
