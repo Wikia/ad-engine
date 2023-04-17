@@ -36,6 +36,9 @@ describe('Freewheel bidder adapter', () => {
 						params: {
 							format: 'instream',
 							zoneId: '32563826',
+							vastUrlParams: {
+								protocolVersion: '4.2',
+							},
 						},
 					},
 				],
@@ -68,6 +71,9 @@ describe('Freewheel bidder adapter', () => {
 						params: {
 							format: 'instream',
 							zoneId: '32563810',
+							vastUrlParams: {
+								protocolVersion: '4.2',
+							},
 						},
 					},
 				],

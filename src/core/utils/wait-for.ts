@@ -1,6 +1,8 @@
 type Condition = () => boolean;
 
 export class WaitFor {
+	private timeoutId: number;
+
 	constructor(
 		private condition: Condition,
 		private noTries: number = 100,
@@ -28,6 +30,14 @@ export class WaitFor {
 	}
 
 	private delay(timeout: number): Promise<Condition> {
-		return new Promise((resolve) => setTimeout(resolve, timeout));
+		return new Promise((resolve) => {
+			this.timeoutId = setTimeout(resolve, timeout);
+		});
+	}
+
+	public reset() {
+		if (this.timeoutId) {
+			window.clearTimeout(this.timeoutId);
+		}
 	}
 }

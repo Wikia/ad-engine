@@ -1,7 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import {
 	AdStackPayload,
-	insertMethodType,
 	SlotPlaceholderContextConfig,
 	SlotTargeting,
 	slotTweaker,
@@ -18,35 +17,31 @@ export interface RepeatConfig {
 	slotNamePattern: string;
 	limit: number;
 	updateProperties: Dictionary;
-	additionalClasses?: string;
+	updateCreator?: Dictionary;
 	disablePushOnScroll?: boolean;
-	insertBelowScrollPosition?: boolean;
 }
 
-export interface SlotConfig {
+export interface BaseSlotConfig {
+	defaultSizes?: any;
+	targeting?: SlotTargeting;
+}
+
+export interface SlotConfig extends BaseSlotConfig {
 	uid: string;
 	adProduct: string;
 	bidderAlias: string;
 	disabled?: boolean;
-	disableExpandAnimation?: boolean;
 	firstCall?: boolean;
 	aboveTheFold?: boolean;
 	slotName?: string;
 	slotNameSuffix: string;
-	insertBeforeSelector?: string;
-	insertAfterSelector?: string;
-	parentContainerSelector?: string;
-	insertIntoParentContainerMethod?: insertMethodType;
 
-	targeting: SlotTargeting;
 	videoAdUnit?: string;
 	repeat?: RepeatConfig;
 	adUnit?: string;
 	sizes?: GptSizeMapping[];
 	videoSizes?: number[][];
-	defaultSizes?: any;
 	viewportConflicts?: string[];
-	insertBelowFirstViewport?: boolean;
 	avoidConflictWith?: string;
 	outOfPage?: any;
 	isVideo?: boolean;
@@ -75,6 +70,7 @@ export class AdSlot {
 	static SLOT_LEFT_VIEWPORT = 'slotLeftViewport';
 	static SLOT_STATUS_CHANGED = 'slotStatusChanged';
 	static DESTROYED_EVENT = 'slotDestroyed';
+	static DESTROY_EVENT = 'slotDestroy';
 	static HIDDEN_EVENT = 'slotHidden';
 	static SHOWED_EVENT = 'slotShowed';
 
@@ -400,10 +396,6 @@ export class AdSlot {
 		return this.slotViewed;
 	}
 
-	isRepeatable(): boolean {
-		return !!this.config.repeat;
-	}
-
 	isOutOfPage(): boolean {
 		return !!this.config.outOfPage;
 	}
@@ -439,7 +431,7 @@ export class AdSlot {
 
 	destroy(): void {
 		this.disable();
-		this.emit(AdSlot.DESTROYED_EVENT);
+		this.emit(AdSlot.DESTROY_EVENT);
 	}
 
 	getConfigProperty(key: string): any {
@@ -650,22 +642,6 @@ export class AdSlot {
 		if (eventName !== null) {
 			this.emit(AdSlot.CUSTOM_EVENT, { status: eventName });
 		}
-	}
-
-	/**
-	 * Return names of slots which should be injected into DOM
-	 * and pushed into ad stack queue after slot is created.
-	 */
-	getSlotsToPushAfterCreated(): string[] {
-		return context.get(`events.pushAfterCreated.${this.getSlotName()}`) || [];
-	}
-
-	/**
-	 * Return names of slots which should be injected into DOM
-	 * after slot is rendered.
-	 */
-	getSlotsToInjectAfterRendered(): string[] {
-		return context.get(`events.pushAfterRendered.${this.getSlotName()}`) || [];
 	}
 
 	/**

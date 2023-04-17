@@ -65,14 +65,13 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setOptionsContext(): void {
-		context.set('options.tracking.kikimora.player', this.instantConfig.get('icPlayerTracking'));
-		context.set('options.tracking.slot.status', this.instantConfig.get('icSlotTracking'));
-		context.set(
-			'options.tracking.slot.viewability',
-			this.instantConfig.get('icViewabilityTracking'),
-		);
-		context.set('options.tracking.slot.bidder', this.instantConfig.get('icBidsTracking'));
-		context.set('options.tracking.postmessage', this.instantConfig.get('icPostmessageTracking'));
+		if (this.instantConfig.get('icIncontentHeadersExperiment')) {
+			context.set('templates.incontentHeadersExperiment', true);
+		} else {
+			context.set('templates.incontentAnchorSelector', '.mw-parser-output > h2');
+		}
+
+		context.set('options.performanceAds', this.instantConfig.get('icPerformanceAds'));
 		context.set('options.stickyTbExperiment', this.instantConfig.get('icStickyTbExperiment'));
 		context.set(
 			'options.uapExtendedSrcTargeting',
@@ -114,14 +113,6 @@ export class BaseContextSetup implements DiProcess {
 			'options.video.uapJWPLineItemIds',
 			this.instantConfig.get('icUAPJWPlayerLineItemIds'),
 		);
-		context.set(
-			'options.video.moatTracking.enabledForArticleVideos',
-			this.instantConfig.get('icFeaturedVideoMoatTracking'),
-		);
-		context.set(
-			'options.video.moatTracking.enabledForPorvata',
-			this.instantConfig.get('icPorvataMoatTracking'),
-		);
 		context.set('options.video.pauseJWPlayerAd', this.instantConfig.get('icPauseJWPlayerAd'));
 		context.set(
 			'options.video.comscoreJwpTracking',
@@ -146,7 +137,6 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setServicesContext(): void {
-		context.set('services.anyclip.enabled', this.instantConfig.get('icAnyclipPlayer'));
 		context.set(
 			'services.interventionTracker.enabled',
 			this.instantConfig.get('icInterventionTracking'),
@@ -161,6 +151,7 @@ export class BaseContextSetup implements DiProcess {
 		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
 		context.set('services.ppidRepository', this.instantConfig.get('icPpidRepository'));
 		context.set('services.identityTtl', this.instantConfig.get('icIdentityTtl'));
+		context.set('services.ageGateHandling', this.instantConfig.get('icAgeGateHandling'));
 
 		context.set(
 			'services.messageBox.enabled',
@@ -175,11 +166,13 @@ export class BaseContextSetup implements DiProcess {
 	private setMiscContext(): void {
 		this.instantConfig.get('icLABradorTest');
 
-		context.set('options.initCall', this.instantConfig.get('icLayoutInitializerSlot'));
-		context.set('pubmatic.identityHub.enabled', this.instantConfig.get('icPubmaticIdentityHub'));
-
 		const priceFloorRule = this.instantConfig.get<object>('icPrebidSizePriceFloorRule');
 		context.set('bidders.prebid.priceFloor', priceFloorRule || null);
+		context.set(
+			'bidders.prebid.disableSendAllBids',
+			this.instantConfig.get('icPrebidDisableSendAllBids'),
+		);
+		context.set('bidders.identityHub.enabled', this.instantConfig.get('icPubmaticIdentityHub'));
 		context.set('bidders.liveRampId.enabled', this.instantConfig.get('icLiveRampId'));
 		context.set('bidders.liveRampATS.enabled', this.instantConfig.get('icLiveRampATS'));
 		context.set(
@@ -187,15 +180,6 @@ export class BaseContextSetup implements DiProcess {
 			this.instantConfig.get('icLiveRampATSAnalytics'),
 		);
 		context.set('bidders.prebid.native.enabled', this.instantConfig.get('icPrebidNative'));
-
-		context.set(
-			'templates.safeFanTakeoverElement.lineItemIds',
-			this.instantConfig.get('icSafeFanTakeoverLineItemIds'),
-		);
-		context.set(
-			'templates.safeFanTakeoverElement.unstickTimeout',
-			this.instantConfig.get('icSafeFanTakeoverUnstickTimeout'),
-		);
 		context.set(
 			'templates.sizeOverwritingMap',
 			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes,

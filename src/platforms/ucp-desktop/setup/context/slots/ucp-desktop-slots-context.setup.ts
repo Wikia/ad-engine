@@ -57,6 +57,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 			incontent_leaderboard: {
 				adProduct: 'incontent_leaderboard',
+				bidderAlias: 'incontent_leaderboard',
 				group: 'ILB',
 				options: {},
 				defaultSizes: [[728, 90]],
@@ -68,7 +69,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'incontent_boxad_1',
 				bidderAlias: 'incontent_boxad_1',
 				group: 'HiVi',
-				insertBeforeSelector: '#incontent_boxad_1',
 				recirculationElementSelector: '#recirculation-rail',
 				options: {},
 				sizes: [],
@@ -115,10 +115,9 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 			incontent_player: {
 				adProduct: 'incontent_player',
-				autoplay: true,
-				audio: false,
+				disabled: true,
 				isVideo: true,
-				insertBeforeSelector: '#mw-content-text > div > h2',
+				trackEachStatus: true,
 				group: 'HiVi',
 				defaultSizes: [[1, 1]],
 				targeting: {
@@ -136,27 +135,13 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				defaultTemplates: ['floorAdhesion'],
 				defaultSizes: [[728, 90]],
 			},
-			invisible_high_impact_2: {
-				adProduct: 'invisible_high_impact_2',
-				group: 'PX',
-				options: {},
-				outOfPage: true,
-				targeting: {
-					loc: 'hivi',
-				},
-			},
 			featured: {
 				adProduct: 'featured',
+				isVideo: true,
 				group: 'VIDEO',
 				videoSizes: [[640, 480]],
 				trackEachStatus: true,
 				trackingKey: 'featured-video',
-				isVideo: true,
-			},
-			ntv_ad: {
-				providers: ['nativo'],
-				trackEachStatus: true,
-				isNative: true,
 			},
 			ntv_feed_ad: {
 				providers: ['nativo'],
@@ -199,6 +184,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 		};
 
 		slotsContext.setupSlotVideoContext();
+		slotsContext.setupCustomPlayerAdUnit();
 
 		context.set('slots', slots);
 		context.set('slots.featured.videoAdUnit', context.get('vast.adUnitIdWithDbName'));

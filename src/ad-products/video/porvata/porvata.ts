@@ -1,12 +1,4 @@
-import {
-	AdSlot,
-	context,
-	SlotFiller,
-	slotService,
-	SlotTargeting,
-	templateService,
-	utils,
-} from '@ad-engine/core';
+import { AdSlot, slotService, SlotTargeting, utils } from '@ad-engine/core';
 import { PorvataFactory } from './porvata-factory';
 import { PorvataListener } from './porvata-listener';
 import { PorvataPlayer } from './porvata-player';
@@ -15,7 +7,6 @@ import { PorvataSettings } from './porvata-settings';
 export interface PorvataTemplateParams {
 	adProduct: string;
 	autoPlay: boolean;
-	blockOutOfViewportPausing: boolean;
 	container: HTMLDivElement;
 	enableInContentFloating?: boolean;
 	hideWhenPlaying: HTMLElement;
@@ -30,95 +21,11 @@ export interface PorvataTemplateParams {
 	vpaidMode?: google.ima.ImaSdkSettings.VpaidMode;
 }
 
-export interface PorvataGamParams {
-	adProduct: string;
-	autoPlay: boolean;
-	blockOutOfViewportPausing: boolean;
-	container: HTMLElement;
-	creativeId: string;
-	enableInContentFloating: boolean;
-	height: number;
-	lineItemId: string;
-	loadVideoTimeout: number;
-	slotName: string;
-	src: string;
-	startInViewportOnly: boolean;
-	theme: string;
-	trackingDisabled: boolean;
-	type: string;
-	vastTargeting: SlotTargeting;
-	vpaidMode: google.ima.ImaSdkSettings.VpaidMode;
-	width: number;
-}
-
 export const VpaidMode = {
 	DISABLED: 0,
 	ENABLED: 1,
 	INSECURE: 2,
 };
-
-/**
- * @TODO: Consider reimplementation of this idea. Currently we have two approaches of filling in
- * 		slots, they are: "provider" and "filler". In my opinion they are doing slightly the same thing.
- * 		It looks like another ad provider which could live along with gpt-provider and prebidium-provider.
- * 		But then we would need to change the way AdEngine handles providers and revisit how btfBlocker works.
- * 		Also, I believe it can be more general idea. We don't need to create 'porvata-provider' but some kind of
- * 		'template-provider', because the responsibility of this code should be loading configured (in context)
- * 		ad-product template (with certain set of parameters) directly instead of calling GPT.
- */
-export class PorvataFiller implements SlotFiller {
-	private containerId = 'playerContainer';
-	private porvataParams: PorvataGamParams = {
-		container: null,
-		slotName: '',
-		type: 'porvata3',
-		theme: 'hivi',
-		adProduct: 'incontent_veles',
-		autoPlay: true,
-		startInViewportOnly: true,
-		blockOutOfViewportPausing: true,
-		enableInContentFloating: false,
-		width: 1,
-		height: 1,
-		src: context.get('src'),
-		lineItemId: '',
-		creativeId: '',
-		trackingDisabled: false,
-		loadVideoTimeout: 30000,
-		vpaidMode: 2,
-		vastTargeting: {},
-	};
-
-	fill(adSlot: AdSlot): void {
-		const player = document.createElement('div');
-		player.setAttribute('id', this.containerId);
-
-		adSlot.getElement().appendChild(player);
-
-		this.porvataParams.vastTargeting.src = context.get('src');
-		this.porvataParams.container = player;
-		this.porvataParams.slotName = adSlot.getSlotName();
-
-		const options = adSlot.getConfigProperty('customFillerOptions');
-
-		if (options) {
-			Object.keys(options).forEach((option) => {
-				this.porvataParams[option] = options[option];
-			});
-		}
-
-		templateService.init(this.porvataParams.type, adSlot, this.porvataParams);
-		adSlot.setConfigProperty('trackEachStatus', true);
-	}
-
-	getContainer(): HTMLElement {
-		return document.getElementById(this.containerId);
-	}
-
-	getName(): string {
-		return 'porvata';
-	}
-}
 
 /**
  * @TODO: Consider reimplementation of this class/logic. In my opinion it conflicts with PorvataFactory.
@@ -163,7 +70,6 @@ export class Porvata {
 		});
 
 		let isFirstPlay = true;
-		let autoPaused = false;
 		let autoPlayed = false;
 		let viewportListenerId: string = null;
 
@@ -189,22 +95,13 @@ export class Porvata {
 					player.play();
 					autoPlayed = true;
 					// Don't resume when video was paused manually
-				} else if (isVisible && autoPaused) {
-					player.resume();
-					// Pause video once it's out of viewport and set autoPaused to distinguish manual
-					// and auto pause
-				} else if (!isVisible && player.isPlaying() && !params.blockOutOfViewportPausing) {
-					player.pause();
-					autoPaused = true;
 				}
 			}
 
 			function setupAutoPlayMethod(): void {
-				if (params.blockOutOfViewportPausing && !params.startInViewportOnly) {
-					if (params.autoPlay && !autoPlayed) {
-						autoPlayed = true;
-						player.play();
-					}
+				if (!params.startInViewportOnly && params.autoPlay && !autoPlayed) {
+					autoPlayed = true;
+					player.play();
 				} else {
 					viewportListenerId = Porvata.addOnViewportChangeListener(params, inViewportCallback);
 				}
@@ -242,7 +139,6 @@ export class Porvata {
 			});
 			player.addEventListener('resume', () => {
 				player.dispatchEvent('wikiaAdPlay');
-				autoPaused = false;
 			});
 			player.addEventListener('pause', () => {
 				player.dispatchEvent('wikiaAdPause');
@@ -274,18 +170,5 @@ export class Porvata {
 
 			return player;
 		});
-	}
-
-	static isVpaid(contentType: string): boolean {
-		return contentType === 'application/javascript';
-	}
-
-	static isVideoAutoplaySupported(): boolean {
-		const isAndroid: boolean = utils.client.getOperatingSystem() === 'Android';
-		const browser: string[] = utils.client.getBrowser().split(' ');
-		const isCompatibleChrome: boolean =
-			browser[0].indexOf('Chrome') !== -1 && parseInt(browser[1], 10) >= 54;
-
-		return !isAndroid || isCompatibleChrome;
 	}
 }

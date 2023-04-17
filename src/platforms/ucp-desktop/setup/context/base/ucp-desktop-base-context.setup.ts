@@ -13,16 +13,12 @@ export class UcpDesktopBaseContextSetup extends BaseContextSetup {
 		);
 		// sourced from front/scripts/shared/tracking/Tracker.js getUserIdForInternalTracking()
 		context.set(
-			'userId',
+			'options.userId',
 			(window.mw as any).config.get('wgTrackID') || (window.mw as any).config.get('wgUserId'),
 		);
 		context.set(
 			'events.pushOnScroll.nativoThreshold',
 			this.instantConfig.get('icPushOnScrollNativoThreshold', 200),
-		);
-		context.set(
-			'services.nativo.gamIncontentEnabled',
-			!context.get('state.isMobile') && this.instantConfig.get('icIncontentLeaderboard'),
 		);
 	}
 }

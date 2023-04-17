@@ -95,9 +95,16 @@ describe('Eyeota', () => {
 	});
 
 	it('constructs proper url with context', async () => {
-		window.fandomContext = { site: null, page: null } as FandomContext;
+		window.fandomContext = {
+			site: {},
+			page: {},
+			tracking: {},
+			partners: {},
+		};
 		const mockedTags = {
 			gnre: ['1', '2', '3'],
+			media: ['web'],
+			theme: ['elf'],
 			pub: ['test'],
 			pform: ['xbox'],
 			mpa: ['general'],
@@ -112,7 +119,7 @@ describe('Eyeota', () => {
 		delete window.fandomContext;
 
 		expect(src).to.equal(
-			'https://ps.eyeota.net/pixel?pid=r8rcb20&sid=fandom&t=ajs&s0v=undefined&gnre=1&gnre=2&gnre=3&pform=xbox&pub=test',
+			'https://ps.eyeota.net/pixel?pid=r8rcb20&sid=fandom&t=ajs&s0v=undefined&gnre=1&gnre=2&gnre=3&media=web&pform=xbox&pub=test&theme=elf',
 		);
 	});
 

@@ -7,6 +7,14 @@ import { getMediaWikiVariable } from '../utils/get-media-wiki-variable';
 export class TrackingParametersSetup implements DiProcess {
 	constructor(private instantConfig: InstantConfigService) {}
 
+	private getPvUniqueId() {
+		return (
+			getMediaWikiVariable('pvUID') || // UCP
+			window.pvUID || // F2
+			window.fandomContext.tracking.pvUID // N+R
+		);
+	}
+
 	private getLegacyTrackingParameters(): ITrackingParameters {
 		const cookies = Cookies.get();
 
@@ -21,7 +29,7 @@ export class TrackingParametersSetup implements DiProcess {
 				getMediaWikiVariable('pvNumberGlobal') ||
 				window.pvNumberGlobal ||
 				cookies['pv_number_global'],
-			pvUID: getMediaWikiVariable('pvUID') || window.pvUID,
+			pvUID: this.getPvUniqueId(),
 			sessionId:
 				getMediaWikiVariable('sessionId') ||
 				window.sessionId ||
@@ -30,16 +38,17 @@ export class TrackingParametersSetup implements DiProcess {
 		};
 	}
 
-	private async getNewTrackingParameters(): Promise<ITrackingParameters> {
+	private async getNewTrackingParameters(): Promise<Partial<ITrackingParameters>> {
 		await new utils.WaitFor(() => !!window.fandomContext?.tracking, 10, 100).until();
 
 		return {
 			...window.fandomContext.tracking,
-			pvUID: getMediaWikiVariable('pvUID') || window.pvUID,
 		};
 	}
 
-	private async getTrackingParameters(legacyEnabled: boolean): Promise<ITrackingParameters> {
+	private async getTrackingParameters(
+		legacyEnabled: boolean,
+	): Promise<Partial<ITrackingParameters>> {
 		return legacyEnabled
 			? this.getLegacyTrackingParameters()
 			: await this.getNewTrackingParameters();
@@ -50,5 +59,24 @@ export class TrackingParametersSetup implements DiProcess {
 		const trackingParameters = await this.getTrackingParameters(legacyEnabled);
 
 		context.set('wiki', { ...context.get('wiki'), ...trackingParameters });
+
+		const dwTracks = [
+			'AdEngLoadTimes',
+			'AdEngBidders',
+			'AdEngViewability',
+			'AdEngPlayerInfo',
+			'KeyVals',
+			'AdEngAdSizeInfo',
+			'AdEngLabradorInfo',
+		];
+
+		dwTracks.forEach((dwTrackService) => {
+			const dwTrackServiceLowercase = dwTrackService.toLowerCase();
+			context.set(
+				`services.dw-tracker-${dwTrackServiceLowercase}.threshold`,
+				utils.queryString.get(`dw_tracker_${dwTrackServiceLowercase}_threshold`) ??
+					this.instantConfig.get(`icDwTrackerTraffic${dwTrackService}Threshold`),
+			);
+		});
 	}
 }

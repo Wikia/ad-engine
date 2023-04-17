@@ -68,7 +68,7 @@ export class A9Provider extends BidderProvider {
 	public static isEnabled(): boolean {
 		const enabled = context.get('bidders.a9.enabled');
 		const coppaA9 = context.get('bidders.coppaA9');
-		return enabled && (coppaA9 ? !context.get('wiki.targeting.directedAtChildren') : true);
+		return enabled && (coppaA9 ? !utils.isCoppaSubject() : true);
 	}
 
 	private loaded = false;
@@ -159,6 +159,9 @@ export class A9Provider extends BidderProvider {
 			videoAdServer: 'DFP',
 			deals: true,
 			...A9Provider.getCcpaIfApplicable(signalData),
+			signals: {
+				ortb2: targetingService.get('openrtb2'),
+			},
 		};
 	}
 

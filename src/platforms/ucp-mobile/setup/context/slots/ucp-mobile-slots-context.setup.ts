@@ -36,7 +36,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			},
 			top_boxad: {
 				adProduct: 'top_boxad',
-				avoidConflictWith: '.ad-slot,.ntv-ad',
 				bidderAlias: 'mobile_in_content',
 				group: 'MR',
 				options: {},
@@ -60,19 +59,12 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					loc: 'top',
 					pos: ['top_boxad'],
 				},
-				placeholder: {
-					createLabel: true,
-				},
 			},
-			// as this slot can be repeated many, it uses bidderAlias mobile_in_content
 			incontent_boxad_1: {
 				adProduct: 'incontent_boxad_1',
-				avoidConflictWith: '.ad-slot,#incontent_player',
 				bidderAlias: 'mobile_in_content',
-				defaultClasses: ['hide', 'ad-slot'],
 				group: 'HiVi',
 				options: {},
-				parentContainerSelector: '.incontent-boxad',
 				sizes: [
 					{
 						viewportSize: [BIG_VIEWPORT_SIZE.width, BIG_VIEWPORT_SIZE.height],
@@ -93,25 +85,18 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					loc: 'middle',
 					pos: ['incontent_boxad'],
 				},
-				placeholder: {
-					createLabel: true,
-				},
 			},
 			incontent_player: {
 				adProduct: 'incontent_player',
-				avoidConflictWith: '.ad-slot,#incontent_boxad_1',
-				autoplay: true,
-				audio: false,
-				insertBeforeSelector: '.mw-parser-output > h2',
-				parentContainerSelector: '.incontent-boxad',
-				defaultClasses: ['hide'],
+				disabled: true,
+				isVideo: true,
+				trackEachStatus: true,
 				group: 'HiVi',
 				defaultSizes: [[1, 1]],
 				targeting: {
 					loc: 'middle',
 					pos: ['outstream'],
 				},
-				isVideo: true,
 			},
 			mobile_prefooter: {
 				adProduct: 'mobile_prefooter',
@@ -127,13 +112,9 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'footer',
 				},
-				placeholder: {
-					createLabel: true,
-				},
 			},
 			interstitial: {
 				adProduct: 'interstitial',
-				defaultClasses: ['hide'],
 				group: 'IU',
 				options: {},
 				outOfPage: true,
@@ -144,7 +125,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			},
 			floor_adhesion: {
 				adProduct: 'floor_adhesion',
-				defaultClasses: ['hide'],
 				group: 'PF',
 				options: {},
 				outOfPage: false,
@@ -202,19 +182,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					loc: 'footer',
 					pos: ['bottom_leaderboard', 'mobile_prefooter'],
 				},
-				placeholder: {
-					createLabel: true,
-				},
-			},
-			invisible_high_impact_2: {
-				adProduct: 'invisible_high_impact_2',
-				defaultClasses: ['hide'],
-				group: 'PX',
-				options: {},
-				outOfPage: true,
-				targeting: {
-					loc: 'hivi',
-				},
 			},
 			featured: {
 				adProduct: 'featured',
@@ -261,6 +228,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 		};
 
 		slotsContext.setupSlotVideoContext();
+		slotsContext.setupCustomPlayerAdUnit();
 
 		context.set('slots', slots);
 		context.set('slots.featured.videoAdUnit', context.get('vast.adUnitIdWithDbName'));

@@ -2,12 +2,15 @@ import {
 	BiddersStateSetup,
 	bootstrapAndGetConsent,
 	InstantConfigSetup,
+	LoadTimesSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
 import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
 import {
+	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsDynamicSlotsSetup,
@@ -33,15 +36,18 @@ export class GiantbombPlatform {
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
 			TrackingParametersSetup,
+			LoadTimesSetup,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			NewsAndRatingsTargetingSetup,
 			GiantbombTargetingSetup,
 			GiantbombSlotsContextSetup,
+			SlotsConfigurationExtender,
 			NewsAndRatingsDynamicSlotsSetup,
 			GiantbombPrebidConfigSetup,
 			GiantbombA9ConfigSetup,
 			BiddersStateSetup,
+			BiddersStateOverwriteSetup,
 			GiantbombTemplatesSetup,
 			NewsAndRatingsAdsMode,
 			TrackingSetup,

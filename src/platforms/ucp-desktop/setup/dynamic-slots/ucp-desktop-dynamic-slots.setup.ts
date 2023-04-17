@@ -11,13 +11,11 @@ import {
 	context,
 	DiProcess,
 	eventsRepository,
-	fillerService,
-	PorvataFiller,
-	PorvataGamParams,
 	slotService,
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { UcpDesktopPerformanceAdsDefinitionRepository } from './ucp-desktop-performance-ads-definition-repository';
 import { UcpDesktopSlotsDefinitionRepository } from './ucp-desktop-slots-definition-repository';
 
 @Injectable()
@@ -25,33 +23,34 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	constructor(
 		private slotsDefinitionRepository: UcpDesktopSlotsDefinitionRepository,
 		private nativoSlotDefinitionRepository: NativoSlotsDefinitionRepository,
+		private performanceAdsDefinitionRepository: UcpDesktopPerformanceAdsDefinitionRepository,
 		private quizSlotsDefinitionRepository: QuizSlotsDefinitionRepository,
 	) {}
 
 	execute(): void {
 		this.injectSlots();
 		this.configureTopLeaderboardAndCompanions();
-		this.configureIncontentPlayerFiller();
 		this.configureFloorAdhesionCodePriority();
 		this.registerAdPlaceholderService();
 	}
 
 	private injectSlots(): void {
 		insertSlots([
-			this.slotsDefinitionRepository.getLayoutInitializerConfig(),
-			this.nativoSlotDefinitionRepository.getNativoIncontentAdConfig(2),
 			this.nativoSlotDefinitionRepository.getNativoFeedAdConfig(),
 			this.slotsDefinitionRepository.getTopLeaderboardConfig(),
 			this.slotsDefinitionRepository.getTopBoxadConfig(),
-			this.slotsDefinitionRepository.getIncontentLeaderboardConfig(2),
-			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
 			this.slotsDefinitionRepository.getIncontentPlayerConfig(),
+			this.slotsDefinitionRepository.getIncontentLeaderboardConfig(),
+			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
 			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
-			this.slotsDefinitionRepository.getInvisibleHighImpactConfig(),
 		]);
 
 		communicationService.on(eventsRepository.RAIL_READY, () => {
 			insertSlots([this.slotsDefinitionRepository.getIncontentBoxadConfig()]);
+
+			communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+				this.performanceAdsDefinitionRepository.setup();
+			});
 		});
 		communicationService.on(
 			eventsRepository.QUIZ_AD_INJECTED,
@@ -85,6 +84,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		if (!context.get('custom.hasFeaturedVideo')) {
 			if (context.get('wiki.targeting.pageType') !== 'special') {
 				slotsContext.addSlotSize(slotName, universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop);
+				slotsContext.addSlotSize(slotName, universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.unified);
 			}
 
 			slotsContext.addSlotSize(
@@ -104,18 +104,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
 			);
 		}
-	}
-
-	private configureIncontentPlayerFiller(): void {
-		const icpSlotName = 'incontent_player';
-		const fillerOptions: Partial<PorvataGamParams> = {
-			enableInContentFloating: true,
-		};
-
-		context.set(`slots.${icpSlotName}.customFiller`, 'porvata');
-		context.set(`slots.${icpSlotName}.customFillerOptions`, fillerOptions);
-
-		fillerService.register(new PorvataFiller());
 	}
 
 	private configureFloorAdhesionCodePriority(): void {

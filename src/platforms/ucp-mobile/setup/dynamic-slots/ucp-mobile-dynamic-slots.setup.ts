@@ -14,9 +14,7 @@ import {
 	CookieStorageAdapter,
 	DiProcess,
 	eventsRepository,
-	fillerService,
 	Nativo,
-	PorvataFiller,
 	slotImpactWatcher,
 	slotService,
 	universalAdPackage,
@@ -52,7 +50,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			this.slotsDefinitionRepository.getIncontentBoxadConfig(),
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
 			this.slotsDefinitionRepository.getMobilePrefooterConfig(),
-			this.slotsDefinitionRepository.getInvisibleHighImpactConfig(),
 			this.slotsDefinitionRepository.getInterstitialConfig(),
 			this.nativoSlotDefinitionRepository.getNativoFeedAdConfig({
 				slotName: Nativo.FEED_AD_SLOT_NAME,
@@ -96,6 +93,10 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				'top_leaderboard',
 				universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile,
 			);
+			slotsContext.addSlotSize(
+				'top_leaderboard',
+				universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.unified,
+			);
 
 			context.push('slots.top_leaderboard.defaultTemplates', 'stickyTlb');
 		}
@@ -114,27 +115,32 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		);
 	}
 
-	private configureIncontentPlayer(): void {
-		const icpSlotName = 'incontent_player';
+	private isIncontentPlayerApplicable(): boolean {
+		return (
+			context.get('custom.hasIncontentPlayer') && context.get('wiki.targeting.pageType') !== 'home'
+		);
+	}
 
-		if (
-			!context.get('custom.hasIncontentPlayer') ||
-			context.get('wiki.targeting.pageType') === 'home'
-		) {
-			context.set(`slots.${icpSlotName}.disabled`, true);
-		} else {
-			context.push('events.pushAfterRendered.top_boxad', icpSlotName);
+	private configureIncontentPlayer(): void {
+		if (!this.isIncontentPlayerApplicable()) {
+			return;
 		}
 
-		context.set(`slots.${icpSlotName}.customFiller`, 'porvata');
-		context.set(`slots.${icpSlotName}.customFillerOptions`, {});
+		const slotName = 'incontent_player';
 
-		fillerService.register(new PorvataFiller());
+		communicationService.onSlotEvent(
+			AdSlot.SLOT_RENDERED_EVENT,
+			() => {
+				insertSlots([this.slotsDefinitionRepository.getIncontentPlayerConfig()]);
+			},
+			'top_boxad',
+			true,
+		);
 
 		communicationService.on(
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
 			({ slot }) => {
-				if (slot.getSlotName() === icpSlotName) {
+				if (slot.getSlotName() === slotName) {
 					slot.getPlaceholder()?.classList.remove('is-loading');
 
 					const noTries = 2500;
@@ -144,7 +150,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 						.until()
 						.then(() => {
 							slotImpactWatcher.request({
-								id: 'incontent_player',
+								id: slotName,
 								priority: 6,
 								breakCallback: () => slot.getPlaceholder()?.classList.add('hide'),
 							});
@@ -216,23 +222,33 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		const disableFloorAdhesion = () => {
 			slotService.disable(slotName);
 			slotImpactWatcher.disable([slotName]);
-			document.getElementById('floor_adhesion_anchor').classList.add('hide');
+			document.getElementById('floor_adhesion_anchor')?.classList.add('hide');
 		};
 
 		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {
 			ntcOverride = true;
 		});
 
+		slotImpactWatcher.request({
+			id: slotName,
+			priority: 4,
+			breakCallback: disableFloorAdhesion,
+		});
+
+		communicationService.onSlotEvent(
+			AdSlot.STATUS_COLLAPSE,
+			() => slotImpactWatcher.disable([slotName]),
+			slotName,
+		);
+		communicationService.onSlotEvent(
+			AdSlot.STATUS_FORCED_COLLAPSE,
+			() => slotImpactWatcher.disable([slotName]),
+			slotName,
+		);
 		communicationService.onSlotEvent(
 			AdSlot.STATUS_SUCCESS,
 			() => {
 				codePriorityActive = true;
-
-				slotImpactWatcher.request({
-					id: slotName,
-					priority: 4,
-					breakCallback: disableFloorAdhesion,
-				});
 
 				communicationService.on(
 					eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED,

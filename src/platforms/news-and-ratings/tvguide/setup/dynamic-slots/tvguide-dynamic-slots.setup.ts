@@ -1,108 +1,143 @@
+import { insertSlots, SlotSetupDefinition } from '@platforms/shared';
 import {
 	AdSlot,
 	communicationService,
 	context,
+	Dictionary,
 	DiProcess,
 	eventsRepository,
-	slotService,
 	utils,
 } from '@wikia/ad-engine';
 
+const logGroup = 'dynamic-slots';
+
 export class TvGuideDynamicSlotsSetup implements DiProcess {
+	private repeatedSlotsCounter: Dictionary<number> = {};
+	private repeatedSlotsRendered: string[] = [];
+	private repeatedSlotsQueue: Dictionary<[string, string]> = {};
+
 	execute(): void {
-		communicationService.on(
-			eventsRepository.AD_ENGINE_PARTNERS_READY,
-			() => {
-				const adPlaceholders = document.querySelectorAll('.c-adDisplay_container');
+		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+			communicationService.on(
+				eventsRepository.PLATFORM_AD_PLACEMENT_READY,
+				({ placementId }) => {
+					utils.logger(logGroup, 'Ad placement rendered', placementId);
+					if (this.repeatedSlotsCounter[placementId]) {
+						this.scheduleRepeatedSlotInjection(placementId);
+						return;
+					}
 
-				if (!adPlaceholders) {
-					return;
+					this.repeatedSlotsCounter[placementId] = 1;
+					insertSlots([this.getSlotConfig(placementId)]);
+				},
+				false,
+			);
+
+			communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ adSlotName }) => {
+				this.repeatedSlotsRendered.push(adSlotName);
+
+				if (this.repeatedSlotsQueue[adSlotName]) {
+					const [nextSlotName, placementId] = this.repeatedSlotsQueue[adSlotName];
+					window.requestAnimationFrame(() => {
+						insertSlots([this.getSlotConfig(nextSlotName, placementId)]);
+					});
 				}
+			});
+		});
 
-				new utils.WaitFor(() => this.adDivsReady(adPlaceholders), 10, 100)
-					.until()
-					.then(() => this.injectSlots(adPlaceholders));
+		communicationService.on(
+			eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE,
+			() => {
+				utils.logger(logGroup, 'Cleaning slots repositories');
+				this.repeatedSlotsCounter = {};
+				this.repeatedSlotsRendered = [];
+				this.repeatedSlotsQueue = {};
+			},
+			false,
+		);
+
+		communicationService.on(
+			eventsRepository.PLATFORM_PAGE_CHANGED,
+			() => {
+				this.refreshStaleSlots();
 			},
 			false,
 		);
 	}
 
-	private injectSlots(adPlaceholders): void {
-		const pushedSlots = [];
+	private scheduleRepeatedSlotInjection(placementId: string): void {
+		const counter = this.repeatedSlotsCounter[placementId];
+		const [currentSlotName, nextSlotName] =
+			counter === 1
+				? [placementId, `${placementId}-2`]
+				: [`${placementId}-${counter}`, `${placementId}-${counter + 1}`];
 
-		adPlaceholders.forEach((placeholder) => {
-			const adWrapper = placeholder.firstElementChild;
+		this.repeatedSlotsCounter[placementId] = counter + 1;
 
-			if (!adWrapper) {
-				utils.logger('setup', 'No ad wrapper found for potential ad slot', placeholder);
-				return;
-			}
+		if (this.repeatedSlotsRendered.includes(currentSlotName)) {
+			insertSlots([this.getSlotConfig(nextSlotName, placementId)]);
+			utils.logger(logGroup, 'Injecting repeated slot', nextSlotName);
+		} else {
+			this.repeatedSlotsQueue[currentSlotName] = [nextSlotName, placementId];
+			utils.logger(logGroup, 'Scheduling repeated slot injection', nextSlotName);
+		}
+	}
 
-			const adSlotName = adWrapper.getAttribute('data-ad');
+	private refreshStaleSlots(): void {
+		const domSlotsElements = document.querySelectorAll('div[data-slot-loaded="true"].gpt-ad');
 
-			if (!this.isSlotDefinedInContext(adSlotName)) {
-				utils.logger('setup', 'Slot not defined in the context', adSlotName);
-				return;
-			}
-
-			if (pushedSlots.includes(adSlotName)) {
-				utils.logger('setup', 'Slot already pushed', adSlotName, pushedSlots);
-				return;
-			}
-
-			if (context.get(`slots.${adSlotName}.repeat`)) {
-				this.setupRepeatableSlot(adSlotName);
-			}
-
-			pushedSlots.push(adSlotName);
-			adWrapper.id = adSlotName;
-
-			context.push('state.adStack', { id: adSlotName });
+		domSlotsElements.forEach((slot) => {
+			utils.logger(logGroup, 'Reinjecting stale slot', slot.getAttribute('data-ad'));
+			communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
+				placementId: slot.getAttribute('data-ad'),
+			});
 		});
 	}
 
-	private setupRepeatableSlot(slotName, slotNameBase = '') {
-		communicationService.onSlotEvent(
-			AdSlot.STATUS_SUCCESS,
-			() => this.injectNextSlot(slotName, slotNameBase),
-			slotName,
-			true,
-		);
-		communicationService.onSlotEvent(
-			AdSlot.STATUS_COLLAPSE,
-			() => this.injectNextSlot(slotName, slotNameBase),
-			slotName,
-			true,
-		);
-	}
-
-	private injectNextSlot(slotName, slotNameBase = '') {
-		const adSlot = slotService.get(slotName);
-		const nextIndex = adSlot.getConfigProperty('repeat.index') + 1;
-		const nextSlotName = `${slotNameBase || slotName}-${nextIndex}`;
-		const nextSlotPlace = document.querySelector(
-			`.c-adDisplay_container > div[data-ad="${slotNameBase || slotName}"]:not(.gpt-ad)`,
-		);
-
-		if (!nextSlotPlace) {
-			return;
-		}
-
-		this.setupRepeatableSlot(nextSlotName, slotNameBase || slotName);
-		nextSlotPlace.id = nextSlotName;
-		context.push('state.adStack', { id: nextSlotName });
-	}
-
-	private isSlotDefinedInContext(slotName: string): boolean {
+	private isSlotApplicable(slotName: string): boolean {
 		return Object.keys(context.get('slots')).includes(slotName);
 	}
 
-	// TODO: This is temporary workaround. Change it for the proper event informing that ad placeholders
-	//  are ready to inject the ad slots (event should be ready after RV code freeze is over).
-	private adDivsReady(adPlaceholders) {
-		const firstPlaceholder = adPlaceholders[0];
-		const adDiv = firstPlaceholder.firstElementChild;
+	private getSlotConfig(slotName: string, baseSlotName = ''): SlotSetupDefinition {
+		const domSlotElement: HTMLElement =
+			document.getElementById(slotName) ||
+			document.querySelector(`div[data-ad="${baseSlotName || slotName}"]:not(.gpt-ad)`);
 
-		return !!adDiv;
+		if (!domSlotElement || !this.isSlotApplicable(slotName)) {
+			utils.logger(logGroup, 'Slot is not applicable or placement not exists', slotName);
+			return null;
+		}
+
+		const slotConfig: SlotSetupDefinition = {
+			slotCreatorConfig: {
+				slotName,
+				insertMethod: 'alter',
+				anchorSelector: '',
+				anchorElement: domSlotElement,
+				classList: ['hide', 'ad-slot'],
+			},
+			activator: () => {
+				context.push('state.adStack', { id: slotName });
+			},
+		};
+
+		if (!baseSlotName) {
+			context.set(`slots.${slotName}.bidderAlias`, slotName);
+
+			slotConfig.slotCreatorConfig.repeat = {
+				index: 1,
+				limit: 10,
+				slotNamePattern: `{slotConfig.bidderAlias}-{slotConfig.repeat.index}`,
+				updateProperties: {
+					adProduct: '{slotConfig.slotName}',
+					'targeting.pos': '{slotConfig.slotName}',
+				},
+				updateCreator: {
+					anchorElement: null,
+				},
+			};
+		}
+
+		return slotConfig;
 	}
 }

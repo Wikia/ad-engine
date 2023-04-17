@@ -1,7 +1,7 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { AdSlot, Dictionary } from '../models';
 import { config, slotService, SlotTargeting, targetingService, trackingOptIn } from '../services';
-import { targeting } from './targeting';
+import { isCoppaSubject } from './is-coppa-subject';
 
 export interface TaglessSlotOptions {
 	correlator: number;
@@ -24,7 +24,6 @@ export interface VastOptions {
 const availableVideoPositions: string[] = ['preroll', 'midroll', 'postroll'];
 const displayBaseUrl = 'https://securepubads.g.doubleclick.net/gampad/adx?';
 const vastBaseUrl = 'https://pubads.g.doubleclick.net/gampad/ads?';
-const correlator: number = Math.round(Math.random() * 10000000000);
 
 function getCustomParameters(slot: AdSlot, extraTargeting: Dictionary = {}): string {
 	const targetingData = targetingService.dump() || {};
@@ -71,6 +70,10 @@ function getVideoSizes(slot: AdSlot): string {
 	return '640x480';
 }
 
+function generateCorrelator(): number {
+	return Math.round(Math.random() * 10000000000);
+}
+
 export function buildVastUrl(
 	aspectRatio: number,
 	slotName: string,
@@ -84,7 +87,7 @@ export function buildVastUrl(
 		'unviewed_position_start=1',
 		`url=${encodeURIComponent(window.location.href)}`,
 		`description_url=${encodeURIComponent(window.location.href)}`,
-		`correlator=${correlator}`,
+		`correlator=${generateCorrelator()}`,
 	];
 	const slot: AdSlot = slotService.get(slotName);
 	const ppid = targetingService.get('ppid');
@@ -98,7 +101,7 @@ export function buildVastUrl(
 		params.push(`ppid=${ppid}`);
 	}
 
-	if (config.rollout.coppaFlag().gam && targeting.isWikiDirectedAtChildren()) {
+	if (config.rollout.coppaFlag().gam && isCoppaSubject()) {
 		params.push('tfcd=1');
 	}
 
@@ -137,7 +140,7 @@ export function buildVastUrl(
 export function buildTaglessRequestUrl(options: Partial<TaglessSlotOptions> = {}): string {
 	const ppid = targetingService.get('ppid');
 	const over18 = targetingService.get('over18');
-	const params: string[] = [`c=${correlator}`, 'tile=1', 'd_imp=1'];
+	const params: string[] = [`c=${generateCorrelator()}`, 'tile=1', 'd_imp=1'];
 
 	params.push(`iu=${options.adUnit}`);
 	params.push(`sz=${options.size}`);
@@ -150,7 +153,7 @@ export function buildTaglessRequestUrl(options: Partial<TaglessSlotOptions> = {}
 		params.push(`ppid=${ppid}`);
 	}
 
-	if (config.rollout.coppaFlag().gam && targeting.isWikiDirectedAtChildren()) {
+	if (config.rollout.coppaFlag().gam && isCoppaSubject()) {
 		params.push('tfcd=1');
 	}
 

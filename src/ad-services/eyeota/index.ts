@@ -17,6 +17,9 @@ export function parseContextTags(tags: TaxonomyTags): string {
 }
 
 export class Eyeota extends BaseServiceSetup {
+	constructor(props) {
+		super(props);
+	}
 	async call(): Promise<void> {
 		if (!this.isEnabled('icEyeota')) {
 			utils.logger(logGroup, 'disabled');
@@ -49,8 +52,8 @@ export class Eyeota extends BaseServiceSetup {
 
 		let contextTags = '';
 		if (window.fandomContext?.site?.tags) {
-			const { gnre, pform, pub, tv } = window.fandomContext.site.tags;
-			contextTags = parseContextTags({ gnre, pform, pub, tv });
+			const { gnre, media, pform, pub, theme, tv } = window.fandomContext.site.tags;
+			contextTags = parseContextTags({ gnre, media, pform, pub, theme, tv });
 		}
 
 		if (tcfData.gdprApplies) {

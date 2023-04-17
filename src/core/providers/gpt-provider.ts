@@ -1,7 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { decorate } from 'core-decorators';
 import { getAdStack } from '../ad-engine';
-import { utils } from '../index';
 import { AdSlot, Dictionary } from '../models';
 import {
 	btfBlockerService,
@@ -14,6 +13,7 @@ import {
 	trackingOptIn,
 } from '../services';
 import { defer, logger } from '../utils';
+import { isCoppaSubject } from '../utils/is-coppa-subject';
 import { GptSizeMap } from './gpt-size-map';
 import { setupGptTargeting } from './gpt-targeting';
 import { Provider } from './provider';
@@ -93,7 +93,7 @@ function configure(): void {
 		function (event: googletag.events.SlotVisibilityChangedEvent) {
 			const adSlot = getAdSlotFromEvent(event);
 
-			return adSlot.emit(AdSlot.SLOT_VISIBILITY_CHANGED, event);
+			return adSlot?.emit(AdSlot.SLOT_VISIBILITY_CHANGED, event);
 		},
 	);
 
@@ -103,7 +103,7 @@ function configure(): void {
 			const adSlot = getAdSlotFromEvent(event);
 
 			if (event.inViewPercentage > 50) {
-				return adSlot.emit(AdSlot.SLOT_BACK_TO_VIEWPORT, event);
+				return adSlot?.emit(AdSlot.SLOT_BACK_TO_VIEWPORT, event);
 			}
 		},
 	);
@@ -114,7 +114,7 @@ function configure(): void {
 			const adSlot = getAdSlotFromEvent(event);
 
 			if (event.inViewPercentage < 50) {
-				return adSlot.emit(AdSlot.SLOT_LEFT_VIEWPORT, event);
+				return adSlot?.emit(AdSlot.SLOT_LEFT_VIEWPORT, event);
 			}
 		},
 	);
@@ -200,8 +200,9 @@ export class GptProvider implements Provider {
 			() => this.updateCorrelator(),
 			false,
 		);
-		communicationService.onSlotEvent(AdSlot.DESTROYED_EVENT, ({ slot }) => {
+		communicationService.onSlotEvent(AdSlot.DESTROY_EVENT, ({ slot }) => {
 			this.destroySlot(slot.getSlotName());
+			slot.emit(AdSlot.DESTROYED_EVENT);
 		});
 		initialized = true;
 	}
@@ -212,7 +213,7 @@ export class GptProvider implements Provider {
 			restrictDataProcessing: trackingOptIn.isOptOutSale(),
 		};
 
-		if (config.rollout.coppaFlag().gam && utils.targeting.isWikiDirectedAtChildren()) {
+		if (config.rollout.coppaFlag().gam && isCoppaSubject()) {
 			settings.childDirectedTreatment = true;
 		}
 

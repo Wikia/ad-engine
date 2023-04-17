@@ -12,7 +12,7 @@ export class SportsDynamicSlotsSetup implements DiProcess {
 	execute(): void {
 		this.configureUap();
 
-		const slotsIdsToInsert = context.get('state.isMobile') ? [1, 2, 3, 6] : [1, 2, 3, 4, 6];
+		const slotsIdsToInsert = [1, 2, 3, 4, 6];
 		const slotsToInsert = slotsIdsToInsert.map((id) =>
 			this.slotsDefinitionRepository.getCdmZoneConfig(id, id === 4),
 		);

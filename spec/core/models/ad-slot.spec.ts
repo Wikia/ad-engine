@@ -1,6 +1,6 @@
 import { communicationService, eventsRepository } from '@wikia/communication';
 import { AdSlot, context, Dictionary, TargetingService, targetingService } from '@wikia/core';
-import { assert, expect } from 'chai';
+import { expect } from 'chai';
 import { SinonSpy, SinonStubbedInstance } from 'sinon';
 import { configMock } from '../config-mock';
 
@@ -53,9 +53,9 @@ describe('ad-slot', () => {
 
 	it('with other ad unit', () => {
 		context.set('custom.pageType', 'other');
-		const adSlot = createAdSlot('invisible_high_impact_2');
+		const adSlot = createAdSlot('floor_adhesion');
 
-		expect(adSlot.getAdUnit()).to.equal('/5441/something/_other/invisible_high_impact_2');
+		expect(adSlot.getAdUnit()).to.equal('/5441/something/_other/floor_adhesion');
 	});
 
 	it('config property getter and setter', () => {
@@ -177,64 +177,6 @@ describe('ad-slot', () => {
 			adSlot.getElement = () => null;
 
 			expect(adSlot.getTopOffset()).to.equal(null);
-		});
-	});
-
-	describe('getSlotsToPushAfterCreated', () => {
-		let adSlot: AdSlot;
-
-		beforeEach(() => {
-			adSlot = createAdSlot('top_leaderboard');
-		});
-
-		afterEach(() => {
-			context.remove('events.pushAfterCreated');
-		});
-
-		it('should return an empty array if slots are not defined', () => {
-			context.remove('events.pushAfterCreated');
-
-			const result = adSlot.getSlotsToPushAfterCreated();
-
-			assert.deepEqual(result, []);
-		});
-
-		it('should return slots defined in context at events.pushAfterCreated.top_leaderboard', () => {
-			const expectedValue = ['foo', 'bar'];
-			context.set('events.pushAfterCreated.top_leaderboard', ['foo', 'bar']);
-
-			const result = adSlot.getSlotsToPushAfterCreated();
-
-			assert.deepEqual(result, expectedValue);
-		});
-	});
-
-	describe('getSlotsToInjectAfterRendered', () => {
-		let adSlot: AdSlot;
-
-		beforeEach(() => {
-			adSlot = createAdSlot('top_leaderboard');
-		});
-
-		afterEach(() => {
-			context.remove('events.pushAfterRendered');
-		});
-
-		it('should return an empty array if slots are not defined', () => {
-			context.remove('events.pushAfterRendered');
-
-			const result = adSlot.getSlotsToInjectAfterRendered();
-
-			assert.deepEqual(result, []);
-		});
-
-		it('should return slots defined in context at events.pushAfterRendered.top_leaderboard', () => {
-			const expectedValue = ['foo', 'bar'];
-			context.set('events.pushAfterRendered.top_leaderboard', ['foo', 'bar']);
-
-			const result = adSlot.getSlotsToInjectAfterRendered();
-
-			assert.deepEqual(result, expectedValue);
 		});
 	});
 

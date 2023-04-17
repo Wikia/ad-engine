@@ -26,11 +26,14 @@ export class BfaaUcpMobileConfigHandler implements TemplateStateHandler {
 				(slotName) => !enabledSlots.includes(slotName),
 			),
 		);
-		context.set('slots.incontent_boxad_1.repeat', null);
 
 		slotsContext.setSlotSize(
 			'bottom_leaderboard',
 			universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile,
+		);
+		slotsContext.addSlotSize(
+			'bottom_leaderboard',
+			universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.unified,
 		);
 	}
 }

@@ -1,5 +1,5 @@
 import { communicationService } from '@ad-engine/communication';
-import { AdSlot, context } from '@ad-engine/core';
+import { AdSlot } from '@ad-engine/core';
 import { BaseTracker, BaseTrackerInterface } from './base-tracker';
 import { viewabilityPropertiesTrackingCompiler, viewabilityTrackingCompiler } from './compilers';
 
@@ -7,7 +7,7 @@ class ViewabilityTracker extends BaseTracker implements BaseTrackerInterface {
 	compilers = [viewabilityTrackingCompiler, viewabilityPropertiesTrackingCompiler];
 
 	isEnabled(): boolean {
-		return context.get('options.tracking.slot.viewability');
+		return true;
 	}
 
 	register(callback): void {

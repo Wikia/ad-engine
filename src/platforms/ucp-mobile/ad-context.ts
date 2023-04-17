@@ -34,9 +34,6 @@ export const basicContext = {
 		pushOnScroll: {
 			ids: [],
 		},
-		pushAfterRendered: {
-			top_boxad: [],
-		},
 	},
 	slots: {},
 	vast: {
@@ -56,10 +53,8 @@ export const basicContext = {
 			'/{custom.dbNameForAdUnit}-{targeting.s0}',
 	},
 	templates: {
-		safeFanTakeoverElement: {
-			boxadSlotNames: ['top_boxad', 'mobile_prefooter'],
-			boxadSize: [300, 251],
-		},
+		incontentAnchorSelector:
+			'.mw-parser-output > h2,.mw-parser-output > section > h3,.mw-parser-output > section > h4,.mw-parser-output > section > h5',
 	},
 	services: {
 		anyclip: {
@@ -104,13 +99,6 @@ export const basicContext = {
 			globalMethodName: 'loadCustomAd',
 		},
 		video: {
-			moatTracking: {
-				articleVideosPartnerCode: 'wikiajwint101173217941',
-				enabled: false,
-				jwplayerPluginUrl: 'https://z.moatads.com/jwplayerplugin0938452/moatplugin.js',
-				partnerCode: 'wikiaimajsint377461931603',
-				sampling: 0,
-			},
 			iasTracking: {
 				enabled: false,
 				config: {
