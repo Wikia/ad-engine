@@ -5,7 +5,9 @@ interface Window {
 	AdEngine_adType?: ManualAdType;
 	ads?: MediaWikiAds;
 	adsQueue?: any;
-	PWT: { jsLoaded: () => void };
+	// TODO: Remove after ADEN-13043 release & data confirmation
+	PWT?: { jsLoaded: () => void };
+	IHPWT?: { jsLoaded: () => void };
 	apstag?: Apstag;
 	au?: any;
 	au_seg?: any;

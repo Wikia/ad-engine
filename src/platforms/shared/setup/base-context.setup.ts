@@ -173,6 +173,8 @@ export class BaseContextSetup implements DiProcess {
 			this.instantConfig.get('icPrebidDisableSendAllBids'),
 		);
 		context.set('bidders.identityHub.enabled', this.instantConfig.get('icPubmaticIdentityHub'));
+		// TODO: Remove after ADEN-13043 release & data confirmation
+		context.set('bidders.identityHubV2.enabled', this.instantConfig.get('icIdentityHubV2'));
 		context.set('bidders.liveRampId.enabled', this.instantConfig.get('icLiveRampId'));
 		context.set('bidders.liveRampATS.enabled', this.instantConfig.get('icLiveRampATS'));
 		context.set(
