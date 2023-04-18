@@ -15,7 +15,7 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.PARAMS) private params: UapParams) {}
 
 	async onEnter(): Promise<void> {
-		const enabledSlots: string[] = ['top_boxad', 'incontent_boxad_1', 'bottom_leaderboard'];
+		const enabledSlots: string[] = ['top_boxad', 'incontent_boxad_1', 'bottom_leaderboard', 'floor_adhesion'];
 
 		if (this.params.newTakeoverConfig) {
 			communicationService.emit(eventsRepository.AD_ENGINE_UAP_NTC_LOADED);
