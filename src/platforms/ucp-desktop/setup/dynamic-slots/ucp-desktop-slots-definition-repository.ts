@@ -69,15 +69,18 @@ export class UcpDesktopSlotsDefinitionRepository {
 		}
 
 		const slotName = 'incontent_leaderboard';
+		const anchorSelector = this.isIncontentPlayerApplicable()
+			? context.get('templates.incontentAnchorSelector').replace(/h([2-5])/gi, 'h$1:nth-of-type(2)')
+			: context.get('templates.incontentAnchorSelector');
 		const slotConfig: SlotSetupDefinition = {
 			slotCreatorConfig: {
 				slotName,
 				placeholderConfig: {
 					createLabel: true,
 				},
-				anchorSelector: context.get('templates.incontentAnchorSelector'),
+				anchorSelector,
 				anchorPosition: 'belowFirstViewport',
-				avoidConflictWith: ['.ad-slot-icl', '#incontent_player'],
+				avoidConflictWith: ['.ad-slot-icl'],
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot', 'ad-slot-icl'],
 			},
@@ -103,6 +106,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 				},
 				updateCreator: {
 					anchorSelector: '.incontent-leaderboard',
+					avoidConflictWith: ['.ad-slot-icl', '#incontent_player'],
 					insertMethod: 'append',
 					placeholderConfig: {
 						createLabel: false,
