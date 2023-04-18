@@ -21,6 +21,7 @@ import {
 	PartnerPipeline,
 	PrebidNativeProvider,
 	Stroer,
+	System1,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -47,6 +48,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 		private stroer: Stroer,
 		private wadRunner: WadRunner,
 		private identitySetup: IdentitySetup,
+		private system1: System1,
 	) {}
 
 	execute(): void {
@@ -69,6 +71,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 				this.nielsen,
 				this.prebidNativeProvider,
 				this.identitySetup,
+				this.system1,
 				this.playerSetup.setOptions({
 					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
 				}),

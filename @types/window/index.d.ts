@@ -37,6 +37,7 @@ interface Window {
 	pvNumberGlobal?: number;
 	pvUID?: string;
 	RLQ?: any;
+	s1search?: any;
 	sessionId?: string;
 	session_id?: string;
 	Sailthru?: Sailthru;
