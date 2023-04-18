@@ -3,6 +3,8 @@ import {
 	bootstrapAndGetConsent,
 	InstantConfigSetup,
 	LoadTimesSetup,
+	MetricReporter,
+	MetricReporterSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
@@ -37,6 +39,8 @@ export class GamefaqsPlatform {
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
 			TrackingParametersSetup,
+			MetricReporterSetup,
+			MetricReporter,
 			LoadTimesSetup,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
