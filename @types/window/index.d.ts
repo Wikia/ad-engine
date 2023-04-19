@@ -36,6 +36,10 @@ interface Window {
 	pvNumber?: number;
 	pvNumberGlobal?: number;
 	pvUID?: string;
+	PQ?: {
+		cmd: any[];
+		loadSignals?: (signals: string[]) => void;
+	};
 	RLQ?: any;
 	sessionId?: string;
 	session_id?: string;
