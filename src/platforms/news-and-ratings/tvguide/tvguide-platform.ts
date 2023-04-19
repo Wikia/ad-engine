@@ -6,14 +6,7 @@ import {
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
-import {
-	communicationService,
-	context,
-	eventsRepository,
-	ProcessPipeline,
-	targetingService,
-	utils,
-} from '@wikia/ad-engine';
+import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
 import { Container, Injectable } from '@wikia/dependency-injection';
 
 import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
@@ -24,18 +17,19 @@ import {
 	NewsAndRatingsTargetingSetup,
 	NewsAndRatingsWadSetup,
 } from '../shared';
+import { NewsAndRatingsDynamicSlotsEventsSetup } from '../shared/setup/dynamic-slots/news-and-ratings-dynamic-slots-events.setup';
+import { NewsAndRatingsSpaHelper } from '../shared/setup/dynamic-slots/news-and-ratings-spa-helper';
 import { basicContext } from './ad-context';
 import { TvGuideNextPageAdsMode } from './modes/tvguide-next-page-ads.mode';
 import { TvGuideA9ConfigSetup } from './setup/context/a9/tvguide-a9-config.setup';
 import { TvGuidePrebidConfigSetup } from './setup/context/prebid/tvguide-prebid-config.setup';
 import { TvGuideSlotsContextSetup } from './setup/context/slots/tvguide-slots-context.setup';
 import { TvGuideTargetingSetup } from './setup/context/targeting/tvguide-targeting.setup';
-import { TvGuideDynamicSlotsSetup } from './setup/dynamic-slots/tvguide-dynamic-slots.setup';
 import { TvGuideTemplatesSetup } from './templates/tvguide-templates.setup';
 
 @Injectable()
 export class TvGuidePlatform {
-	constructor(private pipeline: ProcessPipeline) {}
+	constructor(private pipeline: ProcessPipeline, private spaWatchers: NewsAndRatingsSpaHelper) {}
 
 	execute(container: Container): void {
 		this.pipeline.add(
@@ -52,7 +46,7 @@ export class TvGuidePlatform {
 			NewsAndRatingsTargetingSetup,
 			TvGuideSlotsContextSetup,
 			SlotsConfigurationExtender,
-			TvGuideDynamicSlotsSetup,
+			NewsAndRatingsDynamicSlotsEventsSetup,
 			TvGuidePrebidConfigSetup,
 			TvGuideA9ConfigSetup,
 			BiddersStateSetup,
@@ -67,54 +61,21 @@ export class TvGuidePlatform {
 	}
 
 	private setupSinglePageAppWatchers(container: Container) {
-		let firstPageview = true;
-
-		communicationService.on(
-			eventsRepository.PLATFORM_PAGE_CHANGED,
-			() => {
-				if (firstPageview) {
-					firstPageview = false;
-					return;
-				}
-
-				utils.logger('SPA', 'url changed', location.href);
-
-				targetingService.clear();
-
-				const refreshPipeline = new ProcessPipeline(container);
-				refreshPipeline
-					.add(
-						() => utils.logger('SPA', 'starting pipeline refresh'),
-						NewsAndRatingsBaseContextSetup,
-						TvGuideTargetingSetup,
-						NewsAndRatingsTargetingSetup,
-						TvGuideSlotsContextSetup,
-						TvGuideNextPageAdsMode,
-					)
-					.execute();
-			},
-			false,
+		this.spaWatchers.setupPageChangedWatcher(
+			container,
+			NewsAndRatingsBaseContextSetup,
+			TvGuideTargetingSetup,
+			NewsAndRatingsTargetingSetup,
+			TvGuideSlotsContextSetup,
+			TvGuideNextPageAdsMode,
 		);
 
-		communicationService.on(
-			eventsRepository.PLATFORM_PAGE_EXTENDED,
-			() => {
-				utils.logger('SPA', 'page extended', location.href);
-
-				targetingService.clear();
-
-				const refreshPipeline = new ProcessPipeline(container);
-				refreshPipeline
-					.add(
-						() => utils.logger('SPA', 'starting pipeline refresh'),
-						NewsAndRatingsBaseContextSetup,
-						TvGuideTargetingSetup,
-						NewsAndRatingsTargetingSetup,
-						TvGuideNextPageAdsMode,
-					)
-					.execute();
-			},
-			false,
+		this.spaWatchers.setupPageExtendedWatcher(
+			container,
+			NewsAndRatingsBaseContextSetup,
+			TvGuideTargetingSetup,
+			NewsAndRatingsTargetingSetup,
+			TvGuideNextPageAdsMode,
 		);
 	}
 }

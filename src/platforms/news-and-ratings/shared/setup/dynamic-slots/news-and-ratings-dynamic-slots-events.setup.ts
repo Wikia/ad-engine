@@ -11,7 +11,7 @@ import {
 
 const logGroup = 'dynamic-slots';
 
-export class TvGuideDynamicSlotsSetup implements DiProcess {
+export class NewsAndRatingsDynamicSlotsEventsSetup implements DiProcess {
 	private repeatedSlotsCounter: Dictionary<number> = {};
 	private repeatedSlotsRendered: string[] = [];
 	private repeatedSlotsQueue: Dictionary<[string, string]> = {};
