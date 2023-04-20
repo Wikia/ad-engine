@@ -3,6 +3,7 @@ export * from './client';
 export * from './decorate';
 export * from './dimensions';
 export * from './document';
+export * from './fetch-timeout';
 export * from './flow-control';
 export * from './generate-unique-id';
 export * from './geo';
