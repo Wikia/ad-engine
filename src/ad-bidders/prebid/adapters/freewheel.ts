@@ -29,6 +29,9 @@ export class Freewheel extends PrebidAdapter {
 					params: {
 						format: 'instream',
 						zoneId,
+						vastUrlParams: {
+							protocolVersion: '4.2',
+						},
 					},
 				},
 			],

@@ -68,7 +68,7 @@ export class A9Provider extends BidderProvider {
 	public static isEnabled(): boolean {
 		const enabled = context.get('bidders.a9.enabled');
 		const coppaA9 = context.get('bidders.coppaA9');
-		return enabled && (coppaA9 ? !context.get('wiki.targeting.directedAtChildren') : true);
+		return enabled && (coppaA9 ? !utils.isCoppaSubject() : true);
 	}
 
 	private loaded = false;

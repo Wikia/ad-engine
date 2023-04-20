@@ -87,7 +87,7 @@ export class PrebidProvider extends BidderProvider {
 			},
 		};
 
-		if (config.rollout.coppaFlag().prebid && utils.targeting.isWikiDirectedAtChildren()) {
+		if (config.rollout.coppaFlag().prebid && utils.isCoppaSubject()) {
 			this.prebidConfig.coppa = true;
 		}
 
