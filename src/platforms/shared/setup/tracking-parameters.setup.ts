@@ -32,14 +32,14 @@ export class TrackingParametersSetup implements DiProcess {
 			if (trackingUrlConfig.allowed.sampling) {
 				context.set(
 					`services.dw-tracker-${dwTrackServiceLowercase}.threshold`,
-					this.instantConfig.get(`dwTrafficLimits`)[trackingUrlConfig.icbmName]?.sample,
+					this.instantConfig.get(`dwTrafficLimits`, {})[trackingUrlConfig.icbmName]?.sample,
 				);
 			}
 
 			context.set(
 				`services.dw-tracker-${dwTrackServiceLowercase}.aggregate`,
 				trackingUrlConfig.allowed.aggregation
-					? this.instantConfig.get(`dwTrafficLimits`)[trackingUrlConfig.icbmName]?.agg
+					? this.instantConfig.get(`dwTrafficLimits`, {})[trackingUrlConfig.icbmName]?.agg
 					: false,
 			);
 		});
