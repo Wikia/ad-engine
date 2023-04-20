@@ -55,7 +55,13 @@ export class MetricReporter {
 			queryParams.push(`${k}=${encodeURIComponent(v)}`);
 		});
 
-		utils.fetchTimeout(`${endpointUrl}?app=${endpointInfo.appName}&${queryParams.join('&')}`);
+		utils.fetchTimeout(
+			`${endpointUrl}?app=${endpointInfo.appName}&${queryParams.join('&')}`,
+			2000,
+			{
+				mode: 'no-cors',
+			},
+		);
 	}
 
 	private isMetricSlotData(item: any): item is MetricReporterSenderSlotData {
