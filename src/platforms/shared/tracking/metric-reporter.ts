@@ -8,7 +8,7 @@ interface EndpointInfo {
 }
 
 export interface MetricReporterSenderSlotData {
-	slotName: string;
+	slot: string;
 	state: string;
 }
 
@@ -59,7 +59,7 @@ export class MetricReporter {
 	}
 
 	private isMetricSlotData(item: any): item is MetricReporterSenderSlotData {
-		return item.slotName && item.state;
+		return item.slot && item.state;
 	}
 	private isMetricTimeData(item: any): item is MetricReporterSenderTimeData {
 		return item.action && item.duration;
@@ -75,7 +75,7 @@ export class MetricReporter {
 	private trackGamSlotRequest(): void {
 		communicationService.onSlotEvent(AdSlot.SLOT_REQUESTED_EVENT, ({ slot }) => {
 			this.sendToMeteringSystem({
-				slotName: slot.getSlotName(),
+				slot: slot.getSlotName(),
 				state: 'request',
 			});
 		});
@@ -84,7 +84,7 @@ export class MetricReporter {
 	private trackGamSlotRendered(): void {
 		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot }) => {
 			this.sendToMeteringSystem({
-				slotName: slot.getSlotName(),
+				slot: slot.getSlotName(),
 				state: 'render',
 			});
 		});
