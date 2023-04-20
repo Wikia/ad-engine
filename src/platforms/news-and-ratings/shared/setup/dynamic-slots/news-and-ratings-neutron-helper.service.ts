@@ -10,7 +10,7 @@ import { Container, Injectable } from '@wikia/dependency-injection';
 const logGroup = 'SPA';
 
 @Injectable()
-export class NewsAndRatingsSpaHelper {
+export class NewsAndRatingsNeutronHelper {
 	private firstPageview = true;
 
 	setupPageExtendedWatcher(container: Container, ...steps: any[]) {

@@ -5,22 +5,21 @@ import {
 	LoadTimesSetup,
 	MetricReporter,
 	MetricReporterSetup,
+	SlotsConfigurationExtender,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
 import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
 import { Container, Injectable } from '@wikia/dependency-injection';
-
-import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
 import {
 	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
+	NewsAndRatingsDynamicSlotsNeutronSetup,
+	NewsAndRatingsNeutronHelper,
 	NewsAndRatingsTargetingSetup,
 	NewsAndRatingsWadSetup,
 } from '../shared';
-import { NewsAndRatingsDynamicSlotsEventsSetup } from '../shared/setup/dynamic-slots/news-and-ratings-dynamic-slots-events.setup';
-import { NewsAndRatingsSpaHelper } from '../shared/setup/dynamic-slots/news-and-ratings-spa-helper';
 import { basicContext } from './ad-context';
 import { TvGuideNextPageAdsMode } from './modes/tvguide-next-page-ads.mode';
 import { TvGuideA9ConfigSetup } from './setup/context/a9/tvguide-a9-config.setup';
@@ -31,7 +30,10 @@ import { TvGuideTemplatesSetup } from './templates/tvguide-templates.setup';
 
 @Injectable()
 export class TvGuidePlatform {
-	constructor(private pipeline: ProcessPipeline, private spaWatchers: NewsAndRatingsSpaHelper) {}
+	constructor(
+		private pipeline: ProcessPipeline,
+		private spaWatchers: NewsAndRatingsNeutronHelper,
+	) {}
 
 	execute(container: Container): void {
 		this.pipeline.add(
@@ -50,7 +52,7 @@ export class TvGuidePlatform {
 			NewsAndRatingsTargetingSetup,
 			TvGuideSlotsContextSetup,
 			SlotsConfigurationExtender,
-			NewsAndRatingsDynamicSlotsEventsSetup,
+			NewsAndRatingsDynamicSlotsNeutronSetup,
 			TvGuidePrebidConfigSetup,
 			TvGuideA9ConfigSetup,
 			BiddersStateSetup,

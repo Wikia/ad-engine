@@ -7,21 +7,20 @@ import {
 	LoadTimesSetup,
 	MetricReporter,
 	MetricReporterSetup,
+	SlotsConfigurationExtender,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
 import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
-
-import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
 import {
 	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
+	NewsAndRatingsDynamicSlotsNeutronSetup,
+	NewsAndRatingsNeutronHelper,
 	NewsAndRatingsTargetingSetup,
 	NewsAndRatingsWadSetup,
 } from '../shared';
-import { NewsAndRatingsDynamicSlotsEventsSetup } from '../shared/setup/dynamic-slots/news-and-ratings-dynamic-slots-events.setup';
-import { NewsAndRatingsSpaHelper } from '../shared/setup/dynamic-slots/news-and-ratings-spa-helper';
 import { basicContext } from './ad-context';
 import { MetacriticNeutronNextPageAdsMode } from './modes/metacritic-neutron-next-page-ads.mode';
 import { MetacriticNeutronA9ConfigSetup } from './setup/context/a9/metacritic-neutron-a9-config.setup';
@@ -33,7 +32,10 @@ import { MetacriticNeutronTemplatesSetup } from './templates/metacritic-neutron-
 
 @Injectable()
 export class MetacriticNeutronPlatform {
-	constructor(private pipeline: ProcessPipeline, private spaWatchers: NewsAndRatingsSpaHelper) {}
+	constructor(
+		private pipeline: ProcessPipeline,
+		private spaWatchers: NewsAndRatingsNeutronHelper,
+	) {}
 
 	execute(container: Container): void {
 		this.pipeline.add(
@@ -52,7 +54,7 @@ export class MetacriticNeutronPlatform {
 			MetacriticNeutronTargetingSetup,
 			MetacriticNeutronSlotsContextSetup,
 			SlotsConfigurationExtender,
-			NewsAndRatingsDynamicSlotsEventsSetup,
+			NewsAndRatingsDynamicSlotsNeutronSetup,
 			MetacriticNeutronPrebidConfigSetup,
 			MetacriticNeutronA9ConfigSetup,
 			BiddersStateSetup,
