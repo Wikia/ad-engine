@@ -11,10 +11,10 @@ class OutboundTrafficRestrict {
 			return isAllowedFromContext;
 		}
 
-		const serviceThresholdName = `services.${serviceName}.threshold`;
+		const thresholdFromContext = context.get(`services.${serviceName}.threshold`);
 		const threshold =
-			context.get(serviceThresholdName) >= 0 && context.get(serviceThresholdName) <= 100
-				? context.get(serviceThresholdName)
+			thresholdFromContext >= 0 && thresholdFromContext <= 100
+				? thresholdFromContext
 				: this.ALWAYS_ALLOWED_THRESHOLD;
 
 		let isAllowed = true;
