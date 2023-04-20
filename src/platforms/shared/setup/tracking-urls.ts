@@ -93,7 +93,7 @@ export const trackingUrls: Dictionary<TrackingUrl> = {
 		url: 'https://beacon.wikia-services.com/__track/special/identityinfo',
 		allowed: {
 			sampling: false,
-			aggregation: true,
+			aggregation: false,
 		},
 	},
 	TRACKING_EVENT: {
