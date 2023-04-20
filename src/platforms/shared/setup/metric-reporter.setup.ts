@@ -6,8 +6,9 @@ export class MetricReporterSetup implements DiProcess {
 	constructor(private instantConfig: InstantConfigService) {}
 
 	async execute() {
-		context.set('services.monitoring.endpoint', utils.getServicesBaseURL().slice(0, -1));
-		context.set('services.monitoring.service', 'icbm');
+		const serviceUrl = utils.getServicesBaseURL() || '';
+		context.set('services.monitoring.endpoint', serviceUrl.replace(/\/+$/, ''));
+		context.set('services.monitoring.service', 'adeng');
 		context.set(
 			'services.monitoring.threshold',
 			this.instantConfig.get('icMonitorTrafficThreshold'),
