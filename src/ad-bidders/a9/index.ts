@@ -161,7 +161,7 @@ export class A9Provider extends BidderProvider {
 			deals: true,
 			...A9Provider.getCcpaIfApplicable(signalData),
 			signals: {
-				ortb2: targetingService.get('openrtb2'),
+				ortb2: targetingService.get('openrtb2', 'openrtb2'),
 			},
 		};
 	}
