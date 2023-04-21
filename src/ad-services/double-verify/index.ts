@@ -1,7 +1,8 @@
-import { BaseServiceSetup, utils } from '@ad-engine/core';
+import { BaseServiceSetup, targetingService, utils } from '@ad-engine/core';
 
 const logGroup = 'double-verify';
-const scriptUrl = '//pub.doubleverify.com/signals/pub.js#ctx=28150781&cmp=DV993185';
+const scriptUrl =
+	'//pub.doubleverify.com/signals/pub.js?ctx=28150781&cmp=DV1001654&signals=ids,bsc';
 
 export class DoubleVerify extends BaseServiceSetup {
 	call(): Promise<void> {
@@ -16,15 +17,27 @@ export class DoubleVerify extends BaseServiceSetup {
 
 		utils.logger(logGroup, 'loading', scriptUrl);
 
-		return utils.scriptLoader.loadScript(scriptUrl).then(() => {
-			utils.logger(logGroup, 'ready');
-		});
+		return utils.scriptLoader
+			.loadScript(scriptUrl, 'text/javascript', true, null, {
+				referrerpolicy: 'no-referrer-when-downgrade',
+			})
+			.then(() => {
+				utils.logger(logGroup, 'ready');
+			});
 	}
 
 	private setupSignalsLoad() {
 		window.PQ.cmd.push(() => {
 			utils.logger(logGroup, 'getting signals');
-			window.PQ?.loadSignals(['ids', 'bsc', 'vlp', 'tvp']);
+			window.PQ?.getTargeting({ signals: ['ids', 'bsc'] }, (error, targetingData) => {
+				if (error) {
+					return;
+				}
+
+				utils.logger(logGroup, 'setting targeting', targetingData);
+				targetingService.set('ids', targetingData['IDS']);
+				targetingService.set('bsc', targetingData['BSC']);
+			});
 		});
 	}
 }
