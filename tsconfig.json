@@ -16,6 +16,7 @@
 		"module": "ESNext",
 		"moduleResolution": "node",
 		"target": "es6",
+		"importHelpers": true,
 		"lib": ["ESNext", "dom"],
 		"outDir": "dist",
 		"typeRoots": ["node_modules/@types", "node_modules/@alugha/ima", "@types"],
