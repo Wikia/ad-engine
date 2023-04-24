@@ -41,7 +41,7 @@ class ConditionalProcess<T> implements CompoundProcess<ConditionalProcessPayload
 	}
 
 	private isDiCondition(step: Condition): step is Type<DiCondition> {
-		return typeof step.prototype.execute === 'function';
+		return typeof step.prototype?.execute === 'function';
 	}
 }
 
