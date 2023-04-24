@@ -1,5 +1,5 @@
 import { communicationService } from '@ad-engine/communication';
-import { AdSlot, context, utils } from '@ad-engine/core';
+import { AdSlot, AdSlotEvent, context, utils } from '@ad-engine/core';
 import { PorvataSettings } from './porvata-settings';
 
 export class GoogleImaWrapper {
@@ -12,10 +12,10 @@ export class GoogleImaWrapper {
 
 		if (slot) {
 			communicationService.onSlotEvent(
-				AdSlot.DESTROY_EVENT,
+				AdSlotEvent.DESTROY_EVENT,
 				() => {
 					adDisplayContainer.destroy();
-					slot.emit(AdSlot.DESTROYED_EVENT);
+					slot.emit(AdSlotEvent.DESTROYED_EVENT);
 				},
 				slot.getSlotName(),
 			);

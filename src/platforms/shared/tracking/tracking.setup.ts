@@ -21,16 +21,10 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { props } from 'ts-action';
+import { trackingUrls } from '../setup/tracking-urls';
 import { AdSizeTracker } from './ad-size-tracker';
 import { DataWarehouseTracker } from './data-warehouse';
 import { LabradorTracker } from './labrador-tracker';
-
-const bidderTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengbidders';
-const slotTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengadinfo';
-const viewabilityUrl = 'https://beacon.wikia-services.com/__track/special/adengviewability';
-const porvataUrl = 'https://beacon.wikia-services.com/__track/special/adengplayerinfo';
-const identityTrackingUrl = 'https://beacon.wikia-services.com/__track/special/identityinfo';
-const trackingKeyValsUrl = 'https://beacon.wikia-services.com/__track/special/keyvals';
 
 const adClickedAction = globalAction('[AdEngine] Ad clicked', props<Dictionary>());
 
@@ -62,7 +56,7 @@ export class TrackingSetup {
 		communicationService.on(
 			eventsRepository.VIDEO_PLAYER_TRACKING,
 			({ eventInfo }) => {
-				this.dwTracker.track(eventInfo, porvataUrl);
+				this.dwTracker.track(eventInfo, trackingUrls.AD_ENG_PLAYER_INFO);
 			},
 			false,
 		);
@@ -80,7 +74,7 @@ export class TrackingSetup {
 		slotTracker.onChangeStatusToTrack.push('top-conflict');
 		slotTracker.register(
 			({ data }: Dictionary) => {
-				this.dwTracker.track(data, slotTrackingUrl);
+				this.dwTracker.track(data, trackingUrls.AD_ENG_AD_INFO);
 			},
 			{ bidders: withBidders },
 		);
@@ -88,7 +82,7 @@ export class TrackingSetup {
 
 	private viewabilityTracker(): void {
 		viewabilityTracker.register(({ data }: Dictionary) => {
-			this.dwTracker.track(data, viewabilityUrl);
+			this.dwTracker.track(data, trackingUrls.AD_ENG_VIEWABILITY);
 
 			return data;
 		});
@@ -96,7 +90,7 @@ export class TrackingSetup {
 
 	private ctaTracker(): void {
 		ctaTracker.register(({ data }: Dictionary) => {
-			this.dwTracker.track(data, slotTrackingUrl);
+			this.dwTracker.track(data, trackingUrls.AD_ENG_AD_INFO);
 		});
 	}
 
@@ -104,7 +98,7 @@ export class TrackingSetup {
 		adClickTracker.register(({ data }: Dictionary) => {
 			// event listeners might be outside of AdEngine, f.e. in the SilverSurfer interactions module
 			communicationService.dispatch(adClickedAction(data));
-			this.dwTracker.track(data, slotTrackingUrl);
+			this.dwTracker.track(data, trackingUrls.AD_ENG_AD_INFO);
 		});
 	}
 
@@ -114,7 +108,7 @@ export class TrackingSetup {
 		}
 
 		bidderTracker.register(({ data }: Dictionary) => {
-			this.dwTracker.track(data, bidderTrackingUrl);
+			this.dwTracker.track(data, trackingUrls.AD_ENG_BIDDERS);
 		});
 	}
 
@@ -173,7 +167,7 @@ export class TrackingSetup {
 						partner_name: eventInfo.payload.partnerName,
 						partner_identity_id: eventInfo.payload.partnerIdentityId,
 					},
-					identityTrackingUrl,
+					trackingUrls.IDENTITY_INFO,
 				);
 			},
 			false,
@@ -190,7 +184,7 @@ export class TrackingSetup {
 			{
 				keyvals: JSON.stringify(keyVals),
 			},
-			trackingKeyValsUrl,
+			trackingUrls.KEY_VALS,
 		);
 	}
 }

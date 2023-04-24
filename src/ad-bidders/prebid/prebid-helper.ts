@@ -1,5 +1,4 @@
 import { context, Dictionary, pbjsFactory, slotService } from '@ad-engine/core';
-import { adaptersRegistry } from './adapters-registry';
 import { PrebidAdapterConfig } from './prebid-models';
 
 const uuidKey = 'hb_uuid';
@@ -15,31 +14,13 @@ function isUsedAsAlias(code): boolean {
 	});
 }
 
-function isSlotApplicable(code): boolean {
+export function isSlotApplicable(code): boolean {
 	// This can be simplified once we get rid of uppercase slot names
 	return context.get(`slots.${code}`) ? slotService.getState(code) : isUsedAsAlias(code);
 }
 
 function isValidPrice(bid: PrebidBidResponse): boolean {
 	return bid.getStatusCode && bid.getStatusCode() === validResponseStatusCode;
-}
-
-export function setupAdUnits(): PrebidAdUnit[] {
-	const adUnits: PrebidAdUnit[] = [];
-
-	adaptersRegistry.getAdapters().forEach((adapter) => {
-		if (adapter && adapter.enabled) {
-			const adapterAdUnits = adapter.prepareAdUnits();
-
-			adapterAdUnits.forEach((adUnit) => {
-				if (adUnit && isSlotApplicable(adUnit.code)) {
-					adUnits.push(adUnit);
-				}
-			});
-		}
-	});
-
-	return adUnits;
 }
 
 export async function getBidUUID(adUnitCode: string, adId: string): Promise<string> {

@@ -1,5 +1,6 @@
 import {
-	AdSlot,
+	AdSlotEvent,
+	AdSlotStatus,
 	communicationService,
 	context,
 	DiProcess,
@@ -62,20 +63,20 @@ export class MetacriticNeutronDynamicSlotsSetup implements DiProcess {
 	private setupRepeatableSlot(slotName, slotNameBase = '') {
 		const slotRepeater = new SlotRepeater();
 
-		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot }) => {
+		communicationService.onSlotEvent(AdSlotEvent.SLOT_RENDERED_EVENT, ({ slot }) => {
 			if (slot.isEnabled() && slot.getConfigProperty('repeat')) {
 				slotRepeater.repeatSlot(slot, slot.getConfigProperty('repeat'));
 			}
 		});
 
 		communicationService.onSlotEvent(
-			AdSlot.STATUS_SUCCESS,
+			AdSlotStatus.STATUS_SUCCESS,
 			() => this.injectNextSlot(slotName, slotNameBase),
 			slotName,
 			true,
 		);
 		communicationService.onSlotEvent(
-			AdSlot.STATUS_COLLAPSE,
+			AdSlotStatus.STATUS_COLLAPSE,
 			() => this.injectNextSlot(slotName, slotNameBase),
 			slotName,
 			true,
