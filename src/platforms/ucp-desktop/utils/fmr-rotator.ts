@@ -1,5 +1,7 @@
 import {
 	AdSlot,
+	AdSlotEvent,
+	AdSlotStatus,
 	communicationService,
 	context,
 	eventsRepository,
@@ -47,7 +49,7 @@ export class FmrRotator {
 						context.get('state.provider') === 'prebidium'
 					) {
 						communicationService.onSlotEvent(
-							AdSlot.STATUS_SUCCESS,
+							AdSlotStatus.STATUS_SUCCESS,
 							() => {
 								this.swapRecirculation(false);
 							},
@@ -59,12 +61,12 @@ export class FmrRotator {
 					}
 
 					communicationService.onSlotEvent(
-						AdSlot.STATUS_SUCCESS,
+						AdSlotStatus.STATUS_SUCCESS,
 						() => {
-							this.slotStatusChanged(AdSlot.STATUS_SUCCESS);
+							this.slotStatusChanged(AdSlotStatus.STATUS_SUCCESS);
 
 							communicationService.onSlotEvent(
-								AdSlot.SLOT_VIEWED_EVENT,
+								AdSlotEvent.SLOT_VIEWED_EVENT,
 								() => {
 									const customDelays = context.get('options.rotatorDelay');
 									setTimeout(() => {
@@ -80,9 +82,9 @@ export class FmrRotator {
 					);
 
 					communicationService.onSlotEvent(
-						AdSlot.STATUS_COLLAPSE,
+						AdSlotStatus.STATUS_COLLAPSE,
 						() => {
-							this.slotStatusChanged(AdSlot.STATUS_COLLAPSE);
+							this.slotStatusChanged(AdSlotStatus.STATUS_COLLAPSE);
 							this.scheduleNextSlotPush();
 						},
 						slot.getSlotName(),
@@ -171,7 +173,7 @@ export class FmrRotator {
 		this.currentAdSlot = slotService.get(this.nextSlotName);
 		this.nextSlotName = this.fmrPrefix + this.refreshInfo.repeatIndex;
 
-		if (slotStatus === AdSlot.STATUS_SUCCESS) {
+		if (slotStatus === AdSlotStatus.STATUS_SUCCESS) {
 			this.swapRecirculation(false);
 		}
 	}

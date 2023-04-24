@@ -1,4 +1,4 @@
-import { AdSlot, slotService, utils } from '@ad-engine/core';
+import { AdSlot, AdSlotStatus, slotService, utils } from '@ad-engine/core';
 import { GoogleImaWrapper } from './google-ima-wrapper';
 import { iasVideoTracker } from './plugins/ias/ias-video-tracker';
 import { PorvataPlugin } from './plugins/porvata-plugin';
@@ -103,7 +103,7 @@ export class PorvataFactory {
 					player.dispatchEvent('wikiaEmptyAd');
 				}
 
-				player.setAdStatus(AdSlot.STATUS_ERROR);
+				player.setAdStatus(AdSlotStatus.STATUS_ERROR);
 			},
 		);
 	}

@@ -1,4 +1,4 @@
-import { CacheDictionary } from './instant-config-cache-storage';
+import type { CacheDictionary } from './instant-config-cache-storage';
 
 const KEY_SEPARATOR = '|';
 const VALUE_SEPARATOR = ':';

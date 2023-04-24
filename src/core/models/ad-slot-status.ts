@@ -1,0 +1,17 @@
+export enum AdSlotStatus {
+	STATUS_BLOCKED = 'blocked',
+	STATUS_COLLAPSE = 'collapse',
+	STATUS_DISABLED = 'disabled',
+	STATUS_FORCED_COLLAPSE = 'forced_collapse',
+	STATUS_FORCED_SUCCESS = 'forced_success',
+	STATUS_SKIP_TEMPLATE = 'skip_template',
+	STATUS_MANUAL = 'manual',
+	STATUS_REQUESTED = 'requested',
+	STATUS_ERROR = 'error',
+	STATUS_SUCCESS = 'success',
+	STATUS_CLICKED = 'clicked',
+	STATUS_VIEWPORT_CONFLICT = 'viewport-conflict',
+	STATUS_HIVI_COLLAPSE = 'hivi-collapse',
+	STATUS_HEAVY_AD_INTERVENTION = 'heavy-ad-intervention',
+	STATUS_UNKNOWN_INTERVENTION = 'unknown-intervention',
+}
