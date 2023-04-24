@@ -1,6 +1,6 @@
 import { SlotSetupDefinition } from '@platforms/shared';
 import {
-	AdSlot,
+	AdSlotEvent,
 	communicationService,
 	context,
 	eventsRepository,
@@ -83,7 +83,7 @@ export class F2SlotsDefinitionRepository {
 					(action: UapLoadStatus) => {
 						if (action.isLoaded) {
 							communicationService.onSlotEvent(
-								AdSlot.CUSTOM_EVENT,
+								AdSlotEvent.CUSTOM_EVENT,
 								({ payload }) => {
 									if (
 										[
