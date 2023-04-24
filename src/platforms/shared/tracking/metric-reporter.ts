@@ -1,4 +1,4 @@
-import { AdSlot, communicationService, context, utils } from '@wikia/ad-engine';
+import { AdSlotEvent, communicationService, context, utils } from '@wikia/ad-engine';
 import { clickDetector } from './metric-reporter-trackers/click-detector';
 
 interface EndpointInfo {
@@ -8,7 +8,7 @@ interface EndpointInfo {
 }
 
 export interface MetricReporterSenderSlotData {
-	slotName: string;
+	slot: string;
 	state: string;
 }
 
@@ -55,11 +55,17 @@ export class MetricReporter {
 			queryParams.push(`${k}=${encodeURIComponent(v)}`);
 		});
 
-		utils.fetchTimeout(`${endpointUrl}?app=${endpointInfo.appName}&${queryParams.join('&')}`);
+		utils.fetchTimeout(
+			`${endpointUrl}?app=${endpointInfo.appName}&${queryParams.join('&')}`,
+			2000,
+			{
+				mode: 'no-cors',
+			},
+		);
 	}
 
 	private isMetricSlotData(item: any): item is MetricReporterSenderSlotData {
-		return item.slotName && item.state;
+		return item.slot && item.state;
 	}
 	private isMetricTimeData(item: any): item is MetricReporterSenderTimeData {
 		return item.action && item.duration;
@@ -73,18 +79,18 @@ export class MetricReporter {
 	}
 
 	private trackGamSlotRequest(): void {
-		communicationService.onSlotEvent(AdSlot.SLOT_REQUESTED_EVENT, ({ slot }) => {
+		communicationService.onSlotEvent(AdSlotEvent.SLOT_REQUESTED_EVENT, ({ slot }) => {
 			this.sendToMeteringSystem({
-				slotName: slot.getSlotName(),
+				slot: slot.getSlotName(),
 				state: 'request',
 			});
 		});
 	}
 
 	private trackGamSlotRendered(): void {
-		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot }) => {
+		communicationService.onSlotEvent(AdSlotEvent.SLOT_RENDERED_EVENT, ({ slot }) => {
 			this.sendToMeteringSystem({
-				slotName: slot.getSlotName(),
+				slot: slot.getSlotName(),
 				state: 'render',
 			});
 		});

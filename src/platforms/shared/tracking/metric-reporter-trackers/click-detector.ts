@@ -20,7 +20,7 @@ export function clickDetector(sendCallback: (data: MetricReporterSenderSlotData)
 			`Click! on slot='${placeholderId}' is detected.`,
 		);
 		sendCallback({
-			slotName: placeholderId,
+			slot: placeholderId,
 			state: 'click',
 		});
 

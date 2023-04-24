@@ -5,6 +5,7 @@ import {
 } from '@ad-engine/communication';
 import {
 	AdSlot,
+	AdSlotEvent,
 	config,
 	context,
 	DEFAULT_MAX_DELAY,
@@ -19,7 +20,7 @@ import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
 import { liveRamp } from './live-ramp';
-import { getWinningBid, setupAdUnits } from './prebid-helper';
+import { getWinningBid } from './prebid-helper';
 import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice } from './price-helper';
 
@@ -29,10 +30,10 @@ interface PrebidConfig extends BidderConfig {
 	[bidderName: string]: { enabled: boolean; slots: Dictionary } | boolean;
 }
 
-communicationService.onSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, ({ slot }) =>
+communicationService.onSlotEvent(AdSlotEvent.VIDEO_AD_IMPRESSION, ({ slot }) =>
 	markWinningVideoBidAsUsed(slot),
 );
-communicationService.onSlotEvent(AdSlot.VIDEO_AD_ERROR, ({ slot }) =>
+communicationService.onSlotEvent(AdSlotEvent.VIDEO_AD_ERROR, ({ slot }) =>
 	markWinningVideoBidAsUsed(slot),
 );
 
@@ -44,7 +45,7 @@ async function markWinningVideoBidAsUsed(adSlot: AdSlot): Promise<void> {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
 		pbjs.markWinningBidAsUsed({ adId });
-		adSlot.emit(AdSlot.VIDEO_AD_USED);
+		adSlot.emit(AdSlotEvent.VIDEO_AD_USED);
 	}
 }
 
@@ -58,7 +59,7 @@ export class PrebidProvider extends BidderProvider {
 		super('prebid', bidderConfig, timeout);
 		adaptersRegistry.configureAdapters();
 
-		this.adUnits = setupAdUnits();
+		this.adUnits = adaptersRegistry.setupAdUnits();
 		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
 
 		this.prebidConfig = {
@@ -163,7 +164,7 @@ export class PrebidProvider extends BidderProvider {
 		if (adUnits.length) {
 			this.adUnits = adUnits;
 		} else if (!this.adUnits) {
-			this.adUnits = setupAdUnits();
+			this.adUnits = adaptersRegistry.setupAdUnits();
 		}
 	}
 
@@ -181,7 +182,7 @@ export class PrebidProvider extends BidderProvider {
 
 	protected callBids(bidsBackHandler: (...args: any[]) => void): void {
 		if (!this.adUnits) {
-			this.adUnits = setupAdUnits();
+			this.adUnits = adaptersRegistry.setupAdUnits();
 		}
 
 		if (this.adUnits.length === 0) {

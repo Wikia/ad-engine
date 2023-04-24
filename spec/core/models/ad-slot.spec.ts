@@ -1,5 +1,12 @@
 import { communicationService, eventsRepository } from '@wikia/communication';
-import { AdSlot, context, Dictionary, TargetingService, targetingService } from '@wikia/core';
+import {
+	AdSlot,
+	AdSlotEvent,
+	context,
+	Dictionary,
+	TargetingService,
+	targetingService,
+} from '@wikia/core';
 import { expect } from 'chai';
 import { SinonSpy, SinonStubbedInstance } from 'sinon';
 import { configMock } from '../config-mock';
@@ -196,12 +203,12 @@ describe('ad-slot', () => {
 		});
 
 		it('should call communicationService.dispatch with string event', () => {
-			adSlot.emit(AdSlot.TEMPLATES_LOADED, ['foo', 'bar']);
+			adSlot.emit(AdSlotEvent.TEMPLATES_LOADED, ['foo', 'bar']);
 
 			expect(dispatchSpy.firstCall.args[0]).to.deep.equal(
 				communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
 					payload: ['foo', 'bar'],
-					event: AdSlot.TEMPLATES_LOADED,
+					event: AdSlotEvent.TEMPLATES_LOADED,
 					adSlotName: slotName,
 					slot: adSlot,
 				}),

@@ -1,4 +1,12 @@
-import { AdSlot, context, utils, vastDebugger, VastParams } from '@ad-engine/core';
+import {
+	AdSlot,
+	AdSlotEvent,
+	AdSlotStatus,
+	context,
+	utils,
+	vastDebugger,
+	VastParams,
+} from '@ad-engine/core';
 import { iasVideoTracker } from '../../porvata/plugins/ias/ias-video-tracker';
 import { JWPlayer, JWPlayerEventParams } from '../external-types/jwplayer';
 import { VideoTargeting } from '../jwplayer-actions';
@@ -59,21 +67,21 @@ export class JWPlayerHelper {
 
 	emitVideoAdError(adErrorCode: number): void {
 		if (adErrorCode === EMPTY_VAST_CODE) {
-			this.adSlot.setStatus(AdSlot.STATUS_COLLAPSE);
+			this.adSlot.setStatus(AdSlotStatus.STATUS_COLLAPSE);
 		} else {
-			this.adSlot.setStatus(AdSlot.STATUS_ERROR);
+			this.adSlot.setStatus(AdSlotStatus.STATUS_ERROR);
 		}
 
-		this.adSlot.emit(AdSlot.VIDEO_AD_ERROR);
+		this.adSlot.emit(AdSlotEvent.VIDEO_AD_ERROR);
 	}
 
 	emitVideoAdRequest(): void {
-		this.adSlot.emit(AdSlot.VIDEO_AD_REQUESTED);
+		this.adSlot.emit(AdSlotEvent.VIDEO_AD_REQUESTED);
 	}
 
 	emitVideoAdImpression(): void {
-		this.adSlot.setStatus(AdSlot.STATUS_SUCCESS);
-		this.adSlot.emit(AdSlot.VIDEO_AD_IMPRESSION);
+		this.adSlot.setStatus(AdSlotStatus.STATUS_SUCCESS);
+		this.adSlot.emit(AdSlotEvent.VIDEO_AD_IMPRESSION);
 	}
 
 	updateVideoProperties(state: JwpState): void {

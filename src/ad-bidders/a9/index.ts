@@ -5,6 +5,7 @@ import {
 } from '@ad-engine/communication';
 import {
 	AdSlot,
+	AdSlotEvent,
 	context,
 	DEFAULT_MAX_DELAY,
 	Dictionary,
@@ -111,10 +112,10 @@ export class A9Provider extends BidderProvider {
 	private initIfNotLoaded(signalData: SignalData): void {
 		if (!this.loaded) {
 			if (context.get('custom.hasFeaturedVideo')) {
-				communicationService.onSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, ({ slot }) =>
+				communicationService.onSlotEvent(AdSlotEvent.VIDEO_AD_IMPRESSION, ({ slot }) =>
 					this.removeBids(slot),
 				);
-				communicationService.onSlotEvent(AdSlot.VIDEO_AD_ERROR, ({ slot }) =>
+				communicationService.onSlotEvent(AdSlotEvent.VIDEO_AD_ERROR, ({ slot }) =>
 					this.removeBids(slot),
 				);
 				communicationService.on(
@@ -135,7 +136,7 @@ export class A9Provider extends BidderProvider {
 		delete this.bids[slotAlias];
 
 		if (adSlot.isVideo()) {
-			adSlot.emit(AdSlot.VIDEO_AD_USED);
+			adSlot.emit(AdSlotEvent.VIDEO_AD_USED);
 		}
 	}
 
@@ -155,7 +156,7 @@ export class A9Provider extends BidderProvider {
 	}
 
 	private getApstagConfig(signalData: SignalData): ApstagConfig {
-		const ortb2 = targetingService.get('openrtb2');
+		const ortb2 = targetingService.get('openrtb2', 'openrtb2');
 		externalLogger.log('openrtb2 signals', { signals: JSON.stringify(ortb2) });
 
 		return {
@@ -319,10 +320,10 @@ export class A9Provider extends BidderProvider {
 	}
 
 	private registerVideoBidsRefreshing(): void {
-		communicationService.onSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, ({ slot }) =>
+		communicationService.onSlotEvent(AdSlotEvent.VIDEO_AD_IMPRESSION, ({ slot }) =>
 			this.refreshVideoBids(slot),
 		);
-		communicationService.onSlotEvent(AdSlot.VIDEO_AD_ERROR, ({ slot }) =>
+		communicationService.onSlotEvent(AdSlotEvent.VIDEO_AD_ERROR, ({ slot }) =>
 			this.refreshVideoBids(slot),
 		);
 	}

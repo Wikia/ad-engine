@@ -1,7 +1,7 @@
 import { AdSlot } from '@wikia/ad-engine';
 import { FanLabBox } from './fanlab-box';
-import { MessageBox } from './message-box';
-import { MessageBoxType } from './message-box-service';
+import type { MessageBox } from './message-box';
+import type { MessageBoxType } from './message-box-type';
 import { NewsletterFormBox } from './newsletter-form-box';
 import { NewsletterLinkBox } from './newsletter-link-box';
 import { RegisterBox } from './register-box';
