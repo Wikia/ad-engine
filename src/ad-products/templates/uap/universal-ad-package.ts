@@ -6,6 +6,8 @@ import {
 } from '@ad-engine/communication';
 import {
 	AdSlot,
+	AdSlotEvent,
+	AdSlotStatus,
 	btfBlockerService,
 	context,
 	runtimeVariableSetter,
@@ -186,7 +188,11 @@ export function registerUapListener(): void {
 
 				return (
 					isFirstCallAdSlot &&
-					[AdSlot.TEMPLATES_LOADED, AdSlot.STATUS_COLLAPSE, AdSlot.STATUS_FORCED_COLLAPSE]
+					[
+						AdSlotEvent.TEMPLATES_LOADED,
+						AdSlotStatus.STATUS_COLLAPSE,
+						AdSlotStatus.STATUS_FORCED_COLLAPSE,
+					]
 						.map((status) => action.event === status)
 						.some((x) => !!x)
 				);
