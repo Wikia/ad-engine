@@ -1,1 +1,6 @@
 github_checks: false
+coverage:
+  status:
+    project:
+      default:
+        target: 45%
