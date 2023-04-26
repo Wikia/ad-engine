@@ -12,17 +12,23 @@ export interface DwAggregatedDataCompressor {
 	compress(input: string): Promise<Compressed>;
 }
 
+const LOG_GROUP_NAME = 'dw-track-sender';
+const TEMPORARY_ENDPOINT_SUFFIX = '_v2';
+
 /***
  * Sends aggregated data to DW
  * Optionally compresses data before sending
+ * v2 endpoint is used for sending uncompressed data
+ * v2gzip is used for sending compressed data
+ * Since this is a PoC v2 and v2gzip are temporary endpoints
  */
-export class DwTrackSender {
+export class DwAggregatedDataSender {
 	constructor(
 		private readonly dataCompressor: DwAggregatedDataCompressor = new DwAggregatedDataGzipCompressor(),
 	) {}
 
 	public sendTrackData(trackingUrl: string, paramsAggregated: DataWarehouseParams[]): void {
-		const dwTrackingUrlV2 = `${trackingUrl}_v2`;
+		const dwTrackingUrlV2 = `${trackingUrl}${TEMPORARY_ENDPOINT_SUFFIX}`;
 		if (this.isCompressionEnabled()) {
 			this.dataCompressor.compress(JSON.stringify(paramsAggregated)).then((result) => {
 				this.sendRequest(dwTrackingUrlV2 + result.contentEncoding || '', result.compressed);
@@ -44,9 +50,9 @@ export class DwTrackSender {
 			body: payload,
 		}).then((response) => {
 			if (response.status === 200) {
-				utils.logger(`dw-track-sender`, { status: 'success', url });
+				utils.logger(LOG_GROUP_NAME, { status: 'success', url });
 			} else {
-				utils.logger(`dw-track-sender`, { status: 'failed', url });
+				utils.logger(LOG_GROUP_NAME, { status: 'failed', url });
 			}
 		});
 	}

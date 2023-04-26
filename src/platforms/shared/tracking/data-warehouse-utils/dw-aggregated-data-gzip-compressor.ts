@@ -1,5 +1,5 @@
 import { utils } from '@wikia/ad-engine';
-import { Compressed, DwAggregatedDataCompressor } from './dw-track-sender';
+import { Compressed, DwAggregatedDataCompressor } from './dw-aggregated-data-sender';
 
 /***
  * Compresses data using Gzip algorithm
