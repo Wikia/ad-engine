@@ -4,7 +4,7 @@ import { expect } from 'chai';
 
 describe('product-info', () => {
 	it('should return ad product info', () => {
-		expect(getAdProductInfo('incontent_player', 'bfaa', 'uap')).to.deep.equal({
+		expect(getAdProductInfo('incontent_player', 'bfaa', 'hivi')).to.deep.equal({
 			adGroup: 'OTHER',
 			adProduct: 'incontent_player',
 		});
