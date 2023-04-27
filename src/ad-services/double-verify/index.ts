@@ -35,7 +35,7 @@ export class DoubleVerify extends BaseServiceSetup {
 				}
 
 				utils.logger(logGroup, 'setting targeting', targetingData);
-				targetingService.set('ids', targetingData['IDS']);
+				targetingService.set('fr_2v', targetingData['IDS']);
 				targetingService.set('bsc', targetingData['BSC']);
 			});
 		});
