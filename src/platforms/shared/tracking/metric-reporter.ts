@@ -1,4 +1,4 @@
-import { AdSlotEvent, communicationService, context, utils } from '@wikia/ad-engine';
+import { AdSlot, AdSlotEvent, communicationService, context, utils } from '@wikia/ad-engine';
 import { clickDetector } from './metric-reporter-trackers/click-detector';
 
 interface EndpointInfo {
@@ -17,8 +17,14 @@ export interface MetricReporterSenderTimeData {
 	duration?: number;
 }
 
+const slotsToReport = {
+	state: ['top_leaderboard'],
+	time: ['top_leaderboard'],
+};
+
 export class MetricReporter {
 	private readonly isActive: boolean;
+	private slotTimeDiffRequestToRender = [];
 
 	constructor() {
 		this.isActive = utils.outboundTrafficRestrict.isOutboundTrafficAllowed('monitoring');
@@ -80,19 +86,43 @@ export class MetricReporter {
 
 	private trackGamSlotRequest(): void {
 		communicationService.onSlotEvent(AdSlotEvent.SLOT_REQUESTED_EVENT, ({ slot }) => {
-			this.sendToMeteringSystem({
-				slot: slot.getSlotName(),
-				state: 'request',
-			});
+			this.sendSlotInfoToMeteringSystem(slot, 'request');
+			this.slotTimeDiffRequestToRender[slot.getSlotName()] = Math.round(utils.getTimeDelta());
 		});
 	}
 
 	private trackGamSlotRendered(): void {
 		communicationService.onSlotEvent(AdSlotEvent.SLOT_RENDERED_EVENT, ({ slot }) => {
-			this.sendToMeteringSystem({
-				slot: slot.getSlotName(),
-				state: 'render',
-			});
+			this.sendSlotInfoToMeteringSystem(slot, 'render');
+			this.sendSlotLoadTimeDiffToMeteringSystem(slot);
+		});
+	}
+
+	private sendSlotInfoToMeteringSystem(slot: AdSlot, state: string) {
+		if (!slotsToReport.state.includes(slot.getSlotName())) {
+			return;
+		}
+
+		this.sendToMeteringSystem({
+			slot: slot.getSlotName(),
+			state,
+		});
+	}
+
+	private sendSlotLoadTimeDiffToMeteringSystem(slot: AdSlot) {
+		if (
+			!slotsToReport.time.includes(slot.getSlotName()) ||
+			!Object.keys(this.slotTimeDiffRequestToRender).includes(slot.getSlotName())
+		) {
+			return;
+		}
+
+		const requestTime = this.slotTimeDiffRequestToRender[slot.getSlotName()];
+		const duration = Math.round(utils.getTimeDelta()) - requestTime;
+
+		this.sendToMeteringSystem({
+			action: `${slot.getSlotName()}_ratio`,
+			duration,
 		});
 	}
 
