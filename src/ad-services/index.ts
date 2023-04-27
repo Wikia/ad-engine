@@ -7,7 +7,6 @@ export * from './duration-media';
 export * from './eyeota';
 export * from './ias-publisher-optimization';
 export * from './identity-setup';
-export * from './intent-iq';
 export * from './live-connect';
 export * from './liveramp-pixel';
 export * from './nielsen';
