@@ -1,5 +1,4 @@
 import { context, utils } from '@wikia/ad-engine';
-import { DataWarehouseParams } from '../data-warehouse';
 import { DwAggregatedDataGzipCompressor } from './dw-aggregated-data-gzip-compressor';
 
 export type Compressed = {
@@ -15,6 +14,8 @@ export interface DwAggregatedDataCompressor {
 const LOG_GROUP_NAME = 'dw-track-sender';
 const TEMPORARY_ENDPOINT_SUFFIX = '_v2';
 
+type AggregatedTrackingData = Record<string, string | number>;
+
 /***
  * Sends aggregated data to DW
  * Optionally compresses data before sending
@@ -27,7 +28,7 @@ export class DwAggregatedDataSender {
 		private readonly dataCompressor: DwAggregatedDataCompressor = new DwAggregatedDataGzipCompressor(),
 	) {}
 
-	public sendTrackData(trackingUrl: string, paramsAggregated: DataWarehouseParams[]): void {
+	public sendTrackData(trackingUrl: string, paramsAggregated: AggregatedTrackingData[]): void {
 		const dwTrackingUrlV2 = `${trackingUrl}${TEMPORARY_ENDPOINT_SUFFIX}`;
 		if (this.isCompressionEnabled()) {
 			this.dataCompressor.compress(JSON.stringify(paramsAggregated)).then((result) => {

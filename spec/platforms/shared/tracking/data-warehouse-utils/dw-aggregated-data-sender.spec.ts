@@ -1,5 +1,4 @@
 import { context } from '@wikia/core';
-import { DataWarehouseParams } from '@wikia/platforms/shared';
 import {
 	DwAggregatedDataCompressor,
 	DwAggregatedDataSender,
@@ -8,7 +7,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 
 describe('DwAggregatedDataSender', () => {
-	const aggregatedData: DataWarehouseParams[] = [
+	const aggregatedData = [
 		{
 			cb: 123,
 			url: 'some.kind.of.sample.url',
