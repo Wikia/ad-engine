@@ -10,6 +10,10 @@ describe('Gamespot Targeting Setup', () => {
 		targetingServiceStub = global.sandbox.stub(targetingService);
 	});
 
+	afterEach(() => {
+		global.sandbox.restore();
+	});
+
 	describe('getVerticalName', () => {
 		it('returns "ent" when verticalName="ent"', () => {
 			// given

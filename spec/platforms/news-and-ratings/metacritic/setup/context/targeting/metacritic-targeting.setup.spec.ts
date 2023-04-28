@@ -11,6 +11,10 @@ describe('Metacritic Targeting Setup', () => {
 		window.utag_data = undefined;
 	});
 
+	afterEach(() => {
+		global.sandbox.restore();
+	});
+
 	describe('getVerticalName', () => {
 		it('returns "gaming" when utag_data is available and siteSection equals to "games"', () => {
 			// given
