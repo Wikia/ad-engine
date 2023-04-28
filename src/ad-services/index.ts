@@ -3,6 +3,7 @@ export * from './audigent';
 export * from './bt-rec';
 export * from './captify';
 export * from './confiant';
+export * from './double-verify';
 export * from './duration-media';
 export * from './eyeota';
 export * from './ias-publisher-optimization';
