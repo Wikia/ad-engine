@@ -1,15 +1,17 @@
 import { expect } from 'chai';
 
-import { context, utils } from '@wikia/core';
+import { context, InstantConfigService, utils } from '@wikia/core';
 import { NewsAndRatingsDynamicSlotsSetup } from '@wikia/platforms/news-and-ratings/shared/setup/dynamic-slots/news-and-ratings-dynamic-slots.setup';
 
 import { createHtmlElementStub } from '../../../../../helpers/html-element.stub';
 
 describe('Inserting dynamic slots on NnR', () => {
-	let querySelectorAllStub;
+	let querySelectorAllStub, instantConfigStub;
 
 	beforeEach(() => {
 		querySelectorAllStub = global.sandbox.stub(document, 'querySelectorAll');
+		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
+		instantConfigStub.get.withArgs('icInterstitial').returns(false);
 		context.set('state.adStack', []);
 		context.set('events.pushOnScroll.ids', []);
 		context.set('slots', {});
@@ -24,7 +26,7 @@ describe('Inserting dynamic slots on NnR', () => {
 	it('works as expected for no slots found on the page', () => {
 		querySelectorAllStub.returns([] as any);
 
-		const dynamicSlotsSetup = new NewsAndRatingsDynamicSlotsSetup();
+		const dynamicSlotsSetup = new NewsAndRatingsDynamicSlotsSetup(instantConfigStub);
 		dynamicSlotsSetup.execute();
 
 		expect(context.get('state.adStack').length).to.eq(0);
@@ -35,7 +37,7 @@ describe('Inserting dynamic slots on NnR', () => {
 		const slotElementStub = createHtmlElementStub(global.sandbox, 'div');
 		querySelectorAllStub.returns([slotElementStub] as any);
 
-		const dynamicSlotsSetup = new NewsAndRatingsDynamicSlotsSetup();
+		const dynamicSlotsSetup = new NewsAndRatingsDynamicSlotsSetup(instantConfigStub);
 		dynamicSlotsSetup.execute();
 
 		expect(context.get('state.adStack').length).to.eq(0);
@@ -50,7 +52,7 @@ describe('Inserting dynamic slots on NnR', () => {
 			.returns(createHtmlElementStub(global.sandbox, 'div'));
 		querySelectorAllStub.returns([slotElementStub] as any);
 
-		const dynamicSlotsSetup = new NewsAndRatingsDynamicSlotsSetup();
+		const dynamicSlotsSetup = new NewsAndRatingsDynamicSlotsSetup(instantConfigStub);
 		dynamicSlotsSetup.execute();
 
 		expect(context.get('state.adStack').length).to.eq(1);
@@ -67,7 +69,7 @@ describe('Inserting dynamic slots on NnR', () => {
 
 		context.set('slots.test-ad-lazy-slot.lazyLoad', true);
 
-		const dynamicSlotsSetup = new NewsAndRatingsDynamicSlotsSetup();
+		const dynamicSlotsSetup = new NewsAndRatingsDynamicSlotsSetup(instantConfigStub);
 		dynamicSlotsSetup.execute();
 
 		expect(context.get('state.adStack').length).to.eq(0);

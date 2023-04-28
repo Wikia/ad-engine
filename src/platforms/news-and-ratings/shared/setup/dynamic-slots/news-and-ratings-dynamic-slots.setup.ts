@@ -1,8 +1,15 @@
-import { context, DiProcess, utils } from '@wikia/ad-engine';
+import { context, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
+import { insertSlots, SlotSetupDefinition } from '../../../../shared';
 
+@Injectable()
 export class NewsAndRatingsDynamicSlotsSetup implements DiProcess {
+	constructor(protected instantConfig: InstantConfigService) {}
+
 	execute(): void {
 		this.injectSlots();
+
+		insertSlots([this.getInterstitialConfig()]);
 	}
 
 	private injectSlots(): void {
@@ -33,5 +40,29 @@ export class NewsAndRatingsDynamicSlotsSetup implements DiProcess {
 
 	private isSlotLazyLoaded(slotName: string): boolean {
 		return context.get(`slots.${slotName}.lazyLoad`);
+	}
+
+	private getInterstitialConfig(): SlotSetupDefinition {
+		if (!this.isInterstitialApplicable()) {
+			return;
+		}
+
+		const slotName = 'interstitial';
+
+		return {
+			slotCreatorConfig: {
+				slotName,
+				anchorSelector: 'body',
+				insertMethod: 'prepend',
+				classList: ['hide', 'ad-slot'],
+			},
+			activator: () => {
+				context.push('state.adStack', { id: slotName });
+			},
+		};
+	}
+
+	private isInterstitialApplicable(): boolean {
+		return this.instantConfig.get('icInterstitial') && context.get('state.isMobile');
 	}
 }
