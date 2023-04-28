@@ -1,13 +1,15 @@
 import { Apstag } from '@wikia/ad-bidders';
 import { A9Provider } from '@wikia/ad-bidders/a9';
-import { context } from '@wikia/core';
+import { context, DEFAULT_MAX_DELAY, targetingService } from '@wikia/core';
 import { expect } from 'chai';
+import { SinonStub } from 'sinon';
 
 describe('A9Provider', () => {
 	let bidderConfig;
 
 	beforeEach(() => {
 		bidderConfig = {
+			amazonId: 12345,
 			slots: {
 				top_leaderboard: {
 					sizes: [[728, 90]],
@@ -17,61 +19,156 @@ describe('A9Provider', () => {
 				},
 			},
 		};
-
-		global.sandbox.stub(Apstag, 'make').returns({} as Apstag);
 	});
 
-	it('should be enabled when matches COPPA requirements and feature flag is turned on', () => {
-		const testCases: {
-			coppaA9: boolean;
-			a9: boolean;
-			directedAtChildren: boolean;
-			enabled: boolean;
-		}[] = [
-			{ coppaA9: false, a9: false, directedAtChildren: false, enabled: false },
-			{ coppaA9: false, a9: true, directedAtChildren: true, enabled: true },
-			{ coppaA9: true, a9: true, directedAtChildren: true, enabled: false },
-			{ coppaA9: true, a9: true, directedAtChildren: false, enabled: true },
-		];
+	describe('isEnabled', () => {
+		beforeEach(() => {
+			global.sandbox.stub(Apstag, 'make').returns({} as Apstag);
+		});
 
-		testCases.forEach((testCase) => {
-			context.set('bidders.coppaA9', testCase.coppaA9);
-			context.set('bidders.a9.enabled', testCase.a9);
-			context.set('wiki.targeting.directedAtChildren', testCase.directedAtChildren);
-			expect(A9Provider.isEnabled()).to.equal(testCase.enabled);
+		it('should be enabled when matches COPPA requirements and feature flag is turned on', () => {
+			const testCases: {
+				coppaA9: boolean;
+				a9: boolean;
+				directedAtChildren: boolean;
+				enabled: boolean;
+			}[] = [
+				{ coppaA9: false, a9: false, directedAtChildren: false, enabled: false },
+				{ coppaA9: false, a9: true, directedAtChildren: true, enabled: true },
+				{ coppaA9: true, a9: true, directedAtChildren: true, enabled: false },
+				{ coppaA9: true, a9: true, directedAtChildren: false, enabled: true },
+			];
+
+			testCases.forEach((testCase) => {
+				context.set('bidders.coppaA9', testCase.coppaA9);
+				context.set('bidders.a9.enabled', testCase.a9);
+				context.set('wiki.targeting.directedAtChildren', testCase.directedAtChildren);
+				expect(A9Provider.isEnabled()).to.equal(testCase.enabled);
+			});
 		});
 	});
 
-	it('configure display slot', () => {
-		const a9 = new A9Provider(bidderConfig);
+	describe('createSlotDefinition', () => {
+		beforeEach(() => {
+			global.sandbox.stub(Apstag, 'make').returns({} as Apstag);
+		});
 
-		const definition = a9.createSlotDefinition('top_leaderboard');
+		it('configure display slot', () => {
+			const a9 = new A9Provider(bidderConfig);
 
-		expect(definition).to.deep.equal({
-			slotID: 'top_leaderboard',
-			slotName: 'top_leaderboard',
-			sizes: [[728, 90]],
+			const definition = a9.createSlotDefinition('top_leaderboard');
+
+			expect(definition).to.deep.equal({
+				slotID: 'top_leaderboard',
+				slotName: 'top_leaderboard',
+				sizes: [[728, 90]],
+			});
+		});
+
+		it('do not configure video slot when video is disabled', () => {
+			const a9 = new A9Provider(bidderConfig);
+
+			const definition = a9.createSlotDefinition('featured');
+
+			expect(definition).to.equal(null);
+		});
+
+		it('configure video slot when video is enabled', () => {
+			bidderConfig.videoEnabled = true;
+			const a9 = new A9Provider(bidderConfig);
+
+			const definition = a9.createSlotDefinition('featured');
+
+			expect(definition).to.deep.equal({
+				mediaType: 'video',
+				slotID: 'featured',
+				slotName: 'featured',
+			});
 		});
 	});
 
-	it('do not configure video slot when video is disabled', () => {
-		const a9 = new A9Provider(bidderConfig);
+	describe('getA9SlotsDefinitions', () => {
+		beforeEach(() => {
+			global.sandbox.stub(Apstag, 'make').returns({} as Apstag);
+		});
 
-		const definition = a9.createSlotDefinition('featured');
+		it('should return empty array when no slots are configured', () => {
+			const a9 = new A9Provider({
+				...bidderConfig,
+				slots: {},
+			});
 
-		expect(definition).to.equal(null);
+			const definitions = a9.getA9SlotsDefinitions(['top_leaderboard']);
+
+			expect(definitions).to.have.length(0);
+		});
+
+		it('should return configured slots', () => {
+			const a9 = new A9Provider(bidderConfig);
+
+			const definitions = a9.getA9SlotsDefinitions(Object.keys(bidderConfig.slots));
+
+			expect(definitions).to.have.length(1);
+		});
 	});
 
-	it('configure video slot when video is enabled', () => {
-		bidderConfig.videoEnabled = true;
-		const a9 = new A9Provider(bidderConfig);
+	describe('init', () => {
+		let apstagInitStub: SinonStub;
+		let apstagFetchBids: SinonStub;
 
-		const definition = a9.createSlotDefinition('featured');
+		beforeEach(() => {
+			apstagInitStub = global.sandbox.stub(Apstag.prototype, 'init');
+			apstagFetchBids = global.sandbox.stub(Apstag.prototype, 'fetchBids');
+			global.sandbox.stub(Apstag, 'make').returns({
+				init: apstagInitStub as any,
+				// eslint-disable-next-line @typescript-eslint/no-unused-vars
+				onRenderImpEnd: (_: any) => {},
+				fetchBids: apstagFetchBids as any,
+			} as Apstag);
+			targetingService.set('openrtb2', {}, 'openrtb2');
+		});
 
-		expect(definition).to.deep.equal({
-			mediaType: 'video',
-			slotID: 'featured',
-			slotName: 'featured',
+		it('should initialize Apstag with config and fetch bids', () => {
+			const a9 = new A9Provider(bidderConfig);
+
+			a9.init();
+
+			expect(
+				apstagInitStub.calledOnceWithExactly({
+					pubID: bidderConfig.amazonId,
+					videoAdServer: 'DFP',
+					deals: true,
+					signals: { ortb2: {} },
+				}),
+			).to.equal(true, 'init called with wrong arguments');
+			expect(
+				apstagFetchBids.calledOnceWithExactly({
+					slots: a9.getA9SlotsDefinitions(Object.keys(bidderConfig.slots)),
+					timeout: DEFAULT_MAX_DELAY,
+				}),
+			).to.equal(true, 'fetchBids called with wrong arguments');
+		});
+
+		it('should initialize Apstag with CCPA config and fetch bids', () => {
+			const a9 = new A9Provider(bidderConfig);
+
+			a9.init({ uspString: '1---' });
+
+			expect(
+				apstagInitStub.calledOnceWithExactly({
+					pubID: bidderConfig.amazonId,
+					videoAdServer: 'DFP',
+					deals: true,
+					params: { us_privacy: '1---' },
+					signals: { ortb2: {} },
+				}),
+			).to.equal(true, 'init called with wrong arguments');
+			expect(
+				apstagFetchBids.calledOnceWithExactly({
+					slots: a9.getA9SlotsDefinitions(Object.keys(bidderConfig.slots)),
+					timeout: DEFAULT_MAX_DELAY,
+				}),
+			).to.equal(true, 'fetchBids called with wrong arguments');
 		});
 	});
 });
