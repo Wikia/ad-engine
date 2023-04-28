@@ -13,7 +13,7 @@ export class GamespotTargetingSetup implements DiProcess {
 		targetingService.extend(targeting);
 	}
 
-	getVerticalName(): 'gaming' | 'ent' {
+	getVerticalName(): string | undefined {
 		return targetingService.get('verticalName');
 	}
 }

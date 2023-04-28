@@ -12,7 +12,7 @@ export class MetacriticTargetingSetup implements DiProcess {
 		targetingService.extend(targeting);
 	}
 
-	getVerticalName(): 'gaming' | 'ent' {
+	getVerticalName(): string | undefined {
 		let verticalName;
 
 		if (window.utag_data?.siteSection) {
