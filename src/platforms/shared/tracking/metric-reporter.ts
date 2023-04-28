@@ -24,7 +24,7 @@ const REPORTABLE_SLOTS = {
 
 export class MetricReporter {
 	private readonly isActive: boolean;
-	private slotTimeDiffRequestToRender = [];
+	private slotTimeDiffRequestToRender = new Map<string, number>();
 
 	constructor() {
 		this.isActive = utils.outboundTrafficRestrict.isOutboundTrafficAllowed('monitoring');
@@ -87,7 +87,7 @@ export class MetricReporter {
 	private trackGamSlotRequest(): void {
 		communicationService.onSlotEvent(AdSlotEvent.SLOT_REQUESTED_EVENT, ({ slot }) => {
 			this.sendSlotInfoToMeteringSystem(slot, 'request');
-			this.slotTimeDiffRequestToRender[slot.getSlotName()] = Math.round(utils.getTimeDelta());
+			this.slotTimeDiffRequestToRender.set(slot.getSlotName(), Math.round(utils.getTimeDelta()));
 		});
 	}
 
@@ -112,12 +112,12 @@ export class MetricReporter {
 	private sendSlotLoadTimeDiffToMeteringSystem(slot: AdSlot): void {
 		if (
 			!REPORTABLE_SLOTS.timingMetric.includes(slot.getSlotName()) ||
-			!Object.keys(this.slotTimeDiffRequestToRender).includes(slot.getSlotName())
+			!this.slotTimeDiffRequestToRender.has(slot.getSlotName())
 		) {
 			return;
 		}
 
-		const requestTime = this.slotTimeDiffRequestToRender[slot.getSlotName()];
+		const requestTime = this.slotTimeDiffRequestToRender.get(slot.getSlotName());
 		const duration = Math.round(utils.getTimeDelta()) - requestTime;
 
 		this.sendToMeteringSystem({
