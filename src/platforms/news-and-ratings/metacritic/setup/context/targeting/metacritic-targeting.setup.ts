@@ -13,9 +13,15 @@ export class MetacriticTargetingSetup implements DiProcess {
 	}
 
 	getVerticalName(): 'gaming' | 'ent' {
-		return window.utag_data?.siteSection === 'games'
-			? 'gaming'
-			: 'ent' || targetingService.get('verticalName');
+		let verticalName;
+
+		if (window.utag_data?.siteSection) {
+			verticalName = window.utag_data.siteSection === 'games' ? 'gaming' : 'ent';
+		} else {
+			verticalName = targetingService.get('verticalName');
+		}
+
+		return verticalName;
 	}
 
 	getPageType(): string | undefined {
