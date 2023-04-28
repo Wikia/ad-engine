@@ -1,4 +1,4 @@
-import { insertSlots, SlotSetupDefinition } from '@platforms/shared';
+import { insertSlots } from '@platforms/shared';
 import {
 	AdSlotEvent,
 	AdSlotStatus,
@@ -6,16 +6,16 @@ import {
 	context,
 	DiProcess,
 	eventsRepository,
-	InstantConfigService,
 	SlotRepeater,
 	slotService,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { NewsAndRatingsSlotsDefinitionRepository } from '../../../shared';
 
 @Injectable()
 export class MetacriticNeutronDynamicSlotsSetup implements DiProcess {
-	constructor(protected instantConfig: InstantConfigService) {}
+	constructor(private slotsDefinitionRepository: NewsAndRatingsSlotsDefinitionRepository) {}
 
 	execute(): void {
 		communicationService.on(
@@ -34,7 +34,7 @@ export class MetacriticNeutronDynamicSlotsSetup implements DiProcess {
 			false,
 		);
 
-		insertSlots([this.getInterstitialConfig()]);
+		insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
 	}
 
 	private injectSlots(adPlaceholders): void {
@@ -119,29 +119,5 @@ export class MetacriticNeutronDynamicSlotsSetup implements DiProcess {
 		const adDiv = firstPlaceholder.firstElementChild;
 
 		return !!adDiv;
-	}
-
-	private getInterstitialConfig(): SlotSetupDefinition {
-		if (!this.isInterstitialApplicable()) {
-			return;
-		}
-
-		const slotName = 'interstitial';
-
-		return {
-			slotCreatorConfig: {
-				slotName,
-				anchorSelector: 'body',
-				insertMethod: 'prepend',
-				classList: ['hide', 'ad-slot'],
-			},
-			activator: () => {
-				context.push('state.adStack', { id: slotName });
-			},
-		};
-	}
-
-	private isInterstitialApplicable(): boolean {
-		return this.instantConfig.get('icInterstitial') && context.get('state.isMobile');
 	}
 }

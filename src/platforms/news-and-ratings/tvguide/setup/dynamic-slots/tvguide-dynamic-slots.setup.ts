@@ -6,16 +6,16 @@ import {
 	Dictionary,
 	DiProcess,
 	eventsRepository,
-	InstantConfigService,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { NewsAndRatingsSlotsDefinitionRepository } from '../../../shared';
 
 const logGroup = 'dynamic-slots';
 
 @Injectable()
 export class TvGuideDynamicSlotsSetup implements DiProcess {
-	constructor(protected instantConfig: InstantConfigService) {}
+	constructor(private slotsDefinitionRepository: NewsAndRatingsSlotsDefinitionRepository) {}
 
 	private repeatedSlotsCounter: Dictionary<number> = {};
 	private repeatedSlotsRendered: string[] = [];
@@ -49,7 +49,7 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 				}
 			});
 
-			insertSlots([this.getInterstitialConfig()]);
+			insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
 		});
 
 		communicationService.on(
@@ -146,29 +146,5 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 		}
 
 		return slotConfig;
-	}
-
-	private getInterstitialConfig(): SlotSetupDefinition {
-		if (!this.isInterstitialApplicable()) {
-			return;
-		}
-
-		const slotName = 'interstitial';
-
-		return {
-			slotCreatorConfig: {
-				slotName,
-				anchorSelector: 'body',
-				insertMethod: 'prepend',
-				classList: ['hide', 'ad-slot'],
-			},
-			activator: () => {
-				context.push('state.adStack', { id: slotName });
-			},
-		};
-	}
-
-	private isInterstitialApplicable(): boolean {
-		return this.instantConfig.get('icInterstitial') && context.get('state.isMobile');
 	}
 }

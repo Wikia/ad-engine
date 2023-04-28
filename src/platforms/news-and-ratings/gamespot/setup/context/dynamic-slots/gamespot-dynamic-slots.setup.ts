@@ -1,10 +1,11 @@
-import { insertSlots, SlotSetupDefinition } from '@platforms/shared';
-import { context, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
+import { insertSlots } from '@platforms/shared';
+import { context, DiProcess, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { NewsAndRatingsSlotsDefinitionRepository } from '../../../../shared';
 
 @Injectable()
 export class GamespotDynamicSlotsSetup implements DiProcess {
-	constructor(protected instantConfig: InstantConfigService) {}
+	constructor(private slotsDefinitionRepository: NewsAndRatingsSlotsDefinitionRepository) {}
 
 	private stubbedSlotsCounter = {};
 
@@ -12,7 +13,7 @@ export class GamespotDynamicSlotsSetup implements DiProcess {
 		this.injectSlots();
 		this.restoreStubbedSlots();
 
-		insertSlots([this.getInterstitialConfig()]);
+		insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
 	}
 
 	private injectSlots(): void {
@@ -77,29 +78,5 @@ export class GamespotDynamicSlotsSetup implements DiProcess {
 		context.set(`slots.${slotName}`, { ...context.get(`slots.${baseSlotName}`) });
 		context.set(`slots.${slotName}.slotName`, slotName);
 		context.set(`slots.${slotName}.targeting.pos`, slotName);
-	}
-
-	private getInterstitialConfig(): SlotSetupDefinition {
-		if (!this.isInterstitialApplicable()) {
-			return;
-		}
-
-		const slotName = 'interstitial';
-
-		return {
-			slotCreatorConfig: {
-				slotName,
-				anchorSelector: 'body',
-				insertMethod: 'prepend',
-				classList: ['hide', 'ad-slot'],
-			},
-			activator: () => {
-				context.push('state.adStack', { id: slotName });
-			},
-		};
-	}
-
-	private isInterstitialApplicable(): boolean {
-		return this.instantConfig.get('icInterstitial') && context.get('state.isMobile');
 	}
 }
