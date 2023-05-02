@@ -225,7 +225,7 @@ export class PrebidProvider extends BidderProvider {
 
 		const winningBid = await getWinningBid(slotAlias);
 
-		await intentIQ.reportPrebidWin(slotAlias, winningBid);
+		intentIQ.reportPrebidWin(slotAlias, winningBid);
 
 		return {
 			...pbjs.getAdserverTargetingForAdUnitCode(slotAlias),
