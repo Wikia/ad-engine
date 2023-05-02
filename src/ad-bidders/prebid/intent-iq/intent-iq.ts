@@ -28,7 +28,7 @@ export class IntentIQ {
 				pbjs,
 				timeoutInMillis: DEFAULT_MAX_DELAY,
 				ABTestingConfigurationSource: 'percentage',
-				abPercentage: 10,
+				abPercentage: 90,
 				manualWinReportEnabled: true,
 				browserBlackList: 'Chrome',
 				domainName,
