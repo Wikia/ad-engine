@@ -1,4 +1,4 @@
-import { context, DEFAULT_MAX_DELAY, utils } from '@ad-engine/core';
+import { context, DEFAULT_MAX_DELAY, targetingService, utils } from '@ad-engine/core';
 import { getAvailableBidsByAdUnitCode } from '../prebid-helper';
 
 const logGroup = 'IntentIQ';
@@ -6,9 +6,8 @@ const logGroup = 'IntentIQ';
 export class IntentIQ {
 	private fandomId = 1187275693;
 	private intentIQScriptUrl =
-		'https://iiq-be-js-sdk.s3.amazonaws.com/GA/UniversalID/IIQUniversalID.js';
-	private isLoaded = false;
-	private intentIqObject: any;
+		'//script.wikia.nocookie.net/fandom-ae-assets/platforms/dev/ADEN-12643/intentiq/IIQUniversalID.js';
+	private intentIqObject: IntentIqObject;
 
 	async initialize(pbjs: Pbjs): Promise<void> {
 		if (!context.get('bidders.prebid.intentIQ')) {
@@ -16,56 +15,60 @@ export class IntentIQ {
 			return;
 		}
 
-		if (!this.isLoaded) {
-			await utils.scriptLoader.loadScript(this.intentIQScriptUrl, 'text/javascript', true, 'first');
-			this.isLoaded = true;
-			utils.logger(logGroup, 'loaded');
-		}
-
 		if (!this.intentIqObject) {
+			await utils.scriptLoader.loadScript(this.intentIQScriptUrl, 'text/javascript', true, 'first');
+			utils.logger(logGroup, 'loaded');
+
+			const domainName = window.location.hostname.includes('.fandom.com')
+				? 'fandom.com'
+				: window.location.hostname;
+
 			this.intentIqObject = new window.IntentIqObject({
 				partner: this.fandomId,
 				pbjs,
 				timeoutInMillis: DEFAULT_MAX_DELAY,
 				ABTestingConfigurationSource: 'percentage',
-				abPercentage: 90,
+				abPercentage: 10,
 				manualWinReportEnabled: true,
+				browserBlackList: 'Chrome',
+				domainName,
 				callback: (data) => {
 					utils.logger(logGroup, 'got data', data);
 				},
 			});
+
+			targetingService.set(
+				'intent_iq_group',
+				this.intentIqObject.intentIqConfig.abTesting.currentTestGroup || 'U',
+			);
 		}
 	}
 
 	async reportPrebidWin(slotAlias: string, winningBid: PrebidTargeting): Promise<void> {
-		if (!(context.get('bidders.prebid.intentIQ') && this.isLoaded && this.intentIqObject)) {
+		if (!context.get('bidders.prebid.intentIQ') || !this.intentIqObject) {
 			return;
 		}
+
 		const bids = await getAvailableBidsByAdUnitCode(slotAlias);
 		if (!bids.length) {
 			return;
 		}
 
-		const winningBidResponse = bids.filter((bid) => bid.adId === winningBid.hb_adid);
-
-		if (!winningBidResponse.length) {
+		const winningBidResponse = bids.filter((bid) => bid.adId === winningBid.hb_adid).shift();
+		if (!winningBidResponse) {
 			return;
 		}
 
-		const domainName = window.location.hostname.includes('.fandom.com')
-			? 'fandom.com'
-			: window.location.hostname;
 		const data: IntentIQReportData = {
 			biddingPlatformId: 1, // Prebid
-			bidderCode: winningBidResponse[0].bidderCode,
-			prebidAuctionId: winningBidResponse[0].auctionId,
-			cpm: winningBidResponse[0].cpm,
-			currency: winningBidResponse[0].currency,
-			originalCpm: winningBidResponse[0].originalCpm,
-			originalCurrency: winningBidResponse[0].originalCurrency,
-			status: winningBidResponse[0].status,
-			placementId: winningBidResponse[0].adUnitCode,
-			domainName,
+			bidderCode: winningBidResponse.bidderCode,
+			prebidAuctionId: winningBidResponse.auctionId,
+			cpm: winningBidResponse.cpm,
+			currency: winningBidResponse.currency,
+			originalCpm: winningBidResponse.originalCpm,
+			originalCurrency: winningBidResponse.originalCurrency,
+			status: winningBidResponse.status,
+			placementId: winningBidResponse.adUnitCode,
 		};
 
 		utils.logger(logGroup, 'reporting prebid win', data);

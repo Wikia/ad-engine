@@ -32,7 +32,10 @@ export class InstantConfigSetup implements DiProcess {
 
 	private preloadLibraries(instantConfig: InstantConfigService) {
 		if (instantConfig.get('icPrebid')) {
-			context.set('bidders.prebid.libraryUrl', instantConfig.get('icPrebidVersion'));
+			context.set(
+				'bidders.prebid.libraryUrl',
+				'//script.wikia.nocookie.net/fandom-ae-assets/platforms/dev/ADEN-12643/prebid/20230430.min.js',
+			);
 			pbjsFactory.init();
 		}
 

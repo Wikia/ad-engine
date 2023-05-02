@@ -13,6 +13,8 @@ interface IntentIQConfig {
 	partnerClientId?: string;
 	partnerClientIdType?: number;
 	callback?: (data: any) => void;
+	browserBlackList?: string;
+	domainName?: string;
 }
 
 /**
@@ -31,10 +33,14 @@ interface IntentIQReportData {
 	originalCurrency?: string;
 	status?: string;
 	placementId?: string;
-	domainName?: string;
 }
 
 type IntentIqObject = {
 	new (config: IntentIQConfig): IntentIqObject;
 	reportExternalWin(data: IntentIQReportData): void;
+	intentIqConfig?: {
+		abTesting?: {
+			currentTestGroup: string;
+		};
+	};
 };
