@@ -254,7 +254,7 @@ class SlotService {
 	 */
 	private getGptAdSlot(id: string): AdSlot {
 		const prefix = context.get('custom.serverPrefix');
-		const matcher = new RegExp(`/${prefix}.[A-Z]+/(?<slotName>[a-z_]+)/`);
+		const matcher = new RegExp(`/${prefix ? `${prefix}.` : ''}[A-Z]+/(?<slotName>[a-z_]+)/`);
 		const found = id.match(matcher);
 
 		try {

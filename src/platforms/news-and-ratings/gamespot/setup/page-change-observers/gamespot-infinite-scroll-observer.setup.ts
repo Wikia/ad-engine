@@ -58,6 +58,11 @@ export class GamespotInfiniteScrollObserverSetup implements DiProcess {
 		adSlotsToFill.forEach((adWrapper: Element) => {
 			const placeholder = adWrapper.parentElement;
 			const baseSlotName = placeholder?.getAttribute('data-ad-type');
+
+			if (baseSlotName === 'interstitial') {
+				return;
+			}
+
 			const slotName = this.calculateSeamlessSlotName(placeholder);
 			utils.logger('pageChangeWatcher', 'slot to copy: ', baseSlotName, slotName);
 
