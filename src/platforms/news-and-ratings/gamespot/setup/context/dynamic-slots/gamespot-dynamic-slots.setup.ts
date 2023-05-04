@@ -58,6 +58,10 @@ export class GamespotDynamicSlotsSetup implements DiProcess {
 			const newSlotElement: HTMLElement = stub?.parentElement.querySelector('.mapped-ad');
 			const baseSlotName = newSlotElement?.dataset['adType'];
 
+			if (baseSlotName === 'interstitial') {
+				return;
+			}
+
 			if (typeof this.stubbedSlotsCounter[baseSlotName] !== 'number') {
 				this.stubbedSlotsCounter[baseSlotName] = 1;
 				newSlotElement.id = baseSlotName;

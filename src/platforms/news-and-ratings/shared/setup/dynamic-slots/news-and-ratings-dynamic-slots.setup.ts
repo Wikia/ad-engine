@@ -25,7 +25,7 @@ export class NewsAndRatingsDynamicSlotsSetup implements DiProcess {
 			const adSlotName = placeholder.getAttribute('data-ad-type');
 			const adWrapper = utils.Document.getFirstElementChild(placeholder);
 
-			if (!adWrapper) {
+			if (!adWrapper || adSlotName === 'interstitial') {
 				return;
 			}
 
