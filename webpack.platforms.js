@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const platformsConfig = require('./src/platforms/platforms.json');
 const common = require('./webpack.common.js');
 
@@ -23,6 +24,11 @@ const platforms = ({ entry }) => ({
 		}),
 		new webpack.ProvidePlugin({
 			process: 'process/browser',
+		}),
+		new BundleAnalyzerPlugin({
+			// generate the stats.json file
+			analyzerMode: 'disabled',
+			generateStatsFile: true,
 		}),
 	],
 
@@ -57,17 +63,17 @@ module.exports = (env, argv) => {
 			}),
 		);
 	}
-
-	if (argv.mode === 'production') {
-		return platformsConfig.list.map((platform) =>
-			merge(
-				common(),
-				platforms({
-					entry: { [platform]: path.resolve(__dirname, `src/platforms/${platform}/index.ts`) },
-				}),
-			),
-		);
-	}
+	//
+	// if (argv.mode === 'production') {
+	// 	return platformsConfig.list.map((platform) =>
+	// 		merge(
+	// 			common(),
+	// 			platforms({
+	// 				entry: { [platform]: path.resolve(__dirname, `src/platforms/${platform}/index.ts`) },
+	// 			}),
+	// 		),
+	// 	);
+	// }
 
 	return merge(
 		common(),
