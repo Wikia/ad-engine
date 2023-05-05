@@ -8,10 +8,15 @@ import {
 	eventsRepository,
 	utils,
 } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
+import { NewsAndRatingsSlotsDefinitionRepository } from '../../../shared';
 
 const logGroup = 'dynamic-slots';
 
+@Injectable()
 export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
+	constructor(private slotsDefinitionRepository: NewsAndRatingsSlotsDefinitionRepository) {}
+
 	private repeatedSlotsCounter: Dictionary<number> = {};
 	private repeatedSlotsRendered: string[] = [];
 	private repeatedSlotsQueue: Dictionary<[string, string]> = {};
@@ -43,6 +48,8 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 					});
 				}
 			});
+
+			insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
 		});
 
 		communicationService.on(

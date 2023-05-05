@@ -1,8 +1,16 @@
+import { insertSlots } from '@platforms/shared';
 import { context, DiProcess } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
+import { NewsAndRatingsSlotsDefinitionRepository } from '../../../shared';
 
+@Injectable()
 export class MetacriticDynamicSlotsSetup implements DiProcess {
+	constructor(private slotsDefinitionRepository: NewsAndRatingsSlotsDefinitionRepository) {}
+
 	execute(): void {
 		this.injectSlots();
+
+		insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
 	}
 
 	private injectSlots(): void {
