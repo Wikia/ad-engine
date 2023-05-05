@@ -23,8 +23,10 @@ import {
 	eventsRepository,
 	parallel,
 	ProcessPipeline,
+	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import lodash from 'lodash';
 import { basicContext } from './ad-context';
 import { UcpDesktopAdsMode } from './modes/ucp-desktop-ads.mode';
 import { UcpDesktopA9ConfigSetup } from './setup/context/a9/ucp-desktop-a9-config.setup';
@@ -39,6 +41,16 @@ export class UcpDesktopPlatform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
 	execute(): void {
+		const testObj = {
+			prop: {
+				inner: {
+					innerProp: 'value',
+				},
+			},
+		};
+
+		utils.logger('UcpDesktopPlatform', lodash.get(testObj, 'prop.inner.innerProp'));
+
 		// Config
 		this.pipeline.add(
 			() => context.extend(basicContext),
