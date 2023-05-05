@@ -54,6 +54,7 @@ jobs:
         with:
           name: ${{ matrix.source }}-stats
           path: ./dist/platforms/stats.json
+          retention-days: 5
 
   pkg-size-report:
     name: Package Size Report

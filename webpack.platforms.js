@@ -29,6 +29,12 @@ const platforms = ({ entry }) => ({
 			// generate the stats.json file
 			analyzerMode: 'disabled',
 			generateStatsFile: true,
+			statsOptions: {
+				preset: 'minimal',
+				assets: true,
+				assetsSort: 'name',
+				chunks: true,
+			},
 		}),
 	],
 
