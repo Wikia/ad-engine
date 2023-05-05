@@ -13,16 +13,10 @@ jobs:
       matrix:
         source: [head, base]
     steps:
-      - name: Checkout head
-        if: ${{ matrix.source }} == 'head'
+      - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
-      - name: Checkout base
-        if: ${{ matrix.source }} == 'base'
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.base_ref }}
+          ref: ${{ matrix.source == 'head' && github.event.pull_request.head.ref || github.base_ref }}
       - uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.INSTANT_CONFIG_LOADER_REPO_SSH_KEY }}
