@@ -45,6 +45,7 @@ export interface TargetingData {
 	media?: string[];
 	npa?: string;
 	off?: string;
+	optimizely?: string[];
 	original_host?: string;
 	post_id?: string;
 	ppid?: string;
