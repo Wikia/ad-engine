@@ -46,7 +46,7 @@ jobs:
           key: ${{ runner.os }}-stats-${{ steps.commit.outputs.sha }}
           restore-keys: |
             ${{ runner.os }}-stats-${{ steps.commit.outputs.sha }}
-      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.stats-cache.outputs.cache-hit != 'true' }}
         name: Build
         run: npm run build:platforms
       - name: Upload stats.json
@@ -54,7 +54,7 @@ jobs:
         with:
           name: ${{ matrix.source }}-stats
           path: ./dist/platforms/stats.json
-          retention-days: 5
+          retention-days: 7
 
   pkg-size-report:
     name: Package Size Report
