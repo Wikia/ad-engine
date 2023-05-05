@@ -32,11 +32,11 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
       - uses: actions/cache@v3
-        id: yarn-cache
+        id: npm-cache
         with:
           path: |
             **/node_modules
-          key: ${{ runner.os }}-npm-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.lock') }}
           restore-keys: |
             ${{ runner.os }}-npm-
       - name: Install dependencies
