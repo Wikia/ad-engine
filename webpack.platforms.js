@@ -30,10 +30,12 @@ const platforms = ({ entry }) => ({
 			analyzerMode: 'disabled',
 			generateStatsFile: true,
 			statsOptions: {
-				preset: 'minimal',
+				preset: 'normal',
 				assets: true,
 				assetsSort: 'name',
 				chunks: true,
+				chunkModules: false,
+				modules: false,
 			},
 		}),
 	],
