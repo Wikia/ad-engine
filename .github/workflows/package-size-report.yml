@@ -36,13 +36,16 @@ jobs:
             ${{ runner.os }}-npm-
       - name: Install dependencies
         run: npm ci
+      - name: Get commit SHA
+        id: commit
+        run: echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
       - uses: actions/cache@v3
         id: stats-cache
         with:
           path: ./dist/platforms/stats.json
-          key: ${{ runner.os }}-stats-${{ github.sha }}
+          key: ${{ runner.os }}-stats-${{ steps.commit.outputs.sha }}
           restore-keys: |
-            ${{ runner.os }}-stats-${{ github.sha }}
+            ${{ runner.os }}-stats-${{ steps.commit.outputs.sha }}
       - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
         name: Build
         run: npm run build:platforms
