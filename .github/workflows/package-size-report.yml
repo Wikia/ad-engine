@@ -32,10 +32,19 @@ jobs:
             **/node_modules
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.lock') }}
           restore-keys: |
+            ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.lock') }}
             ${{ runner.os }}-npm-
       - name: Install dependencies
         run: npm ci
-      - name: Build
+      - uses: actions/cache@v3
+        id: npm-cache
+        with:
+          path: ./dist/platforms/stats.json
+          key: ${{ runner.os }}-stats-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-stats-${{ github.sha }}
+      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+        name: Build
         run: npm run build:platforms
       - name: Upload stats.json
         uses: actions/upload-artifact@v3
