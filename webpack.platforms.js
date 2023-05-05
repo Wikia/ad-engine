@@ -63,7 +63,7 @@ module.exports = (env, argv) => {
 			}),
 		);
 	}
-	//
+
 	// if (argv.mode === 'production') {
 	// 	return platformsConfig.list.map((platform) =>
 	// 		merge(
