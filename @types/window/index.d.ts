@@ -36,6 +36,14 @@ interface Window {
 	pvNumber?: number;
 	pvNumberGlobal?: number;
 	pvUID?: string;
+	PQ?: {
+		cmd: any[];
+		getTargeting?: (
+			options: { signals: string[]; adUnits?: object[] },
+			callback: (error, targetingData) => void,
+		) => void;
+		loadSignals?: (signals: string[]) => void;
+	};
 	RLQ?: any;
 	sessionId?: string;
 	session_id?: string;

@@ -1,4 +1,4 @@
-import { AdSlot, communicationService, context, utils } from '@wikia/ad-engine';
+import { AdSlotEvent, communicationService, context, utils } from '@wikia/ad-engine';
 import { clickDetector } from './metric-reporter-trackers/click-detector';
 
 interface EndpointInfo {
@@ -79,7 +79,7 @@ export class MetricReporter {
 	}
 
 	private trackGamSlotRequest(): void {
-		communicationService.onSlotEvent(AdSlot.SLOT_REQUESTED_EVENT, ({ slot }) => {
+		communicationService.onSlotEvent(AdSlotEvent.SLOT_REQUESTED_EVENT, ({ slot }) => {
 			this.sendToMeteringSystem({
 				slot: slot.getSlotName(),
 				state: 'request',
@@ -88,7 +88,7 @@ export class MetricReporter {
 	}
 
 	private trackGamSlotRendered(): void {
-		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot }) => {
+		communicationService.onSlotEvent(AdSlotEvent.SLOT_RENDERED_EVENT, ({ slot }) => {
 			this.sendToMeteringSystem({
 				slot: slot.getSlotName(),
 				state: 'render',

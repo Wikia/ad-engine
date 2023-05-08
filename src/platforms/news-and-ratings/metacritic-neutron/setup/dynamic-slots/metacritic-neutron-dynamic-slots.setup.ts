@@ -1,5 +1,7 @@
+import { insertSlots } from '@platforms/shared';
 import {
-	AdSlot,
+	AdSlotEvent,
+	AdSlotStatus,
 	communicationService,
 	context,
 	DiProcess,
@@ -8,8 +10,13 @@ import {
 	slotService,
 	utils,
 } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
+import { NewsAndRatingsSlotsDefinitionRepository } from '../../../shared';
 
+@Injectable()
 export class MetacriticNeutronDynamicSlotsSetup implements DiProcess {
+	constructor(private slotsDefinitionRepository: NewsAndRatingsSlotsDefinitionRepository) {}
+
 	execute(): void {
 		communicationService.on(
 			eventsRepository.AD_ENGINE_PARTNERS_READY,
@@ -26,6 +33,8 @@ export class MetacriticNeutronDynamicSlotsSetup implements DiProcess {
 			},
 			false,
 		);
+
+		insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
 	}
 
 	private injectSlots(adPlaceholders): void {
@@ -62,20 +71,20 @@ export class MetacriticNeutronDynamicSlotsSetup implements DiProcess {
 	private setupRepeatableSlot(slotName, slotNameBase = '') {
 		const slotRepeater = new SlotRepeater();
 
-		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot }) => {
+		communicationService.onSlotEvent(AdSlotEvent.SLOT_RENDERED_EVENT, ({ slot }) => {
 			if (slot.isEnabled() && slot.getConfigProperty('repeat')) {
 				slotRepeater.repeatSlot(slot, slot.getConfigProperty('repeat'));
 			}
 		});
 
 		communicationService.onSlotEvent(
-			AdSlot.STATUS_SUCCESS,
+			AdSlotStatus.STATUS_SUCCESS,
 			() => this.injectNextSlot(slotName, slotNameBase),
 			slotName,
 			true,
 		);
 		communicationService.onSlotEvent(
-			AdSlot.STATUS_COLLAPSE,
+			AdSlotStatus.STATUS_COLLAPSE,
 			() => this.injectNextSlot(slotName, slotNameBase),
 			slotName,
 			true,
