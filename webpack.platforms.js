@@ -72,17 +72,6 @@ module.exports = (env, argv) => {
 		);
 	}
 
-	// if (argv.mode === 'production') {
-	// 	return platformsConfig.list.map((platform) =>
-	// 		merge(
-	// 			common(),
-	// 			platforms({
-	// 				entry: { [platform]: path.resolve(__dirname, `src/platforms/${platform}/index.ts`) },
-	// 			}),
-	// 		),
-	// 	);
-	// }
-
 	return merge(
 		common(),
 		platforms({
