@@ -24,16 +24,28 @@ export class OptimizelyService {
 			return forcedValue;
 		}
 
-		if (!this.isEnabledExperiment(optimizelyVariables.EXPERIMENT_ENABLED)) {
+		if (!this.getValueFromWindow(optimizelyVariables.EXPERIMENT_ENABLED)) {
 			utils.logger(logGroup, `Experiment ${optimizelyVariables.EXPERIMENT_ENABLED} is disabled`);
 			return;
 		}
 
-		const variant = this.getVariantValue(optimizelyVariables.EXPERIMENT_VARIANT);
+		const variant = this.getValueFromWindow(optimizelyVariables.EXPERIMENT_VARIANT);
 
-		this.variantToLog(optimizelyVariables, variant);
+		if (variant === undefined) {
+			utils.logger(
+				logGroup,
+				`Experiment ${optimizelyVariables.EXPERIMENT_VARIANT} has undefined value`,
+			);
 
-		return variant;
+			return;
+		}
+
+		utils.logger(
+			logGroup,
+			`Experiment ${optimizelyVariables.EXPERIMENT_VARIANT} variant: ${variant}`,
+		);
+
+		return variant.toString();
 	}
 
 	addVariantToTargeting(optimizelyVariables: OptimizelyVariablesType, value: string) {
@@ -42,28 +54,10 @@ export class OptimizelyService {
 		targetingService.set('optimizely', Object.values(this.targetingValues));
 	}
 
-	private variantToLog(optimizelyVariables: OptimizelyVariablesType, variant: string | undefined) {
-		if (variant == undefined) {
-			utils.logger(
-				logGroup,
-				`Experiment ${optimizelyVariables.EXPERIMENT_VARIANT} has undefined value`,
-			);
-		} else {
-			utils.logger(
-				logGroup,
-				`Experiment ${optimizelyVariables.EXPERIMENT_VARIANT} variant: ${variant}`,
-			);
-		}
-	}
+	private getValueFromWindow(variantVariableName: string): string | boolean | undefined {
+		window.adsExperiments = window.adsExperiments || {};
 
-	private isEnabledExperiment(enabledVariableName: string): boolean {
-		window.ads.runtime = window?.ads?.runtime || {};
-
-		return window.ads.runtime[enabledVariableName] ?? false;
-	}
-
-	private getVariantValue(variantVariableName: string): string | undefined {
-		return window?.ads?.runtime[variantVariableName] ?? undefined;
+		return window.adsExperiments[variantVariableName] ?? undefined;
 	}
 
 	private getForcedValue(variantVariableName: string): string {

@@ -148,7 +148,7 @@ export class BaseContextSetup implements DiProcess {
 		utils.logger('setInContentExperiment', `Experiment - value: ${variant}`);
 
 		if (variant) {
-			utils.logger('setInContentExperiment', `Experiment - new targeting value`);
+			utils.logger('setInContentExperiment', `Experiment - new targeting value: ${variant}`);
 			this.optimizelyService.addVariantToTargeting(
 				OPTIMIZELY_SANDBOX_INCONTENT_EXPERIMENT,
 				variant,
