@@ -8,17 +8,11 @@ export function getGlobalValue<T>(name: string): T | undefined {
 }
 
 export function getGlobal(): any | undefined {
-	if (typeof window !== 'undefined') {
-		return window;
-	}
-	if (typeof globalThis !== 'undefined') {
-		return globalThis;
-	}
-	if (typeof self !== 'undefined') {
-		return self;
-	}
-	if (typeof global !== 'undefined') {
-		return global;
-	}
-	return undefined;
+	return (
+		(typeof window !== 'undefined' && window) ||
+		(typeof globalThis !== 'undefined' && globalThis) ||
+		(typeof self !== 'undefined' && self) ||
+		(typeof global !== 'undefined' && global) ||
+		undefined
+	);
 }
