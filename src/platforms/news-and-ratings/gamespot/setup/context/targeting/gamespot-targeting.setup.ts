@@ -14,6 +14,6 @@ export class GamespotTargetingSetup implements DiProcess {
 	}
 
 	getVerticalName(): string | undefined {
-		return targetingService.get('verticalName');
+		return targetingService.get('verticalName') || 'gaming';
 	}
 }

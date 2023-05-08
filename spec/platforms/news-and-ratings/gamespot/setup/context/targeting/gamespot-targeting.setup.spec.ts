@@ -38,5 +38,17 @@ describe('Gamespot Targeting Setup', () => {
 			// then
 			expect(verticalName).to.equal('gaming');
 		});
+
+		it('defaults to  "gaming" when verticalName is not available', () => {
+			// given
+			const gamespotTargetingSetup = new GamespotTargetingSetup();
+			targetingServiceStub.get.withArgs('verticalName').returns(undefined);
+
+			// when
+			const verticalName = gamespotTargetingSetup.getVerticalName();
+
+			// then
+			expect(verticalName).to.equal('gaming');
+		});
 	});
 });
