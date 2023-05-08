@@ -24,12 +24,12 @@ export class OptimizelyService {
 			return forcedValue;
 		}
 
-		if (!this.getValueFromWindow(optimizelyVariables.EXPERIMENT_ENABLED)) {
+		if (!this.getOptimizelyValue(optimizelyVariables.EXPERIMENT_ENABLED)) {
 			utils.logger(logGroup, `Experiment ${optimizelyVariables.EXPERIMENT_ENABLED} is disabled`);
 			return;
 		}
 
-		const variant = this.getValueFromWindow(optimizelyVariables.EXPERIMENT_VARIANT);
+		const variant = this.getOptimizelyValue(optimizelyVariables.EXPERIMENT_VARIANT);
 
 		if (variant === undefined) {
 			utils.logger(
@@ -54,10 +54,10 @@ export class OptimizelyService {
 		targetingService.set('optimizely', Object.values(this.targetingValues));
 	}
 
-	private getValueFromWindow(variantVariableName: string): string | boolean | undefined {
+	private getOptimizelyValue(variableName: string): string | boolean | undefined {
 		window.adsExperiments = window.adsExperiments || {};
 
-		return window.adsExperiments[variantVariableName] ?? undefined;
+		return window.adsExperiments[variableName] ?? undefined;
 	}
 
 	private getForcedValue(variantVariableName: string): string {
