@@ -6,9 +6,9 @@ type OptimizelyVariablesType = {
 	EXPERIMENT_VARIANT: string;
 };
 
-export interface TargetingValues {
+type TargetingValues = {
 	[key: string]: any;
-}
+};
 
 const logGroup = 'optimizely-service';
 
