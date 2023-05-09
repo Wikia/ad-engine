@@ -59,7 +59,7 @@ describe('Optimizely service', () => {
 		expect(optimizelyService.getVariant(experiment)).to.equal('B');
 	});
 
-	it('Add variant to targeting', () => {
+	it('Add expertiment variant to targeting', () => {
 		const experiment = {
 			EXPERIMENT_ENABLED: 'experiment_xyz',
 			EXPERIMENT_VARIANT: 'experiment_xyz_variant',
@@ -70,7 +70,7 @@ describe('Optimizely service', () => {
 		expect(targetingServiceStub.set.calledWith('optimizely', ['test'])).to.equal(true);
 	});
 
-	it('Add multiple variants to targeting', () => {
+	it('Add multiple experiment variants to targeting', () => {
 		const experiment = {
 			EXPERIMENT_ENABLED: 'experiment_xyz',
 			EXPERIMENT_VARIANT: 'experiment_xyz_variant',
