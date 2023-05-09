@@ -8,6 +8,7 @@ import {
 	communicationService,
 	Confiant,
 	DiProcess,
+	DoubleVerify,
 	DurationMedia,
 	eventsRepository,
 	Eyeota,
@@ -34,11 +35,13 @@ export class UcpDesktopAdsMode implements DiProcess {
 		private bidders: Bidders,
 		private captify: Captify,
 		private confiant: Confiant,
+		private doubleVerify: DoubleVerify,
 		private durationMedia: DurationMedia,
 		private eyeota: Eyeota,
 		private gptSetup: GptSetup,
 		private iasPublisherOptimization: IasPublisherOptimization,
 		private identityHub: IdentityHub,
+		private identitySetup: IdentitySetup,
 		private liveConnect: LiveConnect,
 		private liveRampPixel: LiveRampPixel,
 		private nielsen: Nielsen,
@@ -46,7 +49,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 		private prebidNativeProvider: PrebidNativeProvider,
 		private stroer: Stroer,
 		private wadRunner: WadRunner,
-		private identitySetup: IdentitySetup,
 	) {}
 
 	execute(): void {
@@ -81,6 +83,9 @@ export class UcpDesktopAdsMode implements DiProcess {
 					timeout: jwPlayerInhibitor.isRequiredToRun()
 						? jwPlayerInhibitor.getDelayTimeoutInMs()
 						: null,
+				}),
+				this.doubleVerify.setOptions({
+					dependencies: [this.gptSetup.initialized],
 				}),
 			)
 			.execute()

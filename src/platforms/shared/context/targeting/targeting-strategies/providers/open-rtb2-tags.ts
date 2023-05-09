@@ -49,10 +49,8 @@ export class OpenRtb2Tags implements TargetingProvider<OpenRtb2Object> {
 		const categories = [...site.categories, ...site.taxonomy];
 		categories.forEach((category) => this.addCategory(category));
 
-		if (categories.includes('ent')) {
-			const tags = site.tags.media ?? [];
-
-			tags.forEach((tag) => this.addCategory(tag));
+		if (categories.includes('ent') && site?.tags?.media) {
+			site.tags.media.forEach((tag) => this.addCategory(tag));
 		}
 
 		return [...this.categories].sort();
@@ -67,6 +65,10 @@ export class OpenRtb2Tags implements TargetingProvider<OpenRtb2Object> {
 	}
 
 	private getKeywords(site: FandomContext['site']): string {
+		if (!site?.tags) {
+			return '';
+		}
+
 		return [
 			...new Set([
 				...(site.tags.gnre ?? []),

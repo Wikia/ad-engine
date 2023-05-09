@@ -6,6 +6,7 @@ import {
 	communicationService,
 	Confiant,
 	DiProcess,
+	DoubleVerify,
 	DurationMedia,
 	eventsRepository,
 	IasPublisherOptimization,
@@ -24,13 +25,14 @@ export class SportsAdsMode implements DiProcess {
 		private bidders: Bidders,
 		private captify: Captify,
 		private confiant: Confiant,
+		private doubleVerify: DoubleVerify,
 		private durationMedia: DurationMedia,
 		private gptSetup: GptSetup,
 		private iasPublisherOptimization: IasPublisherOptimization,
+		private identitySetup: IdentitySetup,
 		private liveConnect: LiveConnect,
 		private liveRampPixel: LiveRampPixel,
 		private wadRunner: WadRunner,
-		private identitySetup: IdentitySetup,
 	) {}
 
 	execute(): void {
@@ -52,6 +54,9 @@ export class SportsAdsMode implements DiProcess {
 						this.wadRunner.initialized,
 						this.iasPublisherOptimization.IASReady,
 					],
+				}),
+				this.doubleVerify.setOptions({
+					dependencies: [this.gptSetup.initialized],
 				}),
 			)
 			.execute()

@@ -1,24 +1,35 @@
 import { context, targetingService, trackingOptIn, utils } from '@wikia/ad-engine';
 import { injectable } from 'tsyringe';
+import { TrackingUrl, trackingUrls } from '../setup/tracking-urls';
+import { dwTrafficAggregator } from './data-warehouse-utils/dw-traffic-aggregator';
 import { TrackingParams } from './models/tracking-params';
 
 const logGroup = 'data-warehouse-trackingParams';
-const eventUrl = 'https://beacon.wikia-services.com/__track/special/trackingevent';
-const videoEventUrl = 'https://beacon.wikia-services.com/__track/special/videoplayerevent';
+const eventUrl = trackingUrls.TRACKING_EVENT.url;
+const videoEventUrl = trackingUrls.VIDEO_PLAYER_EVENT.url;
 
 export interface TimeBasedParams {
 	cb: number;
 	url: string;
 }
 
-type DataWarehouseParams = TrackingParams & TimeBasedParams;
+export type DataWarehouseParams = TrackingParams & TimeBasedParams;
 
 @injectable()
 export class DataWarehouseTracker {
 	/**
 	 * Call all the setup trackers
 	 */
-	track(options: TrackingParams, trackingURL?: string): void {
+	track(options: TrackingParams, trackingURL?: TrackingUrl): void {
+		if (
+			trackingURL &&
+			!utils.outboundTrafficRestrict.isOutboundTrafficAllowed(
+				`dw-tracker-${trackingURL.name.toLowerCase()}`,
+			)
+		) {
+			return;
+		}
+
 		const params: TrackingParams = {
 			...this.getDataWarehouseParams(),
 			...options,
@@ -59,12 +70,22 @@ export class DataWarehouseTracker {
 	/**
 	 * Send single get request to Data Warehouse using custom route name (defined in config)
 	 */
-	private sendCustomEvent(options: TrackingParams, trackingURL: string): void {
+	private sendCustomEvent(options: TrackingParams, trackingURL: TrackingUrl): void {
 		const params: DataWarehouseParams = {
 			...options,
 			...this.getTimeBasedParams(),
 		};
-		const url = this.buildDataWarehouseUrl(params, trackingURL);
+
+		if (
+			context.get(`services.dw-tracker-${trackingURL.name.toLowerCase()}.aggregate`) &&
+			dwTrafficAggregator.isAggregatorActive()
+		) {
+			dwTrafficAggregator.push(trackingURL, params);
+
+			// return; // TODO: uncomment in task: ADEN-13038
+		}
+
+		const url = this.buildDataWarehouseUrl(params, trackingURL.url);
 
 		this.sendRequest(url, params);
 	}

@@ -135,9 +135,7 @@ describe('Template Registry', () => {
 
 	it('should throw without providing template dependencies', () => {
 		instance.register('mock', { a: [StateAHandler], b: [StateBHandler] }, 'a');
-		expect(() => instance.init('mock', { getSlotName: () => 'mock' } as any)).to.throw(
-			`Cannot inject the dependency at position #1 of "${AdditionalDependency.name}" constructor`,
-		);
+		expect(() => instance.init('mock', { getSlotName: () => 'mock' } as any)).to.throw();
 	});
 
 	it('should be able to register without template dependencies', () => {

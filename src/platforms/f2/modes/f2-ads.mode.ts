@@ -5,6 +5,7 @@ import {
 	communicationService,
 	context,
 	DiProcess,
+	DoubleVerify,
 	eventsRepository,
 	IasPublisherOptimization,
 	IdentitySetup,
@@ -22,14 +23,15 @@ export class F2AdsMode implements DiProcess {
 		private pipeline: PartnerPipeline,
 		private audigent: Audigent,
 		private captify: Captify,
+		private doubleVerify: DoubleVerify,
 		private gptSetup: GptSetup,
 		private iasPublisherOptimization: IasPublisherOptimization,
+		private identitySetup: IdentitySetup,
 		private liveConnect: LiveConnect,
 		private liveRampPixel: LiveRampPixel,
 		private nielsen: Nielsen,
 		private playerSetup: PlayerSetup,
 		private wadRunner: WadRunner,
-		private identitySetup: IdentitySetup,
 	) {}
 
 	execute(): void {
@@ -54,6 +56,9 @@ export class F2AdsMode implements DiProcess {
 						this.iasPublisherOptimization.IASReady,
 					],
 					timeout: context.get('options.jwpMaxDelayTimeout'),
+				}),
+				this.doubleVerify.setOptions({
+					dependencies: [this.gptSetup.initialized],
 				}),
 			)
 			.execute()

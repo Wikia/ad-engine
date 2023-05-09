@@ -25,18 +25,10 @@ describe('Template Dependencies Manager', () => {
 	});
 
 	it('should throw if no provide', () => {
-		expect(() => container.resolve(TEMPLATE.NAME)).to.throw(
-			`Attempted to resolve unregistered dependency token: "${TEMPLATE.NAME.toString()}"`,
-		);
-		expect(() => container.resolve(TEMPLATE.SLOT)).to.throw(
-			`Attempted to resolve unregistered dependency token: "${TEMPLATE.SLOT.toString()}"`,
-		);
-		expect(() => container.resolve(TEMPLATE.PARAMS)).to.throw(
-			`Attempted to resolve unregistered dependency token: "${TEMPLATE.PARAMS.toString()}"`,
-		);
-		expect(() => container.resolve(AdditionalDependency)).to.throw(
-			`Cannot inject the dependency at position #0 of "${AdditionalDependency.name}" constructor`,
-		);
+		expect(() => container.resolve(TEMPLATE.NAME)).to.throw();
+		expect(() => container.resolve(TEMPLATE.SLOT)).to.throw();
+		expect(() => container.resolve(TEMPLATE.PARAMS)).to.throw();
+		expect(() => container.resolve(AdditionalDependency)).to.throw();
 	});
 
 	it('should provide dependencies', () => {
@@ -57,17 +49,9 @@ describe('Template Dependencies Manager', () => {
 		]);
 		instance.resetDependencies();
 
-		expect(() => container.resolve(TEMPLATE.NAME)).to.throw(
-			`Attempted to resolve unregistered dependency token: "${TEMPLATE.NAME.toString()}"`,
-		);
-		expect(() => container.resolve(TEMPLATE.SLOT)).to.throw(
-			`Attempted to resolve unregistered dependency token: "${TEMPLATE.SLOT.toString()}"`,
-		);
-		expect(() => container.resolve(TEMPLATE.PARAMS)).to.throw(
-			`Attempted to resolve unregistered dependency token: "${TEMPLATE.PARAMS.toString()}"`,
-		);
-		expect(() => container.resolve(AdditionalDependency)).to.throw(
-			`Cannot inject the dependency at position #0 of "${AdditionalDependency.name}" constructor`,
-		);
+		expect(() => container.resolve(TEMPLATE.NAME)).to.throw();
+		expect(() => container.resolve(TEMPLATE.SLOT)).to.throw();
+		expect(() => container.resolve(TEMPLATE.PARAMS)).to.throw();
+		expect(() => container.resolve(AdditionalDependency)).to.throw();
 	});
 });

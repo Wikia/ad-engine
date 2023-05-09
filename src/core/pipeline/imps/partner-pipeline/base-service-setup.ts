@@ -1,11 +1,12 @@
-import { autoInjectable } from 'tsyringe';
+import { injectable } from 'tsyringe';
 import { context, InstantConfigService } from '../../../services';
+import { isCoppaSubject } from '../../../utils';
 import {
 	PartnerInitializationProcess,
 	PartnerInitializationProcessOptions,
 } from './partner-pipeline-types';
 
-@autoInjectable()
+@injectable()
 export class BaseServiceSetup implements PartnerInitializationProcess {
 	options: PartnerInitializationProcessOptions;
 	initializationTimeout;
@@ -37,7 +38,7 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 				variableValue &&
 				context.get('options.trackingOptIn') &&
 				!context.get('options.optOutSale') &&
-				!context.get('wiki.targeting.directedAtChildren')
+				!isCoppaSubject()
 			);
 		}
 

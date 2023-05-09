@@ -21,7 +21,7 @@ class BTRec {
 		utils.logger(logGroup, 'loading');
 		globalContextService.setValue(GlobalContextCategories.partners, {
 			blockthrough: {
-				directedAtChildren: !!context.get('wiki.targeting.directedAtChildren'),
+				directedAtChildren: !!utils.isCoppaSubject(),
 			},
 		});
 		await this.loadScript().then(() => {

@@ -55,7 +55,7 @@ export class UcpTargetingSetup implements DiProcess {
 		);
 
 		if (this.instantConfig.get<boolean>('icOpenRtb2Context')) {
-			targetingService.set('openrtb2', createOpenRtb2Context(fandomContext));
+			targetingService.set('openrtb2', createOpenRtb2Context(fandomContext), 'openrtb2');
 		}
 	}
 

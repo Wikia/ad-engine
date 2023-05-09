@@ -2,52 +2,76 @@ name: Package Size Report
 
 on:
   pull_request:
-    branches: [dev]
+    branches: [dev, dev-bundle]
 
 jobs:
-  pkg-size-report:
-    name: Package Size Report
+  build:
+    name: 'Build'
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        source: [head, base]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          ref: ${{ matrix.source == 'head' && github.event.pull_request.head.ref || github.base_ref }}
 
       - uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.INSTANT_CONFIG_LOADER_REPO_SSH_KEY }}
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
-
-      - name: Package size report for ucp-desktop
-        uses: pkg-size/action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          cache: 'npm'
+      - uses: actions/cache@v3
+        id: npm-cache
         with:
-          display-size: gzip
-          build-command: npm run build:platforms -- --env platform=ucp-desktop
-          hide-files: '*.{map,txt}'
-          unchanged-files: hide
-
-      - name: Package size report for ucp-mobile
-        uses: pkg-size/action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.lock') }}
+            ${{ runner.os }}-npm-
+      - name: Install dependencies
+        run: npm ci
+      - name: Get commit SHA
+        id: commit
+        run: echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+      - uses: actions/cache@v3
+        id: stats-cache
         with:
-          display-size: gzip
-          build-command: npm run build:platforms -- --env platform=ucp-mobile
-          hide-files: '*.{map,txt}'
-          unchanged-files: hide
-
-      - name: Package size report for f2
-        uses: pkg-size/action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          path: ./dist/platforms/stats.json
+          key: ${{ runner.os }}-stats-${{ steps.commit.outputs.sha }}
+          restore-keys: |
+            ${{ runner.os }}-stats-${{ steps.commit.outputs.sha }}
+      - if: ${{ steps.stats-cache.outputs.cache-hit != 'true' }}
+        name: Build
+        run: npm run build:platforms
+      - name: Upload stats.json
+        uses: actions/upload-artifact@v3
         with:
           display-size: gzip
           build-command: npm run build:platforms -- --env platform=f2
           hide-files: '*.{map,txt}'
           unchanged-files: hide
+          name: ${{ matrix.source }}-stats
+          path: ./dist/platforms/stats.json
+          retention-days: 7
+
+  pkg-size-report:
+    name: Package Size Report
+    runs-on: ubuntu-latest
+    needs: [build]
+    permissions:
+      pull-requests: write
+
+    steps:
+      - uses: actions/download-artifact@v3
+      - uses: github/webpack-bundlesize-compare-action@v1.5.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          current-stats-json-path: ./head-stats/stats.json
+          base-stats-json-path: ./base-stats/stats.json

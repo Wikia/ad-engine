@@ -6,12 +6,17 @@ export class GamespotSlotsContextSetup implements DiProcess {
 	execute(): void {
 		const slots = {
 			interstitial: {
-				defaultSizes: [[1, 1]],
+				adProduct: 'interstitial',
+				adUnit:
+					'/{custom.dfpId}/{slotConfig.group}/{slotConfig.adProduct}' +
+					'/{custom.device}{custom.region}-{custom.property}{custom.pagePath}',
+				group: 'IU',
+				options: {},
 				outOfPage: true,
-			},
-			'interstitial-inc': {
-				defaultSizes: [[1, 1]],
-				outOfPage: true,
+				outOfPageFormat: 'INTERSTITIAL',
+				targeting: {
+					loc: 'hivi',
+				},
 			},
 			'skybox-nav': {
 				defaultSizes: [[5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],

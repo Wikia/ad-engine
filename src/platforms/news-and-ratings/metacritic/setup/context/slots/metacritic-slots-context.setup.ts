@@ -5,6 +5,19 @@ import { injectable } from 'tsyringe';
 export class MetacriticSlotsContextSetup implements DiProcess {
 	execute(): void {
 		const slots = {
+			interstitial: {
+				adProduct: 'interstitial',
+				adUnit:
+					'/{custom.dfpId}/{slotConfig.group}/{slotConfig.adProduct}' +
+					'/{custom.device}{custom.region}-{custom.property}{custom.pagePath}',
+				group: 'IU',
+				options: {},
+				outOfPage: true,
+				outOfPageFormat: 'INTERSTITIAL',
+				targeting: {
+					loc: 'hivi',
+				},
+			},
 			nav_ad_omni: {
 				defaultSizes: [[5, 5], [6, 6], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
 				targeting: {

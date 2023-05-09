@@ -1,8 +1,16 @@
 import { context, DiProcess, utils } from '@wikia/ad-engine';
+import { injectable } from 'tsyringe';
+import { insertSlots } from '../../../../shared';
+import { NewsAndRatingsSlotsDefinitionRepository } from './news-and-ratings-slots-definition-repository';
 
+@injectable()
 export class NewsAndRatingsDynamicSlotsSetup implements DiProcess {
+	constructor(private slotsDefinitionRepository: NewsAndRatingsSlotsDefinitionRepository) {}
+
 	execute(): void {
 		this.injectSlots();
+
+		insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
 	}
 
 	private injectSlots(): void {
@@ -17,7 +25,7 @@ export class NewsAndRatingsDynamicSlotsSetup implements DiProcess {
 			const adSlotName = placeholder.getAttribute('data-ad-type');
 			const adWrapper = utils.Document.getFirstElementChild(placeholder);
 
-			if (!adWrapper) {
+			if (!adWrapper || adSlotName === 'interstitial') {
 				return;
 			}
 

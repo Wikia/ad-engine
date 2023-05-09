@@ -17,7 +17,9 @@ const createExpectedOpenRtb2Object = (
 	tags: Dictionary<string[]> = {},
 	mobile: 0 | 1 = 0,
 ): OpenRtb2Object => {
-	const keywords = [...new Set(Object.keys(tags).flatMap((key) => tags[key]))].sort().join(',');
+	const keywords = tags
+		? [...new Set(Object.keys(tags).flatMap((key) => tags[key]))].sort().join(',')
+		: '';
 
 	return {
 		site: {
@@ -46,6 +48,13 @@ const testCases: {
 		testName: 'empty fandomContext',
 		categories: [],
 		tags: {},
+		taxonomies: [],
+		openRtb2ContentCategories: [],
+	},
+	{
+		testName: 'null tags fandomContext',
+		categories: ['ent'],
+		tags: null,
 		taxonomies: [],
 		openRtb2ContentCategories: [],
 	},

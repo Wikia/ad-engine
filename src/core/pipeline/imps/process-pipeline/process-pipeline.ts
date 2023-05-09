@@ -42,7 +42,7 @@ class ProcessPipelineAdapter implements PipelineAdapter<ProcessStepUnion, void> 
 	}
 
 	private isDiProcess(step: ProcessStep): step is Type<DiProcess> {
-		return typeof step.prototype.execute === 'function';
+		return typeof step.prototype?.execute === 'function';
 	}
 }
 

@@ -6,6 +6,19 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 	// TODO: Refactor - wait for decision on ADEN-12650
 	execute(): void {
 		const slots = {
+			interstitial: {
+				adProduct: 'interstitial',
+				adUnit:
+					'/{custom.dfpId}/{slotConfig.group}/{slotConfig.adProduct}' +
+					'/{custom.device}{custom.region}-{custom.property}{custom.pagePath}',
+				group: 'IU',
+				options: {},
+				outOfPage: true,
+				outOfPageFormat: 'INTERSTITIAL',
+				targeting: {
+					loc: 'hivi',
+				},
+			},
 			'omni-skybox-leader-nav': {
 				defaultSizes: [
 					[5, 5],
