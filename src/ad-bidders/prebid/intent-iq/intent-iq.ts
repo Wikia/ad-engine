@@ -6,7 +6,7 @@ const logGroup = 'IntentIQ';
 export class IntentIQ {
 	private fandomId = 1187275693;
 	private intentIQScriptUrl =
-		'//script.wikia.nocookie.net/fandom-ae-assets/platforms/dev/ADEN-12643/intentiq/IIQUniversalID.js';
+		'//script.wikia.nocookie.net/fandom-ae-assets/intentiq/5.4/IIQUniversalID.js';
 	private intentIqObject: IntentIqObject;
 
 	async initialize(pbjs: Pbjs): Promise<void> {
