@@ -42,8 +42,13 @@ describe('IntentIQ', () => {
 			expect(intentIqNewSpy.notCalled).to.be.true;
 		});
 
-		it('should initialize when IntentIQ is enabled', async () => {
-			global.sandbox.stub(context, 'get').withArgs('bidders.prebid.intentIQ').returns(true);
+		it('should initialize when IntentIQ is enabled and consents are given', async () => {
+			global.sandbox
+				.stub(context, 'get')
+				.withArgs('bidders.prebid.intentIQ')
+				.returns(true)
+				.withArgs('options.trackingOptIn')
+				.returns(true);
 			const targetingServiceStub = global.sandbox.stub(targetingService, 'set');
 			const intentIQ = new IntentIQ();
 
@@ -76,8 +81,13 @@ describe('IntentIQ', () => {
 			expect(intentIqReportSpy.notCalled).to.be.true;
 		});
 
-		it('should report external win when IntentIQ is enabled', async () => {
-			global.sandbox.stub(context, 'get').withArgs('bidders.prebid.intentIQ').returns(true);
+		it('should report external win when IntentIQ is enabled and consents are given', async () => {
+			global.sandbox
+				.stub(context, 'get')
+				.withArgs('bidders.prebid.intentIQ')
+				.returns(true)
+				.withArgs('options.trackingOptIn')
+				.returns(true);
 			pbjsStub.getBidResponsesForAdUnitCode.returns({
 				bids: [
 					PrebidBidFactory.getBid({
