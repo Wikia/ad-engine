@@ -1,14 +1,14 @@
+import { Optimizely } from '@wikia/ad-services/optimizely';
 import { targetingService, TargetingService, utils } from '@wikia/core';
-import { OptimizelyService } from '@wikia/platforms/shared';
 import { expect } from 'chai';
 import { SinonStubbedInstance } from 'sinon';
 
 describe('Optimizely service', () => {
-	let optimizelyService: OptimizelyService;
+	let optimizelyService: Optimizely;
 	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 
 	beforeEach(() => {
-		optimizelyService = new OptimizelyService();
+		optimizelyService = new Optimizely();
 		targetingServiceStub = global.sandbox.stub(targetingService);
 	});
 

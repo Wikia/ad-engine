@@ -1,4 +1,4 @@
-import { targetingService, utils } from '@wikia/ad-engine';
+import { targetingService, utils } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
 
 type OptimizelyVariablesType = {
@@ -13,7 +13,7 @@ type TargetingValues = {
 const logGroup = 'optimizely-service';
 
 @Injectable()
-export class OptimizelyService {
+export class Optimizely {
 	private targetingValues: TargetingValues = {};
 
 	getVariant(optimizelyVariables: OptimizelyVariablesType): string | undefined {

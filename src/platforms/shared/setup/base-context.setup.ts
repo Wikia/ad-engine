@@ -5,6 +5,7 @@ import {
 	DiProcess,
 	eventsRepository,
 	InstantConfigService,
+	Optimizely,
 	setupNpaContext,
 	setupRdpContext,
 	universalAdPackage,
@@ -12,7 +13,6 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { NoAdsDetector } from '../services/no-ads-detector';
-import { OptimizelyService } from '../services/optimizely-service';
 
 const OPTIMIZELY_SANDBOX_INCONTENT_EXPERIMENT = {
 	EXPERIMENT_ENABLED: 'sandbox_in_content_ads',
@@ -30,7 +30,7 @@ export class BaseContextSetup implements DiProcess {
 	constructor(
 		protected instantConfig: InstantConfigService,
 		protected noAdsDetector: NoAdsDetector,
-		protected optimizelyService: OptimizelyService,
+		protected optimizelyService: Optimizely,
 	) {}
 
 	execute(): void {
