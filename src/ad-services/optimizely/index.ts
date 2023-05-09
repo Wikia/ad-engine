@@ -10,7 +10,7 @@ type TargetingValues = {
 	[key: string]: any;
 };
 
-const logGroup = 'optimizely-service';
+const logGroup = 'optimizely';
 
 @Injectable()
 export class Optimizely {
