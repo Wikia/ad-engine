@@ -10,7 +10,7 @@ export class IntentIQ {
 	private intentIqObject: IntentIqObject;
 
 	async initialize(pbjs: Pbjs): Promise<void> {
-		if (!context.get('bidders.prebid.intentIQ')) {
+		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
 			return;
 		}
@@ -45,7 +45,7 @@ export class IntentIQ {
 	}
 
 	async reportPrebidWin(slotAlias: string, winningBid: PrebidTargeting): Promise<void> {
-		if (!context.get('bidders.prebid.intentIQ') || !this.intentIqObject) {
+		if (!this.isEnabled() || !this.intentIqObject) {
 			return;
 		}
 
@@ -74,6 +74,15 @@ export class IntentIQ {
 		utils.logger(logGroup, 'reporting prebid win', data);
 
 		this.intentIqObject.reportExternalWin(data);
+	}
+
+	private isEnabled(): boolean {
+		return (
+			context.get('bidders.prebid.intentIQ') &&
+			context.get('options.trackingOptIn') &&
+			!context.get('options.optOutSale') &&
+			!utils.isCoppaSubject()
+		);
 	}
 }
 
