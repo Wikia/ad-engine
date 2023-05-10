@@ -76,7 +76,7 @@ export class BiddersStateSetup implements DiProcess {
 			return;
 		}
 
-		if (utils.isCoppaSubject() && !this.isCoppaCompliant(name)) {
+		if (utils.isCoppaSubject() && !this.isBidderCoppaCompliant(name)) {
 			context.set(`bidders.prebid.${name}.enabled`, false);
 			return;
 		}
@@ -84,7 +84,7 @@ export class BiddersStateSetup implements DiProcess {
 		context.set(`bidders.prebid.${name}.enabled`, !!this.instantConfig.get(icKey));
 	}
 
-	private isCoppaCompliant(bidderName: string): boolean {
+	private isBidderCoppaCompliant(bidderName: string): boolean {
 		return !this.notCoppaCompliantBidders.includes(bidderName);
 	}
 }
