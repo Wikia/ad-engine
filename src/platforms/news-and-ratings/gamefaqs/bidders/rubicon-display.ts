@@ -46,6 +46,14 @@ export function getRubiconDisplayContext(isDesktop: boolean): object {
 			siteId: '462802',
 			zoneId: '2719822',
 		},
+		'skybox-nav': {
+			sizes: [
+				[728, 90],
+				[970, 250],
+			],
+			siteId: '462802',
+			zoneId: '2843720',
+		},
 	};
 
 	const mobileSlots = {
@@ -140,6 +148,14 @@ export function getRubiconDisplayContext(isDesktop: boolean): object {
 			sizes: [[728, 90]],
 			siteId: '462804',
 			zoneId: '2719796',
+		},
+		'mobile-skybox-nav': {
+			sizes: [
+				[320, 50],
+				[320, 100],
+			],
+			siteId: '462804',
+			zoneId: '2843722',
 		},
 	};
 
