@@ -1,3 +1,4 @@
+import { insertSlots } from '@platforms/shared';
 import {
 	AdSlotEvent,
 	AdSlotStatus,
@@ -9,8 +10,13 @@ import {
 	slotService,
 	utils,
 } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
+import { NewsAndRatingsSlotsDefinitionRepository } from '../../../shared';
 
+@Injectable()
 export class MetacriticNeutronDynamicSlotsSetup implements DiProcess {
+	constructor(private slotsDefinitionRepository: NewsAndRatingsSlotsDefinitionRepository) {}
+
 	execute(): void {
 		communicationService.on(
 			eventsRepository.AD_ENGINE_PARTNERS_READY,
@@ -27,6 +33,8 @@ export class MetacriticNeutronDynamicSlotsSetup implements DiProcess {
 			},
 			false,
 		);
+
+		insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
 	}
 
 	private injectSlots(adPlaceholders): void {
