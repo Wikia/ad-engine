@@ -5,6 +5,19 @@ import { Injectable } from '@wikia/dependency-injection';
 export class GiantbombSlotsContextSetup implements DiProcess {
 	execute(): void {
 		const slots = {
+			interstitial: {
+				adProduct: 'interstitial',
+				adUnit:
+					'/{custom.dfpId}/{slotConfig.group}/{slotConfig.adProduct}' +
+					'/{custom.device}{custom.region}-{custom.property}{custom.pagePath}',
+				group: 'IU',
+				options: {},
+				outOfPage: true,
+				outOfPageFormat: 'INTERSTITIAL',
+				targeting: {
+					loc: 'hivi',
+				},
+			},
 			'skybox-nav': {
 				defaultSizes: [[5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
 				targeting: {
@@ -73,10 +86,6 @@ export class GiantbombSlotsContextSetup implements DiProcess {
 				targeting: {
 					pos_nr: 'top',
 				},
-			},
-			interstitial: {
-				defaultSizes: [[1, 1]],
-				outOfPage: true,
 			},
 			'native-top': {
 				defaultSizes: [

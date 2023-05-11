@@ -9,12 +9,12 @@ import {
 let adEngineInstance: AdEngine;
 
 export class GptSetup extends BaseServiceSetup {
-	call() {
+	call(): Promise<Event> {
 		utils.logger('GPT Setup', 'Called');
 		const GPT_LIBRARY_URL = '//www.googletagservices.com/tag/js/gpt.js';
 
 		utils.logger('gpt-provider', 'loading GPT...');
-		utils.scriptLoader.loadScript(GPT_LIBRARY_URL);
+		const gptLoaded = utils.scriptLoader.loadScript(GPT_LIBRARY_URL);
 
 		adEngineInstance = new AdEngine();
 		adEngineInstance.init();
@@ -22,5 +22,7 @@ export class GptSetup extends BaseServiceSetup {
 		communicationService.onSlotEvent(AdSlotEvent.SLOT_RENDERED_EVENT, ({ slot }) => {
 			slot.removeClass('default-height');
 		});
+
+		return gptLoaded;
 	}
 }

@@ -1,11 +1,19 @@
+import { insertSlots } from '@platforms/shared';
 import { context, DiProcess, utils } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
+import { NewsAndRatingsSlotsDefinitionRepository } from '../../../../shared';
 
+@Injectable()
 export class GamespotDynamicSlotsSetup implements DiProcess {
+	constructor(private slotsDefinitionRepository: NewsAndRatingsSlotsDefinitionRepository) {}
+
 	private stubbedSlotsCounter = {};
 
 	execute(): void {
 		this.injectSlots();
 		this.restoreStubbedSlots();
+
+		insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
 	}
 
 	private injectSlots(): void {
@@ -20,7 +28,7 @@ export class GamespotDynamicSlotsSetup implements DiProcess {
 			const adSlotName = placeholder.getAttribute('data-ad-type');
 			const adWrapper = utils.Document.getFirstElementChild(placeholder);
 
-			if (!adWrapper) {
+			if (!adWrapper || adSlotName === 'interstitial') {
 				return;
 			}
 
@@ -49,6 +57,10 @@ export class GamespotDynamicSlotsSetup implements DiProcess {
 			stub.insertAdjacentHTML('beforebegin', stub.innerHTML);
 			const newSlotElement: HTMLElement = stub?.parentElement.querySelector('.mapped-ad');
 			const baseSlotName = newSlotElement?.dataset['adType'];
+
+			if (baseSlotName === 'interstitial') {
+				return;
+			}
 
 			if (typeof this.stubbedSlotsCounter[baseSlotName] !== 'number') {
 				this.stubbedSlotsCounter[baseSlotName] = 1;
