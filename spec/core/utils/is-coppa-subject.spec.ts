@@ -36,6 +36,8 @@ describe('isCoppaSubject', () => {
 		});
 
 		const testCases = [
+			{ ageGateCookie: '', expected: true },
+			{ ageGateCookie: 'incorrect', expected: true },
 			{ ageGateCookie: '1|0|1', expected: true },
 			{ ageGateCookie: '1|1|1', expected: false },
 		];
