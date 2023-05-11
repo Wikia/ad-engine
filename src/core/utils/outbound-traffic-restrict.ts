@@ -22,6 +22,10 @@ class OutboundTrafficRestrict {
 			isAllowed = this.getSeed() < threshold;
 		}
 
+		if (threshold < 1) {
+			isAllowed = false;
+		}
+
 		utils.logger(
 			'outbound-traffic-restrict',
 			`Outbound traffic for: "${serviceName}" is allowed: ${isAllowed}`,

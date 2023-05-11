@@ -11,7 +11,7 @@ export class MetricReporterSetup implements DiProcess {
 		context.set('services.monitoring.service', 'adeng');
 		context.set(
 			'services.monitoring.threshold',
-			this.instantConfig.get('icMonitorTrafficThreshold'),
+			this.instantConfig.get('icMonitorTrafficThreshold', 0),
 		);
 	}
 }
