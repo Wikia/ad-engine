@@ -45,12 +45,12 @@ export class DwAggregatedDataGzipCompressor implements DwAggregatedDataCompresso
 			});
 
 			return { compressed: compressedBytes, contentEncoding: this.contentEncoding };
-		} catch (e) {
+		} catch (error) {
 			utils.logger(
 				'dw_gzip_compressor_debug',
 				'DwAggregatedDataGzipCompressor',
 				'Error while compressing data, returning uncompressed data instead.',
-				{ error: e },
+				{ error },
 			);
 			return { compressed: input };
 		}

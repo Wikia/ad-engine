@@ -7,7 +7,7 @@ export function getGlobalValue<T>(name: string): T | undefined {
 	return value as T | undefined;
 }
 
-export function getGlobal(): any | undefined {
+function getGlobal(): any | undefined {
 	return (
 		(typeof window !== 'undefined' && window) ||
 		(typeof globalThis !== 'undefined' && globalThis) ||
