@@ -28,6 +28,7 @@ interface Window {
 	googleImaVansAdapter?: any;
 	googletag: googletag.Googletag;
 	headertag?: any;
+	IntentIqObject?: IntentIqObject;
 	liQ?: LiQ;
 	mw?: MediaWiki;
 	ntv?: NativoApi;
