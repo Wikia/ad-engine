@@ -3,11 +3,11 @@ import { context, CookieStorageAdapter } from '../services';
 
 export function isCoppaSubject(): boolean {
 	const directedAtChildren = context.get('wiki.targeting.directedAtChildren');
-	if (context.get('services.ageGateHandling')) {
+	if (context.get('services.ageGateHandling') && directedAtChildren) {
 		try {
 			const cookieStorage = new CookieStorageAdapter();
 			const ageGateResult = cookieStorage.getItem('age_gate');
-			if (ageGateResult && directedAtChildren) {
+			if (ageGateResult) {
 				const [dialogShown, adult] = ageGateResult.split('|');
 				return dialogShown === '1' ? adult === '0' : directedAtChildren;
 			}
