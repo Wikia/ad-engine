@@ -47,6 +47,13 @@ export function getPubmaticContext(isDesktop: boolean): object {
 		video: {
 			ids: ['4923778'],
 		},
+		nav_ad_omni: {
+			sizes: [
+				[728, 90],
+				[970, 250],
+			],
+			ids: ['5099308'],
+		},
 	};
 
 	const mobileSlots = {
@@ -182,6 +189,13 @@ export function getPubmaticContext(isDesktop: boolean): object {
 		},
 		video: {
 			ids: ['4923779'],
+		},
+		mobile_nav_ad_omni: {
+			sizes: [
+				[300, 100],
+				[320, 50],
+			],
+			ids: ['5099309'],
 		},
 	};
 
