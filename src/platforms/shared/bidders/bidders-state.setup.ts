@@ -62,6 +62,8 @@ export class BiddersStateSetup implements DiProcess {
 				});
 				this.enableIfApplicable('testBidder', 'icPrebidTestBidder');
 			}
+
+			context.set('bidders.prebid.intentIQ', this.instantConfig.get('icPrebidIntentIQ', false));
 		}
 
 		context.set(
