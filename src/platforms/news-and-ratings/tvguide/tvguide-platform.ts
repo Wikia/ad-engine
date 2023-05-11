@@ -30,6 +30,7 @@ import { basicContext } from './ad-context';
 import { TvGuideNextPageAdsMode } from './modes/tvguide-next-page-ads.mode';
 import { TvGuideA9ConfigSetup } from './setup/context/a9/tvguide-a9-config.setup';
 import { TvGuidePrebidConfigSetup } from './setup/context/prebid/tvguide-prebid-config.setup';
+import { TvGuideAnyclipSetup } from './setup/context/slots/tvguide-anyclip.setup';
 import { TvGuideSlotsContextSetup } from './setup/context/slots/tvguide-slots-context.setup';
 import { TvGuideTargetingSetup } from './setup/context/targeting/tvguide-targeting.setup';
 import { TvGuideDynamicSlotsSetup } from './setup/dynamic-slots/tvguide-dynamic-slots.setup';
@@ -53,6 +54,7 @@ export class TvGuidePlatform {
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			TvGuideTargetingSetup,
+			TvGuideAnyclipSetup,
 			NewsAndRatingsTargetingSetup,
 			TvGuideSlotsContextSetup,
 			SlotsConfigurationExtender,
