@@ -19,6 +19,7 @@ import {
 import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
+import { intentIQ } from './intent-iq';
 import { liveRamp } from './live-ramp';
 import { getWinningBid } from './prebid-helper';
 import { getSettings } from './prebid-settings';
@@ -104,6 +105,7 @@ export class PrebidProvider extends BidderProvider {
 		this.registerBidsRefreshing();
 		this.registerBidsTracking();
 		this.enableATSAnalytics();
+		this.registerIntentIQ();
 
 		utils.logger(logGroup, 'prebid created', this.prebidConfig);
 	}
@@ -221,9 +223,13 @@ export class PrebidProvider extends BidderProvider {
 		const pbjs: Pbjs = await pbjsFactory.init();
 		const slotAlias: string = this.getSlotAlias(slotName);
 
+		const winningBid = await getWinningBid(slotAlias);
+
+		intentIQ.reportPrebidWin(slotAlias, winningBid);
+
 		return {
 			...pbjs.getAdserverTargetingForAdUnitCode(slotAlias),
-			...(await getWinningBid(slotAlias)),
+			...winningBid,
 		};
 	}
 
@@ -319,5 +325,11 @@ export class PrebidProvider extends BidderProvider {
 	 */
 	calculatePrices(): void {
 		return;
+	}
+
+	private async registerIntentIQ(): Promise<void> {
+		const pbjs: Pbjs = await pbjsFactory.init();
+
+		return intentIQ.initialize(pbjs);
 	}
 }

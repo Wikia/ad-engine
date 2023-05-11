@@ -60,6 +60,10 @@ export class GamespotSeamlessContentObserverSetup implements DiProcess {
 			const placeholder = this.useParentAsAdPlaceholder ? adWrapper.parentElement : adWrapper;
 			const baseSlotName = placeholder?.getAttribute(this.dataAdAttribute);
 
+			if (baseSlotName === 'interstitial') {
+				return;
+			}
+
 			if (!this.isSlotDefinedInContext(baseSlotName)) {
 				utils.logger(
 					'pageChangeWatcher',

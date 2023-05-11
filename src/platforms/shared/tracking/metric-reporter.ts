@@ -61,7 +61,8 @@ export class MetricReporter {
 			queryParams.push(`${k}=${encodeURIComponent(v)}`);
 		});
 
-		utils.fetchTimeout(
+		const fetchTimeout = new utils.FetchTimeout();
+		fetchTimeout.fetch(
 			`${endpointUrl}?app=${endpointInfo.appName}&${queryParams.join('&')}`,
 			2000,
 			{

@@ -90,7 +90,11 @@ interface PrebidBid {
 }
 
 interface PrebidBidResponse {
+	auctionId: string;
 	cpm: number;
+	currency: string;
+	originalCpm?: number;
+	originalCurrency?: string;
 	status: string;
 	bidderCode: string;
 	requestTimestamp: number;
