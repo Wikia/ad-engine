@@ -1,7 +1,6 @@
 import { context } from '@wikia/core';
 import { MetricReporterSetup } from '@wikia/platforms/shared';
 import { expect } from 'chai';
-import sinon from 'sinon';
 
 describe('MetricReporterSetup', () => {
 	it('should set values to the context', async () => {
@@ -10,7 +9,7 @@ describe('MetricReporterSetup', () => {
 		} as any;
 		const metricSetup = new MetricReporterSetup(instantConfig);
 
-		const contextSetSpy = sinon.spy(context, 'set');
+		const contextSetSpy = global.sandbox.spy(context, 'set');
 		await metricSetup.execute();
 
 		expect(contextSetSpy.callCount).to.be.eq(3);
