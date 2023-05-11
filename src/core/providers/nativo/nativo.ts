@@ -38,7 +38,6 @@ export class Nativo {
 			.then(() => {
 				Nativo.log('Nativo API loaded.');
 				this.watchNtvEvents();
-				this.watchPrebidNativeEvents();
 			});
 	}
 
@@ -92,14 +91,6 @@ export class Nativo {
 		logger(logGroup, ...logValues);
 	}
 
-	/**
-	 * When Nativo is disabled or collapsed - load Affiliate Unit:
-	 * @link https://github.com/Wikia/silver-surfer/blob/master/src/pathfinder/modules/AffiliateUnitModule/hooks/useAdConflictListener.ts
-	 */
-	replaceWithAffiliateUnit(): void {
-		this.sendNativoStatus(AdSlotStatus.STATUS_DISABLED);
-	}
-
 	sendNativoStatus(status: string): void {
 		const payload = {
 			event: status,
@@ -138,14 +129,6 @@ export class Nativo {
 		});
 	}
 
-	private watchPrebidNativeEvents(): void {
-		communicationService.on(eventsRepository.NO_NATIVE_PREBID_AD, (payload) => {
-			if (payload.slotName == Nativo.INCONTENT_AD_SLOT_NAME) {
-				this.replaceWithAffiliateUnit();
-			}
-		});
-	}
-
 	static extractSlotIdFromNativoNoAdEventData(e: NativoNoAdEvent): string {
 		return e.data[0]?.adLocation
 			? e.data[0].adLocation.substring(1)
@@ -172,9 +155,6 @@ export class Nativo {
 
 		if (adStatus === AdSlotStatus.STATUS_COLLAPSE) {
 			slot.hide();
-			if (slotName === Nativo.INCONTENT_AD_SLOT_NAME) {
-				this.replaceWithAffiliateUnit();
-			}
 		}
 
 		if (adStatus === AdSlotStatus.STATUS_SUCCESS && slotName === Nativo.FEED_AD_SLOT_NAME) {

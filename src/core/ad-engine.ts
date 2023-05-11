@@ -74,8 +74,6 @@ export class AdEngine {
 		const nativo = new Nativo(context);
 		if (nativo.isEnabled()) {
 			nativo.load();
-		} else {
-			nativo.replaceWithAffiliateUnit();
 		}
 	}
 
