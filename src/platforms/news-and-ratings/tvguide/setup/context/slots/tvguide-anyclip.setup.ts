@@ -1,15 +1,42 @@
-import { context, DiProcess, targetingService, utils } from '@wikia/ad-engine';
+import {
+	communicationService,
+	context,
+	DiProcess,
+	eventsRepository,
+	targetingService,
+	utils,
+} from '@wikia/ad-engine';
 
 export class TvGuideAnyclipSetup implements DiProcess {
+	private logGroup = 'Anyclip';
+	private currentDocumentTitle;
+
 	execute(): void {
+		this.currentDocumentTitle = window.document.title;
+
 		context.set('services.anyclip.isApplicable', () => {
 			const pname = targetingService.get('pname');
 			const isApplicable = this.isApplicable(pname);
 
-			utils.logger('Anyclip', 'isApplicable: ', isApplicable, pname);
+			utils.logger(this.logGroup, 'isApplicable: ', isApplicable, pname);
 
 			return isApplicable;
 		});
+
+		communicationService.on(
+			eventsRepository.PLATFORM_PAGE_CHANGED,
+			() => {
+				const pname = targetingService.get('pname');
+				const isPageTransition = this.currentDocumentTitle !== window.document.title;
+				utils.logger(this.logGroup, this.currentDocumentTitle, window.document.title, pname);
+
+				if (window?.anyclip?.loaded && isPageTransition && !this.isApplicable(pname)) {
+					utils.logger(this.logGroup, 'Destroying Anyclip widget');
+					window?.anyclip?.destroy();
+				}
+			},
+			false,
+		);
 	}
 
 	isApplicable(pname: string): boolean {

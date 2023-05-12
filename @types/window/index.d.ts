@@ -5,7 +5,7 @@ interface Window {
 	AdEngine_adType?: ManualAdType;
 	ads?: MediaWikiAds;
 	adsQueue?: any;
-	PWT: { jsLoaded: () => void };
+	anyclip?: any;
 	apstag?: Apstag;
 	au?: any;
 	au_seg?: any;
@@ -37,6 +37,7 @@ interface Window {
 	pvNumber?: number;
 	pvNumberGlobal?: number;
 	pvUID?: string;
+	PWT: { jsLoaded: () => void };
 	PQ?: {
 		cmd: any[];
 		getTargeting?: (
