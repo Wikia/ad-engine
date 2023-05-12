@@ -5,7 +5,6 @@ import {
 	DiProcess,
 	eventsRepository,
 	InstantConfigService,
-	Optimizely,
 	setupNpaContext,
 	setupRdpContext,
 	universalAdPackage,
@@ -14,23 +13,11 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 import { NoAdsDetector } from '../services/no-ads-detector';
 
-const OPTIMIZELY_SANDBOX_INCONTENT_EXPERIMENT = {
-	EXPERIMENT_ENABLED: 'sandbox_in_content_ads',
-	EXPERIMENT_VARIANT: 'sandbox_in_content_ads_variant',
-};
-
-const OPTIMIZELY_SANDBOX_INCONTENT_EXPERIMENT_VARIANTS = {
-	NEW_VARIANT: 'sandbox_in_content_ads_new',
-	OLD_VARIANT: 'sandbox_in_content_ads_old',
-	UNDEFINED: 'sandbox_in_content_ads_undefined',
-};
-
 @Injectable()
 export class BaseContextSetup implements DiProcess {
 	constructor(
 		protected instantConfig: InstantConfigService,
 		protected noAdsDetector: NoAdsDetector,
-		protected optimizelyService: Optimizely,
 	) {}
 
 	execute(): void {
@@ -83,7 +70,6 @@ export class BaseContextSetup implements DiProcess {
 		} else {
 			context.set('templates.incontentAnchorSelector', '.mw-parser-output > h2');
 		}
-		this.setInContentExperiment();
 
 		context.set('options.performanceAds', this.instantConfig.get('icPerformanceAds'));
 		context.set('options.stickyTbExperiment', this.instantConfig.get('icStickyTbExperiment'));
@@ -136,24 +122,6 @@ export class BaseContextSetup implements DiProcess {
 		context.set('options.coppaPrebid', this.instantConfig.get('icCoppaPrebid'));
 
 		this.setWadContext();
-	}
-
-	private setInContentExperiment() {
-		this.optimizelyService.addVariantToTargeting(
-			OPTIMIZELY_SANDBOX_INCONTENT_EXPERIMENT,
-			OPTIMIZELY_SANDBOX_INCONTENT_EXPERIMENT_VARIANTS.UNDEFINED,
-		);
-		const variant = this.optimizelyService.getVariant(OPTIMIZELY_SANDBOX_INCONTENT_EXPERIMENT);
-
-		utils.logger('setInContentExperiment', `Experiment - value: ${variant}`);
-
-		if (variant) {
-			utils.logger('setInContentExperiment', `Experiment - new targeting value: ${variant}`);
-			this.optimizelyService.addVariantToTargeting(
-				OPTIMIZELY_SANDBOX_INCONTENT_EXPERIMENT,
-				variant,
-			);
-		}
 	}
 
 	private setWadContext(): void {
