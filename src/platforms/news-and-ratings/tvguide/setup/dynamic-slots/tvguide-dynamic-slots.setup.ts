@@ -1,6 +1,6 @@
 import { insertSlots, SlotSetupDefinition } from '@platforms/shared';
 import {
-	AdSlot,
+	AdSlotEvent,
 	communicationService,
 	context,
 	Dictionary,
@@ -8,10 +8,15 @@ import {
 	eventsRepository,
 	utils,
 } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
+import { NewsAndRatingsSlotsDefinitionRepository } from '../../../shared';
 
 const logGroup = 'dynamic-slots';
 
+@Injectable()
 export class TvGuideDynamicSlotsSetup implements DiProcess {
+	constructor(private slotsDefinitionRepository: NewsAndRatingsSlotsDefinitionRepository) {}
+
 	private repeatedSlotsCounter: Dictionary<number> = {};
 	private repeatedSlotsRendered: string[] = [];
 	private repeatedSlotsQueue: Dictionary<[string, string]> = {};
@@ -33,7 +38,7 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 				false,
 			);
 
-			communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ adSlotName }) => {
+			communicationService.onSlotEvent(AdSlotEvent.SLOT_RENDERED_EVENT, ({ adSlotName }) => {
 				this.repeatedSlotsRendered.push(adSlotName);
 
 				if (this.repeatedSlotsQueue[adSlotName]) {
@@ -43,6 +48,8 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 					});
 				}
 			});
+
+			insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
 		});
 
 		communicationService.on(

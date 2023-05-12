@@ -13,7 +13,7 @@ export class Site {
 	public readonly esrbRating: string;
 	public readonly siteName: string;
 	public readonly top1000: boolean;
-	public readonly tags: TaxonomyTags;
+	public readonly tags: TaxonomyTags | null;
 	public readonly taxonomy: string[];
 	public readonly mpaRating: string;
 

@@ -6,9 +6,17 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 	execute(): void {
 		const slots = {
 			interstitial: {
-				code: 'interstitial',
-				defaultSizes: [[1, 1]],
+				adProduct: 'interstitial',
+				adUnit:
+					'/{custom.dfpId}/{slotConfig.group}/{slotConfig.adProduct}' +
+					'/{custom.device}{custom.region}-{custom.property}{custom.pagePath}',
+				group: 'IU',
+				options: {},
 				outOfPage: true,
+				outOfPageFormat: 'INTERSTITIAL',
+				targeting: {
+					loc: 'hivi',
+				},
 			},
 			'omni-skybox-nav': {
 				code: 'omni-skybox-nav',

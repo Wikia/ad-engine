@@ -5,6 +5,8 @@ import {
 	bootstrapAndGetConsent,
 	InstantConfigSetup,
 	LoadTimesSetup,
+	MetricReporter,
+	MetricReporterSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
@@ -39,6 +41,8 @@ export class MetacriticPlatform {
 			() => bootstrapAndGetConsent(),
 			InstantConfigSetup,
 			TrackingParametersSetup,
+			MetricReporterSetup,
+			MetricReporter,
 			LoadTimesSetup,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,

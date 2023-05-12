@@ -1,5 +1,6 @@
+import { PrebidNativeConfig } from '@wikia/ad-bidders';
 import { Appnexus } from '@wikia/ad-bidders/prebid/adapters/appnexus';
-import { TargetingService, targetingService } from '@wikia/core';
+import { context, TargetingService, targetingService } from '@wikia/core';
 import { expect } from 'chai';
 import { SinonStubbedInstance } from 'sinon';
 
@@ -56,6 +57,55 @@ describe('Appnexus bidder adapter', () => {
 							keywords: {
 								pos: ['bottom_leaderboard'],
 								src: ['gpt'],
+							},
+						},
+					},
+				],
+			},
+		]);
+	});
+
+	it('prepareAdUnits returns data in correct shape for native prebid config', () => {
+		global.sandbox
+			.stub(context, 'get')
+			.withArgs('slots.bottom_leaderboard.isNative')
+			.returns(true)
+			.withArgs('bidders.prebid.native.enabled')
+			.returns(true)
+			.withArgs('bidders.prebid.appnexusNative.enabled')
+			.returns(true);
+		const appnexus = new Appnexus({
+			enabled: true,
+			slots: {
+				bottom_leaderboard: {
+					sizes: [
+						[300, 250],
+						[320, 50],
+					],
+				},
+			},
+			placements: {
+				ent: '99220011',
+				gaming: '99220022',
+				life: '99220033',
+				other: '99220044',
+			},
+		});
+
+		expect(appnexus.prepareAdUnits()).to.deep.equal([
+			{
+				code: 'bottom_leaderboard',
+				mediaTypes: {
+					native: PrebidNativeConfig.getPrebidNativeMediaTypes('mobile'),
+				},
+				bids: [
+					{
+						bidder: 'appnexus',
+						params: {
+							placementId: '99220044',
+							keywords: {
+								pos: ['bottom_leaderboard'],
+								src: [''],
 							},
 						},
 					},

@@ -5,6 +5,7 @@ import {
 } from '@ad-engine/communication';
 import {
 	AdSlot,
+	AdSlotEvent,
 	config,
 	context,
 	DEFAULT_MAX_DELAY,
@@ -18,8 +19,9 @@ import {
 import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
+import { intentIQ } from './intent-iq';
 import { liveRamp } from './live-ramp';
-import { getWinningBid, setupAdUnits } from './prebid-helper';
+import { getWinningBid } from './prebid-helper';
 import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice } from './price-helper';
 
@@ -29,10 +31,10 @@ interface PrebidConfig extends BidderConfig {
 	[bidderName: string]: { enabled: boolean; slots: Dictionary } | boolean;
 }
 
-communicationService.onSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, ({ slot }) =>
+communicationService.onSlotEvent(AdSlotEvent.VIDEO_AD_IMPRESSION, ({ slot }) =>
 	markWinningVideoBidAsUsed(slot),
 );
-communicationService.onSlotEvent(AdSlot.VIDEO_AD_ERROR, ({ slot }) =>
+communicationService.onSlotEvent(AdSlotEvent.VIDEO_AD_ERROR, ({ slot }) =>
 	markWinningVideoBidAsUsed(slot),
 );
 
@@ -44,7 +46,7 @@ async function markWinningVideoBidAsUsed(adSlot: AdSlot): Promise<void> {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
 		pbjs.markWinningBidAsUsed({ adId });
-		adSlot.emit(AdSlot.VIDEO_AD_USED);
+		adSlot.emit(AdSlotEvent.VIDEO_AD_USED);
 	}
 }
 
@@ -58,7 +60,7 @@ export class PrebidProvider extends BidderProvider {
 		super('prebid', bidderConfig, timeout);
 		adaptersRegistry.configureAdapters();
 
-		this.adUnits = setupAdUnits();
+		this.adUnits = adaptersRegistry.setupAdUnits();
 		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
 
 		this.prebidConfig = {
@@ -87,7 +89,7 @@ export class PrebidProvider extends BidderProvider {
 			},
 		};
 
-		if (config.rollout.coppaFlag().prebid && utils.targeting.isWikiDirectedAtChildren()) {
+		if (config.rollout.coppaFlag().prebid && utils.isCoppaSubject()) {
 			this.prebidConfig.coppa = true;
 		}
 
@@ -103,6 +105,7 @@ export class PrebidProvider extends BidderProvider {
 		this.registerBidsRefreshing();
 		this.registerBidsTracking();
 		this.enableATSAnalytics();
+		this.registerIntentIQ();
 
 		utils.logger(logGroup, 'prebid created', this.prebidConfig);
 	}
@@ -163,7 +166,7 @@ export class PrebidProvider extends BidderProvider {
 		if (adUnits.length) {
 			this.adUnits = adUnits;
 		} else if (!this.adUnits) {
-			this.adUnits = setupAdUnits();
+			this.adUnits = adaptersRegistry.setupAdUnits();
 		}
 	}
 
@@ -181,7 +184,7 @@ export class PrebidProvider extends BidderProvider {
 
 	protected callBids(bidsBackHandler: (...args: any[]) => void): void {
 		if (!this.adUnits) {
-			this.adUnits = setupAdUnits();
+			this.adUnits = adaptersRegistry.setupAdUnits();
 		}
 
 		if (this.adUnits.length === 0) {
@@ -220,9 +223,13 @@ export class PrebidProvider extends BidderProvider {
 		const pbjs: Pbjs = await pbjsFactory.init();
 		const slotAlias: string = this.getSlotAlias(slotName);
 
+		const winningBid = await getWinningBid(slotAlias);
+
+		intentIQ.reportPrebidWin(slotAlias, winningBid);
+
 		return {
 			...pbjs.getAdserverTargetingForAdUnitCode(slotAlias),
-			...(await getWinningBid(slotAlias)),
+			...winningBid,
 		};
 	}
 
@@ -318,5 +325,11 @@ export class PrebidProvider extends BidderProvider {
 	 */
 	calculatePrices(): void {
 		return;
+	}
+
+	private async registerIntentIQ(): Promise<void> {
+		const pbjs: Pbjs = await pbjsFactory.init();
+
+		return intentIQ.initialize(pbjs);
 	}
 }

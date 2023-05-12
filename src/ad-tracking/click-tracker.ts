@@ -1,5 +1,5 @@
 import { communicationService, EventOptions, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, Dictionary, slotService, utils } from '@ad-engine/core';
+import { AdSlot, AdSlotEvent, AdSlotStatus, Dictionary, slotService, utils } from '@ad-engine/core';
 import { BaseTracker, BaseTrackerInterface } from './base-tracker';
 import { slotTrackingCompiler } from './compilers';
 
@@ -14,7 +14,7 @@ class AdClickTracker extends BaseTracker implements BaseTrackerInterface {
 	compilers = [slotTrackingCompiler];
 
 	register(callback): void {
-		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ adSlotName }) => {
+		communicationService.onSlotEvent(AdSlotEvent.SLOT_RENDERED_EVENT, ({ adSlotName }) => {
 			this.addClickTrackingListeners(callback, adSlotName);
 		});
 
@@ -61,7 +61,7 @@ class AdClickTracker extends BaseTracker implements BaseTrackerInterface {
 
 	private handleClickEvent(callback: (data: Dictionary) => void, slot: AdSlot): void {
 		const data = {
-			ad_status: AdSlot.STATUS_CLICKED,
+			ad_status: AdSlotStatus.STATUS_CLICKED,
 		};
 
 		callback(this.compileData(slot, null, data));

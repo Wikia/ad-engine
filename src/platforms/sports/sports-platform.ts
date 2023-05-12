@@ -7,6 +7,8 @@ import {
 	InstantConfigSetup,
 	LabradorSetup,
 	LoadTimesSetup,
+	MetricReporter,
+	MetricReporterSetup,
 	NoAdsDetector,
 	NoAdsMode,
 	PlatformContextSetup,
@@ -24,7 +26,7 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { getBasicContext } from './ad-context';
-import { SportsAdsMode } from './modes/ads/sports-ads.mode';
+import { SportsAdsMode } from './modes/sports-ads.mode';
 import { SportsA9ConfigSetup } from './setup/context/a9/sports-a9-config.setup';
 import { SportsPrebidConfigSetup } from './setup/context/prebid/sports-prebid-config.setup';
 import { SportsSlotsContextSetup } from './setup/context/slots/sports-slots-context.setup';
@@ -47,6 +49,8 @@ export class SportsPlatform {
 			PlatformContextSetup,
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
 			TrackingParametersSetup,
+			MetricReporterSetup,
+			MetricReporter,
 			SportsTargetingSetup,
 			LoadTimesSetup,
 			BaseContextSetup,
