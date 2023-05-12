@@ -28,10 +28,9 @@ export class TvGuideAnyclipSetup implements DiProcess {
 			() => {
 				const pname = targetingService.get('pname');
 				const isPageTransition = this.currentDocumentTitle !== window.document.title;
-				utils.logger(this.logGroup, this.currentDocumentTitle, window.document.title, pname);
 
 				if (window?.anyclip?.loaded && isPageTransition && !this.isApplicable(pname)) {
-					utils.logger(this.logGroup, 'Destroying Anyclip widget');
+					utils.logger(this.logGroup, 'Destroying Anyclip widget', pname);
 					window?.anyclip?.destroy();
 				}
 			},

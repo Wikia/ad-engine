@@ -54,8 +54,8 @@ export class TvGuidePlatform {
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			TvGuideTargetingSetup,
-			TvGuideAnyclipSetup,
 			NewsAndRatingsTargetingSetup,
+			TvGuideAnyclipSetup,
 			TvGuideSlotsContextSetup,
 			SlotsConfigurationExtender,
 			TvGuideDynamicSlotsSetup,
@@ -94,6 +94,7 @@ export class TvGuidePlatform {
 						NewsAndRatingsBaseContextSetup,
 						TvGuideTargetingSetup,
 						NewsAndRatingsTargetingSetup,
+						TvGuideAnyclipSetup,
 						TvGuideSlotsContextSetup,
 						TvGuideNextPageAdsMode,
 					)
@@ -116,6 +117,7 @@ export class TvGuidePlatform {
 						NewsAndRatingsBaseContextSetup,
 						TvGuideTargetingSetup,
 						NewsAndRatingsTargetingSetup,
+						TvGuideAnyclipSetup,
 						TvGuideNextPageAdsMode,
 					)
 					.execute();
