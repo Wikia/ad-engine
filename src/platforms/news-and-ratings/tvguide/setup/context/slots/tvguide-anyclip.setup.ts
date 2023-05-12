@@ -1,18 +1,20 @@
-import { context, DiProcess, utils } from '@wikia/ad-engine';
+import { context, DiProcess, targetingService, utils } from '@wikia/ad-engine';
 
 export class TvGuideAnyclipSetup implements DiProcess {
 	execute(): void {
 		context.set('services.anyclip.isApplicable', () => {
-			const isApplicable = this.isApplicable(location.pathname);
-			utils.logger('Anyclip', 'isApplicable: ', isApplicable);
+			const pname = targetingService.get('pname');
+			const isApplicable = this.isApplicable(pname);
+
+			utils.logger('Anyclip', 'isApplicable: ', isApplicable, pname);
 
 			return isApplicable;
 		});
 	}
 
-	isApplicable(pathname: string): boolean {
-		const applicablePaths = ['/news/', '/services/netflix/'];
+	isApplicable(pname: string): boolean {
+		const applicablePnames = ['news', 'feature_hub'];
 
-		return applicablePaths.indexOf(pathname) !== -1;
+		return applicablePnames.indexOf(pname) !== -1;
 	}
 }
