@@ -1,6 +1,6 @@
 import { communicationService } from '@ad-engine/communication';
 import { Injectable } from '@wikia/dependency-injection';
-import { AdSlot, RepeatConfig } from '../models';
+import { AdSlotEvent, RepeatConfig } from '../models';
 import {
 	AD_LABEL_CLASS,
 	getTopOffset,
@@ -188,7 +188,7 @@ export class SlotCreator {
 
 	private setupSlotRepeat(slotConfig: Required<SlotCreatorConfig>): void {
 		communicationService.onSlotEvent(
-			AdSlot.SLOT_RENDERED_EVENT,
+			AdSlotEvent.SLOT_RENDERED_EVENT,
 			({ slot }) => {
 				if (!slot.isEnabled()) {
 					return;

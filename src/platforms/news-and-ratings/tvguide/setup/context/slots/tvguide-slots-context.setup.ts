@@ -5,6 +5,19 @@ import { Injectable } from '@wikia/dependency-injection';
 export class TvGuideSlotsContextSetup implements DiProcess {
 	execute(): void {
 		const slots = {
+			interstitial: {
+				adProduct: 'interstitial',
+				adUnit:
+					'/{custom.dfpId}/{slotConfig.group}/{slotConfig.adProduct}' +
+					'/{custom.device}{custom.region}-{custom.property}{custom.pagePath}',
+				group: 'IU',
+				options: {},
+				outOfPage: true,
+				outOfPageFormat: 'INTERSTITIAL',
+				targeting: {
+					loc: 'hivi',
+				},
+			},
 			'nav-ad-plus': {
 				defaultSizes: [[5, 5]],
 				targeting: {

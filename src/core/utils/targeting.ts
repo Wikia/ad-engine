@@ -60,10 +60,6 @@ class Targeting {
 		return this.applyCodeLevelBundles(targetingBundles);
 	}
 
-	isWikiDirectedAtChildren(): boolean {
-		return context.get('wiki.targeting.directedAtChildren');
-	}
-
 	private applyCodeLevelBundles(bundles: string[]): string[] {
 		const cookieAdapter = new CookieStorageAdapter();
 		const shortPageWordsLimit = 100;
