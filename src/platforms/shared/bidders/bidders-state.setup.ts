@@ -25,7 +25,7 @@ export class BiddersStateSetup implements DiProcess {
 		verizon: 'icPrebidVerizon',
 		yahoossp: 'icPrebidYahooSsp',
 	};
-	private notCoppaCompliantBidders: string[] = ['kargo', 'verizon'];
+	private notCoppaCompliantBidders: Array<keyof typeof this.prebidBidders> = ['kargo', 'verizon'];
 
 	constructor(private instantConfig: InstantConfigService) {
 		this.selectedBidder = utils.queryString.get('select_bidder') || '';
