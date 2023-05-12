@@ -54,6 +54,12 @@ export class Anyclip extends BaseServiceSetup {
 		}
 	}
 
+	reset() {
+		utils.logger(logGroup, 'Destroying Anyclip widget');
+		window?.anyclip?.destroy();
+		this.loadPlayerAsset();
+	}
+
 	get params(): Record<string, string> {
 		return {
 			pubname: this.pubname,
