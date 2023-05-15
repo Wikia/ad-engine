@@ -115,6 +115,13 @@ export function getIndexExchangeContext(isDesktop: boolean): object {
 		video: {
 			siteId: '936614',
 		},
+		'skybox-nav': {
+			sizes: [
+				[728, 90],
+				[970, 250],
+			],
+			siteId: '971590',
+		},
 	};
 
 	const mobileSlots = {
@@ -244,6 +251,13 @@ export function getIndexExchangeContext(isDesktop: boolean): object {
 		},
 		video: {
 			siteId: '936615',
+		},
+		'mobile-skybox-nav': {
+			sizes: [
+				[320, 50],
+				[320, 100],
+			],
+			siteId: '971591',
 		},
 	};
 
