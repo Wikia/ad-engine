@@ -61,6 +61,11 @@ export class TrackingParametersSetup implements DiProcess {
 
 		context.set('wiki', { ...context.get('wiki'), ...trackingParameters });
 
+		context.set(
+			'services.dw-tracker.compression',
+			this.instantConfig.get('dwTrafficCompression', false),
+		);
+
 		Object.values(trackingUrls).forEach((trackingUrlConfig) => {
 			const dwTrackServiceLowercase = trackingUrlConfig.name.toLowerCase();
 			if (trackingUrlConfig.allowed.sampling) {
