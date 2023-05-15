@@ -38,6 +38,13 @@ export function getPubmaticContext(isDesktop: boolean): object {
 			sizes: [[728, 90]],
 			ids: ['4856853'],
 		},
+		'skybox-nav': {
+			sizes: [
+				[728, 90],
+				[970, 250],
+			],
+			ids: ['5099302'],
+		},
 	};
 	const mobileSlots = {
 		'mobile-native-top': {
@@ -118,6 +125,13 @@ export function getPubmaticContext(isDesktop: boolean): object {
 		'incontent-ad-plus': {
 			sizes: [[728, 90]],
 			ids: ['4856861'],
+		},
+		'mobile-skybox-nav': {
+			sizes: [
+				[320, 50],
+				[320, 100],
+			],
+			ids: ['5099303'],
 		},
 	};
 
