@@ -15,7 +15,7 @@ export class TvGuideAnyclipSetup implements DiProcess {
 	}
 
 	isApplicable(pname: string): boolean {
-		const applicablePnames = ['news', 'feature_hub'];
+		const applicablePnames = ['news', 'feature_hub', 'listings/main'];
 
 		return applicablePnames.indexOf(pname) !== -1;
 	}
