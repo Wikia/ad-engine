@@ -14,6 +14,13 @@ export function getIndexExchangeContext(isDesktop: boolean): object {
 			],
 			siteId: ['933458', '933459'],
 		},
+		'skybox-nav': {
+			sizes: [
+				[728, 90],
+				[970, 250],
+			],
+			siteId: ['971594'],
+		},
 		leader_top: {
 			sizes: [[728, 90]],
 			siteId: ['933462'],
@@ -41,6 +48,13 @@ export function getIndexExchangeContext(isDesktop: boolean): object {
 	};
 
 	const mobileSlots = {
+		'mobile-skybox-nav': {
+			sizes: [
+				[320, 50],
+				[320, 100],
+			],
+			siteId: ['971595'],
+		},
 		'mobile-native': {
 			sizes: [[300, 250]],
 			siteId: ['934641'],
