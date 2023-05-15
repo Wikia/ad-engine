@@ -17,18 +17,22 @@ export class Anyclip extends BaseServiceSetup {
 	private get pubname(): string {
 		return context.get('services.anyclip.pubname') || 'fandomcom';
 	}
+
 	private get widgetname(): string {
 		return context.get('services.anyclip.widgetname') || '001w000001Y8ud2_19593';
 	}
+
 	private get libraryUrl(): string {
 		return (
 			context.get('services.anyclip.libraryUrl') ||
 			'//player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/lre.js'
 		);
 	}
+
 	private get isApplicable(): () => boolean | null {
 		return context.get('services.anyclip.isApplicable');
 	}
+
 	private tracker: VideoTracker;
 
 	call() {
