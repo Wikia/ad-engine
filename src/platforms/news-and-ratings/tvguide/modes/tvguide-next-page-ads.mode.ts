@@ -24,8 +24,7 @@ export class TvGuideNextPageAdsMode implements DiProcess {
 		this.bidders.resetInitialized();
 		this.anyclip.reset();
 		this.pipeline
-			.add(this.anyclip)
-			.add(this.bidders, this.wadRunner, this.playerSetup)
+			.add(this.anyclip, this.bidders, this.wadRunner, this.playerSetup)
 			.execute()
 			.then(() => {
 				this.bidders.initialized.then(() => {

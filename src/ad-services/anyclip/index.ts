@@ -57,7 +57,6 @@ export class Anyclip extends BaseServiceSetup {
 	reset() {
 		utils.logger(logGroup, 'Destroying Anyclip widgets');
 		window?.anyclip?.widgets?.forEach((w) => w?.destroy());
-		this.loadPlayerAsset();
 	}
 
 	get params(): Record<string, string> {
