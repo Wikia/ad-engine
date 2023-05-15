@@ -115,6 +115,13 @@ export function getPubmaticContext(isDesktop: boolean): object {
 		video: {
 			ids: ['4923774'],
 		},
+		'skybox-nav': {
+			sizes: [
+				[728, 90],
+				[970, 250],
+			],
+			ids: ['5099300'],
+		},
 	};
 
 	const mobileSlots = {
@@ -244,6 +251,13 @@ export function getPubmaticContext(isDesktop: boolean): object {
 		},
 		video: {
 			ids: ['4923775'],
+		},
+		'mobile-skybox-nav': {
+			sizes: [
+				[320, 50],
+				[320, 100],
+			],
+			ids: ['5099301'],
 		},
 	};
 

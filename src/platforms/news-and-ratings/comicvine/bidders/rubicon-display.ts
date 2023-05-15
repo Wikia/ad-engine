@@ -16,6 +16,14 @@ export function getRubiconDisplayContext(isDesktop: boolean): object {
 			siteId: '462616',
 			zoneId: '2718880',
 		},
+		'skybox-nav': {
+			sizes: [
+				[728, 90],
+				[970, 250],
+			],
+			siteId: '462616',
+			zoneId: '2843724',
+		},
 		leader_top: {
 			sizes: [[728, 90]],
 			siteId: '462616',
@@ -49,6 +57,14 @@ export function getRubiconDisplayContext(isDesktop: boolean): object {
 	};
 
 	const mobileSlots = {
+		'mobile-skybox-nav': {
+			sizes: [
+				[320, 50],
+				[320, 100],
+			],
+			siteId: '462618',
+			zoneId: '2843726',
+		},
 		'mobile-native': {
 			sizes: [[300, 250]],
 			siteId: '462618',

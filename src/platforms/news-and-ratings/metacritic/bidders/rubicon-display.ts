@@ -52,6 +52,14 @@ export function getRubiconDisplayContext(isDesktop: boolean): object {
 			siteId: '462846',
 			zoneId: '2720070',
 		},
+		nav_ad_omni: {
+			sizes: [
+				[728, 90],
+				[970, 250],
+			],
+			siteId: '462846',
+			zoneId: '2843732',
+		},
 	};
 
 	const mobileSlots = {
@@ -203,6 +211,14 @@ export function getRubiconDisplayContext(isDesktop: boolean): object {
 			sizes: [[320, 50]],
 			siteId: '462848',
 			zoneId: '2720110',
+		},
+		mobile_nav_ad_omni: {
+			sizes: [
+				[300, 100],
+				[320, 50],
+			],
+			siteId: '462848',
+			zoneId: '2843734',
 		},
 	};
 
