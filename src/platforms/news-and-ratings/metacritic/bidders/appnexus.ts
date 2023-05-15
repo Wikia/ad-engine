@@ -44,6 +44,13 @@ export function getAppnexusContext(isDesktop: boolean): object {
 			],
 			placementId: ['28574583', '28574584'],
 		},
+		nav_ad_omni: {
+			sizes: [
+				[728, 90],
+				[970, 250],
+			],
+			placementId: ['29779637'],
+		},
 	};
 
 	const mobileSlots = {
@@ -176,6 +183,13 @@ export function getAppnexusContext(isDesktop: boolean): object {
 		'mobile-nav-ad-plus-banner': {
 			sizes: [[320, 50]],
 			placementId: ['28574621'],
+		},
+		mobile_nav_ad_omni: {
+			sizes: [
+				[300, 100],
+				[320, 50],
+			],
+			placementId: ['29779638'],
 		},
 	};
 
