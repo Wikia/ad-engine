@@ -21,10 +21,12 @@ export class TvGuideAnyclipSetup implements DiProcess {
 			return isApplicable;
 		});
 
+		this.updateContextForMiniplayerAnyclip();
+
 		if (this.shouldPlayerBeIncontent(pname)) {
 			utils.logger(this.logGroup, 'player should be in-content');
 
-			this.updateContext();
+			this.updateContextForIncontentAnyclip();
 
 			communicationService.on(
 				eventsRepository.PLATFORM_AD_PLACEMENT_READY,
@@ -39,7 +41,15 @@ export class TvGuideAnyclipSetup implements DiProcess {
 		}
 	}
 
-	private updateContext(): void {
+	private updateContextForMiniplayerAnyclip(): void {
+		context.set('services.anyclip.widgetname', '001w000001Y8ud2AAB_M7985');
+		context.set('services.anyclip.playerElementSelector', null);
+		context.set('services.anyclip.loadOnPageLoad', true);
+		context.set('services.anyclip.latePageInject', false);
+		context.set('custom.hasIncontentPlayer', false);
+	}
+
+	private updateContextForIncontentAnyclip(): void {
 		context.set('services.anyclip.widgetname', '001w000001Y8ud2AAB_M8046');
 		context.set('services.anyclip.playerElementSelector', '#incontent_player');
 		context.set('services.anyclip.loadOnPageLoad', false);
