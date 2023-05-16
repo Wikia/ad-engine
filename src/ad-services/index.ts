@@ -7,5 +7,6 @@ export * from './duration-media';
 export * from './ias-publisher-optimization';
 export * from './identity-setup';
 export * from './nielsen';
+export * from './optimizely';
 export * from './sailthru';
 export * from './stroer';
