@@ -61,6 +61,12 @@ export class TvGuideAnyclipSetup implements DiProcess {
 	}
 
 	private insertPlaceholders(): void {
+		const alreadyExists = document.getElementById('aeAnyclipRow');
+
+		if (alreadyExists) {
+			return;
+		}
+
 		const listingScheduleRow = document.querySelector('.c-tvListingsSchedule_video');
 		const success = listingScheduleRow?.appendChild(this.buildRow());
 
