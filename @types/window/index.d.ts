@@ -5,7 +5,7 @@ interface Window {
 	AdEngine_adType?: ManualAdType;
 	ads?: MediaWikiAds;
 	adsQueue?: any;
-	anyclip?: any;
+	anyclip?: AnyclipApi;
 	apstag?: Apstag;
 	au?: any;
 	au_seg?: any;
@@ -31,6 +31,7 @@ interface Window {
 	mw?: MediaWiki;
 	ntv?: NativoApi;
 	NOLBUNDLE?: any;
+	adsExperiments?: any;
 	pbjs?: any;
 	Phoenix?: Phoenix;
 	PostRelease?: NativoPostRelease;

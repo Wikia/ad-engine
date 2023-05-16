@@ -3,7 +3,6 @@ import { getAdStack } from '../ad-engine';
 import { AdSlotEvent, AdSlotStatus, Dictionary, type AdSlot } from '../models';
 import {
 	btfBlockerService,
-	config,
 	context,
 	slotDataParamsUpdater,
 	slotService,
@@ -211,7 +210,7 @@ export class GptProvider implements Provider {
 			restrictDataProcessing: trackingOptIn.isOptOutSale(),
 		};
 
-		if (config.rollout.coppaFlag().gam && isCoppaSubject()) {
+		if (isCoppaSubject()) {
 			settings.childDirectedTreatment = true;
 		}
 
