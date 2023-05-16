@@ -5,7 +5,7 @@ interface Window {
 	AdEngine_adType?: ManualAdType;
 	ads?: MediaWikiAds;
 	adsQueue?: any;
-	anyclip?: any;
+	anyclip?: AnyclipApi;
 	apstag?: Apstag;
 	au?: any;
 	au_seg?: any;
