@@ -6,7 +6,6 @@ import {
 import {
 	AdSlot,
 	AdSlotEvent,
-	config,
 	context,
 	DEFAULT_MAX_DELAY,
 	Dictionary,
@@ -89,7 +88,7 @@ export class PrebidProvider extends BidderProvider {
 			},
 		};
 
-		if (config.rollout.coppaFlag().prebid && utils.isCoppaSubject()) {
+		if (utils.isCoppaSubject()) {
 			this.prebidConfig.coppa = true;
 		}
 
