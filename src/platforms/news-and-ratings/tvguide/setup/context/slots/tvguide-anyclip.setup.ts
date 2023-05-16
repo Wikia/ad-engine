@@ -22,6 +22,10 @@ export class TvGuideAnyclipSetup implements DiProcess {
 		});
 
 		if (this.shouldPlayerBeIncontent(pname)) {
+			utils.logger(this.logGroup, 'player should be in-content');
+
+			this.updateContext();
+
 			communicationService.on(
 				eventsRepository.PLATFORM_AD_PLACEMENT_READY,
 				({ placementId }) => {
@@ -35,9 +39,23 @@ export class TvGuideAnyclipSetup implements DiProcess {
 		}
 	}
 
+	private updateContext(): void {
+		context.set('services.anyclip.widgetname', '001w000001Y8ud2AAB_M8046');
+		context.set('services.anyclip.playerElementSelector', '#incontent_player');
+		context.set('services.anyclip.loadOnPageLoad', false);
+		context.set('services.anyclip.latePageInject', true);
+		context.set('custom.hasIncontentPlayer', true);
+	}
+
 	private insertPlaceholders(): void {
 		const listingScheduleRow = document.querySelector('.c-tvListingsSchedule_video');
-		listingScheduleRow.appendChild(this.buildRow());
+		const success = listingScheduleRow?.appendChild(this.buildRow());
+
+		if (success) {
+			communicationService.emit(eventsRepository.ANYCLIP_LATE_INJECT);
+			// TODO: remove once we have 100% UAP implemented on N&R
+			communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, { isLoaded: false });
+		}
 	}
 
 	private buildRow(): HTMLElement {
