@@ -25,6 +25,7 @@ export class BiddersStateSetup implements DiProcess {
 		verizon: 'icPrebidVerizon',
 		yahoossp: 'icPrebidYahooSsp',
 	};
+	private notCoppaCompliantBidders: Array<keyof typeof this.prebidBidders> = ['kargo', 'verizon'];
 
 	constructor(private instantConfig: InstantConfigService) {
 		this.selectedBidder = utils.queryString.get('select_bidder') || '';
@@ -76,6 +77,15 @@ export class BiddersStateSetup implements DiProcess {
 			return;
 		}
 
+		if (utils.isCoppaSubject() && !this.isBidderCoppaCompliant(name)) {
+			context.set(`bidders.prebid.${name}.enabled`, false);
+			return;
+		}
+
 		context.set(`bidders.prebid.${name}.enabled`, !!this.instantConfig.get(icKey));
+	}
+
+	private isBidderCoppaCompliant(bidderName: string): boolean {
+		return !this.notCoppaCompliantBidders.includes(bidderName);
 	}
 }

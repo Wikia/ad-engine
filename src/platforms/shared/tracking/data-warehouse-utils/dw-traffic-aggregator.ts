@@ -1,7 +1,7 @@
 import { Dictionary } from '@wikia/ad-engine';
 import { TrackingUrl } from '../../setup/tracking-urls';
 import { DataWarehouseParams } from '../data-warehouse';
-import { DwTrackSender } from './dw-track-sender';
+import { DwAggregatedDataSender } from './dw-aggregated-data-sender';
 
 interface AggregateQueue {
 	track: TrackingUrl;
@@ -16,7 +16,7 @@ export class DwTrafficAggregator {
 	private tracksQueues: Dictionary<AggregateQueue>;
 	private enabled: boolean;
 	private count: number;
-	private sender: DwTrackSender = new DwTrackSender();
+	private sender: DwAggregatedDataSender = new DwAggregatedDataSender();
 
 	constructor() {
 		this.tracksQueues = {};
