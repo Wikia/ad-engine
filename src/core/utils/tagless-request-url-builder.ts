@@ -1,6 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { AdSlot, Dictionary } from '../models';
-import { config, slotService, SlotTargeting, targetingService, trackingOptIn } from '../services';
+import { slotService, SlotTargeting, targetingService, trackingOptIn } from '../services';
 import { isCoppaSubject } from './is-coppa-subject';
 
 export interface TaglessSlotOptions {
@@ -101,7 +101,7 @@ export function buildVastUrl(
 		params.push(`ppid=${ppid}`);
 	}
 
-	if (config.rollout.coppaFlag().gam && isCoppaSubject()) {
+	if (isCoppaSubject()) {
 		params.push('tfcd=1');
 	}
 
@@ -153,7 +153,7 @@ export function buildTaglessRequestUrl(options: Partial<TaglessSlotOptions> = {}
 		params.push(`ppid=${ppid}`);
 	}
 
-	if (config.rollout.coppaFlag().gam && isCoppaSubject()) {
+	if (isCoppaSubject()) {
 		params.push('tfcd=1');
 	}
 
