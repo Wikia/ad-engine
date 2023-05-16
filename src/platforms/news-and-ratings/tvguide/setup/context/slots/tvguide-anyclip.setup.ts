@@ -60,10 +60,12 @@ export class TvGuideAnyclipSetup implements DiProcess {
 
 	private buildRow(): HTMLElement {
 		const listingScheduleRow = document.createElement('div');
-		listingScheduleRow.classList.add('c-tvListingsVideo-container', 'ae-anyclip-row');
+		listingScheduleRow.classList.add('c-tvListingsVideo-container');
+		listingScheduleRow.id = 'aeAnyclipRow';
 
 		const listingVideoContainer = document.createElement('div');
-		listingVideoContainer.classList.add('c-tvListingsVideo-container', 'ae-anyclip-container');
+		listingVideoContainer.classList.add('c-tvListingsVideo-container');
+		listingVideoContainer.id = 'aeAnyclipContainer';
 
 		const videoElement = document.createElement('div');
 		videoElement.classList.add('c-tvListingsVideo_media', 'g-outer-spacing-bottom-medium');
