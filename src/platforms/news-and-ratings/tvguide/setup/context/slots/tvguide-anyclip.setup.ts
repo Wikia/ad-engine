@@ -27,17 +27,7 @@ export class TvGuideAnyclipSetup implements DiProcess {
 			utils.logger(this.logGroup, 'player should be in-content');
 
 			this.updateContextForIncontentAnyclip();
-
-			communicationService.on(
-				eventsRepository.PLATFORM_AD_PLACEMENT_READY,
-				({ placementId }) => {
-					if (placementId === 'leader-top') {
-						utils.logger(this.logGroup, 'inserting placeholders');
-						this.insertPlaceholders();
-					}
-				},
-				false,
-			);
+			this.registerSlotInsertionOnAdPlacementReady();
 		}
 	}
 
@@ -55,6 +45,19 @@ export class TvGuideAnyclipSetup implements DiProcess {
 		context.set('services.anyclip.loadOnPageLoad', false);
 		context.set('services.anyclip.latePageInject', true);
 		context.set('custom.hasIncontentPlayer', true);
+	}
+
+	private registerSlotInsertionOnAdPlacementReady(): void {
+		communicationService.on(
+			eventsRepository.PLATFORM_AD_PLACEMENT_READY,
+			({ placementId }) => {
+				if (placementId === 'leader-top') {
+					utils.logger(this.logGroup, 'inserting placeholders');
+					this.insertPlaceholders();
+				}
+			},
+			false,
+		);
 	}
 
 	private insertPlaceholders(): void {

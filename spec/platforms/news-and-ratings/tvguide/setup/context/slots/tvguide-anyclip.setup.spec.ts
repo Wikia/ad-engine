@@ -26,4 +26,18 @@ describe('Anyclip on TVGuide', () => {
 
 		expect(setup.isApplicable(undefined)).to.be.false;
 	});
+
+	describe('as in-content player', () => {
+		it('should qualify as in-content on listing pages', () => {
+			const setup: TvGuideAnyclipSetup = new TvGuideAnyclipSetup();
+
+			expect(setup.shouldPlayerBeIncontent('listings/main')).to.be.true;
+		});
+
+		it('should not qualify as in-content on streaming news pages', () => {
+			const setup: TvGuideAnyclipSetup = new TvGuideAnyclipSetup();
+
+			expect(setup.shouldPlayerBeIncontent('feature_hub')).to.be.false;
+		});
+	});
 });
