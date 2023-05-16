@@ -51,7 +51,7 @@ export class TvGuideAnyclipSetup implements DiProcess {
 		communicationService.on(
 			eventsRepository.PLATFORM_AD_PLACEMENT_READY,
 			({ placementId }) => {
-				if (placementId === 'leader-top') {
+				if (placementId === 'leader-top' || placementId === 'mobile-banner-plus') {
 					utils.logger(this.logGroup, 'inserting placeholders');
 					this.insertPlaceholders();
 				}
@@ -64,6 +64,7 @@ export class TvGuideAnyclipSetup implements DiProcess {
 		const alreadyExists = document.getElementById('aeAnyclipRow');
 
 		if (alreadyExists) {
+			utils.logger(this.logGroup, 'placeholders already exist');
 			return;
 		}
 
@@ -71,6 +72,7 @@ export class TvGuideAnyclipSetup implements DiProcess {
 		const success = listingScheduleRow?.appendChild(this.buildRow());
 
 		if (success) {
+			utils.logger(this.logGroup, 'placeholder injected');
 			communicationService.emit(eventsRepository.ANYCLIP_LATE_INJECT);
 			// TODO: remove once we have 100% UAP implemented on N&R
 			communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, { isLoaded: false });
