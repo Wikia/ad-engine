@@ -21,7 +21,6 @@ import {
 	conditional,
 	context,
 	eventsRepository,
-	intentIQ,
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
@@ -51,7 +50,6 @@ export class UcpMobilePlatform {
 			MetricReporter,
 			LoadTimesSetup,
 			UcpMobileBaseContextSetup,
-			() => intentIQ.initialize(),
 			UcpMobileSlotsContextSetup,
 			UcpTargetingSetup,
 			UcpMobilePrebidConfigSetup,
