@@ -1,4 +1,10 @@
-import { context, DEFAULT_MAX_DELAY, targetingService, utils } from '@ad-engine/core';
+import {
+	context,
+	DEFAULT_MAX_DELAY,
+	externalLogger,
+	targetingService,
+	utils,
+} from '@ad-engine/core';
 import { getAvailableBidsByAdUnitCode } from '../prebid-helper';
 
 const logGroup = 'IntentIQ';
@@ -86,6 +92,8 @@ export class IntentIQ {
 		utils.logger(logGroup, 'reporting prebid win', data);
 
 		this.intentIqObject.reportExternalWin(data);
+
+		externalLogger.log('intentiq report', { report: JSON.stringify(data) });
 	}
 
 	private isEnabled(): boolean {
