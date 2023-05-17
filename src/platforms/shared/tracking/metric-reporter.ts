@@ -17,10 +17,7 @@ export interface MetricReporterSenderTimeData {
 	duration?: number;
 }
 
-const REPORTABLE_SLOTS = {
-	stateMetric: ['top_leaderboard'],
-	timingMetric: ['top_leaderboard'],
-};
+const SUPPORTED_METRIC_TYPES = ['state', 'timing'];
 
 export class MetricReporter {
 	private readonly isActive: boolean;
@@ -99,8 +96,26 @@ export class MetricReporter {
 		});
 	}
 
+	private isReportable(slotName: string, metricTypeName: string): boolean {
+		if (!SUPPORTED_METRIC_TYPES.includes(metricTypeName)) {
+			return false;
+		}
+
+		try {
+			const currentSlot = context.get('slots')[slotName];
+			const currentSlotReportable = currentSlot?.reportable ?? null;
+			if (!currentSlotReportable) {
+				return false;
+			}
+
+			return currentSlotReportable[`${metricTypeName}Metric`] ?? false;
+		} catch (e) {
+			return false;
+		}
+	}
+
 	private sendSlotInfoToMeteringSystem(slot: AdSlot, state: string): void {
-		if (!REPORTABLE_SLOTS.stateMetric.includes(slot.getSlotName())) {
+		if (!this.isReportable(slot.getSlotName(), 'state')) {
 			return;
 		}
 
@@ -112,7 +127,7 @@ export class MetricReporter {
 
 	private sendSlotLoadTimeDiffToMeteringSystem(slot: AdSlot): void {
 		if (
-			!REPORTABLE_SLOTS.timingMetric.includes(slot.getSlotName()) ||
+			!this.isReportable(slot.getSlotName(), 'timing') ||
 			!this.slotTimeDiffRequestToRender.has(slot.getSlotName())
 		) {
 			return;

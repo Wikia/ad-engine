@@ -66,6 +66,10 @@ export class SportsSlotsContextSetup implements DiProcess {
 					loc: 'top',
 					zne: '02',
 				},
+				reportable: {
+					stateMetric: true,
+					timingMetric: true,
+				},
 			},
 			'cdm-zone-03': {
 				defaultSizes: [[300, 250]],
