@@ -5,4 +5,15 @@
 		// needed for Safari 9 - it doesn't position elements from the left by default
 		left: 0;
 	}
+
+	.floor-adhesion-experiment.theme-fandomdesktop-light {
+		.floor-adhesion {
+			background: rgba(255, 255, 255, 0.8);
+
+			.button-close {
+				background: #fff;
+				fill: #000;
+			}
+		}
+	}
 }
