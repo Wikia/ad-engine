@@ -21,8 +21,8 @@ export class IntentIQ {
 			return;
 		}
 
-		await utils.scriptLoader.loadScript(this.intentIQScriptUrl, 'text/javascript', true, 'first');
 		this.loaded = true;
+		await utils.scriptLoader.loadScript(this.intentIQScriptUrl, 'text/javascript', true, 'first');
 		utils.logger(logGroup, 'loaded');
 	}
 

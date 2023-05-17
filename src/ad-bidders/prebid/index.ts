@@ -171,15 +171,15 @@ export class PrebidProvider extends BidderProvider {
 	async applyConfig(config: Dictionary): Promise<void> {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
-		pbjs.setConfig(config);
-
-		await intentIQ.initialize(pbjs);
+		return pbjs.setConfig(config);
 	}
 
 	async applySettings(): Promise<void> {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
 		pbjs.bidderSettings = getSettings();
+
+		await intentIQ.initialize(pbjs);
 	}
 
 	protected callBids(bidsBackHandler: (...args: any[]) => void): void {
