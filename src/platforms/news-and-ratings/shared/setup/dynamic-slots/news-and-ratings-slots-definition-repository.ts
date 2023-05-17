@@ -29,4 +29,28 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 	private isInterstitialApplicable(): boolean {
 		return this.instantConfig.get('icInterstitial') && context.get('state.isMobile');
 	}
+
+	getIncontentPlayerConfig(): SlotSetupDefinition {
+		if (!this.isIncontentPlayerApplicable()) {
+			return;
+		}
+
+		const slotName = 'incontent_player';
+
+		return {
+			slotCreatorConfig: {
+				slotName,
+				anchorSelector: 'body',
+				insertMethod: 'append',
+				classList: ['hide', 'ad-slot'],
+			},
+			activator: () => {
+				context.push('state.adStack', { id: slotName });
+			},
+		};
+	}
+
+	private isIncontentPlayerApplicable(): boolean {
+		return context.get('services.anyclip.isApplicable');
+	}
 }
