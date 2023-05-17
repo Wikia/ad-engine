@@ -43,7 +43,7 @@ describe('InstantConfigSetup', () => {
 			.withArgs('icAudigent')
 			.returns(true);
 		const contextSetStub = global.sandbox.stub(context, 'set');
-		const pbjsFactoryInitStub = global.sandbox.stub(pbjsFactory, 'init');
+		const pbjsFactoryInitStub = global.sandbox.stub(pbjsFactory, 'init').resolves();
 		const audigentLoadSegmentLibraryStub = global.sandbox.stub(Audigent, 'loadSegmentLibrary');
 		const instantConfigSetup = new InstantConfigSetup(container);
 

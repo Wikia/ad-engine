@@ -4,28 +4,40 @@ import { getAvailableBidsByAdUnitCode } from '../prebid-helper';
 const logGroup = 'IntentIQ';
 
 export class IntentIQ {
+	private loaded = false;
+	private pbjs: Pbjs;
 	private fandomId = 1187275693;
 	private intentIQScriptUrl =
 		'//script.wikia.nocookie.net/fandom-ae-assets/intentiq/5.4/IIQUniversalID.js';
 	private intentIqObject: IntentIqObject;
 
-	async initialize(pbjs: Pbjs): Promise<void> {
+	async preloadScript(pbjs: Pbjs): Promise<void> {
+		if (this.loaded) {
+			return;
+		}
+
+		await utils.scriptLoader.loadScript(this.intentIQScriptUrl, 'text/javascript', true, 'first');
+		this.loaded = true;
+		this.pbjs = pbjs;
+		utils.logger(logGroup, 'loaded');
+	}
+
+	async initialize(): Promise<void> {
+		await new utils.WaitFor(() => window.IntentIqObject !== undefined, 10, 50).until();
+
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
 			return;
 		}
 
 		if (!this.intentIqObject) {
-			await utils.scriptLoader.loadScript(this.intentIQScriptUrl, 'text/javascript', true, 'first');
-			utils.logger(logGroup, 'loaded');
-
 			const domainName = window.location.hostname.includes('.fandom.com')
 				? 'fandom.com'
 				: window.location.hostname;
 
 			this.intentIqObject = new window.IntentIqObject({
 				partner: this.fandomId,
-				pbjs,
+				pbjs: this.pbjs,
 				timeoutInMillis: DEFAULT_MAX_DELAY,
 				ABTestingConfigurationSource: 'percentage',
 				abPercentage: 90,
@@ -78,7 +90,7 @@ export class IntentIQ {
 
 	private isEnabled(): boolean {
 		return (
-			context.get('bidders.prebid.intentIQ') &&
+			this.loaded &&
 			context.get('options.trackingOptIn') &&
 			!context.get('options.optOutSale') &&
 			!utils.isCoppaSubject()

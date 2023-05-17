@@ -36,7 +36,7 @@ describe('IntentIQ', () => {
 			global.sandbox.stub(context, 'get').withArgs('bidders.prebid.intentIQ').returns(false);
 			const intentIQ = new IntentIQ();
 
-			await intentIQ.initialize(pbjsStub);
+			await intentIQ.initialize();
 
 			expect(loadScriptStub.notCalled).to.be.true;
 			expect(intentIqNewSpy.notCalled).to.be.true;
@@ -51,8 +51,9 @@ describe('IntentIQ', () => {
 				.returns(true);
 			const targetingServiceStub = global.sandbox.stub(targetingService, 'set');
 			const intentIQ = new IntentIQ();
+			await intentIQ.preloadScript(pbjsStub);
 
-			await intentIQ.initialize(pbjsStub);
+			await intentIQ.initialize();
 
 			expect(loadScriptStub.calledOnce).to.be.true;
 			expect(intentIqNewSpy.calledOnce).to.be.true;
@@ -104,7 +105,8 @@ describe('IntentIQ', () => {
 			});
 
 			const intentIQ = new IntentIQ();
-			await intentIQ.initialize(pbjsStub);
+			await intentIQ.preloadScript(pbjsStub);
+			await intentIQ.initialize();
 
 			await intentIQ.reportPrebidWin('top_leaderboard', {
 				hb_adid: 'ad-123',
