@@ -1,4 +1,4 @@
-import { BaseServiceSetup, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, utils } from '@ad-engine/core';
 
 const profileId = '2721';
 const pubId = '156260';
@@ -23,12 +23,19 @@ export class IdentityHub extends BaseServiceSetup {
 		if (!this.isLoaded) {
 			// PWT.jsLoaded() is part of Pubmatic script, it's called when IdentityHub is ready
 			// it needs to be defined before loading the script
-			window.PWT = {
+			const identityHubObject = {
 				jsLoaded: () => {
 					utils.logger(logGroup, 'jsLoaded done');
 					return Promise.resolve();
 				},
 			};
+			// TODO: Clean up after ADEN-13043 release & data confirmation
+			if (context.get('bidders.identityHubV2.enabled')) {
+				window.IHPWT = identityHubObject;
+			} else {
+				window.PWT = identityHubObject;
+			}
+
 			return utils.scriptLoader.loadScript(this.identityHubScriptSrc).then(() => {
 				utils.logger(logGroup, 'script loaded');
 				this.isLoaded = true;
