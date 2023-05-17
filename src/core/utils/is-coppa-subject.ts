@@ -6,10 +6,9 @@ export function isCoppaSubject(): boolean {
 	if (context.get('services.ageGateHandling') && wikiDirectedAtChildren) {
 		try {
 			const cookieStorage = new CookieStorageAdapter();
-			const ageGateResult = cookieStorage.getItem('age_gate');
+			const ageGateResult = cookieStorage.getItem('ag');
 			if (ageGateResult) {
-				const [dialogShown, adult] = ageGateResult.split('|');
-				return dialogShown === '1' ? adult === '0' : wikiDirectedAtChildren;
+				return ageGateResult === '1' ? false : wikiDirectedAtChildren;
 			}
 		} catch (e) {
 			utils.logger('age-gate', 'Error while reading age gate cookie');
