@@ -5,6 +5,7 @@ import {
 	DiProcess,
 	eventsRepository,
 	InstantConfigService,
+	Optimizely,
 	setupNpaContext,
 	setupRdpContext,
 	universalAdPackage,
@@ -13,11 +14,23 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 import { NoAdsDetector } from '../services/no-ads-detector';
 
+const OPTIMIZELY_IN_CONTENT_EXPERIMENT = {
+	EXPERIMENT_ENABLED: 'in_content_headers',
+	EXPERIMENT_VARIANT: 'in_content_headers_variant',
+};
+
+const OPTIMIZELY_IN_CONTENT_EXPERIMENT_VARIANTS = {
+	H3: 'in_content_headers_h3',
+	VIEWPORT: 'in_content_headers_viewport',
+	UNDEFINED: 'in_content_headers_undefined',
+};
+
 @Injectable()
 export class BaseContextSetup implements DiProcess {
 	constructor(
 		protected instantConfig: InstantConfigService,
 		protected noAdsDetector: NoAdsDetector,
+		protected optimizely: Optimizely,
 	) {}
 
 	execute(): void {
@@ -65,11 +78,7 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setOptionsContext(): void {
-		if (this.instantConfig.get('icIncontentHeadersExperiment')) {
-			context.set('templates.incontentHeadersExperiment', true);
-		} else {
-			context.set('templates.incontentAnchorSelector', '.mw-parser-output > h2');
-		}
+		this.setInContentExperiment();
 
 		context.set('options.performanceAds', this.instantConfig.get('icPerformanceAds'));
 		context.set('options.stickyTbExperiment', this.instantConfig.get('icStickyTbExperiment'));
@@ -120,6 +129,25 @@ export class BaseContextSetup implements DiProcess {
 		);
 
 		this.setWadContext();
+	}
+
+	private setInContentExperiment(): void {
+		this.optimizely.addVariantToTargeting(
+			OPTIMIZELY_IN_CONTENT_EXPERIMENT,
+			OPTIMIZELY_IN_CONTENT_EXPERIMENT_VARIANTS.UNDEFINED,
+		);
+
+		const variant = this.optimizely.getVariant(OPTIMIZELY_IN_CONTENT_EXPERIMENT);
+
+		if (variant === OPTIMIZELY_IN_CONTENT_EXPERIMENT_VARIANTS.H3) {
+			context.set('templates.incontentHeadersExperiment', true);
+		} else {
+			context.set('templates.incontentAnchorSelector', '.mw-parser-output > h2');
+		}
+
+		if (variant) {
+			this.optimizely.addVariantToTargeting(OPTIMIZELY_IN_CONTENT_EXPERIMENT, variant);
+		}
 	}
 
 	private setWadContext(): void {
