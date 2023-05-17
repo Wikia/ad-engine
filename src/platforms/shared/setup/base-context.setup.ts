@@ -5,7 +5,6 @@ import {
 	DiProcess,
 	eventsRepository,
 	InstantConfigService,
-	intentIQ,
 	setupNpaContext,
 	setupRdpContext,
 	universalAdPackage,
@@ -29,7 +28,6 @@ export class BaseContextSetup implements DiProcess {
 		this.setupStickySlotContext();
 		setupNpaContext();
 		setupRdpContext();
-		intentIQ.initialize();
 	}
 
 	private setBaseState(): void {

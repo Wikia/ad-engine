@@ -11,29 +11,30 @@ const logGroup = 'IntentIQ';
 
 export class IntentIQ {
 	private loaded = false;
-	private pbjs: Pbjs;
 	private fandomId = 1187275693;
 	private intentIQScriptUrl =
 		'//script.wikia.nocookie.net/fandom-ae-assets/intentiq/5.4/IIQUniversalID.js';
 	private intentIqObject: IntentIqObject;
 
-	async preloadScript(pbjs: Pbjs): Promise<void> {
+	async preloadScript(): Promise<void> {
 		if (this.loaded) {
 			return;
 		}
 
 		await utils.scriptLoader.loadScript(this.intentIQScriptUrl, 'text/javascript', true, 'first');
 		this.loaded = true;
-		this.pbjs = pbjs;
 		utils.logger(logGroup, 'loaded');
 	}
 
-	async initialize(): Promise<void> {
-		await new utils.WaitFor(() => window.IntentIqObject !== undefined, 10, 50).until();
-
+	async initialize(pbjs: Pbjs): Promise<void> {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
 			return;
+		}
+
+		if (!this.loaded) {
+			await this.preloadScript();
+			await new utils.WaitFor(() => window.IntentIqObject !== undefined, 10, 10).until();
 		}
 
 		if (!this.intentIqObject) {
@@ -41,24 +42,26 @@ export class IntentIQ {
 				? 'fandom.com'
 				: window.location.hostname;
 
-			this.intentIqObject = new window.IntentIqObject({
-				partner: this.fandomId,
-				pbjs: this.pbjs,
-				timeoutInMillis: DEFAULT_MAX_DELAY,
-				ABTestingConfigurationSource: 'percentage',
-				abPercentage: 90,
-				manualWinReportEnabled: true,
-				browserBlackList: 'Chrome',
-				domainName,
-				callback: (data) => {
-					utils.logger(logGroup, 'got data', data);
-				},
+			return new Promise((resolve) => {
+				this.intentIqObject = new window.IntentIqObject({
+					partner: this.fandomId,
+					pbjs,
+					timeoutInMillis: DEFAULT_MAX_DELAY,
+					ABTestingConfigurationSource: 'percentage',
+					abPercentage: 90,
+					manualWinReportEnabled: true,
+					browserBlackList: 'Chrome',
+					domainName,
+					callback: (data) => {
+						utils.logger(logGroup, 'got data', data);
+						return resolve();
+					},
+				});
+				targetingService.set(
+					'intent_iq_group',
+					this.intentIqObject.intentIqConfig.abTesting.currentTestGroup || 'U',
+				);
 			});
-
-			targetingService.set(
-				'intent_iq_group',
-				this.intentIqObject.intentIqConfig.abTesting.currentTestGroup || 'U',
-			);
 		}
 	}
 
@@ -98,7 +101,7 @@ export class IntentIQ {
 
 	private isEnabled(): boolean {
 		return (
-			this.loaded &&
+			context.get('bidders.prebid.intentIQ') &&
 			context.get('options.trackingOptIn') &&
 			!context.get('options.optOutSale') &&
 			!utils.isCoppaSubject()
