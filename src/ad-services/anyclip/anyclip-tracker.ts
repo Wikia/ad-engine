@@ -33,6 +33,7 @@ export class AnyclipTracker implements VideoTracker {
 			return;
 		}
 
+		utils.logger(logGroup, 'Subscribing to Anyclip events...');
 		Object.keys(this.trackingEvents).map((eventName) => {
 			subscribe((data) => this.track(eventName, data), eventName);
 		});
