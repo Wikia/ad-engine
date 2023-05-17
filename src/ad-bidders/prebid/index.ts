@@ -178,8 +178,6 @@ export class PrebidProvider extends BidderProvider {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
 		pbjs.bidderSettings = getSettings();
-
-		await intentIQ.initialize(pbjs);
 	}
 
 	protected callBids(bidsBackHandler: (...args: any[]) => void): void {
@@ -294,6 +292,8 @@ export class PrebidProvider extends BidderProvider {
 		timeout: number = this.timeout,
 	): Promise<void> {
 		const pbjs: Pbjs = await pbjsFactory.init();
+
+		await intentIQ.initialize(pbjs);
 
 		pbjs.requestBids({
 			adUnits,

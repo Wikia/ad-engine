@@ -10,20 +10,24 @@ import { getAvailableBidsByAdUnitCode } from '../prebid-helper';
 const logGroup = 'IntentIQ';
 
 export class IntentIQ {
+	private loadPromise: Promise<void>;
 	private loaded = false;
 	private fandomId = 1187275693;
 	private intentIQScriptUrl =
 		'//script.wikia.nocookie.net/fandom-ae-assets/intentiq/5.4/IIQUniversalID.js';
 	private intentIqObject: IntentIqObject;
 
-	async preloadScript(): Promise<void> {
-		if (this.loaded) {
-			return;
+	preloadScript(): Promise<void> {
+		if (this.loadPromise) {
+			return this.loadPromise;
 		}
 
-		this.loaded = true;
-		await utils.scriptLoader.loadScript(this.intentIQScriptUrl, 'text/javascript', true, 'first');
-		utils.logger(logGroup, 'loaded');
+		this.loadPromise = utils.scriptLoader
+			.loadScript(this.intentIQScriptUrl, 'text/javascript', true, 'first')
+			.then(() => {
+				this.loaded = true;
+				utils.logger(logGroup, 'loaded');
+			});
 	}
 
 	async initialize(pbjs: Pbjs): Promise<void> {
