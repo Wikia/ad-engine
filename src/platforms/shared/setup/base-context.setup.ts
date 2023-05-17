@@ -20,7 +20,7 @@ const OPTIMIZELY_IN_CONTENT_EXPERIMENT = {
 };
 
 const OPTIMIZELY_IN_CONTENT_EXPERIMENT_VARIANTS = {
-	H3: 'in_content_headers_h3',
+	IGNORE_VIEWPORT: 'in_content_headers_ignore_viewport',
 	VIEWPORT: 'in_content_headers_viewport',
 	UNDEFINED: 'in_content_headers_undefined',
 };
@@ -139,7 +139,7 @@ export class BaseContextSetup implements DiProcess {
 
 		const variant = this.optimizely.getVariant(OPTIMIZELY_IN_CONTENT_EXPERIMENT);
 
-		if (variant === OPTIMIZELY_IN_CONTENT_EXPERIMENT_VARIANTS.H3) {
+		if (variant === OPTIMIZELY_IN_CONTENT_EXPERIMENT_VARIANTS.IGNORE_VIEWPORT) {
 			context.set('templates.incontentHeadersExperiment', true);
 		} else {
 			context.set('templates.incontentAnchorSelector', '.mw-parser-output > h2');
