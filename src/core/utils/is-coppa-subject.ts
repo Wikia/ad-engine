@@ -7,9 +7,8 @@ export function isCoppaSubject(): boolean {
 		try {
 			const cookieStorage = new CookieStorageAdapter();
 			const ageGateResult = cookieStorage.getItem('ag');
-			if (ageGateResult) {
-				return ageGateResult === '1' ? false : wikiDirectedAtChildren;
-			}
+
+			return ageGateResult === '1' ? false : wikiDirectedAtChildren;
 		} catch (e) {
 			utils.logger('age-gate', 'Error while reading age gate cookie');
 		}
