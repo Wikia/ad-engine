@@ -168,7 +168,10 @@ export class Wikia extends PrebidAdapter {
 		const bidResponse = pbjs.createBid(1);
 		const cpm = this.getPrice();
 
+		bidResponse.auctionId = bidRequest.auctionId;
 		bidResponse.bidderCode = bidRequest.bidderCode;
+		bidResponse.bidderRequestId = bidRequest.bidderRequestId;
+		bidResponse.transactionId = bid.transactionId;
 		bidResponse.cpm = cpm;
 		bidResponse.ttl = 300;
 		bidResponse.mediaType = 'native';
@@ -195,7 +198,10 @@ export class Wikia extends PrebidAdapter {
 		const cpm = this.getPrice();
 
 		bidResponse.ad = Wikia.getCreative(bid.sizes[0], cpm);
+		bidResponse.auctionId = bidRequest.auctionId;
 		bidResponse.bidderCode = bidRequest.bidderCode;
+		bidResponse.bidderRequestId = bidRequest.bidderRequestId;
+		bidResponse.transactionId = bid.transactionId;
 		bidResponse.cpm = cpm;
 		bidResponse.ttl = 300;
 		bidResponse.mediaType = 'banner';
