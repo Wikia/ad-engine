@@ -1,4 +1,4 @@
-import { slotsContext, UapDomManager } from '@platforms/shared';
+import { slotsContext } from '@platforms/shared';
 import {
 	communicationService,
 	context,
@@ -26,11 +26,7 @@ const OPTIMIZELY_NTC_2_0_VARIANTS = {
 export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 	private enabledSlots: string[] = ['top_boxad', 'incontent_boxad_1', 'bottom_leaderboard'];
 
-	constructor(
-		@Inject(TEMPLATE.PARAMS) private params: UapParams,
-		private uapDomManager: UapDomManager,
-		private optimizely: Optimizely,
-	) {}
+	constructor(@Inject(TEMPLATE.PARAMS) private params: UapParams, private optimizely: Optimizely) {}
 
 	async onEnter(): Promise<void> {
 		this.configureFloorAdhesionExperiment();
@@ -77,7 +73,8 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 					'bottom_leaderboard',
 					'floor_adhesion',
 				];
-				this.uapDomManager.addClassToPage('floor-adhesion-experiment');
+
+				document.body.classList.add('floor-adhesion-experiment');
 			}
 		}
 	}
