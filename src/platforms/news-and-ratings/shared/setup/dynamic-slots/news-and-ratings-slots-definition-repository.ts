@@ -42,7 +42,7 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 			},
 			activator: () => {
 				const numberOfViewportsFromTopToPush: number =
-					this.instantConfig.get('icFloorAdhesionViewportsToStart') || 1;
+					this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
 
 				if (numberOfViewportsFromTopToPush === -1) {
 					context.push('state.adStack', { id: slotName });
@@ -55,7 +55,11 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 	}
 
 	private isFloorAdhesionApplicable(): boolean {
-		return this.instantConfig.get('icFloorAdhesion') && !context.get('custom.hasFeaturedVideo');
+		return (
+			this.instantConfig.get('icFloorAdhesion') &&
+			!context.get('custom.hasFeaturedVideo') &&
+			!context.get('state.isMobile')
+		);
 	}
 
 	private isInterstitialApplicable(): boolean {
