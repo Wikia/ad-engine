@@ -1,6 +1,14 @@
-import { context, DiProcess, utils } from '@wikia/ad-engine';
+import { insertSlots } from '@platforms/shared';
+import {
+	AdSlotEvent,
+	AdSlotStatus,
+	communicationService,
+	context,
+	DiProcess,
+	slotService,
+	utils,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { insertSlots } from '../../../../shared';
 import { NewsAndRatingsSlotsDefinitionRepository } from './news-and-ratings-slots-definition-repository';
 
 @Injectable()
@@ -10,7 +18,12 @@ export class NewsAndRatingsDynamicSlotsSetup implements DiProcess {
 	execute(): void {
 		this.injectSlots();
 
-		insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
+		insertSlots([
+			this.slotsDefinitionRepository.getInterstitialConfig(),
+			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
+		]);
+
+		this.configureFloorAdhesionCodePriority();
 	}
 
 	private injectSlots(): void {
@@ -37,6 +50,34 @@ export class NewsAndRatingsDynamicSlotsSetup implements DiProcess {
 				context.push('state.adStack', { id: adSlotName });
 			}
 		});
+	}
+
+	private configureFloorAdhesionCodePriority(): void {
+		const slotName = 'floor_adhesion';
+		let porvataClosedActive = false;
+
+		communicationService.onSlotEvent(
+			AdSlotStatus.STATUS_SUCCESS,
+			() => {
+				porvataClosedActive = true;
+
+				communicationService.onSlotEvent(AdSlotEvent.VIDEO_AD_IMPRESSION, () => {
+					if (porvataClosedActive) {
+						porvataClosedActive = false;
+						slotService.disable(slotName);
+					}
+				});
+			},
+			slotName,
+		);
+
+		communicationService.onSlotEvent(
+			AdSlotEvent.HIDDEN_EVENT,
+			() => {
+				porvataClosedActive = false;
+			},
+			slotName,
+		);
 	}
 
 	private isSlotLazyLoaded(slotName: string): boolean {

@@ -10,7 +10,10 @@ export class MetacriticDynamicSlotsSetup implements DiProcess {
 	execute(): void {
 		this.injectSlots();
 
-		insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
+		insertSlots([
+			this.slotsDefinitionRepository.getInterstitialConfig(),
+			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
+		]);
 	}
 
 	private injectSlots(): void {

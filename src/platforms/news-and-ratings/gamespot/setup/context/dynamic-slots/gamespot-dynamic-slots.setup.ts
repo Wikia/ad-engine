@@ -13,7 +13,10 @@ export class GamespotDynamicSlotsSetup implements DiProcess {
 		this.injectSlots();
 		this.restoreStubbedSlots();
 
-		insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
+		insertSlots([
+			this.slotsDefinitionRepository.getInterstitialConfig(),
+			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
+		]);
 	}
 
 	private injectSlots(): void {

@@ -513,6 +513,16 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 			video: {
 				isVideo: true,
 			},
+			floor_adhesion: {
+				adProduct: 'floor_adhesion',
+				group: 'PF',
+				options: {},
+				targeting: {
+					loc: 'footer',
+				},
+				defaultTemplates: ['floorAdhesion'],
+				defaultSizes: [[728, 90]],
+			},
 		};
 
 		context.set('slots', slots);

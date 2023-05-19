@@ -1,4 +1,6 @@
 @import '../shared/styles/uap-styles.scss';
+@import '../shared/styles/out-of-page/_floor-adhesion.scss';
+@import '../shared/styles/out-of-page/_out-of-page-template.scss';
 
 body {
 	@include uap-styles();
@@ -17,3 +19,6 @@ body {
 		margin: 0 auto;
 	}
 }
+
+@include out-of-page-template();
+@include floor-adhesion();
