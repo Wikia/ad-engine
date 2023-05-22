@@ -51,9 +51,14 @@ interface IPartnersParameters {
 	blockthrough: IBlockthroughParameters;
 }
 
+interface ITargetingParameters {
+	[key: string]: string | number;
+}
+
 interface WindowFandomContext {
 	site: Partial<ISiteParameters>;
 	page: Partial<IPageParameters>;
 	tracking: Partial<ITrackingParameters>;
+	targeting: Partial<ITargetingParameters>;
 	partners: Partial<IPartnersParameters>;
 }

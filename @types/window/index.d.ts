@@ -6,6 +6,9 @@ interface Window {
 	ads?: MediaWikiAds;
 	adsQueue?: any;
 	anyclip?: AnyclipApi;
+	// TODO: Remove after ADEN-13043 release & data confirmation
+	PWT?: { jsLoaded: () => void };
+	IHPWT?: { jsLoaded: () => void };
 	apstag?: Apstag;
 	au?: any;
 	au_seg?: any;
@@ -38,7 +41,6 @@ interface Window {
 	pvNumber?: number;
 	pvNumberGlobal?: number;
 	pvUID?: string;
-	PWT: { jsLoaded: () => void };
 	PQ?: {
 		cmd: any[];
 		getTargeting?: (
