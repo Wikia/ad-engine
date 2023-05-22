@@ -67,7 +67,7 @@ describe('Optimizely service', () => {
 
 		optimizelyService.addVariantToTargeting(experiment, 'test');
 
-		expect(targetingServiceStub.set.calledWith('experiment_group', ['test'])).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('experiment_groups', ['test'])).to.equal(true);
 	});
 
 	it('Add multiple experiment variants to targeting', () => {
@@ -82,11 +82,11 @@ describe('Optimizely service', () => {
 		};
 
 		optimizelyService.addVariantToTargeting(experiment, 'firstV');
-		expect(targetingServiceStub.set.calledWith('experiment_group', ['firstV'])).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('experiment_groups', ['firstV'])).to.equal(true);
 
 		optimizelyService.addVariantToTargeting(secondExperiment, 'secondV');
-		expect(targetingServiceStub.set.calledWith('experiment_group', ['firstV', 'secondV'])).to.equal(
-			true,
-		);
+		expect(
+			targetingServiceStub.set.calledWith('experiment_groups', ['firstV', 'secondV']),
+		).to.equal(true);
 	});
 });
