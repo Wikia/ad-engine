@@ -29,8 +29,10 @@ export class Anyclip extends BaseServiceSetup {
 		);
 	}
 
-	private get isApplicable(): () => boolean | null {
-		return context.get('services.anyclip.isApplicable');
+	static isApplicable(): boolean {
+		const isApplicableFunc = context.get('services.anyclip.isApplicable');
+
+		return typeof isApplicableFunc === 'function' ? isApplicableFunc() : true;
 	}
 
 	private tracker: VideoTracker;
@@ -71,7 +73,7 @@ export class Anyclip extends BaseServiceSetup {
 	}
 
 	private loadPlayerAsset(playerContainer: HTMLElement = null) {
-		if (typeof this.isApplicable === 'function' && !this.isApplicable()) {
+		if (!Anyclip.isApplicable()) {
 			utils.logger(logGroup, 'not applicable - aborting');
 			return;
 		}
