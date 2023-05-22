@@ -49,7 +49,11 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 				}
 			});
 
-			insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
+			// slots without DOM elements required
+			insertSlots([
+				this.slotsDefinitionRepository.getInterstitialConfig(),
+				this.slotsDefinitionRepository.getIncontentPlayerConfig(),
+			]);
 		});
 
 		communicationService.on(

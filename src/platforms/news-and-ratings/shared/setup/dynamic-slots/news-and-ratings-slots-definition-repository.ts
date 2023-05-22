@@ -1,4 +1,4 @@
-import { context, InstantConfigService } from '@wikia/ad-engine';
+import { Anyclip, context, InstantConfigService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { SlotSetupDefinition } from '../../../../shared';
 
@@ -28,5 +28,25 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 
 	private isInterstitialApplicable(): boolean {
 		return this.instantConfig.get('icInterstitial') && context.get('state.isMobile');
+	}
+
+	getIncontentPlayerConfig(): SlotSetupDefinition | undefined {
+		if (!Anyclip.isApplicable()) {
+			return;
+		}
+
+		const slotName = 'incontent_player';
+
+		return {
+			slotCreatorConfig: {
+				slotName,
+				anchorSelector: 'body',
+				insertMethod: 'append',
+				classList: ['hide', 'ad-slot'],
+			},
+			activator: () => {
+				context.push('state.adStack', { id: slotName });
+			},
+		};
 	}
 }

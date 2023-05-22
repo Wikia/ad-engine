@@ -42,7 +42,7 @@ describe('Anyclip', () => {
 		expect(mockedIsApplicable.called).to.equal(false);
 	});
 
-	it('loads the script when isApplicable is not a function', () => {
+	it('loads the script when isApplicable is not a function (FCP)', () => {
 		anyclip.call();
 		expect(loadScriptStub.called).to.equal(true);
 	});

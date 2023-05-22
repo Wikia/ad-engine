@@ -5,7 +5,6 @@ import {
 	slotDataParamsUpdater,
 	slotService,
 	utils,
-	VideoTracker,
 } from '@ad-engine/core';
 import { AnyclipTracker } from './anyclip-tracker';
 
@@ -29,11 +28,13 @@ export class Anyclip extends BaseServiceSetup {
 		);
 	}
 
-	private get isApplicable(): () => boolean | null {
-		return context.get('services.anyclip.isApplicable');
+	static isApplicable(): boolean {
+		const isApplicableFunc = context.get('services.anyclip.isApplicable');
+
+		return typeof isApplicableFunc === 'function' ? isApplicableFunc() : true;
 	}
 
-	private tracker: VideoTracker;
+	private tracker: AnyclipTracker;
 
 	call() {
 		if (context.get('custom.hasFeaturedVideo') || !this.isEnabled('icAnyclipPlayer', false)) {
@@ -71,7 +72,7 @@ export class Anyclip extends BaseServiceSetup {
 	}
 
 	private loadPlayerAsset(playerContainer: HTMLElement = null) {
-		if (typeof this.isApplicable === 'function' && !this.isApplicable()) {
+		if (!Anyclip.isApplicable()) {
 			utils.logger(logGroup, 'not applicable - aborting');
 			return;
 		}
@@ -91,6 +92,8 @@ export class Anyclip extends BaseServiceSetup {
 						isSubscribeReady,
 						window[SUBSCRIBE_FUNC_NAME],
 					);
+
+					this.tracker.trackInit();
 
 					isSubscribeReady
 						? this.tracker.register()
