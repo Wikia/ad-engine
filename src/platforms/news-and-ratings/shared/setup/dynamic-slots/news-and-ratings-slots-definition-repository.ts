@@ -45,6 +45,9 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 				classList: ['hide', 'ad-slot'],
 			},
 			activator: () => {
+				const { dataset } = document.getElementById(slotName);
+				dataset.slotLoaded = 'true';
+				dataset.ad = slotName;
 				context.push('state.adStack', { id: slotName });
 			},
 		};
