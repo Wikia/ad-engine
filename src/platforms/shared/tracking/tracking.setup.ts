@@ -147,10 +147,13 @@ export class TrackingSetup {
 
 	private experimentGroupsTracker(): void {
 		const cacheStorage = InstantConfigCacheStorage.make();
-		const labradorPropValue = cacheStorage.getSamplingResults().join(';');
+		const optimizelyVariants: string[] = targetingService.get('experiment_group') || [];
+		const experimentsGroups = [...cacheStorage.getSamplingResults(), ...optimizelyVariants].join(
+			';',
+		);
 
-		if (labradorPropValue) {
-			this.labradorTracker.track(labradorPropValue);
+		if (experimentsGroups) {
+			this.labradorTracker.track(experimentsGroups);
 		}
 	}
 

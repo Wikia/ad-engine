@@ -46,7 +46,7 @@ export const slotTrackingCompiler = ({ data, slot }: CompilerPartial): CompilerP
 			kv_s1: targetingData.s1 || '',
 			kv_s2: targetingData.s2 || '',
 			kv_skin: targetingData.skin || '',
-			labrador: cacheStorage.getSamplingResults().join(';'),
+			labrador: [...cacheStorage.getSamplingResults(), ...targetingData.optimizely].join(';'),
 			opt_in: checkOptIn(),
 			opt_out_sale: checkOptOutSale(),
 			page_width:
