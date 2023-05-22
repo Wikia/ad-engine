@@ -84,13 +84,16 @@ export class WikiaVideo extends PrebidAdapter {
 				const [width, height] = bid.sizes[0];
 				const slotName = bid.adUnitCode;
 
+				bidResponse.auctionId = bidRequest.auctionId;
 				bidResponse.bidderCode = bidRequest.bidderCode;
+				bidResponse.bidderRequestId = bidRequest.bidderRequestId;
 				bidResponse.cpm = this.getPrice();
 				bidResponse.creativeId = 'foo123_wikiaVideoCreativeId';
 				bidResponse.ttl = 300;
 				bidResponse.mediaType = 'video';
 				bidResponse.width = width;
 				bidResponse.height = height;
+				bidResponse.transactionId = bid.transactionId;
 				bidResponse.vastUrl = WikiaVideo.getVastUrl(width, height, slotName);
 				bidResponse.videoCacheKey = '123foo_wikiaVideoCacheKey';
 

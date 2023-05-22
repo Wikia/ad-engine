@@ -14,6 +14,13 @@ export function getAppnexusContext(isDesktop: boolean): object {
 			],
 			placementId: ['28574353', '28574354'],
 		},
+		'skybox-nav': {
+			sizes: [
+				[728, 90],
+				[970, 250],
+			],
+			placementId: ['29779632'],
+		},
 		leader_top: {
 			sizes: [[728, 90]],
 			placementId: ['28574355'],
@@ -41,6 +48,13 @@ export function getAppnexusContext(isDesktop: boolean): object {
 	};
 
 	const mobileSlots = {
+		'mobile-skybox-nav': {
+			sizes: [
+				[320, 50],
+				[320, 100],
+			],
+			placementId: ['29779633'],
+		},
 		'mobile-native': {
 			sizes: [[300, 250]],
 			placementId: ['28574361'],

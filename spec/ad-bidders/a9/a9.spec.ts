@@ -28,19 +28,16 @@ describe('A9Provider', () => {
 
 		it('should be enabled when matches COPPA requirements and feature flag is turned on', () => {
 			const testCases: {
-				coppaA9: boolean;
 				a9: boolean;
 				directedAtChildren: boolean;
 				enabled: boolean;
 			}[] = [
-				{ coppaA9: false, a9: false, directedAtChildren: false, enabled: false },
-				{ coppaA9: false, a9: true, directedAtChildren: true, enabled: true },
-				{ coppaA9: true, a9: true, directedAtChildren: true, enabled: false },
-				{ coppaA9: true, a9: true, directedAtChildren: false, enabled: true },
+				{ a9: false, directedAtChildren: false, enabled: false },
+				{ a9: true, directedAtChildren: true, enabled: false },
+				{ a9: true, directedAtChildren: false, enabled: true },
 			];
 
 			testCases.forEach((testCase) => {
-				context.set('bidders.coppaA9', testCase.coppaA9);
 				context.set('bidders.a9.enabled', testCase.a9);
 				context.set('wiki.targeting.directedAtChildren', testCase.directedAtChildren);
 				expect(A9Provider.isEnabled()).to.equal(testCase.enabled);
