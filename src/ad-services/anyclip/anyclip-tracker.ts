@@ -6,6 +6,7 @@ export class AnyclipTracker implements VideoTracker {
 	constructor(private subscribeFuncName: string) {}
 
 	private trackingEvents = {
+		init: 'init',
 		WidgetLoad: 'ready',
 		adImpression: 'impression',
 		adSkipped: 'skipped',
@@ -37,6 +38,11 @@ export class AnyclipTracker implements VideoTracker {
 		Object.keys(this.trackingEvents).map((eventName) => {
 			subscribe((data) => this.track(eventName, data), eventName);
 		});
+	}
+
+	trackInit() {
+		const eventName = 'init';
+		this.track(eventName, VideoEventProvider.getEventData(this.getVideoData(eventName)));
 	}
 
 	private track(eventName: string, eventData) {
