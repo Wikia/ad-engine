@@ -30,6 +30,7 @@ export class Optimizely {
 		}
 
 		const variant = this.getOptimizelyValue(optimizelyVariables.EXPERIMENT_VARIANT);
+		utils.logger(logGroup, `Variant name: ${optimizelyVariables.EXPERIMENT_VARIANT}`);
 
 		if (variant === undefined) {
 			utils.logger(

@@ -14,15 +14,37 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 import { NoAdsDetector } from '../services/no-ads-detector';
 
-const OPTIMIZELY_IN_CONTENT_EXPERIMENT = {
+type optimizelyInContentExperiment = {
+	EXPERIMENT_ENABLED: string;
+	EXPERIMENT_VARIANT: string;
+};
+
+type optimizelyInContentExperimentVariants = {
+	IGNORE_VIEWPORT: string;
+	VIEWPORT: string;
+	UNDEFINED: string;
+};
+
+const OPTIMIZELY_IN_CONTENT_EXPERIMENT: optimizelyInContentExperiment = {
 	EXPERIMENT_ENABLED: 'in_content_headers',
 	EXPERIMENT_VARIANT: 'in_content_headers_variant',
 };
 
-const OPTIMIZELY_IN_CONTENT_EXPERIMENT_VARIANTS = {
+const OPTIMIZELY_IN_CONTENT_EXPERIMENT_VARIANTS: optimizelyInContentExperimentVariants = {
 	IGNORE_VIEWPORT: 'in_content_headers_ignore_viewport',
 	VIEWPORT: 'in_content_headers_viewport',
 	UNDEFINED: 'in_content_headers_undefined',
+};
+
+const OPTIMIZELY_MOBILE_IN_CONTENT_EXPERIMENT: optimizelyInContentExperiment = {
+	EXPERIMENT_ENABLED: 'mobile_in_content_headers',
+	EXPERIMENT_VARIANT: 'mobile_in_content_headers_variant',
+};
+
+const OPTIMIZELY_MOBILE_IN_CONTENT_EXPERIMENT_VARIANTS: optimizelyInContentExperimentVariants = {
+	IGNORE_VIEWPORT: 'mobile_in_content_headers_ignore_viewport',
+	VIEWPORT: 'mobile_in_content_headers_viewport',
+	UNDEFINED: 'mobile_in_content_headers_undefined',
 };
 
 @Injectable()
@@ -132,21 +154,26 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setInContentExperiment(): void {
-		this.optimizely.addVariantToTargeting(
-			OPTIMIZELY_IN_CONTENT_EXPERIMENT,
-			OPTIMIZELY_IN_CONTENT_EXPERIMENT_VARIANTS.UNDEFINED,
-		);
+		const isMobile = context.get('state.isMobile');
+		const experiment = isMobile
+			? OPTIMIZELY_MOBILE_IN_CONTENT_EXPERIMENT
+			: OPTIMIZELY_IN_CONTENT_EXPERIMENT;
+		const variants = isMobile
+			? OPTIMIZELY_MOBILE_IN_CONTENT_EXPERIMENT_VARIANTS
+			: OPTIMIZELY_IN_CONTENT_EXPERIMENT_VARIANTS;
 
-		const variant = this.optimizely.getVariant(OPTIMIZELY_IN_CONTENT_EXPERIMENT);
+		this.optimizely.addVariantToTargeting(experiment, variants.UNDEFINED);
 
-		if (variant === OPTIMIZELY_IN_CONTENT_EXPERIMENT_VARIANTS.IGNORE_VIEWPORT) {
+		const variant = this.optimizely.getVariant(experiment);
+
+		if (variant === variants.IGNORE_VIEWPORT) {
 			context.set('templates.incontentHeadersExperiment', true);
 		} else {
 			context.set('templates.incontentAnchorSelector', '.mw-parser-output > h2');
 		}
 
 		if (variant) {
-			this.optimizely.addVariantToTargeting(OPTIMIZELY_IN_CONTENT_EXPERIMENT, variant);
+			this.optimizely.addVariantToTargeting(experiment, variant);
 		}
 	}
 
