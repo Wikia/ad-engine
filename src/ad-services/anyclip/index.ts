@@ -94,8 +94,10 @@ export class Anyclip extends BaseServiceSetup {
 						window[SUBSCRIBE_FUNC_NAME],
 					);
 
-					this.waitForIncontentSlotReady().then(() => {
-						this.tracker.trackInit();
+					this.waitForIncontentSlotReady().then((incontentSlotExists) => {
+						if (incontentSlotExists) {
+							this.tracker.trackInit();
+						}
 					});
 
 					isSubscribeReady
