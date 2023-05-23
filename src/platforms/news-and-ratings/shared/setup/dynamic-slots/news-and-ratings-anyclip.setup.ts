@@ -1,14 +1,24 @@
 import { context, DiProcess, targetingService, utils } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
+import { insertSlots } from '../../../../shared';
 
-export class TvGuideAnyclipSetup implements DiProcess {
+import { NewsAndRatingsSlotsDefinitionRepository } from '../../index';
+
+@Injectable()
+export class NewsAndRatingsAnyclipSetup implements DiProcess {
 	private logGroup = 'Anyclip';
+
+	constructor(private slotsDefinitionRepository: NewsAndRatingsSlotsDefinitionRepository) {}
 
 	execute(): void {
 		context.set('services.anyclip.isApplicable', () => {
+			const doesAnyclipTagExist = context.get('services.anyclip.anyclipTagExists');
 			const pname = targetingService.get('pname');
 			const pathname = window.location.pathname.toLowerCase();
 
-			const isApplicable = this.isApplicable(pname)
+			const isApplicable = doesAnyclipTagExist
+				? doesAnyclipTagExist
+				: this.isApplicable(pname)
 				? this.isApplicable(pname)
 				: this.isApplicable(pathname);
 
@@ -16,6 +26,9 @@ export class TvGuideAnyclipSetup implements DiProcess {
 
 			return isApplicable;
 		});
+
+		utils.logger(this.logGroup, 'Inserting slots without DOM elements');
+		insertSlots([this.slotsDefinitionRepository.getIncontentPlayerConfig()]);
 	}
 
 	isApplicable(pathname: string): boolean {
