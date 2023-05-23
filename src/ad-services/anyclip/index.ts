@@ -11,6 +11,7 @@ import { AnyclipTracker } from './anyclip-tracker';
 const logGroup = 'Anyclip';
 const SUBSCRIBE_FUNC_NAME = 'lreSubscribe';
 const isSubscribeReady = () => typeof window[SUBSCRIBE_FUNC_NAME] !== 'undefined';
+const incontentSlotExists = () => !!document.getElementById('incontent_player');
 
 export class Anyclip extends BaseServiceSetup {
 	private get pubname(): string {
@@ -93,7 +94,9 @@ export class Anyclip extends BaseServiceSetup {
 						window[SUBSCRIBE_FUNC_NAME],
 					);
 
-					this.tracker.trackInit();
+					this.waitForIncontentSlotReady().then(() => {
+						this.tracker.trackInit();
+					});
 
 					isSubscribeReady
 						? this.tracker.register()
@@ -130,5 +133,9 @@ export class Anyclip extends BaseServiceSetup {
 
 	private waitForSubscribeReady(): Promise<boolean> {
 		return new utils.WaitFor(isSubscribeReady, 4, 250).until();
+	}
+
+	private waitForIncontentSlotReady(): Promise<boolean> {
+		return new utils.WaitFor(incontentSlotExists, 4, 250).until();
 	}
 }
