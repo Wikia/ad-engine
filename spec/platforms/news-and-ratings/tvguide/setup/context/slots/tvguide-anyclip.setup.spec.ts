@@ -43,7 +43,7 @@ describe('Anyclip on TVGuide setup', () => {
 
 		after(() => {
 			context.remove('services.anyclip.isApplicable');
-			targetingService.remove('pname');
+			targetingService.clear('pname');
 			global.sandbox.restore();
 		});
 

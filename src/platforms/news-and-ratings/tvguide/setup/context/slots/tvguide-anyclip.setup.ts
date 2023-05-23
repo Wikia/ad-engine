@@ -25,12 +25,12 @@ export class TvGuideAnyclipSetup implements DiProcess {
 	private isApplicableByPnameAdTag(pname: string): boolean {
 		const applicablePnames = ['news', 'feature_hub'];
 
-		return applicablePnames.indexOf(pname) !== -1;
+		return applicablePnames.includes(pname);
 	}
 
 	private isApplicableByPathname(pathname: string): boolean {
 		const applicablePathnames = ['/news/'];
 
-		return applicablePathnames.indexOf(pathname) !== -1;
+		return applicablePathnames.includes(pathname);
 	}
 }
