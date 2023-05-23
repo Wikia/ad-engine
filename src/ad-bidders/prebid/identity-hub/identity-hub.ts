@@ -7,7 +7,7 @@ const logGroup = 'IdentityHub';
 
 export class IdentityHub extends BaseServiceSetup {
 	private isLoaded = false;
-	private identityHubScriptSrc = `https://ads.pubmatic.com/AdServer/js/pwt/${pubId}/${profileId}/pwt.js`;
+	private identityHubScriptSrc = `https://ads.pubmatic.com/AdServer/js/pwt/${pubId}/${profileId}/19/pwt.js`;
 
 	call(): Promise<void> {
 		if (
