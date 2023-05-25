@@ -82,9 +82,6 @@ export class MetacriticNeutronPlatform {
 				return;
 			}
 
-			utils.logger('pageChangeWatcher', 'SPA', this.currentUrl, location.href);
-			utils.logger('pageChangeWatcher', 'SPA', location.href, location.href);
-
 			if (this.currentUrl !== location.href) {
 				utils.logger('pageChangeWatcher', 'SPA', 'url changed', location.href);
 
