@@ -39,7 +39,7 @@ export class Rubicon extends PrebidAdapter {
 			mediaTypes: {
 				video: {
 					playerSize: [640, 480],
-					context: 'instream',
+					context: 'outstream',
 					api: [2],
 					linearity: 1,
 					mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
