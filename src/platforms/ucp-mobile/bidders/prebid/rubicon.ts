@@ -5,7 +5,7 @@ export function getRubiconContext(): object {
 		slots: {
 			featured: {
 				siteId: '147980',
-				sizeId: '203gi',
+				sizeId: '203',
 				zoneId: '699374',
 			},
 			incontent_player: {
