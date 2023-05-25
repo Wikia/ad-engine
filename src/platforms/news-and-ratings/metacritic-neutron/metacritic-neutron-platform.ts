@@ -76,6 +76,11 @@ export class MetacriticNeutronPlatform {
 
 	setupPageChangeWatcher(container: Container) {
 		const config = { subtree: false, childList: true };
+
+		if (!this.currentUrl) {
+			this.currentUrl = location.href;
+		}
+
 		const observer = new MutationObserver(() => {
 			if (!this.currentUrl) {
 				this.currentUrl = location.href;
