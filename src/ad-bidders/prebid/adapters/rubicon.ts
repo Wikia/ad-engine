@@ -45,6 +45,7 @@ export class Rubicon extends PrebidAdapter {
 					mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
 					maxduration: 30,
 					protocols: [2, 3, 5, 6],
+					placement: 3,
 				},
 			},
 			bids: [
