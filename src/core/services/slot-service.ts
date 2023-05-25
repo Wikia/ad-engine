@@ -203,12 +203,6 @@ class SlotService {
 		return context.get('slots') || {};
 	}
 
-	getAtfSlotNames(): string[] {
-		return Object.entries<SlotConfig>(this.slotConfigsMap)
-			.filter(([, config]) => !!config.aboveTheFold)
-			.map(([name]) => name);
-	}
-
 	/**
 	 * Returns configuration of first call slots.
 	 */

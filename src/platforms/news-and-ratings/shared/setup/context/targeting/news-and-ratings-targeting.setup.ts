@@ -275,10 +275,6 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 	getSlValue(adSlot, customConfig) {
 		const slParams = [];
 
-		if (adSlot.getConfigProperty('lazyLoad')) {
-			slParams.push('LL');
-		}
-
 		if (customConfig.timeouts.bidder) {
 			slParams.push(`T-${customConfig.timeouts.bidder}`);
 		}

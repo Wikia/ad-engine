@@ -25,6 +25,12 @@ export const basicContext = {
 			bidder: 1000,
 		},
 	},
+	events: {
+		pushOnScroll: {
+			ids: [],
+			threshold: 100,
+		},
+	},
 	services: {
 		anyclip: {
 			enabled: false,

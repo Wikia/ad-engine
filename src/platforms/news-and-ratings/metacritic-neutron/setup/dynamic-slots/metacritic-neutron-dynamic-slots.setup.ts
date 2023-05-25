@@ -109,7 +109,7 @@ export class MetacriticNeutronDynamicSlotsSetup implements DiProcess {
 	}
 
 	private isSlotDefinedInContext(slotName: string): boolean {
-		return Object.keys(context.get('slots')).includes(slotName);
+		return Object.keys(context.get('slots')).includes(slotName) || slotName.includes('skybox');
 	}
 
 	// TODO: This is temporary workaround. Change it for the proper event informing that ad placeholders

@@ -62,7 +62,7 @@ class BtfBlockerService {
 		if (window.ads.runtime.disableSecondCall) {
 			this.disableSecondCall([]);
 		} else if (window.ads.runtime.disableBtf) {
-			this.disableSecondCall([...this.unblockedSlotNames, ...slotService.getAtfSlotNames()]);
+			this.disableSecondCall([...this.unblockedSlotNames]);
 		}
 
 		communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, () => {

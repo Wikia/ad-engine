@@ -7,11 +7,9 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 	execute(): void {
 		const slots = {
 			top_leaderboard: {
-				aboveTheFold: true,
 				firstCall: true,
 				adProduct: 'top_leaderboard',
 				group: 'LB',
-				options: {},
 				sizes: [
 					{
 						viewportSize: [1024, 0],
@@ -43,9 +41,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 			top_boxad: {
 				adProduct: 'top_boxad',
-				aboveTheFold: true,
 				group: 'MR',
-				options: {},
 				defaultSizes: [
 					[300, 250],
 					[300, 600],
@@ -59,7 +55,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'incontent_leaderboard',
 				bidderAlias: 'incontent_leaderboard',
 				group: 'ILB',
-				options: {},
 				defaultSizes: [[728, 90]],
 				targeting: {
 					loc: 'middle',
@@ -70,7 +65,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				bidderAlias: 'incontent_boxad_1',
 				group: 'HiVi',
 				recirculationElementSelector: '#recirculation-rail',
-				options: {},
 				sizes: [],
 				defaultSizes: [
 					[120, 600],
@@ -85,7 +79,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			bottom_leaderboard: {
 				adProduct: 'bottom_leaderboard',
 				group: 'PF',
-				options: {},
 				sizes: [
 					{
 						viewportSize: [1024, 0],
@@ -128,7 +121,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			floor_adhesion: {
 				adProduct: 'floor_adhesion',
 				group: 'PF',
-				options: {},
 				targeting: {
 					loc: 'footer',
 				},
@@ -155,7 +147,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 					[728, 150],
 				],
 				group: 'quiz',
-				options: {},
 			},
 			quiz_leaderboard_questions: {
 				adProduct: 'quiz_leaderboard_questions',
@@ -164,7 +155,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 					[728, 150],
 				],
 				group: 'quiz',
-				options: {},
 			},
 			quiz_leaderboard_finish: {
 				adProduct: 'quiz_leaderboard_finish',
@@ -173,13 +163,11 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 					[728, 150],
 				],
 				group: 'quiz',
-				options: {},
 			},
 			quiz_incontent: {
 				adProduct: 'quiz_incontent',
 				defaultSizes: [[300, 250]],
 				group: 'quiz',
-				options: {},
 			},
 		};
 

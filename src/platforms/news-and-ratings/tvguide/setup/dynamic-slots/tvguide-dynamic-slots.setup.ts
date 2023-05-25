@@ -26,6 +26,15 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 			communicationService.on(
 				eventsRepository.PLATFORM_AD_PLACEMENT_READY,
 				({ placementId }) => {
+					if (placementId.includes('skybox')) {
+						context.set('slots.top_leaderboard.bidderAlias', placementId);
+						context.set('slots.top_leaderboard.targeting.pos', ['top_leaderboard', placementId]);
+						document.querySelector(`.c-adDisplay_container > div[data-ad="${placementId}"]`).id =
+							'top_leaderboard';
+
+						placementId = 'top_leaderboard';
+					}
+
 					utils.logger(logGroup, 'Ad placement rendered', placementId);
 					if (this.repeatedSlotsCounter[placementId]) {
 						this.scheduleRepeatedSlotInjection(placementId);
@@ -102,7 +111,7 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 	}
 
 	private isSlotApplicable(slotName: string): boolean {
-		return Object.keys(context.get('slots')).includes(slotName);
+		return Object.keys(context.get('slots')).includes(slotName) || slotName.includes('skybox');
 	}
 
 	private getSlotConfig(slotName: string, baseSlotName = ''): SlotSetupDefinition {
