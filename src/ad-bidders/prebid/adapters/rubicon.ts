@@ -46,6 +46,7 @@ export class Rubicon extends PrebidAdapter {
 					maxduration: 30,
 					protocols: [2, 3, 5, 6],
 					placement: 3,
+					plcmt: 2,
 				},
 			},
 			bids: [

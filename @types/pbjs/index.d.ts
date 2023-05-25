@@ -73,6 +73,7 @@ interface PrebidVideoType {
 	protocols?: number[];
 	playbackmethod?: number[];
 	placement?: number;
+	plcmt?: number;
 }
 
 interface PrebidMediaTypes {

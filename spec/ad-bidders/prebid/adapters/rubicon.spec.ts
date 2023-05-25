@@ -49,6 +49,8 @@ describe('Rubicon bidder adapter', () => {
 						mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
 						maxduration: 30,
 						protocols: [2, 3, 5, 6],
+						placement: 3,
+						plcmt: 2,
 					},
 				},
 				bids: [
@@ -112,6 +114,8 @@ describe('Rubicon bidder adapter', () => {
 						mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
 						maxduration: 30,
 						protocols: [2, 3, 5, 6],
+						placement: 3,
+						plcmt: 2,
 					},
 				},
 				bids: [
@@ -175,6 +179,8 @@ describe('Rubicon bidder adapter', () => {
 						mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
 						maxduration: 30,
 						protocols: [2, 3, 5, 6],
+						placement: 3,
+						plcmt: 2,
 					},
 				},
 				bids: [
