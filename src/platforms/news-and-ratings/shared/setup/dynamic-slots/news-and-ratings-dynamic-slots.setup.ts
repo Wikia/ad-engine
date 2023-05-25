@@ -1,3 +1,4 @@
+import { insertSlots } from '@platforms/shared';
 import {
 	btfBlockerService,
 	communicationService,
@@ -8,7 +9,6 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { insertSlots } from '../../../../shared';
 import { NewsAndRatingsSlotsDefinitionRepository } from './news-and-ratings-slots-definition-repository';
 
 @Injectable()
