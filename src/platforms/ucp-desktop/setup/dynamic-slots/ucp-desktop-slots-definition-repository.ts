@@ -36,6 +36,22 @@ export class UcpDesktopSlotsDefinitionRepository {
 		};
 	}
 
+	getGalleryLeaderboardConfig(): SlotSetupDefinition {
+		const slotName = 'gallery_leaderboard';
+
+		return {
+			slotCreatorConfig: {
+				slotName,
+				anchorSelector: '.gallery-leaderboard',
+				insertMethod: 'prepend',
+				classList: ['hide', 'ad-slot'],
+			},
+			activator: () => {
+				context.push('state.adStack', { id: slotName });
+			},
+		};
+	}
+
 	getTopBoxadConfig(): SlotSetupDefinition {
 		if (!this.isRightRailApplicable()) {
 			return;

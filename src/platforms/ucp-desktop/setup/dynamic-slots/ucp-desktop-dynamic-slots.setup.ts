@@ -14,6 +14,7 @@ import {
 	eventsRepository,
 	slotService,
 	universalAdPackage,
+	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { UcpDesktopPerformanceAdsDefinitionRepository } from './ucp-desktop-performance-ads-definition-repository';
@@ -33,6 +34,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		this.configureTopLeaderboardAndCompanions();
 		this.configureFloorAdhesionCodePriority();
 		this.registerAdPlaceholderService();
+		this.handleGalleryLightboxSlots();
 	}
 
 	private injectSlots(): void {
@@ -138,5 +140,37 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	private registerAdPlaceholderService(): void {
 		const placeholderService = new PlaceholderService();
 		placeholderService.init();
+	}
+
+	private handleGalleryLightboxSlots(): void {
+		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+			communicationService.on(
+				eventsRepository.PLATFORM_LIGHTBOX_READY,
+				({ placementId }) => {
+					utils.logger('gallery-lightbox-handle', 'Ad placement on Lightbox ready', placementId);
+
+					if (placementId !== 'gallery_leaderboard') {
+						return;
+					}
+
+					insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]);
+				},
+				false,
+			);
+
+			communicationService.on(
+				eventsRepository.PLATFORM_LIGHTBOX_CLOSED,
+				({ placementId }) => {
+					utils.logger('gallery-lightbox-handle', 'Ad placement on Lightbox destroy', placementId);
+
+					if (placementId !== 'gallery_leaderboard') {
+						return;
+					}
+
+					slotService.get(placementId).destroy();
+				},
+				false,
+			);
+		});
 	}
 }

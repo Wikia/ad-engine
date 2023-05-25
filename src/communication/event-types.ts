@@ -268,6 +268,16 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Ad placement ready',
 		payload: props<{ placementId: string }>(),
 	},
+	PLATFORM_LIGHTBOX_READY: {
+		category: '[Platform]',
+		name: 'Lightbox ready',
+		payload: props<{ placementId: string }>(),
+	},
+	PLATFORM_LIGHTBOX_CLOSED: {
+		category: '[Platform]',
+		name: 'Lightbox closed',
+		payload: props<{ placementId: string }>(),
+	},
 	RAIL_READY: {
 		category: '[Rail]',
 		name: 'Ready',
