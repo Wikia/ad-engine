@@ -99,6 +99,9 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 				placementId: slot.getAttribute('data-ad'),
 			});
 		});
+
+		utils.logger(logGroup, 'Reinjecting floor_adhesion');
+		insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
 	}
 
 	private isSlotApplicable(slotName: string): boolean {

@@ -34,7 +34,10 @@ export class MetacriticNeutronDynamicSlotsSetup implements DiProcess {
 			false,
 		);
 
-		insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
+		insertSlots([
+			this.slotsDefinitionRepository.getInterstitialConfig(),
+			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
+		]);
 	}
 
 	private injectSlots(adPlaceholders): void {
