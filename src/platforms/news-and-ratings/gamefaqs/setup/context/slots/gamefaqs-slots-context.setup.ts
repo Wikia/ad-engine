@@ -293,9 +293,9 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 				isVideo: true,
 			},
 			floor_adhesion: {
+				disabled: true,
 				adProduct: 'floor_adhesion',
 				group: 'PF',
-				options: {},
 				targeting: {
 					loc: 'footer',
 				},

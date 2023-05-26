@@ -17,6 +17,6 @@ export class BfaaNewsAndRatingsConfigHandler implements TemplateStateHandler {
 			communicationService.emit(eventsRepository.AD_ENGINE_UAP_NTC_LOADED);
 		}
 
-		universalAdPackage.init(this.params, [], []);
+		universalAdPackage.init(this.params, ['floor_adhesion'], []);
 	}
 }

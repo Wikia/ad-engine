@@ -168,9 +168,9 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 				isVideo: true,
 			},
 			floor_adhesion: {
+				disabled: true,
 				adProduct: 'floor_adhesion',
 				group: 'PF',
-				options: {},
 				targeting: {
 					loc: 'footer',
 				},
