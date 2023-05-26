@@ -1,6 +1,5 @@
 @import '../shared/styles/uap-styles.scss';
-@import '../shared/styles/out-of-page/_floor-adhesion.scss';
-@import '../shared/styles/out-of-page/_out-of-page-template.scss';
+@import '../shared/styles/out-of-page-styles';
 
 body {
 	@include uap-styles();
@@ -27,5 +26,4 @@ body:not(.skybox-loaded) {
 	}
 }
 
-@include out-of-page-template();
-@include floor-adhesion();
+@include out-of-page-styles();
