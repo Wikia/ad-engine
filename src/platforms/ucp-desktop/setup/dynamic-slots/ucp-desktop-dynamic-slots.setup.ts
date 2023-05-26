@@ -12,6 +12,7 @@ import {
 	context,
 	DiProcess,
 	eventsRepository,
+	slotRefresher,
 	slotService,
 	universalAdPackage,
 	utils,
@@ -168,6 +169,24 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 					}
 
 					slotService.get(placementId).destroy();
+				},
+				false,
+			);
+
+			communicationService.on(
+				eventsRepository.PLATFORM_LIGHTBOX_IMAGE_CHANGE,
+				({ placementId }) => {
+					utils.logger(
+						'gallery-lightbox-handle',
+						'Ad placement on Lightbox is going to be refreshed',
+						placementId,
+					);
+
+					if (placementId !== 'gallery_leaderboard') {
+						return;
+					}
+
+					slotRefresher.refreshSlot(slotService.get(placementId));
 				},
 				false,
 			);

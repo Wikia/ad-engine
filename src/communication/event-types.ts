@@ -278,6 +278,11 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Lightbox closed',
 		payload: props<{ placementId: string }>(),
 	},
+	PLATFORM_LIGHTBOX_IMAGE_CHANGE: {
+		category: '[Platform]',
+		name: 'Lightbox image change',
+		payload: props<{ placementId: string }>(),
+	},
 	RAIL_READY: {
 		category: '[Rail]',
 		name: 'Ready',
