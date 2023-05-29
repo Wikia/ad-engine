@@ -6,7 +6,6 @@ import { getFreewheelContext } from '../../../bidders/prebid/freewheel';
 import { getIndexExchangeContext } from '../../../bidders/prebid/index-exchange';
 import { getMedianetContext } from '../../../bidders/prebid/medianet';
 import { getNobidContext } from '../../../bidders/prebid/nobid';
-import { getOneVideoContext } from '../../../bidders/prebid/one-video';
 import { getPubmaticContext } from '../../../bidders/prebid/pubmatic';
 import { getRoundelContext } from '../../../bidders/prebid/roundel';
 import { getRubiconContext } from '../../../bidders/prebid/rubicon';
@@ -25,7 +24,6 @@ export class UcpDesktopPrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.freewheel', getFreewheelContext());
 		context.set('bidders.prebid.medianet', getMedianetContext());
 		context.set('bidders.prebid.nobid', getNobidContext());
-		context.set('bidders.prebid.onevideo', getOneVideoContext());
 		context.set('bidders.prebid.pubmatic', getPubmaticContext());
 		context.set('bidders.prebid.roundel', getRoundelContext());
 		context.set('bidders.prebid.rubicon', getRubiconContext());

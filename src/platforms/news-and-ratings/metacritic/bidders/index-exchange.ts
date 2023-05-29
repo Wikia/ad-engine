@@ -47,6 +47,13 @@ export function getIndexExchangeContext(isDesktop: boolean): object {
 		video: {
 			siteId: '936594',
 		},
+		nav_ad_omni: {
+			sizes: [
+				[728, 90],
+				[970, 250],
+			],
+			siteId: '971598',
+		},
 	};
 
 	const mobileSlots = {
@@ -182,6 +189,13 @@ export function getIndexExchangeContext(isDesktop: boolean): object {
 		},
 		video: {
 			siteId: '936611',
+		},
+		mobile_nav_ad_omni: {
+			sizes: [
+				[300, 100],
+				[320, 50],
+			],
+			siteId: '971599',
 		},
 	};
 

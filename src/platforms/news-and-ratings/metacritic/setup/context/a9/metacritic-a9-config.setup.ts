@@ -9,6 +9,12 @@ export class MetacriticA9ConfigSetup implements DiProcess {
 
 	private getA9Context(): object {
 		const desktopSlots = {
+			nav_ad_omni: {
+				sizes: [
+					[728, 90],
+					[970, 250],
+				],
+			},
 			leader_plus_top: {
 				sizes: [
 					[728, 90],
@@ -51,6 +57,9 @@ export class MetacriticA9ConfigSetup implements DiProcess {
 		};
 
 		const mobileSlots = {
+			mobile_nav_ad_omni: {
+				sizes: [[320, 50]],
+			},
 			mobile_banner_top: {
 				sizes: [
 					[300, 250],

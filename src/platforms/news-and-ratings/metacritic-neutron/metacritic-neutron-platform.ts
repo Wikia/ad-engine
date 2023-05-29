@@ -40,7 +40,6 @@ import { MetacriticNeutronTemplatesSetup } from './templates/metacritic-neutron-
 @injectable()
 export class MetacriticNeutronPlatform {
 	private currentUrl = '';
-	private currentPageViewGuid;
 
 	constructor(private pipeline: ProcessPipeline) {}
 
@@ -77,24 +76,21 @@ export class MetacriticNeutronPlatform {
 
 	setupPageChangeWatcher() {
 		const config = { subtree: false, childList: true };
-		const observer = new MutationObserver(() => {
-			if (!this.currentPageViewGuid) {
-				this.currentPageViewGuid = window.utag_data?.pageViewGuid;
-			}
 
+		if (!this.currentUrl) {
+			this.currentUrl = location.href;
+		}
+
+		const observer = new MutationObserver(() => {
 			if (!this.currentUrl) {
 				this.currentUrl = location.href;
 				return;
 			}
 
-			if (
-				this.currentUrl !== location.href &&
-				this.currentPageViewGuid !== window.utag_data?.pageViewGuid
-			) {
+			if (this.currentUrl !== location.href) {
 				utils.logger('pageChangeWatcher', 'SPA', 'url changed', location.href);
 
 				this.currentUrl = location.href;
-				this.currentPageViewGuid = window.utag_data?.pageViewGuid;
 
 				communicationService.emit(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
 				targetingService.clear();

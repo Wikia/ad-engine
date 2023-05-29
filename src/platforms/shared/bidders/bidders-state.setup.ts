@@ -16,7 +16,6 @@ export class BiddersStateSetup implements DiProcess {
 		medianet: 'icPrebidMedianet',
 		nobid: 'icPrebidNobid',
 		ogury: 'icPrebidOgury',
-		oneVideo: 'icPrebidOneVideo',
 		pubmatic: 'icPrebidPubmatic',
 		rubicon_display: 'icPrebidRubiconDisplay',
 		roundel: 'icPrebidRoundel',
@@ -25,6 +24,7 @@ export class BiddersStateSetup implements DiProcess {
 		verizon: 'icPrebidVerizon',
 		yahoossp: 'icPrebidYahooSsp',
 	};
+	private notCoppaCompliantBidders: Array<keyof typeof this.prebidBidders> = ['kargo', 'verizon'];
 
 	constructor(private instantConfig: InstantConfigService) {
 		this.selectedBidder = utils.queryString.get('select_bidder') || '';
@@ -39,7 +39,6 @@ export class BiddersStateSetup implements DiProcess {
 
 		if (this.instantConfig.get('icA9Bidder')) {
 			context.set('bidders.a9.enabled', true);
-			context.set('bidders.coppaA9', this.instantConfig.get('icCoppaA9'));
 			context.set(
 				'bidders.a9.videoEnabled',
 				this.instantConfig.get('icA9VideoBidder') && hasFeaturedVideo,
@@ -61,6 +60,8 @@ export class BiddersStateSetup implements DiProcess {
 				});
 				this.enableIfApplicable('testBidder', 'icPrebidTestBidder');
 			}
+
+			context.set('bidders.prebid.intentIQ', this.instantConfig.get('icPrebidIntentIQ', false));
 		}
 
 		context.set(
@@ -75,6 +76,15 @@ export class BiddersStateSetup implements DiProcess {
 			return;
 		}
 
+		if (utils.isCoppaSubject() && !this.isBidderCoppaCompliant(name)) {
+			context.set(`bidders.prebid.${name}.enabled`, false);
+			return;
+		}
+
 		context.set(`bidders.prebid.${name}.enabled`, !!this.instantConfig.get(icKey));
+	}
+
+	private isBidderCoppaCompliant(bidderName: string): boolean {
+		return !this.notCoppaCompliantBidders.includes(bidderName);
 	}
 }

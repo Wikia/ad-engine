@@ -9,7 +9,6 @@ import { getKargoContext } from '../../../bidders/prebid/kargo';
 import { getMedianetContext } from '../../../bidders/prebid/medianet';
 import { getNobidContext } from '../../../bidders/prebid/nobid';
 import { getOguryContext } from '../../../bidders/prebid/ogury';
-import { getOneVideoContext } from '../../../bidders/prebid/one-video';
 import { getPubmaticContext } from '../../../bidders/prebid/pubmatic';
 import { getRubiconContext } from '../../../bidders/prebid/rubicon';
 import { getRubiconDisplayContext } from '../../../bidders/prebid/rubicon-display';
@@ -30,7 +29,6 @@ export class UcpMobilePrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.medianet', getMedianetContext());
 		context.set('bidders.prebid.nobid', getNobidContext());
 		context.set('bidders.prebid.ogury', getOguryContext());
-		context.set('bidders.prebid.onevideo', getOneVideoContext());
 		context.set('bidders.prebid.pubmatic', getPubmaticContext());
 		context.set('bidders.prebid.rubicon', getRubiconContext());
 		context.set('bidders.prebid.rubicon_display', getRubiconDisplayContext());
