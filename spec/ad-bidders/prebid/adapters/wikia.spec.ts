@@ -51,8 +51,9 @@ describe('Wikia bidder adapter', () => {
 			},
 		});
 		const bidRequest = {
-			bidderCode: 'fake-wikia-bidder',
 			auctionId: 'fake-id',
+			bidderCode: 'fake-wikia-bidder',
+			bidderRequestId: 'fake-request-id',
 			bids: [
 				{
 					adUnitCode: 'fake-ad-unit',
@@ -60,6 +61,7 @@ describe('Wikia bidder adapter', () => {
 					mediaTypes: {
 						banner: {},
 					},
+					transactionId: 'fake-transaction-id',
 				},
 			],
 		};
@@ -77,7 +79,10 @@ describe('Wikia bidder adapter', () => {
 				'fake-ad-unit',
 				{
 					ad: responseAd,
+					auctionId: 'fake-id',
 					bidderCode: 'fake-wikia-bidder',
+					bidderRequestId: 'fake-request-id',
+					transactionId: 'fake-transaction-id',
 					cpm: responseCpm,
 					ttl: 300,
 					mediaType: 'banner',
