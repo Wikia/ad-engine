@@ -1,11 +1,13 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { AdSlotStatus, BaseServiceSetup, slotService, utils } from '@ad-engine/core';
+import { injectable } from 'tsyringe';
 import { PrebidNativeData } from './native-models';
 import { PrebidNativeConfig } from './prebid-native-config';
 import { PrebidNativeHelper } from './prebid-native-helper';
 
 const logGroup = 'prebid-native-provider';
 
+@injectable()
 export class PrebidNativeProvider extends BaseServiceSetup {
 	static ACTION_CLICK = 'click';
 	static ACTION_IMPRESSION = 'impression';

@@ -5,6 +5,7 @@ import {
 	btRec,
 	context,
 } from '@wikia/ad-engine';
+import { injectable } from 'tsyringe';
 import { trackBab } from '../tracking/bab-tracker';
 
 const defaultOnDetect = () => {
@@ -12,6 +13,7 @@ const defaultOnDetect = () => {
 	btRec.run();
 };
 
+@injectable()
 export class WadRunner extends BaseServiceSetup {
 	public detector = babDetection;
 	public onDetected: () => void = defaultOnDetect;

@@ -1,7 +1,9 @@
 import { BaseServiceSetup, context, utils } from '@ad-engine/core';
+import { injectable } from 'tsyringe';
 
 const logGroup = 'duration-media';
 
+@injectable()
 export class DurationMedia extends BaseServiceSetup {
 	call(): Promise<void> {
 		const libraryUrl: string = context.get('services.durationMedia.libraryUrl');

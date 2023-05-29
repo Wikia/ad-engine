@@ -2,7 +2,7 @@ import { BaseServiceSetup, PartnerPipeline } from '@wikia/core';
 import { wait } from '@wikia/core/utils';
 import { expect } from 'chai';
 import { SinonSpy } from 'sinon';
-import { container as diContainer } from 'tsyringe';
+import { container as diContainer, injectable } from 'tsyringe';
 
 describe('PartnerPipeline', () => {
 	let spy: SinonSpy;
@@ -13,6 +13,7 @@ describe('PartnerPipeline', () => {
 		spy = global.sandbox.spy();
 	});
 
+	@injectable()
 	class ExampleServiceSetup extends BaseServiceSetup {
 		async call() {
 			await wait(20);
@@ -20,6 +21,7 @@ describe('PartnerPipeline', () => {
 		}
 	}
 
+	@injectable()
 	class ExampleSlowServiceSetup extends BaseServiceSetup {
 		async call() {
 			await wait(40);
@@ -28,8 +30,8 @@ describe('PartnerPipeline', () => {
 	}
 
 	it('should work', async () => {
-		const exampleSlowServiceSetup = new ExampleSlowServiceSetup();
-		const exampleServiceSetup = new ExampleServiceSetup();
+		const exampleSlowServiceSetup = container.resolve(ExampleSlowServiceSetup);
+		const exampleServiceSetup = container.resolve(ExampleServiceSetup);
 
 		pipeline
 			.add(

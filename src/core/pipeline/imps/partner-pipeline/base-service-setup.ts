@@ -13,7 +13,7 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 	resolve: () => void;
 	initialized: Promise<void>;
 
-	constructor(protected instantConfig?: InstantConfigService) {
+	constructor(protected instantConfig: InstantConfigService) {
 		this.resetInitialized();
 	}
 

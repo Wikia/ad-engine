@@ -1,5 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { BaseServiceSetup, context, localCache, UniversalStorage, utils } from '@ad-engine/core';
+import { injectable } from 'tsyringe';
 
 interface IdConfig {
 	id: string;
@@ -24,6 +25,7 @@ const idConfigMapping: IdConfig[] = [
 	{ id: 'sha1', name: `${partnerName}-sha1`, params: { qf: '0.3', resolve: 'sha1' } },
 ];
 
+@injectable()
 export class LiveConnect extends BaseServiceSetup {
 	private storage;
 	private storageConfig: CachingStrategyConfig;

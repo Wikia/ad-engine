@@ -6,6 +6,7 @@ import {
 	targetingService,
 	utils,
 } from '@ad-engine/core';
+import { injectable } from 'tsyringe';
 
 const logGroup = 'ias-publisher-optimization';
 const scriptUrl = '//cdn.adsafeprotected.com/iasPET.1.js';
@@ -39,6 +40,7 @@ interface IasTargetingData {
 	slots?: IasTargetingSlotData[];
 }
 
+@injectable()
 export class IasPublisherOptimization extends BaseServiceSetup {
 	private isLoaded = false;
 	private slotList: string[] = [];

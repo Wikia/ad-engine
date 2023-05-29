@@ -4,7 +4,9 @@ import {
 	JWPlayerManager,
 	jwpSetup,
 } from '@wikia/ad-engine';
+import { injectable } from 'tsyringe';
 
+@injectable()
 export class PlayerSetup extends BaseServiceSetup {
 	async execute(): Promise<void> {
 		new JWPlayerManager().manage();

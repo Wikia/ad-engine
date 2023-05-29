@@ -1,5 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { BaseServiceSetup, targetingService, tcf, utils } from '@ad-engine/core';
+import { injectable } from 'tsyringe';
 
 const logGroup = 'eyeota';
 const pid = 'r8rcb20';
@@ -16,6 +17,7 @@ export function parseContextTags(tags: TaxonomyTags): string {
 	return urlParams;
 }
 
+@injectable()
 export class Eyeota extends BaseServiceSetup {
 	async call(): Promise<void> {
 		if (!this.isEnabled('icEyeota')) {

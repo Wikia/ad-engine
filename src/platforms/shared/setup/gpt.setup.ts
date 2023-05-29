@@ -5,9 +5,11 @@ import {
 	communicationService,
 	utils,
 } from '@wikia/ad-engine';
+import { injectable } from 'tsyringe';
 
 let adEngineInstance: AdEngine;
 
+@injectable()
 export class GptSetup extends BaseServiceSetup {
 	call(): Promise<Event> {
 		utils.logger('GPT Setup', 'Called');

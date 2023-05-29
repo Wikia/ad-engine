@@ -1,6 +1,8 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { BaseServiceSetup, utils } from '@ad-engine/core';
+import { injectable } from 'tsyringe';
 
+@injectable()
 export class LiveRampPixel extends BaseServiceSetup {
 	private PIXEL_ID = 712315;
 	private logGroup = 'LiveRamp pixel';

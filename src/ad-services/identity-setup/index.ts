@@ -1,6 +1,8 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { BaseServiceSetup, globalContextService, targetingService, utils } from '@ad-engine/core';
+import { injectable } from 'tsyringe';
 
+@injectable()
 export class IdentitySetup extends BaseServiceSetup {
 	private logGroup = 'identity-setup';
 	private identityReady: () => void;

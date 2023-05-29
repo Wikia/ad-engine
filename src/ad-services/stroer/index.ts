@@ -1,7 +1,9 @@
 import { BaseServiceSetup, utils } from '@ad-engine/core';
+import { injectable } from 'tsyringe';
 
 const logGroup = 'stroer';
 
+@injectable()
 export class Stroer extends BaseServiceSetup {
 	call(): Promise<void> {
 		if (!this.isEnabled('icStroer', false)) {

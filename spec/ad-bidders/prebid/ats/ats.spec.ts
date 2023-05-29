@@ -1,9 +1,10 @@
 import { Ats } from '@wikia/ad-bidders';
 import { context, utils } from '@wikia/core';
 import { expect } from 'chai';
+import { container } from 'tsyringe';
 
 describe('ATS', () => {
-	const ats = new Ats();
+	const ats = container.resolve(Ats);
 	let loadScriptStub;
 
 	beforeEach(() => {

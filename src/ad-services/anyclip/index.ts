@@ -7,12 +7,14 @@ import {
 	utils,
 	VideoTracker,
 } from '@ad-engine/core';
+import { injectable } from 'tsyringe';
 import { AnyclipTracker } from './anyclip-tracker';
 
 const logGroup = 'Anyclip';
 const SUBSCRIBE_FUNC_NAME = 'lreSubscribe';
 const isSubscribeReady = () => typeof window[SUBSCRIBE_FUNC_NAME] !== 'undefined';
 
+@injectable()
 export class Anyclip extends BaseServiceSetup {
 	private get pubname(): string {
 		return context.get('services.anyclip.pubname') || 'fandomcom';

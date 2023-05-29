@@ -1,9 +1,10 @@
 import { IdentityHub } from '@wikia/ad-bidders';
 import { context, utils } from '@wikia/core';
 import { assert } from 'sinon';
+import { container } from 'tsyringe';
 
 describe('Pubmatic IdentityHub', () => {
-	const identityHub = new IdentityHub();
+	const identityHub = container.resolve(IdentityHub);
 	let loadScriptSpy;
 	let contextStub;
 

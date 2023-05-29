@@ -3,6 +3,7 @@ import { communicationService, eventsRepository } from '@wikia/communication';
 import { context, utils } from '@wikia/core';
 import { expect } from 'chai';
 import { SinonSpy } from 'sinon';
+import { container } from 'tsyringe';
 
 const mockedStorageStrategyVariable = {
 	ttl: 300000,
@@ -11,7 +12,7 @@ const mockedStorageStrategyVariable = {
 };
 
 describe('LiveConnect', () => {
-	const liveConnect = new LiveConnect();
+	const liveConnect = container.resolve(LiveConnect);
 	let loadScriptStub;
 
 	before(() => {

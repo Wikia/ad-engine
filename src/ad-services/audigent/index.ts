@@ -6,6 +6,7 @@ import {
 	targetingService,
 	utils,
 } from '@ad-engine/core';
+import { injectable } from 'tsyringe';
 
 const logGroup = 'audigent';
 const DEFAULT_MATCHES_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
@@ -15,6 +16,7 @@ const isAuSegGlobalSet = () => typeof window['au_seg'] !== 'undefined';
 
 window.au = window.au || [];
 
+@injectable()
 export class Audigent extends BaseServiceSetup {
 	private isLoaded = false;
 	private matchesTagScriptLoader: Promise<void>;

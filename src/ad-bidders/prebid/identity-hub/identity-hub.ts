@@ -1,10 +1,12 @@
 import { BaseServiceSetup, context, utils } from '@ad-engine/core';
+import { injectable } from 'tsyringe';
 
 const profileId = '2721';
 const pubId = '156260';
 
 const logGroup = 'IdentityHub';
 
+@injectable()
 export class IdentityHub extends BaseServiceSetup {
 	private isLoaded = false;
 	private identityHubScriptSrc = `https://ads.pubmatic.com/AdServer/js/pwt/${pubId}/${profileId}/pwt.js`;
