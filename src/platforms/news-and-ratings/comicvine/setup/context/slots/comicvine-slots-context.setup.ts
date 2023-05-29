@@ -11,15 +11,39 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 					'/{custom.dfpId}/{slotConfig.group}/{slotConfig.adProduct}' +
 					'/{custom.device}{custom.region}-{custom.property}{custom.pagePath}',
 				group: 'IU',
-				options: {},
 				outOfPage: true,
 				outOfPageFormat: 'INTERSTITIAL',
 				targeting: {
 					loc: 'hivi',
 				},
 			},
-			'skybox-nav': {
-				defaultSizes: [[5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
+			top_leaderboard: {
+				firstCall: true,
+				adProduct: 'top_leaderboard',
+				group: 'LB',
+				sizes: [
+					{
+						viewportSize: [970, 200],
+						sizes: [[728, 90], [970, 250], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
+					},
+					{
+						viewportSize: [840, 200],
+						sizes: [[728, 90], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
+					},
+					{
+						viewportSize: [320, 200],
+						sizes: [[320, 50], [320, 100], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
+					},
+					{
+						viewportSize: [0, 0],
+						sizes: [[320, 50]],
+					},
+				],
+				defaultSizes: [
+					[728, 90],
+					[970, 250],
+				],
+				defaultTemplates: [],
 				targeting: {
 					loc: 'top',
 					pos_nr: 'nav',
@@ -101,13 +125,6 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 					pos_nr: 'top',
 				},
 			},
-			'mobile-skybox-nav': {
-				defaultSizes: [[5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
-				targeting: {
-					loc: 'top',
-					pos_nr: 'nav',
-				},
-			},
 			'mobile-native': {
 				defaultSizes: [
 					[300, 250],
@@ -152,14 +169,12 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 					[300, 250],
 					[320, 50],
 				],
-				incremental: true,
 				targeting: {
 					pos_nr: '1',
 				},
 			},
 			'mobile-banner': {
 				defaultSizes: [[320, 50]],
-				incremental: true,
 				targeting: {
 					pos_nr: '1',
 				},

@@ -10,15 +10,7 @@
 
 @mixin uap-styles() {
 	&.has-uap {
-		#skybox-nav,
-		#mobile-skybox-nav,
-		#nav_ad_omni,
-		#mobile-nav-ad-plus-banner,
-		#omni-skybox-leader-nav,
-		#mobile-omni-skybox-plus-nav,
-		#omni-skybox-leader-sticky,
-		#mobile-omni-skybox-plus-sticky,
-		#nav-ad-plus-leader {
+		#top_leaderboard {
 			line-height: unset;
 			margin: unset;
 
@@ -44,11 +36,7 @@
 			}
 		}
 
-		#skybox-nav,
-		#nav_ad_omni,
-		#omni-skybox-leader-nav,
-		#omni-skybox-leader-sticky,
-		#nav-ad-plus-leader {
+		#top_leaderboard {
 			@include uap-porvata-right-position();
 		}
 	}

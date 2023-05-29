@@ -11,23 +11,39 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					'/{custom.dfpId}/{slotConfig.group}/{slotConfig.adProduct}' +
 					'/{custom.device}{custom.region}-{custom.property}{custom.pagePath}',
 				group: 'IU',
-				options: {},
 				outOfPage: true,
 				outOfPageFormat: 'INTERSTITIAL',
 				targeting: {
 					loc: 'hivi',
 				},
 			},
-			'omni-skybox-nav': {
-				code: 'omni-skybox-nav',
-				defaultSizes: [[5, 5]],
-				targeting: {
-					pos_nr: 'nav',
-				},
-			},
-			'skybox-nav': {
-				code: 'skybox-nav',
-				defaultSizes: [[5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
+			top_leaderboard: {
+				firstCall: true,
+				adProduct: 'top_leaderboard',
+				group: 'LB',
+				sizes: [
+					{
+						viewportSize: [970, 200],
+						sizes: [[728, 90], [970, 250], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
+					},
+					{
+						viewportSize: [840, 200],
+						sizes: [[728, 90], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
+					},
+					{
+						viewportSize: [320, 200],
+						sizes: [[320, 50], [320, 100], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
+					},
+					{
+						viewportSize: [0, 0],
+						sizes: [[320, 50]],
+					},
+				],
+				defaultSizes: [
+					[728, 90],
+					[970, 250],
+				],
+				defaultTemplates: [],
 				targeting: {
 					loc: 'top',
 					pos_nr: 'nav',
@@ -110,21 +126,6 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					pos_nr: 'bottom',
 				},
 			},
-			'mobile-omni-skybox-nav': {
-				code: 'mobile-omni-skybox-nav',
-				defaultSizes: [[5, 5]],
-				targeting: {
-					pos_nr: 'nav',
-				},
-			},
-			'mobile-skybox-nav': {
-				code: 'mobile-skybox-nav',
-				defaultSizes: [[5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
-				targeting: {
-					pos_nr: 'nav',
-					loc: 'top',
-				},
-			},
 			'mobile-native-top': {
 				code: 'mobile-native-top',
 				defaultSizes: [
@@ -188,7 +189,6 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[300, 250],
 					[320, 50],
 				],
-				incremental: true,
 				targeting: {
 					pos_nr: '1',
 				},
@@ -196,7 +196,6 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 			'mobile-banner': {
 				code: 'mobile-banner',
 				defaultSizes: [[320, 50]],
-				incremental: true,
 				targeting: {
 					pos_nr: '1',
 				},
@@ -204,7 +203,6 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 			'mobile-mpu': {
 				code: 'mobile-mpu',
 				defaultSizes: [[300, 250]],
-				incremental: true,
 				targeting: {
 					pos_nr: '1',
 				},
@@ -216,7 +214,6 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[970, 66],
 					[728, 90],
 				],
-				collapseEmptyDiv: [true],
 				targeting: {
 					pos_nr: 'nav',
 				},
@@ -227,7 +224,6 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[5, 5],
 					[320, 50],
 				],
-				collapseEmptyDiv: [true],
 				targeting: {
 					pos_nr: 'nav',
 				},
@@ -238,7 +234,6 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[300, 250],
 					[320, 50],
 				],
-				collapseEmptyDiv: [true],
 				targeting: {
 					pos_nr: 'inc',
 				},
@@ -250,7 +245,6 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[320, 50],
 					[5, 5],
 				],
-				incremental: true,
 				targeting: {
 					pos_nr: 'inc',
 				},
@@ -261,7 +255,6 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[300, 250],
 					[320, 50],
 				],
-				incremental: true,
 				targeting: {
 					pos_nr: 'inc',
 				},
@@ -273,7 +266,6 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[728, 90],
 					[5, 5],
 				],
-				incremental: true,
 				targeting: {
 					pos_nr: 'inc',
 				},
@@ -284,7 +276,6 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					[970, 66],
 					[728, 90],
 				],
-				incremental: true,
 				targeting: {
 					pos_nr: 'inc',
 				},

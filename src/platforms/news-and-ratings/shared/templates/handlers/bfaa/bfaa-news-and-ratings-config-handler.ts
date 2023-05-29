@@ -1,5 +1,6 @@
 import {
 	communicationService,
+	context,
 	eventsRepository,
 	TEMPLATE,
 	TemplateStateHandler,
@@ -17,6 +18,6 @@ export class BfaaNewsAndRatingsConfigHandler implements TemplateStateHandler {
 			communicationService.emit(eventsRepository.AD_ENGINE_UAP_NTC_LOADED);
 		}
 
-		universalAdPackage.init(this.params, ['floor_adhesion'], []);
+		universalAdPackage.init(this.params, Object.keys(context.get('slots')), []);
 	}
 }

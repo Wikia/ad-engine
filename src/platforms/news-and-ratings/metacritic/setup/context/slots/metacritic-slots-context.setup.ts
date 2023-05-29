@@ -11,18 +11,42 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 					'/{custom.dfpId}/{slotConfig.group}/{slotConfig.adProduct}' +
 					'/{custom.device}{custom.region}-{custom.property}{custom.pagePath}',
 				group: 'IU',
-				options: {},
 				outOfPage: true,
 				outOfPageFormat: 'INTERSTITIAL',
 				targeting: {
 					loc: 'hivi',
 				},
 			},
-			nav_ad_omni: {
-				defaultSizes: [[5, 5], [6, 6], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
+			top_leaderboard: {
+				firstCall: true,
+				adProduct: 'top_leaderboard',
+				group: 'LB',
+				sizes: [
+					{
+						viewportSize: [970, 200],
+						sizes: [[728, 90], [970, 250], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
+					},
+					{
+						viewportSize: [840, 200],
+						sizes: [[728, 90], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
+					},
+					{
+						viewportSize: [320, 200],
+						sizes: [[320, 50], [320, 100], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
+					},
+					{
+						viewportSize: [0, 0],
+						sizes: [[320, 50]],
+					},
+				],
+				defaultSizes: [
+					[728, 90],
+					[970, 250],
+				],
+				defaultTemplates: [],
 				targeting: {
-					pos_nr: 'nav',
 					loc: 'top',
+					pos_nr: 'nav',
 				},
 			},
 			leader_plus_top: {
@@ -114,12 +138,6 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 				],
 				targeting: {
 					pos_nr: 'top',
-				},
-			},
-			mobile_nav_ad_omni: {
-				defaultSizes: [[5, 5]],
-				targeting: {
-					pos_nr: 'nav',
 				},
 			},
 			mobile_banner_top: {
@@ -308,13 +326,6 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 				],
 				targeting: {
 					pos_nr: 'middle',
-				},
-			},
-			'mobile-nav-ad-plus-banner': {
-				defaultSizes: [[5, 5], [320, 50], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
-				targeting: {
-					pos_nr: 'nav',
-					loc: 'top',
 				},
 			},
 			video: {
