@@ -52,6 +52,8 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 			// slots without DOM elements required
 			utils.logger(logGroup, 'Inserting slots without DOM elements');
 			insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
+			// TODO: remove once we have 100% UAP implemented on TVG
+			communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, { isLoaded: false });
 		});
 
 		communicationService.on(
