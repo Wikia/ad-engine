@@ -8,3 +8,4 @@ export * from './setup/dynamic-slots/news-and-ratings-neutron-helper.service';
 export * from './setup/dynamic-slots/news-and-ratings-slots-definition-repository';
 export * from './setup/wad/news-and-ratings-wad.setup';
 export * from './templates/bfaa-template';
+export * from './templates/floor-adhesion-template';

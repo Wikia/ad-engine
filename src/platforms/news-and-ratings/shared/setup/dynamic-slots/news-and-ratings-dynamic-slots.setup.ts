@@ -18,7 +18,10 @@ export class NewsAndRatingsDynamicSlotsSetup implements DiProcess {
 	execute(): void {
 		this.injectSlots();
 
-		insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
+		insertSlots([
+			this.slotsDefinitionRepository.getInterstitialConfig(),
+			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
+		]);
 	}
 
 	public injectSlots(selector = '.mapped-ad,.ad', skyboxPatterns = ['skybox']): void {

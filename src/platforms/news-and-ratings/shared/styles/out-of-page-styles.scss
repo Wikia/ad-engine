@@ -1,0 +1,7 @@
+@import '../../../shared/styles/out-of-page/floor-adhesion';
+@import '../../../shared/styles/out-of-page/out-of-page-template';
+
+@mixin out-of-page-styles() {
+	@include out-of-page-template();
+	@include floor-adhesion();
+}

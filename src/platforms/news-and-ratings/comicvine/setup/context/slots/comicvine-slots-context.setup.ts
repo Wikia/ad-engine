@@ -182,6 +182,16 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 			video: {
 				isVideo: true,
 			},
+			floor_adhesion: {
+				disabled: true,
+				adProduct: 'floor_adhesion',
+				group: 'PF',
+				targeting: {
+					loc: 'footer',
+				},
+				defaultTemplates: ['floorAdhesion'],
+				defaultSizes: [[728, 90]],
+			},
 		};
 
 		context.set('slots', slots);
