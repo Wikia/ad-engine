@@ -235,6 +235,7 @@ export class BaseContextSetup implements DiProcess {
 			this.instantConfig.get('icLiveRampATSAnalytics'),
 		);
 		context.set('bidders.prebid.native.enabled', this.instantConfig.get('icPrebidNative'));
+		context.set('bidders.prebid.s2sBidding.enabled', this.instantConfig.get('icEnableS2sBidding'));
 		context.set(
 			'templates.sizeOverwritingMap',
 			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes,

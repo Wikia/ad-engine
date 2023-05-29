@@ -97,6 +97,7 @@ export class PrebidProvider extends BidderProvider {
 			...this.configureTargeting(),
 			...this.configureLiveRamp(),
 			...this.configureTCF(),
+			...this.configureS2sBidding(),
 		};
 
 		this.applyConfig(this.prebidConfig);
@@ -157,6 +158,30 @@ export class PrebidProvider extends BidderProvider {
 		}
 
 		return {};
+	}
+
+	private configureS2sBidding(): object {
+		if (context.get('bidders.prebid.s2sBidding.enabled')) {
+			return {
+				s2sConfig: [
+					{
+						accountId: 'Magnite_AccountID',
+						bidders: ['mgnipbs'],
+						defaultVendor: 'rubicon',
+						coopSync: true,
+						userSyncLimit: 8,
+						allowUnknownBidderCodes: true,
+						extPrebid: {
+							bidders: {
+								mgnipbs: {
+									wrappername: 'wrapper-name-in-DS',
+								},
+							},
+						},
+					},
+				],
+			};
+		}
 	}
 
 	async configureAdUnits(adUnits: PrebidAdUnit[] = []): Promise<void> {
