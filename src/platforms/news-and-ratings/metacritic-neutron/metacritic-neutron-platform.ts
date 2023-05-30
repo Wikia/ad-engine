@@ -7,23 +7,17 @@ import {
 	LoadTimesSetup,
 	MetricReporter,
 	MetricReporterSetup,
+	SlotsConfigurationExtender,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
-import {
-	communicationService,
-	context,
-	eventsRepository,
-	ProcessPipeline,
-	targetingService,
-	utils,
-} from '@wikia/ad-engine';
-
-import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
+import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
 import {
 	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
 	NewsAndRatingsBaseContextSetup,
+	NewsAndRatingsDynamicSlotsNeutronSetup,
+	NewsAndRatingsNeutronHelper,
 	NewsAndRatingsTargetingSetup,
 	NewsAndRatingsWadSetup,
 } from '../shared';
@@ -33,17 +27,17 @@ import { MetacriticNeutronA9ConfigSetup } from './setup/context/a9/metacritic-ne
 import { MetacriticNeutronPrebidConfigSetup } from './setup/context/prebid/metacritic-neutron-prebid-config.setup';
 import { MetacriticNeutronSlotsContextSetup } from './setup/context/slots/metacritic-neutron-slots-context.setup';
 import { MetacriticNeutronTargetingSetup } from './setup/context/targeting/metacritic-neutron-targeting.setup';
-import { MetacriticNeutronDynamicSlotsSetup } from './setup/dynamic-slots/metacritic-neutron-dynamic-slots.setup';
 import { MetacriticNeutronSeeMoreButtonClickListenerSetup } from './setup/page-change-observers/metacritic-neutron-see-more-button-click-listener.setup';
 import { MetacriticNeutronTemplatesSetup } from './templates/metacritic-neutron-templates.setup';
 
 @Injectable()
 export class MetacriticNeutronPlatform {
-	private currentUrl = '';
+	constructor(
+		private pipeline: ProcessPipeline,
+		private spaWatchers: NewsAndRatingsNeutronHelper,
+	) {}
 
-	constructor(private pipeline: ProcessPipeline) {}
-
-	execute(): void {
+	execute(container: Container): void {
 		this.pipeline.add(
 			() => context.extend(basicContext),
 			() => context.set('state.isMobile', !utils.client.isDesktop()),
@@ -60,7 +54,7 @@ export class MetacriticNeutronPlatform {
 			MetacriticNeutronTargetingSetup,
 			MetacriticNeutronSlotsContextSetup,
 			SlotsConfigurationExtender,
-			MetacriticNeutronDynamicSlotsSetup,
+			NewsAndRatingsDynamicSlotsNeutronSetup,
 			MetacriticNeutronPrebidConfigSetup,
 			MetacriticNeutronA9ConfigSetup,
 			BiddersStateSetup,
@@ -72,44 +66,18 @@ export class MetacriticNeutronPlatform {
 		);
 
 		this.pipeline.execute();
+		this.setupSinglePageAppWatchers(container);
 	}
 
-	setupPageChangeWatcher(container: Container) {
-		const config = { subtree: false, childList: true };
-
-		if (!this.currentUrl) {
-			this.currentUrl = location.href;
-		}
-
-		const observer = new MutationObserver(() => {
-			if (!this.currentUrl) {
-				this.currentUrl = location.href;
-				return;
-			}
-
-			if (this.currentUrl !== location.href) {
-				utils.logger('pageChangeWatcher', 'SPA', 'url changed', location.href);
-
-				this.currentUrl = location.href;
-
-				communicationService.emit(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
-				targetingService.clear();
-
-				const refreshPipeline = new ProcessPipeline(container);
-				refreshPipeline
-					.add(
-						() => utils.logger('SPA', 'starting pipeline refresh', location.pathname),
-						NewsAndRatingsBaseContextSetup,
-						MetacriticNeutronTargetingSetup,
-						NewsAndRatingsTargetingSetup,
-						MetacriticNeutronSlotsContextSetup,
-						MetacriticNeutronNextPageAdsMode,
-						MetacriticNeutronSeeMoreButtonClickListenerSetup,
-					)
-					.execute();
-			}
-		});
-
-		observer.observe(document.querySelector('title'), config);
+	private setupSinglePageAppWatchers(container: Container) {
+		this.spaWatchers.setupPageChangedWatcher(
+			container,
+			NewsAndRatingsBaseContextSetup,
+			MetacriticNeutronTargetingSetup,
+			NewsAndRatingsTargetingSetup,
+			MetacriticNeutronSlotsContextSetup,
+			MetacriticNeutronNextPageAdsMode,
+			MetacriticNeutronSeeMoreButtonClickListenerSetup,
+		);
 	}
 }
