@@ -58,7 +58,7 @@ describe('BlockThrough recovery', () => {
 		loadScriptStub.returns(Promise.resolve());
 		context.set('wiki.targeting.directedAtChildren', true);
 		await btRec.run().then(() => {
-			expect(window.fandomContext.partners.blockthrough.directedAtChildren).to.equal(true);
+			expect(window.fandomContext.partners.directedAtChildren).to.equal(true);
 		});
 	});
 
@@ -66,7 +66,7 @@ describe('BlockThrough recovery', () => {
 		context.remove('wiki.targeting.directedAtChildren');
 		loadScriptStub.returns(Promise.resolve());
 		await btRec.run().then(() => {
-			expect(window.fandomContext.partners.blockthrough.directedAtChildren).to.equal(false);
+			expect(window.fandomContext.partners.directedAtChildren).to.equal(false);
 		});
 	});
 });

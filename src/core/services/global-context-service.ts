@@ -19,6 +19,7 @@ export class GlobalContextService {
 	private createEmptyContext(): void {
 		utils.logger(this.logGroup, 'Creating empty fandomContext');
 		window.fandomContext = {
+			targeting: {},
 			site: {},
 			page: {},
 			tracking: {},
