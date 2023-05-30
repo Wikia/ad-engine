@@ -12,7 +12,6 @@ import {
 	context,
 	DiProcess,
 	eventsRepository,
-	slotRefresher,
 	slotService,
 	universalAdPackage,
 	utils,
@@ -144,6 +143,8 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	}
 
 	private handleGalleryLightboxSlots(): void {
+		let galleryLeaderboardRefreshLocked = false;
+
 		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
 			communicationService.on(
 				eventsRepository.PLATFORM_LIGHTBOX_READY,
@@ -182,11 +183,16 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 						placementId,
 					);
 
-					if (placementId !== 'gallery_leaderboard') {
+					if (placementId !== 'gallery_leaderboard' || galleryLeaderboardRefreshLocked) {
 						return;
 					}
 
-					slotRefresher.refreshSlot(slotService.get(placementId));
+					slotService.get(placementId).destroy();
+					insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]);
+					galleryLeaderboardRefreshLocked = true;
+					setTimeout(() => {
+						galleryLeaderboardRefreshLocked = false;
+					}, 2000);
 				},
 				false,
 			);
