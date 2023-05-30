@@ -20,9 +20,7 @@ class BTRec {
 
 		utils.logger(logGroup, 'loading');
 		globalContextService.setValue(GlobalContextCategories.partners, {
-			blockthrough: {
-				directedAtChildren: !!utils.isCoppaSubject(),
-			},
+			directedAtChildren: !!utils.isCoppaSubject(),
 		});
 		await this.loadScript().then(() => {
 			utils.logger(logGroup, 'ready');
