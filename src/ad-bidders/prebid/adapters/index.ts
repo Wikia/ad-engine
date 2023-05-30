@@ -5,6 +5,7 @@ export * from './freewheel';
 export * from './gumgum';
 export * from './index-exchange';
 export * from './kargo';
+export * from './magnite';
 export * from './medianet';
 export * from './nobid';
 export * from './ogury';

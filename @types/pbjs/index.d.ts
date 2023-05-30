@@ -84,7 +84,7 @@ interface PrebidMediaTypes {
 
 interface PrebidBid {
 	bidder: string;
-	params: unknown;
+	params?: unknown;
 	labelAny?: string[];
 	labelAll?: string[];
 }

@@ -161,11 +161,11 @@ export class PrebidProvider extends BidderProvider {
 	}
 
 	private configureS2sBidding(): object {
-		if (context.get('bidders.prebid.s2sBidding.enabled')) {
+		if (context.get('bidders.prebid.magnite.enabled')) {
 			return {
 				s2sConfig: [
 					{
-						accountId: 'Magnite_AccountID',
+						accountId: 'Magnite_AccountID', // tbd
 						bidders: ['mgnipbs'],
 						defaultVendor: 'rubicon',
 						coopSync: true,
@@ -174,7 +174,7 @@ export class PrebidProvider extends BidderProvider {
 						extPrebid: {
 							bidders: {
 								mgnipbs: {
-									wrappername: 'wrapper-name-in-DS',
+									wrappername: 'test-div', // to be changed after Demand Server UI Setup
 								},
 							},
 						},
