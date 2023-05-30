@@ -96,7 +96,6 @@ describe('Eyeota', () => {
 
 	it('constructs proper url with context', async () => {
 		window.fandomContext = {
-			targeting: {},
 			site: {},
 			page: {},
 			tracking: {},
