@@ -1,4 +1,4 @@
-import { utils } from '../index';
+import { GlobalContextCategories, globalContextService, utils } from '../index';
 import { context, CookieStorageAdapter } from '../services';
 
 export function isCoppaSubject(): boolean {
@@ -7,12 +7,25 @@ export function isCoppaSubject(): boolean {
 		try {
 			const cookieStorage = new CookieStorageAdapter();
 			const ageGateResult = cookieStorage.getItem('ag');
+			const isCoppaSubject = ageGateResult === '1' ? false : wikiDirectedAtChildren;
 
-			return ageGateResult === '1' ? false : wikiDirectedAtChildren;
+			globalContextService.setValue(GlobalContextCategories.partners, {
+				directedAtChildren: !!isCoppaSubject,
+				blockthrough: {
+					directedAtChildren: !!isCoppaSubject,
+				},
+			});
+			return isCoppaSubject;
 		} catch (e) {
 			utils.logger('age-gate', 'Error while reading age gate cookie');
 		}
 	}
 
+	globalContextService.setValue(GlobalContextCategories.partners, {
+		directedAtChildren: wikiDirectedAtChildren,
+		blockthrough: {
+			directedAtChildren: !!isCoppaSubject,
+		},
+	});
 	return wikiDirectedAtChildren;
 }

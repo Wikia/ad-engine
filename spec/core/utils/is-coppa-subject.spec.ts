@@ -59,6 +59,7 @@ describe('isCoppaSubject', () => {
 
 				// then
 				expect(result).to.equal(testCase.expected);
+				expect(window.fandomContext.partners.directedAtChildren).to.equal(testCase.expected);
 			});
 		});
 	});

@@ -51,6 +51,9 @@ export class GlobalContextService {
 		category: K,
 		value: V,
 	): void {
+		if (!window.fandomContext) {
+			this.createEmptyContext();
+		}
 		if (!window.fandomContext[category]) {
 			window.fandomContext[category] = {};
 		}
