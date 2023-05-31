@@ -15,7 +15,6 @@ export class UcpDesktopExperimentsSetup implements DiProcess {
 	}
 
 	private configurePerformanceAdsExperiment(): void {
-		console.log(window.adsExperiments);
 		const variant = this.optimizely.getVariant(OPTIMIZELY_PERFORMANCE_ADS_FOR_FANATICAL);
 
 		if (variant) {
