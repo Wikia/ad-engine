@@ -1,5 +1,4 @@
 import {
-	Audigent,
 	communicationService,
 	context,
 	DiProcess,
@@ -35,10 +34,6 @@ export class InstantConfigSetup implements DiProcess {
 		if (instantConfig.get('icPrebid')) {
 			context.set('bidders.prebid.libraryUrl', instantConfig.get('icPrebidVersion'));
 			pbjsFactory.init();
-		}
-
-		if (instantConfig.get('icAudigent')) {
-			Audigent.loadSegmentLibrary();
 		}
 	}
 }
