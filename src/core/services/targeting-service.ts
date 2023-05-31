@@ -30,6 +30,7 @@ export interface TargetingData {
 	dlm?: string;
 	dmn?: string;
 	drg?: string;
+	experiment_groups?: string[];
 	fr?: string;
 	geo?: string;
 	gnre?: string[];

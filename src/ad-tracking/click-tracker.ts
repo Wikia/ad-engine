@@ -1,7 +1,7 @@
 import { communicationService, EventOptions, eventsRepository } from '@ad-engine/communication';
 import { AdSlot, AdSlotEvent, AdSlotStatus, Dictionary, slotService, utils } from '@ad-engine/core';
 import { BaseTracker, BaseTrackerInterface } from './base-tracker';
-import { slotTrackingCompiler } from './compilers';
+import { slotPropertiesTrackingCompiler, slotTrackingCompiler } from './compilers';
 
 const logGroup = 'ad-click-tracker';
 
@@ -11,7 +11,7 @@ class AdClickTracker extends BaseTracker implements BaseTrackerInterface {
 		eventsRepository.AD_ENGINE_VIDEO_OVERLAY_CLICKED,
 		eventsRepository.AD_ENGINE_VIDEO_TOGGLE_UI_OVERLAY_CLICKED,
 	];
-	compilers = [slotTrackingCompiler];
+	compilers = [slotTrackingCompiler, slotPropertiesTrackingCompiler];
 
 	register(callback): void {
 		communicationService.onSlotEvent(AdSlotEvent.SLOT_RENDERED_EVENT, ({ adSlotName }) => {
@@ -32,48 +32,37 @@ class AdClickTracker extends BaseTracker implements BaseTrackerInterface {
 	}
 
 	private addClickTrackingListeners(callback: (data: Dictionary) => void, slotName): void {
-		const adSlot = slotService.get(slotName);
-		const iframeElement = adSlot.getIframe();
-		const slotElement = adSlot.getAdContainer();
-
-		if (!adSlot || !iframeElement) {
-			utils.logger(logGroup, `Slot ${slotName} has no iframe.`);
-			return;
-		}
-
-		if (adSlot.getFrameType() === 'safe') {
-			utils.logger(logGroup, `Slot ${slotName} is served in safeframe.`);
-			return;
-		}
-
-		const iframeBody = iframeElement?.contentWindow?.document?.body;
-
-		if (iframeBody && slotElement) {
-			slotElement.firstElementChild.addEventListener('click', () => {
-				this.handleClickEvent(callback, adSlot);
-			});
-			iframeBody.addEventListener('click', (e) => {
-				this.handleClickEvent(callback, adSlot, e);
-			});
-		}
+		this.clickDetection(slotName, callback);
 	}
 
-	private handleClickEvent(
-		callback: (data: Dictionary) => void,
-		slot: AdSlot,
-		event?: MouseEvent,
-	): void {
+	private clickDetection(slotName: string, callback: (data: Dictionary) => void) {
+		const eventHandler = () => {
+			const elem = document.activeElement;
+			if (!elem) {
+				return;
+			}
+
+			const currentPlacementId = elem.closest(`div#${slotName}`) !== null;
+			if (!currentPlacementId) {
+				return;
+			}
+
+			utils.logger(logGroup, `Click! on slot='${slotName}' is detected.`);
+
+			const adSlot = slotService.get(slotName);
+			this.handleClickEvent(callback, adSlot);
+			setTimeout(() => {
+				(document.activeElement as HTMLBodyElement).blur();
+			}, 100);
+		};
+
+		window.addEventListener('blur', eventHandler);
+	}
+
+	private handleClickEvent(callback: (data: Dictionary) => void, slot: AdSlot): void {
 		const data = {
 			ad_status: AdSlotStatus.STATUS_CLICKED,
 		};
-		if (event) {
-			const target = event.target as HTMLElement;
-			const clickData = {
-				click: { x: event.clientX, y: event.clientY },
-				size: { x: target.offsetWidth, y: target.offsetHeight },
-			};
-			data['click_position'] = JSON.stringify(clickData);
-		}
 
 		callback(this.compileData(slot, null, data));
 	}

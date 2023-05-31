@@ -90,13 +90,25 @@ interface PrebidBid {
 }
 
 interface PrebidBidResponse {
-	cpm: number;
-	status: string;
+	ad: string;
+	adId: string;
+	adserverTargeting: PrebidTargeting;
+	adUnitCode: string;
+	auctionId: string;
 	bidderCode: string;
+	bidderRequestId: string;
+	cpm: number;
+	creativeId?: string;
+	currency: string;
+	getStatusCode: () => number;
+	getSize: () => string;
+	mediaType: string;
+	originalCpm?: number;
+	originalCurrency?: string;
+	status: string;
 	requestTimestamp: number;
 	responseTimestamp: number;
 	timeToRespond: number;
-	getStatusCode: () => number;
 	width: number;
 	height: number;
 	size: string;
@@ -105,20 +117,14 @@ interface PrebidBidResponse {
 		| 'Bid available'
 		| 'Bid returned empty or error response'
 		| 'Bid timed out';
-	ad: string;
-	adId: string;
-	adUnitCode: string;
 	requestId: string;
-	mediaType: string;
 	source: unknown;
+	transactionId: string;
 	videoCacheKey: string; // should not be here
 	/**
 	 * ${width}x${height}
 	 */
-	getSize: () => string;
-	adserverTargeting: PrebidTargeting;
 	ttl?: number;
-	creativeId?: string;
 	vastUrl?: string;
 }
 

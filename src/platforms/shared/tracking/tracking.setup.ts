@@ -47,7 +47,6 @@ export class TrackingSetup {
 		this.interventionTracker();
 		this.adClickTracker();
 		this.ctaTracker();
-		this.identityTracker();
 		this.keyValsTracker();
 		this.adSizeTracker.init();
 	}
@@ -147,31 +146,18 @@ export class TrackingSetup {
 
 	private experimentGroupsTracker(): void {
 		const cacheStorage = InstantConfigCacheStorage.make();
-		const labradorPropValue = cacheStorage.getSamplingResults().join(';');
+		const experimentsGroups = [
+			...cacheStorage.getSamplingResults(),
+			...(targetingService.get('experiment_groups') || []),
+		].join(';');
 
-		if (labradorPropValue) {
-			this.labradorTracker.track(labradorPropValue);
+		if (experimentsGroups) {
+			this.labradorTracker.track(experimentsGroups);
 		}
 	}
 
 	private interventionTracker(): void {
 		interventionTracker.register();
-	}
-
-	private identityTracker(): void {
-		communicationService.on(
-			eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED,
-			(eventInfo) => {
-				this.dwTracker.track(
-					{
-						partner_name: eventInfo.payload.partnerName,
-						partner_identity_id: eventInfo.payload.partnerIdentityId,
-					},
-					trackingUrls.IDENTITY_INFO,
-				);
-			},
-			false,
-		);
 	}
 
 	private keyValsTracker(): void {

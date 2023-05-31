@@ -9,6 +9,7 @@ import {
 	context,
 	DEFAULT_MAX_DELAY,
 	Dictionary,
+	externalLogger,
 	SlotConfig,
 	slotService,
 	targetingService,
@@ -68,8 +69,7 @@ export class A9Provider extends BidderProvider {
 
 	public static isEnabled(): boolean {
 		const enabled = context.get('bidders.a9.enabled');
-		const coppaA9 = context.get('bidders.coppaA9');
-		return enabled && (coppaA9 ? !utils.isCoppaSubject() : true);
+		return enabled && !utils.isCoppaSubject();
 	}
 
 	private loaded = false;
@@ -155,14 +155,15 @@ export class A9Provider extends BidderProvider {
 	}
 
 	private getApstagConfig(signalData: SignalData): ApstagConfig {
+		const ortb2 = targetingService.get('openrtb2', 'openrtb2');
+		externalLogger.log('openrtb2 signals', { signals: JSON.stringify(ortb2) });
+
 		return {
 			pubID: this.amazonId,
 			videoAdServer: 'DFP',
 			deals: true,
 			...A9Provider.getCcpaIfApplicable(signalData),
-			signals: {
-				ortb2: targetingService.get('openrtb2', 'openrtb2'),
-			},
+			signals: { ortb2 },
 		};
 	}
 
