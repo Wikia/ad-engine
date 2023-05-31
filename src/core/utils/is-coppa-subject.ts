@@ -9,12 +9,18 @@ export function isCoppaSubject(): boolean {
 			const ageGateResult = cookieStorage.getItem('ag');
 			const isCoppaSubject = ageGateResult === '1' ? false : wikiDirectedAtChildren;
 
-			globalContextService.setValue(GlobalContextCategories.partners, {
-				directedAtChildren: !!isCoppaSubject,
-				blockthrough: {
+			const contextValue = globalContextService.getValue(
+				GlobalContextCategories.partners,
+				'directedAtChildren',
+			);
+			if (contextValue === undefined) {
+				globalContextService.setValue(GlobalContextCategories.partners, {
 					directedAtChildren: !!isCoppaSubject,
-				},
-			});
+					blockthrough: {
+						directedAtChildren: !!isCoppaSubject,
+					},
+				});
+			}
 			return isCoppaSubject;
 		} catch (e) {
 			utils.logger('age-gate', 'Error while reading age gate cookie');
