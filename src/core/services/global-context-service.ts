@@ -23,6 +23,7 @@ export class GlobalContextService {
 			page: {},
 			tracking: {},
 			partners: {},
+			targeting: {},
 		};
 	}
 
