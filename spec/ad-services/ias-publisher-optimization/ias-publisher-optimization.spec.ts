@@ -43,7 +43,7 @@ describe('IAS Publisher Optimization', () => {
 
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);
-		context.set('wiki.targeting.directedAtChildren', false);
+		window.fandomContext.partners.directedAtChildren = false;
 		context.remove('services.iasPublisherOptimization.slots');
 
 		window.googletag = {
@@ -84,7 +84,7 @@ describe('IAS Publisher Optimization', () => {
 	});
 
 	it('IAS Publisher Optimization is not called on kid wikis', async () => {
-		context.set('wiki.targeting.directedAtChildren', true);
+		window.fandomContext.partners.directedAtChildren = true;
 
 		await iasPublisherOptimization.call();
 
