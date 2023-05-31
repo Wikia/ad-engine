@@ -32,6 +32,7 @@ export function getAppnexusContext(): object {
 				position: 'hivi',
 			},
 			ntv_ad: {
+				sizes: [[1, 1]],
 				position: 'native',
 			},
 		},

@@ -50,11 +50,13 @@ describe('WikiaVideo bidder adapter', () => {
 			},
 		});
 		const bidRequest = {
-			bidderCode: 'fake-wikia-video-bidder',
 			auctionId: 'fake-id',
+			bidderCode: 'fake-wikia-video-bidder',
+			bidderRequestId: 'fake-request-id',
 			bids: [
 				{
 					adUnitCode: 'fake-ad-unit',
+					transactionId: 'fake-transaction-id',
 					sizes: [[640, 480]],
 				},
 			],
@@ -70,7 +72,10 @@ describe('WikiaVideo bidder adapter', () => {
 			expect(addBidResponseSpy.args[0]).to.deep.equal([
 				'fake-ad-unit',
 				{
+					auctionId: 'fake-id',
 					bidderCode: 'fake-wikia-video-bidder',
+					bidderRequestId: 'fake-request-id',
+					transactionId: 'fake-transaction-id',
 					cpm: 20,
 					creativeId: 'foo123_wikiaVideoCreativeId',
 					ttl: 300,
