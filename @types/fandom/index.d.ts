@@ -45,6 +45,9 @@ interface IPageParameters {
 
 interface IPartnersParameters {
 	directedAtChildren: boolean;
+	blockthrough: {
+		directedAtChildren: boolean;
+	};
 }
 
 interface WindowFandomContext {
