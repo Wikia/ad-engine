@@ -9,7 +9,7 @@ export class GamefaqsA9ConfigSetup implements DiProcess {
 
 	private getA9Context(): object {
 		const desktopSlots = {
-			'omni-skybox-nav': {
+			'skybox-nav': {
 				sizes: [
 					[728, 90],
 					[970, 250],
@@ -51,7 +51,7 @@ export class GamefaqsA9ConfigSetup implements DiProcess {
 		};
 
 		const mobileSlots = {
-			'mobile-omni-skybox-nav': {
+			'mobile-skybox-nav': {
 				sizes: [[320, 50]],
 			},
 			'mobile-native-top': {

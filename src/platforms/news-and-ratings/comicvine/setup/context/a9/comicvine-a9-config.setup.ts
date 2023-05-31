@@ -9,6 +9,12 @@ export class ComicvineA9ConfigSetup implements DiProcess {
 
 	private getA9Context(): object {
 		const desktopSlots = {
+			'skybox-nav': {
+				sizes: [
+					[728, 90],
+					[970, 250],
+				],
+			},
 			leader_plus_top: {
 				sizes: [
 					[728, 90],
@@ -45,6 +51,9 @@ export class ComicvineA9ConfigSetup implements DiProcess {
 		};
 
 		const mobileSlots = {
+			'mobile-skybox-nav': {
+				sizes: [[320, 50]],
+			},
 			'mobile-native': {
 				sizes: [[300, 250]],
 			},

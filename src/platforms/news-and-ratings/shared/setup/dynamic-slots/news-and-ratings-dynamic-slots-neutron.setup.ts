@@ -14,7 +14,7 @@ import { NewsAndRatingsSlotsDefinitionRepository } from '../../../shared';
 const logGroup = 'dynamic-slots';
 
 @injectable()
-export class TvGuideDynamicSlotsSetup implements DiProcess {
+export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 	constructor(private slotsDefinitionRepository: NewsAndRatingsSlotsDefinitionRepository) {}
 
 	private repeatedSlotsCounter: Dictionary<number> = {};
