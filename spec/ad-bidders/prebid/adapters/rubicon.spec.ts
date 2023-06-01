@@ -43,12 +43,14 @@ describe('Rubicon bidder adapter', () => {
 				mediaTypes: {
 					video: {
 						playerSize: [640, 480],
-						context: 'instream',
+						context: 'outstream',
 						api: [2],
 						linearity: 1,
 						mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
 						maxduration: 30,
 						protocols: [2, 3, 5, 6],
+						placement: 3,
+						plcmt: 2,
 					},
 				},
 				bids: [
@@ -106,12 +108,14 @@ describe('Rubicon bidder adapter', () => {
 				mediaTypes: {
 					video: {
 						playerSize: [640, 480],
-						context: 'instream',
+						context: 'outstream',
 						api: [2],
 						linearity: 1,
 						mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
 						maxduration: 30,
 						protocols: [2, 3, 5, 6],
+						placement: 3,
+						plcmt: 2,
 					},
 				},
 				bids: [
@@ -169,12 +173,14 @@ describe('Rubicon bidder adapter', () => {
 				mediaTypes: {
 					video: {
 						playerSize: [640, 480],
-						context: 'instream',
+						context: 'outstream',
 						api: [2],
 						linearity: 1,
 						mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
 						maxduration: 30,
 						protocols: [2, 3, 5, 6],
+						placement: 3,
+						plcmt: 2,
 					},
 				},
 				bids: [
