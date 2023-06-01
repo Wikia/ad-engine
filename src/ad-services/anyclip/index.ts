@@ -129,9 +129,15 @@ export class Anyclip extends BaseServiceSetup {
 	private initIncontentPlayer() {
 		const slotName = 'incontent_player';
 		const playerAdSlot = slotService.get(slotName);
+		const playerElementSelector = context.get('services.anyclip.playerElementSelector');
 
-		if (!playerAdSlot) {
+		if (!playerAdSlot && !playerElementSelector) {
 			utils.logger(logGroup, 'No incontent player - aborting');
+			return;
+		}
+
+		if (playerElementSelector) {
+			this.loadPlayerAsset(document.querySelector(playerElementSelector));
 			return;
 		}
 
