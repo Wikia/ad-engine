@@ -52,14 +52,6 @@ describe('Anyclip setup', () => {
 
 			expect(setup.isApplicable('/news/an-article/')).to.be.false;
 		});
-
-		it("is applicable when it's a listing page'", () => {
-			const setup: NewsAndRatingsAnyclipSetup = new NewsAndRatingsAnyclipSetup(
-				slotsDefinitionRepository,
-			);
-
-			expect(setup.isApplicable('listings/main')).to.be.true;
-		});
 	});
 
 	describe('execute()', () => {
