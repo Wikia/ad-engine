@@ -79,8 +79,6 @@ export class BiddersStateSetup implements DiProcess {
 		if (utils.isCoppaSubject() && !this.isBidderCoppaCompliant(name)) {
 			context.set(`bidders.prebid.${name}.enabled`, false);
 			return;
-		} else {
-			window.fandomContext.partners.directedAtChildren = true;
 		}
 
 		context.set(`bidders.prebid.${name}.enabled`, !!this.instantConfig.get(icKey));
