@@ -302,20 +302,34 @@ export class PrebidProvider extends BidderProvider {
 	}
 
 	private enableATSAnalytics(): void {
-		if (context.get('bidders.liveRampATSAnalytics.enabled')) {
-			utils.logger(logGroup, 'prebid enabling ATS Analytics');
+		const configs = [];
 
-			(window as any).pbjs.que.push(() => {
-				(window as any).pbjs.enableAnalytics([
-					{
-						provider: 'atsAnalytics',
-						options: {
-							pid: '2161',
-							host: 'https://analytics.openlog.in',
-						},
-					},
-				]);
+		if (context.get('bidders.liveRampATSAnalytics.enabled')) {
+			utils.logger(logGroup, 'prebid enabling LiveRamp ATS Analytics');
+
+			configs.push({
+				provider: 'atsAnalytics',
+				options: {
+					pid: '2161',
+					host: 'https://analytics.openlog.in',
+				},
 			});
+		}
+
+		if (context.get('bidders.magniteATSAnalytics.enabled')) {
+			utils.logger(logGroup, 'prebid enabling Magnite ATS Analytics');
+
+			configs.push({
+				provider: 'magnite',
+				options: {
+					accountId: 'MAGNITE-ACCOUNT-ID', //todo
+					endpoint: 'https://prebid-a.rubiconproject.com/event',
+				},
+			});
+		}
+
+		if (configs.length) {
+			(window as any).pbjs.que.push(() => (window as any).pbjs.enableAnalytics(configs));
 		}
 	}
 
