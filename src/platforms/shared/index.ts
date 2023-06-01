@@ -22,6 +22,7 @@ export * from './setup/metric-reporter.setup';
 export * from './setup/noads-experiment.setup';
 export * from './setup/platform-context.setup';
 export * from './setup/player.setup';
+export * from './setup/slots-config-extender';
 export * from './setup/tracking-parameters.setup';
 export * from './slots/slots-context';
 export * from './templates/configs/uap-dom-elements';
