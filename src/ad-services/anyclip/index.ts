@@ -11,7 +11,15 @@ import { AnyclipTracker } from './anyclip-tracker';
 const logGroup = 'Anyclip';
 const SUBSCRIBE_FUNC_NAME = 'lreSubscribe';
 const isSubscribeReady = () => typeof window[SUBSCRIBE_FUNC_NAME] !== 'undefined';
-const incontentSlotExists = () => !!document.getElementById('incontent_player');
+const incontentSlotExists = () => {
+	const slotName = 'incontent_player';
+	const adSlot = slotService.get(slotName);
+	const domReady = !!document.getElementById(slotName);
+
+	utils.logger(logGroup, 'Waiting for incontent_player ready', domReady, adSlot);
+
+	return domReady && adSlot !== null;
+};
 
 export class Anyclip extends BaseServiceSetup {
 	private get pubname(): string {
