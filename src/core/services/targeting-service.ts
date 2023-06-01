@@ -30,6 +30,7 @@ export interface TargetingData {
 	dlm?: string;
 	dmn?: string;
 	drg?: string;
+	experiment_groups?: string[];
 	fr?: string;
 	geo?: string;
 	gnre?: string[];
@@ -45,7 +46,6 @@ export interface TargetingData {
 	media?: string[];
 	npa?: string;
 	off?: string;
-	optimizely?: string[];
 	original_host?: string;
 	post_id?: string;
 	ppid?: string;
