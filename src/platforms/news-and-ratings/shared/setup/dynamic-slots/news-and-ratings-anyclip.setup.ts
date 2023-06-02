@@ -52,7 +52,7 @@ export class NewsAndRatingsAnyclipSetup implements DiProcess {
 
 	private updateContextForIncontentAnyclip(): void {
 		context.set('services.anyclip.widgetname', '001w000001Y8ud2AAB_M8046');
-		context.set('services.anyclip.playerElementSelector', '#incontent_player');
+		context.set('services.anyclip.playerElementId', 'incontent_player');
 		context.set('services.anyclip.loadOnPageLoad', false);
 		context.set('services.anyclip.latePageInject', false);
 		context.set('custom.hasIncontentPlayer', true);
