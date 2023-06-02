@@ -39,9 +39,7 @@ export class NewsAndRatingsAnyclipSetup implements DiProcess {
 	}
 
 	private shouldPlayerBeIncontent(pname: string): boolean {
-		const incontentPnames = ['listings/main'];
-
-		return this.isApplicable(pname) && incontentPnames.includes(pname);
+		return this.isApplicable(pname) && ['listings/main'].includes(pname);
 	}
 
 	private updateContextForMiniplayerAnyclip(): void {
