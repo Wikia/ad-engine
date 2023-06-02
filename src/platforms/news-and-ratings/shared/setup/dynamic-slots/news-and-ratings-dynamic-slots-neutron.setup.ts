@@ -27,6 +27,11 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 				eventsRepository.PLATFORM_AD_PLACEMENT_READY,
 				({ placementId }) => {
 					utils.logger(logGroup, 'Ad placement rendered', placementId);
+
+					if (!context.get('slots')[placementId]) {
+						console.log('X', placementId);
+						return;
+					}
 					if (this.repeatedSlotsCounter[placementId]) {
 						this.scheduleRepeatedSlotInjection(placementId);
 						return;
