@@ -1,6 +1,6 @@
+import { insertSlots } from '@platforms/shared';
 import { context, DiProcess, targetingService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { insertSlots } from '../../../../shared';
 
 import { NewsAndRatingsSlotsDefinitionRepository } from '../../index';
 
