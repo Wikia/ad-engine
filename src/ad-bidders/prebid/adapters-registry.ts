@@ -85,7 +85,7 @@ class AdaptersRegistry {
 	}
 
 	setupAdUnits(): PrebidAdUnit[] {
-		let adUnits: PrebidAdUnit[] = [];
+		const adUnits: PrebidAdUnit[] = [];
 
 		adaptersRegistry.getAdapters().forEach((adapter) => {
 			if (adapter && adapter.enabled) {
@@ -98,10 +98,6 @@ class AdaptersRegistry {
 				});
 			}
 		});
-
-		if (context.get('bidders.prebid.filter') === 'static') {
-			adUnits = adUnits.filter((a) => document.querySelector(`div[id="${a.code}"]`) !== null);
-		}
 
 		return adUnits;
 	}
