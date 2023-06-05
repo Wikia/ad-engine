@@ -38,4 +38,18 @@ export const mobileSlots = {
 			loc: 'middle',
 		},
 	},
+	bottom_leaderboard: {
+		defaultSizes: [
+			[320, 50],
+			[300, 250],
+			[5, 5],
+		],
+		incremental: true,
+		collapseEmptyDiv: [true],
+		targeting: {
+			pos_nr: 'bottom',
+			pos: ['bottom_leaderboard', 'bottom'],
+			loc: 'bottom',
+		},
+	},
 };

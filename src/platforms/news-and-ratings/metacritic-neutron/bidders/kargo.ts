@@ -1,45 +1,29 @@
 export function getKargoContext(isDesktop: boolean): object {
 	const desktopSlots = {
-		'omni-skybox-leader-nav': {
+		top_leaderboard: {
 			sizes: [[728, 90]],
 			placementId: '_uAtUAaayo0',
 		},
-		'omni-skybox-leaderboard-nav': {
+		bottom_leaderboard: {
 			sizes: [[728, 90]],
 			placementId: '_uAtUAaayo0',
 		},
-		'incontent-leader-plus-bottom': {
-			sizes: [[728, 90]],
-			placementId: '_uAtUAaayo0',
-		},
-		'mpu-plus-top': {
+		top_boxad: {
 			sizes: [[300, 250]],
 			placementId: '_pC1SeRWmK7',
 		},
-		'mpu-top': {
-			sizes: [[300, 250]],
-			placementId: '_pC1SeRWmK7',
-		},
-		'mpu-middle': {
-			sizes: [[300, 250]],
-			placementId: '_wsvT3CcnTu',
-		},
-		'mpu-bottom': {
+		incontent_boxad: {
 			sizes: [[300, 250]],
 			placementId: '_wsvT3CcnTu',
 		},
 	};
 
 	const mobileSlots = {
-		'mobile-banner-plus': {
-			sizes: [[320, 50]],
-			placementId: '_pC1SeRWmK7',
-		},
-		'mobile-incontent-plus': {
+		incontent_boxad: {
 			sizes: [[300, 250]],
 			placementId: '_pC1SeRWmK7',
 		},
-		'mobile-incontent-plus-bottom': {
+		bottom_leaderboard: {
 			sizes: [[300, 250]],
 			placementId: '_wsvT3CcnTu',
 		},
