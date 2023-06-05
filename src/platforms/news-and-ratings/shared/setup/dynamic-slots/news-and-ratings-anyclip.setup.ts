@@ -43,7 +43,9 @@ export class NewsAndRatingsAnyclipSetup implements DiProcess {
 	}
 
 	private updateContextForMiniplayerAnyclip(): void {
-		context.set('services.anyclip.widgetname', '001w000001Y8ud2AAB_M7985');
+		const MINI_PLAYER_WIDGET_ID = '001w000001Y8ud2AAB_M7985';
+
+		context.set('services.anyclip.widgetname', MINI_PLAYER_WIDGET_ID);
 		context.set('services.anyclip.playerElementSelector', null);
 		context.set('services.anyclip.loadOnPageLoad', true);
 		context.set('services.anyclip.latePageInject', false);
@@ -51,7 +53,9 @@ export class NewsAndRatingsAnyclipSetup implements DiProcess {
 	}
 
 	private updateContextForIncontentAnyclip(): void {
-		context.set('services.anyclip.widgetname', '001w000001Y8ud2AAB_M8046');
+		const INCONTENT_PLAYER_WIDGET_ID = '001w000001Y8ud2AAB_M8046';
+
+		context.set('services.anyclip.widgetname', INCONTENT_PLAYER_WIDGET_ID);
 		context.set('services.anyclip.playerElementId', 'incontent_player');
 		context.set('services.anyclip.loadOnPageLoad', false);
 		context.set('services.anyclip.latePageInject', false);
