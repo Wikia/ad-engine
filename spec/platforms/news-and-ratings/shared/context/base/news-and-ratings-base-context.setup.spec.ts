@@ -21,7 +21,7 @@ describe('News and Ratings base context setup', () => {
 		context.remove('custom.property');
 		context.remove('custom.device');
 		context.remove('custom.pagePath');
-		context.remove('services.anyclip.anyclipTagExists');
+		context.remove('services.anyclip.isApplicable');
 		context.remove('vast.adUnitId');
 	});
 
@@ -152,8 +152,9 @@ describe('News and Ratings base context setup', () => {
 			getDataSettingsFromMetaTagStub.returns({ anyclip: 'active' });
 
 			baseContextSetup.execute();
+			const isApplicable = context.get('services.anyclip.isApplicable');
 
-			expect(context.get('services.anyclip.anyclipTagExists')).to.be.true;
+			expect(isApplicable()).to.be.true;
 		});
 
 		it('does not make Anyclip applicable when it is disabled on backend (ComicVine)', () => {
@@ -165,7 +166,9 @@ describe('News and Ratings base context setup', () => {
 			getDataSettingsFromMetaTagStub.returns();
 
 			baseContextSetup.execute();
-			expect(context.get('services.anyclip.anyclipTagExists')).to.be.false;
+			const isApplicable = context.get('services.anyclip.isApplicable');
+
+			expect(isApplicable()).to.be.false;
 		});
 
 		// TODO: once backend responses in unified way let's remove the logic and test below (ADEN-12794)
@@ -178,7 +181,9 @@ describe('News and Ratings base context setup', () => {
 			getDataSettingsFromMetaTagStub.returns({ target_params: { anyclip: '1' } });
 
 			baseContextSetup.execute();
-			expect(context.get('services.anyclip.anyclipTagExists')).to.be.true;
+			const isApplicable = context.get('services.anyclip.isApplicable');
+
+			expect(isApplicable()).to.be.true;
 		});
 
 		// TODO: once backend responses in unified way let's remove the logic and test below (ADEN-12794)
@@ -191,7 +196,9 @@ describe('News and Ratings base context setup', () => {
 			getDataSettingsFromMetaTagStub.returns({ target_params: { foo: 'bar' } });
 
 			baseContextSetup.execute();
-			expect(context.get('services.anyclip.anyclipTagExists')).to.be.false;
+			const isApplicable = context.get('services.anyclip.isApplicable');
+
+			expect(isApplicable()).to.be.false;
 		});
 
 		it('sets up proper VAST ad unit for mobile', () => {

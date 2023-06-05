@@ -5,45 +5,31 @@ import {
 	slotDataParamsUpdater,
 	slotService,
 	utils,
+	VideoTracker,
 } from '@ad-engine/core';
 import { AnyclipTracker } from './anyclip-tracker';
 
 const logGroup = 'Anyclip';
 const SUBSCRIBE_FUNC_NAME = 'lreSubscribe';
 const isSubscribeReady = () => typeof window[SUBSCRIBE_FUNC_NAME] !== 'undefined';
-const incontentSlotExists = () => {
-	const slotName = 'incontent_player';
-	const adSlot = slotService.get(slotName);
-	const domReady = !!document.getElementById(slotName);
-
-	utils.logger(logGroup, 'Waiting for incontent_player ready', domReady, adSlot);
-
-	return domReady && adSlot !== null;
-};
 
 export class Anyclip extends BaseServiceSetup {
 	private get pubname(): string {
 		return context.get('services.anyclip.pubname') || 'fandomcom';
 	}
-
 	private get widgetname(): string {
 		return context.get('services.anyclip.widgetname') || '001w000001Y8ud2_19593';
 	}
-
 	private get libraryUrl(): string {
 		return (
 			context.get('services.anyclip.libraryUrl') ||
 			'//player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/lre.js'
 		);
 	}
-
-	static isApplicable(): boolean {
-		const isApplicableFunc: () => boolean | null = context.get('services.anyclip.isApplicable');
-
-		return typeof isApplicableFunc === 'function' ? isApplicableFunc() : true;
+	private get isApplicable(): () => boolean | null {
+		return context.get('services.anyclip.isApplicable');
 	}
-
-	private tracker: AnyclipTracker;
+	private tracker: VideoTracker;
 
 	call() {
 		if (context.get('custom.hasFeaturedVideo') || !this.isEnabled('icAnyclipPlayer', false)) {
@@ -68,11 +54,6 @@ export class Anyclip extends BaseServiceSetup {
 		}
 	}
 
-	reset() {
-		utils.logger(logGroup, 'Destroying Anyclip widgets');
-		window?.anyclip?.widgets?.forEach((w) => w?.destroy());
-	}
-
 	get params(): Record<string, string> {
 		return {
 			pubname: this.pubname,
@@ -81,7 +62,7 @@ export class Anyclip extends BaseServiceSetup {
 	}
 
 	private loadPlayerAsset(playerContainer: HTMLElement = null) {
-		if (!Anyclip.isApplicable()) {
+		if (typeof this.isApplicable === 'function' && !this.isApplicable()) {
 			utils.logger(logGroup, 'not applicable - aborting');
 			return;
 		}
@@ -101,10 +82,6 @@ export class Anyclip extends BaseServiceSetup {
 						isSubscribeReady,
 						window[SUBSCRIBE_FUNC_NAME],
 					);
-
-					this.waitForIncontentSlotReady().then(() => {
-						this.tracker.trackInit();
-					});
 
 					isSubscribeReady
 						? this.tracker.register()
@@ -141,9 +118,5 @@ export class Anyclip extends BaseServiceSetup {
 
 	private waitForSubscribeReady(): Promise<boolean> {
 		return new utils.WaitFor(isSubscribeReady, 4, 250).until();
-	}
-
-	private waitForIncontentSlotReady(): Promise<boolean> {
-		return new utils.WaitFor(incontentSlotExists, 4, 250).until();
 	}
 }

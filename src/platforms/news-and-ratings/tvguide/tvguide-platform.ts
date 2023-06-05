@@ -14,7 +14,6 @@ import { Container, Injectable } from '@wikia/dependency-injection';
 import {
 	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
-	NewsAndRatingsAnyclipSetup,
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsDynamicSlotsNeutronSetup,
 	NewsAndRatingsNeutronHelper,
@@ -51,7 +50,6 @@ export class TvGuidePlatform {
 			NewsAndRatingsWadSetup,
 			TvGuideTargetingSetup,
 			NewsAndRatingsTargetingSetup,
-			NewsAndRatingsAnyclipSetup,
 			TvGuideSlotsContextSetup,
 			SlotsConfigurationExtender,
 			NewsAndRatingsDynamicSlotsNeutronSetup,
@@ -74,7 +72,6 @@ export class TvGuidePlatform {
 			NewsAndRatingsBaseContextSetup,
 			TvGuideTargetingSetup,
 			NewsAndRatingsTargetingSetup,
-			NewsAndRatingsAnyclipSetup,
 			TvGuideSlotsContextSetup,
 			TvGuideNextPageAdsMode,
 		);
@@ -84,7 +81,6 @@ export class TvGuidePlatform {
 			NewsAndRatingsBaseContextSetup,
 			TvGuideTargetingSetup,
 			NewsAndRatingsTargetingSetup,
-			NewsAndRatingsAnyclipSetup,
 			TvGuideNextPageAdsMode,
 		);
 	}

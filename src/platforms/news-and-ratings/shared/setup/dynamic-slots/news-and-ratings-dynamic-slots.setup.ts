@@ -10,7 +10,6 @@ export class NewsAndRatingsDynamicSlotsSetup implements DiProcess {
 	execute(): void {
 		this.injectSlots();
 
-		// slots without DOM elements required
 		insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
 	}
 
