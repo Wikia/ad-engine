@@ -64,7 +64,7 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 	}
 
 	private isFloorAdhesionApplicable(): boolean {
-		return this.instantConfig.get('icFloorAdhesion') && !context.get('state.isMobile');
+		return this.instantConfig.get('icFloorAdhesion');
 	}
 
 	private isInterstitialApplicable(): boolean {
