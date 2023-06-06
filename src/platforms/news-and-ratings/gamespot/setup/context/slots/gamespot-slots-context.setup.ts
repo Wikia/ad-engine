@@ -49,6 +49,16 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					pos_nr: 'nav',
 				},
 			},
+			floor_adhesion: {
+				disabled: true,
+				adProduct: 'floor_adhesion',
+				group: 'PF',
+				targeting: {
+					loc: 'footer',
+				},
+				defaultTemplates: ['floorAdhesion'],
+				defaultSizes: [[728, 90]],
+			},
 			mpu_top: {
 				defaultSizes: [[300, 250]],
 				targeting: {
@@ -479,16 +489,6 @@ export class GamespotSlotsContextSetup implements DiProcess {
 			},
 			video: {
 				isVideo: true,
-			},
-			floor_adhesion: {
-				disabled: true,
-				adProduct: 'floor_adhesion',
-				group: 'PF',
-				targeting: {
-					loc: 'footer',
-				},
-				defaultTemplates: ['floorAdhesion'],
-				defaultSizes: [[728, 90]],
 			},
 		};
 

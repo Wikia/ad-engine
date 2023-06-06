@@ -59,6 +59,7 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 				}
 			});
 
+			utils.logger(logGroup, 'Inserting slots without DOM elements');
 			insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
 		});
 

@@ -20,6 +20,8 @@ describe('IntentIQ', () => {
 		window.IntentIqObject = function IntentIqMock(config) {
 			intentIqNewSpy(config);
 
+			config?.callback?.();
+
 			return {
 				intentIqConfig: {
 					abTesting: {

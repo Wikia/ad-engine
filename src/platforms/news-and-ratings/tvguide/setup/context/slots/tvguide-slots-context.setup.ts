@@ -54,6 +54,16 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 					pos_nr: 'sticky',
 				},
 			},
+			floor_adhesion: {
+				disabled: true,
+				adProduct: 'floor_adhesion',
+				group: 'PF',
+				targeting: {
+					loc: 'footer',
+				},
+				defaultTemplates: ['floorAdhesion'],
+				defaultSizes: [[728, 90]],
+			},
 			'nav-ad-plus': {
 				defaultSizes: [[5, 5]],
 				targeting: {
@@ -484,15 +494,16 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 			video: {
 				isVideo: true,
 			},
-			floor_adhesion: {
+			incontent_player: {
+				adProduct: 'incontent_player',
 				disabled: true,
-				adProduct: 'floor_adhesion',
-				group: 'PF',
+				isVideo: true,
+				group: 'HiVi',
+				defaultSizes: [[1, 1]],
 				targeting: {
-					loc: 'footer',
+					loc: 'middle',
+					pos: ['outstream'],
 				},
-				defaultTemplates: ['floorAdhesion'],
-				defaultSizes: [[728, 90]],
 			},
 		};
 

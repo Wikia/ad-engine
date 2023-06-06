@@ -49,6 +49,16 @@ export class GiantbombSlotsContextSetup implements DiProcess {
 					pos_nr: 'nav',
 				},
 			},
+			floor_adhesion: {
+				disabled: true,
+				adProduct: 'floor_adhesion',
+				group: 'PF',
+				targeting: {
+					loc: 'footer',
+				},
+				defaultTemplates: ['floorAdhesion'],
+				defaultSizes: [[728, 90]],
+			},
 			leader_plus_top: {
 				defaultSizes: [
 					[728, 90],
@@ -192,16 +202,6 @@ export class GiantbombSlotsContextSetup implements DiProcess {
 			},
 			video: {
 				isVideo: true,
-			},
-			floor_adhesion: {
-				disabled: true,
-				adProduct: 'floor_adhesion',
-				group: 'PF',
-				targeting: {
-					loc: 'footer',
-				},
-				defaultTemplates: ['floorAdhesion'],
-				defaultSizes: [[728, 90]],
 			},
 		};
 

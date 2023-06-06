@@ -16,7 +16,15 @@ function isUsedAsAlias(code): boolean {
 
 export function isSlotApplicable(code): boolean {
 	// This can be simplified once we get rid of uppercase slot names
-	return context.get(`slots.${code}`) ? slotService.getState(code) : isUsedAsAlias(code);
+	const isApplicable = context.get(`slots.${code}`)
+		? slotService.getState(code)
+		: isUsedAsAlias(code);
+
+	if (!(context.get('bidders.prebid.filter') === 'static') || code.includes('video')) {
+		return isApplicable;
+	}
+
+	return document.querySelector(`div[id="${code}"]`) !== null ? isApplicable : false;
 }
 
 function isValidPrice(bid: PrebidBidResponse): boolean {
