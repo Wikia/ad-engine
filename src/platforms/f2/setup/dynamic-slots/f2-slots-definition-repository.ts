@@ -53,10 +53,6 @@ export class F2SlotsDefinitionRepository {
 	}
 
 	getFloorAdhesionConfig(): SlotSetupDefinition {
-		if (!context.get('state.isMobile')) {
-			return;
-		}
-
 		const slotName = 'floor_adhesion';
 
 		const activateFloorAdhesion = () => {

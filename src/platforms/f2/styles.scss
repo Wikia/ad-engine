@@ -4,6 +4,7 @@
 
 $label-height: -24px;
 $space-between-uap-components: 30px;
+$floor-adhesion-left-position: 66px;
 
 @mixin non-uap-advertisement-label() {
 	$advertisement-label-height: 24px;
@@ -19,9 +20,17 @@ $space-between-uap-components: 30px;
 	text-transform: uppercase;
 }
 
+@mixin f2-floor-adhesion() {
+	.floor-adhesion.out-of-page-template {
+		width: calc(100% - #{$floor-adhesion-left-position}) !important;
+	}
+
+	@include floor-adhesion($floor-adhesion-left-position);
+}
+
 @mixin out-of-page-styles() {
 	@include out-of-page-template();
-	@include floor-adhesion();
+	@include f2-floor-adhesion();
 }
 
 @mixin f2-uap-styles() {
@@ -219,24 +228,26 @@ body:not(.uap-sticked) {
 	margin-top: 29px;
 }
 
-#floor_adhesion {
-	background: rgba(0, 0, 0, 0.8);
-	bottom: 0;
-	left: 0;
-	padding: 20px 0;
+html.mobile {
+	#floor_adhesion {
+		background: rgba(0, 0, 0, 0.8);
+		bottom: 0;
+		left: 0;
+		padding: 20px 0;
 
-	.button-close {
-		border: 2px solid white;
-		border-radius: 50%;
-		width: 40px;
-		height: 40px;
-		top: -20px;
+		.button-close {
+			border: 2px solid white;
+			border-radius: 50%;
+			width: 40px;
+			height: 40px;
+			top: -20px;
 
-		&:after {
-			content: '';
-			position: absolute;
-			width: 45px;
-			height: 45px;
+			&:after {
+				content: '';
+				position: absolute;
+				width: 45px;
+				height: 45px;
+			}
 		}
 	}
 }
