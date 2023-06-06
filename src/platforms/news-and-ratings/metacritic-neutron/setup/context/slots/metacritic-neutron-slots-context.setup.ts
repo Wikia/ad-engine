@@ -50,6 +50,16 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 					pos_nr: 'nav',
 				},
 			},
+			floor_adhesion: {
+				disabled: true,
+				adProduct: 'floor_adhesion',
+				group: 'PF',
+				targeting: {
+					loc: 'footer',
+				},
+				defaultTemplates: ['floorAdhesion'],
+				defaultSizes: [[728, 90]],
+			},
 			'incontent-leader-plus-bottom': {
 				defaultSizes: [
 					[728, 90],
@@ -245,36 +255,6 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 			},
 			video: {
 				isVideo: true,
-			},
-			floor_adhesion: {
-				disabled: true,
-				adProduct: 'floor_adhesion',
-				group: 'PF',
-				targeting: {
-					loc: 'footer',
-				},
-				defaultTemplates: ['floorAdhesion'],
-				defaultSizes: [[728, 90]],
-				sizes: [
-					{
-						viewportSize: [0, 0],
-						sizes: [
-							[300, 50],
-							[320, 50],
-							[320, 100],
-						],
-					},
-					{
-						// 728px for the ad + 40px width of the close button
-						viewportSize: [768, 0],
-						sizes: [
-							[300, 50],
-							[320, 50],
-							[320, 100],
-							[728, 90],
-						],
-					},
-				],
 			},
 		};
 

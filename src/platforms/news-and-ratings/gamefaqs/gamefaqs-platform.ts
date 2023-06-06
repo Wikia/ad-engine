@@ -14,6 +14,7 @@ import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-exte
 import {
 	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
+	NewsAndRatingsAnyclipSetup,
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsDynamicSlotsSetup,
 	NewsAndRatingsTargetingSetup,
@@ -47,6 +48,7 @@ export class GamefaqsPlatform {
 			GamefaqsTargetingSetup,
 			GamefaqsSlotsContextSetup,
 			SlotsConfigurationExtender,
+			NewsAndRatingsAnyclipSetup,
 			NewsAndRatingsDynamicSlotsSetup,
 			GamefaqsPrebidConfigSetup,
 			GamefaqsA9ConfigSetup,

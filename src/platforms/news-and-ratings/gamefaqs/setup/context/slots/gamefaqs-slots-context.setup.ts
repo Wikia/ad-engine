@@ -49,6 +49,16 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 					pos_nr: 'nav',
 				},
 			},
+			floor_adhesion: {
+				disabled: true,
+				adProduct: 'floor_adhesion',
+				group: 'PF',
+				targeting: {
+					loc: 'footer',
+				},
+				defaultTemplates: ['floorAdhesion'],
+				defaultSizes: [[728, 90]],
+			},
 			'native-top': {
 				code: 'native-top',
 				defaultSizes: [
@@ -283,35 +293,16 @@ export class GamefaqsSlotsContextSetup implements DiProcess {
 			video: {
 				isVideo: true,
 			},
-			floor_adhesion: {
+			incontent_player: {
+				adProduct: 'incontent_player',
 				disabled: true,
-				adProduct: 'floor_adhesion',
-				group: 'PF',
+				isVideo: true,
+				group: 'HiVi',
+				defaultSizes: [[1, 1]],
 				targeting: {
-					loc: 'footer',
+					loc: 'middle',
+					pos: ['outstream'],
 				},
-				defaultTemplates: ['floorAdhesion'],
-				defaultSizes: [[728, 90]],
-				sizes: [
-					{
-						viewportSize: [0, 0],
-						sizes: [
-							[300, 50],
-							[320, 50],
-							[320, 100],
-						],
-					},
-					{
-						// 728px for the ad + 40px width of the close button
-						viewportSize: [768, 0],
-						sizes: [
-							[300, 50],
-							[320, 50],
-							[320, 100],
-							[728, 90],
-						],
-					},
-				],
 			},
 		};
 

@@ -15,9 +15,22 @@
 			margin: unset;
 
 			@include bfaa-slot();
-
 			@include uap-porvata();
-			@include uap-porvata-learn-more();
+
+			html.desktop &,
+			html.tablet.landscape & {
+				@include uap-porvata-right-position();
+			}
+
+			html.tablet.portrait &,
+			html.mobile & {
+				@include uap-porvata-learn-more();
+
+				.learn-more > div {
+					margin-right: 30px !important;
+					margin-top: 5px !important;
+				}
+			}
 
 			@include uap-advertisement-label();
 			@include uap-button-close();
@@ -29,15 +42,6 @@
 			.porvata-interface .current-time {
 				margin: unset !important;
 			}
-
-			.learn-more > div {
-				margin-right: 30px !important;
-				margin-top: 5px !important;
-			}
-		}
-
-		#top_leaderboard {
-			@include uap-porvata-right-position();
 		}
 	}
 

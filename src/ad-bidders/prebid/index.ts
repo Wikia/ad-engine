@@ -104,7 +104,6 @@ export class PrebidProvider extends BidderProvider {
 		this.registerBidsRefreshing();
 		this.registerBidsTracking();
 		this.enableATSAnalytics();
-		this.registerIntentIQ();
 
 		utils.logger(logGroup, 'prebid created', this.prebidConfig);
 	}
@@ -294,6 +293,8 @@ export class PrebidProvider extends BidderProvider {
 	): Promise<void> {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
+		await intentIQ.initialize(pbjs);
+
 		pbjs.requestBids({
 			adUnits,
 			bidsBackHandler,
@@ -324,11 +325,5 @@ export class PrebidProvider extends BidderProvider {
 	 */
 	calculatePrices(): void {
 		return;
-	}
-
-	private async registerIntentIQ(): Promise<void> {
-		const pbjs: Pbjs = await pbjsFactory.init();
-
-		return intentIQ.initialize(pbjs);
 	}
 }
