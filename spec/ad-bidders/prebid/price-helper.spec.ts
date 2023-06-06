@@ -1,52 +1,10 @@
 import { adaptersRegistry } from '@wikia/ad-bidders/prebid/adapters-registry';
-import { DEFAULT_MAX_CPM, PrebidAdapter } from '@wikia/ad-bidders/prebid/prebid-adapter';
-import {
-	getPrebidBestPrice,
-	transformPriceFromBid,
-	transformPriceFromCpm,
-} from '@wikia/ad-bidders/prebid/price-helper';
+import { PrebidAdapter } from '@wikia/ad-bidders/prebid/prebid-adapter';
+import { getPrebidBestPrice } from '@wikia/ad-bidders/prebid/price-helper';
 import { context } from '@wikia/core';
 import { expect } from 'chai';
 import { PbjsStub, stubPbjs } from '../../core/services/pbjs.stub';
 import { PrebidBidFactory } from './prebid-bid.factory';
-
-describe('transformPriceFromCpm', () => {
-	it('should return bucket from price converted to string with two decimal places', () => {
-		const testVectors: [number, string][] = [
-			[0.01, '0.01'],
-			[0.02, '0.01'],
-			[0.05, '0.05'],
-
-			[0.07, '0.05'],
-			[0.1, '0.10'],
-			[1.17, '1.15'],
-			[4.99, '4.95'],
-
-			[5.47, '5.40'],
-			[5.97, '5.90'],
-			[9.99, '9.90'],
-
-			[10.01, '10.00'],
-			[10.09, '10.00'],
-			[10.49, '10.00'],
-			[10.99, '10.50'],
-			[19.99, '19.50'],
-
-			[20.99, '20.00'],
-			[49.99, '49.00'],
-			[50.0, '50.00'],
-			[51.0, '50.00'],
-		];
-
-		testVectors.forEach((vector) => {
-			expect(transformPriceFromCpm(vector[0], 50)).to.equal(vector[1]);
-		});
-	});
-
-	it('should cap to 20 even if maxCpm is lower than 20', () => {
-		expect(transformPriceFromCpm(21, 10)).to.equal('20.00');
-	});
-});
 
 describe('getPrebidBestPrice', () => {
 	let adapters: Map<string, PrebidAdapter>;
@@ -209,40 +167,5 @@ describe('getPrebidBestPrice', () => {
 			[otherBidderName]: '14.00',
 			bidderC: '',
 		});
-	});
-});
-
-describe('transformPriceFromBid', () => {
-	let adapter: PrebidAdapter;
-
-	beforeEach(() => {
-		adapter = {} as PrebidAdapter;
-		global.sandbox.stub(adaptersRegistry, 'getAdapter').returns(adapter);
-	});
-
-	it(`should round price to DEFAULT_MAX_CPM (${DEFAULT_MAX_CPM}) if maxCpm is not present on adapter`, () => {
-		const result = transformPriceFromBid(PrebidBidFactory.getBid({ cpm: 20.01 }));
-
-		expect(result).to.equal('20.00');
-	});
-
-	it('should round price to adapter.maxCpm if present', () => {
-		// maxCpm must be greater than 20.
-		let result;
-		adapter.maxCpm = 10;
-
-		result = transformPriceFromBid(PrebidBidFactory.getBid({ cpm: 20.01 }));
-		expect(result).to.equal('20.00');
-
-		result = transformPriceFromBid(PrebidBidFactory.getBid({ cpm: 12.53 }));
-		expect(result).to.equal('12.50');
-
-		adapter.maxCpm = 100;
-
-		result = transformPriceFromBid(PrebidBidFactory.getBid({ cpm: 23.01 }));
-		expect(result).to.equal('23.00');
-
-		result = transformPriceFromBid(PrebidBidFactory.getBid({ cpm: 140.01 }));
-		expect(result).to.equal('100.00');
 	});
 });

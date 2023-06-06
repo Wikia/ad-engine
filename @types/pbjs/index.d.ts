@@ -141,7 +141,7 @@ interface PrebidRequestOptions {
 
 interface PrebidSettings {
 	[key: string]: {
-		adserverTargeting: {
+		adserverTargeting?: {
 			key: string;
 			val: (bidResponse: any) => string;
 		}[];

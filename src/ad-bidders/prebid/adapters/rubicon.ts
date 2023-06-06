@@ -1,11 +1,10 @@
 import { context, Dictionary, targetingService } from '@ad-engine/core';
-import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
+import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class Rubicon extends PrebidAdapter {
 	static bidderName = 'rubicon';
 	accountId: number;
-	maxCpm = EXTENDED_MAX_CPM;
 	customTargeting: Dictionary;
 
 	constructor(options) {
