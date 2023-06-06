@@ -20,6 +20,7 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 	private repeatedSlotsCounter: Dictionary<number> = {};
 	private repeatedSlotsRendered: string[] = [];
 	private repeatedSlotsQueue: Dictionary<[string, string]> = {};
+	private firstCallSlotName: string;
 
 	execute(): void {
 		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
@@ -31,7 +32,7 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 						context.set('slots.top_leaderboard.targeting.pos', ['top_leaderboard', placementId]);
 						document.querySelector(`.c-adDisplay_container > div[data-ad="${placementId}"]`).id =
 							'top_leaderboard';
-
+						this.firstCallSlotName = placementId;
 						placementId = 'top_leaderboard';
 					}
 
@@ -141,7 +142,10 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 		};
 
 		if (!baseSlotName) {
-			context.set(`slots.${slotName}.bidderAlias`, slotName);
+			context.set(
+				`slots.${slotName}.bidderAlias`,
+				slotName.includes('top_leaderboard') ? this.firstCallSlotName : slotName,
+			);
 
 			slotConfig.slotCreatorConfig.repeat = {
 				index: 1,
