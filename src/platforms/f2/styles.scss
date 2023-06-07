@@ -4,7 +4,7 @@
 
 $label-height: -24px;
 $space-between-uap-components: 30px;
-$floor-adhesion-left-position: 66px;
+$navbar-width: 66px;
 
 @mixin non-uap-advertisement-label() {
 	$advertisement-label-height: 24px;
@@ -21,11 +21,33 @@ $floor-adhesion-left-position: 66px;
 }
 
 @mixin f2-floor-adhesion() {
-	.floor-adhesion.out-of-page-template {
-		width: calc(100% - #{$floor-adhesion-left-position}) !important;
+	html.mobile #floor_adhesion {
+		background: rgba(0, 0, 0, 0.8);
+		bottom: 0;
+		left: 0;
+		padding: 20px 0;
+
+		.button-close {
+			border: 2px solid white;
+			border-radius: 50%;
+			width: 40px;
+			height: 40px;
+			top: -20px;
+
+			&:after {
+				content: '';
+				position: absolute;
+				width: 45px;
+				height: 45px;
+			}
+		}
 	}
 
-	@include floor-adhesion($floor-adhesion-left-position);
+	html.desktop .floor-adhesion.out-of-page-template {
+		width: calc(100% - #{$navbar-width}) !important;
+	}
+
+	@include floor-adhesion($navbar-width);
 }
 
 @mixin out-of-page-styles() {
@@ -226,30 +248,6 @@ body:not(.uap-sticked) {
 
 .article-layout__rail.has-incontent-ad {
 	margin-top: 29px;
-}
-
-html.mobile {
-	#floor_adhesion {
-		background: rgba(0, 0, 0, 0.8);
-		bottom: 0;
-		left: 0;
-		padding: 20px 0;
-
-		.button-close {
-			border: 2px solid white;
-			border-radius: 50%;
-			width: 40px;
-			height: 40px;
-			top: -20px;
-
-			&:after {
-				content: '';
-				position: absolute;
-				width: 45px;
-				height: 45px;
-			}
-		}
-	}
 }
 
 @include f2-uap-styles();

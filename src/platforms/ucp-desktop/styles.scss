@@ -4,7 +4,7 @@
 
 $global-navigation-width: 66px;
 $sticky-navigation-height: 46px;
-$floor-adhesion-left-position: 66px;
+$navbar-width: 66px;
 
 @mixin ucp-desktop-uap-styles() {
 	.has-uap {
@@ -72,10 +72,10 @@ $floor-adhesion-left-position: 66px;
 	}
 
 	.floor-adhesion.out-of-page-template {
-		width: calc(100% - #{$floor-adhesion-left-position}) !important;
+		width: calc(100% - #{$navbar-width}) !important;
 	}
 
-	@include floor-adhesion($floor-adhesion-left-position);
+	@include floor-adhesion($navbar-width);
 }
 
 @mixin out-of-page-styles() {
