@@ -22,6 +22,7 @@ function kibanaLogger() {
 			'services.externalLogger.endpoint',
 			'https://community.fandom.com/wikia.php?controller=AdEngine&method=postLog',
 		);
+		context.set('services.externalLogger.threshold', 1);
 	}
 
 	window['smTracking'] = new KibanaLogger();
