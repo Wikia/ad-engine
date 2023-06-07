@@ -64,6 +64,20 @@ $sticky-navigation-height: 46px;
 	@include interstitial();
 }
 
+@mixin placement-label-text-styles($bottom: 0) {
+	bottom: $bottom;
+	display: block;
+	color: #858585;
+	font-size: 10px;
+	font-weight: 500;
+	left: 0;
+	line-height: 24px;
+	position: absolute;
+	text-align: center;
+	text-transform: uppercase;
+	width: 100%;
+}
+
 @include ucp-desktop-uap-styles();
 @include out-of-page-styles();
 
@@ -90,17 +104,7 @@ $sticky-navigation-height: 46px;
 	min-height: 90px;
 
 	.ae-translatable-label {
-		bottom: 0;
-		display: block;
-		color: #858585;
-		font-size: 10px;
-		font-weight: 500;
-		left: 0;
-		line-height: 24px;
-		position: absolute;
-		text-align: center;
-		text-transform: uppercase;
-		width: 100%;
+		@include placement-label-text-styles();
 	}
 
 	&.is-loading {
@@ -116,6 +120,13 @@ $sticky-navigation-height: 46px;
 	&.hide,
 	.hide {
 		display: none;
+	}
+}
+
+.ad-slot-placeholder.gallery-leaderboard {
+	position: relative;
+	.ae-translatable-label {
+		@include placement-label-text-styles(-24px);
 	}
 }
 
