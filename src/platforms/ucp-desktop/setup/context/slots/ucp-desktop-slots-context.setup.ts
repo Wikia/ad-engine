@@ -190,6 +190,10 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'gallery',
 				},
+				placeholder: {
+					createLabel: true,
+					adLabelParent: '.ad-slot-placeholder.gallery-leaderboard',
+				},
 			},
 		};
 
