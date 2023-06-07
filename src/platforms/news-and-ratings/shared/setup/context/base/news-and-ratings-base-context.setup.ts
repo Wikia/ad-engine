@@ -73,21 +73,12 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		);
 		context.set('options.video.pauseJWPlayerAd', this.instantConfig.get('icPauseJWPlayerAd'));
 
-		context.set('services.anyclip.isApplicable', () => {
-			this.log(
-				'Anyclip settings - ad settings param: ',
-				this.getDataSettingsFromMetaTag()?.anyclip,
-			);
-			// TODO: once backend responses in unified way let's remove the logic and the tests connected to the targeting param (ADEN-12794)
-			this.log(
-				'Anyclip settings - targeting param: ',
-				this.getDataSettingsFromMetaTag()?.target_params?.anyclip,
-			);
-			return (
-				!!this.getDataSettingsFromMetaTag()?.anyclip ||
-				!!this.getDataSettingsFromMetaTag()?.target_params?.anyclip
-			);
-		});
+		context.set('services.anyclip.widgetname', this.instantConfig.get('icAnyclipWidgetName'));
+		context.set(
+			'services.anyclip.anyclipTagExists',
+			!!this.getDataSettingsFromMetaTag()?.anyclip ||
+				!!this.getDataSettingsFromMetaTag()?.target_params?.anyclip,
+		);
 	}
 
 	private buildVastAdUnit(): string {
