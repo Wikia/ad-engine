@@ -29,8 +29,11 @@ export class BfaaF2ConfigHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.PARAMS) private params: UapParams, private optimizely: Optimizely) {}
 
 	async onEnter(): Promise<void> {
-		this.configureFloorAdhesionExperiment();
 		const isMobile = context.get('state.isMobile');
+
+		if (!isMobile) {
+			this.configureFloorAdhesionExperiment();
+		}
 
 		if (this.params.newTakeoverConfig) {
 			communicationService.emit(eventsRepository.AD_ENGINE_UAP_NTC_LOADED);

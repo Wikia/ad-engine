@@ -1,11 +1,14 @@
 import { SlotSetupDefinition } from '@platforms/shared';
 import {
+	AdSlotEvent,
 	Anyclip,
 	communicationService,
 	context,
 	eventsRepository,
 	InstantConfigService,
 	scrollListener,
+	UapLoadStatus,
+	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -35,11 +38,21 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 	}
 
 	getFloorAdhesionConfig(): SlotSetupDefinition {
-		if (!this.isFloorAdhesionApplicable()) {
-			return;
-		}
-
 		const slotName = 'floor_adhesion';
+
+		const activateFloorAdhesion = () => {
+			const numberOfViewportsFromTopToPush: number =
+				this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
+
+			if (numberOfViewportsFromTopToPush === -1) {
+				context.push('state.adStack', { id: slotName });
+			} else {
+				communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+					const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
+					scrollListener.addSlot(slotName, { distanceFromTop: distance });
+				});
+			}
+		};
 
 		return {
 			slotCreatorConfig: {
@@ -49,23 +62,31 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 				classList: ['hide', 'ad-slot'],
 			},
 			activator: () => {
-				const numberOfViewportsFromTopToPush: number =
-					this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
-
-				if (numberOfViewportsFromTopToPush === -1) {
-					context.push('state.adStack', { id: slotName });
-				} else {
-					communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
-						const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
-						scrollListener.addSlot(slotName, { distanceFromTop: distance });
-					});
-				}
+				communicationService.on(
+					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+					(action: UapLoadStatus) => {
+						if (action.isLoaded) {
+							communicationService.onSlotEvent(
+								AdSlotEvent.CUSTOM_EVENT,
+								({ payload }) => {
+									if (
+										[
+											universalAdPackage.SLOT_UNSTICKED_STATE,
+											universalAdPackage.SLOT_FORCE_UNSTICK,
+											universalAdPackage.SLOT_STICKY_STATE_SKIPPED,
+											universalAdPackage.SLOT_VIDEO_DONE,
+										].includes(payload.status)
+									) {
+										activateFloorAdhesion();
+									}
+								},
+								'top_leaderboard',
+							);
+						}
+					},
+				);
 			},
 		};
-	}
-
-	private isFloorAdhesionApplicable(): boolean {
-		return this.instantConfig.get('icFloorAdhesion');
 	}
 
 	private isInterstitialApplicable(): boolean {

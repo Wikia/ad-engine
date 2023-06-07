@@ -55,8 +55,16 @@ export class Anyclip extends BaseServiceSetup {
 
 		this.tracker = new AnyclipTracker(SUBSCRIBE_FUNC_NAME);
 
-		if (context.get('services.anyclip.loadOnPageLoad')) {
-			this.loadPlayerAsset();
+		if (context.get('services.anyclip.loadWithoutAnchor')) {
+			communicationService.on(
+				eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+				(action: UapLoadStatus) => {
+					if (!action.isLoaded) {
+						this.loadPlayerAsset();
+					}
+				},
+			);
+
 			return;
 		}
 

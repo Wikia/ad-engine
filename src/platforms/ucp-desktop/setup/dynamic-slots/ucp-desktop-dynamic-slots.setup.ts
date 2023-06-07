@@ -43,8 +43,11 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			this.slotsDefinitionRepository.getIncontentPlayerConfig(),
 			this.slotsDefinitionRepository.getIncontentLeaderboardConfig(),
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
-			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
 		]);
+
+		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () =>
+			insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]),
+		);
 
 		communicationService.on(eventsRepository.RAIL_READY, () => {
 			insertSlots([this.slotsDefinitionRepository.getIncontentBoxadConfig()]);

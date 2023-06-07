@@ -262,10 +262,6 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	getFloorAdhesionConfig(): SlotSetupDefinition {
-		if (!this.isFloorAdhesionApplicable()) {
-			return;
-		}
-
 		let slotPushed = false;
 		const slotName = 'floor_adhesion';
 		const activateFloorAdhesion = () => {
@@ -321,10 +317,6 @@ export class UcpMobileSlotsDefinitionRepository {
 				);
 			},
 		};
-	}
-
-	private isFloorAdhesionApplicable(): boolean {
-		return this.instantConfig.get('icFloorAdhesion');
 	}
 
 	getInterstitialConfig(): SlotSetupDefinition {
