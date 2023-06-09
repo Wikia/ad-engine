@@ -167,8 +167,8 @@ export class TrackingSetup {
 			(eventInfo) => {
 				this.dwTracker.track(
 					{
-						partner_name: eventInfo.payload.partnerName,
-						partner_identity_id: eventInfo.payload.partnerIdentityId,
+						partner_name: eventInfo.partnerName,
+						partner_identity_id: eventInfo.partnerIdentityId,
 					},
 					trackingUrls.IDENTITY_INFO,
 				);

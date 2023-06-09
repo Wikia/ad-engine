@@ -19,8 +19,8 @@ export class LiveRampPixel extends BaseServiceSetup {
 		}
 
 		communicationService.on(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, (event) => {
-			if (event.payload.partnerName === 'Google') {
-				this.insertLiveRampPixel(event.payload.partnerIdentityId);
+			if (event.partnerName === 'Google') {
+				this.insertLiveRampPixel(event.partnerIdentityId);
 			}
 		});
 	}
