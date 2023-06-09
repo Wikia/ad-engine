@@ -4,6 +4,7 @@
 
 $global-navigation-width: 66px;
 $sticky-navigation-height: 46px;
+$navbar-width: 66px;
 
 @mixin ucp-desktop-uap-styles() {
 	.has-uap {
@@ -58,10 +59,29 @@ $sticky-navigation-height: 46px;
 	@include expanded-slot();
 }
 
+@mixin wiki-floor-adhesion() {
+	.floor-adhesion-experiment.theme-fandomdesktop-light {
+		.floor-adhesion {
+			background: rgba(255, 255, 255, 0.8);
+
+			.button-close {
+				background: #fff;
+				fill: #000;
+			}
+		}
+	}
+
+	.floor-adhesion.out-of-page-template {
+		width: calc(100% - #{$navbar-width}) !important;
+	}
+
+	@include floor-adhesion($navbar-width);
+}
+
 @mixin out-of-page-styles() {
 	@include out-of-page-template();
-	@include floor-adhesion();
 	@include interstitial();
+	@include wiki-floor-adhesion();
 }
 
 @include ucp-desktop-uap-styles();

@@ -112,7 +112,10 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 		});
 
 		utils.logger(logGroup, 'Reinjecting floor_adhesion');
-		insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
+
+		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () =>
+			insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]),
+		);
 	}
 
 	private isSlotApplicable(slotName: string): boolean {

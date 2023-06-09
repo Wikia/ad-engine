@@ -4,4 +4,26 @@
 @mixin out-of-page-styles() {
 	@include out-of-page-template();
 	@include floor-adhesion();
+
+	html.mobile #floor_adhesion {
+		background: rgba(0, 0, 0, 0.8);
+		bottom: 0;
+		left: 0;
+		padding: 20px 0;
+
+		.button-close {
+			border: 2px solid white;
+			border-radius: 50%;
+			width: 40px;
+			height: 40px;
+			top: -20px;
+
+			&:after {
+				content: '';
+				position: absolute;
+				width: 45px;
+				height: 45px;
+			}
+		}
+	}
 }

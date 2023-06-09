@@ -1,4 +1,4 @@
-import { SlotSetupDefinition } from '@platforms/shared';
+import { activateFloorAdhesionOnUAP, SlotSetupDefinition } from '@platforms/shared';
 import {
 	Anyclip,
 	communicationService,
@@ -35,11 +35,21 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 	}
 
 	getFloorAdhesionConfig(): SlotSetupDefinition {
-		if (!this.isFloorAdhesionApplicable()) {
-			return;
-		}
-
 		const slotName = 'floor_adhesion';
+
+		const activateFloorAdhesion = () => {
+			const numberOfViewportsFromTopToPush: number =
+				this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
+
+			if (numberOfViewportsFromTopToPush === -1) {
+				context.push('state.adStack', { id: slotName });
+			} else {
+				communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+					const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
+					scrollListener.addSlot(slotName, { distanceFromTop: distance });
+				});
+			}
+		};
 
 		return {
 			slotCreatorConfig: {
@@ -48,24 +58,8 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 				insertMethod: 'append',
 				classList: ['hide', 'ad-slot'],
 			},
-			activator: () => {
-				const numberOfViewportsFromTopToPush: number =
-					this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
-
-				if (numberOfViewportsFromTopToPush === -1) {
-					context.push('state.adStack', { id: slotName });
-				} else {
-					communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
-						const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
-						scrollListener.addSlot(slotName, { distanceFromTop: distance });
-					});
-				}
-			},
+			activator: () => activateFloorAdhesionOnUAP(activateFloorAdhesion),
 		};
-	}
-
-	private isFloorAdhesionApplicable(): boolean {
-		return this.instantConfig.get('icFloorAdhesion') && !context.get('state.isMobile');
 	}
 
 	private isInterstitialApplicable(): boolean {

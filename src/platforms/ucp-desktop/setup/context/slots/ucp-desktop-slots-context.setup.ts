@@ -120,6 +120,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 			floor_adhesion: {
 				adProduct: 'floor_adhesion',
+				disabled: true,
 				group: 'PF',
 				targeting: {
 					loc: 'footer',

@@ -1,19 +1,8 @@
-@mixin floor-adhesion() {
+@mixin floor-adhesion($leftPosition: 0) {
 	.floor-adhesion {
 		background: rgba(0, 0, 0, 0.8);
 		bottom: 0;
 		// needed for Safari 9 - it doesn't position elements from the left by default
-		left: 0;
-	}
-
-	.floor-adhesion-experiment.theme-fandomdesktop-light {
-		.floor-adhesion {
-			background: rgba(255, 255, 255, 0.8);
-
-			.button-close {
-				background: #fff;
-				fill: #000;
-			}
-		}
+		left: $leftPosition;
 	}
 }

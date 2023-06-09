@@ -1,5 +1,5 @@
 import { insertSlots } from '@platforms/shared';
-import { context, DiProcess } from '@wikia/ad-engine';
+import { communicationService, context, DiProcess, eventsRepository } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import {
 	NewsAndRatingsDynamicSlotsSetup,
@@ -19,10 +19,11 @@ export class GamespotDynamicSlotsSetup implements DiProcess {
 		this.dynamicSlotsSetup.injectSlots();
 		this.restoreStubbedSlots();
 
-		insertSlots([
-			this.slotsDefinitionRepository.getInterstitialConfig(),
-			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
-		]);
+		insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
+
+		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () =>
+			insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]),
+		);
 	}
 
 	private restoreStubbedSlots(): void {
