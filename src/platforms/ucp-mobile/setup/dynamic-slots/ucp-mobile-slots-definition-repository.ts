@@ -1,6 +1,5 @@
-import { SlotSetupDefinition } from '@platforms/shared';
+import { activateFloorAdhesionOnUAP, SlotSetupDefinition } from '@platforms/shared';
 import {
-	AdSlotEvent,
 	communicationService,
 	context,
 	CookieStorageAdapter,
@@ -10,7 +9,6 @@ import {
 	scrollListener,
 	slotPlaceholderInjector,
 	UapLoadStatus,
-	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -289,33 +287,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				insertMethod: 'append',
 				classList: ['hide', 'ad-slot'],
 			},
-			activator: () => {
-				communicationService.on(
-					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
-					(action: UapLoadStatus) => {
-						if (action.isLoaded) {
-							communicationService.onSlotEvent(
-								AdSlotEvent.CUSTOM_EVENT,
-								({ payload }) => {
-									if (
-										[
-											universalAdPackage.SLOT_UNSTICKED_STATE,
-											universalAdPackage.SLOT_FORCE_UNSTICK,
-											universalAdPackage.SLOT_STICKY_STATE_SKIPPED,
-											universalAdPackage.SLOT_VIDEO_DONE,
-										].includes(payload.status)
-									) {
-										activateFloorAdhesion();
-									}
-								},
-								'top_leaderboard',
-							);
-						} else {
-							activateFloorAdhesion();
-						}
-					},
-				);
-			},
+			activator: () => activateFloorAdhesionOnUAP(activateFloorAdhesion, false),
 		};
 	}
 

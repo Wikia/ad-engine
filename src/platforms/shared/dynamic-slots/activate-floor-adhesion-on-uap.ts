@@ -6,7 +6,7 @@ import {
 	universalAdPackage,
 } from '@wikia/ad-engine';
 
-export function activateFloorAdhesionOnUAP(callback: () => void) {
+export function activateFloorAdhesionOnUAP(callback: () => void, withLoadedOnly = true) {
 	communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
 		if (action.isLoaded) {
 			communicationService.onSlotEvent(
@@ -25,6 +25,8 @@ export function activateFloorAdhesionOnUAP(callback: () => void) {
 				},
 				'top_leaderboard',
 			);
+		} else if (!withLoadedOnly) {
+			callback();
 		}
 	});
 }
