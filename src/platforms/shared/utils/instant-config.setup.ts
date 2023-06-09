@@ -1,4 +1,5 @@
 import {
+	Audigent,
 	communicationService,
 	context,
 	DiProcess,
@@ -39,6 +40,10 @@ export class InstantConfigSetup implements DiProcess {
 					return intentIQ.preloadScript();
 				}
 			});
+		}
+
+		if (instantConfig.get('icAudigent')) {
+			Audigent.loadSegmentLibrary();
 		}
 	}
 }
