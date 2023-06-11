@@ -30,6 +30,8 @@ describe('Anyclip', () => {
 		context.remove('custom.hasFeaturedVideo');
 		context.remove('services.anyclip.loadOnPageLoad');
 		context.remove('services.anyclip.isApplicable');
+		context.remove('services.anyclip.pubname');
+		context.remove('services.anyclip.widgetname');
 	});
 
 	it('does not load the player when disabled in the instant-config', () => {
@@ -40,7 +42,7 @@ describe('Anyclip', () => {
 		expect(mockedIsApplicable.called).to.equal(false);
 	});
 
-	it('loads the script when isApplicable is not a function', () => {
+	it('loads the script when isApplicable is not a function (FCP)', () => {
 		anyclip.call();
 		expect(loadScriptStub.called).to.equal(true);
 	});
@@ -65,5 +67,26 @@ describe('Anyclip', () => {
 
 		anyclip.call();
 		expect(mockedIsApplicable.called).to.equal(false);
+	});
+
+	it('sets up the Anyclip params based on the context', () => {
+		context.set('services.anyclip.pubname', 'test-pubname');
+		context.set('services.anyclip.widgetname', 'test-widget');
+
+		anyclip = new Anyclip(instantConfigStub);
+
+		expect(anyclip.params).to.deep.equal({
+			pubname: 'test-pubname',
+			widgetname: 'test-widget',
+		});
+	});
+
+	it('sets up the default Anyclip params when none is provided via the context', () => {
+		anyclip = new Anyclip(instantConfigStub);
+
+		expect(anyclip.params).to.deep.equal({
+			pubname: 'fandomcom',
+			widgetname: '001w000001Y8ud2_19593',
+		});
 	});
 });
