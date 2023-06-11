@@ -5,7 +5,7 @@ import {
 	targetingService,
 	utils,
 } from '@ad-engine/core';
-import { getAvailableBidsByAdUnitCode } from '../prebid-helper';
+import { getBidByAdId, getWinningBid } from '../prebid-helper';
 
 const logGroup = 'IntentIQ';
 
@@ -69,17 +69,18 @@ export class IntentIQ {
 		}
 	}
 
-	async reportPrebidWin(slotAlias: string, winningBid: PrebidTargeting): Promise<void> {
+	async reportPrebidWin(slotName: string): Promise<void> {
 		if (!this.isEnabled() || !this.intentIqObject) {
 			return;
 		}
 
-		const bids = await getAvailableBidsByAdUnitCode(slotAlias);
-		if (!bids.length) {
+		const slotAlias = context.get(`slots.${slotName}.bidderAlias`) || slotName;
+		const winningBid = await getWinningBid(slotAlias);
+		if (Object.keys(winningBid).length === 0) {
 			return;
 		}
 
-		const winningBidResponse = bids.filter((bid) => bid.adId === winningBid.hb_adid).shift();
+		const winningBidResponse = await getBidByAdId(slotAlias, winningBid.hb_adid);
 		if (!winningBidResponse) {
 			return;
 		}
