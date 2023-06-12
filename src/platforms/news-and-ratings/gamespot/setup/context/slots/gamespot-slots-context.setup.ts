@@ -24,7 +24,12 @@ export class GamespotSlotsContextSetup implements DiProcess {
 				sizes: [
 					{
 						viewportSize: [970, 200],
-						sizes: [[728, 90], [970, 250], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
+						sizes: [
+							[728, 90],
+							[970, 250],
+							[970, 66],
+							universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop,
+						],
 					},
 					{
 						viewportSize: [840, 200],
@@ -363,13 +368,6 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					pos_nr: '1',
 				},
 			},
-			'mobile-nav-ad-plus-banner': {
-				defaultSizes: [[320, 50], [5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
-				targeting: {
-					pos_nr: 'nav',
-					loc: 'top',
-				},
-			},
 			'leader-ad-plus-top': {
 				defaultSizes: [
 					[728, 90],
@@ -428,19 +426,6 @@ export class GamespotSlotsContextSetup implements DiProcess {
 				],
 				targeting: {
 					pos_nr: 'bottom',
-				},
-			},
-			'nav-ad-plus-leader': {
-				defaultSizes: [
-					[728, 90],
-					[970, 250],
-					[970, 66],
-					[5, 5],
-					universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop,
-				],
-				targeting: {
-					pos_nr: 'nav',
-					loc: 'top',
 				},
 			},
 			'mobile-banner-plus': {

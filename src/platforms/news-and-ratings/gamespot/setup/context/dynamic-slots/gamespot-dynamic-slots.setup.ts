@@ -16,7 +16,7 @@ export class GamespotDynamicSlotsSetup implements DiProcess {
 	private stubbedSlotsCounter = {};
 
 	execute(): void {
-		this.dynamicSlotsSetup.injectSlots();
+		this.dynamicSlotsSetup.injectSlots('.mapped-ad,.ad', ['skybox', 'nav-ad-plus']);
 		this.restoreStubbedSlots();
 
 		insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);

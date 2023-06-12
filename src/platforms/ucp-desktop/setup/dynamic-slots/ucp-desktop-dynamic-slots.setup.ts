@@ -13,6 +13,7 @@ import {
 	DiProcess,
 	eventsRepository,
 	slotService,
+	UapLoadStatus,
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -119,12 +120,19 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			() => {
 				porvataClosedActive = true;
 
-				communicationService.onSlotEvent(AdSlotEvent.VIDEO_AD_IMPRESSION, () => {
-					if (porvataClosedActive) {
-						porvataClosedActive = false;
-						slotService.disable(slotName);
-					}
-				});
+				communicationService.on(
+					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+					(action: UapLoadStatus) => {
+						if (!action.isLoaded || action.adProduct === 'ruap') {
+							communicationService.onSlotEvent(AdSlotEvent.VIDEO_AD_IMPRESSION, () => {
+								if (porvataClosedActive) {
+									porvataClosedActive = false;
+									slotService.disable(slotName);
+								}
+							});
+						}
+					},
+				);
 			},
 			slotName,
 		);
