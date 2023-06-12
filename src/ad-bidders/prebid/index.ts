@@ -20,7 +20,6 @@ import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider
 import { adaptersRegistry } from './adapters-registry';
 import { intentIQ } from './intent-iq';
 import { liveRamp } from './live-ramp';
-import { getWinningBid } from './prebid-helper';
 import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice, roundBucketCpm } from './price-helper';
 
@@ -247,11 +246,9 @@ export class PrebidProvider extends BidderProvider {
 	async getTargetingParams(slotName: string): Promise<PrebidTargeting> {
 		const pbjs: Pbjs = await pbjsFactory.init();
 		const slotAlias: string = this.getSlotAlias(slotName);
+		const targeting = pbjs.getAdserverTargeting();
 
-		return {
-			...pbjs.getAdserverTargetingForAdUnitCode(slotAlias),
-			...(await getWinningBid(slotAlias)),
-		};
+		return targeting[slotAlias];
 	}
 
 	isSupported(slotName: string): boolean {

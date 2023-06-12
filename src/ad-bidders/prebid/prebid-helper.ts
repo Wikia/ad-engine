@@ -63,10 +63,9 @@ export function getDealsTargetingFromBid(bid: Dictionary): PrebidTargeting {
 
 export async function getWinningBid(
 	slotName: string,
-	bidderName: string = null,
+	bidderName: string,
 ): Promise<PrebidTargeting> {
 	let slotParams: PrebidTargeting = {};
-	let deals: PrebidTargeting = {};
 	const priceFloor: Dictionary<string> = context.get('bidders.prebid.priceFloor');
 
 	// We are not using pbjs.getAdserverTargetingForAdUnitCode
@@ -79,7 +78,7 @@ export async function getWinningBid(
 		let bidParams = null;
 
 		bids.forEach((param) => {
-			if (bidderName && bidderName !== param.bidderCode) {
+			if (bidderName !== param.bidderCode) {
 				// Do nothing if we filter by bidders
 			} else if (
 				priceFloor &&
@@ -95,19 +94,10 @@ export async function getWinningBid(
 			} else {
 				bidParams = bidParams.cpm < param.cpm ? param : bidParams;
 			}
-
-			// ... However we need to take care of all hb_deal_* keys manually then
-			deals = {
-				...deals,
-				...getDealsTargetingFromBid(param),
-			};
 		});
 
 		if (bidParams) {
-			slotParams = {
-				...deals,
-				...bidParams.adserverTargeting,
-			};
+			slotParams = bidParams.adserverTargeting;
 		}
 	}
 

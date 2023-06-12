@@ -157,6 +157,10 @@ interface PrebidTargeting {
 	[key: string]: string | string[];
 }
 
+interface PrebidTargetingForAdUnits {
+	[unitId: string]: PrebidTargeting;
+}
+
 interface Pbjs {
 	adUnits: PrebidAdUnit[];
 
@@ -175,6 +179,8 @@ interface Pbjs {
 	getBidResponsesForAdUnitCode(adUnitCode: string): { bids: PrebidBidResponse[] };
 
 	getAdserverTargetingForAdUnitCode(adUnitCode: string): PrebidTargeting;
+
+	getAdserverTargeting(): PrebidTargetingForAdUnits;
 
 	getUserIds(): object;
 
