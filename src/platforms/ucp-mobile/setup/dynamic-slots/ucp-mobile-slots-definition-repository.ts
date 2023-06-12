@@ -76,6 +76,17 @@ export class UcpMobileSlotsDefinitionRepository {
 			},
 			activator: () => {
 				this.pushWaitingSlot(slotName);
+				communicationService.on(
+					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+					(action: UapLoadStatus) => {
+						if (action.isLoaded) {
+							this.injectIncontentAdsPlaceholders(1);
+							return;
+						}
+
+						this.injectIncontentAdsPlaceholders(this.isIncontentPlayerApplicable() ? 21 : 20);
+					},
+				);
 			},
 		};
 	}
@@ -91,12 +102,9 @@ export class UcpMobileSlotsDefinitionRepository {
 		return {
 			slotCreatorConfig: {
 				slotName,
-				placeholderConfig: {
-					createLabel: true,
-				},
-				anchorSelector: context.get('templates.incontentAnchorSelector'),
+				anchorSelector: '.incontent-boxad',
 				avoidConflictWith: ['.ad-slot', '#incontent_player'],
-				insertMethod: 'before',
+				insertMethod: 'append',
 				classList: ['hide', 'ad-slot'],
 				repeat: {
 					index: 1,
@@ -108,28 +116,12 @@ export class UcpMobileSlotsDefinitionRepository {
 						'targeting.pos': ['incontent_boxad'],
 					},
 					updateCreator: {
-						anchorSelector: '.incontent-boxad',
 						anchorPosition: 'belowScrollPosition',
-						insertMethod: 'append',
-						placeholderConfig: {
-							createLabel: false,
-						},
 					},
 				},
 			},
-			slotCreatorWrapperConfig: {
-				classList: ['ad-slot-placeholder', 'incontent-boxad', 'is-loading'],
-			},
 			activator: () => {
-				communicationService.on(
-					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
-					(action: UapLoadStatus) => {
-						context.push('events.pushOnScroll.ids', slotName);
-						if (!action.isLoaded) {
-							this.injectIncontentAdsPlaceholders();
-						}
-					},
-				);
+				context.push('events.pushOnScroll.ids', slotName);
 			},
 		};
 	}
@@ -144,7 +136,7 @@ export class UcpMobileSlotsDefinitionRepository {
 		return pageType !== 'search';
 	}
 
-	private injectIncontentAdsPlaceholders(): void {
+	private injectIncontentAdsPlaceholders(count: number): void {
 		const adSlotCategory = 'incontent';
 
 		const icbPlaceholderConfig: RepeatableSlotPlaceholderConfig = {
@@ -153,7 +145,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			insertMethod: 'before',
 			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder', '.incontent-boxad'],
 			repeatStart: 1,
-			repeatLimit: 20,
+			repeatLimit: count,
 		};
 
 		slotPlaceholderInjector.injectAndRepeat(icbPlaceholderConfig, adSlotCategory);
@@ -243,6 +235,10 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	getIncontentPlayerConfig(): SlotSetupDefinition {
+		if (!this.isIncontentPlayerApplicable()) {
+			return;
+		}
+
 		const slotName = 'incontent_player';
 
 		return {
@@ -257,6 +253,12 @@ export class UcpMobileSlotsDefinitionRepository {
 				context.push('state.adStack', { id: slotName });
 			},
 		};
+	}
+
+	private isIncontentPlayerApplicable(): boolean {
+		return (
+			context.get('custom.hasIncontentPlayer') && context.get('wiki.targeting.pageType') !== 'home'
+		);
 	}
 
 	getFloorAdhesionConfig(): SlotSetupDefinition {
