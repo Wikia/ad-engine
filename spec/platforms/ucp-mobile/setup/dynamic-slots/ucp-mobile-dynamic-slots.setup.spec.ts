@@ -18,12 +18,14 @@ describe('floor_adhesion on ucp-mobile', () => {
 	const quizDefinitionRepositoryMock = new QuizSlotsDefinitionRepository();
 
 	before(() => {
+		context.set('slots.incontent_boxad_1', {});
 		context.set('slots.mobile_prefooter', {});
 		global.sandbox.stub(WaitFor.prototype, 'until').returns(Promise.resolve());
 	});
 
 	after(() => {
 		context.remove('custom.hasFeaturedVideo');
+		context.remove('slots.incontent_boxad_1');
 		context.remove('slots.mobile_prefooter');
 		global.sandbox.restore();
 	});
