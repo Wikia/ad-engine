@@ -6,6 +6,10 @@ class ExternalLogger {
 	private readonly isActive: boolean;
 
 	constructor() {
+		if (!context.get('services.externalLogger.threshold')) {
+			context.set('services.externalLogger.threshold', 1);
+		}
+
 		this.isActive = utils.outboundTrafficRestrict.isOutboundTrafficAllowed('externalLogger');
 	}
 
