@@ -43,8 +43,7 @@ describe('A9Provider', () => {
 
 			testCases.forEach((testCase) => {
 				context.set('bidders.a9.enabled', testCase.a9);
-				window.fandomContext.partners.directedAtChildren = testCase.directedAtChildren;
-
+				context.set('wiki.targeting.directedAtChildren', testCase.directedAtChildren);
 				expect(A9Provider.isEnabled()).to.equal(testCase.enabled);
 			});
 		});

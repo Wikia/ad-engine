@@ -30,7 +30,7 @@ describe('Live Ramp', () => {
 	beforeEach(() => {
 		context.set('bidders.liveRampId.enabled', true);
 		context.set('options.optOutSale', false);
-		window.fandomContext.partners.directedAtChildren = false;
+		context.set('wiki.targeting.directedAtChildren', false);
 	});
 
 	it('Prebid config includes LiveRamp setup', () => {
@@ -58,7 +58,7 @@ describe('Live Ramp', () => {
 	});
 
 	it('Live Ramp is disabled on child-directed wiki', () => {
-		window.fandomContext.partners.directedAtChildren = true;
+		context.set('wiki.targeting.directedAtChildren', true);
 
 		expect(liveRamp.getConfig()).to.eql(liveRampDisabledConfig);
 	});
