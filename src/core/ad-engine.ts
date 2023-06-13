@@ -41,7 +41,7 @@ export class AdEngine {
 		window.ads.runtime = window.ads.runtime || ({} as Runtime);
 
 		communicationService.on(
-			eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE,
+			eventsRepository.PLATFORM_PAGE_CHANGED,
 			() => {
 				slotService.removeAll();
 			},

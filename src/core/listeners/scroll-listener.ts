@@ -92,9 +92,7 @@ export class ScrollListener {
 
 		this.callbacks[id] = callback;
 
-		communicationService.on(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE, () =>
-			this.removeCallback(id),
-		);
+		communicationService.on(eventsRepository.PLATFORM_PAGE_CHANGED, () => this.removeCallback(id));
 
 		return id;
 	}

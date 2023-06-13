@@ -55,19 +55,12 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 		});
 
 		communicationService.on(
-			eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE,
+			eventsRepository.PLATFORM_PAGE_CHANGED,
 			() => {
 				utils.logger(logGroup, 'Cleaning slots repositories');
 				this.repeatedSlotsCounter = {};
 				this.repeatedSlotsRendered = [];
 				this.repeatedSlotsQueue = {};
-			},
-			false,
-		);
-
-		communicationService.on(
-			eventsRepository.PLATFORM_PAGE_CHANGED,
-			() => {
 				this.refreshStaleSlots();
 			},
 			false,
