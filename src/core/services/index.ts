@@ -13,7 +13,6 @@ export * from './pbjs-factory';
 export * from './session-cookie';
 export * from './slot-data-params-updater';
 export * from './slot-impact-watcher';
-export * from './slot-refresher';
 export * from './slot-repeater';
 export * from './slot-service';
 export * from './slot-tweaker';

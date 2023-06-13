@@ -14,9 +14,9 @@ import {
 	eventsRepository,
 	slotService,
 	universalAdPackage,
-	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import GalleryLightboxHandler from './specific-handler/gallery-lightbox-handler';
 import { UcpDesktopPerformanceAdsDefinitionRepository } from './ucp-desktop-performance-ads-definition-repository';
 import { UcpDesktopSlotsDefinitionRepository } from './ucp-desktop-slots-definition-repository';
 
@@ -143,59 +143,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	}
 
 	private handleGalleryLightboxSlots(): void {
-		let galleryLeaderboardRefreshLocked = false;
-
-		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
-			communicationService.on(
-				eventsRepository.PLATFORM_LIGHTBOX_READY,
-				({ placementId }) => {
-					utils.logger('gallery-lightbox-handle', 'Ad placement on Lightbox ready', placementId);
-
-					if (placementId !== 'gallery_leaderboard') {
-						return;
-					}
-
-					insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]);
-				},
-				false,
-			);
-
-			communicationService.on(
-				eventsRepository.PLATFORM_LIGHTBOX_CLOSED,
-				({ placementId }) => {
-					utils.logger('gallery-lightbox-handle', 'Ad placement on Lightbox destroy', placementId);
-
-					if (placementId !== 'gallery_leaderboard') {
-						return;
-					}
-
-					slotService.get(placementId).destroy();
-				},
-				false,
-			);
-
-			communicationService.on(
-				eventsRepository.PLATFORM_LIGHTBOX_IMAGE_CHANGE,
-				({ placementId }) => {
-					utils.logger(
-						'gallery-lightbox-handle',
-						'Ad placement on Lightbox is going to be refreshed',
-						placementId,
-					);
-
-					if (placementId !== 'gallery_leaderboard' || galleryLeaderboardRefreshLocked) {
-						return;
-					}
-
-					slotService.get(placementId).destroy();
-					insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]);
-					galleryLeaderboardRefreshLocked = true;
-					setTimeout(() => {
-						galleryLeaderboardRefreshLocked = false;
-					}, 2000);
-				},
-				false,
-			);
-		});
+		const galleryHandler = new GalleryLightboxHandler(this.slotsDefinitionRepository);
+		galleryHandler.handle();
 	}
 }

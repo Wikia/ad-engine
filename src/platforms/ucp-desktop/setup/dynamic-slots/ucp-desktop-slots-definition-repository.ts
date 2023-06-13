@@ -46,7 +46,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 				placeholderConfig,
 				anchorSelector: '.gallery-leaderboard',
 				insertMethod: 'prepend',
-				classList: ['hide', 'ad-slot'],
+				classList: ['ad-slot'],
 			},
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
