@@ -63,7 +63,7 @@ export function getDealsTargetingFromBid(bid: Dictionary): PrebidTargeting {
 
 export async function getWinningBid(
 	slotName: string,
-	bidderName: string,
+	bidderName: string = null,
 ): Promise<PrebidTargeting> {
 	let slotParams: PrebidTargeting = {};
 	const priceFloor: Dictionary<string> = context.get('bidders.prebid.priceFloor');
@@ -78,7 +78,7 @@ export async function getWinningBid(
 		let bidParams = null;
 
 		bids.forEach((param) => {
-			if (bidderName !== param.bidderCode) {
+			if (bidderName && bidderName !== param.bidderCode) {
 				// Do nothing if we filter by bidders
 			} else if (
 				priceFloor &&
