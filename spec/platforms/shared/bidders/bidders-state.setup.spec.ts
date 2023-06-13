@@ -112,7 +112,10 @@ describe('BiddersStateSetup', () => {
 
 	it('Kargo and Verizon (not COPPA compliant bidders) are disabled on kid wikis', () => {
 		context.set('wiki.targeting.directedAtChildren', true);
-		window.fandomContext.partners.directedAtChildren = true;
+		window.fandomContext = {
+			partners: { directedAtChildren: true },
+		} as any;
+
 		instantConfigStub.get.withArgs('icPrebid').returns(true);
 		instantConfigStub.get.withArgs('icPrebidKargo').returns(true);
 		instantConfigStub.get.withArgs('icPrebidVerizon').returns(true);
@@ -127,5 +130,6 @@ describe('BiddersStateSetup', () => {
 		expect(context.get('bidders.prebid.testBidder.enabled')).to.be.true;
 
 		context.remove('wiki.targeting.directedAtChildren');
+		delete window.fandomContext;
 	});
 });

@@ -34,6 +34,9 @@ describe('Eyeota', () => {
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);
 		context.set('wiki.targeting.directedAtChildren', false);
+		window.fandomContext = {
+			partners: { directedAtChildren: false },
+		} as any;
 
 		targetingServiceStub = global.sandbox.stub(targetingService);
 
@@ -47,6 +50,7 @@ describe('Eyeota', () => {
 		context.remove('options.trackingOptIn');
 		context.remove('options.optOutSale');
 		context.remove('wiki.targeting.directedAtChildren');
+		delete window.fandomContext;
 	});
 
 	it('is called when all requirements are met', async () => {
@@ -81,7 +85,7 @@ describe('Eyeota', () => {
 
 	it('not called on kid wikis', async () => {
 		context.set('wiki.targeting.directedAtChildren', true);
-
+		window.fandomContext.partners.directedAtChildren = true;
 		await eyeota.call();
 
 		expect(loadScriptStub.called).to.equal(false);
