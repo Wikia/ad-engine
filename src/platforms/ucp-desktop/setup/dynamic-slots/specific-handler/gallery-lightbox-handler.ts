@@ -8,7 +8,7 @@ import {
 } from '@wikia/ad-engine';
 import { UcpDesktopSlotsDefinitionRepository } from '../ucp-desktop-slots-definition-repository';
 
-export default class GalleryLightboxHandler {
+export class GalleryLightboxHandler {
 	private readonly slotName = 'gallery_leaderboard';
 	private refreshLock;
 	private logGroup = 'gallery-lightbox-handle';
