@@ -56,9 +56,8 @@ export default class GalleryLightboxHandler {
 	private handleOnLoadNoAd(): void {
 		communicationService.onSlotEvent(
 			AdSlotStatus.STATUS_COLLAPSE,
-			() => {
-				const gallerySlot = slotService.get(this.slotName);
-				if (gallerySlot.getStatus() !== AdSlotStatus.STATUS_COLLAPSE) {
+			({ slot }) => {
+				if (slot.getStatus() !== AdSlotStatus.STATUS_COLLAPSE) {
 					return;
 				}
 				this.changeVisibilityOfParentSlotPlaceholder(false);
