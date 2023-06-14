@@ -182,10 +182,8 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				options: {},
 			},
 			gallery_leaderboard: {
-				aboveTheFold: true,
 				adProduct: 'gallery_leaderboard',
 				group: 'IG',
-				options: {},
 				defaultSizes: [[728, 90]],
 				targeting: {
 					loc: 'gallery',
