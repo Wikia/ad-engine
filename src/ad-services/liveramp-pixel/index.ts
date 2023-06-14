@@ -13,14 +13,14 @@ export class LiveRampPixel extends BaseServiceSetup {
 	}
 
 	async call(): Promise<void> {
-		if (!this.isEnabled('icLiveRampPixel')) {
+		if (!this.isEnabled('icLiveRampPixel') || this.isEnabled('icIdentityPartners', false)) {
 			utils.logger(this.logGroup, 'pixel disabled');
 			return;
 		}
 
 		communicationService.on(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, (event) => {
-			if (event.payload.partnerName === 'Google') {
-				this.insertLiveRampPixel(event.payload.partnerIdentityId);
+			if (event.partnerName === 'Google') {
+				this.insertLiveRampPixel(event.partnerIdentityId);
 			}
 		});
 	}
