@@ -9,7 +9,9 @@ export class MetricReporterSetup implements DiProcess {
 		const serviceUrl = utils.getServicesBaseURL() || '';
 		context.set('services.monitoring.endpoint', serviceUrl.replace(/\/+$/, ''));
 		context.set('services.monitoring.service', 'adeng');
-		const icMonitorTrafficThreshold = this.instantConfig.get('icMonitorTrafficThreshold', {});
+		const icMonitorTrafficThreshold = this.instantConfig.get('icMonitorTrafficThreshold', {
+			default: 0,
+		});
 		const monitorTrafficThreshold =
 			typeof icMonitorTrafficThreshold === 'number'
 				? { default: icMonitorTrafficThreshold }
