@@ -10,8 +10,8 @@ import { UcpDesktopSlotsDefinitionRepository } from '../ucp-desktop-slots-defini
 
 export class GalleryLightboxHandler {
 	private readonly slotName = 'gallery_leaderboard';
-	private refreshLock;
-	private logGroup = 'gallery-lightbox-handle';
+	private refreshLock: boolean;
+	private logGroup = 'gallery-lightbox-handler';
 
 	constructor(private slotsDefinitionRepository: UcpDesktopSlotsDefinitionRepository) {
 		this.refreshLock = false;
@@ -44,13 +44,13 @@ export class GalleryLightboxHandler {
 	}
 
 	private changeVisibilityOfParentSlotPlaceholder(makeVisible: boolean) {
-		const holder: HTMLElement = <HTMLElement>(
-			document.querySelector('.ad-slot-placeholder.gallery-leaderboard')
+		const placeholder: HTMLElement = document.querySelector(
+			'.ad-slot-placeholder.gallery-leaderboard',
 		);
-		if (!holder) {
+		if (!placeholder) {
 			return;
 		}
-		holder.setAttribute('style', !makeVisible ? 'display: none;' : '');
+		placeholder.setAttribute('style', !makeVisible ? 'display: none;' : '');
 	}
 
 	private handleOnLoadNoAd(): void {
@@ -117,6 +117,7 @@ export class GalleryLightboxHandler {
 				}
 				setTimeout(() => {
 					insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]);
+					this.changeVisibilityOfParentSlotPlaceholder(true);
 				}, 100);
 
 				this.lockForFewSeconds();
