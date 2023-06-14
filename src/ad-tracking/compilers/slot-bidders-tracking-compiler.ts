@@ -1,7 +1,10 @@
-import { Dictionary } from '@ad-engine/core';
+import { Dictionary, SlotPriceProvider } from '@ad-engine/core';
 import { CompilerPartial } from '../base-tracker';
 
-async function getBiddersPrices(slotName: string, bidders): Promise<Dictionary<string>> {
+async function getBiddersPrices(
+	slotName: string,
+	bidders: SlotPriceProvider,
+): Promise<Dictionary<string>> {
 	const realSlotPrices: Dictionary<string> = bidders.getDfpSlotPrices(slotName);
 	const currentSlotPrices: Dictionary<string> = await bidders.getCurrentSlotPrices(slotName);
 

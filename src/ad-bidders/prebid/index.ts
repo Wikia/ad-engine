@@ -20,16 +20,15 @@ import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider
 import { adaptersRegistry } from './adapters-registry';
 import { intentIQ } from './intent-iq';
 import { liveRamp } from './live-ramp';
-import { getWinningBid } from './prebid-helper';
 import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice, roundBucketCpm } from './price-helper';
 
 const logGroup = 'prebid';
 
-const defaultGranularity = {
+const priceGranularity = {
 	buckets: [
 		{
-			max: 0.05,
+			max: 3,
 			increment: 0.01,
 		},
 		{
@@ -44,16 +43,11 @@ const defaultGranularity = {
 			max: 20,
 			increment: 0.5,
 		},
-	],
-};
-
-const videoGranularity = {
-	buckets: defaultGranularity.buckets.concat([
 		{
 			max: 50,
 			increment: 1,
 		},
-	]),
+	],
 };
 
 interface PrebidConfig extends BidderConfig {
@@ -100,11 +94,7 @@ export class PrebidProvider extends BidderProvider {
 			},
 			debug: ['1', 'true'].includes(utils.queryString.get('pbjs_debug')),
 			cpmRoundingFunction: roundBucketCpm,
-			mediaTypePriceGranularity: {
-				banner: defaultGranularity,
-				video: videoGranularity,
-				'video-outstream': videoGranularity,
-			},
+			priceGranularity: priceGranularity,
 			rubicon: {
 				singleRequest: true,
 			},
@@ -163,7 +153,7 @@ export class PrebidProvider extends BidderProvider {
 			},
 			targetingControls: {
 				alwaysIncludeDeals: true,
-				allowTargetingKeys: ['AD_ID', 'PRICE_BUCKET', 'UUID', 'SIZE', 'DEAL'],
+				allowTargetingKeys: ['AD_ID', 'BIDDER', 'PRICE_BUCKET', 'UUID', 'SIZE', 'DEAL'],
 				allowSendAllBidsTargetingKeys: ['AD_ID', 'PRICE_BUCKET', 'UUID', 'SIZE', 'DEAL'],
 			},
 		};
@@ -256,11 +246,9 @@ export class PrebidProvider extends BidderProvider {
 	async getTargetingParams(slotName: string): Promise<PrebidTargeting> {
 		const pbjs: Pbjs = await pbjsFactory.init();
 		const slotAlias: string = this.getSlotAlias(slotName);
+		const targeting = pbjs.getAdserverTargeting();
 
-		return {
-			...pbjs.getAdserverTargetingForAdUnitCode(slotAlias),
-			...(await getWinningBid(slotAlias)),
-		};
+		return targeting[slotAlias];
 	}
 
 	isSupported(slotName: string): boolean {
