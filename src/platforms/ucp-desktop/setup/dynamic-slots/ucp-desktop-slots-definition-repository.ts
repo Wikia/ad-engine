@@ -37,6 +37,9 @@ export class UcpDesktopSlotsDefinitionRepository {
 	}
 
 	getGalleryLeaderboardConfig(): SlotSetupDefinition {
+		const isGalleryLeaderboardAllowedInIcbm = this.instantConfig.get('upGallerySlot', true);
+		context.set('gallery_leaderboard.allowed', isGalleryLeaderboardAllowedInIcbm);
+
 		const slotName = 'gallery_leaderboard';
 		const placeholderConfig = context.get(`slots.${slotName}.placeholder`);
 

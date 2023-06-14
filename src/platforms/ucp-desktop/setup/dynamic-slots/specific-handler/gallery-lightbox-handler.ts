@@ -1,7 +1,8 @@
-import { insertSlots } from '@platforms/shared';
+import { insertSlots, SlotSetupDefinition } from '@platforms/shared';
 import {
 	AdSlotStatus,
 	communicationService,
+	context,
 	eventsRepository,
 	slotService,
 	utils,
@@ -13,13 +14,18 @@ export class GalleryLightboxHandler {
 	private refreshLock: boolean;
 	private logGroup = 'gallery-lightbox-handler';
 	private isActive: boolean;
+	private galleryLeaderboardConfig: SlotSetupDefinition;
 
 	constructor(private slotsDefinitionRepository: UcpDesktopSlotsDefinitionRepository) {
 		this.refreshLock = false;
 		this.isActive = true;
+		this.galleryLeaderboardConfig = this.slotsDefinitionRepository.getGalleryLeaderboardConfig();
 	}
 	handle() {
 		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+			if (!context.get('gallery_leaderboard.allowed')) {
+				return;
+			}
 			this.handleOnLoadNoAd();
 			this.handleOnLoad();
 			this.handleOnClose();
@@ -35,7 +41,7 @@ export class GalleryLightboxHandler {
 					return;
 				}
 
-				insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]);
+				insertSlots([this.galleryLeaderboardConfig]);
 				this.changeVisibilityOfParentSlotPlaceholder(true);
 				this.lockForFewSeconds();
 				this.isActive = true;
@@ -118,7 +124,7 @@ export class GalleryLightboxHandler {
 					label.remove();
 				}
 				setTimeout(() => {
-					insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]);
+					insertSlots([this.galleryLeaderboardConfig]);
 					this.changeVisibilityOfParentSlotPlaceholder(true);
 				}, 100);
 

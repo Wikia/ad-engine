@@ -201,5 +201,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 		context.set('slots', slots);
 		context.set('slots.featured.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
 		context.set('slots.incontent_player.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
+		context.set('gallery_leaderboard.allowed', true);
 	}
 }
