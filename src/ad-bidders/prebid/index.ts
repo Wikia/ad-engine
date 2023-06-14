@@ -43,6 +43,10 @@ const priceGranularity = {
 			max: 20,
 			increment: 0.5,
 		},
+		{
+			max: 50,
+			increment: 1,
+		},
 	],
 };
 
