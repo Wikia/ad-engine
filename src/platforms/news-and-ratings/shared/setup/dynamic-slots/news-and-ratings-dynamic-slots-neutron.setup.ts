@@ -70,6 +70,10 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 
 			utils.logger(logGroup, 'Inserting slots without DOM elements');
 			insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
+
+			communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () =>
+				insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]),
+			);
 		});
 
 		communicationService.on(
@@ -79,13 +83,6 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 				this.repeatedSlotsCounter = {};
 				this.repeatedSlotsRendered = [];
 				this.repeatedSlotsQueue = {};
-			},
-			false,
-		);
-
-		communicationService.on(
-			eventsRepository.PLATFORM_PAGE_CHANGED,
-			() => {
 				this.refreshStaleSlots();
 			},
 			false,
@@ -119,6 +116,7 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 				placementId: slot.getAttribute('data-ad'),
 			});
 		});
+		window.googletag.pubads().updateCorrelator();
 	}
 
 	private isSlotApplicable(slotName: string): boolean {
