@@ -10,11 +10,11 @@ import { UcpDesktopSlotsDefinitionRepository } from '../ucp-desktop-slots-defini
 
 export default class GalleryLightboxHandler {
 	private readonly slotName = 'gallery_leaderboard';
-	private galleryLeaderboardRefreshLocked;
+	private refreshLock;
 	private logGroup = 'gallery-lightbox-handle';
 
 	constructor(private slotsDefinitionRepository: UcpDesktopSlotsDefinitionRepository) {
-		this.galleryLeaderboardRefreshLocked = false;
+		this.refreshLock = false;
 	}
 	handle() {
 		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
@@ -37,7 +37,7 @@ export default class GalleryLightboxHandler {
 
 				insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]);
 				this.changeVisibilityOfParentSlotPlaceholder(true);
-				this.galleryLeaderboardRefreshLocked = false;
+				this.lockForFewSeconds();
 			},
 			false,
 		);
@@ -62,7 +62,7 @@ export default class GalleryLightboxHandler {
 					return;
 				}
 				this.changeVisibilityOfParentSlotPlaceholder(false);
-				this.galleryLeaderboardRefreshLocked = true;
+				this.refreshLock = true;
 			},
 			this.slotName,
 		);
@@ -99,7 +99,7 @@ export default class GalleryLightboxHandler {
 					placementId,
 				);
 
-				if (placementId !== this.slotName || this.galleryLeaderboardRefreshLocked) {
+				if (placementId !== this.slotName || this.refreshLock) {
 					return;
 				}
 
@@ -120,12 +120,16 @@ export default class GalleryLightboxHandler {
 					insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]);
 				}, 100);
 
-				this.galleryLeaderboardRefreshLocked = true;
-				setTimeout(() => {
-					this.galleryLeaderboardRefreshLocked = false;
-				}, 2000);
+				this.lockForFewSeconds();
 			},
 			false,
 		);
+	}
+
+	private lockForFewSeconds() {
+		this.refreshLock = true;
+		setTimeout(() => {
+			this.refreshLock = false;
+		}, 2000);
 	}
 }
