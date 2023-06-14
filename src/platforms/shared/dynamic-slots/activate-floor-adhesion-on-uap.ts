@@ -20,7 +20,7 @@ export function activateFloorAdhesionOnUAP(callback: () => void, withLoadedOnly 
 							universalAdPackage.SLOT_VIDEO_DONE,
 						].includes(payload.status)
 					) {
-						setTimeout(() => callback(), 300);
+						setTimeout(() => callback(), universalAdPackage.SLIDE_OUT_TIME);
 					}
 				},
 				'top_leaderboard',
