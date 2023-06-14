@@ -78,7 +78,12 @@ export default class GalleryLightboxHandler {
 					return;
 				}
 
-				slotService.get(placementId).destroy();
+				const gallerySlot = slotService.get(this.slotName);
+				if (!gallerySlot) {
+					return;
+				}
+
+				gallerySlot.destroy();
 			},
 			false,
 		);
