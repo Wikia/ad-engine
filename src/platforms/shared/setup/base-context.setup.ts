@@ -5,6 +5,7 @@ import {
 	DiProcess,
 	eventsRepository,
 	InstantConfigService,
+	Optimizely,
 	setupNpaContext,
 	setupRdpContext,
 	universalAdPackage,
@@ -13,11 +14,45 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 import { NoAdsDetector } from '../services/no-ads-detector';
 
+type optimizelyInContentExperiment = {
+	EXPERIMENT_ENABLED: string;
+	EXPERIMENT_VARIANT: string;
+};
+
+type optimizelyInContentExperimentVariants = {
+	IGNORE_VIEWPORT: string;
+	VIEWPORT: string;
+	UNDEFINED: string;
+};
+
+const OPTIMIZELY_IN_CONTENT_EXPERIMENT: optimizelyInContentExperiment = {
+	EXPERIMENT_ENABLED: 'in_content_headers',
+	EXPERIMENT_VARIANT: 'in_content_headers_variant',
+};
+
+const OPTIMIZELY_IN_CONTENT_EXPERIMENT_VARIANTS: optimizelyInContentExperimentVariants = {
+	IGNORE_VIEWPORT: 'in_content_headers_ignore_viewport',
+	VIEWPORT: 'in_content_headers_viewport',
+	UNDEFINED: 'in_content_headers_undefined',
+};
+
+const OPTIMIZELY_MOBILE_IN_CONTENT_EXPERIMENT: optimizelyInContentExperiment = {
+	EXPERIMENT_ENABLED: 'mobile_in_content_headers',
+	EXPERIMENT_VARIANT: 'mobile_in_content_headers_variant',
+};
+
+const OPTIMIZELY_MOBILE_IN_CONTENT_EXPERIMENT_VARIANTS: optimizelyInContentExperimentVariants = {
+	IGNORE_VIEWPORT: 'mobile_in_content_headers_ignore_viewport',
+	VIEWPORT: 'mobile_in_content_headers_viewport',
+	UNDEFINED: 'mobile_in_content_headers_undefined',
+};
+
 @Injectable()
 export class BaseContextSetup implements DiProcess {
 	constructor(
 		protected instantConfig: InstantConfigService,
 		protected noAdsDetector: NoAdsDetector,
+		protected optimizely: Optimizely,
 	) {}
 
 	execute(): void {
@@ -65,11 +100,7 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setOptionsContext(): void {
-		if (this.instantConfig.get('icIncontentHeadersExperiment')) {
-			context.set('templates.incontentHeadersExperiment', true);
-		} else {
-			context.set('templates.incontentAnchorSelector', '.mw-parser-output > h2');
-		}
+		this.setInContentExperiment();
 
 		context.set('options.performanceAds', this.instantConfig.get('icPerformanceAds'));
 		context.set('options.stickyTbExperiment', this.instantConfig.get('icStickyTbExperiment'));
@@ -122,6 +153,30 @@ export class BaseContextSetup implements DiProcess {
 		this.setWadContext();
 	}
 
+	private setInContentExperiment(): void {
+		const isMobile = context.get('state.isMobile');
+		const experiment = isMobile
+			? OPTIMIZELY_MOBILE_IN_CONTENT_EXPERIMENT
+			: OPTIMIZELY_IN_CONTENT_EXPERIMENT;
+		const variants = isMobile
+			? OPTIMIZELY_MOBILE_IN_CONTENT_EXPERIMENT_VARIANTS
+			: OPTIMIZELY_IN_CONTENT_EXPERIMENT_VARIANTS;
+
+		this.optimizely.addVariantToTargeting(experiment, variants.UNDEFINED);
+
+		const variant = this.optimizely.getVariant(experiment);
+
+		if (variant === variants.IGNORE_VIEWPORT) {
+			context.set('templates.incontentHeadersExperiment', true);
+		} else {
+			context.set('templates.incontentAnchorSelector', '.mw-parser-output > h2');
+		}
+
+		if (variant) {
+			this.optimizely.addVariantToTargeting(experiment, variant);
+		}
+	}
+
 	private setWadContext(): void {
 		const babEnabled = this.instantConfig.get('icBabDetection');
 
@@ -171,6 +226,8 @@ export class BaseContextSetup implements DiProcess {
 			this.instantConfig.get('icPrebidDisableSendAllBids'),
 		);
 		context.set('bidders.identityHub.enabled', this.instantConfig.get('icPubmaticIdentityHub'));
+		// TODO: Remove after ADEN-13043 release & data confirmation
+		context.set('bidders.identityHubV2.enabled', this.instantConfig.get('icPubmaticIdentityHubV2'));
 		context.set('bidders.liveRampId.enabled', this.instantConfig.get('icLiveRampId'));
 		context.set('bidders.liveRampATS.enabled', this.instantConfig.get('icLiveRampATS'));
 		context.set(

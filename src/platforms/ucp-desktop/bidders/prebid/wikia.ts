@@ -15,6 +15,7 @@ export function getWikiaContext(): object {
 				sizes: [[970, 250]],
 			},
 			ntv_ad: {
+				sizes: [[1, 1]],
 				position: 'native',
 			},
 		},

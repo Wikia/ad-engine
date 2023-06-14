@@ -14,7 +14,7 @@ import { NewsAndRatingsSlotsDefinitionRepository } from '../../../shared';
 const logGroup = 'dynamic-slots';
 
 @Injectable()
-export class TvGuideDynamicSlotsSetup implements DiProcess {
+export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 	constructor(private slotsDefinitionRepository: NewsAndRatingsSlotsDefinitionRepository) {}
 
 	private repeatedSlotsCounter: Dictionary<number> = {};
@@ -49,6 +49,8 @@ export class TvGuideDynamicSlotsSetup implements DiProcess {
 				}
 			});
 
+			// slots without DOM elements required
+			utils.logger(logGroup, 'Inserting slots without DOM elements');
 			insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
 		});
 

@@ -6,6 +6,7 @@ import {
 	globalAction,
 	InstantConfigCacheStorage,
 	InstantConfigService,
+	intentIQ,
 	pbjsFactory,
 } from '@wikia/ad-engine';
 import { Container, Injectable } from '@wikia/dependency-injection';
@@ -33,7 +34,12 @@ export class InstantConfigSetup implements DiProcess {
 	private preloadLibraries(instantConfig: InstantConfigService) {
 		if (instantConfig.get('icPrebid')) {
 			context.set('bidders.prebid.libraryUrl', instantConfig.get('icPrebidVersion'));
-			pbjsFactory.init();
+
+			pbjsFactory.init().then(() => {
+				if (instantConfig.get('icPrebidIntentIQ')) {
+					return intentIQ.preloadScript();
+				}
+			});
 		}
 
 		if (instantConfig.get('icAudigent')) {

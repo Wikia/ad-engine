@@ -171,6 +171,7 @@ export class Bidders extends BaseServiceSetup {
 
 export * from './prebid/ats';
 export * from './prebid/identity-hub';
+export * from './prebid/intent-iq';
 export * from './prebid/live-ramp';
 export * from './prebid/native';
 export * from './wrappers';

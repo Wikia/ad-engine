@@ -11,6 +11,7 @@ export * from './identity-setup';
 export * from './live-connect';
 export * from './liveramp-pixel';
 export * from './nielsen';
+export * from './optimizely';
 export * from './sailthru';
 export * from './stroer';
 export * from './wunderkind';

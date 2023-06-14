@@ -20,6 +20,8 @@ describe('IntentIQ', () => {
 		window.IntentIqObject = function IntentIqMock(config) {
 			intentIqNewSpy(config);
 
+			config?.callback?.();
+
 			return {
 				intentIqConfig: {
 					abTesting: {
@@ -76,7 +78,7 @@ describe('IntentIQ', () => {
 			global.sandbox.stub(context, 'get').withArgs('bidders.prebid.intentIQ').returns(false);
 			const intentIQ = new IntentIQ();
 
-			await intentIQ.reportPrebidWin('top_leaderboard', {});
+			await intentIQ.reportPrebidWin('top_leaderboard');
 
 			expect(intentIqReportSpy.notCalled).to.be.true;
 		});
@@ -88,17 +90,19 @@ describe('IntentIQ', () => {
 				.returns(true)
 				.withArgs('options.trackingOptIn')
 				.returns(true);
+
 			pbjsStub.getBidResponsesForAdUnitCode.returns({
 				bids: [
 					PrebidBidFactory.getBid({
 						adId: 'ad-123',
 						bidderCode: 'appnexus',
 						auctionId: '1234-5678',
-						cpm: 0.123,
+						cpm: 0.12,
 						currency: 'USD',
-						originalCpm: 0.123,
+						originalCpm: 0.12,
 						originalCurrency: 'USD',
 						adUnitCode: 'top_leaderboard',
+						adserverTargeting: { hb_adid: 'ad-123', hb_pb: '0.12' },
 					}),
 				],
 			});
@@ -106,20 +110,18 @@ describe('IntentIQ', () => {
 			const intentIQ = new IntentIQ();
 			await intentIQ.initialize(pbjsStub);
 
-			await intentIQ.reportPrebidWin('top_leaderboard', {
-				hb_adid: 'ad-123',
-			});
+			await intentIQ.reportPrebidWin('top_leaderboard');
 
 			expect(intentIqNewSpy.calledOnce).to.be.true;
-			expect(pbjsStub.getBidResponsesForAdUnitCode.calledOnce).to.be.true;
+			expect(pbjsStub.getBidResponsesForAdUnitCode.called).to.be.true;
 			expect(
 				intentIqReportSpy.calledOnceWithExactly({
 					biddingPlatformId: 1,
 					bidderCode: 'appnexus',
 					prebidAuctionId: '1234-5678',
-					cpm: 0.123,
+					cpm: 0.12,
 					currency: 'USD',
-					originalCpm: 0.123,
+					originalCpm: 0.12,
 					originalCurrency: 'USD',
 					status: 'available',
 					placementId: 'top_leaderboard',

@@ -30,6 +30,7 @@ export const slotTrackingCompiler = ({ data, slot }: CompilerPartial): CompilerP
 	const isUap = slot.getTargetingProperty('uap') && slot.getTargetingProperty('uap') !== 'none';
 
 	const targetingData: TargetingData = targetingService.dump<TargetingData>();
+	const experimentGroups: string[] = targetingData?.experiment_groups || [];
 
 	return {
 		slot,
@@ -46,7 +47,7 @@ export const slotTrackingCompiler = ({ data, slot }: CompilerPartial): CompilerP
 			kv_s1: targetingData.s1 || '',
 			kv_s2: targetingData.s2 || '',
 			kv_skin: targetingData.skin || '',
-			labrador: cacheStorage.getSamplingResults().join(';'),
+			labrador: [...cacheStorage.getSamplingResults(), ...experimentGroups].join(';'),
 			opt_in: checkOptIn(),
 			opt_out_sale: checkOptOutSale(),
 			page_width:

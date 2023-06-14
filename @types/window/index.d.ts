@@ -5,7 +5,10 @@ interface Window {
 	AdEngine_adType?: ManualAdType;
 	ads?: MediaWikiAds;
 	adsQueue?: any;
-	PWT: { jsLoaded: () => void };
+	anyclip?: AnyclipApi;
+	// TODO: Remove after ADEN-13043 release & data confirmation
+	PWT?: { jsLoaded: () => void };
+	IHPWT?: { jsLoaded: () => void };
 	apstag?: Apstag;
 	au?: any;
 	au_seg?: any;
@@ -31,6 +34,7 @@ interface Window {
 	mw?: MediaWiki;
 	ntv?: NativoApi;
 	NOLBUNDLE?: any;
+	adsExperiments?: any;
 	pbjs?: any;
 	Phoenix?: Phoenix;
 	PostRelease?: NativoPostRelease;
