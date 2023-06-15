@@ -127,6 +127,9 @@ $sticky-navigation-height: 46px;
 	position: relative;
 	.ae-translatable-label {
 		@include placement-label-text-styles(-24px);
+		&.hide {
+			display: none;
+		}
 	}
 }
 

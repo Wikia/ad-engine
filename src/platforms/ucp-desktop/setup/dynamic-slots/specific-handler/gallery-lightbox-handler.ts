@@ -36,7 +36,6 @@ export class GalleryLightboxHandler {
 				}
 
 				insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]);
-				this.changeVisibilityOfParentSlotPlaceholder(true);
 				this.lockForFewSeconds();
 				this.isActive = true;
 				utils.logger(this.logGroup, 'Ad placement on Lightbox ready', placementId);
@@ -45,24 +44,10 @@ export class GalleryLightboxHandler {
 		);
 	}
 
-	private changeVisibilityOfParentSlotPlaceholder(makeVisible: boolean) {
-		const placeholder: HTMLElement = document.querySelector(
-			'.ad-slot-placeholder.gallery-leaderboard',
-		);
-		if (!placeholder) {
-			return;
-		}
-		placeholder.setAttribute('style', !makeVisible ? 'display: none;' : '');
-	}
-
 	private handleOnLoadNoAd(): void {
 		communicationService.onSlotEvent(
 			AdSlotStatus.STATUS_COLLAPSE,
-			({ slot }) => {
-				if (slot.getStatus() !== AdSlotStatus.STATUS_COLLAPSE) {
-					return;
-				}
-				this.changeVisibilityOfParentSlotPlaceholder(false);
+			() => {
 				this.refreshLock = true;
 			},
 			this.slotName,
@@ -119,7 +104,6 @@ export class GalleryLightboxHandler {
 				}
 				setTimeout(() => {
 					insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]);
-					this.changeVisibilityOfParentSlotPlaceholder(true);
 				}, 100);
 
 				this.lockForFewSeconds();
