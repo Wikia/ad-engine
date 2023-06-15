@@ -155,13 +155,5 @@ export class DataWarehouseTracker {
 		);
 
 		request.send();
-
-		// OPS-14450: send 0.5% of tracking requests to beam
-		if (Math.random() < 0.005) {
-			const beamRequest = new XMLHttpRequest();
-			const beamUrl = url.replace('https://beacon.wikia-services.com/', 'https://beam.wikia-services.com/');
-			beamRequest.open('GET', beamUrl, true);
-			beamRequest.send();
-		}
 	}
 }

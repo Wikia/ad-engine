@@ -41,7 +41,7 @@ export async function getBidUUID(adUnitCode: string, adId: string): Promise<stri
 	return 'disabled';
 }
 
-async function getBidByAdId(adUnitCode, adId): Promise<PrebidBidResponse> {
+export async function getBidByAdId(adUnitCode, adId): Promise<PrebidBidResponse> {
 	const pbjs: Pbjs = await pbjsFactory.init();
 	const { bids } = pbjs.getBidResponsesForAdUnitCode(adUnitCode);
 	const foundBids = bids.filter((bid) => adId === bid.adId);
