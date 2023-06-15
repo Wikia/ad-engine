@@ -5,6 +5,7 @@
 $global-navigation-width: 66px;
 $sticky-navigation-height: 46px;
 $navbar-width: 66px;
+$out-of-page-z-index: 402;
 
 @mixin ucp-desktop-uap-styles() {
 	.has-uap {
@@ -26,7 +27,7 @@ $navbar-width: 66px;
 		}
 
 		#top_leaderboard {
-			@include bfaa-slot(402, $global-navigation-width);
+			@include bfaa-slot($out-of-page-z-index, $global-navigation-width);
 			@include sticky-tlb-slot($global-navigation-width);
 
 			margin-left: $global-navigation-width;
@@ -79,7 +80,7 @@ $navbar-width: 66px;
 }
 
 @mixin out-of-page-styles() {
-	@include out-of-page-template();
+	@include out-of-page-template($out-of-page-z-index);
 	@include interstitial();
 	@include wiki-floor-adhesion();
 }
