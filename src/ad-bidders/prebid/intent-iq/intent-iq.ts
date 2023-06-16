@@ -5,7 +5,6 @@ import {
 	targetingService,
 	utils,
 } from '@ad-engine/core';
-import { getBidByAdId, getWinningBid } from '../prebid-helper';
 
 const logGroup = 'IntentIQ';
 
@@ -69,32 +68,21 @@ export class IntentIQ {
 		}
 	}
 
-	async reportPrebidWin(slotName: string): Promise<void> {
+	async reportPrebidWin(bid: PrebidBidResponse): Promise<void> {
 		if (!this.isEnabled() || !this.intentIqObject) {
-			return;
-		}
-
-		const slotAlias = context.get(`slots.${slotName}.bidderAlias`) || slotName;
-		const winningBid = await getWinningBid(slotAlias);
-		if (Object.keys(winningBid).length === 0) {
-			return;
-		}
-
-		const winningBidResponse = await getBidByAdId(slotAlias, winningBid.hb_adid);
-		if (!winningBidResponse) {
 			return;
 		}
 
 		const data: IntentIQReportData = {
 			biddingPlatformId: 1, // Prebid
-			bidderCode: winningBidResponse.bidderCode,
-			prebidAuctionId: winningBidResponse.auctionId,
-			cpm: winningBidResponse.cpm,
-			currency: winningBidResponse.currency,
-			originalCpm: winningBidResponse.originalCpm,
-			originalCurrency: winningBidResponse.originalCurrency,
-			status: winningBidResponse.status,
-			placementId: winningBidResponse.adUnitCode,
+			bidderCode: bid.bidderCode,
+			prebidAuctionId: bid.auctionId,
+			cpm: bid.cpm,
+			currency: bid.currency,
+			originalCpm: bid.originalCpm,
+			originalCurrency: bid.originalCurrency,
+			status: bid.status,
+			placementId: bid.adUnitCode,
 		};
 
 		utils.logger(logGroup, 'reporting prebid win', data);
