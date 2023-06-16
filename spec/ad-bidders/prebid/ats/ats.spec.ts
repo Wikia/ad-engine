@@ -12,7 +12,7 @@ describe('ATS', () => {
 			.returns(Promise.resolve({} as any));
 
 		(window as any).ats = {
-			start: () => ({}),
+			setAdditionalData: () => ({}),
 			retrieveEnvelope: () => ({}),
 		};
 
@@ -20,7 +20,7 @@ describe('ATS', () => {
 		context.set('options.optOutSale', false);
 		context.set('options.trackingOptIn', true);
 		context.set('wiki.targeting.directedAtChildren', false);
-		context.set('wiki.opts.userEmailHashes', ['hash1', 'hash2', 'hash3']);
+		context.set('wiki.opts.userEmailHashes', ['md5', 'sha1', 'sha256']);
 		context.set('state.isLogged', true);
 	});
 
