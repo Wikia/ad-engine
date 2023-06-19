@@ -25,6 +25,9 @@ export class DoubleVerify extends BaseServiceSetup {
 			})
 			.then(() => {
 				utils.logger(logGroup, 'ready');
+			})
+			.catch(() => {
+				utils.logger(logGroup, 'error on loading');
 			});
 	}
 

@@ -1,10 +1,12 @@
 import {
+	Audigent,
 	communicationService,
 	context,
 	DiProcess,
 	globalAction,
 	InstantConfigCacheStorage,
 	InstantConfigService,
+	intentIQ,
 	pbjsFactory,
 } from '@wikia/ad-engine';
 import { props } from 'ts-action';
@@ -33,7 +35,16 @@ export class InstantConfigSetup implements DiProcess {
 	private preloadLibraries(instantConfig: InstantConfigService) {
 		if (instantConfig.get('icPrebid')) {
 			context.set('bidders.prebid.libraryUrl', instantConfig.get('icPrebidVersion'));
-			pbjsFactory.init();
+
+			pbjsFactory.init().then(() => {
+				if (instantConfig.get('icPrebidIntentIQ')) {
+					return intentIQ.preloadScript();
+				}
+			});
+		}
+
+		if (instantConfig.get('icAudigent')) {
+			Audigent.loadSegmentLibrary();
 		}
 	}
 }

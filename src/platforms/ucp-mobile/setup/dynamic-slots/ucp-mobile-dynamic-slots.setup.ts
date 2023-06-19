@@ -18,6 +18,7 @@ import {
 	Nativo,
 	slotImpactWatcher,
 	slotService,
+	UapLoadStatus,
 	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
@@ -35,7 +36,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	execute(): void {
 		this.injectSlots();
 		this.configureTopLeaderboardAndCompanions();
-		this.configureIncontentPlayer();
+		this.configureIncontents();
 		this.configureInterstitial();
 		this.registerFloorAdhesionCodePriority();
 		this.registerAdPlaceholderService();
@@ -48,7 +49,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			topLeaderboardDefinition,
 			this.nativoSlotDefinitionRepository.getNativoIncontentAdConfig(4),
 			this.slotsDefinitionRepository.getTopBoxadConfig(),
-			this.slotsDefinitionRepository.getIncontentBoxadConfig(),
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
 			this.slotsDefinitionRepository.getMobilePrefooterConfig(),
 			this.slotsDefinitionRepository.getInterstitialConfig(),
@@ -116,32 +116,21 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		);
 	}
 
-	private isIncontentPlayerApplicable(): boolean {
-		return (
-			context.get('custom.hasIncontentPlayer') && context.get('wiki.targeting.pageType') !== 'home'
-		);
-	}
-
-	private configureIncontentPlayer(): void {
-		if (!this.isIncontentPlayerApplicable()) {
-			return;
-		}
-
-		const slotName = 'incontent_player';
-
-		communicationService.onSlotEvent(
-			AdSlotEvent.SLOT_RENDERED_EVENT,
-			() => {
+	private configureIncontents(): void {
+		communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
+			if (!action.isLoaded) {
 				insertSlots([this.slotsDefinitionRepository.getIncontentPlayerConfig()]);
-			},
-			'top_boxad',
-			true,
-		);
+			}
+
+			insertSlots([this.slotsDefinitionRepository.getIncontentBoxadConfig()]);
+		});
+
+		const icpSlotName = 'incontent_player';
 
 		communicationService.on(
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
 			({ slot }) => {
-				if (slot.getSlotName() === slotName) {
+				if (slot.getSlotName() === icpSlotName) {
 					slot.getPlaceholder()?.classList.remove('is-loading');
 
 					const noTries = 2500;
@@ -151,7 +140,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 						.until()
 						.then(() => {
 							slotImpactWatcher.request({
-								id: slotName,
+								id: icpSlotName,
 								priority: 6,
 								breakCallback: () => slot.getPlaceholder()?.classList.add('hide'),
 							});

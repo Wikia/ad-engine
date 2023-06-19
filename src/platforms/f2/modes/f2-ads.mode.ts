@@ -1,5 +1,6 @@
 import { GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
+	Audigent,
 	Captify,
 	communicationService,
 	context,
@@ -9,6 +10,8 @@ import {
 	IasPublisherOptimization,
 	IdentitySetup,
 	jwPlayerInhibitor,
+	LiveConnect,
+	LiveRampPixel,
 	Nielsen,
 	PartnerPipeline,
 } from '@wikia/ad-engine';
@@ -18,11 +21,14 @@ import { injectable } from 'tsyringe';
 export class F2AdsMode implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,
+		private audigent: Audigent,
 		private captify: Captify,
 		private doubleVerify: DoubleVerify,
 		private gptSetup: GptSetup,
 		private iasPublisherOptimization: IasPublisherOptimization,
 		private identitySetup: IdentitySetup,
+		private liveConnect: LiveConnect,
+		private liveRampPixel: LiveRampPixel,
 		private nielsen: Nielsen,
 		private playerSetup: PlayerSetup,
 		private wadRunner: WadRunner,
@@ -31,7 +37,10 @@ export class F2AdsMode implements DiProcess {
 	execute(): void {
 		this.pipeline
 			.add(
+				this.liveRampPixel,
+				this.audigent,
 				this.captify,
+				this.liveConnect,
 				this.iasPublisherOptimization,
 				this.nielsen,
 				this.wadRunner,

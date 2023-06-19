@@ -1,5 +1,6 @@
 import { PlayerSetup, WadRunner } from '@platforms/shared';
 import {
+	Anyclip,
 	Bidders,
 	communicationService,
 	DiProcess,
@@ -12,6 +13,7 @@ import { injectable } from 'tsyringe';
 @injectable()
 export class TvGuideNextPageAdsMode implements DiProcess {
 	constructor(
+		private anyclip: Anyclip,
 		private pipeline: PartnerPipeline,
 		private bidders: Bidders,
 		private playerSetup: PlayerSetup,
@@ -20,8 +22,9 @@ export class TvGuideNextPageAdsMode implements DiProcess {
 
 	execute(): void {
 		this.bidders.resetInitialized();
+		this.anyclip.reset();
 		this.pipeline
-			.add(this.bidders, this.wadRunner, this.playerSetup)
+			.add(this.anyclip, this.bidders, this.wadRunner, this.playerSetup)
 			.execute()
 			.then(() => {
 				this.bidders.initialized.then(() => {

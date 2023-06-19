@@ -1,3 +1,4 @@
+import { Audigent } from '@wikia/ad-services';
 import { context, InstantConfigService, pbjsFactory } from '@wikia/core';
 import { InstantConfigSetup } from '@wikia/platforms/shared';
 import { expect } from 'chai';
@@ -37,12 +38,14 @@ describe('InstantConfigSetup', () => {
 			.withArgs('icAudigent')
 			.returns(true);
 		const contextSetStub = global.sandbox.stub(context, 'set');
-		const pbjsFactoryInitStub = global.sandbox.stub(pbjsFactory, 'init');
+		const pbjsFactoryInitStub = global.sandbox.stub(pbjsFactory, 'init').resolves();
+		const audigentLoadSegmentLibraryStub = global.sandbox.stub(Audigent, 'loadSegmentLibrary');
 		const instantConfigSetup = new InstantConfigSetup();
 
 		await instantConfigSetup.execute();
 
 		expect(contextSetStub.calledOnceWith('bidders.prebid.libraryUrl')).to.be.true;
 		expect(pbjsFactoryInitStub.calledOnce).to.be.true;
+		expect(audigentLoadSegmentLibraryStub.calledOnce).to.be.true;
 	});
 });

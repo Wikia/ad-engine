@@ -33,6 +33,7 @@ export class ComicvinePrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.rubicon_display', getRubiconDisplayContext(isDesktop));
 		context.set('bidders.prebid.wikia', getWikiaContext());
 		context.set('bidders.prebid.yahoossp', getYahooSspContext(isDesktop));
+		context.set('bidders.prebid.filter', 'static');
 
 		this.registerListeners();
 	}

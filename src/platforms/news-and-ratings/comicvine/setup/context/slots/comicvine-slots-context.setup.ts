@@ -167,6 +167,17 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 			video: {
 				isVideo: true,
 			},
+			incontent_player: {
+				adProduct: 'incontent_player',
+				disabled: true,
+				isVideo: true,
+				group: 'HiVi',
+				defaultSizes: [[1, 1]],
+				targeting: {
+					loc: 'middle',
+					pos: ['outstream'],
+				},
+			},
 		};
 
 		context.set('slots', slots);

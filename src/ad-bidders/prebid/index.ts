@@ -104,7 +104,6 @@ export class PrebidProvider extends BidderProvider {
 		this.registerBidsRefreshing();
 		this.registerBidsTracking();
 		this.enableATSAnalytics();
-		this.registerIntentIQ();
 
 		utils.logger(logGroup, 'prebid created', this.prebidConfig);
 	}
@@ -222,13 +221,9 @@ export class PrebidProvider extends BidderProvider {
 		const pbjs: Pbjs = await pbjsFactory.init();
 		const slotAlias: string = this.getSlotAlias(slotName);
 
-		const winningBid = await getWinningBid(slotAlias);
-
-		intentIQ.reportPrebidWin(slotAlias, winningBid);
-
 		return {
 			...pbjs.getAdserverTargetingForAdUnitCode(slotAlias),
-			...winningBid,
+			...(await getWinningBid(slotAlias)),
 		};
 	}
 
@@ -274,6 +269,11 @@ export class PrebidProvider extends BidderProvider {
 		};
 
 		pbjs.onEvent('bidResponse', trackBid);
+		pbjs.onEvent(
+			'adRenderSucceeded',
+			(response: { adId: string; bid: PrebidBidResponse; doc: Document | null }) =>
+				intentIQ.reportPrebidWin(response.bid),
+		);
 	}
 
 	private mapResponseToTrackingBidDefinition(response: PrebidBidResponse): TrackingBidDefinition {
@@ -293,6 +293,8 @@ export class PrebidProvider extends BidderProvider {
 		timeout: number = this.timeout,
 	): Promise<void> {
 		const pbjs: Pbjs = await pbjsFactory.init();
+
+		await intentIQ.initialize(pbjs);
 
 		pbjs.requestBids({
 			adUnits,
@@ -324,11 +326,5 @@ export class PrebidProvider extends BidderProvider {
 	 */
 	calculatePrices(): void {
 		return;
-	}
-
-	private async registerIntentIQ(): Promise<void> {
-		const pbjs: Pbjs = await pbjsFactory.init();
-
-		return intentIQ.initialize(pbjs);
 	}
 }

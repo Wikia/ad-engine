@@ -47,8 +47,25 @@ export class TrackingSetup {
 		this.interventionTracker();
 		this.adClickTracker();
 		this.ctaTracker();
+		this.identityTracker();
 		this.keyValsTracker();
 		this.adSizeTracker.init();
+	}
+
+	private identityTracker(): void {
+		communicationService.on(
+			eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED,
+			(eventInfo) => {
+				this.dwTracker.track(
+					{
+						partner_name: eventInfo.payload.partnerName,
+						partner_identity_id: eventInfo.payload.partnerIdentityId,
+					},
+					trackingUrls.IDENTITY_INFO,
+				);
+			},
+			false,
+		);
 	}
 
 	private porvataTracker(): void {
