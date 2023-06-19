@@ -17,6 +17,7 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { GalleryLightboxHandler } from './specific-handler/gallery-lightbox-handler';
+import { TlbStickyHandler } from './specific-handler/tlb-sticky-handler';
 import { UcpDesktopPerformanceAdsDefinitionRepository } from './ucp-desktop-performance-ads-definition-repository';
 import { UcpDesktopSlotsDefinitionRepository } from './ucp-desktop-slots-definition-repository';
 
@@ -107,6 +108,8 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
 			);
 		}
+
+		new TlbStickyHandler().handle();
 	}
 
 	private configureFloorAdhesionCodePriority(): void {
