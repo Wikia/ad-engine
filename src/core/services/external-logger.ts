@@ -1,8 +1,23 @@
+import { utils } from '../index';
 import { Dictionary } from '../models';
 import { context } from './context-service';
 
 class ExternalLogger {
+	private readonly isActive: boolean;
+
+	constructor() {
+		if (!context.get('services.externalLogger.threshold')) {
+			context.set('services.externalLogger.threshold', 1);
+		}
+
+		this.isActive = utils.outboundTrafficRestrict.isOutboundTrafficAllowed('externalLogger');
+	}
+
 	log(logMessage: string, data: Dictionary = {}): void {
+		if (!this.isActive) {
+			return;
+		}
+
 		const loggerEndpoint = context.get('services.externalLogger.endpoint');
 
 		if (!loggerEndpoint) {

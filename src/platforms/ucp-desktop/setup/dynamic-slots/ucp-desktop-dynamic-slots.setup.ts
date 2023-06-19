@@ -17,6 +17,7 @@ import {
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { GalleryLightboxHandler } from './specific-handler/gallery-lightbox-handler';
 import { UcpDesktopPerformanceAdsDefinitionRepository } from './ucp-desktop-performance-ads-definition-repository';
 import { UcpDesktopSlotsDefinitionRepository } from './ucp-desktop-slots-definition-repository';
 
@@ -34,6 +35,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		this.configureTopLeaderboardAndCompanions();
 		this.configureFloorAdhesionCodePriority();
 		this.registerAdPlaceholderService();
+		this.handleGalleryLightboxSlots();
 	}
 
 	private injectSlots(): void {
@@ -149,5 +151,9 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	private registerAdPlaceholderService(): void {
 		const placeholderService = new PlaceholderService();
 		placeholderService.init();
+	}
+
+	private handleGalleryLightboxSlots(): void {
+		new GalleryLightboxHandler(this.slotsDefinitionRepository).handle();
 	}
 }
