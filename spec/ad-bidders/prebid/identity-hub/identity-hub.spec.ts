@@ -1,13 +1,15 @@
 import { IdentityHub } from '@wikia/ad-bidders';
-import { context, utils } from '@wikia/core';
+import { context, InstantConfigService, utils } from '@wikia/core';
 import { assert } from 'sinon';
 
 describe('Pubmatic IdentityHub', () => {
-	const identityHub = new IdentityHub();
+	let identityHub;
 	let loadScriptSpy;
-	let contextStub;
+	let contextStub, instantConfigStub;
 
 	beforeEach(() => {
+		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
+		instantConfigStub.get.withArgs('icIdentityPartners').returns(false);
 		loadScriptSpy = global.sandbox.stub(utils.scriptLoader, 'loadScript');
 		loadScriptSpy.resolvesThis();
 		contextStub = global.sandbox.stub(context);
@@ -15,6 +17,8 @@ describe('Pubmatic IdentityHub', () => {
 		contextStub.get.withArgs('options.trackingOptIn').returns(true);
 		contextStub.get.withArgs('options.optOutSale').returns(false);
 		contextStub.get.withArgs('wiki.targeting.directedAtChildren').returns(false);
+
+		identityHub = new IdentityHub(instantConfigStub);
 	});
 
 	it('pwt.js is called', async () => {
@@ -25,6 +29,14 @@ describe('Pubmatic IdentityHub', () => {
 
 	it('IdentityHub is disabled by feature flag', async () => {
 		contextStub.get.withArgs('bidders.identityHub.enabled').returns(false);
+
+		await identityHub.call();
+
+		assert.notCalled(loadScriptSpy);
+	});
+
+	it('IdentityHub is disabled when Identity Partners are enabled', async () => {
+		instantConfigStub.get.withArgs('icIdentityPartners').returns(true);
 
 		await identityHub.call();
 
