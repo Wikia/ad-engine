@@ -12,180 +12,168 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 					'/{custom.dfpId}/{slotConfig.group}/{slotConfig.adProduct}' +
 					'/{custom.device}{custom.region}-{custom.property}{custom.pagePath}',
 				group: 'IU',
-				options: {},
 				outOfPage: true,
 				outOfPageFormat: 'INTERSTITIAL',
 				targeting: {
 					loc: 'hivi',
 				},
 			},
-			'omni-skybox-leader-nav': {
-				defaultSizes: [
-					[5, 5],
-					[970, 66],
-					[728, 90],
-					universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop,
+			top_leaderboard: {
+				firstCall: true,
+				adProduct: 'top_leaderboard',
+				group: 'LB',
+				sizes: [
+					{
+						viewportSize: [970, 200],
+						sizes: [[728, 90], [970, 66], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
+					},
+					{
+						viewportSize: [840, 200],
+						sizes: [[728, 90], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
+					},
+					{
+						viewportSize: [320, 200],
+						sizes: [[320, 50], [320, 100], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
+					},
+					{
+						viewportSize: [0, 0],
+						sizes: [[320, 50]],
+					},
 				],
-				incremental: true,
-				collapseEmptyDiv: [true],
-				targeting: {
-					pos_nr: 'nav',
-					loc: 'top',
-				},
-			},
-			'omni-skybox-leaderboard-nav': {
-				defaultSizes: [
-					[970, 66],
-					[728, 90],
-					[5, 5],
-				],
-				incremental: true,
-				collapseEmptyDiv: [true],
-				targeting: {
-					pos_nr: 'nav',
-				},
-			},
-			'incontent-leader-plus-bottom': {
 				defaultSizes: [
 					[728, 90],
-					[970, 66],
 					[970, 250],
-					[5, 5],
 				],
-				incremental: true,
-				collapseEmptyDiv: [true],
+				defaultTemplates: [],
 				targeting: {
-					pos_nr: 'bottom',
+					loc: 'top',
+					pos_nr: 'nav',
 				},
 			},
-			'incontent-leaderboard-bottom': {
-				defaultSizes: [
-					[728, 90],
-					[5, 5],
-				],
-				incremental: true,
-				collapseEmptyDiv: [true],
+			floor_adhesion: {
+				disabled: true,
+				adProduct: 'floor_adhesion',
+				group: 'PF',
 				targeting: {
-					pos_nr: 'bottom',
+					loc: 'footer',
 				},
+				defaultTemplates: ['floorAdhesion'],
+				defaultSizes: [[728, 90]],
+				sizes: [
+					{
+						viewportSize: [0, 0],
+						sizes: [
+							[300, 50],
+							[320, 50],
+							[320, 100],
+						],
+					},
+					{
+						// 728px for the ad + 40px width of the close button
+						viewportSize: [768, 0],
+						sizes: [[728, 90]],
+					},
+				],
 			},
-			'mpu-plus-top': {
+			top_boxad: {
+				adProduct: 'top_boxad',
+				bidderAlias: 'mpu-top',
 				defaultSizes: [
 					[300, 250],
 					[320, 600],
 				],
-				incremental: true,
-				collapseEmptyDiv: [true],
-				targeting: {
-					pos_nr: 'top',
-				},
-			},
-			'mpu-top': {
-				defaultSizes: [[300, 250]],
-				incremental: true,
-				collapseEmptyDiv: [true],
-				targeting: {
-					pos_nr: 'top',
-				},
-			},
-			'mpu-middle': {
-				defaultSizes: [[300, 250]],
-				incremental: true,
-				collapseEmptyDiv: [true],
-				targeting: {
-					pos_nr: 'middle',
-				},
-			},
-			'mpu-bottom': {
-				defaultSizes: [[300, 250]],
-				incremental: true,
-				collapseEmptyDiv: [true],
-				targeting: {
-					pos_nr: 'bottom',
-				},
-			},
-			'mobile-omni-skybox-plus-nav': {
-				defaultSizes: [
-					[5, 5],
-					[320, 50],
-					[320, 100],
-					universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile,
+				sizes: [
+					{
+						viewportSize: [840, 200],
+						sizes: [
+							[300, 250],
+							[320, 600],
+						],
+					},
+					{
+						viewportSize: [0, 0],
+						sizes: [[300, 250]],
+					},
 				],
-				incremental: true,
-				collapseEmptyDiv: [true],
 				targeting: {
-					pos_nr: 'nav',
+					pos_nr: 'top',
 					loc: 'top',
+					pos: ['top_boxad', 'top'],
 				},
 			},
-			'mobile-banner-plus': {
+			bottom_leaderboard: {
+				adProduct: 'bottom_leaderboard',
 				defaultSizes: [
-					[320, 50],
-					[300, 250],
-				],
-				incremental: true,
-				collapseEmptyDiv: [true],
-				targeting: {
-					pos_nr: 'increment',
-				},
-			},
-			'mobile-incontent-plus': {
-				defaultSizes: [
-					[300, 250],
-					[320, 50],
+					[728, 90],
+					[970, 66],
+					[970, 250],
 					[5, 5],
 				],
-				incremental: true,
-				collapseEmptyDiv: [true],
-				targeting: {
-					pos_nr: 'increment',
-				},
-			},
-			'mobile-incontent-plus-bottom': {
-				defaultSizes: [
-					[320, 50],
-					[300, 250],
-					[5, 5],
+				sizes: [
+					{
+						viewportSize: [970, 200],
+						sizes: [
+							[728, 90],
+							[970, 66],
+							[970, 250],
+							[5, 5],
+						],
+					},
+					{
+						viewportSize: [728, 200],
+						sizes: [
+							[728, 90],
+							[5, 5],
+						],
+					},
+					{
+						viewportSize: [320, 200],
+						sizes: [
+							[320, 50],
+							[300, 250],
+							[5, 5],
+						],
+					},
+					{
+						viewportSize: [0, 0],
+						sizes: [[5, 5]],
+					},
 				],
-				incremental: true,
-				collapseEmptyDiv: [true],
 				targeting: {
 					pos_nr: 'bottom',
+					loc: 'footer',
+					pos: ['bottom_leaderboard', 'footer'],
 				},
 			},
-			'leaderboard-middle': {
-				defaultSizes: [[728, 90]],
-				incremental: true,
-				collapseEmptyDiv: [true],
-				targeting: {
-					pos_nr: 'middle',
-				},
-			},
-			'incontent-leader-plus-top': {
-				defaultSizes: [
-					[970, 66],
-					[970, 250],
-					[728, 90],
-					[5, 5],
+			incontent_boxad: {
+				adProduct: 'incontent_boxad',
+				bidderAlias: 'mpu-middle',
+				defaultSizes: [[300, 250]],
+				sizes: [
+					{
+						viewportSize: [840, 200],
+						sizes: [
+							[300, 250],
+							[5, 5],
+						],
+					},
+					{
+						viewportSize: [0, 0],
+						sizes: [
+							[300, 250],
+							[300, 50],
+							[5, 5],
+						],
+					},
 				],
-				incremental: true,
-				collapseEmptyDiv: [true],
 				targeting: {
-					pos_nr: 'top',
+					pos_nr: ['middle', 'increment'],
+					loc: 'middle',
+					pos: ['incontent_boxad', 'middle', 'increment'],
 				},
 			},
-			'incontent-leaderboard-top': {
-				defaultSizes: [
-					[728, 90],
-					[5, 5],
-				],
-				incremental: true,
-				collapseEmptyDiv: [true],
-				targeting: {
-					pos_nr: 'top',
-				},
-			},
-			'incontent-all-top': {
+			incontent_leaderboard: {
+				adProduct: 'incontent_leaderboard',
 				defaultSizes: [
 					[728, 90],
 					[970, 66],
@@ -195,101 +183,8 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 				],
 				targeting: {
 					pos_nr: 'top',
-				},
-			},
-			'nav-ad-plus-leader': {
-				defaultSizes: [
-					[728, 90],
-					[970, 66],
-					[5, 5],
-				],
-				targeting: {
-					pos_nr: 'nav',
-				},
-			},
-			'incontent-ad-plus-billboard-middle': {
-				defaultSizes: [
-					[728, 90],
-					[970, 250],
-					[970, 66],
-					[5, 5],
-				],
-				incremental: true,
-				targeting: {
-					pos_nr: 'middle',
-				},
-			},
-			'incontent-leaderboard-middle': {
-				defaultSizes: [
-					[728, 90],
-					[5, 5],
-				],
-				incremental: true,
-				targeting: {
-					pos_nr: 'middle',
-				},
-			},
-			'incontent-narrow-all-top': {
-				defaultSizes: [
-					[728, 90],
-					[5, 5],
-					[8, 8],
-				],
-				incremental: true,
-				targeting: {
-					pos_nr: 'top',
-				},
-			},
-			'mobile-nav-ad-plus-banner': {
-				defaultSizes: [
-					[5, 5],
-					[320, 50],
-				],
-				incremental: false,
-				targeting: {
-					pos_nr: 'nav',
-				},
-			},
-			'skybox-leaderboard-nav': {
-				defaultSizes: [
-					[5, 5],
-					[728, 90],
-				],
-				targeting: {
-					pos_nr: 'nav',
-				},
-			},
-			'mobile-incontent-mpu-plus': {
-				defaultSizes: [
-					[300, 250],
-					[5, 5],
-					[320, 480],
-				],
-				incremental: true,
-				targeting: {
-					pos_nr: 'increment',
-				},
-			},
-			'mobile-incontent-all': {
-				defaultSizes: [
-					[300, 250],
-					[5, 5],
-					[320, 480],
-					[8, 8],
-				],
-				incremental: true,
-				targeting: {
-					pos_nr: 'increment',
-				},
-			},
-			'mobile-incontent-ad-plus': {
-				defaultSizes: [
-					[300, 250],
-					[5, 5],
-				],
-				incremental: true,
-				targeting: {
-					pos_nr: 'increment',
+					loc: 'top',
+					pos: ['incontent_leaderboard', 'top'],
 				},
 			},
 			video: {
