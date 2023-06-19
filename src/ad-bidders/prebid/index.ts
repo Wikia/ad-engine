@@ -293,6 +293,11 @@ export class PrebidProvider extends BidderProvider {
 		};
 
 		pbjs.onEvent('bidResponse', trackBid);
+		pbjs.onEvent(
+			'adRenderSucceeded',
+			(response: { adId: string; bid: PrebidBidResponse; doc: Document | null }) =>
+				intentIQ.reportPrebidWin(response.bid),
+		);
 	}
 
 	private mapResponseToTrackingBidDefinition(response: PrebidBidResponse): TrackingBidDefinition {

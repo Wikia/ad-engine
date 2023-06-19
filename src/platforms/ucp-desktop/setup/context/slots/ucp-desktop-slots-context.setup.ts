@@ -181,6 +181,18 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				group: 'quiz',
 				options: {},
 			},
+			gallery_leaderboard: {
+				adProduct: 'gallery_leaderboard',
+				group: 'IG',
+				defaultSizes: [[728, 90]],
+				targeting: {
+					loc: 'gallery',
+				},
+				placeholder: {
+					createLabel: true,
+					adLabelParent: '.ad-slot-placeholder.gallery-leaderboard',
+				},
+			},
 		};
 
 		slotsContext.setupSlotVideoContext();

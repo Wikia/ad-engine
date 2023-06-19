@@ -27,7 +27,7 @@ export class MetricReporter {
 	private slotTimeDiffRequestToRender = new Map<string, number>();
 
 	constructor() {
-		this.isActive = utils.outboundTrafficRestrict.isOutboundTrafficAllowed('monitoring');
+		this.isActive = utils.outboundTrafficRestrict.isOutboundTrafficAllowed('monitoring-default');
 	}
 
 	execute() {
