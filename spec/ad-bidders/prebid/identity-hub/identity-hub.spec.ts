@@ -21,6 +21,10 @@ describe('Pubmatic IdentityHub', () => {
 		identityHub = new IdentityHub(instantConfigStub);
 	});
 
+	afterEach(() => {
+		delete window.fandomContext.partners.directedAtChildren;
+	});
+
 	it('pwt.js is called', async () => {
 		await identityHub.call();
 
