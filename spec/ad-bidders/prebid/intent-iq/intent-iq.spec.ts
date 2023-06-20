@@ -64,7 +64,7 @@ describe('IntentIQ', () => {
 					pbjs: pbjsStub,
 					timeoutInMillis: DEFAULT_MAX_DELAY,
 					ABTestingConfigurationSource: 'percentage',
-					abPercentage: 90,
+					abPercentage: 97,
 					manualWinReportEnabled: true,
 					browserBlackList: 'Chrome',
 				}),
@@ -78,7 +78,7 @@ describe('IntentIQ', () => {
 			global.sandbox.stub(context, 'get').withArgs('bidders.prebid.intentIQ').returns(false);
 			const intentIQ = new IntentIQ();
 
-			await intentIQ.reportPrebidWin('top_leaderboard');
+			await intentIQ.reportPrebidWin({} as PrebidBidResponse);
 
 			expect(intentIqReportSpy.notCalled).to.be.true;
 		});
@@ -91,29 +91,24 @@ describe('IntentIQ', () => {
 				.withArgs('options.trackingOptIn')
 				.returns(true);
 
-			pbjsStub.getBidResponsesForAdUnitCode.returns({
-				bids: [
-					PrebidBidFactory.getBid({
-						adId: 'ad-123',
-						bidderCode: 'appnexus',
-						auctionId: '1234-5678',
-						cpm: 0.12,
-						currency: 'USD',
-						originalCpm: 0.12,
-						originalCurrency: 'USD',
-						adUnitCode: 'top_leaderboard',
-						adserverTargeting: { hb_adid: 'ad-123', hb_pb: '0.12' },
-					}),
-				],
+			const bid = PrebidBidFactory.getBid({
+				adId: 'ad-123',
+				bidderCode: 'appnexus',
+				auctionId: '1234-5678',
+				cpm: 0.12,
+				currency: 'USD',
+				originalCpm: 0.12,
+				originalCurrency: 'USD',
+				adUnitCode: 'top_leaderboard',
+				adserverTargeting: { hb_adid: 'ad-123', hb_pb: '0.12' },
 			});
 
 			const intentIQ = new IntentIQ();
 			await intentIQ.initialize(pbjsStub);
 
-			await intentIQ.reportPrebidWin('top_leaderboard');
+			await intentIQ.reportPrebidWin(bid);
 
 			expect(intentIqNewSpy.calledOnce).to.be.true;
-			expect(pbjsStub.getBidResponsesForAdUnitCode.called).to.be.true;
 			expect(
 				intentIqReportSpy.calledOnceWithExactly({
 					biddingPlatformId: 1,

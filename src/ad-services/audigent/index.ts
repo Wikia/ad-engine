@@ -39,7 +39,7 @@ export class Audigent extends BaseServiceSetup {
 	}
 
 	async call(): Promise<void> {
-		if (!this.isEnabled('icAudigent')) {
+		if (!this.isEnabled('icAudigent') || this.isEnabled('icIdentityPartners', false)) {
 			utils.logger(logGroup, 'disabled');
 			return;
 		}

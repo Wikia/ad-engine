@@ -66,6 +66,7 @@ describe('gpt-provider', () => {
 
 	it('initialise with restrict data processing when user opt-out from data sale', () => {
 		context.set('options.optOutSale', true);
+		context.set('wiki.targeting.directedAtChildren', false);
 
 		provider = new GptProvider();
 		provider.setupRestrictDataProcessing();
