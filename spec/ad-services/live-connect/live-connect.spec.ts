@@ -1,6 +1,6 @@
 import { LiveConnect } from '@wikia/ad-services';
 import { communicationService, eventsRepository } from '@wikia/communication';
-import { context, utils } from '@wikia/core';
+import { context, InstantConfigService, utils } from '@wikia/core';
 import { expect } from 'chai';
 import { SinonSpy } from 'sinon';
 
@@ -11,14 +11,16 @@ const mockedStorageStrategyVariable = {
 };
 
 describe('LiveConnect', () => {
-	const liveConnect = new LiveConnect();
-	let loadScriptStub;
+	let liveConnect;
+	let loadScriptStub, instantConfigStub;
 
 	before(() => {
 		context.set('services.liveConnect.cachingStrategy', mockedStorageStrategyVariable);
 	});
 
 	beforeEach(() => {
+		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
+		instantConfigStub.get.withArgs('icIdentityPartners').returns(false);
 		loadScriptStub = global.sandbox
 			.stub(utils.scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
@@ -26,6 +28,7 @@ describe('LiveConnect', () => {
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);
 		context.set('wiki.targeting.directedAtChildren', false);
+		liveConnect = new LiveConnect(instantConfigStub);
 		window.fandomContext = {
 			partners: { directedAtChildren: false },
 		} as any;
@@ -44,6 +47,14 @@ describe('LiveConnect', () => {
 
 	it('Live Connect can be disabled', async () => {
 		context.set('services.liveConnect.enabled', false);
+
+		await liveConnect.call();
+
+		expect(loadScriptStub.called).to.equal(false);
+	});
+
+	it('Live Connect is disabled when Identity Partners are enabled', async () => {
+		instantConfigStub.get.withArgs('icIdentityPartners').returns(true);
 
 		await liveConnect.call();
 
@@ -75,8 +86,9 @@ describe('LiveConnect', () => {
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
-	describe('LiveConnect ids resolution', () => {
+	describe('LiveConnect ids resolution', async () => {
 		let emitSpy: SinonSpy;
+		await liveConnect.call();
 
 		beforeEach(() => {
 			emitSpy = global.sandbox.spy(communicationService, 'emit');

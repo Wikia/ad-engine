@@ -27,6 +27,7 @@ describe('Eyeota', () => {
 			.returns(Promise.resolve({} as any));
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		instantConfigStub.get.withArgs('icEyeota').returns(true);
+		instantConfigStub.get.withArgs('icIdentityPartners').returns(false);
 		tcfStub = global.sandbox
 			.stub(tcf, 'getTCData')
 			.returns(Promise.resolve({ tcString: 'test' }) as any);
@@ -61,6 +62,14 @@ describe('Eyeota', () => {
 
 	it('it can be disabled', async () => {
 		instantConfigStub.get.withArgs('icEyeota').returns(undefined);
+
+		await eyeota.call();
+
+		expect(loadScriptStub.called).to.equal(false);
+	});
+
+	it('not called when Identity Partners is enabled', async () => {
+		instantConfigStub.get.withArgs('icIdentityPartners').returns(true);
 
 		await eyeota.call();
 
@@ -103,6 +112,7 @@ describe('Eyeota', () => {
 			site: {},
 			page: {},
 			tracking: {},
+			targeting: {},
 			partners: {},
 		};
 		const mockedTags = {
