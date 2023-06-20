@@ -66,14 +66,13 @@ export class GlobalContextService {
 		key?: I,
 	): WindowFandomContext[K][I] | undefined {
 		if (!window.fandomContext) {
-			return;
+			return undefined;
 		}
 		const categoryObj = window.fandomContext[category];
 		if (categoryObj) {
 			return categoryObj[key];
-		} else {
-			utils.logger(this.logGroup, 'Attempting to retrieve invalid category in context!');
 		}
+		utils.logger(this.logGroup, 'Attempting to retrieve invalid category in context!');
 	}
 }
 
