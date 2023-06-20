@@ -1,6 +1,5 @@
 import { communicationService } from '@ad-engine/communication';
 import { AdSlotEvent, AdSlotStatus } from '@ad-engine/core';
-import { intentIQ } from '../ad-bidders';
 import { BaseTracker, BaseTrackerInterface } from './base-tracker';
 import {
 	pageTrackingCompiler,
@@ -39,14 +38,6 @@ class SlotTracker extends BaseTracker implements BaseTrackerInterface {
 
 		communicationService.onSlotEvent(AdSlotEvent.SLOT_RENDERED_EVENT, ({ slot }) => {
 			slot.trackStatusAfterRendered = true;
-		});
-
-		communicationService.onSlotEvent(AdSlotEvent.SLOT_VIEWED_EVENT, async ({ slot }) => {
-			if (slot.winningBidderDetails === null) {
-				return;
-			}
-
-			intentIQ.reportPrebidWin(slot.getSlotName());
 		});
 
 		communicationService.onSlotEvent(AdSlotEvent.SLOT_STATUS_CHANGED, async ({ slot }) => {
