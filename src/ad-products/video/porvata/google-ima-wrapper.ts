@@ -3,6 +3,8 @@ import { AdSlot, AdSlotEvent, context, utils } from '@ad-engine/core';
 import { PorvataSettings } from './porvata-settings';
 
 export class GoogleImaWrapper {
+	private static activeContainers = [];
+
 	static createDisplayContainer(
 		videoContainer: HTMLElement,
 		slot: AdSlot = null,
@@ -14,11 +16,20 @@ export class GoogleImaWrapper {
 			communicationService.onSlotEvent(
 				AdSlotEvent.DESTROY_EVENT,
 				() => {
+					if (!GoogleImaWrapper.activeContainers.includes(slot.getUid())) {
+						return;
+					}
+
 					adDisplayContainer.destroy();
-					slot.emit(AdSlotEvent.DESTROYED_EVENT);
+					GoogleImaWrapper.activeContainers = GoogleImaWrapper.activeContainers.filter(
+						(el) => el !== slot.getUid(),
+					);
 				},
 				slot.getSlotName(),
+				true,
 			);
+
+			GoogleImaWrapper.activeContainers.push(slot.getUid());
 		}
 
 		GoogleImaWrapper.reloadIframeOnNavigation(iframe);
