@@ -66,7 +66,7 @@ export class GlobalContextService {
 		key?: I,
 	): WindowFandomContext[K][I] | undefined {
 		if (!window.fandomContext) {
-			return;
+			return undefined;
 		}
 		const categoryObj = window.fandomContext[category];
 		if (categoryObj) {
