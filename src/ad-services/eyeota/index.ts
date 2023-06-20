@@ -21,7 +21,7 @@ export class Eyeota extends BaseServiceSetup {
 		super(props);
 	}
 	async call(): Promise<void> {
-		if (!this.isEnabled('icEyeota')) {
+		if (!this.isEnabled('icEyeota') || this.isEnabled('icIdentityPartners', false)) {
 			utils.logger(logGroup, 'disabled');
 
 			return Promise.resolve();
