@@ -29,7 +29,10 @@ export class LiveConnect extends BaseServiceSetup {
 	private storageConfig: CachingStrategyConfig;
 
 	call(): void {
-		if (!this.isEnabled(['services.liveConnect.enabled', 'services.liveConnect.cachingStrategy'])) {
+		if (
+			!this.isEnabled(['services.liveConnect.enabled', 'services.liveConnect.cachingStrategy']) ||
+			this.isEnabled('icIdentityPartners', false)
+		) {
 			utils.logger(logGroup, 'disabled');
 			return;
 		}
