@@ -12,7 +12,8 @@ export class IdentityHub extends BaseServiceSetup {
 	call(): Promise<void> {
 		if (
 			!this.isEnabled('bidders.identityHub.enabled') ||
-			this.isEnabled('bidders.prebid.intentIQ')
+			this.isEnabled('bidders.prebid.intentIQ') ||
+			this.isEnabled('icIdentityPartners', false)
 		) {
 			utils.logger(logGroup, 'disabled');
 			return;

@@ -10,6 +10,7 @@ import {
 	GAMOrigins,
 	globalAction,
 	InstantConfigCacheStorage,
+	InstantConfigService,
 	interventionTracker,
 	porvataTracker,
 	PostmessageTracker,
@@ -35,6 +36,7 @@ export class TrackingSetup {
 		private adSizeTracker: AdSizeTracker,
 		private dwTracker: DataWarehouseTracker,
 		private bidders: Bidders,
+		private instantConfig: InstantConfigService = null,
 	) {}
 
 	execute(): void {
@@ -47,8 +49,27 @@ export class TrackingSetup {
 		this.interventionTracker();
 		this.adClickTracker();
 		this.ctaTracker();
+		this.identityTracker();
 		this.keyValsTracker();
 		this.adSizeTracker.init();
+	}
+
+	private identityTracker(): void {
+		if (!this.instantConfig.get('icIdentityPartners', false)) {
+			communicationService.on(
+				eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED,
+				(eventInfo) => {
+					this.dwTracker.track(
+						{
+							partner_name: eventInfo.payload.partnerName,
+							partner_identity_id: eventInfo.payload.partnerIdentityId,
+						},
+						trackingUrls.IDENTITY_INFO,
+					);
+				},
+				false,
+			);
+		}
 	}
 
 	private porvataTracker(): void {
