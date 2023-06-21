@@ -25,7 +25,12 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 				sizes: [
 					{
 						viewportSize: [970, 200],
-						sizes: [[728, 90], [970, 66], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
+						sizes: [
+							[728, 90],
+							[970, 66],
+							[970, 250],
+							universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop,
+						],
 					},
 					{
 						viewportSize: [840, 200],
@@ -78,17 +83,11 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 			top_boxad: {
 				adProduct: 'top_boxad',
 				bidderAlias: 'mpu-top',
-				defaultSizes: [
-					[300, 250],
-					[320, 600],
-				],
+				defaultSizes: [[300, 250]],
 				sizes: [
 					{
 						viewportSize: [840, 200],
-						sizes: [
-							[300, 250],
-							[320, 600],
-						],
+						sizes: [[300, 250]],
 					},
 					{
 						viewportSize: [0, 0],
@@ -117,14 +116,12 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 							[970, 66],
 							[970, 250],
 							[5, 5],
+							universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop,
 						],
 					},
 					{
 						viewportSize: [728, 200],
-						sizes: [
-							[728, 90],
-							[5, 5],
-						],
+						sizes: [[728, 90], [5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
 					},
 					{
 						viewportSize: [320, 200],
@@ -132,6 +129,7 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 							[320, 50],
 							[300, 250],
 							[5, 5],
+							universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile,
 						],
 					},
 					{
@@ -161,6 +159,7 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 						viewportSize: [0, 0],
 						sizes: [
 							[300, 250],
+							[300, 100],
 							[300, 50],
 							[5, 5],
 						],
