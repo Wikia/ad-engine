@@ -13,6 +13,7 @@ export function getOpenXContext(isDesktop: boolean): object {
 
 	return {
 		enabled: false,
+		delDomain: 'wikia-d.openx.net',
 		slots: isDesktop ? desktopSlots : mobileSlots,
 	};
 }
