@@ -137,7 +137,14 @@ export class Anyclip extends BaseServiceSetup {
 
 		if (playerElementId) {
 			this.waitForPlayerAdSlot(playerElementId).then(() => {
-				this.loadPlayerAsset(document.getElementById(playerElementId));
+				if (!isPlayerAdSlotReady()) {
+					utils.logger(logGroup, 'No incontent player - aborting');
+					return;
+				}
+
+				const playerElement = document.getElementById(playerElementId);
+				this.loadPlayerAsset(playerElement);
+				playerElement.dataset.slotLoaded = 'true';
 			});
 			return;
 		}

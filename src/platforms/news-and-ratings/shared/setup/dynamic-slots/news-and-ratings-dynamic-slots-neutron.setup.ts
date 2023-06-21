@@ -26,7 +26,8 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 			communicationService.on(
 				eventsRepository.PLATFORM_AD_PLACEMENT_READY,
 				({ placementId }) => {
-					utils.logger(logGroup, 'Ad placement rendered', placementId);
+					utils.logger(logGroup, 'Rendering ad placement', placementId);
+
 					if (this.repeatedSlotsCounter[placementId]) {
 						this.scheduleRepeatedSlotInjection(placementId);
 						return;
@@ -63,6 +64,9 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 				this.repeatedSlotsCounter = {};
 				this.repeatedSlotsRendered = [];
 				this.repeatedSlotsQueue = {};
+
+				utils.logger(logGroup, 'Removing slots without DOM elements');
+				document.getElementById('incontent_player').remove();
 			},
 			false,
 		);
