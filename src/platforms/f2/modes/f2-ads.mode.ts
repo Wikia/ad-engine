@@ -1,9 +1,9 @@
 import { GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
+	AdEngineStackSetup,
 	Audigent,
 	Captify,
 	communicationService,
-	context,
 	DiProcess,
 	DoubleVerify,
 	eventsRepository,
@@ -32,6 +32,7 @@ export class F2AdsMode implements DiProcess {
 		private nielsen: Nielsen,
 		private playerSetup: PlayerSetup,
 		private wadRunner: WadRunner,
+		private adEngineStackSetup: AdEngineStackSetup,
 	) {}
 
 	execute(): void {
@@ -45,20 +46,24 @@ export class F2AdsMode implements DiProcess {
 				this.nielsen,
 				this.wadRunner,
 				this.identitySetup,
-				this.playerSetup.setOptions({
-					dependencies: [this.wadRunner.initialized],
-					timeout: context.get('options.jwpMaxDelayTimeout'),
-				}),
+				this.playerSetup,
 				this.gptSetup.setOptions({
+					timeout: 10000,
+				}),
+				this.adEngineStackSetup.setOptions({
 					dependencies: [
+						this.wadRunner.initialized,
 						this.playerSetup.initialized,
+						this.gptSetup.initialized,
 						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
 						this.iasPublisherOptimization.IASReady,
 					],
-					timeout: context.get('options.jwpMaxDelayTimeout'),
+					timeout: jwPlayerInhibitor.isRequiredToRun()
+						? jwPlayerInhibitor.getDelayTimeoutInMs()
+						: null,
 				}),
 				this.doubleVerify.setOptions({
-					dependencies: [this.gptSetup.initialized],
+					dependencies: [this.adEngineStackSetup.initialized],
 				}),
 			)
 			.execute()

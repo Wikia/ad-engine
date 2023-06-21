@@ -17,6 +17,7 @@ import {
 	PartnerPipeline,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { AdEngineStackSetup } from '../../../shared/setup/ad-engine-stack.setup';
 
 @Injectable()
 export class NewsAndRatingsAdsMode implements DiProcess {
@@ -36,6 +37,7 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 		private liveRampPixel: LiveRampPixel,
 		private playerSetup: PlayerSetup,
 		private wadRunner: WadRunner,
+		private adEngineStackSetup: AdEngineStackSetup,
 	) {}
 
 	execute(): void {
@@ -54,10 +56,17 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 				this.playerSetup,
 				this.identitySetup,
 				this.gptSetup.setOptions({
-					dependencies: [this.wadRunner.initialized, this.bidders.initialized],
+					timeout: 10000,
+				}),
+				this.adEngineStackSetup.setOptions({
+					dependencies: [
+						this.bidders.initialized,
+						this.wadRunner.initialized,
+						this.gptSetup.initialized,
+					],
 				}),
 				this.doubleVerify.setOptions({
-					dependencies: [this.gptSetup.initialized],
+					dependencies: [this.adEngineStackSetup.initialized],
 				}),
 			)
 			.execute()

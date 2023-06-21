@@ -1,5 +1,6 @@
 import { GptSetup, WadRunner } from '@platforms/shared';
 import {
+	AdEngineStackSetup,
 	Audigent,
 	Bidders,
 	Captify,
@@ -33,6 +34,7 @@ export class SportsAdsMode implements DiProcess {
 		private liveConnect: LiveConnect,
 		private liveRampPixel: LiveRampPixel,
 		private wadRunner: WadRunner,
+		private adEngineStackSetup: AdEngineStackSetup,
 	) {}
 
 	execute(): void {
@@ -49,14 +51,17 @@ export class SportsAdsMode implements DiProcess {
 				this.durationMedia,
 				this.identitySetup,
 				this.gptSetup.setOptions({
+					timeout: 10000,
+				}),
+				this.adEngineStackSetup.setOptions({
 					dependencies: [
 						this.bidders.initialized,
 						this.wadRunner.initialized,
-						this.iasPublisherOptimization.IASReady,
+						this.gptSetup.initialized,
 					],
 				}),
 				this.doubleVerify.setOptions({
-					dependencies: [this.gptSetup.initialized],
+					dependencies: [this.adEngineStackSetup.initialized],
 				}),
 			)
 			.execute()

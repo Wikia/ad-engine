@@ -1,5 +1,6 @@
 import { GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
+	AdEngineStackSetup,
 	Anyclip,
 	Ats,
 	Audigent,
@@ -7,7 +8,6 @@ import {
 	Captify,
 	communicationService,
 	Confiant,
-	context,
 	DiProcess,
 	DoubleVerify,
 	DurationMedia,
@@ -50,6 +50,7 @@ export class UcpMobileAdsMode implements DiProcess {
 		private prebidNativeProvider: PrebidNativeProvider,
 		private stroer: Stroer,
 		private wadRunner: WadRunner,
+		private adEngineStackSetup: AdEngineStackSetup,
 	) {}
 
 	execute(): void {
@@ -72,19 +73,25 @@ export class UcpMobileAdsMode implements DiProcess {
 				this.nielsen,
 				this.prebidNativeProvider,
 				this.identitySetup,
-				this.playerSetup.setOptions({
-					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
-					timeout: context.get('options.jwpMaxDelayTimeout'),
-				}),
+				this.playerSetup,
 				this.gptSetup.setOptions({
+					timeout: 10000,
+				}),
+				this.adEngineStackSetup.setOptions({
 					dependencies: [
+						this.bidders.initialized,
+						this.wadRunner.initialized,
 						this.playerSetup.initialized,
+						this.gptSetup.initialized,
 						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
 						this.iasPublisherOptimization.IASReady,
 					],
+					timeout: jwPlayerInhibitor.isRequiredToRun()
+						? jwPlayerInhibitor.getDelayTimeoutInMs()
+						: null,
 				}),
 				this.doubleVerify.setOptions({
-					dependencies: [this.gptSetup.initialized],
+					dependencies: [this.adEngineStackSetup.initialized],
 				}),
 			)
 			.execute()
