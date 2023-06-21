@@ -31,7 +31,9 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 	}
 
 	getIncontentPlayerConfig(): SlotSetupDefinition | undefined {
-		if (!Anyclip.isApplicable()) {
+		// services.anyclip.playerElementId means the element for the incontent player (fe. Anyclip)
+		// was rendered on the backend and there is no need to dynamically inject slot
+		if (!Anyclip.isApplicable() || context.get('services.anyclip.playerElementId')) {
 			return;
 		}
 
