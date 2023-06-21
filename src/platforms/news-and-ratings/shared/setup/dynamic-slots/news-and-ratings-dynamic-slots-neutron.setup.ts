@@ -145,6 +145,16 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 					anchorElement: null,
 				},
 			};
+
+			const baseSlotTargeting = context.get(`slots.${slotName}.targeting`);
+			if (baseSlotTargeting.loc) {
+				slotConfig.slotCreatorConfig.repeat.updateProperties['targeting.loc'] =
+					baseSlotTargeting.loc;
+			}
+			if (baseSlotTargeting.pos_nr) {
+				slotConfig.slotCreatorConfig.repeat.updateProperties['targeting.pos_nr'] =
+					baseSlotTargeting.pos_nr;
+			}
 		}
 
 		return slotConfig;
