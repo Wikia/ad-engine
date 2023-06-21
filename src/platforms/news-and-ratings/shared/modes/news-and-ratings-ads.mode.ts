@@ -1,4 +1,4 @@
-import { GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
+import { AdEngineStackSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
 	Anyclip,
 	Audigent,
@@ -17,7 +17,6 @@ import {
 	PartnerPipeline,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { AdEngineStackSetup } from '../../../shared/setup/ad-engine-stack.setup';
 
 @Injectable()
 export class NewsAndRatingsAdsMode implements DiProcess {

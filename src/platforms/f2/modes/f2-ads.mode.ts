@@ -1,6 +1,5 @@
-import { GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
+import { AdEngineStackSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
-	AdEngineStackSetup,
 	Audigent,
 	Captify,
 	communicationService,
