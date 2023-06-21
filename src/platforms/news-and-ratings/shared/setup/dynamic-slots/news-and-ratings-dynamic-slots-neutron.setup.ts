@@ -59,6 +59,10 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 				}
 			});
 
+			communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () =>
+				insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]),
+			);
+
 			utils.logger(logGroup, 'Inserting slots without DOM elements');
 			insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
 		});
