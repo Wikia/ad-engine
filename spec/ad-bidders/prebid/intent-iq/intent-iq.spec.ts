@@ -64,7 +64,7 @@ describe('IntentIQ', () => {
 					pbjs: pbjsStub,
 					timeoutInMillis: DEFAULT_MAX_DELAY,
 					ABTestingConfigurationSource: 'percentage',
-					abPercentage: 90,
+					abPercentage: 97,
 					manualWinReportEnabled: true,
 					browserBlackList: 'Chrome',
 				}),

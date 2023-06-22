@@ -26,6 +26,7 @@ async function getBiddersPrices(
 		bidder_2: transformBidderPrice('appnexus'),
 		bidder_4: transformBidderPrice('rubicon'),
 		bidder_8: transformBidderPrice('wikiaVideo'),
+		bidder_9: transformBidderPrice('openx'),
 		bidder_10: transformBidderPrice('appnexusAst'),
 		bidder_11: transformBidderPrice('rubicon_display'),
 		bidder_12: transformBidderPrice('a9'),
