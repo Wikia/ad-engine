@@ -9,14 +9,15 @@ class ScriptLoader implements ScriptLoaderInterface {
 	createScript(
 		src: string,
 		type = 'text/javascript',
-		isAsync = true,
+		isAsyncOrDeferOtherwise = true,
 		node: HTMLElement | string = null,
 		parameters: Record<string, string> = {},
 		datasets: Partial<DOMStringMap> = {},
 	): HTMLScriptElement {
 		const script: HTMLScriptElement = document.createElement('script');
 
-		script.async = isAsync;
+		script.async = isAsyncOrDeferOtherwise;
+		script.defer = !isAsyncOrDeferOtherwise;
 		script.type = type;
 		script.src = src;
 
@@ -47,7 +48,7 @@ class ScriptLoader implements ScriptLoaderInterface {
 	loadScript(
 		src: string,
 		type = 'text/javascript',
-		isAsync = true,
+		isAsyncOrDeferOtherwise = true,
 		node: HTMLElement | string = null,
 		parameters: Record<string, string> = {},
 		datasets: Partial<DOMStringMap> = {},
@@ -56,7 +57,7 @@ class ScriptLoader implements ScriptLoaderInterface {
 			const script: HTMLScriptElement = this.createScript(
 				src,
 				type,
-				isAsync,
+				isAsyncOrDeferOtherwise,
 				node,
 				parameters,
 				datasets,
