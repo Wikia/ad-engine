@@ -10,6 +10,7 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		this.setupIdentityOptions();
 		this.setupServicesOptions();
 		this.setupVideo();
+		this.setupStickyContext();
 	}
 
 	private setBaseState(): void {
@@ -78,6 +79,13 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 			'services.anyclip.anyclipTagExists',
 			!!this.getDataSettingsFromMetaTag()?.anyclip ||
 				!!this.getDataSettingsFromMetaTag()?.target_params?.anyclip,
+		);
+	}
+
+	private setupStickyContext(): void {
+		context.set(
+			'templates.stickyTop.activateByGamAd',
+			this.instantConfig.get('icStickyTopActivateByGamAd', {}),
 		);
 	}
 

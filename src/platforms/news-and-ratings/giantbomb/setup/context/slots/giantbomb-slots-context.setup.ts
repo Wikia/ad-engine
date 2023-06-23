@@ -24,6 +24,7 @@ export class GiantbombSlotsContextSetup implements DiProcess {
 					pos_nr: 'nav',
 					loc: 'top',
 				},
+				defaultTemplates: [],
 			},
 			leader_plus_top: {
 				defaultSizes: [

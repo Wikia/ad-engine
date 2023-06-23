@@ -17,6 +17,8 @@ export class StickyTlbBootstrapHandler implements TemplateStateHandler {
 		await this.awaitVisibleDOM();
 
 		transition('sticky');
+
+		console.log('StickyTlbBootstrapHandler', this.adSlot);
 	}
 
 	private async awaitVisibleDOM(): Promise<void> {

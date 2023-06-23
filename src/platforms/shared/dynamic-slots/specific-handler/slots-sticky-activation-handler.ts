@@ -6,29 +6,32 @@ import {
 	eventsRepository,
 } from '@wikia/ad-engine';
 
-export class TlbStickyHandler {
-	private readonly slotName = 'top_leaderboard';
+export class SlotsStickyActivationHandler {
 	private icbmStickyTlbActivateByCampainsData;
 
-	constructor() {
-		this.icbmStickyTlbActivateByCampainsData = context.get('templates.stickyTlb.activateByGamAd');
+	constructor(private slotNames: string[]) {
+		this.icbmStickyTlbActivateByCampainsData = context.get('templates.stickyTop.activateByGamAd');
+		console.log('!!', this.icbmStickyTlbActivateByCampainsData);
 	}
 
 	handle() {
 		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
-			this.handleOnLoad();
+			this.slotNames.forEach((slotName: string) => {
+				this.handleOnLoad(slotName);
+			});
 		});
 	}
 
-	handleOnLoad(): void {
+	handleOnLoad(slotName: string): void {
 		communicationService.onSlotEvent(
 			AdSlotStatus.STATUS_SUCCESS,
 			({ slot }) => {
+				console.log('SUCCESS!', slotName, slot, this.isLoadedGamAdOnIcbmActivationList(slot));
 				if (this.isLoadedGamAdOnIcbmActivationList(slot)) {
-					context.push(`slots.${this.slotName}.defaultTemplates`, 'stickyTlb');
+					context.push(`slots.${slotName}.defaultTemplates`, 'stickyLocTop');
 				}
 			},
-			this.slotName,
+			slotName,
 		);
 	}
 

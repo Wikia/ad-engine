@@ -19,6 +19,7 @@ import {
 	NewsAndRatingsTargetingSetup,
 	NewsAndRatingsWadSetup,
 } from '../shared';
+import { NewsAndRatingsLocTopStickinessSetup } from '../shared/setup/dynamic-slots/news-and-ratings-loc-top-stickiness.setup';
 import { basicContext } from './ad-context';
 import { GiantbombA9ConfigSetup } from './setup/context/a9/giantbomb-a9-config.setup';
 import { GiantbombPrebidConfigSetup } from './setup/context/prebid/giantbomb-prebid-config.setup';
@@ -48,6 +49,7 @@ export class GiantbombPlatform {
 			GiantbombSlotsContextSetup,
 			SlotsConfigurationExtender,
 			NewsAndRatingsDynamicSlotsSetup,
+			NewsAndRatingsLocTopStickinessSetup,
 			GiantbombPrebidConfigSetup,
 			GiantbombA9ConfigSetup,
 			BiddersStateSetup,
