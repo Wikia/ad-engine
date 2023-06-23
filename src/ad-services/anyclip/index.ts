@@ -142,15 +142,6 @@ export class Anyclip extends BaseServiceSetup {
 					return;
 				}
 
-				if (
-					document.querySelector(
-						`.c-tvListingsVideo-container--anyclip #${playerElementId}[data-slot-loaded="true"]`,
-					)
-				) {
-					utils.logger(logGroup, 'In-content Anyclip already on the page - aborting');
-					return;
-				}
-
 				const playerElement = document.getElementById(playerElementId);
 				this.loadPlayerAsset(playerElement);
 				playerElement.dataset.slotLoaded = 'true';
