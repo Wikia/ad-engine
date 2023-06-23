@@ -1,5 +1,5 @@
 import { insertSlots } from '@platforms/shared';
-import { communicationService, DiProcess, eventsRepository } from '@wikia/ad-engine';
+import { communicationService, context, DiProcess, eventsRepository } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import {
 	NewsAndRatingsDynamicSlotsSetup,
@@ -21,5 +21,8 @@ export class MetacriticDynamicSlotsSetup implements DiProcess {
 		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () =>
 			insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]),
 		);
+
+		// ToDo: any conditions?
+		context.push(`slots.top_leaderboard.defaultTemplates`, 'stickyTlb');
 	}
 }

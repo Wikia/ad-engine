@@ -1,4 +1,4 @@
-import { context, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
+import { context, Dictionary, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -10,6 +10,7 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		this.setupIdentityOptions();
 		this.setupServicesOptions();
 		this.setupVideo();
+		this.setupStickySlotContext();
 	}
 
 	private setBaseState(): void {
@@ -40,6 +41,15 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		);
 		context.set('services.captify.propertyId', 13061);
 		context.set('services.confiant.propertyId', 'IOegabOoWb7FyEI1AmEa9Ki-5AY');
+	}
+
+	private setupStickySlotContext(): void {
+		context.set('templates.stickyTlb.forced', this.instantConfig.get('icForceStickyTlb'));
+
+		const stickySlotsLines: Dictionary = this.instantConfig.get('icStickySlotLineItemIds');
+		if (stickySlotsLines && stickySlotsLines.length) {
+			context.set('templates.stickyTlb.lineItemIds', stickySlotsLines);
+		}
 	}
 
 	private setupVideo() {

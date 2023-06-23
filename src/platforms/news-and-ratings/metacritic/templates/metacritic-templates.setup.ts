@@ -3,6 +3,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
 import { registerBfaaTemplate, registerFloorAdhesionTemplate } from '../../shared';
 import { registerUapDomElements } from './configs/register-uap-dom-elements';
+import { registerStickyTlbTemplate } from './sticky-tlb-template';
 
 @Injectable()
 export class MetacriticTemplatesSetup implements DiProcess {
@@ -12,8 +13,9 @@ export class MetacriticTemplatesSetup implements DiProcess {
 
 	execute(): void {
 		const bfaa$ = registerBfaaTemplate(this.registry, registerUapDomElements);
+		const stickyTlb$ = registerStickyTlbTemplate(this.registry);
 		const floorAdhesion$ = registerFloorAdhesionTemplate(this.registry);
 
-		logTemplates(merge(bfaa$, floorAdhesion$));
+		logTemplates(merge(bfaa$, stickyTlb$, floorAdhesion$));
 	}
 }
