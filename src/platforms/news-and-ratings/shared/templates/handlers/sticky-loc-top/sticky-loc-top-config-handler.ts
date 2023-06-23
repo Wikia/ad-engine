@@ -14,7 +14,6 @@ export class StickyLocTopConfigHandler implements TemplateStateHandler {
 		this.adSlot.loaded.then(() => {
 			this.adSlot.emitEvent(universalAdPackage.SLOT_STICKY_READY_STATE);
 		});
-		console.log('StickyLocTopConfigHandler', this.adSlot);
 	}
 
 	async onLeave(): Promise<void> {

@@ -11,7 +11,6 @@ export class SlotsStickyActivationHandler {
 
 	constructor(private slotNames: string[]) {
 		this.icbmStickyTlbActivateByCampainsData = context.get('templates.stickyTop.activateByGamAd');
-		console.log('!!', this.icbmStickyTlbActivateByCampainsData);
 	}
 
 	handle() {
@@ -26,7 +25,6 @@ export class SlotsStickyActivationHandler {
 		communicationService.onSlotEvent(
 			AdSlotStatus.STATUS_SUCCESS,
 			({ slot }) => {
-				console.log('SUCCESS!', slotName, slot, this.isLoadedGamAdOnIcbmActivationList(slot));
 				if (this.isLoadedGamAdOnIcbmActivationList(slot)) {
 					context.push(`slots.${slotName}.defaultTemplates`, 'stickyLocTop');
 				}

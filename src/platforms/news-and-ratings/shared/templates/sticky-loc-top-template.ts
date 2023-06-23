@@ -61,7 +61,7 @@ export function registerStickyLocTopTemplate(
 			],
 			hidden: [SlotHiddenHandler, DomCleanupHandler],
 		},
-		'blocking',
+		'initial',
 		[
 			DomManipulator,
 			UapDomManager,
