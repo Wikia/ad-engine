@@ -1,9 +1,14 @@
+import { insertSlots } from '@platforms/shared';
 import { context, DiProcess, targetingService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+
+import { NewsAndRatingsSlotsDefinitionRepository } from '../../index';
 
 @Injectable()
 export class NewsAndRatingsAnyclipSetup implements DiProcess {
 	private logGroup = 'Anyclip';
+
+	constructor(private slotsDefinitionRepository: NewsAndRatingsSlotsDefinitionRepository) {}
 
 	execute(): void {
 		const pname = targetingService.get('pname');
@@ -24,11 +29,12 @@ export class NewsAndRatingsAnyclipSetup implements DiProcess {
 		});
 
 		if (this.shouldPlayerBeIncontent(pname)) {
-			utils.logger(this.logGroup, 'player should be in the in-content mode');
+			utils.logger(this.logGroup, 'player should be in-content');
 			this.updateContextForIncontentAnyclip();
 		} else {
-			utils.logger(this.logGroup, 'player should be in the miniplayer mode');
+			utils.logger(this.logGroup, 'inserting slots without DOM elements');
 			this.updateContextForMiniplayerAnyclip();
+			insertSlots([this.slotsDefinitionRepository.getIncontentPlayerConfig()]);
 		}
 	}
 

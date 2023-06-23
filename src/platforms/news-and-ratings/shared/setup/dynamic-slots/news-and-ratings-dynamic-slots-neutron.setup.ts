@@ -53,7 +53,6 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 			// slots without DOM elements required
 			utils.logger(logGroup, 'Inserting slots without DOM elements');
 			insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
-			insertSlots([this.slotsDefinitionRepository.getIncontentPlayerConfig()]);
 			// TODO: remove once we have 100% UAP implemented on TVG
 			communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, { isLoaded: false });
 		});
@@ -67,7 +66,7 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 				this.repeatedSlotsQueue = {};
 
 				utils.logger(logGroup, 'Removing slots without DOM elements');
-				document.getElementById('incontent_player')?.remove();
+				document.getElementById('incontent_player').remove();
 			},
 			false,
 		);
