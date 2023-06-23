@@ -32,8 +32,8 @@ export class NewsAndRatingsAnyclipSetup implements DiProcess {
 			utils.logger(this.logGroup, 'player should be in-content');
 			this.updateContextForIncontentAnyclip();
 		} else {
-			utils.logger(this.logGroup, 'inserting slots without DOM elements');
 			this.updateContextForMiniplayerAnyclip();
+			utils.logger(this.logGroup, 'inserting slots without DOM elements');
 			insertSlots([this.slotsDefinitionRepository.getIncontentPlayerConfig()]);
 		}
 	}

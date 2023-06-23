@@ -66,7 +66,7 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 				this.repeatedSlotsQueue = {};
 
 				utils.logger(logGroup, 'Removing slots without DOM elements');
-				document.getElementById('incontent_player').remove();
+				document.getElementById('incontent_player')?.remove();
 			},
 			false,
 		);
