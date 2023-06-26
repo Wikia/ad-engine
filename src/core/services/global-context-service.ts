@@ -52,6 +52,9 @@ export class GlobalContextService {
 		category: K,
 		value: V,
 	): void {
+		if (!window.fandomContext) {
+			this.createEmptyContext();
+		}
 		if (!window.fandomContext[category]) {
 			window.fandomContext[category] = {};
 		}
@@ -62,12 +65,14 @@ export class GlobalContextService {
 		category: K,
 		key?: I,
 	): WindowFandomContext[K][I] | undefined {
+		if (!window.fandomContext) {
+			return undefined;
+		}
 		const categoryObj = window.fandomContext[category];
 		if (categoryObj) {
 			return categoryObj[key];
-		} else {
-			utils.logger(this.logGroup, 'Attempting to retrieve invalid category in context!');
 		}
+		utils.logger(this.logGroup, 'Attempting to retrieve invalid category in context!');
 	}
 }
 
