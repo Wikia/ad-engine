@@ -43,12 +43,11 @@ interface IPageParameters {
 	wordCount: number;
 }
 
-interface IBlockthroughParameters {
-	directedAtChildren: boolean;
-}
-
 interface IPartnersParameters {
-	blockthrough: IBlockthroughParameters;
+	directedAtChildren: boolean;
+	blockthrough: {
+		directedAtChildren: boolean;
+	};
 }
 
 interface ITargetingParameters {
