@@ -34,3 +34,19 @@ body:not(.skybox-loaded) {
 		min-height: 0 !important;
 	}
 }
+
+body:not(.c-siteHeader_menu-mobile) {
+	.c-adSkyBox,
+	.c-adSkyBox .c-adDisplay_container,
+	#floor_adhesion {
+		display: block;
+	}
+}
+
+body:has(.c-siteHeader_menu-mobile) {
+	.c-adSkyBox,
+	.c-adSkyBox .c-adDisplay_container,
+	#floor_adhesion {
+		display: none;
+	}
+}
