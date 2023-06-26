@@ -17,7 +17,7 @@
 		"rxjs": "7.8.0",
 		"ts-action": "11.0.0",
 		"ts-action-operators": "9.1.2",
-		"ts-loader": "9.4.2",
+		"ts-loader": "9.4.3",
 		"uuid": "9.0.0"
 	},
 	"devDependencies": {
