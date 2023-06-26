@@ -65,7 +65,7 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 					],
 				}),
 				this.doubleVerify.setOptions({
-					dependencies: [this.adEngineStackSetup.initialized],
+					dependencies: [this.gptSetup.initialized],
 				}),
 			)
 			.execute()

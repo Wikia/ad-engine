@@ -62,7 +62,7 @@ export class F2AdsMode implements DiProcess {
 						: null,
 				}),
 				this.doubleVerify.setOptions({
-					dependencies: [this.adEngineStackSetup.initialized],
+					dependencies: [this.gptSetup.initialized],
 				}),
 			)
 			.execute()

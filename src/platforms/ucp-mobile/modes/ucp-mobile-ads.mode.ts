@@ -90,7 +90,7 @@ export class UcpMobileAdsMode implements DiProcess {
 						: null,
 				}),
 				this.doubleVerify.setOptions({
-					dependencies: [this.adEngineStackSetup.initialized],
+					dependencies: [this.gptSetup.initialized],
 				}),
 			)
 			.execute()
