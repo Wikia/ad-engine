@@ -48,7 +48,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 					[728, 90],
 					[970, 250],
 				],
-				defaultTemplates: [],
+				defaultTemplates: ['stickyTlb'],
 				targeting: {
 					loc: 'top',
 					pos_nr: 'sticky',
