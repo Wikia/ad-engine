@@ -39,6 +39,7 @@ export class Anyclip extends BaseServiceSetup {
 
 	static isApplicable(): boolean {
 		const isApplicableFunc: () => boolean | null = context.get('services.anyclip.isApplicable');
+
 		return typeof isApplicableFunc === 'function' ? isApplicableFunc() : true;
 	}
 

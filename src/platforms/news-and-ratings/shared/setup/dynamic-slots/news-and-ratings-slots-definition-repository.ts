@@ -59,14 +59,14 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 				classList: ['hide', 'ad-slot'],
 			},
 			activator: () =>
-				activateFloorAdhesionOnUAP(activateFloorAdhesion, !this.isFloorAdhesionApplicable()),
+				activateFloorAdhesionOnUAP(activateFloorAdhesion, !this.isFloorAdhesionNonUapApplicable()),
 		};
 	}
 
 	private isInterstitialApplicable(): boolean {
 		return this.instantConfig.get('icInterstitial') && context.get('state.isMobile');
 	}
-	private isFloorAdhesionApplicable(): boolean {
+	private isFloorAdhesionNonUapApplicable(): boolean {
 		return context.get('state.isMobile') && !Anyclip.isApplicable();
 	}
 	getIncontentPlayerConfig(): SlotSetupDefinition | undefined {
