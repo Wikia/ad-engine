@@ -1,5 +1,5 @@
 import { insertSlots } from '@platforms/shared';
-import { communicationService, DiProcess, eventsRepository } from '@wikia/ad-engine';
+import { DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import {
 	NewsAndRatingsDynamicSlotsSetup,
@@ -18,8 +18,6 @@ export class MetacriticDynamicSlotsSetup implements DiProcess {
 
 		insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
 
-		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () =>
-			insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]),
-		);
+		insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
 	}
 }
