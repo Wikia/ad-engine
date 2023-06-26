@@ -52,15 +52,15 @@ export class SportsAdsMode implements DiProcess {
 				this.gptSetup.setOptions({
 					timeout: 10000,
 				}),
+				this.doubleVerify.setOptions({
+					dependencies: [this.gptSetup.initialized],
+				}),
 				this.adEngineStackSetup.setOptions({
 					dependencies: [
 						this.bidders.initialized,
 						this.wadRunner.initialized,
 						this.gptSetup.initialized,
 					],
-				}),
-				this.doubleVerify.setOptions({
-					dependencies: [this.gptSetup.initialized],
 				}),
 			)
 			.execute()
