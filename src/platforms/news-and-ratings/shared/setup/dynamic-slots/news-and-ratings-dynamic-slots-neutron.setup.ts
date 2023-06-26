@@ -27,6 +27,10 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 			communicationService.on(
 				eventsRepository.PLATFORM_AD_PLACEMENT_READY,
 				({ placementId }) => {
+					if (!placementId) {
+						return;
+					}
+
 					if (placementId.includes('skybox')) {
 						context.set('slots.top_leaderboard.bidderAlias', placementId);
 						context.set('slots.top_leaderboard.targeting.pos', ['top_leaderboard', placementId]);
@@ -57,6 +61,11 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 						insertSlots([this.getSlotConfig(nextSlotName, placementId)]);
 					});
 				}
+			});
+
+			communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {
+				document.getElementById('floor_adhesion')?.remove();
+				insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
 			});
 
 			utils.logger(logGroup, 'Inserting slots without DOM elements');
@@ -110,12 +119,6 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 				placementId: slot.getAttribute('data-ad'),
 			});
 		});
-
-		utils.logger(logGroup, 'Reinjecting floor_adhesion');
-
-		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () =>
-			insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]),
-		);
 	}
 
 	private isSlotApplicable(slotName: string): boolean {
