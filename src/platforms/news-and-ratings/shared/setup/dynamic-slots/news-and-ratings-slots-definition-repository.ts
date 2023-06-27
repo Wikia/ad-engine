@@ -60,6 +60,7 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 			},
 			activator: () =>
 				activateFloorAdhesionOnUAP(activateFloorAdhesion, !this.isFloorAdhesionNonUapApplicable()),
+
 		};
 	}
 
@@ -71,6 +72,7 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 	}
 	getIncontentPlayerConfig(): SlotSetupDefinition | undefined {
 		if (!Anyclip.isApplicable()) {
+			utils.logger(logGroup, 'Aborting insertion of incontent_player');
 			return;
 		}
 

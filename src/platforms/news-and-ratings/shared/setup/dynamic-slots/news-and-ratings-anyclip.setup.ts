@@ -1,6 +1,6 @@
+import { insertSlots } from '@platforms/shared';
 import { context, DiProcess, targetingService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { insertSlots } from '../../../../shared';
 
 import { NewsAndRatingsSlotsDefinitionRepository } from '../../index';
 
@@ -11,9 +11,10 @@ export class NewsAndRatingsAnyclipSetup implements DiProcess {
 	constructor(private slotsDefinitionRepository: NewsAndRatingsSlotsDefinitionRepository) {}
 
 	execute(): void {
+		const pname = targetingService.get('pname');
+
 		context.set('services.anyclip.isApplicable', () => {
 			const doesAnyclipTagExist = context.get('services.anyclip.anyclipTagExists');
-			const pname = targetingService.get('pname');
 			const pathname = window.location.pathname.toLowerCase();
 
 			const isApplicable = doesAnyclipTagExist
@@ -27,8 +28,40 @@ export class NewsAndRatingsAnyclipSetup implements DiProcess {
 			return isApplicable;
 		});
 
-		utils.logger(this.logGroup, 'Inserting slots without DOM elements');
-		insertSlots([this.slotsDefinitionRepository.getIncontentPlayerConfig()]);
+		if (this.shouldPlayerBeIncontent(pname)) {
+			utils.logger(this.logGroup, 'player should be in-content');
+			this.updateContextForIncontentAnyclip();
+		} else {
+			this.updateContextForMiniplayerAnyclip();
+			utils.logger(this.logGroup, 'inserting slots without DOM elements');
+			insertSlots([this.slotsDefinitionRepository.getIncontentPlayerConfig()]);
+		}
+	}
+
+	private shouldPlayerBeIncontent(pname: string): boolean {
+		return this.isApplicable(pname) && ['listings/main'].includes(pname);
+	}
+
+	private updateContextForMiniplayerAnyclip(): void {
+		context.set(
+			'services.anyclip.widgetname',
+			context.get('services.anyclip.miniPlayerWidgetname'),
+		);
+		context.set('services.anyclip.playerElementSelector', null);
+		context.set('services.anyclip.loadOnPageLoad', true);
+		context.set('services.anyclip.latePageInject', false);
+		context.set('custom.hasIncontentPlayer', false);
+	}
+
+	private updateContextForIncontentAnyclip(): void {
+		context.set(
+			'services.anyclip.widgetname',
+			context.get('services.anyclip.incontentPlayerWidgetname'),
+		);
+		context.set('services.anyclip.playerElementId', 'incontent_player');
+		context.set('services.anyclip.loadOnPageLoad', false);
+		context.set('services.anyclip.latePageInject', false);
+		context.set('custom.hasIncontentPlayer', true);
 	}
 
 	isApplicable(pathname: string): boolean {
@@ -36,7 +69,7 @@ export class NewsAndRatingsAnyclipSetup implements DiProcess {
 	}
 
 	private isApplicableByPnameAdTag(pname: string): boolean {
-		const applicablePnames = ['news', 'feature_hub'];
+		const applicablePnames = ['news', 'feature_hub', 'listings/main'];
 
 		return applicablePnames.includes(pname);
 	}
