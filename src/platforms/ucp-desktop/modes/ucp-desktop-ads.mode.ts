@@ -72,10 +72,10 @@ export class UcpDesktopAdsMode implements DiProcess {
 				this.nielsen,
 				this.prebidNativeProvider,
 				this.identitySetup,
-				this.playerSetup,
-				this.gptSetup.setOptions({
-					timeout: 10000,
+				this.playerSetup.setOptions({
+					dependencies: [this.bidders.initialized],
 				}),
+				this.gptSetup,
 				this.doubleVerify.setOptions({
 					dependencies: [this.gptSetup.initialized],
 				}),
@@ -83,7 +83,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 					dependencies: [
 						this.bidders.initialized,
 						this.wadRunner.initialized,
-						this.playerSetup.initialized,
 						this.gptSetup.initialized,
 						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
 					],

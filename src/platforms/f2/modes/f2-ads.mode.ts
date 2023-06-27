@@ -46,16 +46,13 @@ export class F2AdsMode implements DiProcess {
 				this.wadRunner,
 				this.identitySetup,
 				this.playerSetup,
-				this.gptSetup.setOptions({
-					timeout: 10000,
-				}),
+				this.gptSetup,
 				this.doubleVerify.setOptions({
 					dependencies: [this.gptSetup.initialized],
 				}),
 				this.adEngineStackSetup.setOptions({
 					dependencies: [
 						this.wadRunner.initialized,
-						this.playerSetup.initialized,
 						this.gptSetup.initialized,
 						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
 					],

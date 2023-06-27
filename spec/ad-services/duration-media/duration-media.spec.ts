@@ -1,4 +1,5 @@
 import { DurationMedia } from '@wikia/ad-services';
+import { communicationService, eventsRepository } from '@wikia/communication';
 import { context, InstantConfigService, utils } from '@wikia/core';
 import { expect } from 'chai';
 
@@ -39,6 +40,8 @@ describe('Duration media service', () => {
 		context.set('services.durationMedia.libraryUrl', '//example.com/foo');
 
 		await durationMedia.call();
+
+		communicationService.emit(eventsRepository.AD_ENGINE_SLOT_LOADED);
 
 		expect(loadScriptStub.called).to.equal(true);
 		expect(
