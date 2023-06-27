@@ -14,11 +14,11 @@ export class Wunderkind extends BaseServiceSetup {
 		}
 
 		communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
-			if (!action.isLoaded) {
-				this.loadScript();
-			} else {
-				utils.logger(logGroup, 'disabled - UAP is loaded');
+			if (action.isLoaded) {
+			    utils.logger(logGroup, 'disabled - UAP is loaded');
+			    return;
 			}
+			this.loadScript();
 		});
 	}
 
