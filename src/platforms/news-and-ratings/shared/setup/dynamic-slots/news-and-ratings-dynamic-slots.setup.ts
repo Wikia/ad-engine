@@ -17,6 +17,7 @@ export class NewsAndRatingsDynamicSlotsSetup implements DiProcess {
 
 	execute(): void {
 		this.injectSlots();
+
 		insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
 
 		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () =>
