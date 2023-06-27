@@ -78,7 +78,11 @@ export class LiveConnect extends BaseServiceSetup {
 		};
 	}
 
-	resolveAndReportId(idName: string, partnerName: string, params?: LiQParams) {
+	resolveAndReportId(idName: string, partnerName: string, defaultParams?: LiQParams) {
+		const params = {
+			...defaultParams,
+			qf: context.get('services.liveConnect.qf') || defaultParams.qf,
+		};
 		window.liQ.resolve(
 			this.resolveId(idName, partnerName),
 			(err) => {
