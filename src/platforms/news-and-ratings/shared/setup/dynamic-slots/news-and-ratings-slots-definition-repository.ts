@@ -1,6 +1,8 @@
-import { Anyclip, context, InstantConfigService } from '@wikia/ad-engine';
+import { Anyclip, context, InstantConfigService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { SlotSetupDefinition } from '../../../../shared';
+
+const logGroup = 'dynamic-slots';
 
 @Injectable()
 export class NewsAndRatingsSlotsDefinitionRepository {
@@ -32,6 +34,7 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 
 	getIncontentPlayerConfig(): SlotSetupDefinition | undefined {
 		if (!Anyclip.isApplicable()) {
+			utils.logger(logGroup, 'Aborting insertion of incontent_player');
 			return;
 		}
 
