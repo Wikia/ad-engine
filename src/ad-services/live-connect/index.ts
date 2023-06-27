@@ -99,7 +99,7 @@ export class LiveConnect extends BaseServiceSetup {
 			this.storage.setItem(partnerName, partnerIdentityId, this.storageConfig.ttl);
 
 			communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
-				partnerName,
+				partnerName: name,
 				partnerIdentityId,
 			});
 		});
