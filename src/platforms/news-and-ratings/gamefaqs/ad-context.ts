@@ -25,13 +25,19 @@ export const basicContext = {
 			bidder: 1000,
 		},
 	},
+	events: {
+		pushOnScroll: {
+			ids: [],
+			threshold: 100,
+		},
+	},
 	services: {
 		anyclip: {
 			enabled: false,
 			pubname: '1999',
-			widgetname: '001w000001Y8ud2AAB_M7309',
+			miniPlayerWidgetname: '001w000001Y8ud2AAB_M7309',
 			libraryUrl: '//player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/acins.js',
-			loadOnPageLoad: true,
+			loadWithoutAnchor: true,
 		},
 		durationMedia: {
 			libraryUrl: '//tag.durationmedia.net/sites/11354/dm.js',
