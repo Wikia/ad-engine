@@ -11,19 +11,73 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					'/{custom.dfpId}/{slotConfig.group}/{slotConfig.adProduct}' +
 					'/{custom.device}{custom.region}-{custom.property}{custom.pagePath}',
 				group: 'IU',
-				options: {},
 				outOfPage: true,
 				outOfPageFormat: 'INTERSTITIAL',
 				targeting: {
 					loc: 'hivi',
 				},
 			},
-			'skybox-nav': {
-				defaultSizes: [[5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
+			top_leaderboard: {
+				firstCall: true,
+				adProduct: 'top_leaderboard',
+				group: 'LB',
+				sizes: [
+					{
+						viewportSize: [970, 200],
+						sizes: [
+							[728, 90],
+							[970, 250],
+							[970, 66],
+							universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop,
+						],
+					},
+					{
+						viewportSize: [840, 200],
+						sizes: [[728, 90], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
+					},
+					{
+						viewportSize: [320, 200],
+						sizes: [[320, 50], [320, 100], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
+					},
+					{
+						viewportSize: [0, 0],
+						sizes: [[320, 50]],
+					},
+				],
+				defaultSizes: [
+					[728, 90],
+					[970, 250],
+				],
+				defaultTemplates: [],
 				targeting: {
 					loc: 'top',
 					pos_nr: 'nav',
 				},
+			},
+			floor_adhesion: {
+				disabled: true,
+				adProduct: 'floor_adhesion',
+				group: 'PF',
+				targeting: {
+					loc: 'footer',
+				},
+				defaultTemplates: ['floorAdhesion'],
+				defaultSizes: [[728, 90]],
+				sizes: [
+					{
+						viewportSize: [0, 0],
+						sizes: [
+							[300, 50],
+							[320, 50],
+							[320, 100],
+						],
+					},
+					{
+						// 728px for the ad + 40px width of the close button
+						viewportSize: [768, 0],
+						sizes: [[728, 90]],
+					},
+				],
 			},
 			mpu_top: {
 				defaultSizes: [[300, 250]],
@@ -186,13 +240,6 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					pos_nr: 'top',
 				},
 			},
-			'mobile-skybox-nav': {
-				defaultSizes: [[5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
-				targeting: {
-					loc: 'top',
-					pos_nr: 'nav',
-				},
-			},
 			'mobile-native': {
 				defaultSizes: [
 					[300, 250],
@@ -316,13 +363,6 @@ export class GamespotSlotsContextSetup implements DiProcess {
 					pos_nr: '1',
 				},
 			},
-			'mobile-nav-ad-plus-banner': {
-				defaultSizes: [[320, 50], [5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
-				targeting: {
-					pos_nr: 'nav',
-					loc: 'top',
-				},
-			},
 			'leader-ad-plus-top': {
 				defaultSizes: [
 					[728, 90],
@@ -381,19 +421,6 @@ export class GamespotSlotsContextSetup implements DiProcess {
 				],
 				targeting: {
 					pos_nr: 'bottom',
-				},
-			},
-			'nav-ad-plus-leader': {
-				defaultSizes: [
-					[728, 90],
-					[970, 250],
-					[970, 66],
-					[5, 5],
-					universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop,
-				],
-				targeting: {
-					pos_nr: 'nav',
-					loc: 'top',
 				},
 			},
 			'mobile-banner-plus': {

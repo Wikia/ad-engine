@@ -34,7 +34,6 @@ export interface SlotConfig extends BaseSlotConfig {
 	bidderAlias: string;
 	disabled?: boolean;
 	firstCall?: boolean;
-	aboveTheFold?: boolean;
 	slotName?: string;
 	slotNameSuffix: string;
 

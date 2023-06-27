@@ -6,6 +6,7 @@ import {
 	Dictionary,
 	DiProcess,
 	eventsRepository,
+	targetingService,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -20,13 +21,28 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 	private repeatedSlotsCounter: Dictionary<number> = {};
 	private repeatedSlotsRendered: string[] = [];
 	private repeatedSlotsQueue: Dictionary<[string, string]> = {};
+	private firstCallSlotName: string;
 
 	execute(): void {
 		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
 			communicationService.on(
 				eventsRepository.PLATFORM_AD_PLACEMENT_READY,
 				({ placementId }) => {
+					if (!placementId) {
+						return;
+					}
+
+					if (placementId.includes('skybox')) {
+						context.set('slots.top_leaderboard.bidderAlias', placementId);
+						context.set('slots.top_leaderboard.targeting.pos', ['top_leaderboard', placementId]);
+						document.querySelector(`.c-adDisplay_container > div[data-ad="${placementId}"]`).id =
+							'top_leaderboard';
+						this.firstCallSlotName = placementId;
+						placementId = 'top_leaderboard';
+					}
+
 					utils.logger(logGroup, 'Ad placement rendered', placementId);
+          
 					if (this.repeatedSlotsCounter[placementId]) {
 						this.scheduleRepeatedSlotInjection(placementId);
 						return;
@@ -49,7 +65,11 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 				}
 			});
 
-			// slots without DOM elements required
+			communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {
+				document.getElementById('floor_adhesion')?.remove();
+				insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
+			});
+
 			utils.logger(logGroup, 'Inserting slots without DOM elements');
 			insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
 		});
@@ -61,6 +81,9 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 				this.repeatedSlotsCounter = {};
 				this.repeatedSlotsRendered = [];
 				this.repeatedSlotsQueue = {};
+
+				utils.logger(logGroup, 'Removing slots without DOM elements');
+				document.getElementById('incontent_player')?.remove();
 			},
 			false,
 		);
@@ -104,7 +127,7 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 	}
 
 	private isSlotApplicable(slotName: string): boolean {
-		return Object.keys(context.get('slots')).includes(slotName);
+		return Object.keys(context.get('slots')).includes(slotName) || slotName.includes('skybox');
 	}
 
 	private getSlotConfig(slotName: string, baseSlotName = ''): SlotSetupDefinition {
@@ -130,8 +153,19 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 			},
 		};
 
+		const uapKeyval = targetingService.get('uap', 'top_leaderboard');
+		const uapCreativeKeyval = targetingService.get('uap_c', 'top_leaderboard');
+
+		if (uapKeyval && uapCreativeKeyval) {
+			context.set(`slots.${slotName}.targeting.uap`, uapKeyval);
+			context.set(`slots.${slotName}.targeting.uap_c`, uapCreativeKeyval);
+		}
+
 		if (!baseSlotName) {
-			context.set(`slots.${slotName}.bidderAlias`, slotName);
+			context.set(
+				`slots.${slotName}.bidderAlias`,
+				slotName.includes('top_leaderboard') ? this.firstCallSlotName : slotName,
+			);
 
 			slotConfig.slotCreatorConfig.repeat = {
 				index: 1,
