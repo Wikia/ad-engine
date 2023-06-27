@@ -29,7 +29,7 @@ export const basicContext = {
 		anyclip: {
 			enabled: false,
 			pubname: '2033',
-			widgetname: '001w000001Y8ud2AAB_M7540',
+			miniPlayerWidgetname: '001w000001Y8ud2AAB_M7540',
 			libraryUrl: 'https://player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/acins.js',
 			loadWithoutAnchor: true,
 		},
