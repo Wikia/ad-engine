@@ -79,8 +79,10 @@ export class LiveConnect extends BaseServiceSetup {
 	}
 
 	trackIds(liQResponse: LiQResolveResponse): void {
-		idConfigMapping.forEach(({ id, name }) => {
-			if (!this.isAvailableInStorage(name)) {
+		Object.keys(liQResponse).forEach((key) => {
+			const trackingKeyName = this.getTrackingKeyName(key);
+
+			if (!this.isAvailableInStorage(trackingKeyName)) {
 				return;
 			}
 
@@ -88,9 +90,9 @@ export class LiveConnect extends BaseServiceSetup {
 				communicationService.emit(eventsRepository.LIVE_CONNECT_RESPONDED_UUID);
 			}
 
-			const partnerIdentityId = liQResponse[id];
+			const partnerIdentityId = liQResponse[key];
 
-			utils.logger(logGroup, `id ${id}: ${partnerIdentityId}`);
+			utils.logger(logGroup, `${key}: ${partnerIdentityId}`);
 
 			if (!partnerIdentityId) {
 				return;
@@ -99,10 +101,14 @@ export class LiveConnect extends BaseServiceSetup {
 			this.storage.setItem(partnerName, partnerIdentityId, this.storageConfig.ttl);
 
 			communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
-				partnerName: name,
+				partnerName: trackingKeyName,
 				partnerIdentityId,
 			});
 		});
+	}
+
+	getTrackingKeyName(key: string): string {
+		return idConfigMapping.find((config) => config.id === key)?.name;
 	}
 
 	setupStorage(): void {
