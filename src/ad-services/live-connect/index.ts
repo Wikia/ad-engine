@@ -79,13 +79,13 @@ export class LiveConnect extends BaseServiceSetup {
 	}
 
 	trackIds(liQResponse: LiQResolveResponse): void {
-		if (liQResponse.unifiedId) {
-			communicationService.emit(eventsRepository.LIVE_CONNECT_RESPONDED_UUID);
-		}
-
 		idConfigMapping.forEach(({ id, name }) => {
 			if (!this.isAvailableInStorage(name)) {
 				return;
+			}
+
+			if (liQResponse.unifiedId) {
+				communicationService.emit(eventsRepository.LIVE_CONNECT_RESPONDED_UUID);
 			}
 
 			const partnerIdentityId = liQResponse[id];
