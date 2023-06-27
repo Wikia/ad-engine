@@ -31,7 +31,7 @@ export const basicContext = {
 			pubname: '2033',
 			miniPlayerWidgetname: '001w000001Y8ud2AAB_M7540',
 			libraryUrl: 'https://player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/acins.js',
-			loadOnPageLoad: true,
+			loadWithoutAnchor: true,
 		},
 		durationMedia: {
 			libraryUrl: '//tag.durationmedia.net/sites/11353/dm.js',

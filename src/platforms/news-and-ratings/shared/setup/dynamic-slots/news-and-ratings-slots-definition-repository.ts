@@ -1,6 +1,14 @@
-import { Anyclip, context, InstantConfigService, utils } from '@wikia/ad-engine';
+import { activateFloorAdhesionOnUAP, SlotSetupDefinition } from '@platforms/shared';
+import {
+	Anyclip,
+	communicationService,
+	context,
+	eventsRepository,
+	InstantConfigService,
+	scrollListener,
+	utils,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { SlotSetupDefinition } from '../../../../shared';
 
 const logGroup = 'dynamic-slots';
 
@@ -25,6 +33,34 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
 			},
+		};
+	}
+
+	getFloorAdhesionConfig(): SlotSetupDefinition {
+		const slotName = 'floor_adhesion';
+
+		const activateFloorAdhesion = () => {
+			const numberOfViewportsFromTopToPush: number =
+				this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
+
+			if (numberOfViewportsFromTopToPush === -1) {
+				context.push('state.adStack', { id: slotName });
+			} else {
+				communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+					const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
+					scrollListener.addSlot(slotName, { distanceFromTop: distance });
+				});
+			}
+		};
+
+		return {
+			slotCreatorConfig: {
+				slotName,
+				anchorSelector: 'body',
+				insertMethod: 'append',
+				classList: ['hide', 'ad-slot'],
+			},
+			activator: () => activateFloorAdhesionOnUAP(activateFloorAdhesion),
 		};
 	}
 

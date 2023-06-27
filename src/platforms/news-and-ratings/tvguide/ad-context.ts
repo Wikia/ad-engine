@@ -66,6 +66,7 @@ export const basicContext = {
 			incontentPlayerWidgetname: '001w000001Y8ud2AAB_M8046',
 			miniPlayerWidgetname: '001w000001Y8ud2AAB_M7985',
 			libraryUrl: '//player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/acins.js',
+			loadWithoutAnchor: true,
 		},
 		durationMedia: {
 			libraryUrl: '//tag.durationmedia.net/sites/11359/dm.js',
