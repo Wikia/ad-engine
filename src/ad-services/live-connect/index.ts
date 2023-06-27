@@ -79,6 +79,8 @@ export class LiveConnect extends BaseServiceSetup {
 	}
 
 	trackIds(liQResponse: LiQResolveResponse): void {
+		utils.logger(logGroup, 'resolve response:', liQResponse);
+
 		Object.keys(liQResponse).forEach((key) => {
 			const trackingKeyName = this.getTrackingKeyName(key);
 
