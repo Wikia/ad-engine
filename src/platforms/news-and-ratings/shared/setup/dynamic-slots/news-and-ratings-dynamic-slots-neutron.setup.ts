@@ -6,6 +6,7 @@ import {
 	Dictionary,
 	DiProcess,
 	eventsRepository,
+	targetingService,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -147,6 +148,14 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 				context.push('state.adStack', { id: slotName });
 			},
 		};
+
+		const uapKeyval = targetingService.get('uap', 'top_leaderboard');
+		const uapCreativeKeyval = targetingService.get('uap_c', 'top_leaderboard');
+
+		if (uapKeyval && uapCreativeKeyval) {
+			context.set(`slots.${slotName}.targeting.uap`, uapKeyval);
+			context.set(`slots.${slotName}.targeting.uap_c`, uapCreativeKeyval);
+		}
 
 		if (!baseSlotName) {
 			context.set(
