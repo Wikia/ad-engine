@@ -4,7 +4,13 @@ import { BaseServiceSetup, context, localCache, UniversalStorage, utils } from '
 interface IdConfig {
 	id: string;
 	name: string;
-	params?: LiQParams;
+}
+
+interface LiQResolveResponse {
+	sha1?: string;
+	sha2?: string;
+	md5?: string;
+	unifiedId?: string;
 }
 
 interface CachingStrategyConfig {
@@ -19,9 +25,9 @@ const liveConnectScriptUrl = 'https://b-code.liadm.com/a-07ev.min.js';
 
 const idConfigMapping: IdConfig[] = [
 	{ id: 'unifiedId', name: `${partnerName}-unifiedId` },
-	{ id: 'sha2', name: partnerName, params: { qf: '0.3', resolve: 'sha2' } },
-	{ id: 'md5', name: `${partnerName}-md5`, params: { qf: '0.3', resolve: 'md5' } },
-	{ id: 'sha1', name: `${partnerName}-sha1`, params: { qf: '0.3', resolve: 'sha1' } },
+	{ id: 'sha2', name: partnerName },
+	{ id: 'md5', name: `${partnerName}-md5` },
+	{ id: 'sha1', name: `${partnerName}-sha1` },
 ];
 
 export class LiveConnect extends BaseServiceSetup {
@@ -47,7 +53,7 @@ export class LiveConnect extends BaseServiceSetup {
 				.loadScript(liveConnectScriptUrl, 'text/javascript', true, 'first')
 				.then(() => {
 					utils.logger(logGroup, 'loaded');
-					this.track();
+					this.resolveAndTrackIds();
 				});
 		} else {
 			communicationService.emit(eventsRepository.LIVE_CONNECT_CACHED);
@@ -55,15 +61,36 @@ export class LiveConnect extends BaseServiceSetup {
 		}
 	}
 
-	resolveId(idName, partnerName) {
-		return (nonId) => {
-			const partnerIdentityId = nonId[idName];
+	resolveAndTrackIds(): void {
+		if (!window.liQ) {
+			utils.warner(logGroup, 'window.liQ not available for tracking');
+			return;
+		}
 
-			utils.logger(logGroup, `id ${idName}: ${partnerIdentityId}`);
+		window.liQ.resolve(
+			(result) => {
+				this.trackIds(result);
+			},
+			(err) => {
+				console.error(err);
+			},
+			{ qf: '0.3', resolve: ['sha1', 'sha2', 'md5', 'unifiedId'] },
+		);
+	}
 
-			if (idName === 'unifiedId') {
-				communicationService.emit(eventsRepository.LIVE_CONNECT_RESPONDED_UUID);
+	trackIds(liQResponse: LiQResolveResponse): void {
+		if (liQResponse.unifiedId) {
+			communicationService.emit(eventsRepository.LIVE_CONNECT_RESPONDED_UUID);
+		}
+
+		idConfigMapping.forEach(({ id, name }) => {
+			if (!this.isAvailableInStorage(name)) {
+				return;
 			}
+
+			const partnerIdentityId = liQResponse[id];
+
+			utils.logger(logGroup, `id ${id}: ${partnerIdentityId}`);
 
 			if (!partnerIdentityId) {
 				return;
@@ -75,28 +102,6 @@ export class LiveConnect extends BaseServiceSetup {
 				partnerName,
 				partnerIdentityId,
 			});
-		};
-	}
-
-	resolveAndReportId(idName: string, partnerName: string, params?: LiQParams) {
-		window.liQ.resolve(
-			this.resolveId(idName, partnerName),
-			(err) => {
-				utils.warner(logGroup, err);
-			},
-			params,
-		);
-	}
-
-	track(): void {
-		if (!window.liQ) {
-			utils.warner(logGroup, 'window.liQ not available for tracking');
-			return;
-		}
-		idConfigMapping.forEach(({ id, name, params }) => {
-			if (!this.isAvailableInStorage(name)) {
-				this.resolveAndReportId(id, name, params);
-			}
 		});
 	}
 

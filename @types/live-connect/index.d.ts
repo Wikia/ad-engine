@@ -8,5 +8,7 @@ interface LiQ {
 
 interface LiQParams {
 	qf: string;
-	resolve: 'sha1' | 'sha2' | 'md5';
+	resolve: LiQResolveParams[];
 }
+
+type LiQResolveParams = 'sha1' | 'sha2' | 'md5' | 'unifiedId';
