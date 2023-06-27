@@ -5,18 +5,20 @@ const logGroup = 'wunderkind';
 
 export class Wunderkind extends BaseServiceSetup {
 	call(): void {
+		if (context.get('state.isLogged')) {
+			utils.logger(logGroup, 'disabled - user is logged');
+			return;
+		}
+
 		if (!this.instantConfig.get('icWunderkind')) {
 			utils.logger(logGroup, 'disabled');
-			return;
-		} else if (context.get('state.isLogged')) {
-			utils.logger(logGroup, 'disabled - user is logged');
 			return;
 		}
 
 		communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
 			if (action.isLoaded) {
-			    utils.logger(logGroup, 'disabled - UAP is loaded');
-			    return;
+				utils.logger(logGroup, 'disabled - UAP is loaded');
+				return;
 			}
 			this.loadScript();
 		});
