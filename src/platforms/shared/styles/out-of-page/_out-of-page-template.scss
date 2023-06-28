@@ -1,13 +1,13 @@
-$out-of-page-z-index: 5000101;
+@import './out-of-page-variables';
 
-@mixin out-of-page-template() {
+@mixin out-of-page-template($z-index: $out-of-page-z-index) {
 	.out-of-page-template {
 		align-items: center;
 		display: flex;
 		justify-content: center;
 		position: fixed;
 		width: 100%;
-		z-index: $out-of-page-z-index;
+		z-index: $z-index;
 
 		& > .button-close {
 			align-items: center;
@@ -22,7 +22,7 @@ $out-of-page-z-index: 5000101;
 			position: absolute;
 			right: 0;
 			//This is needed to make sure that close button is always displayed above ad
-			z-index: $out-of-page-z-index;
+			z-index: $z-index;
 
 			&:hover {
 				background: #333;

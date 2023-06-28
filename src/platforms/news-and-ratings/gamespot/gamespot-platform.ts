@@ -13,8 +13,8 @@ import { Injectable } from '@wikia/dependency-injection';
 import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
 import {
 	BiddersStateOverwriteSetup,
-	LazyLoadedSlotsContextSetup,
 	NewsAndRatingsAdsMode,
+	NewsAndRatingsAnyclipSetup,
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsTargetingSetup,
 	NewsAndRatingsWadSetup,
@@ -47,10 +47,10 @@ export class GameSpotPlatform {
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			NewsAndRatingsTargetingSetup,
+			NewsAndRatingsAnyclipSetup,
 			GamespotTargetingSetup,
 			GamespotSlotsContextSetup,
 			SlotsConfigurationExtender,
-			LazyLoadedSlotsContextSetup,
 			GamespotDynamicSlotsSetup,
 			GamespotPrebidConfigSetup,
 			GamespotA9ConfigSetup,

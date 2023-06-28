@@ -25,6 +25,12 @@ export const basicContext = {
 			bidder: 1000,
 		},
 	},
+	events: {
+		pushOnScroll: {
+			ids: [],
+			threshold: 100,
+		},
+	},
 	services: {
 		durationMedia: {
 			libraryUrl: '//tag.durationmedia.net/sites/11355/dm.js',

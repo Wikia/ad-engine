@@ -11,8 +11,6 @@ const logGroup = 'SPA';
 
 @Injectable()
 export class NewsAndRatingsNeutronHelper {
-	private firstPageview = true;
-
 	setupPageExtendedWatcher(container: Container, ...steps: any[]) {
 		communicationService.on(
 			eventsRepository.PLATFORM_PAGE_EXTENDED,
@@ -34,11 +32,6 @@ export class NewsAndRatingsNeutronHelper {
 		communicationService.on(
 			eventsRepository.PLATFORM_PAGE_CHANGED,
 			() => {
-				if (this.firstPageview) {
-					this.firstPageview = false;
-					return;
-				}
-
 				utils.logger(logGroup, 'url changed', location.href);
 
 				targetingService.clear();

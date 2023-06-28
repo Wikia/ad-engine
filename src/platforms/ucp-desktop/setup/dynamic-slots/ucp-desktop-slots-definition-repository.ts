@@ -1,4 +1,4 @@
-import { SlotSetupDefinition } from '@platforms/shared';
+import { activateFloorAdhesionOnUAP, SlotSetupDefinition } from '@platforms/shared';
 import {
 	btRec,
 	communicationService,
@@ -252,6 +252,18 @@ export class UcpDesktopSlotsDefinitionRepository {
 
 		const slotName = 'floor_adhesion';
 
+		const activateFloorAdhesion = () => {
+			const numberOfViewportsFromTopToPush: number =
+				this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
+
+			if (numberOfViewportsFromTopToPush === -1) {
+				context.push('state.adStack', { id: slotName });
+			} else {
+				const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
+				scrollListener.addSlot(slotName, { distanceFromTop: distance });
+			}
+		};
+
 		return {
 			slotCreatorConfig: {
 				slotName,
@@ -259,21 +271,11 @@ export class UcpDesktopSlotsDefinitionRepository {
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
 			},
-			activator: () => {
-				const numberOfViewportsFromTopToPush: number =
-					this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
-
-				if (numberOfViewportsFromTopToPush === -1) {
-					context.push('state.adStack', { id: slotName });
-				} else {
-					const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
-					scrollListener.addSlot(slotName, { distanceFromTop: distance });
-				}
-			},
+			activator: () => activateFloorAdhesionOnUAP(activateFloorAdhesion),
 		};
 	}
 
 	private isFloorAdhesionApplicable(): boolean {
-		return this.instantConfig.get('icFloorAdhesion') && !context.get('custom.hasFeaturedVideo');
+		return !context.get('custom.hasFeaturedVideo');
 	}
 }
