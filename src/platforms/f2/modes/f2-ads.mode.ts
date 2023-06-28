@@ -19,7 +19,7 @@ import { Injectable } from '@wikia/dependency-injection';
 @Injectable()
 export class F2AdsMode implements DiProcess {
 	constructor(
-		private pipeline: PartnerPipeline,
+		private adEngineStackSetup: AdEngineStackSetup,
 		private audigent: Audigent,
 		private captify: Captify,
 		private doubleVerify: DoubleVerify,
@@ -29,9 +29,9 @@ export class F2AdsMode implements DiProcess {
 		private liveConnect: LiveConnect,
 		private liveRampPixel: LiveRampPixel,
 		private nielsen: Nielsen,
+		private pipeline: PartnerPipeline,
 		private playerSetup: PlayerSetup,
 		private wadRunner: WadRunner,
-		private adEngineStackSetup: AdEngineStackSetup,
 	) {}
 
 	execute(): void {
