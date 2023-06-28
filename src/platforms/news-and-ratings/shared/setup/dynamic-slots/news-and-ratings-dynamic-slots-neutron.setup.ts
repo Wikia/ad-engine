@@ -42,7 +42,7 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 					}
 
 					utils.logger(logGroup, 'Ad placement rendered', placementId);
-          
+
 					if (this.repeatedSlotsCounter[placementId]) {
 						this.scheduleRepeatedSlotInjection(placementId);
 						return;
@@ -65,10 +65,8 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 				}
 			});
 
-			communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {
-				document.getElementById('floor_adhesion')?.remove();
-				insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
-			});
+			document.getElementById('floor_adhesion')?.remove();
+			insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
 
 			utils.logger(logGroup, 'Inserting slots without DOM elements');
 			insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);

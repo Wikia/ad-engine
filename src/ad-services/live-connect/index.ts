@@ -83,7 +83,7 @@ export class LiveConnect extends BaseServiceSetup {
 		if (defaultParams) {
 			params = {
 				...defaultParams,
-				qf: this.instantConfig.get<string>('icLiveConnectQf') || defaultParams.qf,
+				qf: this.instantConfig.get<number>('icLiveConnectQf')?.toString() ?? defaultParams.qf,
 			};
 		}
 
