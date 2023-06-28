@@ -55,7 +55,6 @@ export class GamespotSlotsContextSetup implements DiProcess {
 				},
 			},
 			floor_adhesion: {
-				disabled: true,
 				adProduct: 'floor_adhesion',
 				group: 'PF',
 				targeting: {
