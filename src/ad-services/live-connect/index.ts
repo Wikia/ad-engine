@@ -2,7 +2,7 @@ import { communicationService, eventsRepository } from '@ad-engine/communication
 import { BaseServiceSetup, context, localCache, UniversalStorage, utils } from '@ad-engine/core';
 
 interface IdConfig {
-	id: string;
+	id: LiQResolveParams;
 	name: string;
 }
 
@@ -67,7 +67,7 @@ export class LiveConnect extends BaseServiceSetup {
 			(err) => {
 				console.error(err);
 			},
-			{ qf: '0.3', resolve: idConfigMapping.map(config => config.id) },
+			{ qf: '0.3', resolve: idConfigMapping.map((config) => config.id) },
 		);
 	}
 
@@ -81,7 +81,7 @@ export class LiveConnect extends BaseServiceSetup {
 				return;
 			}
 
-			if (key  === 'unifiedId') {
+			if (key === 'unifiedId') {
 				communicationService.emit(eventsRepository.LIVE_CONNECT_RESPONDED_UUID);
 			}
 
