@@ -16,6 +16,7 @@ import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-exte
 import {
 	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
+	NewsAndRatingsAnyclipSetup,
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsTargetingSetup,
 	NewsAndRatingsWadSetup,
@@ -48,6 +49,7 @@ export class MetacriticPlatform {
 			NewsAndRatingsWadSetup,
 			IdentitySetup,
 			NewsAndRatingsTargetingSetup,
+			NewsAndRatingsAnyclipSetup,
 			MetacriticTargetingSetup,
 			MetacriticSlotsContextSetup,
 			MetacriticDynamicSlotsSetup,

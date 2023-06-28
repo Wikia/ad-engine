@@ -14,6 +14,7 @@ import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-exte
 import {
 	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
+	NewsAndRatingsAnyclipSetup,
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsTargetingSetup,
 	NewsAndRatingsWadSetup,
@@ -47,6 +48,7 @@ export class GameSpotPlatform {
 			NewsAndRatingsWadSetup,
 			IdentitySetup,
 			NewsAndRatingsTargetingSetup,
+			NewsAndRatingsAnyclipSetup,
 			GamespotTargetingSetup,
 			GamespotSlotsContextSetup,
 			SlotsConfigurationExtender,

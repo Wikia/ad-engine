@@ -14,6 +14,7 @@ import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-exte
 import {
 	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
+	NewsAndRatingsAnyclipSetup,
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsDynamicSlotsSetup,
 	NewsAndRatingsTargetingSetup,
@@ -45,6 +46,7 @@ export class GiantbombPlatform {
 			NewsAndRatingsWadSetup,
 			IdentitySetup,
 			NewsAndRatingsTargetingSetup,
+			NewsAndRatingsAnyclipSetup,
 			GiantbombTargetingSetup,
 			GiantbombSlotsContextSetup,
 			SlotsConfigurationExtender,
