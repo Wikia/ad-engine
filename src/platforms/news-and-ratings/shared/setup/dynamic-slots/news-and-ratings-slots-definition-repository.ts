@@ -10,6 +10,7 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
+const logGroup = 'dynamic-slots';
 @Injectable()
 export class NewsAndRatingsSlotsDefinitionRepository {
 	constructor(protected instantConfig: InstantConfigService) {}
@@ -60,7 +61,6 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 			},
 			activator: () =>
 				activateFloorAdhesionOnUAP(activateFloorAdhesion, !this.isFloorAdhesionNonUapApplicable()),
-
 		};
 	}
 
