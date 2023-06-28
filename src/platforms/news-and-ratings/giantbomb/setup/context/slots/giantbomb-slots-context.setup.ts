@@ -11,19 +11,68 @@ export class GiantbombSlotsContextSetup implements DiProcess {
 					'/{custom.dfpId}/{slotConfig.group}/{slotConfig.adProduct}' +
 					'/{custom.device}{custom.region}-{custom.property}{custom.pagePath}',
 				group: 'IU',
-				options: {},
 				outOfPage: true,
 				outOfPageFormat: 'INTERSTITIAL',
 				targeting: {
 					loc: 'hivi',
 				},
 			},
-			'skybox-nav': {
-				defaultSizes: [[5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
+			top_leaderboard: {
+				firstCall: true,
+				adProduct: 'top_leaderboard',
+				group: 'LB',
+				sizes: [
+					{
+						viewportSize: [970, 200],
+						sizes: [[728, 90], [970, 250], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
+					},
+					{
+						viewportSize: [840, 200],
+						sizes: [[728, 90], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
+					},
+					{
+						viewportSize: [320, 200],
+						sizes: [[320, 50], [320, 100], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
+					},
+					{
+						viewportSize: [0, 0],
+						sizes: [[320, 50]],
+					},
+				],
+				defaultSizes: [
+					[728, 90],
+					[970, 250],
+				],
+				defaultTemplates: [],
 				targeting: {
-					pos_nr: 'nav',
 					loc: 'top',
+					pos_nr: 'nav',
 				},
+			},
+			floor_adhesion: {
+				disabled: true,
+				adProduct: 'floor_adhesion',
+				group: 'PF',
+				targeting: {
+					loc: 'footer',
+				},
+				defaultTemplates: ['floorAdhesion'],
+				defaultSizes: [[728, 90]],
+				sizes: [
+					{
+						viewportSize: [0, 0],
+						sizes: [
+							[300, 50],
+							[320, 50],
+							[320, 100],
+						],
+					},
+					{
+						// 728px for the ad + 40px width of the close button
+						viewportSize: [768, 0],
+						sizes: [[728, 90]],
+					},
+				],
 			},
 			leader_plus_top: {
 				defaultSizes: [
@@ -105,13 +154,6 @@ export class GiantbombSlotsContextSetup implements DiProcess {
 				],
 				targeting: {
 					pos_nr: 'top',
-				},
-			},
-			'mobile-skybox-nav': {
-				defaultSizes: [[5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
-				targeting: {
-					pos_nr: 'nav',
-					loc: 'top',
 				},
 			},
 			'mobile-native': {

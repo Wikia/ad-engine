@@ -40,6 +40,7 @@ describe('Audigent', () => {
 		context.set('options.optOutSale', false);
 
 		context.set('wiki.targeting.directedAtChildren', false);
+		window.fandomContext.partners.directedAtChildren = false;
 	});
 
 	afterEach(() => {
@@ -99,6 +100,7 @@ describe('Audigent', () => {
 
 	it('Audigent not called on kid wikis', async () => {
 		context.set('wiki.targeting.directedAtChildren', true);
+		window.fandomContext.partners.directedAtChildren = true;
 
 		await audigent.call();
 

@@ -1,6 +1,8 @@
 import { slotsContext } from '@platforms/shared';
 import {
+	communicationService,
 	context,
+	eventsRepository,
 	TEMPLATE,
 	TemplateStateHandler,
 	UapParams,
@@ -16,6 +18,7 @@ export class BfaaUcpMobileConfigHandler implements TemplateStateHandler {
 		const enabledSlots: string[] = ['top_boxad', 'mobile_prefooter', 'bottom_leaderboard'];
 
 		if (this.params.newTakeoverConfig) {
+			communicationService.emit(eventsRepository.AD_ENGINE_UAP_NTC_LOADED);
 			enabledSlots.push('floor_adhesion');
 		}
 
