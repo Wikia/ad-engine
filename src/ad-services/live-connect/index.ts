@@ -67,7 +67,7 @@ export class LiveConnect extends BaseServiceSetup {
 			(err) => {
 				console.error(err);
 			},
-			{ qf: '0.3', resolve: ['sha1', 'sha2', 'md5', 'unifiedId'] },
+			{ qf: '0.3', resolve: idConfigMapping.map(config => config.id) },
 		);
 	}
 
@@ -77,11 +77,11 @@ export class LiveConnect extends BaseServiceSetup {
 		Object.keys(liQResponse).forEach((key) => {
 			const trackingKeyName = this.getTrackingKeyName(key);
 
-			if (!this.isAvailableInStorage(trackingKeyName)) {
+			if (this.isAvailableInStorage(trackingKeyName)) {
 				return;
 			}
 
-			if (liQResponse.unifiedId) {
+			if (key  === 'unifiedId') {
 				communicationService.emit(eventsRepository.LIVE_CONNECT_RESPONDED_UUID);
 			}
 
