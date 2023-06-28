@@ -72,8 +72,6 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 			this.instantConfig.get('icComscoreJwpTracking'),
 		);
 		context.set('options.video.pauseJWPlayerAd', this.instantConfig.get('icPauseJWPlayerAd'));
-
-		context.set('services.anyclip.widgetname', this.instantConfig.get('icAnyclipWidgetName'));
 		context.set(
 			'services.anyclip.anyclipTagExists',
 			!!this.getDataSettingsFromMetaTag()?.anyclip ||

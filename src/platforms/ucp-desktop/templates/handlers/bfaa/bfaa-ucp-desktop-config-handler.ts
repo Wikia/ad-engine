@@ -12,10 +12,12 @@ import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })
 export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
+	private enabledSlots: string[] = ['top_boxad', 'incontent_boxad_1', 'bottom_leaderboard'];
+
 	constructor(@Inject(TEMPLATE.PARAMS) private params: UapParams) {}
 
 	async onEnter(): Promise<void> {
-		const enabledSlots: string[] = ['top_boxad', 'incontent_boxad_1', 'bottom_leaderboard'];
+		this.configureFloorAdhesionExperiment();
 
 		if (this.params.newTakeoverConfig) {
 			communicationService.emit(eventsRepository.AD_ENGINE_UAP_NTC_LOADED);
@@ -23,9 +25,9 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 
 		universalAdPackage.init(
 			this.params,
-			enabledSlots,
+			this.enabledSlots,
 			Object.keys(context.get('slots') || []).filter(
-				(slotName) => !enabledSlots.includes(slotName),
+				(slotName) => !this.enabledSlots.includes(slotName),
 			),
 		);
 
@@ -39,5 +41,18 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 			'bottom_leaderboard',
 			universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.unified,
 		);
+	}
+
+	private configureFloorAdhesionExperiment() {
+		if (context.get('options.ntc.floorEnabled')) {
+			this.enabledSlots = [
+				'top_boxad',
+				'incontent_boxad_1',
+				'bottom_leaderboard',
+				'floor_adhesion',
+			];
+
+			document.body.classList.add('floor-adhesion-experiment');
+		}
 	}
 }

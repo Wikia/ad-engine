@@ -1,8 +1,6 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { Dictionary } from '../';
-import { slotService } from '../services/slot-service';
-import { getTopOffset, getViewportHeight } from '../utils/dimensions';
-import { logger } from '../utils/logger';
+import { slotService } from '../services';
+import { getTopOffset, getViewportHeight, logger } from '../utils';
 
 type ScrollListenerCallback = (event: string, callbackId: string) => void;
 
@@ -91,10 +89,6 @@ export class ScrollListener {
 		const id: string = this.getUniqueId();
 
 		this.callbacks[id] = callback;
-
-		communicationService.on(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE, () =>
-			this.removeCallback(id),
-		);
 
 		return id;
 	}

@@ -8,7 +8,6 @@ export const configMock = {
 	},
 	slots: {
 		top_leaderboard: {
-			aboveTheFold: true,
 			firstCall: true,
 			sizes: [
 				{
@@ -87,7 +86,6 @@ export const configMock = {
 		},
 		top_boxad: {
 			slotName: 'top_boxad',
-			aboveTheFold: true,
 			sizes: [
 				{
 					viewportSize: [0, 0],
