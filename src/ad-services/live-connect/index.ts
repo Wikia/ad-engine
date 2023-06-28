@@ -6,13 +6,6 @@ interface IdConfig {
 	name: string;
 }
 
-interface LiQResolveResponse {
-	sha1?: string;
-	sha2?: string;
-	md5?: string;
-	unifiedId?: string;
-}
-
 interface CachingStrategyConfig {
 	type: 'local' | 'session';
 	mandatoryParams: string[];
