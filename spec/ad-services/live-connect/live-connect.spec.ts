@@ -74,7 +74,7 @@ describe('LiveConnect', () => {
 		await liveConnect.resolveAndReportId('unifiedId', 'fandom', { qf: 0.3 });
 
 		expect(
-			liqStub.args[0].filter((arg) => typeof arg === 'object').map((arg) => JSON.stringify(arg)),
+			liqStub.calledWith(sinon.match.func, sinon.match.func, { qf: 0.5 })
 		).to.contain('{"qf":0.5}');
 	});
 
