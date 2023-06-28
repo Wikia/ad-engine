@@ -7,7 +7,7 @@ export class DurationMedia extends BaseServiceSetup {
 	call(): Promise<void> {
 		const libraryUrl: string = context.get('services.durationMedia.libraryUrl');
 
-		if (this.isEnabled('icDurationMedia', false) || !libraryUrl) {
+		if (this.isEnabled('icDurationMedia', false) && libraryUrl) {
 			// DM is refreshing slots, so let's load it only after at least one slot is filled
 			communicationService.on(
 				eventsRepository.AD_ENGINE_SLOT_LOADED,
