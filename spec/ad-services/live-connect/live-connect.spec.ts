@@ -14,17 +14,16 @@ describe('LiveConnect', () => {
 	let liveConnect;
 	let loadScriptStub, instantConfigStub;
 
-	before(() => {
-		context.set('services.liveConnect.cachingStrategy', mockedStorageStrategyVariable);
-	});
-
 	beforeEach(() => {
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
+		instantConfigStub.get.withArgs('icLiveConnect').returns(true);
+		instantConfigStub.get
+			.withArgs('icLiveConnectCachingStrategy')
+			.returns(mockedStorageStrategyVariable);
 		instantConfigStub.get.withArgs('icIdentityPartners').returns(false);
 		loadScriptStub = global.sandbox
 			.stub(utils.scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
-		context.set('services.liveConnect.enabled', true);
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);
 		context.set('wiki.targeting.directedAtChildren', false);
@@ -35,7 +34,6 @@ describe('LiveConnect', () => {
 	});
 
 	after(() => {
-		context.set('services.liveConnect.cachingStrategy', mockedStorageStrategyVariable);
 		delete window.fandomContext;
 	});
 
@@ -46,7 +44,7 @@ describe('LiveConnect', () => {
 	});
 
 	it('Live Connect can be disabled', async () => {
-		context.set('services.liveConnect.enabled', false);
+		instantConfigStub.get.withArgs('icLiveConnect').returns(false);
 
 		await liveConnect.call();
 

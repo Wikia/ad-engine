@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { BaseServiceSetup, context, localCache, UniversalStorage, utils } from '@ad-engine/core';
+import { BaseServiceSetup, localCache, UniversalStorage, utils } from '@ad-engine/core';
 
 interface IdConfig {
 	id: LiQResolveParams;
@@ -29,7 +29,8 @@ export class LiveConnect extends BaseServiceSetup {
 
 	call(): void {
 		if (
-			!this.isEnabled(['services.liveConnect.enabled', 'services.liveConnect.cachingStrategy']) ||
+			!this.isEnabled('icLiveConnect') ||
+			!this.isEnabled('icLiveConnectCachingStrategy') ||
 			this.isEnabled('icIdentityPartners', false)
 		) {
 			utils.logger(logGroup, 'disabled');
@@ -107,7 +108,9 @@ export class LiveConnect extends BaseServiceSetup {
 	}
 
 	setupStorage(): void {
-		this.storageConfig = context.get('services.liveConnect.cachingStrategy');
+		this.storageConfig = this.instantConfig.get<CachingStrategyConfig>(
+			'icLiveConnectCachingStrategy',
+		);
 
 		if (this.storageConfig.type === 'local') {
 			this.storage = localCache;

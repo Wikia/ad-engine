@@ -194,11 +194,6 @@ export class BaseContextSetup implements DiProcess {
 			'services.interventionTracker.enabled',
 			this.instantConfig.get('icInterventionTracking'),
 		);
-		context.set('services.liveConnect.enabled', this.instantConfig.get('icLiveConnect'));
-		context.set(
-			'services.liveConnect.cachingStrategy',
-			this.instantConfig.get('icLiveConnectCachingStrategy'),
-		);
 		context.set('services.nativo.enabled', this.instantConfig.get('icNativo'));
 		context.set('services.sailthru.enabled', this.instantConfig.get('icSailthru'));
 		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
