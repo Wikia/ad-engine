@@ -36,4 +36,18 @@ body:not(.skybox-loaded) {
 	}
 }
 
+body:not(.c-siteHeader_menu-mobile) {
+	.c-adSkyBox,
+	.c-adSkyBox .c-adDisplay_container {
+		display: block;
+	}
+}
+
+body:has(.c-siteHeader_menu-mobile) {
+	.c-adSkyBox,
+	.c-adSkyBox .c-adDisplay_container {
+		display: none;
+	}
+}
+
 @include out-of-page-styles();

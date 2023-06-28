@@ -10,6 +10,8 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
+const logGroup = 'dynamic-slots';
+
 @Injectable()
 export class NewsAndRatingsSlotsDefinitionRepository {
 	constructor(protected instantConfig: InstantConfigService) {}
@@ -68,6 +70,7 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 
 	getIncontentPlayerConfig(): SlotSetupDefinition | undefined {
 		if (!Anyclip.isApplicable()) {
+			utils.logger(logGroup, 'Aborting insertion of incontent_player');
 			return;
 		}
 

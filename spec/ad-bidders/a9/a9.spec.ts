@@ -26,6 +26,10 @@ describe('A9Provider', () => {
 			global.sandbox.stub(Apstag, 'make').returns({} as Apstag);
 		});
 
+		afterEach(() => {
+			window.fandomContext.partners.directedAtChildren = undefined;
+		});
+
 		it('should be enabled when matches COPPA requirements and feature flag is turned on', () => {
 			const testCases: {
 				a9: boolean;
@@ -39,7 +43,8 @@ describe('A9Provider', () => {
 
 			testCases.forEach((testCase) => {
 				context.set('bidders.a9.enabled', testCase.a9);
-				context.set('wiki.targeting.directedAtChildren', testCase.directedAtChildren);
+				window.fandomContext.partners.directedAtChildren = testCase.directedAtChildren;
+
 				expect(A9Provider.isEnabled()).to.equal(testCase.enabled);
 			});
 		});

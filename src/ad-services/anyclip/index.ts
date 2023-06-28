@@ -11,12 +11,11 @@ import { AnyclipTracker } from './anyclip-tracker';
 const logGroup = 'Anyclip';
 const SUBSCRIBE_FUNC_NAME = 'lreSubscribe';
 const isSubscribeReady = () => typeof window[SUBSCRIBE_FUNC_NAME] !== 'undefined';
-const incontentSlotExists = () => {
-	const slotName = 'incontent_player';
+const isPlayerAdSlotReady = (slotName = 'incontent_player') => {
 	const adSlot = slotService.get(slotName);
 	const domReady = !!document.getElementById(slotName);
 
-	utils.logger(logGroup, 'Waiting for incontent_player ready', domReady, adSlot);
+	utils.logger(logGroup, `Waiting for player ad slot (${slotName}) ready`, domReady, adSlot);
 
 	return domReady && adSlot !== null;
 };
@@ -110,7 +109,7 @@ export class Anyclip extends BaseServiceSetup {
 						window[SUBSCRIBE_FUNC_NAME],
 					);
 
-					this.waitForIncontentSlotReady().then(() => {
+					this.waitForPlayerAdSlot().then(() => {
 						this.tracker.trackInit();
 					});
 
@@ -137,9 +136,24 @@ export class Anyclip extends BaseServiceSetup {
 	private initIncontentPlayer() {
 		const slotName = 'incontent_player';
 		const playerAdSlot = slotService.get(slotName);
+		const playerElementId = context.get('services.anyclip.playerElementId');
 
-		if (!playerAdSlot) {
+		if (!playerAdSlot && !playerElementId) {
 			utils.logger(logGroup, 'No incontent player - aborting');
+			return;
+		}
+
+		if (playerElementId) {
+			this.waitForPlayerAdSlot(playerElementId).then(() => {
+				if (!isPlayerAdSlotReady()) {
+					utils.logger(logGroup, 'No incontent player - aborting');
+					return;
+				}
+
+				const playerElement = document.getElementById(playerElementId);
+				this.loadPlayerAsset(playerElement);
+				playerElement.dataset.slotLoaded = 'true';
+			});
 			return;
 		}
 
@@ -151,7 +165,7 @@ export class Anyclip extends BaseServiceSetup {
 		return new utils.WaitFor(isSubscribeReady, 4, 250).until();
 	}
 
-	private waitForIncontentSlotReady(): Promise<boolean> {
-		return new utils.WaitFor(incontentSlotExists, 4, 250).until();
+	private waitForPlayerAdSlot(playerAdSlotName = 'incontent_player'): Promise<boolean> {
+		return new utils.WaitFor(() => isPlayerAdSlotReady(playerAdSlotName), 4, 250).until();
 	}
 }

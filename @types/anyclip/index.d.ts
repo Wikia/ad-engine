@@ -11,4 +11,5 @@ interface AnyclipWidget {
 	widgetId: string;
 	play: () => void;
 	destroy: () => void;
+	isDestroyed: () => boolean;
 }

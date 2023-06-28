@@ -6,6 +6,7 @@ import {
 	Dictionary,
 	DiProcess,
 	eventsRepository,
+	targetingService,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -27,6 +28,10 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 			communicationService.on(
 				eventsRepository.PLATFORM_AD_PLACEMENT_READY,
 				({ placementId }) => {
+					if (!placementId) {
+						return;
+					}
+
 					if (placementId.includes('skybox')) {
 						context.set('slots.top_leaderboard.bidderAlias', placementId);
 						context.set('slots.top_leaderboard.targeting.pos', ['top_leaderboard', placementId]);
@@ -37,6 +42,7 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 					}
 
 					utils.logger(logGroup, 'Ad placement rendered', placementId);
+          
 					if (this.repeatedSlotsCounter[placementId]) {
 						this.scheduleRepeatedSlotInjection(placementId);
 						return;
@@ -59,6 +65,11 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 				}
 			});
 
+			communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {
+				document.getElementById('floor_adhesion')?.remove();
+				insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
+			});
+
 			utils.logger(logGroup, 'Inserting slots without DOM elements');
 			insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
 		});
@@ -70,6 +81,9 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 				this.repeatedSlotsCounter = {};
 				this.repeatedSlotsRendered = [];
 				this.repeatedSlotsQueue = {};
+
+				utils.logger(logGroup, 'Removing slots without DOM elements');
+				document.getElementById('incontent_player')?.remove();
 			},
 			false,
 		);
@@ -144,6 +158,14 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 				context.push('state.adStack', { id: slotName });
 			},
 		};
+
+		const uapKeyval = targetingService.get('uap', 'top_leaderboard');
+		const uapCreativeKeyval = targetingService.get('uap_c', 'top_leaderboard');
+
+		if (uapKeyval && uapCreativeKeyval) {
+			context.set(`slots.${slotName}.targeting.uap`, uapKeyval);
+			context.set(`slots.${slotName}.targeting.uap_c`, uapCreativeKeyval);
+		}
 
 		if (!baseSlotName) {
 			context.set(

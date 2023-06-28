@@ -24,6 +24,9 @@ export class UcpDesktopA9ConfigSetup implements DiProcess {
 			incontent_leaderboard: {
 				sizes: [[728, 90]],
 			},
+			gallery_leaderboard: {
+				sizes: [[728, 90]],
+			},
 			incontent_boxad_1: {
 				sizes: [
 					[300, 250],
