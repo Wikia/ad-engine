@@ -1,7 +1,13 @@
 import { Anyclip } from '@wikia/ad-services';
+import { EventOptions } from '@wikia/communication';
+import {
+	communicationService,
+	CommunicationService,
+} from '@wikia/communication/communication-service';
 import { context, InstantConfigService, utils } from '@wikia/core';
 import { WaitFor } from '@wikia/core/utils';
 import { expect } from 'chai';
+import { SinonStubbedInstance } from 'sinon';
 
 describe('Anyclip', () => {
 	let anyclip: Anyclip;
@@ -10,6 +16,7 @@ describe('Anyclip', () => {
 	const mockIsNotApplicable = () => false;
 
 	let loadScriptStub, instantConfigStub;
+	let communicationServiceStub: SinonStubbedInstance<CommunicationService>;
 
 	beforeEach(() => {
 		global.sandbox.stub(WaitFor.prototype, 'until').returns(Promise.resolve());
@@ -20,7 +27,15 @@ describe('Anyclip', () => {
 		anyclip = new Anyclip(instantConfigStub);
 
 		context.set('custom.hasFeaturedVideo', false);
-		context.set('services.anyclip.loadOnPageLoad', true);
+		context.set('services.anyclip.loadWithoutAnchor', true);
+
+		communicationServiceStub = global.sandbox.stub(communicationService);
+		communicationServiceStub.on.callsFake(
+			(event: EventOptions, callback: (payload?: any) => void) => {
+				const payload = { isLoaded: false };
+				callback(payload);
+			},
+		);
 	});
 
 	afterEach(() => {
@@ -28,7 +43,7 @@ describe('Anyclip', () => {
 		global.sandbox.restore();
 
 		context.remove('custom.hasFeaturedVideo');
-		context.remove('services.anyclip.loadOnPageLoad');
+		context.remove('services.anyclip.loadWithoutAnchor');
 		context.remove('services.anyclip.isApplicable');
 		context.remove('services.anyclip.pubname');
 		context.remove('services.anyclip.widgetname');
@@ -44,6 +59,7 @@ describe('Anyclip', () => {
 
 	it('loads the script when isApplicable is not a function (FCP)', () => {
 		anyclip.call();
+
 		expect(loadScriptStub.called).to.equal(true);
 	});
 
@@ -62,7 +78,7 @@ describe('Anyclip', () => {
 	});
 
 	it('does not load the player when it is supposed to wait for UAP load event that never happens', () => {
-		context.set('services.anyclip.loadOnPageLoad', false);
+		context.set('services.anyclip.loadWithoutAnchor', false);
 		context.set('services.anyclip.isApplicable', mockedIsApplicable);
 
 		anyclip.call();

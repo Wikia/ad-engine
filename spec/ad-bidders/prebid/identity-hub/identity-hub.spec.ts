@@ -21,6 +21,10 @@ describe('Pubmatic IdentityHub', () => {
 		identityHub = new IdentityHub(instantConfigStub);
 	});
 
+	afterEach(() => {
+		delete window.fandomContext.partners.directedAtChildren;
+	});
+
 	it('pwt.js is called', async () => {
 		await identityHub.call();
 
@@ -53,6 +57,7 @@ describe('Pubmatic IdentityHub', () => {
 
 	it('IdentityHub is disabled on child-directed wiki', async () => {
 		contextStub.get.withArgs('wiki.targeting.directedAtChildren').returns(true);
+		window.fandomContext.partners.directedAtChildren = true;
 
 		await identityHub.call();
 
