@@ -40,7 +40,6 @@ class BTRec {
 
 		return utils.scriptLoader.loadScript(
 			btLibraryUrl,
-			'text/javascript',
 			true,
 			document.head.lastChild as HTMLElement,
 		);

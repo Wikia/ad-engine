@@ -55,6 +55,6 @@ export class Confiant extends BaseServiceSetup {
 	private loadScript(): Promise<Event> {
 		const confiantLibraryUrl = `//${this.scriptDomain}/${this.propertyId}/gpt_and_prebid/config.js`;
 
-		return utils.scriptLoader.loadScript(confiantLibraryUrl, 'text/javascript', true, 'first');
+		return utils.scriptLoader.loadScript(confiantLibraryUrl, true, 'first');
 	}
 }

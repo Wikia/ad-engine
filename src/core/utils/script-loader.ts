@@ -8,7 +8,6 @@ class ScriptLoader implements ScriptLoaderInterface {
 	 */
 	createScript(
 		src: string,
-		type = 'text/javascript',
 		isAsyncOrDeferOtherwise = true,
 		node: HTMLElement | string = null,
 		parameters: Record<string, string> = {},
@@ -18,7 +17,6 @@ class ScriptLoader implements ScriptLoaderInterface {
 
 		script.async = isAsyncOrDeferOtherwise;
 		script.defer = !isAsyncOrDeferOtherwise;
-		script.type = type;
 		script.src = src;
 
 		Object.keys(parameters).forEach((parameter) => {
@@ -47,7 +45,6 @@ class ScriptLoader implements ScriptLoaderInterface {
 	 */
 	loadScript(
 		src: string,
-		type = 'text/javascript',
 		isAsyncOrDeferOtherwise = true,
 		node: HTMLElement | string = null,
 		parameters: Record<string, string> = {},
@@ -56,7 +53,6 @@ class ScriptLoader implements ScriptLoaderInterface {
 		return new Promise((resolve, reject) => {
 			const script: HTMLScriptElement = this.createScript(
 				src,
-				type,
 				isAsyncOrDeferOtherwise,
 				node,
 				parameters,

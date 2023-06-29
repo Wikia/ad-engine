@@ -15,7 +15,7 @@ export class DurationMedia extends BaseServiceSetup {
 					utils.logger(logGroup, 'loading', libraryUrl);
 
 					utils.scriptLoader
-						.loadScript(libraryUrl, 'text/javascript', false, null, {
+						.loadScript(libraryUrl, false, null, {
 							id: 'dm-script',
 						})
 						.then(() => {
