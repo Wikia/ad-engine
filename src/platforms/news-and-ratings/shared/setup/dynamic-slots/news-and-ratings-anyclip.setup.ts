@@ -48,6 +48,7 @@ export class NewsAndRatingsAnyclipSetup implements DiProcess {
 			context.get('services.anyclip.miniPlayerWidgetname'),
 		);
 		context.set('services.anyclip.playerElementSelector', null);
+		context.set('services.anyclip.loadWithoutAnchor', true);
 		context.set('services.anyclip.loadOnPageLoad', true);
 		context.set('services.anyclip.latePageInject', false);
 		context.set('custom.hasIncontentPlayer', false);
@@ -59,6 +60,7 @@ export class NewsAndRatingsAnyclipSetup implements DiProcess {
 			context.get('services.anyclip.incontentPlayerWidgetname'),
 		);
 		context.set('services.anyclip.playerElementId', 'incontent_player');
+		context.set('services.anyclip.loadWithoutAnchor', false);
 		context.set('services.anyclip.loadOnPageLoad', false);
 		context.set('services.anyclip.latePageInject', false);
 		context.set('custom.hasIncontentPlayer', true);
