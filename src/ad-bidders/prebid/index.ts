@@ -173,7 +173,7 @@ export class PrebidProvider extends BidderProvider {
 						extPrebid: {
 							bidders: {
 								mgnipbs: {
-									wrappername: 'test-div', // to be changed after Demand Server UI Setup
+									wrappername: 'Web_Server',
 								},
 							},
 						},
