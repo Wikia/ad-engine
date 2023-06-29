@@ -94,7 +94,7 @@ export class LiveConnect extends BaseServiceSetup {
 				return;
 			}
 
-			this.storage.setItem(partnerName, partnerIdentityId, this.storageConfig.ttl);
+			this.storage.setItem(trackingKeyName, partnerIdentityId, this.storageConfig.ttl);
 
 			communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
 				partnerName: trackingKeyName,
