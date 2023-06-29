@@ -14,9 +14,8 @@ describe('ATS', () => {
 			.returns(Promise.resolve({} as any));
 		setAdditionalDataSpy = global.sandbox.spy();
 
-		(window as any).ats = {
+		window.ats = {
 			setAdditionalData: setAdditionalDataSpy,
-			retrieveEnvelope: () => ({}),
 		};
 
 		context.set('bidders.liveRampATS.enabled', true);

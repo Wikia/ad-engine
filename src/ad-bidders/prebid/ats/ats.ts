@@ -38,7 +38,7 @@ export class Ats extends BaseServiceSetup {
 				const consentString =
 					consentType === 'gdpr' ? Cookies.get('euconsent-v2') : Cookies.get('usprivacy');
 
-				(window as any).ats.setAdditionalData({
+				window.ats.setAdditionalData({
 					consentType,
 					consentString,
 					type: 'emailHashes',
