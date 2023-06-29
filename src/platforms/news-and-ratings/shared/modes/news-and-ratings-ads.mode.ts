@@ -53,7 +53,7 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 				this.captify,
 				this.durationMedia,
 				this.playerSetup.setOptions({
-					dependencies: [this.bidders.initialized],
+					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
 				}),
 				this.identitySetup,
 				this.gptSetup,

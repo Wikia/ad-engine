@@ -73,7 +73,7 @@ export class UcpMobileAdsMode implements DiProcess {
 				this.prebidNativeProvider,
 				this.identitySetup,
 				this.playerSetup.setOptions({
-					dependencies: [this.bidders.initialized],
+					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
 				}),
 				this.gptSetup,
 				this.doubleVerify.setOptions({

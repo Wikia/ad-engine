@@ -45,7 +45,9 @@ export class F2AdsMode implements DiProcess {
 				this.nielsen,
 				this.wadRunner,
 				this.identitySetup,
-				this.playerSetup,
+				this.playerSetup.setOptions({
+					dependencies: [this.wadRunner.initialized],
+				}),
 				this.gptSetup,
 				this.doubleVerify.setOptions({
 					dependencies: [this.gptSetup.initialized],
