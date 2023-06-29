@@ -9,7 +9,7 @@ import {
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
-import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
+import { context, IdentitySetup, ProcessPipeline, utils } from '@wikia/ad-engine';
 import { Container, Injectable } from '@wikia/dependency-injection';
 import {
 	BiddersStateOverwriteSetup,
@@ -49,6 +49,7 @@ export class TvGuidePlatform {
 			LoadTimesSetup,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
+			IdentitySetup,
 			TvGuideTargetingSetup,
 			NewsAndRatingsTargetingSetup,
 			NewsAndRatingsAnyclipSetup,
