@@ -52,6 +52,6 @@ export class Ats extends BaseServiceSetup {
 	}
 
 	private waitForAts(): Promise<boolean> {
-		return new utils.WaitFor(() => (window as any).ats !== undefined, 10, 50).until();
+		return new utils.WaitFor(() => window.ats !== undefined, 10, 50).until();
 	}
 }
