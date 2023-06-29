@@ -1,33 +1,37 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { BaseServiceSetup, globalContextService, targetingService, utils } from '@ad-engine/core';
+import { context, DiProcess, globalContextService, targetingService, utils } from '@ad-engine/core';
 
-export class IdentitySetup extends BaseServiceSetup {
+export class IdentitySetup implements DiProcess {
 	private logGroup = 'identity-setup';
-	private identityReady: () => void;
-	private fallback = setTimeout(() => {
-		utils.logger(this.logGroup, 'Fallback launched');
-		this.identityReady();
-	}, 2500);
 
-	call(): Promise<void> {
-		const identityPromise = new Promise<void>((res) => {
-			this.identityReady = res;
+	async execute(): Promise<void> {
+		utils.logger(this.logGroup, 'initialized');
+
+		await this.identityEngineReady();
+		this.setupOver18Targeting();
+		return Promise.resolve();
+	}
+
+	async identityEngineReady(): Promise<void> {
+		return new Promise<void>((resolve) => {
+			communicationService.on(eventsRepository.IDENTITY_ENGINE_READY, () => {
+				const ppid = globalContextService.getValue('tracking', 'ppid');
+				if (ppid) {
+					targetingService.set('ppid', ppid);
+				}
+
+				if (context.get('services.identityPartners')) {
+					const segments = globalContextService.getValue('targeting', 'AU_SEG');
+					targetingService.set('AU_SEG', segments);
+				}
+
+				utils.logger(this.logGroup, 'ready');
+				resolve();
+			});
 		});
-		communicationService.on(eventsRepository.IDENTITY_ENGINE_READY, () => {
-			const ppid = globalContextService.getValue('tracking', 'ppid');
-			if (ppid) {
-				targetingService.set('ppid', ppid);
-			}
-			if (this.instantConfig.get('icIdentityPartners', false)) {
-				const segments = globalContextService.getValue('targeting', 'AU_SEG');
-				targetingService.set('AU_SEG', segments);
-			}
+	}
 
-			clearTimeout(this.fallback);
-			utils.logger(this.logGroup, 'initialized');
-			this.identityReady();
-		});
-
+	setupOver18Targeting(): void {
 		communicationService.on(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, () => {
 			const over18 = window.fandomContext.tracking.over_18;
 
@@ -35,6 +39,5 @@ export class IdentitySetup extends BaseServiceSetup {
 				targetingService.set('over_18', over18);
 			}
 		});
-		return identityPromise;
 	}
 }
