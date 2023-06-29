@@ -181,6 +181,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 					createLabel: true,
 					adLabelParent: '.ad-slot-placeholder.gallery-leaderboard',
 				},
+				bidderAlias: 'fandom_dt_galleries',
 			},
 		};
 

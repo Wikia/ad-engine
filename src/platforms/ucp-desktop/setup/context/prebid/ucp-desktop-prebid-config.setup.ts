@@ -4,6 +4,7 @@ import { getAppnexusContext } from '../../../bidders/prebid/appnexus';
 import { getAppnexusAstContext } from '../../../bidders/prebid/appnexus-ast';
 import { getFreewheelContext } from '../../../bidders/prebid/freewheel';
 import { getIndexExchangeContext } from '../../../bidders/prebid/index-exchange';
+import { getKargoContext } from '../../../bidders/prebid/kargo';
 import { getMedianetContext } from '../../../bidders/prebid/medianet';
 import { getNobidContext } from '../../../bidders/prebid/nobid';
 import { getOpenXContext } from '../../../bidders/prebid/openx';
@@ -34,5 +35,6 @@ export class UcpDesktopPrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.verizon', getVerizonContext());
 		context.set('bidders.prebid.wikia', getWikiaContext());
 		context.set('bidders.prebid.wikiaVideo', getWikiaVideoContext());
+		context.set('bidders.prebid.kargo', getKargoContext());
 	}
 }
