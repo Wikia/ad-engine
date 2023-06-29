@@ -65,7 +65,7 @@ export const basicContext = {
 			pubname: '2079',
 			incontentPlayerWidgetname: '001w000001Y8ud2AAB_M8046',
 			miniPlayerWidgetname: '001w000001Y8ud2AAB_M7985',
-			libraryUrl: '//player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/acins.js',
+			libraryUrl: '//player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/lre.js',
 			loadWithoutAnchor: true,
 		},
 		durationMedia: {

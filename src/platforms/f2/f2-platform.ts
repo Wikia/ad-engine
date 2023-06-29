@@ -18,6 +18,7 @@ import {
 	conditional,
 	context,
 	eventsRepository,
+	IdentitySetup,
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
@@ -48,6 +49,7 @@ export class F2Platform {
 			TrackingParametersSetup,
 			MetricReporterSetup,
 			MetricReporter,
+			IdentitySetup,
 			F2TargetingSetup,
 			LoadTimesSetup,
 			F2BaseContextSetup,
