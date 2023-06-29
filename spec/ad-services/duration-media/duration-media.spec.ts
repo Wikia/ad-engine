@@ -45,7 +45,7 @@ describe('Duration media service', () => {
 
 		expect(loadScriptStub.called).to.equal(true);
 		expect(
-			loadScriptStub.calledWith('//example.com/foo', 'text/javascript', false, null, {
+			loadScriptStub.calledWith('//example.com/foo', false, null, {
 				id: 'dm-script',
 			}),
 		).to.equal(true);
