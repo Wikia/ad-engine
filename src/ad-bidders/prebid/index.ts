@@ -164,7 +164,7 @@ export class PrebidProvider extends BidderProvider {
 			return {
 				s2sConfig: [
 					{
-						accountId: 'Magnite_AccountID', // tbd
+						accountId: 7450,
 						bidders: ['mgnipbs'],
 						defaultVendor: 'rubicon',
 						coopSync: true,
