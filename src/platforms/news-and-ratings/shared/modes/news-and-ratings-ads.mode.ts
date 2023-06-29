@@ -11,7 +11,6 @@ import {
 	DurationMedia,
 	eventsRepository,
 	IasPublisherOptimization,
-	IdentitySetup,
 	LiveConnect,
 	LiveRampPixel,
 	PartnerPipeline,
@@ -22,6 +21,7 @@ import { Injectable } from '@wikia/dependency-injection';
 export class NewsAndRatingsAdsMode implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,
+		private adEngineStackSetup: AdEngineStackSetup,
 		private anyclip: Anyclip,
 		private audigent: Audigent,
 		private bidders: Bidders,
@@ -31,12 +31,10 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 		private durationMedia: DurationMedia,
 		private gptSetup: GptSetup,
 		private iasPublisherOptimization: IasPublisherOptimization,
-		private identitySetup: IdentitySetup,
 		private liveConnect: LiveConnect,
 		private liveRampPixel: LiveRampPixel,
 		private playerSetup: PlayerSetup,
 		private wadRunner: WadRunner,
-		private adEngineStackSetup: AdEngineStackSetup,
 	) {}
 
 	execute(): void {
@@ -55,7 +53,6 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 				this.playerSetup.setOptions({
 					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
 				}),
-				this.identitySetup,
 				this.gptSetup,
 				this.doubleVerify.setOptions({
 					dependencies: [this.gptSetup.initialized],

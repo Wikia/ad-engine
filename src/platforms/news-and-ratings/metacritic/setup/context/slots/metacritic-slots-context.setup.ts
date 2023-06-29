@@ -50,7 +50,6 @@ export class MetacriticSlotsContextSetup implements DiProcess {
 				},
 			},
 			floor_adhesion: {
-				disabled: true,
 				adProduct: 'floor_adhesion',
 				group: 'PF',
 				targeting: {
