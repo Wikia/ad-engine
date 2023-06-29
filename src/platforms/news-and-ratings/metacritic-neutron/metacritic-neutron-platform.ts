@@ -15,6 +15,7 @@ import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
 import {
 	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
+	NewsAndRatingsAnyclipSetup,
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsDynamicSlotsNeutronSetup,
 	NewsAndRatingsNeutronHelper,
@@ -51,6 +52,7 @@ export class MetacriticNeutronPlatform {
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			NewsAndRatingsTargetingSetup,
+			NewsAndRatingsAnyclipSetup,
 			MetacriticNeutronTargetingSetup,
 			MetacriticNeutronSlotsContextSetup,
 			SlotsConfigurationExtender,

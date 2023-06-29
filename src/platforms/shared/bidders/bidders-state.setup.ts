@@ -17,6 +17,7 @@ export class BiddersStateSetup implements DiProcess {
 		medianet: 'icPrebidMedianet',
 		nobid: 'icPrebidNobid',
 		ogury: 'icPrebidOgury',
+		openx: 'icPrebidOpenX',
 		pubmatic: 'icPrebidPubmatic',
 		rubicon_display: 'icPrebidRubiconDisplay',
 		roundel: 'icPrebidRoundel',

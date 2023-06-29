@@ -13,8 +13,8 @@ import { Injectable } from '@wikia/dependency-injection';
 import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
 import {
 	BiddersStateOverwriteSetup,
-	LazyLoadedSlotsContextSetup,
 	NewsAndRatingsAdsMode,
+	NewsAndRatingsAnyclipSetup,
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsDynamicSlotsSetup,
 	NewsAndRatingsTargetingSetup,
@@ -48,7 +48,7 @@ export class GamefaqsPlatform {
 			GamefaqsTargetingSetup,
 			GamefaqsSlotsContextSetup,
 			SlotsConfigurationExtender,
-			LazyLoadedSlotsContextSetup,
+			NewsAndRatingsAnyclipSetup,
 			NewsAndRatingsDynamicSlotsSetup,
 			GamefaqsPrebidConfigSetup,
 			GamefaqsA9ConfigSetup,

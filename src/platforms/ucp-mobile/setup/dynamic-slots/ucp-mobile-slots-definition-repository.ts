@@ -1,6 +1,5 @@
-import { SlotSetupDefinition } from '@platforms/shared';
+import { activateFloorAdhesionOnUAP, SlotSetupDefinition } from '@platforms/shared';
 import {
-	AdSlotEvent,
 	communicationService,
 	context,
 	CookieStorageAdapter,
@@ -10,7 +9,6 @@ import {
 	scrollListener,
 	slotPlaceholderInjector,
 	UapLoadStatus,
-	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -78,6 +76,17 @@ export class UcpMobileSlotsDefinitionRepository {
 			},
 			activator: () => {
 				this.pushWaitingSlot(slotName);
+				communicationService.on(
+					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+					(action: UapLoadStatus) => {
+						if (action.isLoaded) {
+							this.injectIncontentAdsPlaceholders(1);
+							return;
+						}
+
+						this.injectIncontentAdsPlaceholders(this.isIncontentPlayerApplicable() ? 21 : 20);
+					},
+				);
 			},
 		};
 	}
@@ -93,12 +102,9 @@ export class UcpMobileSlotsDefinitionRepository {
 		return {
 			slotCreatorConfig: {
 				slotName,
-				placeholderConfig: {
-					createLabel: true,
-				},
-				anchorSelector: context.get('templates.incontentAnchorSelector'),
+				anchorSelector: '.incontent-boxad',
 				avoidConflictWith: ['.ad-slot', '#incontent_player'],
-				insertMethod: 'before',
+				insertMethod: 'append',
 				classList: ['hide', 'ad-slot'],
 				repeat: {
 					index: 1,
@@ -110,28 +116,12 @@ export class UcpMobileSlotsDefinitionRepository {
 						'targeting.pos': ['incontent_boxad'],
 					},
 					updateCreator: {
-						anchorSelector: '.incontent-boxad',
 						anchorPosition: 'belowScrollPosition',
-						insertMethod: 'append',
-						placeholderConfig: {
-							createLabel: false,
-						},
 					},
 				},
 			},
-			slotCreatorWrapperConfig: {
-				classList: ['ad-slot-placeholder', 'incontent-boxad', 'is-loading'],
-			},
 			activator: () => {
-				communicationService.on(
-					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
-					(action: UapLoadStatus) => {
-						context.push('events.pushOnScroll.ids', slotName);
-						if (!action.isLoaded) {
-							this.injectIncontentAdsPlaceholders();
-						}
-					},
-				);
+				context.push('events.pushOnScroll.ids', slotName);
 			},
 		};
 	}
@@ -146,7 +136,7 @@ export class UcpMobileSlotsDefinitionRepository {
 		return pageType !== 'search';
 	}
 
-	private injectIncontentAdsPlaceholders(): void {
+	private injectIncontentAdsPlaceholders(count: number): void {
 		const adSlotCategory = 'incontent';
 
 		const icbPlaceholderConfig: RepeatableSlotPlaceholderConfig = {
@@ -155,7 +145,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			insertMethod: 'before',
 			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder', '.incontent-boxad'],
 			repeatStart: 1,
-			repeatLimit: 20,
+			repeatLimit: count,
 		};
 
 		slotPlaceholderInjector.injectAndRepeat(icbPlaceholderConfig, adSlotCategory);
@@ -245,6 +235,10 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	getIncontentPlayerConfig(): SlotSetupDefinition {
+		if (!this.isIncontentPlayerApplicable()) {
+			return;
+		}
+
 		const slotName = 'incontent_player';
 
 		return {
@@ -261,11 +255,13 @@ export class UcpMobileSlotsDefinitionRepository {
 		};
 	}
 
-	getFloorAdhesionConfig(): SlotSetupDefinition {
-		if (!this.isFloorAdhesionApplicable()) {
-			return;
-		}
+	private isIncontentPlayerApplicable(): boolean {
+		return (
+			context.get('custom.hasIncontentPlayer') && context.get('wiki.targeting.pageType') !== 'home'
+		);
+	}
 
+	getFloorAdhesionConfig(): SlotSetupDefinition {
 		let slotPushed = false;
 		const slotName = 'floor_adhesion';
 		const activateFloorAdhesion = () => {
@@ -293,38 +289,8 @@ export class UcpMobileSlotsDefinitionRepository {
 				insertMethod: 'append',
 				classList: ['hide', 'ad-slot'],
 			},
-			activator: () => {
-				communicationService.on(
-					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
-					(action: UapLoadStatus) => {
-						if (action.isLoaded) {
-							communicationService.onSlotEvent(
-								AdSlotEvent.CUSTOM_EVENT,
-								({ payload }) => {
-									if (
-										[
-											universalAdPackage.SLOT_UNSTICKED_STATE,
-											universalAdPackage.SLOT_FORCE_UNSTICK,
-											universalAdPackage.SLOT_STICKY_STATE_SKIPPED,
-											universalAdPackage.SLOT_VIDEO_DONE,
-										].includes(payload.status)
-									) {
-										activateFloorAdhesion();
-									}
-								},
-								'top_leaderboard',
-							);
-						} else {
-							activateFloorAdhesion();
-						}
-					},
-				);
-			},
+			activator: () => activateFloorAdhesionOnUAP(activateFloorAdhesion, false),
 		};
-	}
-
-	private isFloorAdhesionApplicable(): boolean {
-		return this.instantConfig.get('icFloorAdhesion');
 	}
 
 	getInterstitialConfig(): SlotSetupDefinition {

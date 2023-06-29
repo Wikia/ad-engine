@@ -146,27 +146,6 @@ describe('slot-service', () => {
 		expect(slotService.getState('foo')).to.equals(false);
 	});
 
-	describe('getAtfSlotNames', () => {
-		beforeEach(() => {
-			clearSlotServiceState.bind(slotService)();
-		});
-
-		it('should return only first all slots', () => {
-			slotConfigs = {
-				A: { aboveTheFold: true, disabled: true },
-				B: { aboveTheFold: true, disabled: false },
-				C: { aboveTheFold: false, disabled: true },
-				D: { aboveTheFold: false, disabled: false },
-			};
-
-			const result = slotService.getAtfSlotNames();
-
-			expect(result.length).to.equals(2);
-			expect(result.includes('A')).to.equals(true);
-			expect(result.includes('B')).to.equals(true);
-		});
-	});
-
 	describe('getFirstCallSlotNames', () => {
 		beforeEach(() => {
 			clearSlotServiceState.bind(slotService)();

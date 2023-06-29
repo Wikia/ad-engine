@@ -18,8 +18,10 @@ export class IdentitySetup extends BaseServiceSetup {
 			if (ppid) {
 				targetingService.set('ppid', ppid);
 			}
-			const segments = globalContextService.getValue('targeting', 'AU_SEG');
-			targetingService.set('AU_SEG', segments);
+			if (this.instantConfig.get('icIdentityPartners', false)) {
+				const segments = globalContextService.getValue('targeting', 'AU_SEG');
+				targetingService.set('AU_SEG', segments);
+			}
 
 			clearTimeout(this.fallback);
 			utils.logger(this.logGroup, 'initialized');
