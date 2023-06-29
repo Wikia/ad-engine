@@ -11,7 +11,7 @@ import {
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
-import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
+import { context, IdentitySetup, ProcessPipeline, utils } from '@wikia/ad-engine';
 import {
 	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
@@ -51,6 +51,7 @@ export class MetacriticNeutronPlatform {
 			LoadTimesSetup,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
+			IdentitySetup,
 			NewsAndRatingsTargetingSetup,
 			NewsAndRatingsAnyclipSetup,
 			MetacriticNeutronTargetingSetup,
