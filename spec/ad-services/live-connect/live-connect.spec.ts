@@ -14,17 +14,16 @@ describe('LiveConnect', () => {
 	let liveConnect;
 	let loadScriptStub, instantConfigStub;
 
-	before(() => {
-		context.set('services.liveConnect.cachingStrategy', mockedStorageStrategyVariable);
-	});
-
 	beforeEach(() => {
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
+		instantConfigStub.get.withArgs('icLiveConnect').returns(true);
+		instantConfigStub.get
+			.withArgs('icLiveConnectCachingStrategy')
+			.returns(mockedStorageStrategyVariable);
 		instantConfigStub.get.withArgs('icIdentityPartners').returns(false);
 		loadScriptStub = global.sandbox
 			.stub(utils.scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
-		context.set('services.liveConnect.enabled', true);
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);
 		context.set('wiki.targeting.directedAtChildren', false);
@@ -35,7 +34,6 @@ describe('LiveConnect', () => {
 	});
 
 	after(() => {
-		context.set('services.liveConnect.cachingStrategy', mockedStorageStrategyVariable);
 		delete window.fandomContext;
 	});
 
@@ -46,7 +44,7 @@ describe('LiveConnect', () => {
 	});
 
 	it('Live Connect can be disabled', async () => {
-		context.set('services.liveConnect.enabled', false);
+		instantConfigStub.get.withArgs('icLiveConnect').returns(false);
 
 		await liveConnect.call();
 
@@ -108,7 +106,7 @@ describe('LiveConnect', () => {
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
-	describe('LiveConnect ids resolution', async () => {
+	describe('trackIds', async () => {
 		let emitSpy: SinonSpy;
 		await liveConnect.call();
 
@@ -118,19 +116,10 @@ describe('LiveConnect', () => {
 
 		afterEach(() => global.sandbox.restore());
 
-		it('valid id is resolved', async () => {
-			liveConnect.resolveId('md5', 'liveconnect-md5')({ md5: '123' });
-
-			expect(
-				emitSpy.calledWith(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
-					partnerName: 'liveconnect-md5',
-					partnerIdentityId: '123',
-				}),
-			).to.be.true;
-		});
-
-		it('unifiedId is resolved', async () => {
-			liveConnect.resolveId('unifiedId', 'liveconnect-unifiedId')({ unifiedId: '123' });
+		it('unifiedId is resolved', () => {
+			liveConnect.trackIds({
+				unifiedId: '123',
+			});
 
 			expect(emitSpy.calledWith(eventsRepository.LIVE_CONNECT_RESPONDED_UUID)).to.be.true;
 			expect(
@@ -141,11 +130,37 @@ describe('LiveConnect', () => {
 			).to.be.true;
 		});
 
-		it('missing or wrong id is not resolved', async () => {
-			liveConnect.resolveId('test', 'liveconnect-test')({});
-			liveConnect.resolveId('test', 'liveconnect-test')({ wrong: '123' });
+		it('undefined unifiedId is not resolved', () => {
+			liveConnect.trackIds({
+				unifiedId: undefined,
+			});
 
-			expect(emitSpy.notCalled).to.be.true;
+			expect(emitSpy.calledWith(eventsRepository.LIVE_CONNECT_RESPONDED_UUID)).to.be.false;
+		});
+
+		it('valid md5 is resolved', () => {
+			liveConnect.trackIds({ md5: '123' });
+
+			expect(
+				emitSpy.calledWith(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
+					partnerName: 'liveconnect-md5',
+					partnerIdentityId: '123',
+				}),
+			).to.be.true;
+		});
+
+		it('undefined id like md5 is not tracked', () => {
+			liveConnect.trackIds({ md5: undefined });
+
+			expect(emitSpy.called).to.be.false;
+		});
+
+		it('Ids are not resolved if already in the storage', () => {
+			global.sandbox.stub(liveConnect, 'isAvailableInStorage').returns(true);
+
+			liveConnect.trackIds({ md5: '123' });
+
+			expect(emitSpy.called).to.be.false;
 		});
 	});
 });
