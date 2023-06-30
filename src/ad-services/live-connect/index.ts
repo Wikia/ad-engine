@@ -48,6 +48,10 @@ export class LiveConnect extends BaseServiceSetup {
 				.then(() => {
 					utils.logger(logGroup, 'loaded');
 					this.resolveAndTrackIds();
+					const customQF = this.instantConfig.get<number>('icLiveConnectQf')?.toString();
+					if (customQF) {
+						this.resolveAndTrackIds(customQF);
+					}
 				});
 		} else {
 			communicationService.emit(eventsRepository.LIVE_CONNECT_CACHED);
@@ -55,7 +59,7 @@ export class LiveConnect extends BaseServiceSetup {
 		}
 	}
 
-	resolveAndTrackIds(): void {
+	resolveAndTrackIds(qf?: string): void {
 		if (!window.liQ) {
 			utils.warner(logGroup, 'window.liQ not available for tracking');
 			return;
@@ -63,16 +67,16 @@ export class LiveConnect extends BaseServiceSetup {
 
 		window.liQ.resolve(
 			(result) => {
-				this.trackIds(result);
+				this.trackIds(result, qf);
 			},
 			(err) => {
 				console.error(err);
 			},
-			{ qf: '0.3', resolve: idConfigMapping.map((config) => config.id) },
+			{ qf: qf || '0.3', resolve: idConfigMapping.map((config) => config.id) },
 		);
 	}
 
-	trackIds(liQResponse: LiQResolveResponse): void {
+	trackIds(liQResponse: LiQResolveResponse, customQf?: string): void {
 		utils.logger(logGroup, 'resolve response:', liQResponse);
 
 		Object.keys(liQResponse).forEach((key) => {
@@ -97,7 +101,7 @@ export class LiveConnect extends BaseServiceSetup {
 			this.storage.setItem(trackingKeyName, partnerIdentityId, this.storageConfig.ttl);
 
 			communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
-				partnerName: trackingKeyName,
+				partnerName: trackingKeyName + (customQf ? `-${customQf}` : ''),
 				partnerIdentityId,
 			});
 		});

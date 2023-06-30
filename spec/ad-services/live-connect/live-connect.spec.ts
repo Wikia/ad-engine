@@ -2,7 +2,7 @@ import { LiveConnect } from '@wikia/ad-services';
 import { communicationService, eventsRepository } from '@wikia/communication';
 import { context, InstantConfigService, utils } from '@wikia/core';
 import { expect } from 'chai';
-import { match, SinonSpy } from 'sinon';
+import { SinonSpy } from 'sinon';
 
 const mockedStorageStrategyVariable = {
 	ttl: 300000,
@@ -49,28 +49,6 @@ describe('LiveConnect', () => {
 		await liveConnect.call();
 
 		expect(loadScriptStub.called).to.equal(false);
-	});
-
-	it('Live Connect is called with default qf if feature flag is not set', async () => {
-		window.liQ = { resolve: () => {} };
-		const liqStub = global.sandbox.stub(window.liQ, 'resolve').returns(Promise.resolve({} as any));
-
-		await liveConnect.resolveAndReportId('unifiedId', 'fandom', { qf: '0.3', resolve: 'sha2' });
-
-		expect(liqStub.calledWithMatch(match.func, match.func, match({ qf: '0.3', resolve: 'sha2' })))
-			.to.be.true;
-	});
-
-	it('Live Connect is called with qf value from feature flag', async () => {
-		window.liQ = { resolve: () => {} };
-		const liqStub = global.sandbox.stub(window.liQ, 'resolve').returns(Promise.resolve({} as any));
-
-		instantConfigStub.get.withArgs('icLiveConnectQf').returns(0.5);
-
-		await liveConnect.resolveAndReportId('unifiedId', 'fandom', { qf: '0.3', resolve: 'sha2' });
-
-		expect(liqStub.calledWithMatch(match.func, match.func, match({ qf: '0.5', resolve: 'sha2' })))
-			.to.be.true;
 	});
 
 	it('Live Connect is disabled when Identity Partners are enabled', async () => {
