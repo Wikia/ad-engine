@@ -48,7 +48,7 @@ export class LiveConnect extends BaseServiceSetup {
 				.then(() => {
 					utils.logger(logGroup, 'loaded');
 					this.resolveAndTrackIds();
-					const customQF = this.instantConfig.get<number>('icLiveConnectQf')?.toString();
+					const customQf = this.instantConfig.get<number>('icLiveConnectQf')?.toString();
 					if (customQF) {
 						this.resolveAndTrackIds(customQF);
 					}
