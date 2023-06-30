@@ -160,7 +160,7 @@ export class PrebidProvider extends BidderProvider {
 	}
 
 	private configureS2sBidding(): object {
-		if (context.get('bidders.prebid.magnite.enabled')) {
+		if (context.get('bidders.prebid.mgnipbs.enabled')) {
 			return {
 				s2sConfig: [
 					{

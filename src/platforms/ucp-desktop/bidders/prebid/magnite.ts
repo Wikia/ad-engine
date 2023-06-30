@@ -8,12 +8,6 @@ export function getMagniteContext(): object {
 					[300, 250],
 					[300, 600],
 				],
-				targeting: {
-					loc: ['top'],
-				},
-				position: 'atf',
-				siteId: '148804',
-				zoneId: '704672',
 			},
 		},
 	};

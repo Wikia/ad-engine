@@ -24,7 +24,7 @@ export class UcpDesktopPrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.appnexusAst', getAppnexusAstContext());
 		context.set('bidders.prebid.indexExchange', getIndexExchangeContext());
 		context.set('bidders.prebid.freewheel', getFreewheelContext());
-		context.set('bidders.prebid.magnite', getMagniteContext());
+		context.set('bidders.prebid.mgnipbs', getMagniteContext());
 		context.set('bidders.prebid.medianet', getMedianetContext());
 		context.set('bidders.prebid.nobid', getNobidContext());
 		context.set('bidders.prebid.openx', getOpenXContext());

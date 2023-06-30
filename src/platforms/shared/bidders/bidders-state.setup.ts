@@ -13,7 +13,7 @@ export class BiddersStateSetup implements DiProcess {
 		gumgum: 'icPrebidGumGum',
 		indexExchange: 'icPrebidIndexExchange',
 		kargo: 'icPrebidKargo',
-		magnite: 'icPrebidMagnite',
+		mgnipbs: 'icPrebidMagnite',
 		medianet: 'icPrebidMedianet',
 		nobid: 'icPrebidNobid',
 		ogury: 'icPrebidOgury',
