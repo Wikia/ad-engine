@@ -26,6 +26,7 @@ const idConfigMapping: IdConfig[] = [
 export class LiveConnect extends BaseServiceSetup {
 	private storage;
 	private storageConfig: CachingStrategyConfig;
+	private defaultQfValue = '0.3';
 
 	call(): void {
 		if (
@@ -72,7 +73,7 @@ export class LiveConnect extends BaseServiceSetup {
 			(err) => {
 				console.error(err);
 			},
-			{ qf: qf || '0.3', resolve: idConfigMapping.map((config) => config.id) },
+			{ qf: qf || this.defaultQfValue, resolve: idConfigMapping.map((config) => config.id) },
 		);
 	}
 
