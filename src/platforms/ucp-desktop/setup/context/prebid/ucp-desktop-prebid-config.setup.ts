@@ -24,6 +24,7 @@ export class UcpDesktopPrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.appnexusAst', getAppnexusAstContext());
 		context.set('bidders.prebid.indexExchange', getIndexExchangeContext());
 		context.set('bidders.prebid.freewheel', getFreewheelContext());
+		context.set('bidders.prebid.kargo', getKargoContext());
 		context.set('bidders.prebid.medianet', getMedianetContext());
 		context.set('bidders.prebid.nobid', getNobidContext());
 		context.set('bidders.prebid.openx', getOpenXContext());
@@ -35,6 +36,5 @@ export class UcpDesktopPrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.verizon', getVerizonContext());
 		context.set('bidders.prebid.wikia', getWikiaContext());
 		context.set('bidders.prebid.wikiaVideo', getWikiaVideoContext());
-		context.set('bidders.prebid.kargo', getKargoContext());
 	}
 }

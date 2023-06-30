@@ -44,9 +44,9 @@ export function getAppnexusContext(): object {
 			atf: '11977073',
 			btf: '11977096',
 			hivi: '11977016',
+			gallery: '30286507',
 			native: '25450069',
 			other: '11969927',
-			gallery: '30286507',
 		},
 	};
 }
