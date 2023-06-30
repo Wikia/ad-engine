@@ -25,7 +25,7 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 			this.blockStickyTLB('UAP');
 			return;
 		}
-		if (!this.isStickyTlbForced() && !this.isLineAndGeo()) {
+		if (!this.isStickyTlbForced() && !this.isLineAndGeo() && !this.isOrderAndGeo()) {
 			this.blockStickyTLB(`Line item ID ${this.adSlot.lineItemId}`);
 			return;
 		}
@@ -45,19 +45,27 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 	private isLineAndGeo(): boolean {
 		const lines: string[] = context.get('templates.stickyTlb.lineItemIds') || [];
 
-		if (Array.isArray(lines)) {
-			return lines
-				.map((line) => line.toString())
-				.some((line) => {
-					const [lineId, geo] = line.split(':', 2);
+		return this.checkIdsMapBySlotGamId(this.adSlot.lineItemId.toString(), lines);
+	}
 
-					return (
-						lineId.toString() === this.adSlot.lineItemId.toString() &&
-						(!geo || utils.geoService.isProperGeo([geo]))
-					);
-				});
+	private isOrderAndGeo(): boolean {
+		const orders: string[] = context.get('templates.stickyTlb.ordersIds') || [];
+
+		return this.checkIdsMapBySlotGamId(this.adSlot.orderId.toString(), orders);
+	}
+
+	private checkIdsMapBySlotGamId(gamId: string, map: string[]): boolean {
+		if (!Array.isArray(map)) {
+			return true;
 		}
-		return false;
+
+		return map
+			.map((element) => element.toString())
+			.some((element) => {
+				const [mapGamId, geo] = element.split(':', 2);
+
+				return mapGamId.toString() === gamId && (!geo || utils.geoService.isProperGeo([geo]));
+			});
 	}
 
 	private async isUAP(): Promise<boolean> {

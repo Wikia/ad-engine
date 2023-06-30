@@ -84,8 +84,12 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		context.set('templates.stickyTlb.forced', this.instantConfig.get('icForceStickyTlb'));
 
 		const stickySlotsLines: Dictionary = this.instantConfig.get('icStickySlotLineItemIds');
+		const stickySlotsOrders: Dictionary = this.instantConfig.get('icStickySlotOrderIds');
 		if (stickySlotsLines && stickySlotsLines.length) {
 			context.set('templates.stickyTlb.lineItemIds', stickySlotsLines);
+		}
+		if (stickySlotsOrders && stickySlotsOrders.length) {
+			context.set('templates.stickyTlb.ordersIds', stickySlotsOrders);
 		}
 	}
 
