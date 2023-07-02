@@ -32,6 +32,9 @@ describe('Magnite bidder adapter', () => {
 				bids: [
 					{
 						bidder: 'mgnipbs',
+						params: {
+							name: 'top_boxad',
+						},
 					},
 				],
 			},
