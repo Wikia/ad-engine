@@ -42,7 +42,7 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 					}
 
 					utils.logger(logGroup, 'Ad placement rendered', placementId);
-          
+
 					if (this.repeatedSlotsCounter[placementId]) {
 						this.scheduleRepeatedSlotInjection(placementId);
 						return;

@@ -5,7 +5,6 @@ import {
 	DiProcess,
 	eventsRepository,
 	InstantConfigService,
-	Optimizely,
 	setupNpaContext,
 	setupRdpContext,
 	universalAdPackage,
@@ -14,45 +13,11 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 import { NoAdsDetector } from '../services/no-ads-detector';
 
-type optimizelyInContentExperiment = {
-	EXPERIMENT_ENABLED: string;
-	EXPERIMENT_VARIANT: string;
-};
-
-type optimizelyInContentExperimentVariants = {
-	IGNORE_VIEWPORT: string;
-	VIEWPORT: string;
-	UNDEFINED: string;
-};
-
-const OPTIMIZELY_IN_CONTENT_EXPERIMENT: optimizelyInContentExperiment = {
-	EXPERIMENT_ENABLED: 'in_content_headers',
-	EXPERIMENT_VARIANT: 'in_content_headers_variant',
-};
-
-const OPTIMIZELY_IN_CONTENT_EXPERIMENT_VARIANTS: optimizelyInContentExperimentVariants = {
-	IGNORE_VIEWPORT: 'in_content_headers_ignore_viewport',
-	VIEWPORT: 'in_content_headers_viewport',
-	UNDEFINED: 'in_content_headers_undefined',
-};
-
-const OPTIMIZELY_MOBILE_IN_CONTENT_EXPERIMENT: optimizelyInContentExperiment = {
-	EXPERIMENT_ENABLED: 'mobile_in_content_headers',
-	EXPERIMENT_VARIANT: 'mobile_in_content_headers_variant',
-};
-
-const OPTIMIZELY_MOBILE_IN_CONTENT_EXPERIMENT_VARIANTS: optimizelyInContentExperimentVariants = {
-	IGNORE_VIEWPORT: 'mobile_in_content_headers_ignore_viewport',
-	VIEWPORT: 'mobile_in_content_headers_viewport',
-	UNDEFINED: 'mobile_in_content_headers_undefined',
-};
-
 @Injectable()
 export class BaseContextSetup implements DiProcess {
 	constructor(
 		protected instantConfig: InstantConfigService,
 		protected noAdsDetector: NoAdsDetector,
-		protected optimizely: Optimizely,
 	) {}
 
 	execute(): void {
@@ -154,26 +119,13 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setInContentExperiment(): void {
-		const isMobile = context.get('state.isMobile');
-		const experiment = isMobile
-			? OPTIMIZELY_MOBILE_IN_CONTENT_EXPERIMENT
-			: OPTIMIZELY_IN_CONTENT_EXPERIMENT;
-		const variants = isMobile
-			? OPTIMIZELY_MOBILE_IN_CONTENT_EXPERIMENT_VARIANTS
-			: OPTIMIZELY_IN_CONTENT_EXPERIMENT_VARIANTS;
+		const top500bundleName = 'top500';
+		const wiki: MediaWikiAdsContext = context.get('wiki');
 
-		this.optimizely.addVariantToTargeting(experiment, variants.UNDEFINED);
-
-		const variant = this.optimizely.getVariant(experiment);
-
-		if (variant === variants.IGNORE_VIEWPORT) {
+		if (wiki?.targeting?.adTagManagerTags?.bundles?.includes(top500bundleName)) {
 			context.set('templates.incontentHeadersExperiment', true);
 		} else {
 			context.set('templates.incontentAnchorSelector', '.mw-parser-output > h2');
-		}
-
-		if (variant) {
-			this.optimizely.addVariantToTargeting(experiment, variant);
 		}
 	}
 
@@ -194,16 +146,12 @@ export class BaseContextSetup implements DiProcess {
 			'services.interventionTracker.enabled',
 			this.instantConfig.get('icInterventionTracking'),
 		);
-		context.set('services.liveConnect.enabled', this.instantConfig.get('icLiveConnect'));
-		context.set(
-			'services.liveConnect.cachingStrategy',
-			this.instantConfig.get('icLiveConnectCachingStrategy'),
-		);
 		context.set('services.nativo.enabled', this.instantConfig.get('icNativo'));
 		context.set('services.sailthru.enabled', this.instantConfig.get('icSailthru'));
 		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
 		context.set('services.ppidRepository', this.instantConfig.get('icPpidRepository'));
 		context.set('services.identityTtl', this.instantConfig.get('icIdentityTtl'));
+		context.set('services.identityPartners', this.instantConfig.get('icIdentityPartners'));
 		context.set('services.ageGateHandling', this.instantConfig.get('icAgeGateHandling'));
 
 		context.set(
