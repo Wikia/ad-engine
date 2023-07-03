@@ -17,7 +17,7 @@
 
 			@include bfaa-slot();
 			@include uap-porvata();
-			@include sticky-tlb-slot();
+			@include sticky-tlb-slot(0px, 5000061);
 
 			html.desktop &,
 			html.tablet.landscape & {

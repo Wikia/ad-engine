@@ -56,7 +56,7 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 
 	private checkIdsMapBySlotGamId(gamId: string, map: string[]): boolean {
 		if (!Array.isArray(map)) {
-			return true;
+			return false;
 		}
 
 		return map
