@@ -5,14 +5,18 @@ import {
 	UapLoadStatus,
 	universalAdPackage,
 } from '@wikia/ad-engine';
+import { StickyTlbAllowanceExaminer } from '../templates/handlers/sticky-tlb/sticky-tlb-blocking-handler';
 
 export function activateFloorAdhesionOnUAP(callback: () => void, withLoadedOnly = true) {
 	communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
 		if (action.isLoaded) {
 			communicationService.onSlotEvent(
 				AdSlotEvent.CUSTOM_EVENT,
-				({ payload }) => {
+				({ slot, payload }) => {
+					const stickyExaminer = new StickyTlbAllowanceExaminer(slot);
+
 					if (
+						stickyExaminer.shouldStick() &&
 						[
 							universalAdPackage.SLOT_UNSTICKED_STATE,
 							universalAdPackage.SLOT_FORCE_UNSTICK,
@@ -20,7 +24,7 @@ export function activateFloorAdhesionOnUAP(callback: () => void, withLoadedOnly 
 							universalAdPackage.SLOT_VIDEO_DONE,
 						].includes(payload.status)
 					) {
-						setTimeout(() => callback(), universalAdPackage.SLIDE_OUT_TIME);
+						setTimeout(() => callback(), universalAdPackage.SLIDE_OUT_TIME + 400);
 					}
 				},
 				'top_leaderboard',
