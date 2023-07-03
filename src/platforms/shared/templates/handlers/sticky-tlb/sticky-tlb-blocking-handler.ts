@@ -80,32 +80,6 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 		this.logger(`Template 'stickyTlb' could not be applied for ${reason}`);
 	}
 
-	// private isLineAndGeo(): boolean {
-	// 	const lines: string[] = context.get('templates.stickyTlb.lineItemIds') || [];
-	//
-	// 	return this.checkIdsMapBySlotGamId(this.adSlot.lineItemId.toString(), lines);
-	// }
-	//
-	// private isOrderAndGeo(): boolean {
-	// 	const orders: string[] = context.get('templates.stickyTlb.ordersIds') || [];
-	//
-	// 	return this.checkIdsMapBySlotGamId(this.adSlot.orderId.toString(), orders);
-	// }
-	//
-	// private checkIdsMapBySlotGamId(gamId: string, map: string[]): boolean {
-	// 	if (!Array.isArray(map)) {
-	// 		return true;
-	// 	}
-	//
-	// 	return map
-	// 		.map((element) => element.toString())
-	// 		.some((element) => {
-	// 			const [mapGamId, geo] = element.split(':', 2);
-	//
-	// 			return mapGamId.toString() === gamId && (!geo || utils.geoService.isProperGeo([geo]));
-	// 		});
-	// }
-
 	private async isUAP(): Promise<boolean> {
 		return new Promise((resolve) => {
 			communicationService.on(
@@ -116,10 +90,6 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 			);
 		});
 	}
-
-	// private isStickyTlbForced(): boolean {
-	// 	return context.get('templates.stickyTlb.forced');
-	// }
 
 	private logger(...logMsgs: any): void {
 		utils.logger(StickyTlbBlockingHandler.LOG_GROUP, ...logMsgs);
