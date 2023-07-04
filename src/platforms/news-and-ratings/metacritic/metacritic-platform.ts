@@ -10,12 +10,13 @@ import {
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
-import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
+import { context, IdentitySetup, ProcessPipeline, utils } from '@wikia/ad-engine';
 
 import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
 import {
 	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
+	NewsAndRatingsAnyclipSetup,
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsTargetingSetup,
 	NewsAndRatingsWadSetup,
@@ -46,7 +47,9 @@ export class MetacriticPlatform {
 			LoadTimesSetup,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
+			IdentitySetup,
 			NewsAndRatingsTargetingSetup,
+			NewsAndRatingsAnyclipSetup,
 			MetacriticTargetingSetup,
 			MetacriticSlotsContextSetup,
 			MetacriticDynamicSlotsSetup,

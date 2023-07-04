@@ -11,7 +11,6 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 
 const logGroup = 'dynamic-slots';
-
 @Injectable()
 export class NewsAndRatingsSlotsDefinitionRepository {
 	constructor(protected instantConfig: InstantConfigService) {}
@@ -60,14 +59,21 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 				insertMethod: 'append',
 				classList: ['hide', 'ad-slot'],
 			},
-			activator: () => activateFloorAdhesionOnUAP(activateFloorAdhesion),
+			activator: () =>
+				activateFloorAdhesionOnUAP(activateFloorAdhesion, !this.isFloorAdhesionNonUapApplicable()),
 		};
 	}
 
 	private isInterstitialApplicable(): boolean {
 		return this.instantConfig.get('icInterstitial') && context.get('state.isMobile');
 	}
-
+	private isFloorAdhesionNonUapApplicable(): boolean {
+		return (
+			context.get('state.isMobile') &&
+			!Anyclip.isApplicable() &&
+			this.instantConfig.get('icFloorAdhesion')
+		);
+	}
 	getIncontentPlayerConfig(): SlotSetupDefinition | undefined {
 		if (!Anyclip.isApplicable()) {
 			utils.logger(logGroup, 'Aborting insertion of incontent_player');
