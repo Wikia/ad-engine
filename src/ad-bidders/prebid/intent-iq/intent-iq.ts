@@ -1,3 +1,4 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import {
 	context,
 	DEFAULT_MAX_DELAY,
@@ -26,6 +27,14 @@ export class IntentIQ {
 			.then(() => {
 				this.loaded = true;
 				utils.logger(logGroup, 'loaded');
+
+				if (this.isEnabled() && context.get('services.intentIq.ppid')) {
+					const ppid = this.getPPID();
+					if (ppid) {
+						this.setPpid(ppid);
+						this.trackPpid(ppid);
+					}
+				}
 			});
 	}
 
@@ -99,6 +108,49 @@ export class IntentIQ {
 			!context.get('options.optOutSale') &&
 			!utils.isCoppaSubject()
 		);
+	}
+
+	private getPPID(): string | undefined {
+		try {
+			const ppid = this.extractIIQ_ID(this.intentIqObject.getIntentIqData());
+
+			if (ppid) {
+				utils.logger(logGroup, 'ppid received', ppid);
+				return ppid;
+			}
+		} catch (error) {
+			utils.warner(logGroup, 'error setting ppid', error);
+		}
+	}
+
+	private setPpid(ppid: string) {
+		targetingService.set('intent_iq_ppid', ppid);
+		utils.logger(logGroup, 'ppid set', ppid);
+	}
+
+	private extractIIQ_ID(json) {
+		const eids = json.eids;
+		for (let i = 0; i < eids.length; i++) {
+			const eid = eids[i];
+			if (eid.source === 'intentiq.com') {
+				const uids = eid.uids;
+				for (let j = 0; j < uids.length; j++) {
+					const uid = uids[j];
+					if (uid.ext.stype === 'ppuid') {
+						return uid.id;
+					}
+				}
+			}
+		}
+
+		return null;
+	}
+
+	private trackPpid(ppid: string) {
+		communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
+			partnerName: 'intentiq',
+			partnerIdentityId: ppid,
+		});
 	}
 }
 

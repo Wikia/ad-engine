@@ -43,4 +43,5 @@ type IntentIqObject = {
 			currentTestGroup: string;
 		};
 	};
+	getIntentIqData?: () => string;
 };

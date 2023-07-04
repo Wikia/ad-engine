@@ -155,6 +155,7 @@ export class BaseContextSetup implements DiProcess {
 		context.set('services.ppidRepository', this.instantConfig.get('icPpidRepository'));
 		context.set('services.identityTtl', this.instantConfig.get('icIdentityTtl'));
 		context.set('services.identityPartners', this.instantConfig.get('icIdentityPartners'));
+		context.set('services.intentIq.ppid', this.instantConfig.get('icIntentIqPpid', false));
 		context.set('services.ageGateHandling', this.instantConfig.get('icAgeGateHandling'));
 
 		context.set(
