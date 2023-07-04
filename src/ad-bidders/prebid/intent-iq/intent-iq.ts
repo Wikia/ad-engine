@@ -27,14 +27,6 @@ export class IntentIQ {
 			.then(() => {
 				this.loaded = true;
 				utils.logger(logGroup, 'loaded');
-
-				if (this.isEnabled() && context.get('services.intentIq.ppid')) {
-					const ppid = this.getPPID();
-					if (ppid) {
-						this.setPpid(ppid);
-						this.trackPpid(ppid);
-					}
-				}
 			});
 	}
 
@@ -74,6 +66,14 @@ export class IntentIQ {
 					this.intentIqObject.intentIqConfig.abTesting.currentTestGroup || 'U',
 				);
 			});
+		}
+
+		if (this.isEnabled() && context.get('services.intentIq.ppid')) {
+			const ppid = this.getPPID();
+			if (ppid) {
+				this.setPpid(ppid);
+				this.trackPpid(ppid);
+			}
 		}
 	}
 
