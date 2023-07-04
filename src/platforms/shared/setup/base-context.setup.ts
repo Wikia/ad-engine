@@ -122,7 +122,10 @@ export class BaseContextSetup implements DiProcess {
 		const top500bundleName = 'top500';
 		const wiki: MediaWikiAdsContext = context.get('wiki');
 
-		if (wiki?.targeting?.adTagManagerTags?.bundles?.includes(top500bundleName)) {
+		if (
+			this.instantConfig.get('icExperiments', []).includes('incontentHeaders') &&
+			wiki?.targeting?.adTagManagerTags?.bundles?.includes(top500bundleName)
+		) {
 			context.set('templates.incontentHeadersExperiment', true);
 		} else {
 			context.set('templates.incontentAnchorSelector', '.mw-parser-output > h2');
