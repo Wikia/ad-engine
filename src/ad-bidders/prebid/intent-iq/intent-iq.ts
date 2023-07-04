@@ -67,14 +67,6 @@ export class IntentIQ {
 				);
 			});
 		}
-
-		if (this.isEnabled() && context.get('services.intentIq.ppid')) {
-			const ppid = this.getPPID();
-			if (ppid) {
-				this.setPpid(ppid);
-				this.trackPpid(ppid);
-			}
-		}
 	}
 
 	async reportPrebidWin(bid: PrebidBidResponse): Promise<void> {
@@ -101,6 +93,20 @@ export class IntentIQ {
 		externalLogger.log('intentiq report', { report: JSON.stringify(data) });
 	}
 
+	setupPpid() {
+		if (this.isEnabled() && context.get('services.intentIq.ppid')) {
+			const ppid = this.getPPID();
+			utils.logger(logGroup, 'ppid', ppid);
+
+			if (ppid) {
+				this.setPpid(ppid);
+				this.trackPpid(ppid);
+			}
+		} else {
+			utils.logger(logGroup, 'ppid disabled');
+		}
+	}
+
 	private isEnabled(): boolean {
 		return (
 			context.get('bidders.prebid.intentIQ') &&
@@ -112,12 +118,7 @@ export class IntentIQ {
 
 	private getPPID(): string | undefined {
 		try {
-			const ppid = this.extractIIQ_ID(this.intentIqObject.getIntentIqData());
-
-			if (ppid) {
-				utils.logger(logGroup, 'ppid received', ppid);
-				return ppid;
-			}
+			return this.extractIIQ_ID(this.intentIqObject.getIntentIqData());
 		} catch (error) {
 			utils.warner(logGroup, 'error setting ppid', error);
 		}
