@@ -52,6 +52,7 @@ export * from './templates/handlers/slot/slot-size-resolved-with-placeholder-han
 export * from './templates/handlers/slot/slot-state-sticked-handler';
 export * from './templates/handlers/slot/slot-transition-handler';
 export * from './templates/handlers/slot/slot-transition-ihi-handler';
+export * from './templates/handlers/sticky-tlb/sticky-tlb-allowance-examiner';
 export * from './templates/handlers/sticky-tlb/sticky-tlb-blocking-handler';
 export * from './templates/handlers/sticky-tlb/sticky-tlb-bootstrap-handler';
 export * from './templates/handlers/sticky-tlb/sticky-tlb-config-handler';
