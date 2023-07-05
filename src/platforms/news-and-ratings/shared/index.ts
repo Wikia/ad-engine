@@ -10,3 +10,4 @@ export * from './setup/dynamic-slots/news-and-ratings-slots-definition-repositor
 export * from './setup/wad/news-and-ratings-wad.setup';
 export * from './templates/bfaa-template';
 export * from './templates/floor-adhesion-template';
+export * from './templates/sticky-tlb-template';
