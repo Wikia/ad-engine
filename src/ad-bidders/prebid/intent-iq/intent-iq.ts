@@ -58,7 +58,8 @@ export class IntentIQ {
 					domainName,
 					callback: (data) => {
 						utils.logger(logGroup, 'got data', data);
-						return resolve();
+						resolve();
+						this.setupPpid(data);
 					},
 				});
 				targetingService.set(
@@ -93,17 +94,25 @@ export class IntentIQ {
 		externalLogger.log('intentiq report', { report: JSON.stringify(data) });
 	}
 
-	setupPpid() {
-		if (this.isEnabled() && context.get('services.intentIq.ppid')) {
-			const ppid = this.getPPID();
-			utils.logger(logGroup, 'ppid', ppid);
+	setupPpid(data: any) {
+		if (!data) {
+			utils.logger(logGroup, 'no data received');
+			return;
+		}
 
-			if (ppid) {
-				this.setPpid(ppid);
+		if (!this.isEnabled() || !context.get('services.intentIq.ppid.enabled')) {
+			utils.logger(logGroup, 'ppid disabled');
+			return;
+		}
+
+		const ppid = this.getPPID(data);
+		utils.logger(logGroup, 'ppid', ppid);
+
+		if (ppid) {
+			this.setPpid(ppid);
+			if (context.get('services.intentIq.ppid.tracking.enabled')) {
 				this.trackPpid(ppid);
 			}
-		} else {
-			utils.logger(logGroup, 'ppid disabled');
 		}
 	}
 
@@ -116,9 +125,9 @@ export class IntentIQ {
 		);
 	}
 
-	private getPPID(): string | undefined {
+	private getPPID(data: any): string | undefined {
 		try {
-			return this.extractIIQ_ID(this.intentIqObject.getIntentIqData());
+			return this.extractIIQ_ID(data);
 		} catch (error) {
 			utils.warner(logGroup, 'error setting ppid', error);
 		}
@@ -126,7 +135,7 @@ export class IntentIQ {
 
 	private setPpid(ppid: string) {
 		targetingService.set('intent_iq_ppid', ppid);
-		utils.logger(logGroup, 'ppid set', ppid);
+		utils.logger(logGroup, 'set ppid ', ppid);
 	}
 
 	private extractIIQ_ID(json) {
@@ -152,6 +161,8 @@ export class IntentIQ {
 			partnerName: 'intentiq',
 			partnerIdentityId: ppid,
 		});
+
+		utils.logger(logGroup, 'track ppid');
 	}
 }
 
