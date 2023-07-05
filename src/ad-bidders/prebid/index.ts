@@ -25,8 +25,16 @@ import { getPrebidBestPrice, roundBucketCpm } from './price-helper';
 
 const logGroup = 'prebid';
 
-const commonGranularity = {
+const displayGranularity = {
 	buckets: [
+		{
+			max: 5,
+			increment: 0.01,
+		},
+		{
+			max: 10,
+			increment: 0.1,
+		},
 		{
 			max: 20,
 			increment: 0.5,
@@ -38,26 +46,21 @@ const commonGranularity = {
 	],
 };
 
-const displayGranularity = {
-	buckets: commonGranularity.buckets.concat([
-		{
-			max: 5,
-			increment: 0.01,
-		},
-		{
-			max: 10,
-			increment: 0.1,
-		},
-	]),
-};
-
 const videoGranularity = {
-	buckets: commonGranularity.buckets.concat([
+	buckets: [
 		{
 			max: 10,
 			increment: 0.01,
 		},
-	]),
+		{
+			max: 20,
+			increment: 0.5,
+		},
+		{
+			max: 50,
+			increment: 1,
+		},
+	],
 };
 
 interface PrebidConfig extends BidderConfig {
