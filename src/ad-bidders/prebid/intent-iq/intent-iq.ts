@@ -9,6 +9,10 @@ import {
 
 const logGroup = 'IntentIQ';
 
+function isIntentIqData(data: IntentIqResponseData): data is IntentIqData {
+	return !!data && data.eids !== undefined;
+}
+
 export class IntentIQ {
 	private loadPromise: Promise<void>;
 	private loaded = false;
@@ -94,14 +98,13 @@ export class IntentIQ {
 		externalLogger.log('intentiq report', { report: JSON.stringify(data) });
 	}
 
-	setupPpid(data: any) {
-		if (!data) {
+	setupPpid(data: IntentIqResponseData) {
+		if (!isIntentIqData(data)) {
 			utils.logger(logGroup, 'no data received');
 			return;
 		}
 
-		if (!this.isEnabled() || !context.get('services.intentIq.ppid.enabled')) {
-			utils.logger(logGroup, 'ppid disabled');
+		if (!this.isEnabled()) {
 			return;
 		}
 
@@ -109,7 +112,9 @@ export class IntentIQ {
 		utils.logger(logGroup, 'ppid', ppid);
 
 		if (ppid) {
-			this.setPpid(ppid);
+			if (context.get('services.intentIq.ppid.enabled')) {
+				this.setPpid(ppid);
+			}
 			if (context.get('services.intentIq.ppid.tracking.enabled')) {
 				this.trackPpid(ppid);
 			}
@@ -125,38 +130,30 @@ export class IntentIQ {
 		);
 	}
 
-	private getPPID(data: any): string | undefined {
+	private getPPID(data: IntentIqData): string | undefined {
 		try {
-			return this.extractIIQ_ID(data);
+			return this.extractId(data);
 		} catch (error) {
 			utils.warner(logGroup, 'error setting ppid', error);
 		}
 	}
 
-	private setPpid(ppid: string) {
+	private setPpid(ppid: string): void {
 		targetingService.set('intent_iq_ppid', ppid);
 		utils.logger(logGroup, 'set ppid ', ppid);
 	}
 
-	private extractIIQ_ID(json) {
-		const eids = json.eids;
-		for (let i = 0; i < eids.length; i++) {
-			const eid = eids[i];
-			if (eid.source === 'intentiq.com') {
-				const uids = eid.uids;
-				for (let j = 0; j < uids.length; j++) {
-					const uid = uids[j];
-					if (uid.ext.stype === 'ppuid') {
-						return uid.id;
-					}
-				}
-			}
-		}
-
-		return null;
+	private extractId(data: IntentIqData): string | null {
+		return (
+			data.eids
+				.filter((eid) => eid.source === 'intentiq.com')
+				.map((eid) => {
+					return eid.uids.find((uid) => uid.ext.stype === 'ppuid');
+				})[0]?.id ?? null
+		);
 	}
 
-	private trackPpid(ppid: string) {
+	private trackPpid(ppid: string): void {
 		communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
 			partnerName: 'intentiq',
 			partnerIdentityId: ppid,
