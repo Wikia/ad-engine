@@ -25,7 +25,6 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 			this.blockStickyTLB('UAP');
 			return;
 		}
-
 		const stickyExaminer = new StickyTlbAllowanceExaminer(this.adSlot);
 		if (!stickyExaminer.shouldStick()) {
 			this.blockStickyTLB(`Stickiness forced`);

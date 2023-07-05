@@ -3,6 +3,14 @@
 
 body {
 	@include uap-styles();
+
+	&.has-uap {
+		#top_leaderboard {
+			&.sticky-tlb {
+				z-index: 5000061;
+			}
+		}
+	}
 }
 
 .gpt-ad {
