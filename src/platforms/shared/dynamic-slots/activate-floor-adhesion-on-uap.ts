@@ -5,7 +5,7 @@ import {
 	UapLoadStatus,
 	universalAdPackage,
 } from '@wikia/ad-engine';
-import { StickyTlbAllowanceExaminer } from '../templates/handlers/sticky-tlb/sticky-tlb-blocking-handler';
+import { StickyTlbAllowanceExaminer } from '../templates/handlers/sticky-tlb/sticky-tlb-allowance-examiner';
 
 export function activateFloorAdhesionOnUAP(callback: () => void, withLoadedOnly = true) {
 	communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
@@ -24,7 +24,10 @@ export function activateFloorAdhesionOnUAP(callback: () => void, withLoadedOnly 
 							universalAdPackage.SLOT_VIDEO_DONE,
 						].includes(payload.status)
 					) {
-						setTimeout(() => callback(), universalAdPackage.SLIDE_OUT_TIME + 400);
+						const timeoutCallbackActivation =
+							universalAdPackage.SLIDE_OUT_TIME +
+							universalAdPackage.DELAY_TIME_FOR_SLIDE_OUT_FINISH;
+						setTimeout(() => callback(), timeoutCallbackActivation);
 					}
 				},
 				'top_leaderboard',
