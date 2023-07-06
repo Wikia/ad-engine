@@ -139,7 +139,7 @@ export class IntentIQ {
 	}
 
 	setPpid(ppid: string): void {
-		targetingService.set('intent_iq_ppid', ppid);
+		targetingService.set('intent_iq_ppid', ppid, 'intent_iq');
 		utils.logger(logGroup, 'set ppid ', ppid);
 	}
 
