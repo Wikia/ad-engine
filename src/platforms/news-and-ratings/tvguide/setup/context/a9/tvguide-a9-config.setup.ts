@@ -183,6 +183,13 @@ export class TvGuideA9ConfigSetup implements DiProcess {
 			'incontent-narrow-all-top': {
 				sizes: [[728, 90]],
 			},
+			floor_adhesion: {
+				sizes: [
+					[300, 50],
+					[320, 50],
+					[320, 100],
+				],
+			},
 			video: {
 				type: 'video',
 			},
