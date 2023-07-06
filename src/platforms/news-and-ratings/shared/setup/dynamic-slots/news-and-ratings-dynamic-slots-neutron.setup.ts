@@ -120,12 +120,8 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 				placementId: slot.getAttribute('data-ad'),
 			});
 		});
-
 		utils.logger(logGroup, 'Reinjecting floor_adhesion');
-
-		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () =>
-			insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]),
-		);
+		insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
 	}
 
 	private isSlotApplicable(slotName: string): boolean {
