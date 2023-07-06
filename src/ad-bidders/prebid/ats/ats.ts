@@ -22,14 +22,14 @@ export class Ats extends BaseServiceSetup {
 			return;
 		}
 
+		const launchpadScript = utils.scriptLoader.loadScript(this.launchpadScriptUrl);
+		const launchpadBundleScript = utils.scriptLoader.loadScript(this.launchpadBundleScriptUrl);
+
 		const userEmailHashes: [string, string, string] = context.get('wiki.opts.userEmailHashes');
 		if (!Array.isArray(userEmailHashes) || userEmailHashes?.length !== 3) {
-			utils.logger(logGroup, userEmailHashes);
 			return;
 		}
 		const [md5, sha1, sha256] = userEmailHashes;
-		const launchpadScript = utils.scriptLoader.loadScript(this.launchpadScriptUrl);
-		const launchpadBundleScript = utils.scriptLoader.loadScript(this.launchpadBundleScriptUrl);
 
 		return Promise.all([launchpadScript, launchpadBundleScript])
 			.then(() => this.waitForAts())

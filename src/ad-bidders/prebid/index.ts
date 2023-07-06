@@ -99,11 +99,17 @@ export class PrebidProvider extends BidderProvider {
 			...this.configureTCF(),
 		};
 
-		this.applyConfig(this.prebidConfig);
-		this.configureAdUnits();
-		this.registerBidsRefreshing();
-		this.registerBidsTracking();
+		utils.logger(logGroup, 'prebid created', this.prebidConfig);
+
 		this.enableATSAnalytics();
+		this.applyConfig(this.prebidConfig);
+		console.log('prebid', 'XXX');
+		this.configureAdUnits();
+		console.log('prebid', 'XXX');
+		this.registerBidsRefreshing();
+		console.log('prebid', 'XXX');
+		this.registerBidsTracking();
+		console.log('prebid', 'XXX');
 
 		utils.logger(logGroup, 'prebid created', this.prebidConfig);
 	}
@@ -304,6 +310,7 @@ export class PrebidProvider extends BidderProvider {
 	}
 
 	private enableATSAnalytics(): void {
+		console.log('ATS', context.get('bidders.liveRampATSAnalytics.enabled'));
 		if (context.get('bidders.liveRampATSAnalytics.enabled')) {
 			utils.logger(logGroup, 'prebid enabling ATS Analytics');
 
@@ -313,7 +320,6 @@ export class PrebidProvider extends BidderProvider {
 						provider: 'atsAnalytics',
 						options: {
 							pid: '2161',
-							host: 'https://analytics.openlog.in',
 						},
 					},
 				]);

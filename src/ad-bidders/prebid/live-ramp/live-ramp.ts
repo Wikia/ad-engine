@@ -5,6 +5,7 @@ const logGroup = 'LiveRamp';
 interface LiveRampConfig {
 	userSync?: {
 		userIds: object[];
+		syncDelay: number;
 	};
 }
 
@@ -25,12 +26,14 @@ class LiveRamp {
 							pid: '2161',
 						},
 						storage: {
-							type: 'cookie',
-							name: 'idl_env',
+							type: 'html5',
+							name: '_lr_env',
 							expires: 1,
+							refreshInSeconds: 1800,
 						},
 					},
 				],
+				syncDelay: 3000,
 			},
 		};
 	}
