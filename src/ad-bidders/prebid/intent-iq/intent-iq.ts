@@ -99,12 +99,12 @@ export class IntentIQ {
 	}
 
 	setupPpid(data: IntentIqResponseData) {
-		if (!isIntentIqData(data)) {
-			utils.logger(logGroup, 'no data received');
+		if (!this.isEnabled()) {
 			return;
 		}
 
-		if (!this.isEnabled()) {
+		if (!isIntentIqData(data)) {
+			utils.logger(logGroup, 'no data received');
 			return;
 		}
 
@@ -130,11 +130,12 @@ export class IntentIQ {
 		);
 	}
 
-	getPpid(data: IntentIqData): string | undefined {
+	getPpid(data: IntentIqData): string | null {
 		try {
 			return this.extractId(data);
 		} catch (error) {
 			utils.warner(logGroup, 'error setting ppid', error);
+			return null;
 		}
 	}
 
