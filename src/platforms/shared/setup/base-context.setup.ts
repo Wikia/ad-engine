@@ -185,6 +185,10 @@ export class BaseContextSetup implements DiProcess {
 			'bidders.liveRampATSAnalytics.enabled',
 			this.instantConfig.get('icLiveRampATSAnalytics'),
 		);
+		context.set(
+			'bidders.magniteATSAnalytics.enabled',
+			this.instantConfig.get('icMagniteATSAnalytics'),
+		);
 		context.set('bidders.prebid.native.enabled', this.instantConfig.get('icPrebidNative'));
 		context.set(
 			'templates.sizeOverwritingMap',
