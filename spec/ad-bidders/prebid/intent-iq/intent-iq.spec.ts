@@ -184,7 +184,8 @@ describe('IntentIQ', () => {
 
 			expect(setPpidSpy.calledOnce).to.be.true;
 			expect(setPpidSpy.calledWithExactly('12341234')).to.be.true;
-			expect(targetingServiceStub.calledWithExactly('intent_iq_ppid', '12341234')).to.be.true;
+			expect(targetingServiceStub.calledWithExactly('intent_iq_ppid', '12341234', 'intent_iq')).to
+				.be.true;
 		});
 
 		it('should not send tracking events when IIQ PPID tracking is disabled', () => {
