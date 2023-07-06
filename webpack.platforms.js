@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
+const { EsbuildPlugin } = require('esbuild-loader');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const platformsConfig = require('./src/platforms/platforms.json');
@@ -43,6 +44,15 @@ const platforms = ({ entry }) => ({
 	performance: {
 		maxAssetSize: 310000,
 		maxEntrypointSize: 330000,
+	},
+
+	optimization: {
+		minimizer: [
+			new EsbuildPlugin({
+				target: 'es2015',
+				css: true,
+			}),
+		],
 	},
 
 	devServer: {

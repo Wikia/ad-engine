@@ -24,9 +24,9 @@ module.exports = () => ({
 				exclude: /node_modules/,
 				use: [
 					{
-						loader: 'ts-loader',
+						loader: 'esbuild-loader',
 						options: {
-							configFile: 'tsconfig.json',
+							target: 'es2015',
 						},
 					},
 				],
