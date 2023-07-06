@@ -50,6 +50,7 @@ export class UcpDesktopPerformanceAdsDefinitionRepository {
 		if (this.popularPagesElement) {
 			await this.getDataFromAdServer();
 			this.fillPerformanceWidget('popularPages');
+			this.trackElementVisibility(this.popularPagesElement, 'popularPages');
 		}
 
 		new utils.WaitFor(() => !!document.querySelector(OTHERS_LIKE_YOU_SELECTOR), 50, 0, 250)
@@ -60,6 +61,7 @@ export class UcpDesktopPerformanceAdsDefinitionRepository {
 				if (this.othersLikeYouElement) {
 					await this.getDataFromAdServer();
 					this.fillPerformanceWidget('othersLikeYou');
+					this.trackElementVisibility(this.othersLikeYouElement, 'othersLikeYou');
 				}
 			});
 	}
@@ -162,5 +164,23 @@ export class UcpDesktopPerformanceAdsDefinitionRepository {
 
 	private triggerImpressionPixels(): void {
 		utils.scriptLoader.loadAsset(this.widgetData.data.impression, 'blob');
+	}
+
+	private trackElementVisibility(element: HTMLElement, type: PerformanceAdType): void {
+		if (!this.widgetData.type || !this.widgetData.type.includes(type)) {
+			return;
+		}
+
+		new IntersectionObserver(
+			(entries, observer) => {
+				entries.forEach((entry) => {
+					if (entry.intersectionRatio > 0.5 && entry.isIntersecting && entry.time > 500) {
+						utils.logger('test', 'track');
+						observer.disconnect();
+					}
+				});
+			},
+			{ threshold: 0.5 },
+		).observe(element);
 	}
 }
