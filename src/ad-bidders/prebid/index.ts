@@ -305,7 +305,6 @@ export class PrebidProvider extends BidderProvider {
 	}
 
 	private enableATSAnalytics(): void {
-		console.log('ATS', context.get('bidders.liveRampATSAnalytics.enabled'));
 		if (context.get('bidders.liveRampATSAnalytics.enabled')) {
 			utils.logger(logGroup, 'prebid enabling ATS Analytics');
 
