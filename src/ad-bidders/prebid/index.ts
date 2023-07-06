@@ -100,8 +100,6 @@ export class PrebidProvider extends BidderProvider {
 			...this.configureTCF(),
 		};
 
-		utils.logger(logGroup, 'prebid created', this.prebidConfig);
-
 		this.applyConfig(this.prebidConfig);
 		this.configureAdUnits();
 		this.registerBidsRefreshing();
