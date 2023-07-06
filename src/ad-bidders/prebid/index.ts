@@ -18,6 +18,7 @@ import {
 import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
+import { Ats } from './ats';
 import { intentIQ } from './intent-iq';
 import { liveRamp } from './live-ramp';
 import { getWinningBid } from './prebid-helper';
@@ -101,15 +102,11 @@ export class PrebidProvider extends BidderProvider {
 
 		utils.logger(logGroup, 'prebid created', this.prebidConfig);
 
-		this.enableATSAnalytics();
 		this.applyConfig(this.prebidConfig);
-		console.log('prebid', 'XXX');
 		this.configureAdUnits();
-		console.log('prebid', 'XXX');
 		this.registerBidsRefreshing();
-		console.log('prebid', 'XXX');
 		this.registerBidsTracking();
-		console.log('prebid', 'XXX');
+		this.enableATSAnalytics();
 
 		utils.logger(logGroup, 'prebid created', this.prebidConfig);
 	}
@@ -319,7 +316,7 @@ export class PrebidProvider extends BidderProvider {
 					{
 						provider: 'atsAnalytics',
 						options: {
-							pid: '2161',
+							pid: Ats.PLACEMENT_ID,
 						},
 					},
 				]);
