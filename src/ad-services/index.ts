@@ -14,3 +14,4 @@ export * from './nielsen';
 export * from './optimizely';
 export * from './sailthru';
 export * from './stroer';
+export * from './wunderkind';

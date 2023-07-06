@@ -68,7 +68,11 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 		return this.instantConfig.get('icInterstitial') && context.get('state.isMobile');
 	}
 	private isFloorAdhesionNonUapApplicable(): boolean {
-		return context.get('state.isMobile') && !Anyclip.isApplicable();
+		return (
+			context.get('state.isMobile') &&
+			!Anyclip.isApplicable() &&
+			this.instantConfig.get('icFloorAdhesion')
+		);
 	}
 	getIncontentPlayerConfig(): SlotSetupDefinition | undefined {
 		if (!Anyclip.isApplicable()) {

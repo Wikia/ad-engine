@@ -81,6 +81,13 @@ export class ComicvineA9ConfigSetup implements DiProcess {
 			'mobile-banner': {
 				sizes: [[300, 250]],
 			},
+			floor_adhesion: {
+				sizes: [
+					[300, 50],
+					[320, 50],
+					[320, 100],
+				],
+			},
 			video: {
 				type: 'video',
 			},

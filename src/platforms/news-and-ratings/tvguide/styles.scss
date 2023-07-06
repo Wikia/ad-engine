@@ -13,6 +13,14 @@ body {
 			display: none;
 		}
 	}
+
+	&.has-uap {
+		#top_leaderboard {
+			&.sticky-tlb {
+				z-index: 5000001;
+			}
+		}
+	}
 }
 
 .gpt-ad {
