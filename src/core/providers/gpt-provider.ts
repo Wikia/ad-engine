@@ -218,7 +218,7 @@ export class GptProvider implements Provider {
 	}
 
 	setPPID() {
-		const intentIqPpid = targetingService.get('intent_iq_ppid');
+		const intentIqPpid = targetingService.get('intent_iq_ppid', 'intent_iq');
 		const ppid = intentIqPpid ? intentIqPpid : targetingService.get('ppid');
 
 		if (ppid) {
