@@ -42,6 +42,7 @@ export class IndexExchange extends PrebidAdapter {
 				video: {
 					context: 'instream',
 					playerSize: [640, 480],
+					plcmt: 2,
 				},
 			},
 			ortb2Imp: {
@@ -67,7 +68,6 @@ export class IndexExchange extends PrebidAdapter {
 							maxduration: 30,
 							protocols: [2, 3, 5, 6],
 							api: [2],
-							plcmt: 2,
 						},
 					},
 				},
