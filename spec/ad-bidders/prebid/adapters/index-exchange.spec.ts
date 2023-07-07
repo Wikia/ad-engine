@@ -114,6 +114,7 @@ describe('IndexExchange bidder adapter', () => {
 								maxduration: 30,
 								protocols: [2, 3, 5, 6],
 								api: [2],
+								plcmt: 2,
 							},
 						},
 					},
