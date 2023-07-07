@@ -30,6 +30,7 @@ export class AppnexusAst extends PrebidAdapter {
 				video: {
 					context: 'instream',
 					playerSize: [640, 480],
+					plcmt: 2,
 				},
 			},
 			bids: [
