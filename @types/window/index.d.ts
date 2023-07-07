@@ -53,7 +53,6 @@ interface Window {
 	RLQ?: any;
 	sessionId?: string;
 	session_id?: string;
-	Sailthru?: Sailthru;
 	SilverSurferSDK?: SilverSurferSDK;
 	// Fandom JWPlayer sets the sponsored videos list
 	sponsoredVideos?: string[];
