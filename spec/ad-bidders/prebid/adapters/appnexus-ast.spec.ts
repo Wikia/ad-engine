@@ -32,7 +32,6 @@ describe('AppnexusAst bidder adapter', () => {
 					video: {
 						context: 'instream',
 						playerSize: [640, 480],
-						plcmt: 2,
 					},
 				},
 				bids: [
@@ -47,6 +46,7 @@ describe('AppnexusAst bidder adapter', () => {
 							video: {
 								skippable: false,
 								playback_method: ['auto_play_sound_off'],
+								plcmt: 2,
 							},
 						},
 					},

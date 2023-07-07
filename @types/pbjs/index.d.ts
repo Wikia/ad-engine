@@ -72,7 +72,6 @@ interface PrebidVideoType {
 	maxduration?: number;
 	protocols?: number[];
 	playbackmethod?: number[];
-	plcmt?: number;
 }
 
 interface PrebidMediaTypes {
