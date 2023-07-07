@@ -7,6 +7,14 @@ body {
 	&.has-uap #top_header {
 		z-index: 201;
 	}
+
+	&.has-uap {
+		#top_leaderboard {
+			&.sticky-tlb {
+				z-index: 202;
+			}
+		}
+	}
 }
 
 .gpt-ad {
