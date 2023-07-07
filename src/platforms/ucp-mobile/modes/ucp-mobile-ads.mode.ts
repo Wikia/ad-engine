@@ -22,6 +22,7 @@ import {
 	PartnerPipeline,
 	PrebidNativeProvider,
 	Stroer,
+	System1,
 	Wunderkind,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -48,6 +49,7 @@ export class UcpMobileAdsMode implements DiProcess {
 		private playerSetup: PlayerSetup,
 		private prebidNativeProvider: PrebidNativeProvider,
 		private stroer: Stroer,
+		private system1: System1,
 		private wadRunner: WadRunner,
 		private wunderkind: Wunderkind,
 	) {}
@@ -68,6 +70,7 @@ export class UcpMobileAdsMode implements DiProcess {
 				this.confiant,
 				this.durationMedia,
 				this.stroer,
+				this.system1,
 				this.identityHub,
 				this.nielsen,
 				this.prebidNativeProvider,
