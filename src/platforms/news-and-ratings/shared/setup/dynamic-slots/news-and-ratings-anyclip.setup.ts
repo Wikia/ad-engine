@@ -71,7 +71,7 @@ export class NewsAndRatingsAnyclipSetup implements DiProcess {
 	}
 
 	private isApplicableByPnameAdTag(pname: string): boolean {
-		const applicablePnames = ['news', 'feature_hub', 'listings/main', 'movie'];
+		const applicablePnames = ['news', 'feature_hub', 'listings/main', 'movie', 'tv_show'];
 
 		return applicablePnames.includes(pname);
 	}
