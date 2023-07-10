@@ -27,7 +27,7 @@ export class IntentIQ {
 		}
 
 		this.loadPromise = utils.scriptLoader
-			.loadScript(this.intentIQScriptUrl, 'text/javascript', true, 'first')
+			.loadScript(this.intentIQScriptUrl, true, 'first')
 			.then(() => {
 				this.loaded = true;
 				utils.logger(logGroup, 'loaded');
