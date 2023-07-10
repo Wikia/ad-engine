@@ -71,7 +71,7 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 	async execute(): Promise<void> {
 		const maxInitializationTime = this.options?.timeout || this.getDelayTimeoutInMs();
 
-		if (this.options) {
+		if (this.options?.dependencies) {
 			Promise.race([
 				new Promise((res) => setTimeout(res, maxInitializationTime)),
 				Promise.all(this.options.dependencies),

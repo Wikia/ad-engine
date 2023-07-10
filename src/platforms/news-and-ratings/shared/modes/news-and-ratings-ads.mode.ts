@@ -1,4 +1,4 @@
-import { GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
+import { AdEngineStackSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
 	Anyclip,
 	Audigent,
@@ -21,6 +21,7 @@ import { injectable } from 'tsyringe';
 export class NewsAndRatingsAdsMode implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,
+		private adEngineStackSetup: AdEngineStackSetup,
 		private anyclip: Anyclip,
 		private audigent: Audigent,
 		private bidders: Bidders,
@@ -49,12 +50,19 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 				this.iasPublisherOptimization,
 				this.captify,
 				this.durationMedia,
-				this.playerSetup,
-				this.gptSetup.setOptions({
-					dependencies: [this.wadRunner.initialized, this.bidders.initialized],
+				this.playerSetup.setOptions({
+					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
 				}),
+				this.gptSetup,
 				this.doubleVerify.setOptions({
 					dependencies: [this.gptSetup.initialized],
+				}),
+				this.adEngineStackSetup.setOptions({
+					dependencies: [
+						this.bidders.initialized,
+						this.wadRunner.initialized,
+						this.gptSetup.initialized,
+					],
 				}),
 			)
 			.execute()

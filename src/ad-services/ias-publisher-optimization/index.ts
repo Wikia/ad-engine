@@ -45,11 +45,6 @@ export class IasPublisherOptimization extends BaseServiceSetup {
 	private isLoaded = false;
 	private slotList: string[] = [];
 
-	private resolveIASReady: () => void;
-	IASReady: Promise<void> = new Promise<void>((resolve) => {
-		this.resolveIASReady = resolve;
-	});
-
 	call(): Promise<void> {
 		if (!this.isEnabled('icIASPublisherOptimization')) {
 			utils.logger(logGroup, 'disabled');
@@ -59,7 +54,7 @@ export class IasPublisherOptimization extends BaseServiceSetup {
 		if (!this.isLoaded) {
 			utils.logger(logGroup, 'loading...');
 			this.isLoaded = true;
-			return utils.scriptLoader.loadScript(scriptUrl, 'text/javascript', true, 'first').then(() => {
+			return utils.scriptLoader.loadScript(scriptUrl, true, 'first').then(() => {
 				utils.logger(logGroup, 'asset loaded');
 				this.setup();
 			});
@@ -136,7 +131,6 @@ export class IasPublisherOptimization extends BaseServiceSetup {
 			targetingService.set('vw', slotTargeting.vw || slotTargeting.vw_vv, slotName);
 		}
 		utils.logger(logGroup, 'Done.', this);
-		this.resolveIASReady();
 	}
 
 	private static setBrandSafetyKeyValuesInTargeting(brandSafetyData): void {
