@@ -12,25 +12,30 @@ import { inject, injectable } from 'tsyringe';
 
 @injectable()
 export class BfaaF2ConfigHandler implements TemplateStateHandler {
+	private enabledSlots: string[] = ['top_boxad', 'incontent_boxad', 'bottom_leaderboard'];
+
 	constructor(@inject(TEMPLATE.PARAMS) private params: UapParams) {}
 
 	async onEnter(): Promise<void> {
-		const enabledSlots: string[] = ['top_boxad', 'incontent_boxad', 'bottom_leaderboard'];
 		const isMobile = context.get('state.isMobile');
+
+		if (!isMobile) {
+			this.configureFloorAdhesionExperiment();
+		}
 
 		if (this.params.newTakeoverConfig) {
 			communicationService.emit(eventsRepository.AD_ENGINE_UAP_NTC_LOADED);
 
 			if (isMobile) {
-				enabledSlots.push('floor_adhesion');
+				this.enabledSlots.push('floor_adhesion');
 			}
 		}
 
 		universalAdPackage.init(
 			this.params,
-			enabledSlots,
+			this.enabledSlots,
 			Object.keys(context.get('slots') || []).filter(
-				(slotName) => !enabledSlots.includes(slotName),
+				(slotName) => !this.enabledSlots.includes(slotName),
 			),
 		);
 		context.set('slots.bottom_leaderboard.viewportConflicts', []);
@@ -40,5 +45,11 @@ export class BfaaF2ConfigHandler implements TemplateStateHandler {
 			: universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop;
 
 		slotsContext.setSlotSize('bottom_leaderboard', bfaSize);
+	}
+
+	private configureFloorAdhesionExperiment() {
+		if (context.get('options.ntc.floorEnabled')) {
+			this.enabledSlots.push('floor_adhesion');
+		}
 	}
 }

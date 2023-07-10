@@ -16,9 +16,5 @@ export class UcpDesktopBaseContextSetup extends BaseContextSetup {
 			'options.userId',
 			(window.mw as any).config.get('wgTrackID') || (window.mw as any).config.get('wgUserId'),
 		);
-		context.set(
-			'events.pushOnScroll.nativoThreshold',
-			this.instantConfig.get('icPushOnScrollNativoThreshold', 200),
-		);
 	}
 }

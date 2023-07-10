@@ -13,6 +13,7 @@ import {
 	DiProcess,
 	eventsRepository,
 	slotService,
+	UapLoadStatus,
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { injectable } from 'tsyringe';
@@ -45,8 +46,11 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			this.slotsDefinitionRepository.getIncontentPlayerConfig(),
 			this.slotsDefinitionRepository.getIncontentLeaderboardConfig(),
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
-			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
 		]);
+
+		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () =>
+			insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]),
+		);
 
 		communicationService.on(eventsRepository.RAIL_READY, () => {
 			insertSlots([this.slotsDefinitionRepository.getIncontentBoxadConfig()]);
@@ -118,12 +122,19 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			() => {
 				porvataClosedActive = true;
 
-				communicationService.onSlotEvent(AdSlotEvent.VIDEO_AD_IMPRESSION, () => {
-					if (porvataClosedActive) {
-						porvataClosedActive = false;
-						slotService.disable(slotName);
-					}
-				});
+				communicationService.on(
+					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+					(action: UapLoadStatus) => {
+						if (!action.isLoaded || action.adProduct === 'ruap') {
+							communicationService.onSlotEvent(AdSlotEvent.VIDEO_AD_IMPRESSION, () => {
+								if (porvataClosedActive) {
+									porvataClosedActive = false;
+									slotService.disable(slotName);
+								}
+							});
+						}
+					},
+				);
 			},
 			slotName,
 		);

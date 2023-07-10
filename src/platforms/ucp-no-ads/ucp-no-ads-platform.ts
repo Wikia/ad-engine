@@ -5,6 +5,7 @@ import {
 	MetricReporter,
 	MetricReporterSetup,
 	NoAdsMode,
+	PlatformContextSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
@@ -21,6 +22,7 @@ export class UcpNoAdsPlatform {
 	execute(): void {
 		this.pipeline.add(
 			UcpNoAdsWikiContextSetup,
+			PlatformContextSetup,
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
 			TrackingParametersSetup,
 			MetricReporterSetup,

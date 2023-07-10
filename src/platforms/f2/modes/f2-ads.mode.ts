@@ -8,7 +8,6 @@ import {
 	DoubleVerify,
 	eventsRepository,
 	IasPublisherOptimization,
-	IdentitySetup,
 	jwPlayerInhibitor,
 	LiveConnect,
 	LiveRampPixel,
@@ -26,7 +25,6 @@ export class F2AdsMode implements DiProcess {
 		private doubleVerify: DoubleVerify,
 		private gptSetup: GptSetup,
 		private iasPublisherOptimization: IasPublisherOptimization,
-		private identitySetup: IdentitySetup,
 		private liveConnect: LiveConnect,
 		private liveRampPixel: LiveRampPixel,
 		private nielsen: Nielsen,
@@ -44,7 +42,6 @@ export class F2AdsMode implements DiProcess {
 				this.iasPublisherOptimization,
 				this.nielsen,
 				this.wadRunner,
-				this.identitySetup,
 				this.playerSetup.setOptions({
 					dependencies: [this.wadRunner.initialized],
 					timeout: context.get('options.jwpMaxDelayTimeout'),

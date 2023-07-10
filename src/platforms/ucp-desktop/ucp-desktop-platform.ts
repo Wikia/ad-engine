@@ -21,6 +21,7 @@ import {
 	conditional,
 	context,
 	eventsRepository,
+	IdentitySetup,
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
@@ -51,6 +52,7 @@ export class UcpDesktopPlatform {
 			LoadTimesSetup,
 			UcpDesktopBaseContextSetup,
 			UcpDesktopSlotsContextSetup,
+			IdentitySetup,
 			UcpTargetingSetup,
 			UcpDesktopPrebidConfigSetup,
 			UcpDesktopA9ConfigSetup,

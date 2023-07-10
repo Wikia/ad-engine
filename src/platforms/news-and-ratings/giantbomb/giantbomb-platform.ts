@@ -5,15 +5,16 @@ import {
 	LoadTimesSetup,
 	MetricReporter,
 	MetricReporterSetup,
+	SlotsConfigurationExtender,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
-import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
+import { context, IdentitySetup, ProcessPipeline, utils } from '@wikia/ad-engine';
 import { injectable } from 'tsyringe';
-import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
 import {
 	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
+	NewsAndRatingsAnyclipSetup,
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsDynamicSlotsSetup,
 	NewsAndRatingsTargetingSetup,
@@ -43,7 +44,9 @@ export class GiantbombPlatform {
 			LoadTimesSetup,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
+			IdentitySetup,
 			NewsAndRatingsTargetingSetup,
+			NewsAndRatingsAnyclipSetup,
 			GiantbombTargetingSetup,
 			GiantbombSlotsContextSetup,
 			SlotsConfigurationExtender,

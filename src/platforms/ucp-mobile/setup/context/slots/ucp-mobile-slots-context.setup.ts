@@ -12,12 +12,10 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 	execute(): void {
 		const slots = {
 			top_leaderboard: {
-				aboveTheFold: true,
 				firstCall: true,
 				adProduct: 'top_leaderboard',
 				bidderAlias: 'mobile_top_leaderboard',
 				group: 'LB',
-				options: {},
 				sizes: [],
 				defaultSizes: [
 					[320, 50],
@@ -38,7 +36,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				adProduct: 'top_boxad',
 				bidderAlias: 'mobile_in_content',
 				group: 'MR',
-				options: {},
 				sizes: [
 					{
 						viewportSize: [BIG_VIEWPORT_SIZE.width, BIG_VIEWPORT_SIZE.height],
@@ -64,7 +61,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				adProduct: 'incontent_boxad_1',
 				bidderAlias: 'mobile_in_content',
 				group: 'HiVi',
-				options: {},
 				sizes: [
 					{
 						viewportSize: [BIG_VIEWPORT_SIZE.width, BIG_VIEWPORT_SIZE.height],
@@ -102,7 +98,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				adProduct: 'mobile_prefooter',
 				disabled: true,
 				group: 'PF',
-				options: {},
 				sizes: [],
 				defaultSizes: [
 					[320, 50],
@@ -116,7 +111,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			interstitial: {
 				adProduct: 'interstitial',
 				group: 'IU',
-				options: {},
 				outOfPage: true,
 				outOfPageFormat: 'INTERSTITIAL',
 				targeting: {
@@ -126,7 +120,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			floor_adhesion: {
 				adProduct: 'floor_adhesion',
 				group: 'PF',
-				options: {},
 				outOfPage: false,
 				targeting: {
 					loc: 'footer',
@@ -137,31 +130,10 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					[320, 50],
 					[320, 100],
 				],
-				sizes: [
-					{
-						viewportSize: [0, 0],
-						sizes: [
-							[300, 50],
-							[320, 50],
-							[320, 100],
-						],
-					},
-					{
-						// 728px for the ad + 40px width of the close button
-						viewportSize: [768, 0],
-						sizes: [
-							[300, 50],
-							[320, 50],
-							[320, 100],
-							[728, 90],
-						],
-					},
-				],
 			},
 			bottom_leaderboard: {
 				adProduct: 'bottom_leaderboard',
 				group: 'PF',
-				options: {},
 				sizes: [
 					{
 						viewportSize: [375, 627],
@@ -205,25 +177,21 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				adProduct: 'quiz_leaderboard_start',
 				defaultSizes: [[320, 50]],
 				group: 'quiz',
-				options: {},
 			},
 			quiz_leaderboard_questions: {
 				adProduct: 'quiz_leaderboard_questions',
 				defaultSizes: [[320, 50]],
 				group: 'quiz',
-				options: {},
 			},
 			quiz_leaderboard_finish: {
 				adProduct: 'quiz_leaderboard_finish',
 				defaultSizes: [[320, 50]],
 				group: 'quiz',
-				options: {},
 			},
 			quiz_incontent: {
 				adProduct: 'quiz_incontent',
 				defaultSizes: [[300, 250]],
 				group: 'quiz',
-				options: {},
 			},
 		};
 

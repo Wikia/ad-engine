@@ -6,8 +6,13 @@ export class AdvertisementLabelHandler implements TemplateStateHandler {
 	constructor(@inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
 
 	async onEnter(): Promise<void> {
-		const advertisementLabel = new AdvertisementLabel();
+		const adSlotElement = this.adSlot.getElement();
+		const advertisementLabel = adSlotElement.querySelector('.advertisement-label');
+		if (advertisementLabel) {
+			return;
+		}
 
-		this.adSlot.getElement().appendChild(advertisementLabel.render());
+		const newAdvertisementLabel = new AdvertisementLabel();
+		adSlotElement.appendChild(newAdvertisementLabel.render());
 	}
 }

@@ -6,6 +6,7 @@ interface Window {
 	ads?: MediaWikiAds;
 	adsQueue?: any;
 	anyclip?: AnyclipApi;
+	ats?: ATS;
 	// TODO: Remove after ADEN-13043 release & data confirmation
 	PWT?: { jsLoaded: () => void };
 	IHPWT?: { jsLoaded: () => void };
@@ -52,7 +53,6 @@ interface Window {
 	RLQ?: any;
 	sessionId?: string;
 	session_id?: string;
-	Sailthru?: Sailthru;
 	SilverSurferSDK?: SilverSurferSDK;
 	// Fandom JWPlayer sets the sponsored videos list
 	sponsoredVideos?: string[];

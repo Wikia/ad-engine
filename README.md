@@ -61,7 +61,6 @@ export default customContext = {
 	},
 	slots: {
 		top_leaderboard: {
-			aboveTheFold: true,
 			firstCall: true,
 			sizes: [
 				{

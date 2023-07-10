@@ -120,6 +120,13 @@ export class GamefaqsA9ConfigSetup implements DiProcess {
 			'incontent-ad-plus': {
 				sizes: [[728, 90]],
 			},
+			floor_adhesion: {
+				sizes: [
+					[300, 50],
+					[320, 50],
+					[320, 100],
+				],
+			},
 			video: {
 				type: 'video',
 			},

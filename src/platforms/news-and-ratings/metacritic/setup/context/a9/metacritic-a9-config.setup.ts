@@ -171,6 +171,13 @@ export class MetacriticA9ConfigSetup implements DiProcess {
 			'mobile-nav-ad-plus-banner': {
 				sizes: [[320, 50]],
 			},
+			floor_adhesion: {
+				sizes: [
+					[300, 50],
+					[320, 50],
+					[320, 100],
+				],
+			},
 			video: {
 				type: 'video',
 			},

@@ -11,14 +11,5 @@ export class UcpMobileBaseContextSetup extends BaseContextSetup {
 			'custom.serverPrefix',
 			utils.geoService.isProperCountry(['AU', 'NZ']) ? 'vm1b' : 'wka1b',
 		);
-
-		context.set(
-			'events.pushOnScroll.threshold',
-			this.instantConfig.get('icPushOnScrollThreshold', 100),
-		);
-		context.set(
-			'events.pushOnScroll.nativoThreshold',
-			this.instantConfig.get('icPushOnScrollNativoThreshold', 200),
-		);
 	}
 }

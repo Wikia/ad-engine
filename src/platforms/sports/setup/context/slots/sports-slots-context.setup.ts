@@ -6,7 +6,6 @@ export class SportsSlotsContextSetup implements DiProcess {
 	execute(): void {
 		const slots = {
 			'cdm-zone-01': {
-				aboveTheFold: true,
 				defaultSizes: [
 					[728, 90],
 					[970, 150],
@@ -44,7 +43,6 @@ export class SportsSlotsContextSetup implements DiProcess {
 							[320, 50],
 							[320, 100],
 						],
-						mobileViewport: true,
 					},
 				],
 				targeting: {
@@ -53,7 +51,6 @@ export class SportsSlotsContextSetup implements DiProcess {
 				},
 			},
 			'cdm-zone-02': {
-				aboveTheFold: true,
 				autoplay: true,
 				audio: false,
 				defaultSizes: [
@@ -99,7 +96,6 @@ export class SportsSlotsContextSetup implements DiProcess {
 							[320, 50],
 							[320, 100],
 						],
-						mobileViewport: true,
 					},
 				],
 				targeting: {

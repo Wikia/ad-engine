@@ -1,4 +1,5 @@
 @import '../shared/styles/uap-styles.scss';
+@import '../shared/styles/out-of-page-styles';
 
 body {
 	@include uap-styles();
@@ -8,8 +9,16 @@ body {
 			z-index: 201;
 		}
 
-		.c-layoutDefault:has(.c-searchBox_autoSuggest.isActive) #mobile-omni-skybox-plus-sticky {
+		.c-layoutDefault:has(.c-searchBox_autoSuggest.isActive) #top_leaderboard {
 			display: none;
+		}
+	}
+
+	&.has-uap {
+		#top_leaderboard {
+			&.sticky-tlb {
+				z-index: 5000001;
+			}
 		}
 	}
 }
@@ -34,3 +43,19 @@ body:not(.skybox-loaded) {
 		min-height: 0 !important;
 	}
 }
+
+body:not(.c-siteHeader_menu-mobile) {
+	.c-adSkyBox,
+	.c-adSkyBox .c-adDisplay_container {
+		display: block;
+	}
+}
+
+body:has(.c-siteHeader_menu-mobile) {
+	.c-adSkyBox,
+	.c-adSkyBox .c-adDisplay_container {
+		display: none;
+	}
+}
+
+@include out-of-page-styles();

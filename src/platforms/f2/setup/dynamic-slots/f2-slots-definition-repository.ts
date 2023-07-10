@@ -1,14 +1,9 @@
-import { SlotSetupDefinition } from '@platforms/shared';
+import { activateFloorAdhesionOnUAP, SlotSetupDefinition } from '@platforms/shared';
 import {
-	AdSlotEvent,
-	communicationService,
 	context,
-	eventsRepository,
 	InstantConfigService,
 	scrollListener,
 	SlotCreatorWrapperConfig,
-	UapLoadStatus,
-	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
 import { inject, injectable } from 'tsyringe';
@@ -53,10 +48,6 @@ export class F2SlotsDefinitionRepository {
 	}
 
 	getFloorAdhesionConfig(): SlotSetupDefinition {
-		if (!context.get('state.isMobile')) {
-			return;
-		}
-
 		const slotName = 'floor_adhesion';
 
 		const activateFloorAdhesion = () => {
@@ -77,31 +68,7 @@ export class F2SlotsDefinitionRepository {
 				insertMethod: 'append',
 				classList: ['hide', 'ad-slot'],
 			},
-			activator: () => {
-				communicationService.on(
-					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
-					(action: UapLoadStatus) => {
-						if (action.isLoaded) {
-							communicationService.onSlotEvent(
-								AdSlotEvent.CUSTOM_EVENT,
-								({ payload }) => {
-									if (
-										[
-											universalAdPackage.SLOT_UNSTICKED_STATE,
-											universalAdPackage.SLOT_FORCE_UNSTICK,
-											universalAdPackage.SLOT_STICKY_STATE_SKIPPED,
-											universalAdPackage.SLOT_VIDEO_DONE,
-										].includes(payload.status)
-									) {
-										activateFloorAdhesion();
-									}
-								},
-								'top_leaderboard',
-							);
-						}
-					},
-				);
-			},
+			activator: () => activateFloorAdhesionOnUAP(activateFloorAdhesion),
 		};
 	}
 
