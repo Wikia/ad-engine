@@ -16,7 +16,7 @@ export function activateFloorAdhesionOnUAP(callback: () => void, withLoadedOnly 
 					const stickyExaminer = new StickyTlbAllowanceExaminer(slot);
 
 					if (
-						stickyExaminer.shouldStick() &&
+						stickyExaminer.shouldStick() ||
 						[
 							universalAdPackage.SLOT_UNSTICKED_STATE,
 							universalAdPackage.SLOT_FORCE_UNSTICK,
