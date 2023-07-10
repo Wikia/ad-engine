@@ -82,6 +82,9 @@ describe('Anyclip setup', () => {
 		afterEach(() => {
 			context.remove('services.anyclip.isApplicable');
 			context.remove('services.anyclip.anyclipTagExists');
+			context.remove('services.anyclip.playerElementId');
+			context.remove('services.anyclip.loadWithoutAnchor');
+			context.remove('services.anyclip.loadOnPageLoad');
 			targetingService.clear('pname');
 			global.sandbox.restore();
 		});
@@ -140,6 +143,42 @@ describe('Anyclip setup', () => {
 			const isApplicable = context.get('services.anyclip.isApplicable');
 
 			expect(isApplicable()).to.be.false;
+		});
+
+		it('sets Anyclip context for mini-player when ad tag available but it is not an in-content player pname (GameFAQs, ComicVine)', () => {
+			context.set('services.anyclip.anyclipTagExists', true);
+			const setup: NewsAndRatingsAnyclipSetup = new NewsAndRatingsAnyclipSetup(
+				slotsDefinitionRepository,
+			);
+			setup.execute();
+
+			expect(context.get('services.anyclip.playerElementId')).to.be.null;
+			expect(context.get('services.anyclip.loadWithoutAnchor')).to.be.true;
+			expect(context.get('services.anyclip.loadOnPageLoad')).to.be.true;
+		});
+
+		it('sets Anyclip context for mini-player when pname a match (TV Guide)', () => {
+			targetingService.set('pname', 'news');
+			const setup: NewsAndRatingsAnyclipSetup = new NewsAndRatingsAnyclipSetup(
+				slotsDefinitionRepository,
+			);
+			setup.execute();
+
+			expect(context.get('services.anyclip.playerElementId')).to.be.null;
+			expect(context.get('services.anyclip.loadWithoutAnchor')).to.be.true;
+			expect(context.get('services.anyclip.loadOnPageLoad')).to.be.true;
+		});
+
+		it('sets Anyclip context for in-content player when pname a match (TV Guide)', () => {
+			targetingService.set('pname', 'movie');
+			const setup: NewsAndRatingsAnyclipSetup = new NewsAndRatingsAnyclipSetup(
+				slotsDefinitionRepository,
+			);
+			setup.execute();
+
+			expect(context.get('services.anyclip.playerElementId')).not.to.be.null;
+			expect(context.get('services.anyclip.loadWithoutAnchor')).to.be.false;
+			expect(context.get('services.anyclip.loadOnPageLoad')).to.be.false;
 		});
 	});
 });

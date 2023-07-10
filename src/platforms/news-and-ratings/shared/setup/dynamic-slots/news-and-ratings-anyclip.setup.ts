@@ -39,7 +39,7 @@ export class NewsAndRatingsAnyclipSetup implements DiProcess {
 	}
 
 	private shouldPlayerBeIncontent(pname: string): boolean {
-		return this.isApplicable(pname) && ['listings/main'].includes(pname);
+		return this.isApplicable(pname) && this.isIncontentPlayerPage(pname);
 	}
 
 	private updateContextForMiniplayerAnyclip(): void {
@@ -47,7 +47,7 @@ export class NewsAndRatingsAnyclipSetup implements DiProcess {
 			'services.anyclip.widgetname',
 			context.get('services.anyclip.miniPlayerWidgetname'),
 		);
-		context.set('services.anyclip.playerElementSelector', null);
+		context.set('services.anyclip.playerElementId', null);
 		context.set('services.anyclip.loadWithoutAnchor', true);
 		context.set('services.anyclip.loadOnPageLoad', true);
 		context.set('services.anyclip.latePageInject', false);
@@ -80,5 +80,11 @@ export class NewsAndRatingsAnyclipSetup implements DiProcess {
 		const applicablePathnames = ['/news/'];
 
 		return applicablePathnames.includes(pathname);
+	}
+
+	private isIncontentPlayerPage(pname: string): boolean {
+		const incontentPlayerPages = ['listings/main', 'movie', 'tv_show'];
+
+		return incontentPlayerPages.includes(pname);
 	}
 }
