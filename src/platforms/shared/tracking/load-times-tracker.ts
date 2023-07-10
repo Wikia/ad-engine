@@ -39,7 +39,7 @@ export class LoadTimesTracker {
 	initStartTime(): void {
 		const now = new Date();
 		if (!this.startTime) {
-			this.startTime = now.getTime();
+			this.startTime = utils.getTimeOrigin();
 			this.tzOffset = now.getTimezoneOffset();
 		}
 		communicationService.emit(eventsRepository.AD_ENGINE_LOAD_TIME_INIT, {
