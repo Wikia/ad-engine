@@ -29,6 +29,14 @@ describe('Anyclip setup', () => {
 			expect(setup.isApplicable('feature_hub')).to.be.true;
 		});
 
+		it('returns true when it pname equals movie', () => {
+			const setup: NewsAndRatingsAnyclipSetup = new NewsAndRatingsAnyclipSetup(
+				slotsDefinitionRepository,
+			);
+
+			expect(setup.isApplicable('movie')).to.be.true;
+		});
+
 		it('returns false when it pname equals undefined', () => {
 			const setup: NewsAndRatingsAnyclipSetup = new NewsAndRatingsAnyclipSetup(
 				slotsDefinitionRepository,

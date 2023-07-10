@@ -23,7 +23,7 @@ export class NewsAndRatingsAnyclipSetup implements DiProcess {
 				? this.isApplicable(pname)
 				: this.isApplicable(pathname);
 
-			utils.logger(this.logGroup, 'isApplicable: ', isApplicable, pname);
+			utils.logger(this.logGroup, 'isApplicable: ', isApplicable, pname, pathname);
 
 			return isApplicable;
 		});
@@ -71,7 +71,7 @@ export class NewsAndRatingsAnyclipSetup implements DiProcess {
 	}
 
 	private isApplicableByPnameAdTag(pname: string): boolean {
-		const applicablePnames = ['news', 'feature_hub', 'listings/main'];
+		const applicablePnames = ['news', 'feature_hub', 'listings/main', 'movie'];
 
 		return applicablePnames.includes(pname);
 	}
