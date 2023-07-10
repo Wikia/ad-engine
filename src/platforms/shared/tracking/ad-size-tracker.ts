@@ -1,12 +1,12 @@
 import { AdSlot, communicationService, eventsRepository } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { trackingUrls } from '../setup/tracking-urls';
 import { DataWarehouseTracker } from './data-warehouse';
 
 /**
  * Wrapper for ad size tracking
  */
-@Injectable()
+@injectable()
 export class AdSizeTracker {
 	constructor(private dwTracker: DataWarehouseTracker) {}
 

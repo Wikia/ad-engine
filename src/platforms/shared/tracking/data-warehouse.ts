@@ -1,5 +1,5 @@
 import { context, targetingService, trackingOptIn, utils } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { TrackingUrl, trackingUrls } from '../setup/tracking-urls';
 import { dwTrafficAggregator } from './data-warehouse-utils/dw-traffic-aggregator';
 import { TrackingParams } from './models/tracking-params';
@@ -15,10 +15,10 @@ export interface TimeBasedParams {
 
 export type DataWarehouseParams = TrackingParams & TimeBasedParams;
 
-@Injectable()
+@injectable()
 export class DataWarehouseTracker {
 	/**
-	 * Call all of the setup trackers
+	 * Call all the setup trackers
 	 */
 	track(options: TrackingParams, trackingURL?: TrackingUrl): void {
 		if (

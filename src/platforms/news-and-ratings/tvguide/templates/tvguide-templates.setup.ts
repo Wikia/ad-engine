@@ -1,6 +1,6 @@
 import { DiProcess, logTemplates, TemplateRegistry, templateService } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
+import { injectable } from 'tsyringe';
 import {
 	registerBfaaTemplate,
 	registerFloorAdhesionTemplate,
@@ -8,7 +8,7 @@ import {
 } from '../../shared';
 import { registerUapDomElements } from './configs/register-uap-dom-elements';
 
-@Injectable()
+@injectable()
 export class TvGuideTemplatesSetup implements DiProcess {
 	constructor(private registry: TemplateRegistry) {
 		templateService.setInitializer(this.registry);

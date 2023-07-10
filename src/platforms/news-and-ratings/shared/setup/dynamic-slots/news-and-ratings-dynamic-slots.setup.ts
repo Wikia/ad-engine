@@ -8,10 +8,11 @@ import {
 	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
+
 import { NewsAndRatingsSlotsDefinitionRepository } from './news-and-ratings-slots-definition-repository';
 
-@Injectable()
+@injectable()
 export class NewsAndRatingsDynamicSlotsSetup implements DiProcess {
 	constructor(private slotsDefinitionRepository: NewsAndRatingsSlotsDefinitionRepository) {}
 

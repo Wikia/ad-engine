@@ -5,17 +5,17 @@ import {
 	TEMPLATE,
 	UapParams,
 } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
+import { inject, injectable } from 'tsyringe';
 import { PAGE } from '../configs/uap-dom-elements';
 import { DomManipulator } from './manipulators/dom-manipulator';
 import { UapDomReader } from './uap-dom-reader';
 
-@Injectable({ autobind: false })
+@injectable()
 export class UapDomManager {
 	constructor(
-		@Inject(TEMPLATE.PARAMS) private params: UapParams,
-		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
-		@Inject(PAGE) private page: HTMLElement,
+		@inject(TEMPLATE.PARAMS) private params: UapParams,
+		@inject(TEMPLATE.SLOT) private adSlot: AdSlot,
+		@inject(PAGE) private page: HTMLElement,
 		private manipulator: DomManipulator,
 		private reader: UapDomReader,
 	) {}

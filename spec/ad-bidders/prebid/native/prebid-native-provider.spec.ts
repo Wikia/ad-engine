@@ -1,9 +1,10 @@
 import { PrebidNativeProvider } from '@wikia/ad-bidders';
 import { context } from '@wikia/core';
 import { expect } from 'chai';
+import { container } from 'tsyringe';
 
 describe('Prebid native provider', () => {
-	const prebidNativeProvider = new PrebidNativeProvider();
+	const prebidNativeProvider = container.resolve(PrebidNativeProvider);
 	let contextStub;
 
 	beforeEach(() => {

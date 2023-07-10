@@ -1,12 +1,12 @@
 import { insertSlots } from '@platforms/shared';
 import { DiProcess } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import {
 	NewsAndRatingsDynamicSlotsSetup,
 	NewsAndRatingsSlotsDefinitionRepository,
 } from '../../../shared';
 
-@Injectable()
+@injectable()
 export class MetacriticDynamicSlotsSetup implements DiProcess {
 	constructor(
 		private slotsDefinitionRepository: NewsAndRatingsSlotsDefinitionRepository,

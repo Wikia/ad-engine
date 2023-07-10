@@ -14,9 +14,9 @@ import {
 	LiveRampPixel,
 	PartnerPipeline,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
-@Injectable()
+@injectable()
 export class SportsAdsMode implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,

@@ -1,7 +1,7 @@
 import { context, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
-@Injectable()
+@injectable()
 export class MetricReporterSetup implements DiProcess {
 	constructor(private instantConfig: InstantConfigService) {}
 

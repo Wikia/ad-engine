@@ -5,12 +5,12 @@ import {
 	LoadTimesSetup,
 	MetricReporter,
 	MetricReporterSetup,
+	SlotsConfigurationExtender,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
 import { context, IdentitySetup, ProcessPipeline, utils } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
-import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
+import { injectable } from 'tsyringe';
 import {
 	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
@@ -27,7 +27,7 @@ import { GamefaqsSlotsContextSetup } from './setup/context/slots/gamefaqs-slots-
 import { GamefaqsTargetingSetup } from './setup/context/targeting/gamefaqs-targeting.setup';
 import { GamefaqsTemplatesSetup } from './templates/gamefaqs-templates.setup';
 
-@Injectable()
+@injectable()
 export class GamefaqsPlatform {
 	constructor(private pipeline: ProcessPipeline) {}
 

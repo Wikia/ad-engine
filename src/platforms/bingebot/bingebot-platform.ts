@@ -13,7 +13,7 @@ import {
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { basicContext } from './ad-context';
 import { BingeBotAdsMode } from './modes/bingebot-ads.mode';
 import { BingeBotSlotsContextSetup } from './setup/context/slots/bingebot-slots-context.setup';
@@ -23,7 +23,7 @@ import { BingeBotDynamicSlotsSetup } from './setup/dynamic-slots/bingebot-dynami
 import { BingeBotBeforeViewChangeSetup } from './setup/hooks/bingebot-before-view-change.setup';
 import { BingeBotTemplatesSetup } from './templates/bingebot-templates.setup';
 
-@Injectable()
+@injectable()
 export class BingeBotPlatform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 

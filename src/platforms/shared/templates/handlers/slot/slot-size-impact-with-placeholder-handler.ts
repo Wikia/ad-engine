@@ -6,18 +6,17 @@ import {
 	TemplateStateHandler,
 	UapParams,
 } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil, tap } from 'rxjs/operators';
+import { inject, injectable } from 'tsyringe';
 import { UapDomManager } from '../../helpers/uap-dom-manager';
 
-@Injectable({ autobind: false })
+@injectable()
 export class SlotSizeImpactWithPlaceholderHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(
-		@Inject(TEMPLATE.PARAMS) private params: UapParams,
-
+		@inject(TEMPLATE.PARAMS) private params: UapParams,
 		private domListener: DomListener,
 		private manager: UapDomManager,
 	) {}

@@ -5,16 +5,16 @@ import {
 	TemplateTransition,
 	universalAdPackage,
 } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Observable, Subject, timer } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
+import { inject, injectable } from 'tsyringe';
 import { DomManipulator } from '../../helpers/manipulators/dom-manipulator';
 
-@Injectable({ autobind: false })
+@injectable()
 export class SlotTransitionIhiHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
-	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot, private manipulator: DomManipulator) {}
+	constructor(@inject(TEMPLATE.SLOT) private adSlot: AdSlot, private manipulator: DomManipulator) {}
 
 	async onEnter(transition: TemplateTransition<'hidden'>): Promise<void> {
 		this.animate()

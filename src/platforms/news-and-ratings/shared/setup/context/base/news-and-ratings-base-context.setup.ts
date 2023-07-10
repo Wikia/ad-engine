@@ -1,7 +1,7 @@
 import { context, Dictionary, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
-@Injectable()
+@injectable()
 export class NewsAndRatingsBaseContextSetup implements DiProcess {
 	constructor(protected instantConfig: InstantConfigService) {}
 

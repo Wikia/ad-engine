@@ -6,9 +6,9 @@ import {
 	TemplateStateHandler,
 	TemplateTransition,
 } from '@wikia/core';
-import { Container, Inject, Injectable } from '@wikia/dependency-injection';
 import { assert, expect } from 'chai';
 import { SinonSpy } from 'sinon';
+import { container as diContainer, DependencyContainer, inject, injectable } from 'tsyringe';
 import {
 	createTemplateStateHandlerSpy,
 	TemplateStateHandlerSpy,
@@ -19,22 +19,26 @@ describe('Template Registry', () => {
 	let stateASpy: TemplateStateHandlerSpy;
 	let stateBSpy: TemplateStateHandlerSpy;
 	let stateSharedSpy: TemplateStateHandlerSpy;
-	let container: Container;
+	let container: DependencyContainer;
 	let instance: TemplateRegistry;
+	const DEPENDENCY = Symbol('DEPENDENCY');
 
-	@Injectable({ autobind: false })
+	@injectable()
 	class AdditionalDependency {
-		constructor(@Inject(TEMPLATE.NAME) public name: string) {
-			additionalDepsSpy(name);
+		constructor(
+			@inject(TEMPLATE.NAME) public name: string,
+			@inject(DEPENDENCY) public innerDep: string,
+		) {
+			additionalDepsSpy(name, innerDep);
 		}
 	}
 
-	@Injectable({ autobind: false })
+	@injectable()
 	class StateAHandler implements TemplateStateHandler {
 		constructor(
-			@Inject(TEMPLATE.NAME) name: string,
-			@Inject(TEMPLATE.SLOT) slot: AdSlot,
-			@Inject(TEMPLATE.PARAMS) params: Dictionary,
+			@inject(TEMPLATE.NAME) name: string,
+			@inject(TEMPLATE.SLOT) slot: AdSlot,
+			@inject(TEMPLATE.PARAMS) params: Dictionary,
 			dep: AdditionalDependency,
 		) {
 			stateASpy.constructor(name, slot, params, dep);
@@ -53,7 +57,7 @@ describe('Template Registry', () => {
 		}
 	}
 
-	@Injectable({ autobind: false })
+	@injectable()
 	class StateBHandler implements TemplateStateHandler {
 		constructor() {
 			stateBSpy.constructor();
@@ -72,7 +76,7 @@ describe('Template Registry', () => {
 		}
 	}
 
-	@Injectable({ autobind: false })
+	@injectable()
 	class StateSharedHandler implements TemplateStateHandler {
 		constructor() {
 			stateSharedSpy.constructor();
@@ -96,8 +100,12 @@ describe('Template Registry', () => {
 		stateASpy = createTemplateStateHandlerSpy(global.sandbox);
 		stateBSpy = createTemplateStateHandlerSpy(global.sandbox);
 		stateSharedSpy = createTemplateStateHandlerSpy(global.sandbox);
-		container = new Container();
-		instance = container.get(TemplateRegistry);
+		container = diContainer.createChildContainer();
+		instance = container.resolve(TemplateRegistry);
+	});
+
+	afterEach(() => {
+		container.reset();
 	});
 
 	it('should throw error if template not registered', () => {
@@ -108,6 +116,7 @@ describe('Template Registry', () => {
 
 	it('should not throw when initialized twice', () => {
 		instance.register('mock', { a: [StateAHandler], b: [StateBHandler] }, 'a', [
+			{ bind: DEPENDENCY, value: 'some value' },
 			AdditionalDependency,
 		]);
 		instance.init('mock', { getSlotName: () => 'mock' } as any);
@@ -118,6 +127,7 @@ describe('Template Registry', () => {
 
 	it('should work with nested template dependencies', () => {
 		instance.register('mock', { a: [StateAHandler], b: [StateBHandler] }, 'a', [
+			[[{ bind: DEPENDENCY, value: 'some value' }]],
 			[[AdditionalDependency]],
 		]);
 		instance.init('mock', { getSlotName: () => 'mock' } as any);
@@ -125,9 +135,7 @@ describe('Template Registry', () => {
 
 	it('should throw without providing template dependencies', () => {
 		instance.register('mock', { a: [StateAHandler], b: [StateBHandler] }, 'a');
-		expect(() => instance.init('mock', { getSlotName: () => 'mock' } as any)).to.throw(
-			`${AdditionalDependency.toString()} is not bound to anything`,
-		);
+		expect(() => instance.init('mock', { getSlotName: () => 'mock' } as any)).to.throw();
 	});
 
 	it('should be able to register without template dependencies', () => {
@@ -149,8 +157,14 @@ describe('Template Registry', () => {
 		};
 
 		beforeEach(() => {
-			instance.register(templateName1, template, 'a', [AdditionalDependency]);
-			instance.register(templateName2, template, 'a', [AdditionalDependency]);
+			instance.register(templateName1, template, 'a', [
+				{ bind: DEPENDENCY, value: 'some value' },
+				AdditionalDependency,
+			]);
+			instance.register(templateName2, template, 'a', [
+				{ bind: DEPENDENCY, value: 'some value' },
+				AdditionalDependency,
+			]);
 		});
 
 		it('should not start before init', () => {
@@ -223,14 +237,14 @@ describe('Template Registry', () => {
 		it('should throw then trying get deps after init', () => {
 			instance.init(templateName1, templateSlot1, templateParams1);
 
-			expect(() => container.get(TEMPLATE.NAME)).to.throw(
-				`${TEMPLATE.NAME.toString()} is not bound to anything`,
+			expect(() => container.resolve(TEMPLATE.NAME)).to.throw(
+				`Attempted to resolve unregistered dependency token: "${TEMPLATE.NAME.toString()}"`,
 			);
-			expect(() => container.get(TEMPLATE.SLOT)).to.throw(
-				`${TEMPLATE.SLOT.toString()} is not bound to anything`,
+			expect(() => container.resolve(TEMPLATE.SLOT)).to.throw(
+				`Attempted to resolve unregistered dependency token: "${TEMPLATE.SLOT.toString()}"`,
 			);
-			expect(() => container.get(TEMPLATE.PARAMS)).to.throw(
-				`${TEMPLATE.PARAMS.toString()} is not bound to anything`,
+			expect(() => container.resolve(TEMPLATE.PARAMS)).to.throw(
+				`Attempted to resolve unregistered dependency token: "${TEMPLATE.PARAMS.toString()}"`,
 			);
 		});
 

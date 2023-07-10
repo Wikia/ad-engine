@@ -8,13 +8,13 @@ import {
 	UapParams,
 	utils,
 } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
+import { inject, injectable } from 'tsyringe';
 
-@Injectable({ autobind: false })
+@injectable()
 export class BfaaBootstrapHandler implements TemplateStateHandler {
 	constructor(
-		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
-		@Inject(TEMPLATE.PARAMS) private params: UapParams,
+		@inject(TEMPLATE.SLOT) private adSlot: AdSlot,
+		@inject(TEMPLATE.PARAMS) private params: UapParams,
 	) {}
 
 	async onEnter(transition: TemplateTransition<'sticky' | 'impact'>): Promise<void> {

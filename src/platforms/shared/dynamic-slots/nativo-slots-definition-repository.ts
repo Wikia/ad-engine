@@ -1,4 +1,4 @@
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
 import {
 	communicationService,
@@ -14,7 +14,7 @@ import {
 import { SlotSetupDefinition } from '../utils/insert-slots';
 import { fanFeedNativeAdListener } from './fan-feed-native-ad-listener';
 
-@Injectable()
+@injectable()
 export class NativoSlotsDefinitionRepository {
 	protected nativo: Nativo;
 

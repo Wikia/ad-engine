@@ -1,8 +1,10 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { BaseServiceSetup, context, utils } from '@ad-engine/core';
+import { injectable } from 'tsyringe';
 
 const logGroup = 'captify';
 
+@injectable()
 export class Captify extends BaseServiceSetup {
 	private propertyId = 12974;
 

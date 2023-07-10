@@ -25,7 +25,7 @@ import {
 	ProcessPipeline,
 	utils,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { getBasicContext } from './ad-context';
 import { SportsAdsMode } from './modes/sports-ads.mode';
 import { SportsA9ConfigSetup } from './setup/context/a9/sports-a9-config.setup';
@@ -36,7 +36,7 @@ import { SportsDynamicSlotsSetup } from './setup/dynamic-slots/sports-dynamic-sl
 import { SportsTemplatesSetup } from './templates/sports-templates.setup';
 import { selectApplication } from './utils/application-helper';
 
-@Injectable()
+@injectable()
 export class SportsPlatform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 

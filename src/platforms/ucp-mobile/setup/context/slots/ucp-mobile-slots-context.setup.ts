@@ -1,13 +1,13 @@
 import { slotsContext } from '@platforms/shared';
 import { context, DiProcess } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
 const BIG_VIEWPORT_SIZE = {
 	height: 627,
 	width: 375,
 };
 
-@Injectable()
+@injectable()
 export class UcpMobileSlotsContextSetup implements DiProcess {
 	execute(): void {
 		const slots = {

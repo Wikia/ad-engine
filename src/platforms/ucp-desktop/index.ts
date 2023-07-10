@@ -1,11 +1,11 @@
-import { Container } from '@wikia/dependency-injection';
+import '@abraham/reflection';
+import { container } from 'tsyringe';
 import './styles.scss';
 import { UcpDesktopPlatform } from './ucp-desktop-platform';
 
 window.RLQ = window.RLQ || [];
 window.RLQ.push(async () => {
-	const container = new Container();
-	const platform = container.get(UcpDesktopPlatform);
+	const platform = container.resolve(UcpDesktopPlatform);
 
 	platform.execute();
 });

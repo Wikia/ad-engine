@@ -5,12 +5,12 @@ import {
 	LoadTimesSetup,
 	MetricReporter,
 	MetricReporterSetup,
+	SlotsConfigurationExtender,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
 import { context, IdentitySetup, ProcessPipeline, utils } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
-import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
+import { injectable } from 'tsyringe';
 import {
 	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
@@ -27,7 +27,7 @@ import { ComicvineSlotsContextSetup } from './setup/context/slots/comicvine-slot
 import { ComicvineTargetingSetup } from './setup/context/targeting/comicvine-targeting.setup';
 import { ComicvineTemplatesSetup } from './templates/comicvine-templates.setup';
 
-@Injectable()
+@injectable()
 export class ComicvinePlatform {
 	constructor(private pipeline: ProcessPipeline) {}
 

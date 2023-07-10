@@ -3,11 +3,12 @@ import { A9Provider } from '@wikia/ad-bidders/a9';
 import { PrebidProvider } from '@wikia/ad-bidders/prebid';
 import { context, targetingService } from '@wikia/core';
 import { expect } from 'chai';
+import { container } from 'tsyringe';
 
 describe('Bidders', () => {
 	describe('getName', () => {
 		it('should return name', () => {
-			const bidders = new Bidders();
+			const bidders = container.resolve(Bidders);
 			expect(bidders.getName()).to.equal('bidders');
 		});
 	});
@@ -20,19 +21,19 @@ describe('Bidders', () => {
 				.returns(false)
 				.withArgs('bidders.prebid.enabled')
 				.returns(false);
-			const bidders = new Bidders();
+			const bidders = container.resolve(Bidders);
 			expect(bidders.isEnabled()).to.be.false;
 		});
 
 		it('should be enabled when prebid is enabled', () => {
 			global.sandbox.stub(context, 'get').withArgs('bidders.prebid.enabled').returns(true);
-			const bidders = new Bidders();
+			const bidders = container.resolve(Bidders);
 			expect(bidders.isEnabled()).to.be.true;
 		});
 
 		it('should be enabled when A9 is enabled', () => {
 			global.sandbox.stub(context, 'get').withArgs('bidders.a9.enabled').returns(true);
-			const bidders = new Bidders();
+			const bidders = container.resolve(Bidders);
 			expect(bidders.isEnabled()).to.be.true;
 		});
 	});
@@ -40,7 +41,7 @@ describe('Bidders', () => {
 	describe('applyTargetingParams', () => {
 		it('should apply targeting params using targetingService', () => {
 			const setStub = global.sandbox.stub(targetingService, 'set');
-			const bidders = new Bidders();
+			const bidders = container.resolve(Bidders);
 			bidders.applyTargetingParams('slot1', { key: 'value' });
 			expect(setStub.calledOnceWithExactly('key', 'value', 'slot1')).to.be.true;
 		});
@@ -62,7 +63,7 @@ describe('Bidders', () => {
 						enabled: false,
 					},
 				});
-			const bidders = new Bidders();
+			const bidders = container.resolve(Bidders);
 			return bidders
 				.call()
 				.then(() => {
@@ -111,7 +112,7 @@ describe('Bidders', () => {
 				.withArgs('bidders.coppaA9')
 				.returns(false);
 
-			const bidders = new Bidders();
+			const bidders = container.resolve(Bidders);
 			return bidders
 				.call()
 				.then(() => {

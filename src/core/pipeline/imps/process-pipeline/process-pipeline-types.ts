@@ -1,4 +1,4 @@
-import { Type } from '../../../models/dictionary';
+import { Type } from '../../../models';
 
 export type ProcessStepUnion<T = any> = ProcessStep | CompoundProcessStep<T>;
 

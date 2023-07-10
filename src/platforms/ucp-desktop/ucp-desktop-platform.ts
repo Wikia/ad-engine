@@ -25,7 +25,7 @@ import {
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { basicContext } from './ad-context';
 import { UcpDesktopAdsMode } from './modes/ucp-desktop-ads.mode';
 import { UcpDesktopA9ConfigSetup } from './setup/context/a9/ucp-desktop-a9-config.setup';
@@ -36,7 +36,7 @@ import { UcpDesktopDynamicSlotsSetup } from './setup/dynamic-slots/ucp-desktop-d
 import { UcpDesktopExperimentsSetup } from './setup/experiments/ucp-desktop-experiments.setup';
 import { UcpDesktopTemplatesSetup } from './templates/ucp-desktop-templates.setup';
 
-@Injectable()
+@injectable()
 export class UcpDesktopPlatform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 

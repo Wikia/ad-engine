@@ -1,5 +1,5 @@
 import { context, DiProcess, Optimizely } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
 const OPTIMIZELY_NTC_2_0 = {
 	EXPERIMENT_ENABLED: 'unified_takeover_ntc20',
@@ -12,7 +12,7 @@ const OPTIMIZELY_NTC_2_0_VARIANTS = {
 	UNDEFINED: 'ntc20_adhesion_undefined',
 };
 
-@Injectable()
+@injectable()
 export class F2ExperimentsSetup implements DiProcess {
 	constructor(private optimizely: Optimizely) {}
 

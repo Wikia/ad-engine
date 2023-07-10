@@ -1,15 +1,13 @@
-import { Container, Injectable } from '@wikia/dependency-injection';
+import { container, injectable } from 'tsyringe';
 import { ProcessPipeline } from '../process-pipeline';
 import { CompoundProcess, CompoundProcessStep, ProcessStepUnion } from '../process-pipeline-types';
 
-@Injectable({ scope: 'Transient' })
+@injectable()
 class ParallelProcess<T> implements CompoundProcess<ProcessStepUnion<T>[]> {
-	constructor(private container: Container) {}
-
 	execute(payload: ProcessStepUnion<T>[]): Promise<void> | void {
 		return Promise.all(
 			payload.map((step) => {
-				const pipeline = this.container.get(ProcessPipeline);
+				const pipeline = container.resolve(ProcessPipeline);
 
 				return pipeline.add(step).execute();
 			}),

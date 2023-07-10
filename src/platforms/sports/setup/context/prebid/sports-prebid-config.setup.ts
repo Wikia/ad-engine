@@ -1,11 +1,11 @@
 import { getWikiaContext } from '@platforms/shared';
 import { context, DiProcess } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { getRubiconFutheadContext } from '../../../bidders/prebid/rubicon-futhead';
 import { getRubiconMutheadContext } from '../../../bidders/prebid/rubicon-muthead';
 import { selectApplication } from '../../../utils/application-helper';
 
-@Injectable()
+@injectable()
 export class SportsPrebidConfigSetup implements DiProcess {
 	execute(): void {
 		const mode = context.get('state.isMobile') ? 'mobile' : 'desktop';

@@ -8,14 +8,14 @@ import {
 	UapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { createFandomContext } from './targeting-strategies/factories/create-fandom-context';
 import { createOpenRtb2Context } from './targeting-strategies/factories/create-open-rtb2-context';
 import { createSelectedStrategy } from './targeting-strategies/factories/create-selected-strategy';
 import { TargetingTags } from './targeting-strategies/interfaces/taxonomy-tags';
 import { FandomContext } from './targeting-strategies/models/fandom-context';
 
-@Injectable()
+@injectable()
 export class UcpTargetingSetup implements DiProcess {
 	constructor(protected instantConfig: InstantConfigService) {}
 

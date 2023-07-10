@@ -1,7 +1,7 @@
 import { context, DiProcess } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
-@Injectable()
+@injectable()
 export class SportsSlotsContextSetup implements DiProcess {
 	execute(): void {
 		const slots = {

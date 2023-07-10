@@ -8,10 +8,10 @@ import {
 	scrollListener,
 	utils,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
 const logGroup = 'dynamic-slots';
-@Injectable()
+@injectable()
 export class NewsAndRatingsSlotsDefinitionRepository {
 	constructor(protected instantConfig: InstantConfigService) {}
 

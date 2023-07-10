@@ -1,10 +1,10 @@
-import { Container } from '@wikia/dependency-injection';
+import '@abraham/reflection';
+import { container } from 'tsyringe';
 import { SportsPlatform } from './sports-platform';
 import './styles.scss';
 
 async function start(): Promise<void> {
-	const container = new Container();
-	const platform = container.get(SportsPlatform);
+	const platform = container.resolve(SportsPlatform);
 
 	platform.execute();
 }

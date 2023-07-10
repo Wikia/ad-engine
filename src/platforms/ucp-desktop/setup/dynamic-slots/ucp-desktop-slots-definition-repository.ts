@@ -11,10 +11,10 @@ import {
 	UapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { FmrRotator } from '../../utils/fmr-rotator';
 
-@Injectable()
+@injectable()
 export class UcpDesktopSlotsDefinitionRepository {
 	constructor(protected instantConfig: InstantConfigService) {}
 

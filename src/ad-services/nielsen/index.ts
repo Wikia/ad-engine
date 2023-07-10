@@ -6,6 +6,7 @@ import {
 	targetingService,
 	utils,
 } from '@ad-engine/core';
+import { injectable } from 'tsyringe';
 import { initNielsenStaticQueue } from './static-queue-script';
 
 const logGroup = 'nielsen-dcr';
@@ -30,6 +31,7 @@ function createInstance(nielsenKey): any {
 /**
  * Nielsen service handler
  */
+@injectable()
 export class Nielsen extends BaseServiceSetup {
 	nlsnInstance: any = null;
 

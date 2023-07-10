@@ -1,8 +1,10 @@
 import { BaseServiceSetup, context, utils } from '@ad-engine/core';
 import Cookies from 'js-cookie';
+import { injectable } from 'tsyringe';
 
 const logGroup = 'ATS';
 
+@injectable()
 export class Ats extends BaseServiceSetup {
 	private isLoaded = false;
 	private launchpadScriptUrl =

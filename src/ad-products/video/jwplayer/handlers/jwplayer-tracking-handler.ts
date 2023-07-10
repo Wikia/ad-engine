@@ -1,8 +1,8 @@
 import { AdSlot, VideoData, VideoEventData, VideoEventProvider } from '@ad-engine/core';
-import { Injectable } from '@wikia/dependency-injection';
 import Cookies from 'js-cookie';
 import { Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
+import { injectable } from 'tsyringe';
 import { PlayerReadyResult } from '../helpers/player-ready-result';
 import { JwpEventKey } from '../streams/jwplayer-events';
 import { JwpEvent } from '../streams/jwplayer-stream';
@@ -30,7 +30,7 @@ const trackingEventsMap = {
 
 type TrackingEvent = keyof typeof trackingEventsMap;
 
-@Injectable({ scope: 'Transient' })
+@injectable()
 export class JWPlayerTrackingHandler {
 	private adSlot: AdSlot;
 	private lastKnownAdData = {

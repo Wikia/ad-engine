@@ -6,9 +6,11 @@ import {
 	jwpSetup,
 	utils,
 } from '@wikia/ad-engine';
+import { injectable } from 'tsyringe';
 
 const logGroup = 'player-setup';
 
+@injectable()
 export class PlayerSetup extends BaseServiceSetup {
 	call() {
 		const showAds = !context.get('options.wad.blocking');

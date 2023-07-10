@@ -1,13 +1,13 @@
 import { AdSlot, context, TEMPLATE, UapParams } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
+import { inject, injectable } from 'tsyringe';
 import { NAVBAR } from '../configs/uap-dom-elements';
 
-@Injectable({ autobind: false })
+@injectable()
 export class UapDomReader {
 	constructor(
-		@Inject(TEMPLATE.PARAMS) private params: UapParams,
-		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
-		@Inject(NAVBAR) private navbar: HTMLElement,
+		@inject(TEMPLATE.PARAMS) private params: UapParams,
+		@inject(TEMPLATE.SLOT) private adSlot: AdSlot,
+		@inject(NAVBAR) private navbar: HTMLElement,
 	) {}
 
 	getPageOffsetImpact(): number {

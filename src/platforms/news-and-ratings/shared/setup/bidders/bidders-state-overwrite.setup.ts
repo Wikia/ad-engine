@@ -1,8 +1,8 @@
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
 import { context, DiProcess, InstantConfigService } from '@wikia/ad-engine';
 
-@Injectable()
+@injectable()
 export class BiddersStateOverwriteSetup implements DiProcess {
 	constructor(protected instantConfig: InstantConfigService) {}
 

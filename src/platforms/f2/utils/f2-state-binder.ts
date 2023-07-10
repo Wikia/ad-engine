@@ -11,8 +11,5 @@ export function getF2StateBinder(): Binder<F2State> {
 	// @ts-ignore global fandom variable not created by our code
 	const state = window.fandom;
 
-	return {
-		bind: F2_STATE,
-		value: state,
-	};
+	return [F2_STATE, { useValue: state }];
 }

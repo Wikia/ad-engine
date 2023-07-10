@@ -1,4 +1,5 @@
 import { BaseServiceSetup, context, slotService, utils } from '@ad-engine/core';
+import { injectable } from 'tsyringe';
 
 const logGroup = 'confiant';
 
@@ -19,6 +20,7 @@ function trackBlock(blockingType, blockingId, isBlocked, wrapperId, tagId, impre
 /**
  * Confiant service handler
  */
+@injectable()
 export class Confiant extends BaseServiceSetup {
 	protected scriptDomain = 'cdn.confiant-integrations.net';
 	protected propertyId = 'd-aIf3ibf0cYxCLB1HTWfBQOFEA';

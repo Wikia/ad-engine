@@ -6,6 +6,7 @@ import {
 	slotService,
 	utils,
 } from '@ad-engine/core';
+import { injectable } from 'tsyringe';
 import { AnyclipTracker } from './anyclip-tracker';
 
 const logGroup = 'Anyclip';
@@ -20,6 +21,7 @@ const isPlayerAdSlotReady = (slotName = 'incontent_player') => {
 	return domReady && adSlot !== null;
 };
 
+@injectable()
 export class Anyclip extends BaseServiceSetup {
 	private get pubname(): string {
 		return context.get('services.anyclip.pubname') || 'fandomcom';

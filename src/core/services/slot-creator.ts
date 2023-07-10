@@ -1,5 +1,5 @@
 import { communicationService } from '@ad-engine/communication';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { AdSlotEvent, RepeatConfig } from '../models';
 import {
 	AD_LABEL_CLASS,
@@ -40,7 +40,7 @@ export interface SlotPlaceholderContextConfig {
 
 const groupName = 'slot-creator';
 
-@Injectable()
+@injectable()
 export class SlotCreator {
 	constructor(private slotRepeater = new SlotRepeater()) {}
 

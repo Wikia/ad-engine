@@ -1,6 +1,8 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { context, DiProcess, globalContextService, targetingService, utils } from '@ad-engine/core';
+import { injectable } from 'tsyringe';
 
+@injectable()
 export class IdentitySetup implements DiProcess {
 	private logGroup = 'identity-setup';
 

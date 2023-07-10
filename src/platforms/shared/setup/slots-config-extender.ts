@@ -5,9 +5,9 @@ import {
 	DiProcess,
 	InstantConfigService,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
-@Injectable()
+@injectable()
 export class SlotsConfigurationExtender implements DiProcess {
 	constructor(private instantConfig: InstantConfigService) {}
 

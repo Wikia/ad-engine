@@ -1,13 +1,20 @@
-import { Container, Injectable } from '@wikia/dependency-injection';
-import { AdSlot, Dictionary } from '../../models/';
+import { container, DependencyContainer, injectable, isNormalToken, Lifecycle } from 'tsyringe';
+import {
+	AdSlot,
+	Dictionary,
+	isDependencyProvider,
+	isDependencyValue,
+	TemplateDependency,
+} from '../../models/';
 import { TEMPLATE } from './template-symbols';
 
-/*eslint @typescript-eslint/no-unused-vars: "off"*/
-export type TemplateDependency<T = any> = Parameters<Container['bind']>[0];
-
-@Injectable()
+@injectable()
 export class TemplateDependenciesManager {
-	constructor(private container: Container) {}
+	private readonly container: DependencyContainer;
+
+	constructor() {
+		this.container = container.createChildContainer();
+	}
 
 	/**
 	 * Binds template slot and params. Consecutive call overwrites previous one.
@@ -20,16 +27,41 @@ export class TemplateDependenciesManager {
 		templateParams: Dictionary,
 		dependencies: TemplateDependency[],
 	): void {
-		this.container.bind(TEMPLATE.NAME).value(templateName);
-		this.container.bind(TEMPLATE.SLOT).value(templateSlot);
-		this.container.bind(TEMPLATE.PARAMS).value(templateParams);
-		dependencies.forEach((dependency) => this.container.bind(dependency));
+		this.container.register(TEMPLATE.NAME, { useValue: templateName });
+		this.container.register(TEMPLATE.SLOT, { useValue: templateSlot });
+		this.container.register(TEMPLATE.PARAMS, { useValue: templateParams });
+		dependencies.forEach((dependency) => this.register(dependency));
 	}
 
-	resetDependencies(dependencies: TemplateDependency[]): void {
-		this.container.unbind(TEMPLATE.PARAMS);
-		this.container.unbind(TEMPLATE.SLOT);
-		this.container.unbind(TEMPLATE.NAME);
-		dependencies.forEach((dependency) => this.container.unbind(dependency));
+	resetDependencies(): void {
+		this.container.clearInstances();
+		this.container.reset();
+	}
+
+	getContainer(): DependencyContainer {
+		return this.container;
+	}
+
+	private register(dependency: TemplateDependency): void {
+		if (isDependencyProvider(dependency)) {
+			this.container.register(dependency.bind, { useFactory: dependency.provider });
+			return;
+		}
+
+		if (isDependencyValue(dependency)) {
+			this.container.register(dependency.bind, { useValue: dependency.value });
+			return;
+		}
+
+		if (isNormalToken(dependency)) {
+			this.container.register(dependency, { useValue: dependency });
+			return;
+		}
+
+		this.container.register(
+			dependency,
+			{ useClass: dependency },
+			{ lifecycle: Lifecycle.ContainerScoped },
+		);
 	}
 }

@@ -1,8 +1,8 @@
 import { BaseContextSetup } from '@platforms/shared';
 import { context } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
-@Injectable()
+@injectable()
 export class UcpDesktopBaseContextSetup extends BaseContextSetup {
 	execute(): void {
 		super.execute();

@@ -9,12 +9,12 @@ import {
 	targetingService,
 	utils,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { NewsAndRatingsSlotsDefinitionRepository } from '../../../shared';
 
 const logGroup = 'dynamic-slots';
 
-@Injectable()
+@injectable()
 export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 	constructor(private slotsDefinitionRepository: NewsAndRatingsSlotsDefinitionRepository) {}
 

@@ -1,6 +1,6 @@
 import { FOOTER, NAVBAR, PAGE } from '@platforms/shared';
 import { TemplateDependency } from '@wikia/ad-engine';
-import { Container } from '@wikia/dependency-injection';
+import { DependencyContainer } from 'tsyringe';
 import { F2Environment, F2_ENV } from '../../setup-f2';
 import { F2State } from '../../utils/f2-state';
 import { F2_STATE } from '../../utils/f2-state-binder';
@@ -9,8 +9,8 @@ export function registerF2UapDomElements(): TemplateDependency[] {
 	return [
 		{
 			bind: NAVBAR,
-			provider: (container: Container) => {
-				const f2Env: F2Environment = container.get(F2_ENV);
+			provider: (container: DependencyContainer) => {
+				const f2Env: F2Environment = container.resolve(F2_ENV);
 
 				return f2Env.isPageMobile
 					? document.querySelector('.global-navigation-mobile-wrapper')
@@ -19,8 +19,8 @@ export function registerF2UapDomElements(): TemplateDependency[] {
 		},
 		{
 			bind: PAGE,
-			provider: (container: Container) => {
-				const state: F2State = container.get(F2_STATE);
+			provider: (container: DependencyContainer) => {
+				const state: F2State = container.resolve(F2_STATE);
 
 				return state.topOffset === null
 					? document.querySelector('.article-layout.is-mobile-app-view') || document.body

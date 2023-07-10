@@ -1,8 +1,8 @@
 import { ProcessPipeline, sequential } from '@wikia/core';
 import { wait } from '@wikia/core/utils';
-import { Container } from '@wikia/dependency-injection';
 import { expect } from 'chai';
 import { SinonSpy } from 'sinon';
+import { container as diContainer } from 'tsyringe';
 
 describe('SequentialProcess', () => {
 	let spy: SinonSpy;
@@ -17,10 +17,10 @@ describe('SequentialProcess', () => {
 	}
 
 	beforeEach(() => {
-		const container = new Container();
+		const container = diContainer.createChildContainer();
 
 		spy = global.sandbox.spy();
-		pipeline = container.get(ProcessPipeline);
+		pipeline = container.resolve(ProcessPipeline);
 	});
 
 	it('should work', async () => {

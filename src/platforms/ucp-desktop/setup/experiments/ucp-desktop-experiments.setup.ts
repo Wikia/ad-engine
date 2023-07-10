@@ -1,5 +1,5 @@
 import { context, DiProcess, Optimizely } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
 const OPTIMIZELY_PERFORMANCE_ADS_FOR_FANATICAL = {
 	EXPERIMENT_ENABLED: 'performance_ads',
@@ -17,7 +17,7 @@ const OPTIMIZELY_NTC_2_0_VARIANTS = {
 	UNDEFINED: 'ntc20_adhesion_undefined',
 };
 
-@Injectable()
+@injectable()
 export class UcpDesktopExperimentsSetup implements DiProcess {
 	constructor(private optimizely: Optimizely) {}
 

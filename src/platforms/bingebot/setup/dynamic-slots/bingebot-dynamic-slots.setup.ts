@@ -6,9 +6,9 @@ import {
 	slotService,
 	TemplateRegistry,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
-@Injectable()
+@injectable()
 export class BingeBotDynamicSlotsSetup implements DiProcess {
 	constructor(private templateRegistry: TemplateRegistry) {}
 

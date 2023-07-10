@@ -1,8 +1,8 @@
 import { conditional, DiProcess, parallel, ProcessPipeline, sequential } from '@wikia/core';
 import { wait } from '@wikia/core/utils';
-import { Container } from '@wikia/dependency-injection';
 import { expect } from 'chai';
 import { SinonSpy } from 'sinon';
+import { container as diContainer } from 'tsyringe';
 
 describe('ProcessPipeline', () => {
 	let spy: SinonSpy;
@@ -18,8 +18,8 @@ describe('ProcessPipeline', () => {
 	});
 
 	it('should work', async () => {
-		const container = new Container();
-		const pipeline = container.get(ProcessPipeline);
+		const container = diContainer.createChildContainer();
+		const pipeline = container.resolve(ProcessPipeline);
 
 		const promise = pipeline
 			.add(

@@ -1,12 +1,12 @@
 import { AdSlot, TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
+import { inject, injectable } from 'tsyringe';
 import { sponsoredLogoComponent } from './sponsored-logo-component';
 
-@Injectable({ autobind: false })
+@injectable()
 export class SponsoredLogoHandler implements TemplateStateHandler {
 	private domParser = new DOMParser();
 
-	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
+	constructor(@inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
 
 	async onEnter(): Promise<void> {
 		const components = this.parse(sponsoredLogoComponent());

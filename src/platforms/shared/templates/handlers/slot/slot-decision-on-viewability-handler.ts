@@ -5,17 +5,17 @@ import {
 	TemplateStateHandler,
 	TemplateTransition,
 } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
 import { EMPTY, from, merge, NEVER, Observable, Subject, timer } from 'rxjs';
 import { mergeMap, take, takeUntil, tap } from 'rxjs/operators';
+import { inject, injectable } from 'tsyringe';
 
-@Injectable({ autobind: false })
+@injectable()
 export class SlotDecisionOnViewabilityHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 	private readonly additionalHideTime?: number;
 	private readonly timeoutHideTime?: number;
 
-	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot, instantConfig: InstantConfigService) {
+	constructor(@inject(TEMPLATE.SLOT) private adSlot: AdSlot, instantConfig: InstantConfigService) {
 		this.additionalHideTime = instantConfig.get('icFloorAdhesionDelay');
 		this.timeoutHideTime = instantConfig.get('icFloorAdhesionTimeout');
 	}

@@ -1,5 +1,5 @@
-import { Container, Injectable } from '@wikia/dependency-injection';
-import { Type } from '../../../models/dictionary';
+import { container, injectable } from 'tsyringe';
+import { Type } from '../../../models';
 import { Pipeline } from '../../pipeline';
 import { PipelineAdapter, PipelineNext } from '../../pipeline-types';
 import {
@@ -9,13 +9,11 @@ import {
 	ProcessStepUnion,
 } from './process-pipeline-types';
 
-@Injectable({ scope: 'Transient' })
+@injectable()
 class ProcessPipelineAdapter implements PipelineAdapter<ProcessStepUnion, void> {
-	constructor(private container: Container) {}
-
 	async execute(step: ProcessStepUnion, payload: void, next?: PipelineNext<void>): Promise<void> {
 		if (this.isCompoundProcessStep(step)) {
-			const process = this.container.get(step.process);
+			const process = container.resolve(step.process);
 
 			await process.execute(step.payload);
 
@@ -23,7 +21,7 @@ class ProcessPipelineAdapter implements PipelineAdapter<ProcessStepUnion, void> 
 		}
 
 		if (this.isDiProcess(step)) {
-			const instance = this.container.get(step);
+			const instance = container.resolve(step);
 
 			await instance.execute();
 
@@ -48,9 +46,9 @@ class ProcessPipelineAdapter implements PipelineAdapter<ProcessStepUnion, void> 
 	}
 }
 
-@Injectable({ scope: 'Transient' })
+@injectable()
 export class ProcessPipeline extends Pipeline<ProcessStepUnion> {
-	constructor(container: Container) {
-		super(container.get(ProcessPipelineAdapter));
+	constructor() {
+		super(container.resolve(ProcessPipelineAdapter));
 	}
 }

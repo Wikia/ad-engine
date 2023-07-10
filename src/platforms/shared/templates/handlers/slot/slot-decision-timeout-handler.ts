@@ -6,17 +6,17 @@ import {
 	TemplateTransition,
 	universalAdPackage,
 } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { inject, injectable } from 'tsyringe';
 import { StickinessTimeout } from '../../helpers/stickiness-timeout';
 
-@Injectable({ autobind: false })
+@injectable()
 export class SlotDecisionTimeoutHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(
-		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
+		@inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		private domListener: DomListener,
 		private timeout: StickinessTimeout,
 	) {}

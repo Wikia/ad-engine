@@ -1,11 +1,11 @@
 import { AdSlot, DomListener, TEMPLATE } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
 import { from, Observable } from 'rxjs';
 import { filter, startWith, take, tap } from 'rxjs/operators';
+import { inject, injectable } from 'tsyringe';
 
-@Injectable({ autobind: false })
+@injectable()
 export class CloseButtonHelper {
-	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot, private domListener: DomListener) {}
+	constructor(@inject(TEMPLATE.SLOT) private adSlot: AdSlot, private domListener: DomListener) {}
 
 	appendOnViewed(button: HTMLButtonElement): Observable<unknown> {
 		return from(this.adSlot.viewed).pipe(

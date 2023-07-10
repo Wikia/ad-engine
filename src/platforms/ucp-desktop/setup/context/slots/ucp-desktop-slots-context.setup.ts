@@ -1,8 +1,8 @@
 import { slotsContext } from '@platforms/shared';
 import { context, DiProcess } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
-@Injectable()
+@injectable()
 export class UcpDesktopSlotsContextSetup implements DiProcess {
 	execute(): void {
 		const slots = {

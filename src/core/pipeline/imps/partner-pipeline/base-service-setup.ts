@@ -1,12 +1,12 @@
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { context, InstantConfigService } from '../../../services';
-import { isCoppaSubject } from '../../../utils/is-coppa-subject';
+import { isCoppaSubject } from '../../../utils';
 import {
 	PartnerInitializationProcess,
 	PartnerInitializationProcessOptions,
 } from './partner-pipeline-types';
 
-@Injectable()
+@injectable()
 export class BaseServiceSetup implements PartnerInitializationProcess {
 	options: PartnerInitializationProcessOptions;
 	initializationTimeout;

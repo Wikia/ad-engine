@@ -1,8 +1,8 @@
 import { TemplateStateHandler } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { DomManipulator } from '../helpers/manipulators/dom-manipulator';
 
-@Injectable({ autobind: false })
+@injectable()
 export class PreventScrollingHandler implements TemplateStateHandler {
 	constructor(private manipulator: DomManipulator) {}
 

@@ -25,7 +25,7 @@ import {
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { basicContext } from './ad-context';
 import { UcpMobileAdsMode } from './modes/ucp-mobile-ads.mode';
 import { UcpMobileA9ConfigSetup } from './setup/context/a9/ucp-mobile-a9-config.setup';
@@ -36,7 +36,7 @@ import { UcpMobileDynamicSlotsSetup } from './setup/dynamic-slots/ucp-mobile-dyn
 import { UcpMobileExperimentsSetup } from './setup/experiments/ucp-mobile-experiments.setup';
 import { UcpMobileTemplatesSetup } from './templates/ucp-mobile-templates.setup';
 
-@Injectable()
+@injectable()
 export class UcpMobilePlatform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 

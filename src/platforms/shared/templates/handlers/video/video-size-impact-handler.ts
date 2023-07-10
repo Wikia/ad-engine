@@ -1,11 +1,11 @@
 import { DomListener, startAndRespondTo, TemplateStateHandler, utils } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
+import { injectable } from 'tsyringe';
 import { PlayerRegistry } from '../../helpers/player-registry';
 import { VideoDomManager } from '../../helpers/video-dom-manager';
 
-@Injectable({ autobind: false })
+@injectable()
 export class VideoSizeImpactHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
 import {
 	BiddersStateSetup,
@@ -30,7 +30,7 @@ import { MetacriticDynamicSlotsSetup } from './setup/dynamic-slots/metacritic-dy
 import { MetacriticPageChangeGalleryObserver } from './setup/page-observers/metacritic-page-change-gallery-observer.setup';
 import { MetacriticTemplatesSetup } from './templates/metacritic-templates.setup';
 
-@Injectable()
+@injectable()
 export class MetacriticPlatform {
 	constructor(private pipeline: ProcessPipeline) {}
 

@@ -20,8 +20,8 @@ import {
 	TrackingTarget,
 	viewabilityTracker,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
 import { props } from 'ts-action';
+import { injectable } from 'tsyringe';
 import { trackingUrls } from '../setup/tracking-urls';
 import { AdSizeTracker } from './ad-size-tracker';
 import { DataWarehouseTracker } from './data-warehouse';
@@ -29,7 +29,7 @@ import { LabradorTracker } from './labrador-tracker';
 
 const adClickedAction = globalAction('[AdEngine] Ad clicked', props<Dictionary>());
 
-@Injectable()
+@injectable()
 export class TrackingSetup {
 	constructor(
 		private labradorTracker: LabradorTracker,

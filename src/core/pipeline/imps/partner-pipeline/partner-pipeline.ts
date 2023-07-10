@@ -1,7 +1,7 @@
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { PartnerStepUnion } from './partner-pipeline-types';
 
-@Injectable({ scope: 'Transient' })
+@injectable()
 export class PartnerPipeline {
 	steps: PartnerStepUnion[] = [];
 	add(...steps: PartnerStepUnion[]): this {

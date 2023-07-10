@@ -5,12 +5,12 @@ import {
 	LoadTimesSetup,
 	MetricReporter,
 	MetricReporterSetup,
+	SlotsConfigurationExtender,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
 import { context, IdentitySetup, ProcessPipeline, utils } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
-import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
+import { injectable } from 'tsyringe';
 import {
 	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
@@ -27,7 +27,7 @@ import { GiantbombSlotsContextSetup } from './setup/context/slots/giantbomb-slot
 import { GiantbombTargetingSetup } from './setup/context/targeting/giantbomb-targeting.setup';
 import { GiantbombTemplatesSetup } from './templates/giantbomb-templates.setup';
 
-@Injectable()
+@injectable()
 export class GiantbombPlatform {
 	constructor(private pipeline: ProcessPipeline) {}
 

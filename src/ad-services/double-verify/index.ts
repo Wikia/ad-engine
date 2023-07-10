@@ -1,9 +1,11 @@
 import { BaseServiceSetup, targetingService, utils } from '@ad-engine/core';
+import { injectable } from 'tsyringe';
 
 const logGroup = 'double-verify';
 const scriptUrl =
 	'//pub.doubleverify.com/signals/pub.js?ctx=28150781&cmp=DV1001654&signals=ids,bsc';
 
+@injectable()
 export class DoubleVerify extends BaseServiceSetup {
 	call(): Promise<void> {
 		if (!this.isEnabled('icDoubleVerify')) {

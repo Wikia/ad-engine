@@ -7,9 +7,9 @@ import {
 	eventsRepository,
 	slotService,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
-@Injectable()
+@injectable()
 export class MetacriticPageChangeGalleryObserver implements DiProcess {
 	protected elementToObserveMutationSelector =
 		'div.gallery2 div.slidex_wrapper div.slidex.slide_layout';

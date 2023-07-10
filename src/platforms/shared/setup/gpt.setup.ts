@@ -1,7 +1,9 @@
 import { BaseServiceSetup, utils } from '@wikia/ad-engine';
+import { injectable } from 'tsyringe';
 
 const GPT_TIMEOUT_MS = 10 * 1000;
 
+@injectable()
 export class GptSetup extends BaseServiceSetup {
 	constructor() {
 		super();

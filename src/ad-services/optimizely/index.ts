@@ -1,5 +1,5 @@
 import { targetingService, utils } from '@ad-engine/core';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
 type OptimizelyVariablesType = {
 	EXPERIMENT_ENABLED: string;
@@ -12,7 +12,7 @@ type TargetingValues = {
 
 const logGroup = 'optimizely';
 
-@Injectable()
+@injectable()
 export class Optimizely {
 	private targetingValues: TargetingValues = {};
 

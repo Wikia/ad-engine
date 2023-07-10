@@ -1,23 +1,17 @@
 import { Audigent } from '@wikia/ad-services';
 import { context, InstantConfigService, pbjsFactory } from '@wikia/core';
-import { Binding, Container } from '@wikia/dependency-injection';
 import { InstantConfigSetup } from '@wikia/platforms/shared';
 import { expect } from 'chai';
-import { SinonSpy, SinonStub } from 'sinon';
+import { SinonStub } from 'sinon';
+import { container } from 'tsyringe';
 
 describe('InstantConfigSetup', () => {
-	let container;
 	const instantConfigService = new InstantConfigService();
 	let containerBindStub: SinonStub;
-	let containerValueSpy: SinonSpy;
 
 	beforeEach(() => {
-		container = new Container();
 		global.sandbox.stub(InstantConfigService.prototype, 'init').resolves(instantConfigService);
-		containerValueSpy = global.sandbox.spy();
-		containerBindStub = global.sandbox.stub(container, 'bind').returns({
-			value: containerValueSpy,
-		} as unknown as Binding<any>);
+		containerBindStub = global.sandbox.stub(container, 'register');
 	});
 
 	it('should bind InstantConfigService to container', async () => {
@@ -27,12 +21,13 @@ describe('InstantConfigSetup', () => {
 			.returns(false)
 			.withArgs('icAudigent')
 			.returns(false);
-		const instantConfigSetup = new InstantConfigSetup(container);
+		const instantConfigSetup = new InstantConfigSetup();
 
 		await instantConfigSetup.execute();
 
-		expect(containerBindStub.calledWithExactly(InstantConfigService)).to.be.true;
-		expect(containerValueSpy.calledWithExactly(instantConfigService)).to.be.true;
+		expect(
+			containerBindStub.calledWithExactly(InstantConfigService, { useValue: instantConfigService }),
+		).to.be.true;
 	});
 
 	it('should preloadLibraries', async () => {
@@ -45,7 +40,7 @@ describe('InstantConfigSetup', () => {
 		const contextSetStub = global.sandbox.stub(context, 'set');
 		const pbjsFactoryInitStub = global.sandbox.stub(pbjsFactory, 'init').resolves();
 		const audigentLoadSegmentLibraryStub = global.sandbox.stub(Audigent, 'loadSegmentLibrary');
-		const instantConfigSetup = new InstantConfigSetup(container);
+		const instantConfigSetup = new InstantConfigSetup();
 
 		await instantConfigSetup.execute();
 

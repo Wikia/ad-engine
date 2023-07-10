@@ -13,9 +13,9 @@ import {
 	Nielsen,
 	PartnerPipeline,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
-@Injectable()
+@injectable()
 export class F2AdsMode implements DiProcess {
 	constructor(
 		private adEngineStackSetup: AdEngineStackSetup,

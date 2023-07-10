@@ -7,17 +7,17 @@ import {
 	TEMPLATE,
 	UapParams,
 } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
 import { ReplaySubject } from 'rxjs';
+import { inject, injectable } from 'tsyringe';
 
-@Injectable({ autobind: false })
+@injectable()
 export class PlayerRegistry {
 	private state$ = new ReplaySubject<{ player: PorvataPlayer; params: PorvataTemplateParams }>(1);
 	video$ = this.state$.asObservable();
 
 	constructor(
-		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
-		@Inject(TEMPLATE.PARAMS) private params: UapParams,
+		@inject(TEMPLATE.SLOT) private adSlot: AdSlot,
+		@inject(TEMPLATE.PARAMS) private params: UapParams,
 	) {}
 
 	/**

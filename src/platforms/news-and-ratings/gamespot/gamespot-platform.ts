@@ -5,12 +5,12 @@ import {
 	LoadTimesSetup,
 	MetricReporter,
 	MetricReporterSetup,
+	SlotsConfigurationExtender,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
 import { context, IdentitySetup, ProcessPipeline, utils } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
-import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
+import { injectable } from 'tsyringe';
 import {
 	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
@@ -29,7 +29,7 @@ import { GamespotInfiniteScrollObserverSetup } from './setup/page-change-observe
 import { GamespotSeamlessContentObserverSetup } from './setup/page-change-observers/gamespot-seamless-content-observer.setup';
 import { GamespotTemplatesSetup } from './templates/gamespot-templates.setup';
 
-@Injectable()
+@injectable()
 export class GameSpotPlatform {
 	constructor(private pipeline: ProcessPipeline) {}
 

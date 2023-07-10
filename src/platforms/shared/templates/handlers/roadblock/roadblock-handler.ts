@@ -7,7 +7,7 @@ import {
 	TemplateStateHandler,
 	universalAdPackage,
 } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
+import { inject, injectable } from 'tsyringe';
 import { RoadblockParams } from './roadblock-params';
 
 const ROADBLOCK_CONFIG = Symbol('Roadblock Config');
@@ -17,18 +17,15 @@ interface RoadblockConfig {
 	disableSlots: string[];
 }
 
-@Injectable({ autobind: false })
+@injectable()
 export class RoadblockHandler implements TemplateStateHandler {
 	static config(config: RoadblockConfig): TemplateDependency<RoadblockConfig> {
-		return {
-			bind: ROADBLOCK_CONFIG,
-			value: config,
-		};
+		return { bind: ROADBLOCK_CONFIG, value: config };
 	}
 
 	constructor(
-		@Inject(TEMPLATE.PARAMS) private params: RoadblockParams,
-		@Inject(ROADBLOCK_CONFIG) private config: RoadblockConfig,
+		@inject(TEMPLATE.PARAMS) private params: RoadblockParams,
+		@inject(ROADBLOCK_CONFIG) private config: RoadblockConfig,
 	) {}
 
 	async onEnter(): Promise<void> {

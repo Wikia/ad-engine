@@ -10,10 +10,10 @@ import {
 	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 import { NoAdsDetector } from '../services/no-ads-detector';
 
-@Injectable()
+@injectable()
 export class BaseContextSetup implements DiProcess {
 	constructor(
 		protected instantConfig: InstantConfigService,

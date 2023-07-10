@@ -1,12 +1,10 @@
-import { Container, Injectable } from '@wikia/dependency-injection';
+import { container, singleton } from 'tsyringe';
 import { ProcessPipeline } from '../process-pipeline';
 import { CompoundProcess, CompoundProcessStep, ProcessStepUnion } from '../process-pipeline-types';
 
-@Injectable()
+@singleton()
 class OnceProcess<T> implements CompoundProcess<ProcessStepUnion<T>> {
 	private created = new Set<ProcessStepUnion<T>>();
-
-	constructor(private container: Container) {}
 
 	execute(payload: ProcessStepUnion<T>): Promise<void> | void {
 		if (this.created.has(payload)) {
@@ -15,7 +13,7 @@ class OnceProcess<T> implements CompoundProcess<ProcessStepUnion<T>> {
 
 		this.created.add(payload);
 
-		const pipeline = this.container.get(ProcessPipeline);
+		const pipeline = container.resolve(ProcessPipeline);
 
 		return pipeline.add(payload).execute();
 	}

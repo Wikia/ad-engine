@@ -8,10 +8,10 @@ import {
 	targetingService,
 	utils,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
 import { shareReplay } from 'rxjs/operators';
+import { injectable } from 'tsyringe';
 
-@Injectable()
+@injectable()
 export class BingeBotTargetingSetup implements DiProcess {
 	execute(): void {
 		targetingService.extend({

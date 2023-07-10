@@ -8,7 +8,7 @@
 		"url": "https://github.com/Wikia/AdEngine"
 	},
 	"dependencies": {
-		"@wikia/dependency-injection": "2.2.3",
+		"@abraham/reflection": "0.12.0",
 		"@wikia/instant-config-loader": "github:Wikia/instant-config-loader#semver:0.3.0",
 		"@wikia/post-quecast": "2.0.1",
 		"blockadblock": "3.2.1",
@@ -18,6 +18,7 @@
 		"ts-action": "11.0.0",
 		"ts-action-operators": "9.1.2",
 		"ts-loader": "9.4.2",
+		"tsyringe": "4.7.0",
 		"uuid": "9.0.0"
 	},
 	"devDependencies": {
@@ -74,9 +75,9 @@
 		"prepare": "husky install",
 		"prebuild": "rm -rf dist",
 		"preversion": "./maintenance/preversion.sh",
-		"test": "instant-mocha './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.js --require ./spec/helpers/sandbox-hook.js",
+		"test": "instant-mocha './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.js --require ./spec/helpers/setup.mjs --require ./spec/helpers/sandbox-hook.js",
 		"test:watch": "npm run test -- -w",
-		"test-coverage": "nyc instant-mocha './src/!(platforms)*/**/*.ts' './src/platforms/shared/**/*.ts' './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.coverage.js --require ./spec/helpers/sandbox-hook.js"
+		"test-coverage": "nyc instant-mocha './src/!(platforms)*/**/*.ts' './src/platforms/shared/**/*.ts' './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.coverage.js --require ./spec/helpers/setup.mjs --require ./spec/helpers/sandbox-hook.js"
 	},
 	"lint-staged": {
 		"*.ts": [

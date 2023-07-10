@@ -1,10 +1,10 @@
 import { getDomain } from '@platforms/shared';
 import { context, DiProcess, SlotTargeting, targetingService, utils } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
 import { getPageType } from '../../../utils/pagetype-helper';
 
-@Injectable()
+@injectable()
 export class SportsTargetingSetup implements DiProcess {
 	execute(): void {
 		targetingService.extend({

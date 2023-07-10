@@ -1,8 +1,8 @@
 import { BaseContextSetup } from '@platforms/shared';
 import { context, utils } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
-@Injectable()
+@injectable()
 export class UcpMobileBaseContextSetup extends BaseContextSetup {
 	execute(): void {
 		super.execute();

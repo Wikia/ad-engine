@@ -3,6 +3,7 @@ import sinon from 'sinon';
 
 import { BabDetection } from '@wikia/core';
 import { WadRunner } from '@wikia/platforms/shared';
+import { container } from 'tsyringe';
 
 function createDetectionRunStub(returnValue: boolean) {
 	return new Promise<void>((resolve) => {
@@ -18,7 +19,7 @@ describe('Wikia AdBlock Detector runner', () => {
 	let wadRunner: WadRunner;
 
 	beforeEach(() => {
-		wadRunner = new WadRunner();
+		wadRunner = container.resolve(WadRunner);
 		wadRunner.detector = babDetectionStub;
 		wadRunner.onDetected = onDetected;
 	});

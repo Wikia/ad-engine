@@ -10,7 +10,8 @@ import {
 	TrackingSetup,
 } from '@platforms/shared';
 import { context, IdentitySetup, ProcessPipeline, utils } from '@wikia/ad-engine';
-import { Container, Injectable } from '@wikia/dependency-injection';
+import { container, injectable } from 'tsyringe';
+
 import {
 	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
@@ -29,14 +30,14 @@ import { TvGuideSlotsContextSetup } from './setup/context/slots/tvguide-slots-co
 import { TvGuideTargetingSetup } from './setup/context/targeting/tvguide-targeting.setup';
 import { TvGuideTemplatesSetup } from './templates/tvguide-templates.setup';
 
-@Injectable()
+@injectable()
 export class TvGuidePlatform {
 	constructor(
 		private pipeline: ProcessPipeline,
 		private spaWatchers: NewsAndRatingsNeutronHelper,
 	) {}
 
-	execute(container: Container): void {
+	execute(): void {
 		this.pipeline.add(
 			() => context.extend(basicContext),
 			() => context.set('state.isMobile', !utils.client.isDesktop()),
@@ -66,10 +67,10 @@ export class TvGuidePlatform {
 		);
 
 		this.pipeline.execute();
-		this.setupSinglePageAppWatchers(container);
+		this.setupSinglePageAppWatchers();
 	}
 
-	private setupSinglePageAppWatchers(container: Container) {
+	private setupSinglePageAppWatchers() {
 		this.spaWatchers.setupPageChangedWatcher(
 			container,
 			NewsAndRatingsBaseContextSetup,

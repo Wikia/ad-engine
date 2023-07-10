@@ -5,11 +5,11 @@ import {
 	eventsRepository,
 	utils,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
 const logGroup = 'ad-engine';
 
-@Injectable()
+@injectable()
 export class AdEngineRunnerSetup implements DiProcess {
 	constructor(private bidders: Bidders) {}
 

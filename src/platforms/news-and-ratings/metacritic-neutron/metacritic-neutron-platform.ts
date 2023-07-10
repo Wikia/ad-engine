@@ -1,4 +1,4 @@
-import { Container, Injectable } from '@wikia/dependency-injection';
+import { container, injectable } from 'tsyringe';
 
 import {
 	BiddersStateSetup,
@@ -31,14 +31,14 @@ import { MetacriticNeutronTargetingSetup } from './setup/context/targeting/metac
 import { MetacriticNeutronSeeMoreButtonClickListenerSetup } from './setup/page-change-observers/metacritic-neutron-see-more-button-click-listener.setup';
 import { MetacriticNeutronTemplatesSetup } from './templates/metacritic-neutron-templates.setup';
 
-@Injectable()
+@injectable()
 export class MetacriticNeutronPlatform {
 	constructor(
 		private pipeline: ProcessPipeline,
 		private spaWatchers: NewsAndRatingsNeutronHelper,
 	) {}
 
-	execute(container: Container): void {
+	execute(): void {
 		this.pipeline.add(
 			() => context.extend(basicContext),
 			() => context.set('state.isMobile', !utils.client.isDesktop()),
@@ -69,10 +69,10 @@ export class MetacriticNeutronPlatform {
 		);
 
 		this.pipeline.execute();
-		this.setupSinglePageAppWatchers(container);
+		this.setupSinglePageAppWatchers();
 	}
 
-	private setupSinglePageAppWatchers(container: Container) {
+	private setupSinglePageAppWatchers() {
 		this.spaWatchers.setupPageChangedWatcher(
 			container,
 			NewsAndRatingsBaseContextSetup,

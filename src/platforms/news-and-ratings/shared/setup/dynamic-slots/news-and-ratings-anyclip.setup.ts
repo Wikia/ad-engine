@@ -1,10 +1,10 @@
 import { insertSlots } from '@platforms/shared';
 import { context, DiProcess, targetingService, utils } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
 import { NewsAndRatingsSlotsDefinitionRepository } from '../../index';
 
-@Injectable()
+@injectable()
 export class NewsAndRatingsAnyclipSetup implements DiProcess {
 	private logGroup = 'Anyclip';
 

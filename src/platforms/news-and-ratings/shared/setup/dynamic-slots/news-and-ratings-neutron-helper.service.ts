@@ -5,13 +5,15 @@ import {
 	targetingService,
 	utils,
 } from '@wikia/ad-engine';
-import { Container, Injectable } from '@wikia/dependency-injection';
+import { DependencyContainer, injectable } from 'tsyringe';
 
 const logGroup = 'SPA';
 
-@Injectable()
+@injectable()
 export class NewsAndRatingsNeutronHelper {
-	setupPageExtendedWatcher(container: Container, ...steps: any[]) {
+	private firstPageview = true;
+
+	setupPageExtendedWatcher(container: DependencyContainer, ...steps: any[]) {
 		communicationService.on(
 			eventsRepository.PLATFORM_PAGE_EXTENDED,
 			() => {
@@ -19,7 +21,7 @@ export class NewsAndRatingsNeutronHelper {
 
 				targetingService.clear();
 
-				const refreshPipeline = new ProcessPipeline(container);
+				const refreshPipeline = new ProcessPipeline();
 				refreshPipeline
 					.add(() => utils.logger(logGroup, 'starting pipeline refresh'), ...steps)
 					.execute();
@@ -28,15 +30,20 @@ export class NewsAndRatingsNeutronHelper {
 		);
 	}
 
-	setupPageChangedWatcher(container: Container, ...steps: any[]) {
+	setupPageChangedWatcher(container: DependencyContainer, ...steps: any[]) {
 		communicationService.on(
 			eventsRepository.PLATFORM_PAGE_CHANGED,
 			() => {
+				if (this.firstPageview) {
+					this.firstPageview = false;
+					return;
+				}
+
 				utils.logger(logGroup, 'url changed', location.href);
 
 				targetingService.clear();
 
-				const refreshPipeline = new ProcessPipeline(container);
+				const refreshPipeline = new ProcessPipeline();
 				refreshPipeline
 					.add(() => utils.logger(logGroup, 'starting pipeline refresh'), ...steps)
 					.execute();

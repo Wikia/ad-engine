@@ -1,7 +1,7 @@
 import { context, DiProcess, utils } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { injectable } from 'tsyringe';
 
-@Injectable()
+@injectable()
 export class SportsA9ConfigSetup implements DiProcess {
 	execute(): void {
 		const mode = context.get('state.isMobile') ? 'mobile' : 'desktop';
