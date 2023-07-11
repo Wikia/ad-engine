@@ -8,11 +8,12 @@ if (debugGroup !== '') {
 }
 
 const BACKUP_ORIGIN_TIME = Date.now(); // fallback for timeorigin
-export function getTimeDelta(): number {
-	const currentTimeStamp = Date.now();
-	const originTime = window.performance?.timeOrigin ?? BACKUP_ORIGIN_TIME;
+export function getTimeOrigin() {
+	return window.performance?.timeOrigin ?? BACKUP_ORIGIN_TIME;
+}
 
-	return currentTimeStamp - originTime;
+export function getTimeDelta(): number {
+	return Date.now() - getTimeOrigin();
 }
 
 export function getTimeDeltaFixed(): string {
