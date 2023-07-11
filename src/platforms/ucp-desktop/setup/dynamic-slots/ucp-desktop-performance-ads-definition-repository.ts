@@ -187,7 +187,7 @@ export class UcpDesktopPerformanceAdsDefinitionRepository {
 						entry.isIntersecting &&
 						entry.time > minVisibleTime
 					) {
-						this.callToDW();
+						this.viewabilityCallToDW();
 						observer.disconnect();
 					}
 				});
@@ -196,7 +196,7 @@ export class UcpDesktopPerformanceAdsDefinitionRepository {
 		).observe(element);
 	}
 
-	private callToDW() {
+	private viewabilityCallToDW() {
 		this.dwTracker.track(
 			{
 				creative_id: this.widgetData.data.creativeId,
