@@ -111,13 +111,11 @@ export class IntentIQ {
 		const ppid = this.getPpid(data);
 		utils.logger(logGroup, 'ppid', ppid);
 
-		if (ppid) {
-			if (context.get('services.intentIq.ppid.enabled')) {
-				this.setPpid(ppid);
-			}
-			if (context.get('services.intentIq.ppid.tracking.enabled')) {
-				this.trackPpid(ppid);
-			}
+		if (context.get('services.intentIq.ppid.enabled')) {
+			this.setPpid(ppid);
+		}
+		if (context.get('services.intentIq.ppid.tracking.enabled')) {
+			this.trackPpid(ppid);
 		}
 	}
 
@@ -139,7 +137,7 @@ export class IntentIQ {
 		}
 	}
 
-	setPpid(ppid: string): void {
+	setPpid(ppid: string | null): void {
 		targetingService.set('intent_iq_ppid', ppid, 'intent_iq');
 		utils.logger(logGroup, 'set ppid ', ppid);
 	}
@@ -154,7 +152,11 @@ export class IntentIQ {
 		);
 	}
 
-	trackPpid(ppid: string): void {
+	trackPpid(ppid: string | null): void {
+		if (!ppid) {
+			return;
+		}
+
 		communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
 			partnerName: 'intentiq',
 			partnerIdentityId: ppid,

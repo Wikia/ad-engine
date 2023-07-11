@@ -219,6 +219,11 @@ export class GptProvider implements Provider {
 
 	setPPID() {
 		const intentIqPpid = targetingService.get('intent_iq_ppid', 'intent_iq');
+
+		if (!intentIqPpid && targetingService.get('intent_iq_ppid', 'intent_iq') !== null) {
+			communicationService.emit(eventsRepository.INTENTIQ_PPID_NOT_SET_ON_TIME);
+		}
+
 		const ppid = intentIqPpid ? intentIqPpid : targetingService.get('ppid');
 
 		if (ppid) {
