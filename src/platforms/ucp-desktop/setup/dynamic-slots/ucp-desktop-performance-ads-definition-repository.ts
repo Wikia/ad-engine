@@ -1,3 +1,4 @@
+import { DataWarehouseTracker, trackingUrls } from '@platforms/shared';
 import { context, targetingService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -17,6 +18,8 @@ interface WidgetAdPayload {
 		title: string;
 		image: string;
 		description?: string;
+		lineItemId?: string;
+		creativeId?: string;
 	};
 }
 
@@ -34,6 +37,8 @@ export class UcpDesktopPerformanceAdsDefinitionRepository {
 			src: context.get('src'),
 		},
 	};
+
+	constructor(private dwTracker: DataWarehouseTracker) {}
 
 	async setup(): Promise<void> {
 		if (!context.get('options.performanceAds')) {
@@ -175,7 +180,14 @@ export class UcpDesktopPerformanceAdsDefinitionRepository {
 			(entries, observer) => {
 				entries.forEach((entry) => {
 					if (entry.intersectionRatio > 0.5 && entry.isIntersecting && entry.time > 500) {
-						utils.logger('test', 'track');
+						this.dwTracker.track(
+							{
+								creative_id: this.widgetData.data.creativeId,
+								line_item_id: this.widgetData.data.lineItemId,
+							},
+							trackingUrls.AD_ENG_VIEWABILITY,
+						);
+
 						observer.disconnect();
 					}
 				});
