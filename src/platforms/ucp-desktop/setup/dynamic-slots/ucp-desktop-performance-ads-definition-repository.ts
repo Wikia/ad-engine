@@ -176,23 +176,33 @@ export class UcpDesktopPerformanceAdsDefinitionRepository {
 			return;
 		}
 
+		const minIntersectioneRatio = 0.5;
+		const minVisibleTime = 500;
+
 		new IntersectionObserver(
 			(entries, observer) => {
 				entries.forEach((entry) => {
-					if (entry.intersectionRatio > 0.5 && entry.isIntersecting && entry.time > 500) {
-						this.dwTracker.track(
-							{
-								creative_id: this.widgetData.data.creativeId,
-								line_item_id: this.widgetData.data.lineItemId,
-							},
-							trackingUrls.AD_ENG_VIEWABILITY,
-						);
-
+					if (
+						entry.intersectionRatio > minIntersectioneRatio &&
+						entry.isIntersecting &&
+						entry.time > minVisibleTime
+					) {
+						this.callToDW();
 						observer.disconnect();
 					}
 				});
 			},
-			{ threshold: 0.5 },
+			{ threshold: minIntersectioneRatio },
 		).observe(element);
+	}
+
+	private callToDW() {
+		this.dwTracker.track(
+			{
+				creative_id: this.widgetData.data.creativeId,
+				line_item_id: this.widgetData.data.lineItemId,
+			},
+			trackingUrls.AD_ENG_VIEWABILITY,
+		);
 	}
 }
