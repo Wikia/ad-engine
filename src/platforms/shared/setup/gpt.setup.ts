@@ -1,28 +1,19 @@
-import {
-	AdEngine,
-	AdSlotEvent,
-	BaseServiceSetup,
-	communicationService,
-	utils,
-} from '@wikia/ad-engine';
+import { BaseServiceSetup, utils } from '@wikia/ad-engine';
 
-let adEngineInstance: AdEngine;
+const GPT_TIMEOUT_MS = 10 * 1000;
 
 export class GptSetup extends BaseServiceSetup {
-	call(): Promise<Event> {
-		utils.logger('GPT Setup', 'Called');
+	constructor() {
+		super();
+		this.options = { timeout: GPT_TIMEOUT_MS };
+	}
+
+	call(): Promise<void> {
 		const GPT_LIBRARY_URL = '//www.googletagservices.com/tag/js/gpt.js';
 
 		utils.logger('gpt-provider', 'loading GPT...');
-		const gptLoaded = utils.scriptLoader.loadScript(GPT_LIBRARY_URL);
-
-		adEngineInstance = new AdEngine();
-		adEngineInstance.init();
-
-		communicationService.onSlotEvent(AdSlotEvent.SLOT_RENDERED_EVENT, ({ slot }) => {
-			slot.removeClass('default-height');
+		return utils.scriptLoader.loadScript(GPT_LIBRARY_URL).then(() => {
+			utils.logger('gpt-provider', 'ready');
 		});
-
-		return gptLoaded;
 	}
 }

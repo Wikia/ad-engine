@@ -89,6 +89,7 @@ describe('IndexExchange bidder adapter', () => {
 					video: {
 						context: 'instream',
 						playerSize: [640, 480],
+						plcmt: [2],
 					},
 				},
 				ortb2Imp: {
