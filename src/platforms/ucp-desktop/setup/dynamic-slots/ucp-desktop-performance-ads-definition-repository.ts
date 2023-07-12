@@ -176,23 +176,19 @@ export class UcpDesktopPerformanceAdsDefinitionRepository {
 			return;
 		}
 
-		const minIntersectioneRatio = 0.5;
+		const minIntersectionRatio = 0.5;
 		const minVisibleTime = 500;
 
 		new IntersectionObserver(
 			(entries, observer) => {
 				entries.forEach((entry) => {
-					if (
-						entry.intersectionRatio > minIntersectioneRatio &&
-						entry.isIntersecting &&
-						entry.time > minVisibleTime
-					) {
+					if (entry.intersectionRatio > minIntersectionRatio && entry.time > minVisibleTime) {
 						this.viewabilityCallToDW();
 						observer.disconnect();
 					}
 				});
 			},
-			{ threshold: minIntersectioneRatio },
+			{ threshold: minIntersectionRatio },
 		).observe(element);
 	}
 
