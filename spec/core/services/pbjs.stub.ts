@@ -22,6 +22,7 @@ export function createPbjsStub(sandbox: SinonSandbox): PbjsStub {
 		renderAd: sandbox.stub(),
 		onEvent: sandbox.stub(),
 		offEvent: sandbox.stub(),
+		getAdserverTargeting: sandbox.stub(),
 	};
 }
 
