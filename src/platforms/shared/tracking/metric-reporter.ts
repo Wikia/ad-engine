@@ -85,6 +85,13 @@ export class MetricReporter {
 		});
 	}
 
+	public trackGptLibReady(): void {
+		this.sendToMeteringSystem({
+			action: 'gpt-ready',
+			duration: Math.round(utils.getTimeDelta()),
+		});
+	}
+
 	private trackGamSlotRequest(): void {
 		communicationService.onSlotEvent(AdSlotEvent.SLOT_REQUESTED_EVENT, ({ slot }) => {
 			this.sendSlotInfoToMeteringSystem(slot, 'request');
