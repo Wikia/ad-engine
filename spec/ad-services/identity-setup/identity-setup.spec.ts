@@ -18,11 +18,9 @@ describe('IdentitySetup', () => {
 
 	it('should call the required methods', async () => {
 		const identityEngineReadyStub = sinon.stub(identitySetup, 'identityEngineReady').resolves();
-		const setupOver18TargetingStub = sinon.stub(identitySetup, 'setupOver18Targeting');
 
 		await identitySetup.execute();
 
 		expect(identityEngineReadyStub.calledOnce).to.be.true;
-		expect(setupOver18TargetingStub.calledOnce).to.be.true;
 	});
 });
