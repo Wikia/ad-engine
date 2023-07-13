@@ -26,6 +26,7 @@ export class Magnite extends PrebidAdapter {
 			bids: [
 				{
 					bidder: this.bidderName,
+					params: {}, // Magnite requires empty "params"
 				},
 			],
 		};

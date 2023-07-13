@@ -6,6 +6,7 @@ import { getFreewheelContext } from '../../../bidders/prebid/freewheel';
 import { getGumgumContext } from '../../../bidders/prebid/gumgum';
 import { getIndexExchangeContext } from '../../../bidders/prebid/index-exchange';
 import { getKargoContext } from '../../../bidders/prebid/kargo';
+import { getMagniteContext } from '../../../bidders/prebid/magnite';
 import { getMedianetContext } from '../../../bidders/prebid/medianet';
 import { getNobidContext } from '../../../bidders/prebid/nobid';
 import { getOguryContext } from '../../../bidders/prebid/ogury';
@@ -27,6 +28,7 @@ export class UcpMobilePrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.gumgum', getGumgumContext());
 		context.set('bidders.prebid.indexExchange', getIndexExchangeContext());
 		context.set('bidders.prebid.kargo', getKargoContext());
+		context.set('bidders.prebid.mgnipbs', getMagniteContext());
 		context.set('bidders.prebid.medianet', getMedianetContext());
 		context.set('bidders.prebid.nobid', getNobidContext());
 		context.set('bidders.prebid.ogury', getOguryContext());
