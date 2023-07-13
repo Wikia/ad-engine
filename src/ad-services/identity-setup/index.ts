@@ -4,30 +4,26 @@ import { context, DiProcess, globalContextService, targetingService, utils } fro
 export class IdentitySetup implements DiProcess {
 	private logGroup = 'identity-setup';
 
-	async execute(): Promise<void> {
+	execute(): void {
 		utils.logger(this.logGroup, 'initialized');
 
-		await this.identityEngineReady();
+		this.setupIdentityEngineReady();
 		this.setupOver18Targeting();
-		return Promise.resolve();
 	}
 
-	async identityEngineReady(): Promise<void> {
-		return new Promise<void>((resolve) => {
-			communicationService.on(eventsRepository.IDENTITY_ENGINE_READY, () => {
-				const ppid = globalContextService.getValue('tracking', 'ppid');
-				if (ppid) {
-					targetingService.set('ppid', ppid);
-				}
+	setupIdentityEngineReady(): void {
+		communicationService.on(eventsRepository.IDENTITY_ENGINE_READY, () => {
+			const ppid = globalContextService.getValue('tracking', 'ppid');
+			if (ppid) {
+				targetingService.set('ppid', ppid);
+			}
 
-				if (context.get('services.identityPartners')) {
-					const segments = globalContextService.getValue('targeting', 'AU_SEG');
-					targetingService.set('AU_SEG', segments);
-				}
+			if (context.get('services.identityPartners')) {
+				const segments = globalContextService.getValue('targeting', 'AU_SEG');
+				targetingService.set('AU_SEG', segments);
+			}
 
-				utils.logger(this.logGroup, 'ready');
-				resolve();
-			});
+			utils.logger(this.logGroup, 'ready');
 		});
 	}
 

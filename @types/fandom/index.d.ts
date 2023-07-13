@@ -19,6 +19,7 @@ interface ITrackingParameters {
 	sessionId: string;
 	pvUID: string;
 	ppid?: string;
+	getPpid?: () => Promise<string>;
 	over_18?: string;
 }
 

@@ -4,10 +4,10 @@ import { AdSlotEvent, AdSlotStatus, Dictionary, type AdSlot } from '../models';
 import {
 	btfBlockerService,
 	context,
+	globalContextService,
 	slotDataParamsUpdater,
 	slotService,
 	SlotTargeting,
-	targetingService,
 	trackingOptIn,
 } from '../services';
 import { decorate, defer, isCoppaSubject, logger } from '../utils';
@@ -218,11 +218,14 @@ export class GptProvider implements Provider {
 	}
 
 	setPPID() {
-		const ppid = targetingService.get('ppid');
-		if (ppid) {
-			const tag = window.googletag.pubads();
-			tag.setPublisherProvidedId(ppid);
-		}
+		globalContextService
+			.getValue('tracking', 'getPpid')()
+			.then((ppid) => {
+				if (ppid) {
+					const tag = window.googletag.pubads();
+					tag.setPublisherProvidedId(ppid);
+				}
+			});
 	}
 
 	@decorate(postponeExecutionUntilGptLoads)
