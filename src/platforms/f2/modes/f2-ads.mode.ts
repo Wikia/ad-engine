@@ -1,14 +1,12 @@
-import { GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
+import { AdEngineStackSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
 	Audigent,
 	Captify,
 	communicationService,
-	context,
 	DiProcess,
 	DoubleVerify,
 	eventsRepository,
 	IasPublisherOptimization,
-	IdentitySetup,
 	jwPlayerInhibitor,
 	LiveConnect,
 	LiveRampPixel,
@@ -20,16 +18,16 @@ import { Injectable } from '@wikia/dependency-injection';
 @Injectable()
 export class F2AdsMode implements DiProcess {
 	constructor(
-		private pipeline: PartnerPipeline,
+		private adEngineStackSetup: AdEngineStackSetup,
 		private audigent: Audigent,
 		private captify: Captify,
 		private doubleVerify: DoubleVerify,
 		private gptSetup: GptSetup,
 		private iasPublisherOptimization: IasPublisherOptimization,
-		private identitySetup: IdentitySetup,
 		private liveConnect: LiveConnect,
 		private liveRampPixel: LiveRampPixel,
 		private nielsen: Nielsen,
+		private pipeline: PartnerPipeline,
 		private playerSetup: PlayerSetup,
 		private wadRunner: WadRunner,
 	) {}
@@ -44,21 +42,22 @@ export class F2AdsMode implements DiProcess {
 				this.iasPublisherOptimization,
 				this.nielsen,
 				this.wadRunner,
-				this.identitySetup,
 				this.playerSetup.setOptions({
 					dependencies: [this.wadRunner.initialized],
-					timeout: context.get('options.jwpMaxDelayTimeout'),
 				}),
-				this.gptSetup.setOptions({
-					dependencies: [
-						this.playerSetup.initialized,
-						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
-						this.iasPublisherOptimization.IASReady,
-					],
-					timeout: context.get('options.jwpMaxDelayTimeout'),
-				}),
+				this.gptSetup,
 				this.doubleVerify.setOptions({
 					dependencies: [this.gptSetup.initialized],
+				}),
+				this.adEngineStackSetup.setOptions({
+					dependencies: [
+						this.wadRunner.initialized,
+						this.gptSetup.initialized,
+						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
+					],
+					timeout: jwPlayerInhibitor.isRequiredToRun()
+						? jwPlayerInhibitor.getDelayTimeoutInMs()
+						: null,
 				}),
 			)
 			.execute()

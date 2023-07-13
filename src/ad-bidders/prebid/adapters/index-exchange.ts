@@ -1,5 +1,5 @@
 import { context, utils } from '@ad-engine/core';
-import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
+import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class IndexExchange extends PrebidAdapter {
@@ -7,7 +7,6 @@ export class IndexExchange extends PrebidAdapter {
 	aliases = {
 		ix: [IndexExchange.bidderName],
 	};
-	maxCpm = EXTENDED_MAX_CPM;
 
 	constructor(options) {
 		super(options);
@@ -42,6 +41,7 @@ export class IndexExchange extends PrebidAdapter {
 				video: {
 					context: 'instream',
 					playerSize: [640, 480],
+					plcmt: [2],
 				},
 			},
 			ortb2Imp: {

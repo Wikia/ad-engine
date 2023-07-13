@@ -28,7 +28,6 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 						sizes: [
 							[728, 90],
 							[970, 66],
-							[970, 250],
 							universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop,
 						],
 					},
@@ -45,7 +44,7 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 						sizes: [[320, 50]],
 					},
 				],
-				defaultSizes: [
+        defaultSizes: [
 					[728, 90],
 					[970, 250],
 				],
@@ -56,7 +55,6 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 				},
 			},
 			floor_adhesion: {
-				disabled: true,
 				adProduct: 'floor_adhesion',
 				group: 'PF',
 				targeting: {

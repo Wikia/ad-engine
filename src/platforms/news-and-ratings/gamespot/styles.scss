@@ -1,7 +1,16 @@
 @import '../shared/styles/uap-styles.scss';
+@import '../shared/styles/out-of-page-styles';
 
 body {
 	@include uap-styles();
+
+	&.has-uap {
+		#top_leaderboard {
+			&.sticky-tlb {
+				z-index: 5000061;
+			}
+		}
+	}
 }
 
 .gpt-ad {
@@ -24,3 +33,5 @@ body:not(.skybox-loaded) {
 		min-height: 0;
 	}
 }
+
+@include out-of-page-styles();

@@ -1,10 +1,9 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { BaseServiceSetup, context, localCache, UniversalStorage, utils } from '@ad-engine/core';
+import { BaseServiceSetup, localCache, UniversalStorage, utils } from '@ad-engine/core';
 
 interface IdConfig {
-	id: string;
+	id: LiQResolveParams;
 	name: string;
-	params?: LiQParams;
 }
 
 interface CachingStrategyConfig {
@@ -19,17 +18,22 @@ const liveConnectScriptUrl = 'https://b-code.liadm.com/a-07ev.min.js';
 
 const idConfigMapping: IdConfig[] = [
 	{ id: 'unifiedId', name: `${partnerName}-unifiedId` },
-	{ id: 'sha2', name: partnerName, params: { qf: '0.3', resolve: 'sha2' } },
-	{ id: 'md5', name: `${partnerName}-md5`, params: { qf: '0.3', resolve: 'md5' } },
-	{ id: 'sha1', name: `${partnerName}-sha1`, params: { qf: '0.3', resolve: 'sha1' } },
+	{ id: 'sha2', name: partnerName },
+	{ id: 'md5', name: `${partnerName}-md5` },
+	{ id: 'sha1', name: `${partnerName}-sha1` },
 ];
 
 export class LiveConnect extends BaseServiceSetup {
 	private storage;
 	private storageConfig: CachingStrategyConfig;
+	private defaultQfValue = '0.3';
 
 	call(): void {
-		if (!this.isEnabled(['services.liveConnect.enabled', 'services.liveConnect.cachingStrategy'])) {
+		if (
+			!this.isEnabled('icLiveConnect') ||
+			!this.isEnabled('icLiveConnectCachingStrategy') ||
+			this.isEnabled('icIdentityPartners', false)
+		) {
 			utils.logger(logGroup, 'disabled');
 			return;
 		}
@@ -40,65 +44,76 @@ export class LiveConnect extends BaseServiceSetup {
 			utils.logger(logGroup, 'loading');
 			communicationService.emit(eventsRepository.LIVE_CONNECT_STARTED);
 
-			utils.scriptLoader
-				.loadScript(liveConnectScriptUrl, 'text/javascript', true, 'first')
-				.then(() => {
-					utils.logger(logGroup, 'loaded');
-					this.track();
-				});
+			utils.scriptLoader.loadScript(liveConnectScriptUrl, true, 'first').then(() => {
+				utils.logger(logGroup, 'loaded');
+				this.resolveAndTrackIds();
+				const customQf = this.instantConfig.get<number>('icLiveConnectQf')?.toString();
+				if (customQf && customQf !== this.defaultQfValue) {
+					this.resolveAndTrackIds(customQf);
+				}
+			});
 		} else {
 			communicationService.emit(eventsRepository.LIVE_CONNECT_CACHED);
 			utils.logger(logGroup, `already loaded and available in ${this.storageConfig.type}Storage`);
 		}
 	}
 
-	resolveId(idName, partnerName) {
-		return (nonId) => {
-			const partnerIdentityId = nonId[idName];
+	resolveAndTrackIds(qf?: string): void {
+		if (!window.liQ) {
+			utils.warner(logGroup, 'window.liQ not available for tracking');
+			return;
+		}
 
-			utils.logger(logGroup, `id ${idName}: ${partnerIdentityId}`);
+		window.liQ.resolve(
+			(result) => {
+				this.trackIds(result, qf);
+			},
+			(err) => {
+				console.error(err);
+			},
+			{ qf: qf || this.defaultQfValue, resolve: idConfigMapping.map((config) => config.id) },
+		);
+	}
 
-			if (idName === 'unifiedId') {
+	trackIds(liQResponse: LiQResolveResponse, customQf?: string): void {
+		utils.logger(logGroup, 'resolve response:', liQResponse);
+
+		Object.keys(liQResponse).forEach((key) => {
+			const trackingKeyName = this.getTrackingKeyName(key);
+
+			if (this.isAvailableInStorage(trackingKeyName)) {
+				return;
+			}
+
+			if (key === 'unifiedId') {
 				communicationService.emit(eventsRepository.LIVE_CONNECT_RESPONDED_UUID);
 			}
+
+			const partnerIdentityId = liQResponse[key];
+
+			utils.logger(logGroup, `${key}: ${partnerIdentityId}`);
 
 			if (!partnerIdentityId) {
 				return;
 			}
 
-			this.storage.setItem(partnerName, partnerIdentityId, this.storageConfig.ttl);
+			this.storage.setItem(trackingKeyName, partnerIdentityId, this.storageConfig.ttl);
 
 			communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
-				partnerName,
+				partnerName: trackingKeyName + (customQf ? `-${customQf}` : ''),
 				partnerIdentityId,
 			});
-		};
-	}
-
-	resolveAndReportId(idName: string, partnerName: string, params?: LiQParams) {
-		window.liQ.resolve(
-			this.resolveId(idName, partnerName),
-			(err) => {
-				utils.warner(logGroup, err);
-			},
-			params,
-		);
-	}
-
-	track(): void {
-		if (!window.liQ) {
-			utils.warner(logGroup, 'window.liQ not available for tracking');
-			return;
-		}
-		idConfigMapping.forEach(({ id, name, params }) => {
-			if (!this.isAvailableInStorage(name)) {
-				this.resolveAndReportId(id, name, params);
-			}
 		});
 	}
 
+	getTrackingKeyName(key: string): string {
+		return idConfigMapping.find((config) => config.id === key)?.name;
+	}
+
 	setupStorage(): void {
-		this.storageConfig = context.get('services.liveConnect.cachingStrategy');
+		this.storageConfig = this.instantConfig.get<CachingStrategyConfig>(
+			'icLiveConnectCachingStrategy',
+		);
 
 		if (this.storageConfig.type === 'local') {
 			this.storage = localCache;

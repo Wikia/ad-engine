@@ -27,6 +27,7 @@ describe('Audigent', () => {
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		instantConfigStub.get.withArgs('icAudigent').returns(true);
 		instantConfigStub.get.withArgs('icAudigentTrackingSampling').returns(0);
+		instantConfigStub.get.withArgs('icIdentityPartners').returns(false);
 
 		targetingServiceStub = global.sandbox.stub(targetingService);
 		global.sandbox.stub(WaitFor.prototype, 'until').returns(Promise.resolve());
@@ -39,6 +40,7 @@ describe('Audigent', () => {
 		context.set('options.optOutSale', false);
 
 		context.set('wiki.targeting.directedAtChildren', false);
+		window.fandomContext.partners.directedAtChildren = false;
 	});
 
 	afterEach(() => {
@@ -72,6 +74,14 @@ describe('Audigent', () => {
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
+	it('Audigent is not called when Identity Partners is enabled', async () => {
+		instantConfigStub.get.withArgs('icIdentityPartners').returns(true);
+
+		await audigent.call();
+
+		expect(loadScriptStub.called).to.equal(false);
+	});
+
 	it('Audigent not called when user is not opted in', async () => {
 		context.set('options.trackingOptIn', false);
 
@@ -90,6 +100,7 @@ describe('Audigent', () => {
 
 	it('Audigent not called on kid wikis', async () => {
 		context.set('wiki.targeting.directedAtChildren', true);
+		window.fandomContext.partners.directedAtChildren = true;
 
 		await audigent.call();
 

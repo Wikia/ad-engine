@@ -8,7 +8,7 @@ import {
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
-import { context, ProcessPipeline, utils } from '@wikia/ad-engine';
+import { context, IdentitySetup, ProcessPipeline, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
 import {
@@ -44,11 +44,12 @@ export class ComicvinePlatform {
 			LoadTimesSetup,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
+			IdentitySetup,
 			NewsAndRatingsTargetingSetup,
 			ComicvineTargetingSetup,
 			NewsAndRatingsAnyclipSetup,
-			NewsAndRatingsDynamicSlotsSetup,
 			ComicvineSlotsContextSetup,
+			NewsAndRatingsDynamicSlotsSetup,
 			SlotsConfigurationExtender,
 			ComicvinePrebidConfigSetup,
 			ComicvineA9ConfigSetup,

@@ -1,4 +1,4 @@
-import { context, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
+import { context, Dictionary, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -10,6 +10,7 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		this.setupIdentityOptions();
 		this.setupServicesOptions();
 		this.setupVideo();
+		this.setupStickySlotContext();
 	}
 
 	private setBaseState(): void {
@@ -72,13 +73,24 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 			this.instantConfig.get('icComscoreJwpTracking'),
 		);
 		context.set('options.video.pauseJWPlayerAd', this.instantConfig.get('icPauseJWPlayerAd'));
-
-		context.set('services.anyclip.widgetname', this.instantConfig.get('icAnyclipWidgetName'));
 		context.set(
 			'services.anyclip.anyclipTagExists',
 			!!this.getDataSettingsFromMetaTag()?.anyclip ||
 				!!this.getDataSettingsFromMetaTag()?.target_params?.anyclip,
 		);
+	}
+
+	private setupStickySlotContext(): void {
+		context.set('templates.stickyTlb.forced', this.instantConfig.get('icForceStickyTlb'));
+
+		const stickySlotsLines: Dictionary = this.instantConfig.get('icStickySlotLineItemIds');
+		const stickySlotsOrders: Dictionary = this.instantConfig.get('icStickySlotOrderIds');
+		if (stickySlotsLines && stickySlotsLines.length) {
+			context.set('templates.stickyTlb.lineItemIds', stickySlotsLines);
+		}
+		if (stickySlotsOrders && stickySlotsOrders.length) {
+			context.set('templates.stickyTlb.ordersIds', stickySlotsOrders);
+		}
 	}
 
 	private buildVastAdUnit(): string {

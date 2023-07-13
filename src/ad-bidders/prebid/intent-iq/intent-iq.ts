@@ -22,7 +22,7 @@ export class IntentIQ {
 		}
 
 		this.loadPromise = utils.scriptLoader
-			.loadScript(this.intentIQScriptUrl, 'text/javascript', true, 'first')
+			.loadScript(this.intentIQScriptUrl, true, 'first')
 			.then(() => {
 				this.loaded = true;
 				utils.logger(logGroup, 'loaded');
@@ -51,7 +51,7 @@ export class IntentIQ {
 					pbjs,
 					timeoutInMillis: DEFAULT_MAX_DELAY,
 					ABTestingConfigurationSource: 'percentage',
-					abPercentage: 90,
+					abPercentage: 97,
 					manualWinReportEnabled: true,
 					browserBlackList: 'Chrome',
 					domainName,

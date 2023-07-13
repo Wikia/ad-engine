@@ -1,49 +1,28 @@
 import { insertSlots } from '@platforms/shared';
-import { context, DiProcess, utils } from '@wikia/ad-engine';
+import { context, DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { NewsAndRatingsSlotsDefinitionRepository } from '../../../../shared';
+import {
+	NewsAndRatingsDynamicSlotsSetup,
+	NewsAndRatingsSlotsDefinitionRepository,
+} from '../../../../shared';
 
 @Injectable()
 export class GamespotDynamicSlotsSetup implements DiProcess {
-	constructor(private slotsDefinitionRepository: NewsAndRatingsSlotsDefinitionRepository) {}
+	constructor(
+		private slotsDefinitionRepository: NewsAndRatingsSlotsDefinitionRepository,
+		private dynamicSlotsSetup: NewsAndRatingsDynamicSlotsSetup,
+	) {}
 
 	private stubbedSlotsCounter = {};
 
 	execute(): void {
-		this.injectSlots();
+		this.dynamicSlotsSetup.injectSlots('.mapped-ad,.ad', ['skybox', 'nav-ad-plus']);
 		this.restoreStubbedSlots();
 
-		insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
-	}
-
-	private injectSlots(): void {
-		const adPlaceholders = document.querySelectorAll('.mapped-ad,.ad');
-
-		if (!adPlaceholders || adPlaceholders.length === 0) {
-			console.warn('AdEngine did not find any ad placeholders');
-			return;
-		}
-
-		adPlaceholders.forEach((placeholder: Element) => {
-			const adSlotName = placeholder.getAttribute('data-ad-type');
-			const adWrapper = utils.Document.getFirstElementChild(placeholder);
-
-			if (!adWrapper || adSlotName === 'interstitial') {
-				return;
-			}
-
-			adWrapper.id = adSlotName;
-
-			if (this.isSlotLazyLoaded(adSlotName)) {
-				context.push('events.pushOnScroll.ids', adSlotName);
-			} else {
-				context.push('state.adStack', { id: adSlotName });
-			}
-		});
-	}
-
-	private isSlotLazyLoaded(slotName: string): boolean {
-		return context.get(`slots.${slotName}.lazyLoad`);
+		insertSlots([
+			this.slotsDefinitionRepository.getInterstitialConfig(),
+			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
+		]);
 	}
 
 	private restoreStubbedSlots(): void {

@@ -1,4 +1,4 @@
-import { context, GlobalContextCategories, globalContextService, utils } from '@ad-engine/core';
+import { context, utils } from '@ad-engine/core';
 
 const logGroup = 'bt-loader';
 
@@ -19,11 +19,6 @@ class BTRec {
 		this.insertSideUnits();
 
 		utils.logger(logGroup, 'loading');
-		globalContextService.setValue(GlobalContextCategories.partners, {
-			blockthrough: {
-				directedAtChildren: !!utils.isCoppaSubject(),
-			},
-		});
 		await this.loadScript().then(() => {
 			utils.logger(logGroup, 'ready');
 		});
@@ -45,7 +40,6 @@ class BTRec {
 
 		return utils.scriptLoader.loadScript(
 			btLibraryUrl,
-			'text/javascript',
 			true,
 			document.head.lastChild as HTMLElement,
 		);
