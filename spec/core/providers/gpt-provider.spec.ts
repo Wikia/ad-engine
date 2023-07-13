@@ -1,4 +1,4 @@
-import { context, GptProvider, targetingService } from '@wikia/core';
+import { context, globalContextService, GptProvider, targetingService } from '@wikia/core';
 import { expect } from 'chai';
 import { spy, stub } from 'sinon';
 
@@ -9,6 +9,10 @@ let isInitializedCb;
 describe('gpt-provider', () => {
 	beforeEach(() => {
 		global.sandbox.stub(targetingService);
+		global.sandbox
+			.stub(globalContextService, 'getValue')
+			.withArgs('tracking', 'getPpid')
+			.returns(() => Promise.resolve('1234'));
 	});
 
 	before(() => {

@@ -7,11 +7,11 @@ export class IdentitySetup implements DiProcess {
 	execute(): void {
 		utils.logger(this.logGroup, 'initialized');
 
-		this.setupIdentityEngineReady();
+		this.identityEngineReady();
 		this.setupOver18Targeting();
 	}
 
-	setupIdentityEngineReady(): void {
+	identityEngineReady(): void {
 		communicationService.on(eventsRepository.IDENTITY_ENGINE_READY, () => {
 			const ppid = globalContextService.getValue('tracking', 'ppid');
 			if (ppid) {
