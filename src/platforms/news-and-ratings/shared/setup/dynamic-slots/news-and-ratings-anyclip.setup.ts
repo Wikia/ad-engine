@@ -7,6 +7,18 @@ import { NewsAndRatingsSlotsDefinitionRepository } from '../../index';
 @Injectable()
 export class NewsAndRatingsAnyclipSetup implements DiProcess {
 	private logGroup = 'Anyclip';
+	private pageNamesWhenAnyclipAppliesOnDesktop = ['movie', 'tv_show'];
+	private pageNamesWithAnyclipInContent = [
+		'listings/main',
+		...this.pageNamesWhenAnyclipAppliesOnDesktop,
+	];
+	private pageNamesWhenAnyclipApplies = [
+		'news',
+		'feature_hub',
+		'listings/main',
+		...this.pageNamesWhenAnyclipAppliesOnDesktop,
+	];
+	private pathNamesWhenAnyclipApplies = ['/news/'];
 
 	constructor(private slotsDefinitionRepository: NewsAndRatingsSlotsDefinitionRepository) {}
 
@@ -67,32 +79,28 @@ export class NewsAndRatingsAnyclipSetup implements DiProcess {
 	}
 
 	isApplicable(pathname: string): boolean {
-		if (this.isMobileTvShowOrMoviePage(pathname)) {
+		if (this.isTvShowOrMoviePageOnMobile(pathname)) {
 			return false;
 		}
 
 		return this.isApplicableByPnameAdTag(pathname) || this.isApplicableByPathname(pathname);
 	}
 
-	private isMobileTvShowOrMoviePage(pathname: string): boolean {
-		return context.get('state.isMobile') && ['movie', 'tv_show'].includes(pathname);
+	private isTvShowOrMoviePageOnMobile(pathname: string): boolean {
+		return (
+			context.get('state.isMobile') && this.pageNamesWhenAnyclipAppliesOnDesktop.includes(pathname)
+		);
 	}
 
 	private isApplicableByPnameAdTag(pname: string): boolean {
-		const applicablePnames = ['news', 'feature_hub', 'listings/main', 'movie', 'tv_show'];
-
-		return applicablePnames.includes(pname);
+		return this.pageNamesWhenAnyclipApplies.includes(pname);
 	}
 
 	private isApplicableByPathname(pathname: string): boolean {
-		const applicablePathnames = ['/news/'];
-
-		return applicablePathnames.includes(pathname);
+		return this.pathNamesWhenAnyclipApplies.includes(pathname);
 	}
 
 	private isIncontentPlayerPage(pname: string): boolean {
-		const incontentPlayerPages = ['listings/main', 'movie', 'tv_show'];
-
-		return incontentPlayerPages.includes(pname);
+		return this.pageNamesWithAnyclipInContent.includes(pname);
 	}
 }
