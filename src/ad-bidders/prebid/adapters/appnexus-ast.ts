@@ -1,5 +1,5 @@
 import { utils } from '@ad-engine/core';
-import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
+import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class AppnexusAst extends PrebidAdapter {
@@ -10,7 +10,6 @@ export class AppnexusAst extends PrebidAdapter {
 
 	debugPlacementId: string;
 	isDebugMode: boolean;
-	maxCpm = EXTENDED_MAX_CPM;
 
 	constructor(options) {
 		super(options);

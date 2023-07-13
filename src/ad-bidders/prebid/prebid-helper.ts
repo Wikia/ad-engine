@@ -66,7 +66,6 @@ export async function getWinningBid(
 	bidderName: string = null,
 ): Promise<PrebidTargeting> {
 	let slotParams: PrebidTargeting = {};
-	let deals: PrebidTargeting = {};
 	const priceFloor: Dictionary<string> = context.get('bidders.prebid.priceFloor');
 
 	// We are not using pbjs.getAdserverTargetingForAdUnitCode
@@ -95,19 +94,10 @@ export async function getWinningBid(
 			} else {
 				bidParams = bidParams.cpm < param.cpm ? param : bidParams;
 			}
-
-			// ... However we need to take care of all hb_deal_* keys manually then
-			deals = {
-				...deals,
-				...getDealsTargetingFromBid(param),
-			};
 		});
 
 		if (bidParams) {
-			slotParams = {
-				...deals,
-				...bidParams.adserverTargeting,
-			};
+			slotParams = bidParams.adserverTargeting;
 		}
 	}
 
