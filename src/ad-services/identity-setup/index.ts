@@ -8,7 +8,6 @@ export class IdentitySetup implements DiProcess {
 		utils.logger(this.logGroup, 'initialized');
 
 		await this.identityEngineReady();
-		this.setupOver18Targeting();
 		return Promise.resolve();
 	}
 
@@ -28,16 +27,6 @@ export class IdentitySetup implements DiProcess {
 				utils.logger(this.logGroup, 'ready');
 				resolve();
 			});
-		});
-	}
-
-	setupOver18Targeting(): void {
-		communicationService.on(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, () => {
-			const over18 = window.fandomContext.tracking.over_18;
-
-			if (over18) {
-				targetingService.set('over_18', over18);
-			}
 		});
 	}
 }

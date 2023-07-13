@@ -7,6 +7,7 @@ import {
 	Captify,
 	communicationService,
 	Confiant,
+	CoppaSetup,
 	DiProcess,
 	DoubleVerify,
 	DurationMedia,
@@ -14,6 +15,7 @@ import {
 	Eyeota,
 	IasPublisherOptimization,
 	IdentityHub,
+	IdentitySetup,
 	jwPlayerInhibitor,
 	LiveConnect,
 	LiveRampPixel,
@@ -50,25 +52,44 @@ export class UcpDesktopAdsMode implements DiProcess {
 		private stroer: Stroer,
 		private wadRunner: WadRunner,
 		private wunderkind: Wunderkind,
+		private coppaSetup: CoppaSetup,
+		private identitySetup: IdentitySetup,
 	) {}
 
 	execute(): void {
 		this.pipeline
 			.add(
-				this.liveRampPixel,
+				this.identitySetup,
+				this.liveRampPixel.setOptions({
+					dependencies: [this.coppaSetup.initialized],
+				}),
 				this.anyclip,
-				this.ats,
-				this.audigent,
+				this.ats.setOptions({
+					dependencies: [this.coppaSetup.initialized],
+				}),
+				this.audigent.setOptions({
+					dependencies: [this.coppaSetup.initialized],
+				}),
 				this.bidders,
-				this.liveConnect,
+				this.liveConnect.setOptions({
+					dependencies: [this.coppaSetup.initialized],
+				}),
 				this.wadRunner,
-				this.eyeota,
-				this.iasPublisherOptimization,
+				this.eyeota.setOptions({
+					dependencies: [this.coppaSetup.initialized],
+				}),
+				this.iasPublisherOptimization.setOptions({
+					dependencies: [this.coppaSetup.initialized],
+				}),
 				this.confiant,
 				this.durationMedia,
 				this.stroer,
-				this.identityHub,
-				this.captify,
+				this.identityHub.setOptions({
+					dependencies: [this.coppaSetup.initialized],
+				}),
+				this.captify.setOptions({
+					dependencies: [this.coppaSetup.initialized],
+				}),
 				this.nielsen,
 				this.prebidNativeProvider,
 				this.wunderkind,
@@ -77,13 +98,14 @@ export class UcpDesktopAdsMode implements DiProcess {
 				}),
 				this.gptSetup,
 				this.doubleVerify.setOptions({
-					dependencies: [this.gptSetup.initialized],
+					dependencies: [this.gptSetup.initialized, this.coppaSetup.initialized],
 				}),
 				this.adEngineStackSetup.setOptions({
 					dependencies: [
 						this.bidders.initialized,
 						this.wadRunner.initialized,
 						this.gptSetup.initialized,
+						this.coppaSetup.initialized,
 						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
 					],
 					timeout: jwPlayerInhibitor.isRequiredToRun()
