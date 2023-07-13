@@ -18,13 +18,51 @@ import {
 import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
+import { Ats } from './ats';
 import { intentIQ } from './intent-iq';
 import { liveRamp } from './live-ramp';
-import { getWinningBid } from './prebid-helper';
 import { getSettings } from './prebid-settings';
-import { getPrebidBestPrice } from './price-helper';
+import { getPrebidBestPrice, roundBucketCpm } from './price-helper';
 
 const logGroup = 'prebid';
+
+const displayGranularity = {
+	buckets: [
+		{
+			max: 5,
+			increment: 0.01,
+		},
+		{
+			max: 10,
+			increment: 0.1,
+		},
+		{
+			max: 20,
+			increment: 0.5,
+		},
+		{
+			max: 50,
+			increment: 1,
+		},
+	],
+};
+
+const videoGranularity = {
+	buckets: [
+		{
+			max: 10,
+			increment: 0.01,
+		},
+		{
+			max: 20,
+			increment: 0.5,
+		},
+		{
+			max: 50,
+			increment: 1,
+		},
+	],
+};
 
 interface PrebidConfig extends BidderConfig {
 	[bidderName: string]: { enabled: boolean; slots: Dictionary } | boolean;
@@ -69,6 +107,12 @@ export class PrebidProvider extends BidderProvider {
 				url: 'https://prebid.adnxs.com/pbc/v1/cache',
 			},
 			debug: ['1', 'true'].includes(utils.queryString.get('pbjs_debug')),
+			cpmRoundingFunction: roundBucketCpm,
+			mediaTypePriceGranularity: {
+				banner: displayGranularity,
+				video: videoGranularity,
+				'video-outstream': videoGranularity,
+			},
 			rubicon: {
 				singleRequest: true,
 			},
@@ -127,7 +171,7 @@ export class PrebidProvider extends BidderProvider {
 			},
 			targetingControls: {
 				alwaysIncludeDeals: true,
-				allowTargetingKeys: ['AD_ID', 'PRICE_BUCKET', 'UUID', 'SIZE', 'DEAL'],
+				allowTargetingKeys: ['AD_ID', 'BIDDER', 'PRICE_BUCKET', 'UUID', 'SIZE', 'DEAL'],
 				allowSendAllBidsTargetingKeys: ['AD_ID', 'PRICE_BUCKET', 'UUID', 'SIZE', 'DEAL'],
 			},
 		};
@@ -220,11 +264,9 @@ export class PrebidProvider extends BidderProvider {
 	async getTargetingParams(slotName: string): Promise<PrebidTargeting> {
 		const pbjs: Pbjs = await pbjsFactory.init();
 		const slotAlias: string = this.getSlotAlias(slotName);
+		const targeting = pbjs.getAdserverTargeting();
 
-		return {
-			...pbjs.getAdserverTargetingForAdUnitCode(slotAlias),
-			...(await getWinningBid(slotAlias)),
-		};
+		return targeting[slotAlias];
 	}
 
 	isSupported(slotName: string): boolean {
@@ -312,8 +354,7 @@ export class PrebidProvider extends BidderProvider {
 					{
 						provider: 'atsAnalytics',
 						options: {
-							pid: '2161',
-							host: 'https://analytics.openlog.in',
+							pid: Ats.PLACEMENT_ID,
 						},
 					},
 				]);

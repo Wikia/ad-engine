@@ -159,7 +159,6 @@ export class BaseContextSetup implements DiProcess {
 			'services.intentIq.ppid.tracking.enabled',
 			this.instantConfig.get('icIntentIqPpidTracking', false),
 		);
-		context.set('services.ageGateHandling', this.instantConfig.get('icAgeGateHandling'));
 
 		context.set(
 			'services.messageBox.enabled',
