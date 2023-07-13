@@ -12,6 +12,10 @@ describe('Anyclip setup', () => {
 		slotsDefinitionRepository = new NewsAndRatingsSlotsDefinitionRepository(instantConfigStub);
 	});
 
+	afterEach(() => {
+		context.remove('state.isMobile');
+	});
+
 	describe('isApplicable()', () => {
 		it('returns true when pname equals news', () => {
 			const setup: NewsAndRatingsAnyclipSetup = new NewsAndRatingsAnyclipSetup(
@@ -35,14 +39,6 @@ describe('Anyclip setup', () => {
 			);
 
 			expect(setup.isApplicable('movie')).to.be.true;
-		});
-
-		it('returns true when it pname equals tv_show', () => {
-			const setup: NewsAndRatingsAnyclipSetup = new NewsAndRatingsAnyclipSetup(
-				slotsDefinitionRepository,
-			);
-
-			expect(setup.isApplicable('tv_show')).to.be.true;
 		});
 
 		it('returns false when it pname equals undefined', () => {
@@ -75,6 +71,33 @@ describe('Anyclip setup', () => {
 			);
 
 			expect(setup.isApplicable('listings/main')).to.be.true;
+		});
+
+		it('is not applicable when it is a tv show page on mobile', () => {
+			context.set('state.isMobile', true);
+			const setup: NewsAndRatingsAnyclipSetup = new NewsAndRatingsAnyclipSetup(
+				slotsDefinitionRepository,
+			);
+
+			expect(setup.isApplicable('tv_show')).to.be.false;
+		});
+
+		it('is applicable when it is a listing page on mobile', () => {
+			context.set('state.isMobile', true);
+			const setup: NewsAndRatingsAnyclipSetup = new NewsAndRatingsAnyclipSetup(
+				slotsDefinitionRepository,
+			);
+
+			expect(setup.isApplicable('listings/main')).to.be.true;
+		});
+
+		it('is applicable when it is a tv show page on desktop', () => {
+			context.set('state.isMobile', false);
+			const setup: NewsAndRatingsAnyclipSetup = new NewsAndRatingsAnyclipSetup(
+				slotsDefinitionRepository,
+			);
+
+			expect(setup.isApplicable('tv_show')).to.be.true;
 		});
 	});
 

@@ -67,7 +67,15 @@ export class NewsAndRatingsAnyclipSetup implements DiProcess {
 	}
 
 	isApplicable(pathname: string): boolean {
+		if (this.isMobileTvShowOrMoviePage(pathname)) {
+			return false;
+		}
+
 		return this.isApplicableByPnameAdTag(pathname) || this.isApplicableByPathname(pathname);
+	}
+
+	private isMobileTvShowOrMoviePage(pathname: string): boolean {
+		return context.get('state.isMobile') && ['movie', 'tv_show'].includes(pathname);
 	}
 
 	private isApplicableByPnameAdTag(pname: string): boolean {
