@@ -72,6 +72,7 @@ interface PrebidVideoType {
 	maxduration?: number;
 	protocols?: number[];
 	playbackmethod?: number[];
+	plcmt?: number | number[];
 }
 
 interface PrebidMediaTypes {
@@ -139,7 +140,7 @@ interface PrebidRequestOptions {
 
 interface PrebidSettings {
 	[key: string]: {
-		adserverTargeting: {
+		adserverTargeting?: {
 			key: string;
 			val: (bidResponse: any) => string;
 		}[];
@@ -155,6 +156,10 @@ interface PrebidTargeting {
 	hb_size?: string;
 
 	[key: string]: string | string[];
+}
+
+interface PrebidTargetingForAdUnits {
+	[unitId: string]: PrebidTargeting;
 }
 
 interface Pbjs {
@@ -175,6 +180,8 @@ interface Pbjs {
 	getBidResponsesForAdUnitCode(adUnitCode: string): { bids: PrebidBidResponse[] };
 
 	getAdserverTargetingForAdUnitCode(adUnitCode: string): PrebidTargeting;
+
+	getAdserverTargeting(): PrebidTargetingForAdUnits;
 
 	getUserIds(): object;
 

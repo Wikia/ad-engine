@@ -44,16 +44,14 @@ export class LiveConnect extends BaseServiceSetup {
 			utils.logger(logGroup, 'loading');
 			communicationService.emit(eventsRepository.LIVE_CONNECT_STARTED);
 
-			utils.scriptLoader
-				.loadScript(liveConnectScriptUrl, 'text/javascript', true, 'first')
-				.then(() => {
-					utils.logger(logGroup, 'loaded');
-					this.resolveAndTrackIds();
-					const customQf = this.instantConfig.get<number>('icLiveConnectQf')?.toString();
-					if (customQf && customQf !== this.defaultQfValue) {
-						this.resolveAndTrackIds(customQf);
-					}
-				});
+			utils.scriptLoader.loadScript(liveConnectScriptUrl, true, 'first').then(() => {
+				utils.logger(logGroup, 'loaded');
+				this.resolveAndTrackIds();
+				const customQf = this.instantConfig.get<number>('icLiveConnectQf')?.toString();
+				if (customQf && customQf !== this.defaultQfValue) {
+					this.resolveAndTrackIds(customQf);
+				}
+			});
 		} else {
 			communicationService.emit(eventsRepository.LIVE_CONNECT_CACHED);
 			utils.logger(logGroup, `already loaded and available in ${this.storageConfig.type}Storage`);

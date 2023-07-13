@@ -18,7 +18,7 @@ export class DoubleVerify extends BaseServiceSetup {
 		utils.logger(logGroup, 'loading', scriptUrl);
 
 		return utils.scriptLoader
-			.loadScript(scriptUrl, 'text/javascript', true, null, {
+			.loadScript(scriptUrl, true, null, {
 				referrerpolicy: 'no-referrer-when-downgrade',
 			})
 			.then(() => {

@@ -3,6 +3,7 @@
 @import '../../../shared/styles/uap/uap-button-close';
 @import '../../../shared/styles/uap/bfaa-slot';
 @import '../../../shared/styles/uap/expanded-slot';
+@import '../../../shared/styles/uap/sticky-tlb-slot';
 @import '../../../shared/styles/uap-porvata/uap-porvata-learn-more';
 @import '../../../shared/styles/uap-porvata/uap-porvata-right-position';
 @import '../../../shared/styles/uap-porvata/uap-porvata';
@@ -16,6 +17,7 @@
 
 			@include bfaa-slot();
 			@include uap-porvata();
+			@include sticky-tlb-slot();
 
 			html.desktop &,
 			html.tablet.landscape & {
