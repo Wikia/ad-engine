@@ -28,6 +28,7 @@ export function getAppnexusContext(): object {
 					[160, 600],
 					[300, 600],
 					[300, 250],
+					[728, 90],
 				],
 				position: 'hivi',
 			},

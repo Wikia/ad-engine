@@ -12,7 +12,10 @@ export function getVerizonContext(): object {
 				pos: 'top_boxad',
 			},
 			incontent_boxad_1: {
-				sizes: [[300, 250]],
+				sizes: [
+					[300, 250],
+					[728, 90],
+				],
 				pos: 'incontent_boxad_1',
 			},
 			bottom_leaderboard: {

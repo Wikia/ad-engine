@@ -21,6 +21,7 @@ export function getIndexExchangeContext(): object {
 					[160, 600],
 					[300, 600],
 					[300, 250],
+					[728, 90],
 				],
 				siteId: '185049',
 			},

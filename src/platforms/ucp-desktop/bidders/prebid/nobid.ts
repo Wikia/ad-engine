@@ -21,6 +21,7 @@ export function getNobidContext(): object {
 					[300, 250],
 					[300, 600],
 					[160, 600],
+					[728, 90],
 				],
 				siteId: 21872987104,
 			},

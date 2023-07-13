@@ -32,6 +32,7 @@ export function getRubiconDisplayContext(): object {
 					[160, 600],
 					[300, 600],
 					[300, 250],
+					[728, 90],
 				],
 				targeting: {
 					loc: ['hivi'],
