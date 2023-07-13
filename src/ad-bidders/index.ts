@@ -4,6 +4,7 @@ import {
 	BaseServiceSetup,
 	context,
 	Dictionary,
+	SlotPriceProvider,
 	targetingService,
 	utils,
 } from '@ad-engine/core';
@@ -17,7 +18,7 @@ interface BiddersProviders {
 
 const logGroup = 'bidders';
 
-export class Bidders extends BaseServiceSetup {
+export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 	private biddersProviders: BiddersProviders = {};
 	private realSlotPrices = {};
 
