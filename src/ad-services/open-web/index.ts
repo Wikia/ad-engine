@@ -1,9 +1,17 @@
 import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
 import { BaseServiceSetup, context, TargetingData, targetingService, utils } from '@ad-engine/core';
+import { OpenWebPlacementBuilder } from './builder/types';
 
 const logGroup = 'open-web';
 
 export class OpenWeb extends BaseServiceSetup {
+	builder: OpenWebPlacementBuilder;
+
+	setPlacementBuilder(builder: OpenWebPlacementBuilder) {
+		this.builder = builder;
+		return this;
+	}
+
 	call(): void {
 		if (context.get('state.isLogged')) {
 			utils.logger(logGroup, 'disabled - user is logged');
@@ -20,6 +28,11 @@ export class OpenWeb extends BaseServiceSetup {
 			return;
 		}
 
+		if (!this.builder) {
+			utils.logger(logGroup, 'disabled - no builders');
+			return;
+		}
+
 		const targeting = targetingService.dump<TargetingData>();
 		const articleId = targeting.post_id || targeting.artid;
 		const siteId = targeting.s1;
@@ -30,9 +43,12 @@ export class OpenWeb extends BaseServiceSetup {
 				utils.logger(logGroup, 'disabled - UAP is loaded');
 				return;
 			}
-			this.buildReactionDivModule(postUniqueId);
-			this.buildStandaloneAdUnit();
-			this.loadScript(config.spotId, postUniqueId);
+
+			if (this.builder.buildPlacement(postUniqueId)) {
+				this.loadScript(config.spotId, postUniqueId);
+			} else {
+				utils.logger(logGroup, 'disabled - builder failed');
+			}
 		});
 	}
 
@@ -55,32 +71,5 @@ export class OpenWeb extends BaseServiceSetup {
 			.then(() => {
 				utils.logger(logGroup, 'ready');
 			});
-	}
-
-	private buildReactionDivModule(postUniqueId: string): void {
-		const divElement = document.createElement('div');
-		divElement.dataset.spotimApp = 'reactions';
-		divElement.dataset.postId = postUniqueId;
-		divElement.dataset.vertivalView = 'true';
-
-		const selector = context.get('open-web.selector') || '#WikiaAdInContentPlaceHolder';
-		const anchor = document.querySelector(selector);
-
-		// anchor.parentNode.appendChild(divElement);
-		anchor.prepend(divElement);
-	}
-
-	private buildStandaloneAdUnit(): void {
-		const divElement = document.createElement('div');
-		divElement.dataset.openwebAd = '';
-		divElement.dataset.row = '1';
-		divElement.dataset.column = '1';
-		divElement.classList.add('openwebAdUnit');
-
-		const selector = context.get('open-web.selector') || '#WikiaAdInContentPlaceHolder';
-		const anchor = document.querySelector(selector);
-
-		// anchor.parentNode.appendChild(divElement);
-		anchor.prepend(divElement);
 	}
 }
