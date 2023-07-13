@@ -1,13 +1,21 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { context, DiProcess, globalContextService, targetingService, utils } from '@ad-engine/core';
+import {
+	BaseServiceSetup,
+	context,
+	globalContextService,
+	targetingService,
+	utils,
+} from '@ad-engine/core';
 
-export class IdentitySetup implements DiProcess {
+export class IdentitySetup extends BaseServiceSetup {
 	private logGroup = 'identity-setup';
 
-	async execute(): Promise<void> {
-		utils.logger(this.logGroup, 'initialized');
+	async call(): Promise<void> {
+		utils.logger(this.logGroup, 'initializing');
 
 		await this.identityEngineReady();
+		utils.logger(this.logGroup, 'initialized');
+
 		return Promise.resolve();
 	}
 

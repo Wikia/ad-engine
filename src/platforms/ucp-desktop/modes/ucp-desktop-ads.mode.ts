@@ -59,7 +59,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 	execute(): void {
 		this.pipeline
 			.add(
-				this.identitySetup,
 				this.liveRampPixel.setOptions({
 					dependencies: [this.coppaSetup.initialized],
 				}),
@@ -100,6 +99,8 @@ export class UcpDesktopAdsMode implements DiProcess {
 				this.doubleVerify.setOptions({
 					dependencies: [this.gptSetup.initialized, this.coppaSetup.initialized],
 				}),
+				this.identitySetup,
+				this.coppaSetup,
 				this.adEngineStackSetup.setOptions({
 					dependencies: [
 						this.bidders.initialized,

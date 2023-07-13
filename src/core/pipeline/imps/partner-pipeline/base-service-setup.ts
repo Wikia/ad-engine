@@ -1,6 +1,6 @@
 import { Injectable } from '@wikia/dependency-injection';
 import { context, InstantConfigService } from '../../../services';
-import { isCoppaSubject } from '../../../utils/is-coppa-subject';
+import { isCoppaSubject } from '../../../utils';
 import {
 	PartnerInitializationProcess,
 	PartnerInitializationProcessOptions,
