@@ -4,7 +4,6 @@ import { UcpCommon } from './ucp-common';
 export class UcpMobileBuilder extends UcpCommon implements OpenWebPlacementBuilder {
 	public buildPlacement(postUniqueId: string): boolean {
 		const boxes = document.querySelectorAll('div[class*="-boxad"]');
-
 		if (boxes.length <= 3) {
 			return false;
 		}

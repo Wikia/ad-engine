@@ -20,10 +20,10 @@ export class OpenWeb extends BaseServiceSetup {
 
 		const config = this.instantConfig.get('icOpenWeb', {
 			isActive: false,
-			spotId: 'abc',
+			spotId: 'n-a',
 		});
 
-		if (!config.isActive) {
+		if (!config?.isActive) {
 			utils.logger(logGroup, 'disabled - not activated');
 			return;
 		}
