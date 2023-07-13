@@ -150,12 +150,15 @@ export class BaseContextSetup implements DiProcess {
 			this.instantConfig.get('icInterventionTracking'),
 		);
 		context.set('services.nativo.enabled', this.instantConfig.get('icNativo'));
-		context.set('services.sailthru.enabled', this.instantConfig.get('icSailthru'));
 		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
 		context.set('services.ppidRepository', this.instantConfig.get('icPpidRepository'));
 		context.set('services.identityTtl', this.instantConfig.get('icIdentityTtl'));
 		context.set('services.identityPartners', this.instantConfig.get('icIdentityPartners'));
-		context.set('services.ageGateHandling', this.instantConfig.get('icAgeGateHandling'));
+		context.set('services.intentIq.ppid.enabled', this.instantConfig.get('icIntentIqPpid', false));
+		context.set(
+			'services.intentIq.ppid.tracking.enabled',
+			this.instantConfig.get('icIntentIqPpidTracking', false),
+		);
 
 		context.set(
 			'services.messageBox.enabled',
