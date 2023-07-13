@@ -1,4 +1,4 @@
-import { liveRamp } from '@wikia/ad-bidders';
+import { Ats, liveRamp, LiveRampConfig } from '@wikia/ad-bidders';
 import { PrebidProvider } from '@wikia/ad-bidders/prebid';
 import { context } from '@wikia/core';
 import { expect } from 'chai';
@@ -8,24 +8,26 @@ const bidderConfig = {
 };
 
 describe('Live Ramp', () => {
-	const liveRampEnabledConfig = {
+	const liveRampEnabledConfig: LiveRampConfig = {
 		userSync: {
+			syncDelay: 3000,
 			userIds: [
 				{
 					name: 'identityLink',
 					params: {
-						pid: '2161',
+						pid: Ats.PLACEMENT_ID,
 					},
 					storage: {
-						type: 'cookie',
-						name: 'idl_env',
+						type: 'html5',
+						name: Ats.ENVELOPE_STORAGE_NAME,
 						expires: 1,
+						refreshInSeconds: 1800,
 					},
 				},
 			],
 		},
 	};
-	const liveRampDisabledConfig = {};
+	const liveRampDisabledConfig: LiveRampConfig = {};
 
 	beforeEach(() => {
 		context.set('bidders.liveRampId.enabled', true);
@@ -37,7 +39,7 @@ describe('Live Ramp', () => {
 		const prebid = new PrebidProvider(bidderConfig);
 		const liveRampConfig = liveRamp.getConfig();
 
-		expect(prebid.prebidConfig.userSync).to.have.key('userIds');
+		expect(prebid.prebidConfig.userSync).to.have.keys('syncDelay', 'userIds');
 		expect(prebid.prebidConfig.userSync.userIds).to.eql(liveRampConfig.userSync.userIds);
 	});
 
