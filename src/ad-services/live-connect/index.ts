@@ -81,7 +81,7 @@ export class LiveConnect extends BaseServiceSetup {
 		Object.keys(liQResponse).forEach((key) => {
 			const trackingKeyName = this.getTrackingKeyName(key);
 
-			if (this.isAvailableInStorage(trackingKeyName)) {
+			if (this.isAvailableInStorage(trackingKeyName) && !customQf) {
 				return;
 			}
 
