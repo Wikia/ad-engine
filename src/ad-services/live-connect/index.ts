@@ -79,9 +79,9 @@ export class LiveConnect extends BaseServiceSetup {
 		utils.logger(logGroup, 'resolve response:', liQResponse);
 
 		Object.keys(liQResponse).forEach((key) => {
-			const trackingKeyName = this.getTrackingKeyName(key);
+			const trackingKeyName = this.getTrackingKeyName(key) + (customQf ? `-${customQf}` : '');
 
-			if (this.isAvailableInStorage(trackingKeyName) && !customQf) {
+			if (this.isAvailableInStorage(trackingKeyName)) {
 				return;
 			}
 
@@ -100,7 +100,7 @@ export class LiveConnect extends BaseServiceSetup {
 			this.storage.setItem(trackingKeyName, partnerIdentityId, this.storageConfig.ttl);
 
 			communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
-				partnerName: trackingKeyName + (customQf ? `-${customQf}` : ''),
+				partnerName: trackingKeyName,
 				partnerIdentityId,
 			});
 		});
