@@ -6,7 +6,9 @@ type ScrollListenerCallback = (event: string, callbackId: string) => void;
 
 export class ScrollListener {
 	readonly serviceName = 'scroll-listener';
+	public readonly DEFAULT_SKIPS = 5;
 	private callbacks: Dictionary<ScrollListenerCallback> = {};
+	private currentSkip: Dictionary<number> = {};
 
 	init(): void {
 		let requestAnimationFrameHandleAdded = false;
@@ -32,12 +34,17 @@ export class ScrollListener {
 	 * @param id ID of the AdSlot to push
 	 * @param threshold slot will be pushed `threshold`px before it appears in viewport
 	 * @param distanceFromTop slot will be pushed after scrolling `distanceFromTop`px
+	 * @param initialSkips how many measurements we skip
 	 *
 	 * Only one parameter can be supplied: threshold or distanceFromTop
 	 */
 	addSlot(
 		id: string,
-		{ threshold, distanceFromTop }: { threshold?: number; distanceFromTop?: number } = {},
+		{
+			threshold,
+			distanceFromTop,
+			initialSkips,
+		}: { threshold?: number; distanceFromTop?: number; initialSkips?: number } = {},
 	): void {
 		const node = document.getElementById(id);
 
@@ -59,11 +66,15 @@ export class ScrollListener {
 			return;
 		}
 
+		if (initialSkips == undefined) {
+			initialSkips = 0;
+		}
+		Object.assign(this.currentSkip, { [id]: initialSkips });
+
 		logger(this.serviceName, `Add slot ${id}.`);
 
 		this.addCallback((event: string, callbackId: string): void => {
-			const scrollPosition: number =
-				window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+			const scrollPosition: number = this.getScrollPosition();
 
 			if (threshold !== undefined) {
 				const slotPosition: number = getTopOffset(node);
@@ -75,6 +86,10 @@ export class ScrollListener {
 				}
 			} else {
 				if (scrollPosition > distanceFromTop) {
+					if (this.currentSkip[id] > 0) {
+						this.currentSkip[id]--;
+						return;
+					}
 					this.removeCallback(callbackId);
 					slotService.pushSlot(node);
 				}
@@ -99,6 +114,10 @@ export class ScrollListener {
 
 	getUniqueId(): string {
 		return ((1 + Math.random()) * 0x1000000).toString(16).substring(1);
+	}
+
+	getScrollPosition(): number {
+		return window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
 	}
 }
 

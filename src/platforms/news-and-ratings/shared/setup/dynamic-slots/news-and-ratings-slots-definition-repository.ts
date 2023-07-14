@@ -47,7 +47,10 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 			} else {
 				communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
 					const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
-					scrollListener.addSlot(slotName, { distanceFromTop: distance });
+					scrollListener.addSlot(slotName, {
+						distanceFromTop: distance,
+						initialSkips: scrollListener.DEFAULT_SKIPS,
+					});
 				});
 			}
 		};

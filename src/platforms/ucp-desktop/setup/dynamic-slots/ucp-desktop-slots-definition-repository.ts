@@ -260,7 +260,10 @@ export class UcpDesktopSlotsDefinitionRepository {
 				context.push('state.adStack', { id: slotName });
 			} else {
 				const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
-				scrollListener.addSlot(slotName, { distanceFromTop: distance });
+				scrollListener.addSlot(slotName, {
+					distanceFromTop: distance,
+					initialSkips: scrollListener.DEFAULT_SKIPS,
+				});
 			}
 		};
 
