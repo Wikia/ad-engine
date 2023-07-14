@@ -18,6 +18,7 @@ import {
 import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
+import { Ats } from './ats';
 import { intentIQ } from './intent-iq';
 import { liveRamp } from './live-ramp';
 import { getSettings } from './prebid-settings';
@@ -353,8 +354,7 @@ export class PrebidProvider extends BidderProvider {
 					{
 						provider: 'atsAnalytics',
 						options: {
-							pid: '2161',
-							host: 'https://analytics.openlog.in',
+							pid: Ats.PLACEMENT_ID,
 						},
 					},
 				]);
