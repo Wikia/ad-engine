@@ -10,12 +10,37 @@ describe('IntentIQ', () => {
 	let intentIqNewSpy: SinonSpy;
 	let intentIqReportSpy: SinonSpy;
 	let loadScriptStub: SinonStub;
+	let contextStub;
+
+	const testResultData = {
+		eids: [
+			{
+				uids: [
+					{
+						ext: {
+							stype: 'ppuid',
+						},
+						id: '12341234',
+					},
+				],
+				source: 'intentiq.com',
+			},
+		],
+	};
 
 	beforeEach(() => {
 		pbjsStub = stubPbjs(global.sandbox).pbjsStub;
 		loadScriptStub = global.sandbox.stub(utils.scriptLoader, 'loadScript').resolvesThis();
 		intentIqNewSpy = global.sandbox.spy();
 		intentIqReportSpy = global.sandbox.spy();
+		contextStub = global.sandbox
+			.stub(context, 'get')
+			.withArgs('bidders.prebid.intentIQ')
+			.returns(true)
+			.withArgs('services.intentIq.ppid.enabled')
+			.returns(true)
+			.withArgs('services.intentIq.ppid.tracking.enabled')
+			.returns(true);
 
 		window.IntentIqObject = function IntentIqMock(config) {
 			intentIqNewSpy(config);
@@ -33,9 +58,13 @@ describe('IntentIQ', () => {
 		} as unknown as IntentIqObject;
 	});
 
+	afterEach(() => {
+		global.sandbox.restore();
+	});
+
 	describe('initialize', () => {
 		it('should not initialize when IntentIQ is disabled', async () => {
-			global.sandbox.stub(context, 'get').withArgs('bidders.prebid.intentIQ').returns(false);
+			contextStub.withArgs('bidders.prebid.intentIQ').returns(false);
 			const intentIQ = new IntentIQ();
 
 			await intentIQ.initialize(pbjsStub);
@@ -45,12 +74,7 @@ describe('IntentIQ', () => {
 		});
 
 		it('should initialize when IntentIQ is enabled and consents are given', async () => {
-			global.sandbox
-				.stub(context, 'get')
-				.withArgs('bidders.prebid.intentIQ')
-				.returns(true)
-				.withArgs('options.trackingOptIn')
-				.returns(true);
+			contextStub.withArgs('options.trackingOptIn').returns(true);
 			const targetingServiceStub = global.sandbox.stub(targetingService, 'set');
 			const intentIQ = new IntentIQ();
 
@@ -75,7 +99,7 @@ describe('IntentIQ', () => {
 
 	describe('reportExternalWin', () => {
 		it('should not report external win when IntentIQ is disabled', async () => {
-			global.sandbox.stub(context, 'get').withArgs('bidders.prebid.intentIQ').returns(false);
+			contextStub.withArgs('bidders.prebid.intentIQ').returns(false);
 			const intentIQ = new IntentIQ();
 
 			await intentIQ.reportPrebidWin({} as PrebidBidResponse);
@@ -84,12 +108,7 @@ describe('IntentIQ', () => {
 		});
 
 		it('should report external win when IntentIQ is enabled and consents are given', async () => {
-			global.sandbox
-				.stub(context, 'get')
-				.withArgs('bidders.prebid.intentIQ')
-				.returns(true)
-				.withArgs('options.trackingOptIn')
-				.returns(true);
+			contextStub.withArgs('options.trackingOptIn').returns(true);
 
 			const bid = PrebidBidFactory.getBid({
 				adId: 'ad-123',
@@ -122,6 +141,104 @@ describe('IntentIQ', () => {
 					placementId: 'top_leaderboard',
 				}),
 			).to.be.true;
+		});
+	});
+
+	describe('setupPpid', () => {
+		it('should quit ppid setup when IntentIQ data is incorrect', () => {
+			const intentIQ = new IntentIQ();
+			const getPpidSpy = global.sandbox.spy(intentIQ, 'getPpid');
+
+			intentIQ.setupPpid({});
+
+			expect(getPpidSpy.notCalled).to.be.true;
+		});
+
+		it('should quit ppid setup when IntentIQ is disabled', () => {
+			contextStub.withArgs('bidders.prebid.intentIQ').returns(false);
+			const intentIQ = new IntentIQ();
+			const getPpidSpy = global.sandbox.spy(intentIQ, 'getPpid');
+
+			intentIQ.setupPpid(testResultData);
+
+			expect(getPpidSpy.notCalled).to.be.true;
+		});
+
+		it('should not call setPpid when IIQ PPID is disabled', () => {
+			contextStub.withArgs('services.intentIq.ppid.enabled').returns(false);
+
+			const intentIQ = new IntentIQ();
+			const setPpidSpy = global.sandbox.spy(intentIQ, 'setPpid');
+
+			intentIQ.setupPpid(testResultData);
+
+			expect(setPpidSpy.notCalled).to.be.true;
+		});
+
+		it('should call setPpid when IIQ PPID is enabled', () => {
+			const intentIQ = new IntentIQ();
+			global.sandbox.stub(intentIQ, 'isEnabled').returns(true);
+			const setPpidSpy = global.sandbox.spy(intentIQ, 'setPpid');
+			const targetingServiceStub = global.sandbox.stub(targetingService, 'set');
+
+			intentIQ.setupPpid(testResultData);
+
+			expect(setPpidSpy.calledOnce).to.be.true;
+			expect(setPpidSpy.calledWithExactly('12341234')).to.be.true;
+			expect(targetingServiceStub.calledWithExactly('intent_iq_ppid', '12341234', 'intent_iq')).to
+				.be.true;
+		});
+
+		it('should not send tracking events when IIQ PPID tracking is disabled', () => {
+			contextStub.withArgs('services.intentIq.ppid.tracking.enabled').returns(false);
+
+			const intentIQ = new IntentIQ();
+			global.sandbox.stub(intentIQ, 'isEnabled').returns(true);
+			const trackPpidSpy = global.sandbox.spy(intentIQ, 'trackPpid');
+
+			intentIQ.setupPpid(testResultData);
+
+			expect(trackPpidSpy.notCalled).to.be.true;
+		});
+
+		it('should send tracking events when IIQ PPID tracking is enabled', () => {
+			const intentIQ = new IntentIQ();
+			global.sandbox.stub(intentIQ, 'isEnabled').returns(true);
+			const trackPpidSpy = global.sandbox.spy(intentIQ, 'trackPpid');
+
+			intentIQ.setupPpid(testResultData);
+
+			expect(trackPpidSpy.calledOnce).to.be.true;
+			expect(trackPpidSpy.calledWithExactly('12341234')).to.be.true;
+		});
+	});
+
+	describe('getPpid', () => {
+		it('getPpid returns correct PPID when data input is correct ', () => {
+			const intentIQ = new IntentIQ();
+			const ppid = intentIQ.getPpid(testResultData);
+			expect(ppid).to.equal('12341234');
+		});
+
+		it('getPpid does not return ppid when data input does not contain source=intentiq.com', () => {
+			const intentIQ = new IntentIQ();
+			const testData = {
+				eids: [
+					{
+						uids: [
+							{
+								ext: {
+									stype: 'ppuid',
+								},
+								id: '12341234',
+							},
+						],
+						source: 'different.com',
+					},
+				],
+			};
+			const ppid = intentIQ.getPpid(testData);
+			expect(ppid).to.be.null;
 		});
 	});
 });
