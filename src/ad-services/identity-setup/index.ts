@@ -1,43 +1,33 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { context, DiProcess, globalContextService, targetingService, utils } from '@ad-engine/core';
+import {
+	BaseServiceSetup,
+	context,
+	globalContextService,
+	targetingService,
+	utils,
+} from '@ad-engine/core';
 
-export class IdentitySetup implements DiProcess {
+export class IdentitySetup extends BaseServiceSetup {
 	private logGroup = 'identity-setup';
 
-	async execute(): Promise<void> {
+	async call(): Promise<void> {
 		utils.logger(this.logGroup, 'initialized');
 
-		await this.identityEngineReady();
-		this.setupOver18Targeting();
-		return Promise.resolve();
+		return this.identityEngineReady();
 	}
 
 	async identityEngineReady(): Promise<void> {
-		return new Promise<void>((resolve) => {
-			communicationService.on(eventsRepository.IDENTITY_ENGINE_READY, () => {
-				const ppid = globalContextService.getValue('tracking', 'ppid');
-				if (ppid) {
-					targetingService.set('ppid', ppid);
-				}
-
-				if (context.get('services.identityPartners')) {
-					const segments = globalContextService.getValue('targeting', 'AU_SEG');
-					targetingService.set('AU_SEG', segments);
-				}
-
-				utils.logger(this.logGroup, 'ready');
-				resolve();
-			});
-		});
-	}
-
-	setupOver18Targeting(): void {
-		communicationService.on(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, () => {
-			const over18 = window.fandomContext.tracking.over_18;
-
-			if (over18) {
-				targetingService.set('over_18', over18);
+		return window.ie.isReady.then(() => {
+			const ppid = globalContextService.getValue('tracking', 'ppid');
+			if (ppid) {
+				targetingService.set('ppid', ppid);
 			}
+
+			if (context.get('services.identityPartners')) {
+				const segments = globalContextService.getValue('targeting', 'AU_SEG');
+				targetingService.set('AU_SEG', segments);
+			}
+
+			utils.logger(this.logGroup, 'ready');
 		});
 	}
 }

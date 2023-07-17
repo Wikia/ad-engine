@@ -1,4 +1,4 @@
-import { queryString } from '../utils/query-string';
+import { queryString } from '../utils';
 import { context } from './context-service';
 
 const isOptInByQueryParam = queryString.get('tracking-opt-in-status') === 'true';
@@ -9,12 +9,6 @@ function isOptedIn(): boolean {
 }
 
 function isOptOutSale(): boolean {
-	const isSubjectToCcpa = !!context.get('options.isSubjectToCcpa');
-
-	if (isSubjectToCcpa) {
-		return true;
-	}
-
 	return isOptOutSaleByQueryParam || !!context.get('options.optOutSale');
 }
 
