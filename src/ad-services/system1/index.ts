@@ -3,7 +3,7 @@ import { BaseServiceSetup, context, utils } from '@ad-engine/core';
 
 const logGroup = 'system1';
 const scriptUrl = 'https://s.flocdn.com/@s1/embedded-search/embedded-search.js';
-const partnerId = 42232;
+const partnerId = '42232';
 const segments = {
 	mobile: 'fanmob00',
 	desktop: 'fan00',
@@ -13,20 +13,20 @@ export class System1 extends BaseServiceSetup {
 	private isLoaded = false;
 
 	call(): Promise<void> {
-		if (!this.isEnabled('icSystem1')) {
-			utils.logger(logGroup, 'disabled');
+		if (!this.isSearchPage()) {
+			utils.logger(logGroup, 'disabled - it is not search page');
 			return Promise.resolve();
 		}
 
-		if (!this.isSearchPage()) {
-			utils.logger(logGroup, 'disabled - it is not search page');
+		if (!this.isEnabled('icSystem1')) {
+			utils.logger(logGroup, 'disabled');
 			return Promise.resolve();
 		}
 
 		if (!this.isLoaded) {
 			utils.logger(logGroup, 'loading...');
 			this.isLoaded = true;
-			return utils.scriptLoader.loadScript(scriptUrl, 'text/javascript', true, 'first').then(() => {
+			return utils.scriptLoader.loadScript(scriptUrl).then(() => {
 				utils.logger(logGroup, 'asset loaded');
 				this.setup();
 			});
