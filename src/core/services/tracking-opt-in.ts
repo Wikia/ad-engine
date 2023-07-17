@@ -9,6 +9,12 @@ function isOptedIn(): boolean {
 }
 
 function isOptOutSale(): boolean {
+	const isSubjectToCcpa = !!context.get('options.isSubjectToCcpa');
+
+	if (isSubjectToCcpa) {
+		return true;
+	}
+
 	return isOptOutSaleByQueryParam || !!context.get('options.optOutSale');
 }
 
