@@ -37,6 +37,8 @@ export class OpenWeb extends BaseServiceSetup {
 		const articleId = targeting.post_id || targeting.artid;
 		const siteId = targeting.s1;
 		const postUniqueId = `wk_${siteId}_${articleId}`;
+		const postUrl = window.location.href.split('?')[0];
+		const articleTitle = targeting.wpage || '';
 
 		communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
 			if (action.isLoaded) {
@@ -45,14 +47,14 @@ export class OpenWeb extends BaseServiceSetup {
 			}
 
 			if (this.builder.buildPlacement(postUniqueId)) {
-				this.loadScript(config.spotId, postUniqueId);
+				this.loadScript(config.spotId, postUniqueId, postUrl, articleTitle);
 			} else {
 				utils.logger(logGroup, 'disabled - builder failed');
 			}
 		});
 	}
 
-	private loadScript(spotId: string, postUniqueId: string): void {
+	private loadScript(spotId: string, postUniqueId: string, postUrl: string, title: string): void {
 		const libraryUrl = `//launcher.spot.im/spot/${spotId}`;
 		utils.logger(logGroup, 'loading', libraryUrl);
 
@@ -66,6 +68,8 @@ export class OpenWeb extends BaseServiceSetup {
 					spotimModule: 'spotim-launcher',
 					spotimAutorun: 'false',
 					postId: postUniqueId,
+					postUrl,
+					articleTags: title,
 				},
 			)
 			.then(() => {
