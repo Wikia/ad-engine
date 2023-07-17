@@ -1,4 +1,4 @@
-import { GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
+import { AdEngineStackSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
 	Anyclip,
 	Ats,
@@ -7,7 +7,6 @@ import {
 	Captify,
 	communicationService,
 	Confiant,
-	context,
 	DiProcess,
 	DoubleVerify,
 	DurationMedia,
@@ -31,6 +30,7 @@ import { Injectable } from '@wikia/dependency-injection';
 export class UcpMobileAdsMode implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,
+		private adEngineStackSetup: AdEngineStackSetup,
 		private anyclip: Anyclip,
 		private ats: Ats,
 		private audigent: Audigent,
@@ -77,17 +77,21 @@ export class UcpMobileAdsMode implements DiProcess {
 				this.wunderkind,
 				this.playerSetup.setOptions({
 					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
-					timeout: context.get('options.jwpMaxDelayTimeout'),
 				}),
-				this.gptSetup.setOptions({
-					dependencies: [
-						this.playerSetup.initialized,
-						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
-						this.iasPublisherOptimization.IASReady,
-					],
-				}),
+				this.gptSetup,
 				this.doubleVerify.setOptions({
 					dependencies: [this.gptSetup.initialized],
+				}),
+				this.adEngineStackSetup.setOptions({
+					dependencies: [
+						this.bidders.initialized,
+						this.wadRunner.initialized,
+						this.gptSetup.initialized,
+						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
+					],
+					timeout: jwPlayerInhibitor.isRequiredToRun()
+						? jwPlayerInhibitor.getDelayTimeoutInMs()
+						: null,
 				}),
 			)
 			.execute()

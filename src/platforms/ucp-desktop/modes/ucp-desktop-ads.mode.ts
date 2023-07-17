@@ -1,4 +1,4 @@
-import { GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
+import { AdEngineStackSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
 	Anyclip,
 	Ats,
@@ -30,6 +30,7 @@ import { Injectable } from '@wikia/dependency-injection';
 export class UcpDesktopAdsMode implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,
+		private adEngineStackSetup: AdEngineStackSetup,
 		private anyclip: Anyclip,
 		private ats: Ats,
 		private audigent: Audigent,
@@ -77,18 +78,20 @@ export class UcpDesktopAdsMode implements DiProcess {
 				this.playerSetup.setOptions({
 					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
 				}),
-				this.gptSetup.setOptions({
+				this.gptSetup,
+				this.doubleVerify.setOptions({
+					dependencies: [this.gptSetup.initialized],
+				}),
+				this.adEngineStackSetup.setOptions({
 					dependencies: [
-						this.playerSetup.initialized,
+						this.bidders.initialized,
+						this.wadRunner.initialized,
+						this.gptSetup.initialized,
 						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
-						this.iasPublisherOptimization.IASReady,
 					],
 					timeout: jwPlayerInhibitor.isRequiredToRun()
 						? jwPlayerInhibitor.getDelayTimeoutInMs()
 						: null,
-				}),
-				this.doubleVerify.setOptions({
-					dependencies: [this.gptSetup.initialized],
 				}),
 			)
 			.execute()

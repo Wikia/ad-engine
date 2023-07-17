@@ -44,16 +44,14 @@ export class LiveConnect extends BaseServiceSetup {
 			utils.logger(logGroup, 'loading');
 			communicationService.emit(eventsRepository.LIVE_CONNECT_STARTED);
 
-			utils.scriptLoader
-				.loadScript(liveConnectScriptUrl, 'text/javascript', true, 'first')
-				.then(() => {
-					utils.logger(logGroup, 'loaded');
-					this.resolveAndTrackIds();
-					const customQf = this.instantConfig.get<number>('icLiveConnectQf')?.toString();
-					if (customQf && customQf !== this.defaultQfValue) {
-						this.resolveAndTrackIds(customQf);
-					}
-				});
+			utils.scriptLoader.loadScript(liveConnectScriptUrl, true, 'first').then(() => {
+				utils.logger(logGroup, 'loaded');
+				this.resolveAndTrackIds();
+				const customQf = this.instantConfig.get<number>('icLiveConnectQf')?.toString();
+				if (customQf) {
+					this.resolveAndTrackIds(customQf);
+				}
+			});
 		} else {
 			communicationService.emit(eventsRepository.LIVE_CONNECT_CACHED);
 			utils.logger(logGroup, `already loaded and available in ${this.storageConfig.type}Storage`);
@@ -81,7 +79,7 @@ export class LiveConnect extends BaseServiceSetup {
 		utils.logger(logGroup, 'resolve response:', liQResponse);
 
 		Object.keys(liQResponse).forEach((key) => {
-			const trackingKeyName = this.getTrackingKeyName(key);
+			const trackingKeyName = this.getTrackingKeyName(key) + (customQf ? `-${customQf}` : '');
 
 			if (this.isAvailableInStorage(trackingKeyName)) {
 				return;
@@ -102,7 +100,7 @@ export class LiveConnect extends BaseServiceSetup {
 			this.storage.setItem(trackingKeyName, partnerIdentityId, this.storageConfig.ttl);
 
 			communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
-				partnerName: trackingKeyName + (customQf ? `-${customQf}` : ''),
+				partnerName: trackingKeyName,
 				partnerIdentityId,
 			});
 		});
