@@ -86,6 +86,10 @@ export class MetricReporter {
 	}
 
 	public trackGptLibReady(): void {
+		if (!this.isActive) {
+			return;
+		}
+
 		this.sendToMeteringSystem({
 			action: 'gpt-ready',
 			duration: Math.round(utils.getTimeDelta()),
