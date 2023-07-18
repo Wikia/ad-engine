@@ -193,10 +193,14 @@ export class UcpDesktopPerformanceAdsDefinitionRepository {
 	}
 
 	private viewabilityCallToDW() {
+		const now = new Date();
+
 		this.dwTracker.track(
 			{
 				creative_id: this.widgetData.data.creativeId,
 				line_item_id: this.widgetData.data.lineItemId,
+				timestamp: now.getTime(),
+				tz_offset: now.getTimezoneOffset(),
 			},
 			trackingUrls.AD_ENG_VIEWABILITY,
 		);
