@@ -14,7 +14,7 @@
 		"blockadblock": "3.2.1",
 		"current-device": "0.10.2",
 		"js-cookie": "3.0.1",
-		"rxjs": "7.8.0",
+		"rxjs": "7.8.1",
 		"ts-action": "11.0.0",
 		"ts-action-operators": "9.1.2",
 		"ts-loader": "9.4.2",
