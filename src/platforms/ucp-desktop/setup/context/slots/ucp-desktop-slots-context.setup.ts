@@ -172,6 +172,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 			gallery_leaderboard: {
 				adProduct: 'gallery_leaderboard',
+				bidderAlias: 'fandom_dt_galleries',
 				group: 'IG',
 				defaultSizes: [[728, 90]],
 				targeting: {
