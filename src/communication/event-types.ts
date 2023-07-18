@@ -189,6 +189,10 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		category: '[IdentityEngine]',
 		name: 'Identity ready',
 	},
+	IDENTITY_SDK_READY: {
+		category: '[IdentityEngine]',
+		name: 'Identity SDK ready',
+	},
 	IDENTITY_PARTNER_DATA_OBTAINED: {
 		name: 'Identity partner data obtained',
 		payload: payload<IdentityDataPayload>(),
