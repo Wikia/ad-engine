@@ -1,14 +1,10 @@
 import { Aliases, context, Dictionary, targetingService } from '@ad-engine/core';
 import { PrebidAdapterConfig, PrebidAdSlotConfig } from './prebid-models';
 
-export const DEFAULT_MAX_CPM = 20;
-export const EXTENDED_MAX_CPM = 50;
-
 export abstract class PrebidAdapter {
 	static bidderName: string;
 	aliases?: Aliases;
 	isCustomBidAdapter = false;
-	maxCpm = DEFAULT_MAX_CPM;
 
 	enabled: boolean;
 	slots: any;

@@ -99,6 +99,7 @@ describe('Pubmatic bidder adapter', () => {
 								protocols: [2, 3, 5, 6],
 								linearity: 1,
 								placement: 1,
+								plcmt: 2,
 							},
 						},
 					},

@@ -1,39 +1,24 @@
 import { Dictionary } from '@ad-engine/core';
 import { adaptersRegistry } from './adapters-registry';
-import { DEFAULT_MAX_CPM } from './prebid-adapter';
 import { getWinningBid } from './prebid-helper';
 
 /**
- * Round cpm to predefined values.
- * ToDo: Replace with pbjs.setConfig({'cpmRoundingFunction'})
+ * Used with pbjs.setConfig({'cpmRoundingFunction'}) to set all CPMs below 0.01 into 0.01 bucket,
+ * as by default Prebid uses Math.floor that will put anything below 0.01 into 0.0 bucket.
+ *
+ * Rounding is called by Prebid.js with CPM adjusted to bucketCpm = (CPM - bucket.min) / bucket.increment,
+ * with all values lifted up by 10 ^ (precision + 2). Then the rounded value rCPM is put into the price
+ * bucket by reverse calculation e.g. bucket_price = bucket.min + rCPM * bucket.increment.
+ *
+ * For the lowest bucket configured 0.01 and increment 0.1 we have min = 0, so for cpm < 0.01 we have bucketCpm < 1.
  */
-function roundCpm(cpm: number, maxCpm: number): number {
-	let result: number = Math.floor(maxCpm);
-
-	if (cpm === 0) {
-		result = 0.0;
-	} else if (cpm < 0.05) {
-		result = 0.01;
-	} else if (cpm < 5.0) {
-		result = Math.floor(cpm * 20) / 20;
-	} else if (cpm < 10.0) {
-		result = Math.floor(cpm * 10) / 10;
-	} else if (cpm < 20.0) {
-		result = Math.floor(cpm * 2) / 2;
-	} else if (cpm < maxCpm) {
-		result = Math.floor(cpm);
+export function roundBucketCpm(bucketCpm: number): number {
+	if (bucketCpm === 0) {
+		return 0.0;
+	} else if (bucketCpm < 1) {
+		return 1;
 	}
-
-	return result;
-}
-
-/**
- * Round cpm to predefined values and transform to string with 2 decimal places.
- */
-export function transformPriceFromCpm(cpm: number, maxCpm: number = DEFAULT_MAX_CPM): string {
-	const price = Math.max(maxCpm, DEFAULT_MAX_CPM);
-
-	return roundCpm(cpm, price).toFixed(2);
+	return Math.floor(bucketCpm);
 }
 
 function parseWinningBid(winningBid: string): string {
@@ -52,15 +37,4 @@ export async function getPrebidBestPrice(slotName: string): Promise<Dictionary<s
 	}
 
 	return bestPrices;
-}
-
-export function transformPriceFromBid(bid): string {
-	const bidder = adaptersRegistry.getAdapter(bid.bidderCode);
-	let maxCpm = DEFAULT_MAX_CPM;
-
-	if (bidder && bidder.maxCpm) {
-		maxCpm = bidder.maxCpm;
-	}
-
-	return transformPriceFromCpm(bid.cpm, maxCpm);
 }

@@ -1,10 +1,12 @@
 import { context, utils } from '@ad-engine/core';
+import { Ats } from '../ats';
 
 const logGroup = 'LiveRamp';
 
-interface LiveRampConfig {
+export interface LiveRampConfig {
 	userSync?: {
 		userIds: object[];
+		syncDelay: number;
 	};
 }
 
@@ -22,15 +24,17 @@ class LiveRamp {
 					{
 						name: 'identityLink',
 						params: {
-							pid: '2161',
+							pid: Ats.PLACEMENT_ID,
 						},
 						storage: {
-							type: 'cookie',
-							name: 'idl_env',
+							type: 'html5',
+							name: Ats.ENVELOPE_STORAGE_NAME,
 							expires: 1,
+							refreshInSeconds: 1800,
 						},
 					},
 				],
+				syncDelay: 3000,
 			},
 		};
 	}
