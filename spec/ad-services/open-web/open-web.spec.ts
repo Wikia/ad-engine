@@ -85,6 +85,15 @@ describe('OpenWeb', () => {
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
+	it('OpenWeb does not load script if it is control group in experiment', () => {
+		prepareUAPevent(false);
+		contextStub.get.withArgs('templates.openWebReactionsExperiment').returns(true);
+
+		service.setPlacementBuilder(new UcpMobileBuilder()).call();
+
+		expect(loadScriptStub.called).to.equal(false);
+	});
+
 	it('OpenWeb does load script for mobile-builder', async () => {
 		prepareUAPevent(false);
 		instantConfigStub.get.withArgs('icOpenWeb').returns(fakeActiveConfigValue);
