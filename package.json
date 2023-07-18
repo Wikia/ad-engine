@@ -13,7 +13,7 @@
 		"@wikia/post-quecast": "2.0.1",
 		"blockadblock": "3.2.1",
 		"current-device": "0.10.2",
-		"js-cookie": "3.0.1",
+		"js-cookie": "3.0.5",
 		"rxjs": "7.8.0",
 		"ts-action": "11.0.0",
 		"ts-action-operators": "9.1.2",
