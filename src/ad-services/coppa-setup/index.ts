@@ -1,7 +1,9 @@
-import { BaseServiceSetup } from '@ad-engine/core';
+import { BaseServiceSetup, utils } from '@ad-engine/core';
 
 export class CoppaSetup extends BaseServiceSetup {
 	call() {
-		return window.ie.getCoppaStatus();
+		return window.ie.getCoppaStatus().then(() => {
+			utils.logger('coppa', 'COPPA status read');
+		});
 	}
 }
