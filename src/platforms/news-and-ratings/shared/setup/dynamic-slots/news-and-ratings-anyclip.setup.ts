@@ -7,6 +7,18 @@ import { NewsAndRatingsSlotsDefinitionRepository } from '../../index';
 @Injectable()
 export class NewsAndRatingsAnyclipSetup implements DiProcess {
 	private logGroup = 'Anyclip';
+	private pageNamesWhenAnyclipAppliesOnDesktop = ['movie', 'tv_show'];
+	private pageNamesWithAnyclipInContent = [
+		'listings/main',
+		...this.pageNamesWhenAnyclipAppliesOnDesktop,
+	];
+	private pageNamesWhenAnyclipApplies = [
+		'news',
+		'feature_hub',
+		'listings/main',
+		...this.pageNamesWhenAnyclipAppliesOnDesktop,
+	];
+	private pathNamesWhenAnyclipApplies = ['/news/'];
 
 	constructor(private slotsDefinitionRepository: NewsAndRatingsSlotsDefinitionRepository) {}
 
@@ -23,7 +35,7 @@ export class NewsAndRatingsAnyclipSetup implements DiProcess {
 				? this.isApplicable(pname)
 				: this.isApplicable(pathname);
 
-			utils.logger(this.logGroup, 'isApplicable: ', isApplicable, pname);
+			utils.logger(this.logGroup, 'isApplicable: ', isApplicable, pname, pathname);
 
 			return isApplicable;
 		});
@@ -39,7 +51,7 @@ export class NewsAndRatingsAnyclipSetup implements DiProcess {
 	}
 
 	private shouldPlayerBeIncontent(pname: string): boolean {
-		return this.isApplicable(pname) && ['listings/main'].includes(pname);
+		return this.isApplicable(pname) && this.isIncontentPlayerPage(pname);
 	}
 
 	private updateContextForMiniplayerAnyclip(): void {
@@ -47,7 +59,7 @@ export class NewsAndRatingsAnyclipSetup implements DiProcess {
 			'services.anyclip.widgetname',
 			context.get('services.anyclip.miniPlayerWidgetname'),
 		);
-		context.set('services.anyclip.playerElementSelector', null);
+		context.set('services.anyclip.playerElementId', null);
 		context.set('services.anyclip.loadWithoutAnchor', true);
 		context.set('services.anyclip.loadOnPageLoad', true);
 		context.set('services.anyclip.latePageInject', false);
@@ -67,18 +79,28 @@ export class NewsAndRatingsAnyclipSetup implements DiProcess {
 	}
 
 	isApplicable(pathname: string): boolean {
+		if (this.isTvShowOrMoviePageOnMobile(pathname)) {
+			return false;
+		}
+
 		return this.isApplicableByPnameAdTag(pathname) || this.isApplicableByPathname(pathname);
 	}
 
-	private isApplicableByPnameAdTag(pname: string): boolean {
-		const applicablePnames = ['news', 'feature_hub', 'listings/main'];
+	private isTvShowOrMoviePageOnMobile(pathname: string): boolean {
+		return (
+			context.get('state.isMobile') && this.pageNamesWhenAnyclipAppliesOnDesktop.includes(pathname)
+		);
+	}
 
-		return applicablePnames.includes(pname);
+	private isApplicableByPnameAdTag(pname: string): boolean {
+		return this.pageNamesWhenAnyclipApplies.includes(pname);
 	}
 
 	private isApplicableByPathname(pathname: string): boolean {
-		const applicablePathnames = ['/news/'];
+		return this.pathNamesWhenAnyclipApplies.includes(pathname);
+	}
 
-		return applicablePathnames.includes(pathname);
+	private isIncontentPlayerPage(pname: string): boolean {
+		return this.pageNamesWithAnyclipInContent.includes(pname);
 	}
 }
