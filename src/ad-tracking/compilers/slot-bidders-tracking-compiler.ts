@@ -42,6 +42,7 @@ async function getBiddersPrices(
 		bidder_33: transformBidderPrice('criteo'),
 		bidder_34: transformBidderPrice('yahoossp'),
 		bidder_35: transformBidderPrice('freewheel'),
+		bidder_36: transformBidderPrice('webads'),
 	};
 }
 
