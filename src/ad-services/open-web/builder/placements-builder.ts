@@ -1,5 +1,5 @@
-export class UcpCommon {
-	protected buildReactionDivModule(postUniqueId: string): Element {
+export class PlacementsBuilder {
+	public buildReactionDivModule(postUniqueId: string): Element {
 		const divElement = document.createElement('div');
 		divElement.dataset.spotimApp = 'reactions';
 		divElement.dataset.postId = postUniqueId;
@@ -8,12 +8,12 @@ export class UcpCommon {
 		return divElement;
 	}
 
-	protected buildStandaloneAdUnit(): Element {
+	public buildStandaloneAdUnit(): Element {
 		const divElement = document.createElement('div');
 		divElement.dataset.openwebAd = '';
 		divElement.dataset.row = '1';
 		divElement.dataset.column = '1';
-		divElement.classList.add('openwebAdUnit');
+		divElement.classList.add('openweb-ad-unit');
 
 		return divElement;
 	}

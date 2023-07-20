@@ -19,10 +19,10 @@ import {
 	LiveRampPixel,
 	Nielsen,
 	OpenWeb,
+	OpenWebUcpDesktopPlacementSearch,
 	PartnerPipeline,
 	PrebidNativeProvider,
 	Stroer,
-	UcpDesktopBuilder,
 	Wunderkind,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -75,7 +75,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 				this.nielsen,
 				this.prebidNativeProvider,
 				this.wunderkind,
-				this.openWeb.setPlacementBuilder(new UcpDesktopBuilder()),
+				this.openWeb.setPlacementHandler(new OpenWebUcpDesktopPlacementSearch()),
 				this.playerSetup.setOptions({
 					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
 				}),

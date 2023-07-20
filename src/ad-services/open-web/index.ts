@@ -1,14 +1,17 @@
 import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
 import { BaseServiceSetup, context, TargetingData, targetingService, utils } from '@ad-engine/core';
-import { OpenWebPlacementBuilder } from './builder/types';
+import { PlacementsBuilder } from './builder/placements-builder';
+import { OpenWebPlacementSearchHandler } from './placement-handler/placement-search';
 
 const logGroup = 'open-web';
 
-export class OpenWeb extends BaseServiceSetup {
-	builder: OpenWebPlacementBuilder;
+export * from './placement-handler';
 
-	setPlacementBuilder(builder: OpenWebPlacementBuilder) {
-		this.builder = builder;
+export class OpenWeb extends BaseServiceSetup {
+	placementHandler: OpenWebPlacementSearchHandler;
+
+	setPlacementHandler(handler: OpenWebPlacementSearchHandler) {
+		this.placementHandler = handler;
 		return this;
 	}
 
@@ -28,17 +31,14 @@ export class OpenWeb extends BaseServiceSetup {
 			return;
 		}
 
-		if (!this.builder) {
-			utils.logger(logGroup, 'disabled - no builders');
+		if (!this.placementHandler) {
+			utils.logger(logGroup, 'disabled - no placement handlers');
 			return;
 		}
 
 		const targeting = targetingService.dump<TargetingData>();
 		const articleId = targeting.post_id || targeting.artid;
 		const siteId = targeting.s1;
-		const postUniqueId = `wk_${siteId}_${articleId}`;
-		const postUrl = window.location.href.split('?')[0];
-		const articleTitle = targeting.wpage || '';
 
 		communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
 			if (action.isLoaded) {
@@ -46,7 +46,18 @@ export class OpenWeb extends BaseServiceSetup {
 				return;
 			}
 
-			if (this.builder.buildPlacement(postUniqueId)) {
+			if (this.placementHandler.isPlacementFound()) {
+				const postUniqueId = `wk_${siteId}_${articleId}`;
+				const postUrl = window.location.href.split('?')[0];
+				const articleTitle = targeting.wpage || '';
+
+				const placementBuilder = new PlacementsBuilder();
+				const reactionElement = placementBuilder.buildReactionDivModule(postUniqueId);
+				const standaloneAdElement = placementBuilder.buildStandaloneAdUnit();
+				const anchor = this.placementHandler.getPlacement();
+				anchor.prepend(standaloneAdElement);
+				anchor.prepend(reactionElement);
+
 				this.loadScript(config.spotId, postUniqueId, postUrl, articleTitle);
 			} else {
 				utils.logger(logGroup, 'disabled - builder failed');

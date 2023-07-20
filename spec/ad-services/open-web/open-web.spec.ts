@@ -2,7 +2,7 @@ import { OpenWeb } from '@wikia/ad-services';
 import { communicationService, EventOptions } from '@wikia/communication';
 import { context, InstantConfigService, utils } from '@wikia/core';
 import { expect } from 'chai';
-import { UcpDesktopBuilder, UcpMobileBuilder } from '../../../src';
+import { OpenWebUcpDesktopPlacementSearch, OpenWebUcpMobilePlacementSearch } from '../../../src';
 
 describe('OpenWeb', () => {
 	let loadScriptStub, instantConfigStub, contextStub, communicationServiceStub;
@@ -80,7 +80,7 @@ describe('OpenWeb', () => {
 		instantConfigStub.get.withArgs('icOpenWeb').returns(fakeActiveConfigValue);
 		contextStub.get.withArgs('state.isLogged').returns(false);
 
-		service.setPlacementBuilder(new UcpMobileBuilder()).call();
+		service.setPlacementHandler(new OpenWebUcpMobilePlacementSearch()).call();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
@@ -97,7 +97,7 @@ describe('OpenWeb', () => {
 			.withArgs('div[class*="-boxad"]')
 			.returns([div, div, div, div]);
 
-		service.setPlacementBuilder(new UcpMobileBuilder()).call();
+		service.setPlacementHandler(new OpenWebUcpMobilePlacementSearch()).call();
 
 		expect(loadScriptStub.called).to.equal(true);
 	});
@@ -113,7 +113,7 @@ describe('OpenWeb', () => {
 			.withArgs('#WikiaAdInContentPlaceHolder')
 			.returns(div);
 
-		service.setPlacementBuilder(new UcpDesktopBuilder()).call();
+		service.setPlacementHandler(new OpenWebUcpDesktopPlacementSearch()).call();
 
 		expect(loadScriptStub.called).to.equal(true);
 	});

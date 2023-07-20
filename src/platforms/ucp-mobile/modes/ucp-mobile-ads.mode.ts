@@ -19,10 +19,10 @@ import {
 	LiveRampPixel,
 	Nielsen,
 	OpenWeb,
+	OpenWebUcpMobilePlacementSearch,
 	PartnerPipeline,
 	PrebidNativeProvider,
 	Stroer,
-	UcpMobileBuilder,
 	Wunderkind,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -75,7 +75,7 @@ export class UcpMobileAdsMode implements DiProcess {
 				this.nielsen,
 				this.prebidNativeProvider,
 				this.wunderkind,
-				this.openWeb.setPlacementBuilder(new UcpMobileBuilder()),
+				this.openWeb.setPlacementHandler(new OpenWebUcpMobilePlacementSearch()),
 				this.playerSetup.setOptions({
 					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
 				}),
