@@ -32,13 +32,15 @@ export function getRubiconDisplayContext(): object {
 					[160, 600],
 					[300, 600],
 					[300, 250],
-					[728, 90],
 				],
 				targeting: {
 					loc: ['hivi'],
 				},
 				siteId: '148804',
 				zoneId: '704676',
+			},
+			incontent_leaderboard: {
+				sizes: [[728, 90]],
 			},
 			bottom_leaderboard: {
 				sizes: [

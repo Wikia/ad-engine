@@ -27,10 +27,12 @@ export function getMedianetContext(): object {
 				sizes: [
 					[300, 250],
 					[300, 600],
-					[728, 90],
 				],
 				cid: '8CU5JOKX4',
 				crid: '210414245',
+			},
+			incontent_leaderboard: {
+				sizes: [[728, 90]],
 			},
 			bottom_leaderboard: {
 				sizes: [

@@ -21,14 +21,16 @@ export function getTripleliftContext(): object {
 					[160, 600],
 					[300, 600],
 					[300, 250],
-					[728, 90],
 				],
 				inventoryCodes: [
 					'Fandom_DT_FMR_160x600_hdx_prebid',
 					'Fandom_DT_FMR_300x250_hdx_prebid',
 					'Fandom_DT_FMR_300x600_hdx_prebid',
-					'Fandom_DT_FMR_728x90_hdx_prebid',
 				],
+			},
+			incontent_leaderboard: {
+				sizes: [[728, 90]],
+				inventoryCodes: ['Fandom_DT_FMR_728x90_hdx_prebid'],
 			},
 			bottom_leaderboard: {
 				sizes: [

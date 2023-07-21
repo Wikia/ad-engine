@@ -9,10 +9,10 @@ export function getWikiaContext(): object {
 				sizes: [[300, 250]],
 			},
 			incontent_boxad_1: {
-				sizes: [
-					[300, 250],
-					[728, 90],
-				],
+				sizes: [[300, 250]],
+			},
+			incontent_leaderboard: {
+				sizes: [[728, 90]],
 			},
 			bottom_leaderboard: {
 				sizes: [[970, 250]],

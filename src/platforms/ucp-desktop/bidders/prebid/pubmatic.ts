@@ -30,14 +30,16 @@ export function getPubmaticContext(): object {
 					[160, 600],
 					[300, 600],
 					[300, 250],
-					[728, 90],
 				],
 				ids: [
 					'/5441/INCONTENT_BOXAD_1_160x600@160x600',
 					'/5441/INCONTENT_BOXAD_1_300x250@300x250',
 					'/5441/INCONTENT_BOXAD_1_300x600@300x600',
-					'/5441/INCONTENT_BOXAD_1_728x90@728x90',
 				],
+			},
+			incontent_leaderboard: {
+				sizes: [[728, 90]],
+				ids: ['/5441/INCONTENT_LEADERBOARD_728x90@728x90'],
 			},
 			bottom_leaderboard: {
 				sizes: [

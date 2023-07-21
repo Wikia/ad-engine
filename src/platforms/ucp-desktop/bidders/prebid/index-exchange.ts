@@ -16,12 +16,14 @@ export function getIndexExchangeContext(): object {
 				],
 				siteId: '183567',
 			},
+			incontent_leaderboard: {
+				sizes: [[728, 90]],
+			},
 			incontent_boxad_1: {
 				sizes: [
 					[160, 600],
 					[300, 600],
 					[300, 250],
-					[728, 90],
 				],
 				siteId: '185049',
 			},
