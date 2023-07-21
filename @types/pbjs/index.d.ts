@@ -64,13 +64,15 @@ interface PrebidNativeImageType {
 }
 
 interface PrebidVideoType {
-	context?: string;
 	playerSize: number[];
-	mimes?: string[];
+	context?: string;
 	api?: number[];
-	linearity?: number;
-	maxduration?: number;
 	protocols?: number[];
+	minduration?: number;
+	maxduration?: number;
+	mimes?: string[];
+	placement?: number;
+	linearity?: number;
 	playbackmethod?: number[];
 	plcmt?: number | number[];
 }
