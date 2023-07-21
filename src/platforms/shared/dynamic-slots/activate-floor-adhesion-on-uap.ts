@@ -37,7 +37,7 @@ export function activateFloorAdhesionOnUAP(callback: () => void, withLoadedOnly 
 			communicationService.onSlotEvent(
 				AdSlotEvent.CUSTOM_EVENT,
 				({ payload }) => {
-					if (payload.status === eventsRepository.SLOT_STICKINESS_DISABLED) {
+					if (payload.status === universalAdPackage.SLOT_STICKINESS_DISABLED) {
 						callback();
 						return;
 					}
