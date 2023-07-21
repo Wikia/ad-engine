@@ -38,11 +38,7 @@ class BTRec {
 		const btLibraryUrl =
 			context.get('options.wad.btRec.loaderUrl') || '//btloader.com/tag?h=wikia-inc-com&upapi=true';
 
-		return utils.scriptLoader.loadScript(
-			btLibraryUrl,
-			true,
-			document.head.lastChild as HTMLElement,
-		);
+		return utils.scriptLoader.loadScript(btLibraryUrl, true, 'first');
 	}
 
 	/**
