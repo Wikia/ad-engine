@@ -185,10 +185,6 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	EYEOTA_FAILED: {
 		name: 'Eyeota loading failed',
 	},
-	IDENTITY_ENGINE_READY: {
-		category: '[IdentityEngine]',
-		name: 'Identity ready',
-	},
 	IDENTITY_SDK_READY: {
 		category: '[IdentityEngine]',
 		name: 'Identity SDK ready',

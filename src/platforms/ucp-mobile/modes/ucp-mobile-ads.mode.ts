@@ -7,6 +7,7 @@ import {
 	Captify,
 	communicationService,
 	Confiant,
+	CoppaSetup,
 	DiProcess,
 	DoubleVerify,
 	DurationMedia,
@@ -14,6 +15,7 @@ import {
 	Eyeota,
 	IasPublisherOptimization,
 	IdentityHub,
+	IdentitySetup,
 	jwPlayerInhibitor,
 	LiveConnect,
 	LiveRampPixel,
@@ -50,20 +52,32 @@ export class UcpMobileAdsMode implements DiProcess {
 		private stroer: Stroer,
 		private wadRunner: WadRunner,
 		private wunderkind: Wunderkind,
+		private identitySetup: IdentitySetup,
+		private coppaSetup: CoppaSetup,
 	) {}
 
 	execute(): void {
 		this.pipeline
 			.add(
-				this.liveRampPixel,
+				this.identitySetup,
+				this.coppaSetup,
+				this.liveRampPixel.setOptions({
+					dependencies: [this.coppaSetup.initialized],
+				}),
 				this.anyclip,
 				this.ats,
-				this.audigent,
+				this.audigent.setOptions({
+					dependencies: [this.coppaSetup.initialized],
+				}),
 				this.bidders,
 				this.captify,
-				this.liveConnect,
+				this.liveConnect.setOptions({
+					dependencies: [this.coppaSetup.initialized],
+				}),
 				this.wadRunner,
-				this.eyeota,
+				this.eyeota.setOptions({
+					dependencies: [this.coppaSetup.initialized],
+				}),
 				this.iasPublisherOptimization,
 				this.confiant,
 				this.durationMedia,
