@@ -36,6 +36,11 @@ export class OpenWeb extends BaseServiceSetup {
 			return;
 		}
 
+		if (this.isControlGroupInOpenWebReactionsExperiment()) {
+			utils.logger(logGroup, 'disabled - control group in experiment');
+			return;
+		}
+
 		const targeting = targetingService.dump<TargetingData>();
 		const articleId = targeting.post_id || targeting.artid;
 		const siteId = targeting.s1;
@@ -86,5 +91,10 @@ export class OpenWeb extends BaseServiceSetup {
 			.then(() => {
 				utils.logger(logGroup, 'ready');
 			});
+	}
+
+	private isControlGroupInOpenWebReactionsExperiment() {
+		const isControllGroup = context.get('templates.openWebReactionsExperiment');
+		return isControllGroup;
 	}
 }

@@ -17,6 +17,11 @@ const OPTIMIZELY_NTC_2_0_VARIANTS = {
 	UNDEFINED: 'ntc20_adhesion_undefined',
 };
 
+const OPTIMIZELY_OPEN_WEB_REACTIONS = {
+	EXPERIMENT_ENABLED: 'desktop_open_web',
+	EXPERIMENT_VARIANT: 'desktop_open_web_variant',
+};
+
 @Injectable()
 export class UcpDesktopExperimentsSetup implements DiProcess {
 	constructor(private optimizely: Optimizely) {}
@@ -24,6 +29,7 @@ export class UcpDesktopExperimentsSetup implements DiProcess {
 	execute(): void {
 		this.configurePerformanceAdsExperiment();
 		this.configureFloorAdhesionExperiment();
+		this.configureOpenWebReactionsExperiment();
 	}
 
 	private configurePerformanceAdsExperiment(): void {
@@ -52,6 +58,14 @@ export class UcpDesktopExperimentsSetup implements DiProcess {
 
 			context.set('options.ntc.floorEnabled', isNewVariant);
 			this.optimizely.addVariantToTargeting(OPTIMIZELY_NTC_2_0, targetingVariantName);
+		}
+	}
+
+	private configureOpenWebReactionsExperiment(): void {
+		const variant = this.optimizely.getVariant(OPTIMIZELY_OPEN_WEB_REACTIONS);
+
+		if (variant) {
+			this.optimizely.addVariantToTargeting(OPTIMIZELY_OPEN_WEB_REACTIONS, variant);
 		}
 	}
 }
