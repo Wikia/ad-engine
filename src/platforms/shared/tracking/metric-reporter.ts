@@ -43,6 +43,19 @@ export class MetricReporter {
 		clickDetector((data) => this.sendToMeteringSystem(data));
 	}
 
+	public sendCustomEvent<T>(data: T, appName?: string, endpoint?: string): void {
+		if (!appName || !endpoint) {
+			const endpointInfo = this.getEndpointInfoFromContext();
+			!appName && (appName = endpointInfo.appName);
+			!endpoint && (endpoint = this.getEndpointUrlFor('custom', endpointInfo));
+
+			utils.logger('DJ', appName);
+			utils.logger('DJ', endpointInfo);
+			utils.logger('DJ', endpoint);
+		}
+		this.sendEvent(data, appName, endpoint);
+	}
+
 	private sendToMeteringSystem(
 		metricData: MetricReporterSenderSlotData | MetricReporterSenderTimeData,
 	): void {
@@ -55,20 +68,19 @@ export class MetricReporter {
 		if (this.isMetricTimeData(metricData)) {
 			endpointUrl = this.getEndpointUrlFor('time', endpointInfo);
 		}
+		this.sendEvent(metricData, endpointInfo.appName, endpointUrl);
+	}
 
+	private sendEvent<T>(metricData: T, appName: string, endpointUrl: string) {
 		const queryParams = [];
 		Object.entries(metricData).forEach(([k, v]) => {
 			queryParams.push(`${k}=${encodeURIComponent(v)}`);
 		});
 
 		const fetchTimeout = new utils.FetchTimeout();
-		fetchTimeout.fetch(
-			`${endpointUrl}?app=${endpointInfo.appName}&${queryParams.join('&')}`,
-			2000,
-			{
-				mode: 'no-cors',
-			},
-		);
+		fetchTimeout.fetch(`${endpointUrl}?app=${appName}&${queryParams.join('&')}`, 2000, {
+			mode: 'no-cors',
+		});
 	}
 
 	private isMetricSlotData(item: any): item is MetricReporterSenderSlotData {

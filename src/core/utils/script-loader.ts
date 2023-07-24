@@ -15,6 +15,7 @@ class ScriptLoader implements ScriptLoaderInterface {
 	): HTMLScriptElement {
 		const script: HTMLScriptElement = document.createElement('script');
 
+		script.type = 'text/javascript';
 		script.async = isAsyncOrDeferOtherwise;
 		script.defer = !isAsyncOrDeferOtherwise;
 		script.src = src;

@@ -1,5 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { BaseServiceSetup, localCache, UniversalStorage, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, localCache, UniversalStorage, utils } from '@ad-engine/core';
+import { MetricReporter } from '../../platforms/shared';
 
 interface IdConfig {
 	id: LiQResolveParams;
@@ -27,6 +28,7 @@ export class LiveConnect extends BaseServiceSetup {
 	private storage;
 	private storageConfig: CachingStrategyConfig;
 	private defaultQfValue = '0.3';
+	private metricReporter: MetricReporter;
 
 	call(): void {
 		if (
@@ -37,6 +39,7 @@ export class LiveConnect extends BaseServiceSetup {
 			utils.logger(logGroup, 'disabled');
 			return;
 		}
+		this.metricReporter = new MetricReporter();
 
 		this.setupStorage();
 
@@ -47,6 +50,7 @@ export class LiveConnect extends BaseServiceSetup {
 			utils.scriptLoader.loadScript(liveConnectScriptUrl, true, 'first').then(() => {
 				utils.logger(logGroup, 'loaded');
 				this.resolveAndTrackIds();
+				this.logEvent('live-connect-requested');
 				const customQf = this.instantConfig.get<number>('icLiveConnectQf')?.toString();
 				if (customQf) {
 					this.resolveAndTrackIds(customQf);
@@ -97,6 +101,10 @@ export class LiveConnect extends BaseServiceSetup {
 				return;
 			}
 
+			if (!customQf && key === 'sha2') {
+				this.logEvent('live-connect-sha2');
+			}
+
 			this.storage.setItem(trackingKeyName, partnerIdentityId, this.storageConfig.ttl);
 
 			communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
@@ -143,5 +151,13 @@ export class LiveConnect extends BaseServiceSetup {
 
 	isAvailableInStorage(key: string): boolean {
 		return !!this.storage.getItem(key);
+	}
+
+	logEvent(event: string): void {
+		this.metricReporter.sendCustomEvent(
+			{ action: event, duration: Math.floor(utils.getTimeDelta()) },
+			context.get('services.instantConfig.appName'),
+			'https://services.fandom.com/adeng/api/identity/metrics',
+		);
 	}
 }
