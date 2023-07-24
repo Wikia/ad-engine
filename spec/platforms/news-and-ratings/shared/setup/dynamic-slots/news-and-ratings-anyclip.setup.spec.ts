@@ -12,6 +12,10 @@ describe('Anyclip setup', () => {
 		slotsDefinitionRepository = new NewsAndRatingsSlotsDefinitionRepository(instantConfigStub);
 	});
 
+	afterEach(() => {
+		context.remove('state.isMobile');
+	});
+
 	describe('isApplicable()', () => {
 		it('returns true when pname equals news', () => {
 			const setup: NewsAndRatingsAnyclipSetup = new NewsAndRatingsAnyclipSetup(
@@ -27,6 +31,14 @@ describe('Anyclip setup', () => {
 			);
 
 			expect(setup.isApplicable('feature_hub')).to.be.true;
+		});
+
+		it('returns true when it pname equals movie', () => {
+			const setup: NewsAndRatingsAnyclipSetup = new NewsAndRatingsAnyclipSetup(
+				slotsDefinitionRepository,
+			);
+
+			expect(setup.isApplicable('movie')).to.be.true;
 		});
 
 		it('returns false when it pname equals undefined', () => {
@@ -60,12 +72,42 @@ describe('Anyclip setup', () => {
 
 			expect(setup.isApplicable('listings/main')).to.be.true;
 		});
+
+		it('is not applicable when it is a tv show page on mobile', () => {
+			context.set('state.isMobile', true);
+			const setup: NewsAndRatingsAnyclipSetup = new NewsAndRatingsAnyclipSetup(
+				slotsDefinitionRepository,
+			);
+
+			expect(setup.isApplicable('tv_show')).to.be.false;
+		});
+
+		it('is applicable when it is a listing page on mobile', () => {
+			context.set('state.isMobile', true);
+			const setup: NewsAndRatingsAnyclipSetup = new NewsAndRatingsAnyclipSetup(
+				slotsDefinitionRepository,
+			);
+
+			expect(setup.isApplicable('listings/main')).to.be.true;
+		});
+
+		it('is applicable when it is a tv show page on desktop', () => {
+			context.set('state.isMobile', false);
+			const setup: NewsAndRatingsAnyclipSetup = new NewsAndRatingsAnyclipSetup(
+				slotsDefinitionRepository,
+			);
+
+			expect(setup.isApplicable('tv_show')).to.be.true;
+		});
 	});
 
 	describe('execute()', () => {
 		afterEach(() => {
 			context.remove('services.anyclip.isApplicable');
 			context.remove('services.anyclip.anyclipTagExists');
+			context.remove('services.anyclip.playerElementId');
+			context.remove('services.anyclip.loadWithoutAnchor');
+			context.remove('services.anyclip.loadOnPageLoad');
 			targetingService.clear('pname');
 			global.sandbox.restore();
 		});
@@ -124,6 +166,42 @@ describe('Anyclip setup', () => {
 			const isApplicable = context.get('services.anyclip.isApplicable');
 
 			expect(isApplicable()).to.be.false;
+		});
+
+		it('sets Anyclip context for mini-player when ad tag available but it is not an in-content player pname (GameFAQs, ComicVine)', () => {
+			context.set('services.anyclip.anyclipTagExists', true);
+			const setup: NewsAndRatingsAnyclipSetup = new NewsAndRatingsAnyclipSetup(
+				slotsDefinitionRepository,
+			);
+			setup.execute();
+
+			expect(context.get('services.anyclip.playerElementId')).to.be.null;
+			expect(context.get('services.anyclip.loadWithoutAnchor')).to.be.true;
+			expect(context.get('services.anyclip.loadOnPageLoad')).to.be.true;
+		});
+
+		it('sets Anyclip context for mini-player when pname a match (TV Guide)', () => {
+			targetingService.set('pname', 'news');
+			const setup: NewsAndRatingsAnyclipSetup = new NewsAndRatingsAnyclipSetup(
+				slotsDefinitionRepository,
+			);
+			setup.execute();
+
+			expect(context.get('services.anyclip.playerElementId')).to.be.null;
+			expect(context.get('services.anyclip.loadWithoutAnchor')).to.be.true;
+			expect(context.get('services.anyclip.loadOnPageLoad')).to.be.true;
+		});
+
+		it('sets Anyclip context for in-content player when pname a match (TV Guide)', () => {
+			targetingService.set('pname', 'movie');
+			const setup: NewsAndRatingsAnyclipSetup = new NewsAndRatingsAnyclipSetup(
+				slotsDefinitionRepository,
+			);
+			setup.execute();
+
+			expect(context.get('services.anyclip.playerElementId')).not.to.be.null;
+			expect(context.get('services.anyclip.loadWithoutAnchor')).to.be.false;
+			expect(context.get('services.anyclip.loadOnPageLoad')).to.be.false;
 		});
 	});
 });
