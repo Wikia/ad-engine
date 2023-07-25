@@ -25,7 +25,7 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 			this.blockStickyTLB('UAP');
 			return;
 		}
-		if (!this.isStickyTlbForced() && !this.isLineAndGeo() && !this.isOrderAndGeo()) {
+		if (!this.isStickyTlbForced() && !this.enabledByLine() && !this.enabledByOrder()) {
 			this.blockStickyTLB(`Line item ID ${this.adSlot.lineItemId}`);
 			return;
 		}
@@ -42,30 +42,26 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 		this.logger(`Template 'stickyTlb' could not be applied for ${reason}`);
 	}
 
-	private isLineAndGeo(): boolean {
+	private enabledByLine(): boolean {
 		const lines: string[] = context.get('templates.stickyTlb.lineItemIds') || [];
 
-		return this.checkIdsMapBySlotGamId(this.adSlot.lineItemId.toString(), lines);
+		return this.checkRolloutVariable(this.adSlot.lineItemId, lines);
 	}
 
-	private isOrderAndGeo(): boolean {
+	private enabledByOrder(): boolean {
 		const orders: string[] = context.get('templates.stickyTlb.ordersIds') || [];
 
-		return this.checkIdsMapBySlotGamId(this.adSlot.orderId.toString(), orders);
+		return this.checkRolloutVariable(this.adSlot.orderId, orders);
 	}
 
-	private checkIdsMapBySlotGamId(gamId: string, map: string[]): boolean {
-		if (!Array.isArray(map)) {
+	private checkRolloutVariable(gamId: string | number, enabledIds: string[]): boolean {
+		if (!gamId || !enabledIds || !Array.isArray(enabledIds)) {
 			return false;
 		}
 
-		return map
-			.map((element) => element.toString())
-			.some((element) => {
-				const [mapGamId, geo] = element.split(':', 2);
-
-				return mapGamId.toString() === gamId && (!geo || utils.geoService.isProperGeo([geo]));
-			});
+		return enabledIds.some((id) => {
+			return id.toString() === gamId.toString();
+		});
 	}
 
 	private async isUAP(): Promise<boolean> {
