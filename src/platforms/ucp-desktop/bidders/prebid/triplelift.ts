@@ -30,7 +30,7 @@ export function getTripleliftContext(): object {
 			},
 			incontent_leaderboard: {
 				sizes: [[728, 90]],
-				inventoryCodes: ['Fandom_DT_FMR_728x90_hdx_prebid'],
+				inventoryCodes: ['Fandom_DT_GALLERIES_728x90_hdx_prebid'],
 			},
 			bottom_leaderboard: {
 				sizes: [

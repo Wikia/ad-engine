@@ -26,6 +26,7 @@ export function getAppnexusContext(): object {
 			},
 			incontent_leaderboard: {
 				sizes: [[728, 90]],
+				position: 'hivi',
 			},
 			bottom_leaderboard: {
 				sizes: [

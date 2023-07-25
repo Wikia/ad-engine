@@ -17,6 +17,7 @@ export function getVerizonContext(): object {
 			},
 			incontent_leaderboard: {
 				sizes: [[728, 90]],
+				pos: 'incontent_leaderboard',
 			},
 			bottom_leaderboard: {
 				sizes: [[728, 90]],

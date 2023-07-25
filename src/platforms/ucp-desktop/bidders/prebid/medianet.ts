@@ -33,6 +33,8 @@ export function getMedianetContext(): object {
 			},
 			incontent_leaderboard: {
 				sizes: [[728, 90]],
+				cid: '8CU5JOKX4',
+				crid: '550202278',
 			},
 			bottom_leaderboard: {
 				sizes: [
