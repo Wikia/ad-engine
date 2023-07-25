@@ -1,4 +1,4 @@
-import { Ats, liveRamp, LiveRampConfig } from '@wikia/ad-bidders';
+import { Ats, liveRamp } from '@wikia/ad-bidders';
 import { PrebidProvider } from '@wikia/ad-bidders/prebid';
 import { context } from '@wikia/core';
 import { expect } from 'chai';
@@ -8,27 +8,6 @@ const bidderConfig = {
 };
 
 describe('Live Ramp', () => {
-	const liveRampEnabledConfig: LiveRampConfig = {
-		userSync: {
-			syncDelay: 3000,
-			userIds: [
-				{
-					name: 'identityLink',
-					params: {
-						pid: Ats.PLACEMENT_ID,
-					},
-					storage: {
-						type: 'html5',
-						name: Ats.ENVELOPE_STORAGE_NAME,
-						expires: 1,
-						refreshInSeconds: 1800,
-					},
-				},
-			],
-		},
-	};
-	const liveRampDisabledConfig: LiveRampConfig = {};
-
 	beforeEach(() => {
 		context.set('bidders.liveRampId.enabled', true);
 		context.set('options.optOutSale', false);
@@ -39,29 +18,41 @@ describe('Live Ramp', () => {
 		const prebid = new PrebidProvider(bidderConfig);
 		const liveRampConfig = liveRamp.getConfig();
 
-		expect(prebid.prebidConfig.userSync).to.have.keys('syncDelay', 'userIds');
-		expect(prebid.prebidConfig.userSync.userIds).to.eql(liveRampConfig.userSync.userIds);
+		expect(prebid.prebidConfig.userSync.userIds[0]).to.eql(liveRampConfig);
 	});
 
 	it('LiveRamp is enabled', () => {
+		const liveRampEnabledConfig = {
+			name: 'identityLink',
+			params: {
+				pid: Ats.PLACEMENT_ID,
+			},
+			storage: {
+				type: 'html5',
+				name: Ats.ENVELOPE_STORAGE_NAME,
+				expires: 1,
+				refreshInSeconds: 1800,
+			},
+		};
+
 		expect(liveRamp.getConfig()).to.eql(liveRampEnabledConfig);
 	});
 
 	it('Live Ramp is disabled by feature flag', () => {
 		context.set('bidders.liveRampId.enabled', false);
 
-		expect(liveRamp.getConfig()).to.eql(liveRampDisabledConfig);
+		expect(liveRamp.getConfig()).to.eql(undefined);
 	});
 
 	it('Live Ramp is disabled if user has opted out sale', () => {
 		context.set('options.optOutSale', true);
 
-		expect(liveRamp.getConfig()).to.eql(liveRampDisabledConfig);
+		expect(liveRamp.getConfig()).to.eql(undefined);
 	});
 
 	it('Live Ramp is disabled on child-directed wiki', () => {
 		window.fandomContext.partners.directedAtChildren = true;
 
-		expect(liveRamp.getConfig()).to.eql(liveRampDisabledConfig);
+		expect(liveRamp.getConfig()).to.eql(undefined);
 	});
 });
