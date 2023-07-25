@@ -1,3 +1,16 @@
+type IntentIqData = {
+	eids: {
+		source: string;
+		uids: {
+			ext: {
+				stype: string;
+			};
+			id: string;
+		}[];
+	}[];
+};
+type IntentIqResponseData = undefined | Record<string, never> | IntentIqData;
+
 /**
  * IntentIQ configuration object.
  *
@@ -12,7 +25,7 @@ interface IntentIQConfig {
 	manualWinReportEnabled?: boolean;
 	partnerClientId?: string;
 	partnerClientIdType?: number;
-	callback?: (data: any) => void;
+	callback?: (data: IntentIqResponseData) => void;
 	browserBlackList?: string;
 	domainName?: string;
 }
