@@ -38,6 +38,10 @@ export function getIndexExchangeContext(): object {
 			featured: {
 				siteId: '437502',
 			},
+			fandom_dt_galleries: {
+				sizes: [[728, 90]],
+				siteId: '1001381',
+			},
 		},
 	};
 }
