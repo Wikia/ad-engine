@@ -28,10 +28,6 @@ export function getTripleliftContext(): object {
 					'Fandom_DT_FMR_300x600_hdx_prebid',
 				],
 			},
-			incontent_leaderboard: {
-				sizes: [[728, 90]],
-				inventoryCodes: ['Fandom_DT_GALLERIES_728x90_hdx_prebid'],
-			},
 			bottom_leaderboard: {
 				sizes: [
 					[728, 90],

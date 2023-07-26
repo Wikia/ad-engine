@@ -39,14 +39,6 @@ export function getRubiconDisplayContext(): object {
 				siteId: '148804',
 				zoneId: '704676',
 			},
-			incontent_leaderboard: {
-				sizes: [[728, 90]],
-				targeting: {
-					loc: ['hivi'],
-				},
-				siteId: '494482',
-				zoneId: '2942280',
-			},
 			bottom_leaderboard: {
 				sizes: [
 					[728, 90],

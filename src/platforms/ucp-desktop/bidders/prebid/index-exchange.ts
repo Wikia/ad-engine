@@ -16,10 +16,6 @@ export function getIndexExchangeContext(): object {
 				],
 				siteId: '183567',
 			},
-			incontent_leaderboard: {
-				sizes: [[728, 90]],
-				siteId: '1001381',
-			},
 			incontent_boxad_1: {
 				sizes: [
 					[160, 600],
@@ -27,6 +23,10 @@ export function getIndexExchangeContext(): object {
 					[300, 250],
 				],
 				siteId: '185049',
+			},
+			incontent_leaderboard: {
+				sizes: [[728, 90]],
+				siteId: '1001381',
 			},
 			bottom_leaderboard: {
 				sizes: [

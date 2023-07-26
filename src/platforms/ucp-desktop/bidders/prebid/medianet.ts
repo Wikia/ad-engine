@@ -31,11 +31,6 @@ export function getMedianetContext(): object {
 				cid: '8CU5JOKX4',
 				crid: '210414245',
 			},
-			incontent_leaderboard: {
-				sizes: [[728, 90]],
-				cid: '8CU5JOKX4',
-				crid: '550202278',
-			},
 			bottom_leaderboard: {
 				sizes: [
 					[728, 90],
