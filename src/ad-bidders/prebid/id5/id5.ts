@@ -12,13 +12,13 @@ class Id5 {
 
 		utils.logger(logGroup, 'enabled');
 
-		return {
+		const config = {
 			name: 'id5Id',
 			params: {
 				partner: 1139,
 				abTesting: {
 					enabled: false,
-					controlGroupPct: 0.1,
+					controlGroupPct: 0.5,
 				},
 			},
 			storage: {
@@ -28,6 +28,21 @@ class Id5 {
 				refreshInSeconds: 8 * 3600,
 			},
 		};
+
+		// Configure A/B testing
+		const id5AbValue = context.get('bidders.prebid.id5AbValue');
+
+		if (id5AbValue && id5AbValue !== 0) {
+			utils.logger(logGroup, 'A/B testing enabled', 'value', id5AbValue);
+			config.params.abTesting.enabled = true;
+			config.params.abTesting.controlGroupPct = id5AbValue;
+		} else {
+			utils.logger(logGroup, 'A/B testing disabled');
+		}
+
+		utils.logger(logGroup, 'config', config);
+
+		return config;
 	}
 
 	private isEnabled(): boolean {
