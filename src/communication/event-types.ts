@@ -92,6 +92,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'set opt in',
 		payload: props<GdprConsentPayload & CcpaSignalPayload>(),
 	},
+	AD_ENGINE_GPT_READY: {
+		name: 'GPT Ready',
+	},
 	AD_ENGINE_INSTANT_CONFIG_CACHE_RESET: {
 		name: 'Instant Config cache reset',
 	},

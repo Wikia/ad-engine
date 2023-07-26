@@ -1,10 +1,9 @@
 import { context, utils } from '@ad-engine/core';
-import { Ats } from '../ats';
 import { UserIdConfig } from '../index';
 
-const logGroup = 'LiveRamp';
+const logGroup = 'Id5';
 
-class LiveRamp {
+class Id5 {
 	getConfig(): UserIdConfig {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
@@ -12,27 +11,32 @@ class LiveRamp {
 		}
 
 		utils.logger(logGroup, 'enabled');
+
 		return {
-			name: 'identityLink',
+			name: 'id5Id',
 			params: {
-				pid: Ats.PLACEMENT_ID,
+				partner: 1139,
+				abTesting: {
+					enabled: false,
+					controlGroupPct: 0.1,
+				},
 			},
 			storage: {
 				type: 'html5',
-				name: Ats.ENVELOPE_STORAGE_NAME,
-				expires: 1,
-				refreshInSeconds: 1800,
+				name: 'id5id',
+				expires: 90,
+				refreshInSeconds: 8 * 3600,
 			},
 		};
 	}
 
 	private isEnabled(): boolean {
 		return (
-			context.get('bidders.liveRampId.enabled') &&
+			context.get('bidders.prebid.id5') &&
 			!context.get('options.optOutSale') &&
 			!utils.isCoppaSubject()
 		);
 	}
 }
 
-export const liveRamp = new LiveRamp();
+export const id5 = new Id5();
