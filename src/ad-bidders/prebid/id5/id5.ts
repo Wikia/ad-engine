@@ -2,9 +2,17 @@ import { context, utils } from '@ad-engine/core';
 import { UserIdConfig } from '../index';
 
 const logGroup = 'Id5';
+interface Id5Config extends UserIdConfig {
+	params: {
+		abTesting: {
+			enabled: boolean;
+			controlGroupPct: number;
+		};
+	};
+}
 
 class Id5 {
-	getConfig(): UserIdConfig {
+	getConfig(): Id5Config {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
 			return;

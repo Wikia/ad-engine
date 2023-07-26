@@ -14,7 +14,7 @@ describe('Id5', () => {
 			partner: 1139,
 			abTesting: {
 				enabled: false,
-				controlGroupPct: 0.1,
+				controlGroupPct: 0.5,
 			},
 		},
 		storage: {
@@ -29,6 +29,7 @@ describe('Id5', () => {
 		context.set('bidders.prebid.id5', true);
 		context.set('options.optOutSale', false);
 		window.fandomContext.partners.directedAtChildren = false;
+		context.set('bidders.prebid.id5AbValue', undefined);
 	});
 
 	after(() => {
@@ -62,5 +63,15 @@ describe('Id5', () => {
 		window.fandomContext.partners.directedAtChildren = true;
 
 		expect(id5.getConfig()).to.eql(undefined);
+	});
+
+	it('Id5 A/B testing is disabled when no value is set in context', () => {
+		expect(id5.getConfig().params.abTesting.enabled).to.eql(false);
+	});
+
+	it('Id5 A/B testing value is set with the one taken from context', () => {
+		context.set('bidders.prebid.id5AbValue', 0.9);
+
+		expect(id5.getConfig().params.abTesting.controlGroupPct).to.eql(0.9);
 	});
 });
