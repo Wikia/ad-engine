@@ -4,6 +4,8 @@ import { UserIdConfig } from '../index';
 const logGroup = 'Id5';
 
 class Id5 {
+	private partnerId = 1139;
+
 	getConfig(): UserIdConfig {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
@@ -15,7 +17,7 @@ class Id5 {
 		return {
 			name: 'id5Id',
 			params: {
-				partner: 1139,
+				partner: this.partnerId,
 				abTesting: {
 					enabled: false,
 					controlGroupPct: 0.1,
@@ -28,6 +30,10 @@ class Id5 {
 				refreshInSeconds: 8 * 3600,
 			},
 		};
+	}
+
+	getPartnerId(): number {
+		return this.partnerId;
 	}
 
 	private isEnabled(): boolean {

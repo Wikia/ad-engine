@@ -206,6 +206,25 @@ export class PrebidProvider extends BidderProvider {
 			this.prebidConfig.userSync.userIds.push(id5Config);
 			this.prebidConfig.userSync.auctionDelay = 50;
 		}
+
+		this.enableId5Analytics();
+	}
+
+	private enableId5Analytics(): void {
+		if (context.get('bidders.prebid.id5Analytics.enabled')) {
+			utils.logger(logGroup, 'enabling ID5 Analytics');
+
+			(window as any).pbjs.que.push(() => {
+				(window as any).pbjs.enableAnalytics([
+					{
+						provider: 'id5Analytics',
+						options: {
+							pid: id5.getPartnerId(),
+						},
+					},
+				]);
+			});
+		}
 	}
 
 	private configureTCF(): object {
