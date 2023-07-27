@@ -74,14 +74,6 @@ describe('Audigent', () => {
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
-	it('Audigent is not called when Identity Partners is enabled', async () => {
-		instantConfigStub.get.withArgs('icIdentityPartners').returns(true);
-
-		await audigent.call();
-
-		expect(loadScriptStub.called).to.equal(false);
-	});
-
 	it('Audigent not called when user is not opted in', async () => {
 		context.set('options.trackingOptIn', false);
 

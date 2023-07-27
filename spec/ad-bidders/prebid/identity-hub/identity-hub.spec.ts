@@ -39,14 +39,6 @@ describe('Pubmatic IdentityHub', () => {
 		assert.notCalled(loadScriptSpy);
 	});
 
-	it('IdentityHub is disabled when Identity Partners are enabled', async () => {
-		instantConfigStub.get.withArgs('icIdentityPartners').returns(true);
-
-		await identityHub.call();
-
-		assert.notCalled(loadScriptSpy);
-	});
-
 	it('IdentityHub is disabled if user has opted out sale', async () => {
 		contextStub.get.withArgs('options.optOutSale').returns(true);
 

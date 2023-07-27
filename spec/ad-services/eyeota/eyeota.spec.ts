@@ -68,14 +68,6 @@ describe('Eyeota', () => {
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
-	it('not called when Identity Partners is enabled', async () => {
-		instantConfigStub.get.withArgs('icIdentityPartners').returns(true);
-
-		await eyeota.call();
-
-		expect(loadScriptStub.called).to.equal(false);
-	});
-
 	it('not called when user is not opted in', async () => {
 		context.set('options.trackingOptIn', false);
 
