@@ -1,4 +1,4 @@
-import { BaseServiceSetup, utils } from '@wikia/ad-engine';
+import { BaseServiceSetup, communicationService, eventsRepository, utils } from '@wikia/ad-engine';
 import { MetricReporter } from '../tracking/metric-reporter';
 
 const GPT_TIMEOUT_MS = 10 * 1000;
@@ -16,6 +16,7 @@ export class GptSetup extends BaseServiceSetup {
 		return utils.scriptLoader.loadScript(GPT_LIBRARY_URL).then(() => {
 			utils.logger('gpt-provider', 'ready');
 			new MetricReporter().trackGptLibReady();
+			communicationService.emit(eventsRepository.AD_ENGINE_GPT_READY);
 		});
 	}
 }

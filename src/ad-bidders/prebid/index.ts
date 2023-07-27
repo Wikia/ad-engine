@@ -19,6 +19,7 @@ import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
 import { Ats } from './ats';
+import { id5 } from './id5';
 import { intentIQ } from './intent-iq';
 import { liveRamp } from './live-ramp';
 import { getSettings } from './prebid-settings';
@@ -66,6 +67,12 @@ const videoGranularity = {
 
 interface PrebidConfig extends BidderConfig {
 	[bidderName: string]: { enabled: boolean; slots: Dictionary } | boolean;
+}
+
+export interface UserIdConfig {
+	name: string;
+	params: object;
+	storage: object;
 }
 
 communicationService.onSlotEvent(AdSlotEvent.VIDEO_AD_IMPRESSION, ({ slot }) =>
@@ -127,6 +134,7 @@ export class PrebidProvider extends BidderProvider {
 						filter: 'include',
 					},
 				},
+				userIds: [],
 				syncsPerBidder: 3,
 				syncDelay: 6000,
 			},
@@ -139,9 +147,10 @@ export class PrebidProvider extends BidderProvider {
 		this.prebidConfig = {
 			...this.prebidConfig,
 			...this.configureTargeting(),
-			...this.configureLiveRamp(),
 			...this.configureTCF(),
 		};
+
+		this.configureUserSync();
 
 		this.applyConfig(this.prebidConfig);
 		this.configureAdUnits();
@@ -177,8 +186,26 @@ export class PrebidProvider extends BidderProvider {
 		};
 	}
 
-	private configureLiveRamp(): object {
-		return liveRamp.getConfig();
+	private configureUserSync(): void {
+		this.configureLiveRamp();
+		this.configureId5();
+	}
+
+	private configureLiveRamp(): void {
+		const liveRampConfig = liveRamp.getConfig();
+		if (liveRampConfig !== undefined) {
+			this.prebidConfig.userSync.userIds.push(liveRampConfig);
+			this.prebidConfig.userSync.syncDelay = 3000;
+		}
+	}
+
+	private configureId5(): void {
+		const id5Config = id5.getConfig();
+
+		if (id5Config !== undefined) {
+			this.prebidConfig.userSync.userIds.push(id5Config);
+			this.prebidConfig.userSync.auctionDelay = 50;
+		}
 	}
 
 	private configureTCF(): object {
