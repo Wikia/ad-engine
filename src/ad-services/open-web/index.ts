@@ -37,11 +37,6 @@ export class OpenWeb extends BaseServiceSetup {
 			return;
 		}
 
-		if (!this.placementHandler) {
-			utils.logger(logGroup, 'disabled - no placement handlers');
-			return;
-		}
-
 		const articleId = targetingService.get('post_id') || targetingService.get('artid');
 		const siteId = targetingService.get('s1');
 
