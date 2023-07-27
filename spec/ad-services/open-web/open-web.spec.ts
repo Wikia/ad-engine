@@ -1,11 +1,15 @@
-import { OpenWeb } from '@wikia/ad-services';
+import { OpenWeb, PlacementHandler } from '@wikia/ad-services';
 import { communicationService, EventOptions } from '@wikia/communication';
 import { context, InstantConfigService, utils } from '@wikia/core';
 import { expect } from 'chai';
-import { OpenWebUcpDesktopPlacementSearch, OpenWebUcpMobilePlacementSearch } from '../../../src';
 
 describe('OpenWeb', () => {
-	let loadScriptStub, instantConfigStub, contextStub, communicationServiceStub;
+	let loadScriptStub,
+		instantConfigStub,
+		contextStub,
+		communicationServiceStub,
+		placementHandlerBuildStub,
+		placementHandlerIsReadyStub;
 	let service: OpenWeb;
 	const fakeActiveConfigValue = {
 		isActive: true,
@@ -19,6 +23,11 @@ describe('OpenWeb', () => {
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		contextStub = global.sandbox.stub(context);
 		communicationServiceStub = global.sandbox.stub(communicationService);
+
+		placementHandlerIsReadyStub = global.sandbox
+			.stub(PlacementHandler.prototype, 'isReady')
+			.returns(true);
+		placementHandlerBuildStub = global.sandbox.stub(PlacementHandler.prototype, 'buildPlacements');
 
 		service = new OpenWeb(instantConfigStub);
 	});
@@ -55,16 +64,6 @@ describe('OpenWeb', () => {
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
-	it('OpenWeb does not load script without builder', async () => {
-		prepareUAPevent(false);
-		instantConfigStub.get.withArgs('icOpenWeb').returns(fakeActiveConfigValue);
-		contextStub.get.withArgs('state.isLogged').returns(false);
-
-		service.call();
-
-		expect(loadScriptStub.called).to.equal(false);
-	});
-
 	it('OpenWeb does not load script if UAP is loaded', async () => {
 		prepareUAPevent(true);
 		instantConfigStub.get.withArgs('icOpenWeb').returns(fakeActiveConfigValue);
@@ -75,31 +74,16 @@ describe('OpenWeb', () => {
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
-	it('OpenWeb does not load script if there is not enough boxes for mobile-builder', async () => {
-		prepareUAPevent(false);
-		instantConfigStub.get.withArgs('icOpenWeb').returns(fakeActiveConfigValue);
-		contextStub.get.withArgs('state.isLogged').returns(false);
-
-		service.setPlacementHandler(new OpenWebUcpMobilePlacementSearch()).call();
-
-		expect(loadScriptStub.called).to.equal(false);
-	});
-
 	it('OpenWeb does load script for mobile-builder', async () => {
 		prepareUAPevent(false);
 		instantConfigStub.get.withArgs('icOpenWeb').returns(fakeActiveConfigValue);
 		contextStub.get.withArgs('state.isLogged').returns(false);
 
-		const div = document.createElement('div');
-		div.classList.add('testing-boxad');
-		global.sandbox
-			.stub(document, 'querySelectorAll')
-			.withArgs('div[class*="-boxad"]')
-			.returns([div, div, div, div]);
-
-		service.setPlacementHandler(new OpenWebUcpMobilePlacementSearch()).call();
+		service.call();
 
 		expect(loadScriptStub.called).to.equal(true);
+		expect(placementHandlerIsReadyStub.called).to.equal(true);
+		expect(placementHandlerBuildStub.called).to.equal(true);
 	});
 
 	it('OpenWeb does load script for desktop-builder', async () => {
@@ -107,14 +91,10 @@ describe('OpenWeb', () => {
 		instantConfigStub.get.withArgs('icOpenWeb').returns(fakeActiveConfigValue);
 		contextStub.get.withArgs('state.isLogged').returns(false);
 
-		const div = document.createElement('div');
-		global.sandbox
-			.stub(document, 'querySelector')
-			.withArgs('#WikiaAdInContentPlaceHolder')
-			.returns(div);
-
-		service.setPlacementHandler(new OpenWebUcpDesktopPlacementSearch()).call();
+		service.call();
 
 		expect(loadScriptStub.called).to.equal(true);
+		expect(placementHandlerIsReadyStub.called).to.equal(true);
+		expect(placementHandlerBuildStub.called).to.equal(true);
 	});
 });

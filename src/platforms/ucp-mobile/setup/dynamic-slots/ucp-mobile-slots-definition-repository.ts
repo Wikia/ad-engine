@@ -143,9 +143,14 @@ export class UcpMobileSlotsDefinitionRepository {
 			classList: ['ad-slot-placeholder', 'incontent-boxad', 'is-loading'],
 			anchorSelector: context.get('templates.incontentAnchorSelector'),
 			insertMethod: 'before',
-			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder', '.incontent-boxad'],
+			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder', '.incontent-boxad', '.openweb-slot'],
 			repeatStart: 1,
 			repeatLimit: count,
+			repeatExceptions: [
+				(repeat) => {
+					return repeat === 2 ? { classList: ['openweb-slot'] } : null;
+				},
+			],
 		};
 
 		slotPlaceholderInjector.injectAndRepeat(icbPlaceholderConfig, adSlotCategory);

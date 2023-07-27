@@ -84,6 +84,9 @@ export const basicContext = {
 			fallback:
 				'https://script.wikia.nocookie.net/fandom-ae-assets/icbm/prod/icbm_state_fandomdesktop.json',
 		},
+		openweb: {
+			placementSelector: '#WikiaAdInContentPlaceHolder',
+		},
 	},
 	slotGroups: {
 		VIDEO: ['FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],

@@ -1,18 +1,24 @@
 import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
-import { BaseServiceSetup, context, TargetingData, targetingService, utils } from '@ad-engine/core';
-import { PlacementsBuilder } from './builder/placements-builder';
-import { OpenWebPlacementSearchHandler } from './placement-handler/placement-search';
+import {
+	BaseServiceSetup,
+	context,
+	InstantConfigService,
+	targetingService,
+	utils,
+} from '@ad-engine/core';
+import { PlacementHandler } from './utils/placement-handler';
 
 const logGroup = 'open-web';
 
-export * from './placement-handler';
+export * from './utils/placement-handler';
 
 export class OpenWeb extends BaseServiceSetup {
-	placementHandler: OpenWebPlacementSearchHandler;
+	protected placementHandler: PlacementHandler;
 
-	setPlacementHandler(handler: OpenWebPlacementSearchHandler) {
-		this.placementHandler = handler;
-		return this;
+	constructor(protected instantConfig: InstantConfigService = null) {
+		super(instantConfig);
+
+		this.placementHandler = new PlacementHandler();
 	}
 
 	call(): void {
@@ -36,9 +42,8 @@ export class OpenWeb extends BaseServiceSetup {
 			return;
 		}
 
-		const targeting = targetingService.dump<TargetingData>();
-		const articleId = targeting.post_id || targeting.artid;
-		const siteId = targeting.s1;
+		const articleId = targetingService.get('post_id') || targetingService.get('artid');
+		const siteId = targetingService.get('s1');
 
 		communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
 			if (action.isLoaded) {
@@ -46,18 +51,13 @@ export class OpenWeb extends BaseServiceSetup {
 				return;
 			}
 
-			if (this.placementHandler.isPlacementFound()) {
+			this.placementHandler.init();
+			if (this.placementHandler.isReady()) {
 				const postUniqueId = `wk_${siteId}_${articleId}`;
-				const postUrl = window.location.href.split('?')[0];
-				const articleTitle = targeting.wpage || '';
+				const postUrl = window.location.origin + window.location.pathname;
+				const articleTitle = targetingService.get('wpage') || '';
 
-				const placementBuilder = new PlacementsBuilder();
-				const reactionElement = placementBuilder.buildReactionDivModule(postUniqueId);
-				const standaloneAdElement = placementBuilder.buildStandaloneAdUnit();
-				const anchor = this.placementHandler.getPlacement();
-				anchor.prepend(standaloneAdElement);
-				anchor.prepend(reactionElement);
-
+				this.placementHandler.buildPlacements(postUniqueId);
 				this.loadScript(config.spotId, postUniqueId, postUrl, articleTitle);
 			} else {
 				utils.logger(logGroup, 'disabled - builder failed');

@@ -19,7 +19,6 @@ import {
 	LiveRampPixel,
 	Nielsen,
 	OpenWeb,
-	OpenWebUcpMobilePlacementSearch,
 	PartnerPipeline,
 	PrebidNativeProvider,
 	Stroer,
@@ -75,7 +74,7 @@ export class UcpMobileAdsMode implements DiProcess {
 				this.nielsen,
 				this.prebidNativeProvider,
 				this.wunderkind,
-				this.openWeb.setPlacementHandler(new OpenWebUcpMobilePlacementSearch()),
+				this.openWeb,
 				this.playerSetup.setOptions({
 					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
 				}),
