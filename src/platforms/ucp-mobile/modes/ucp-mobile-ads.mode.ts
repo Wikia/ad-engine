@@ -4,6 +4,7 @@ import {
 	Ats,
 	Audigent,
 	Bidders,
+	BrandMetrics,
 	Captify,
 	communicationService,
 	Confiant,
@@ -36,6 +37,7 @@ export class UcpMobileAdsMode implements DiProcess {
 		private ats: Ats,
 		private audigent: Audigent,
 		private bidders: Bidders,
+		private brandMetrics: BrandMetrics,
 		private captify: Captify,
 		private confiant: Confiant,
 		private doubleVerify: DoubleVerify,
@@ -70,6 +72,7 @@ export class UcpMobileAdsMode implements DiProcess {
 					dependencies: [this.coppaSetup.initialized],
 				}),
 				this.bidders,
+				this.brandMetrics,
 				this.captify,
 				this.liveConnect.setOptions({
 					dependencies: [this.coppaSetup.initialized],
