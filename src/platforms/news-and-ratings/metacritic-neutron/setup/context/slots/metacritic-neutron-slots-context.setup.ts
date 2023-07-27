@@ -150,6 +150,7 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 						viewportSize: [840, 200],
 						sizes: [
 							[300, 250],
+							[300, 600],
 							[5, 5],
 						],
 					},
