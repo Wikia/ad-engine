@@ -44,7 +44,7 @@ export class LoadTimesTracker {
 			this.tzOffset = now.getTimezoneOffset();
 		}
 		communicationService.emit(eventsRepository.AD_ENGINE_LOAD_TIME_INIT, {
-			timestamp: this.startTime,
+			timestamp: now,
 		});
 	}
 
@@ -67,11 +67,23 @@ export class LoadTimesTracker {
 			});
 		});
 
-		communicationService.onSlotEvent(AdSlotEvent.SLOT_RESPONSE_RECEIVED, (payload) => {
-			if (payload.adSlotName == 'top_leaderboard') {
+		communicationService.onSlotEvent(
+			AdSlotEvent.SLOT_REQUESTED_EVENT,
+			() => {
+				this.trackLoadTime('top_leaderboard_requested', Date.now());
+			},
+			'top_leaderboard',
+			true,
+		);
+
+		communicationService.onSlotEvent(
+			AdSlotEvent.SLOT_RESPONSE_RECEIVED,
+			() => {
 				this.trackLoadTime('top_leaderboard_received', Date.now());
-			}
-		});
+			},
+			'top_leaderboard',
+			true,
+		);
 
 		communicationService.on(eventsRepository.AD_ENGINE_SLOT_LOADED, (payload) => {
 			if (payload.name == 'top_leaderboard') {
