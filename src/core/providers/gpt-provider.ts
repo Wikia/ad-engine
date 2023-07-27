@@ -60,6 +60,12 @@ function configure(): void {
 		adSlot.emit(AdSlotEvent.SLOT_REQUESTED_EVENT);
 	});
 
+	tag.addEventListener('slotResponseReceived', (event: googletag.events.SlotOnloadEvent) => {
+		const adSlot = getAdSlotFromEvent(event);
+
+		adSlot.emit(AdSlotEvent.SLOT_RESPONSE_RECEIVED);
+	});
+
 	tag.addEventListener('slotOnload', (event: googletag.events.SlotOnloadEvent) => {
 		const adSlot = getAdSlotFromEvent(event);
 

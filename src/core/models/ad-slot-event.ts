@@ -2,6 +2,7 @@ export enum AdSlotEvent {
 	CUSTOM_EVENT = 'customEvent',
 	SLOT_ADDED_EVENT = 'slotAdded',
 	SLOT_REQUESTED_EVENT = 'slotRequested',
+	SLOT_RESPONSE_RECEIVED = 'slotResponseReceived',
 	SLOT_LOADED_EVENT = 'slotLoaded',
 	SLOT_VIEWED_EVENT = 'slotViewed',
 	SLOT_RENDERED_EVENT = 'slotRendered',

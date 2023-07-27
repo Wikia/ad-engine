@@ -1,4 +1,4 @@
-import { communicationService, eventsRepository, utils } from '@wikia/ad-engine';
+import { AdSlotEvent, communicationService, eventsRepository, utils } from '@wikia/ad-engine';
 import { trackingUrls } from '../setup/tracking-urls';
 import { DataWarehouseTracker } from './data-warehouse';
 
@@ -44,7 +44,7 @@ export class LoadTimesTracker {
 			this.tzOffset = now.getTimezoneOffset();
 		}
 		communicationService.emit(eventsRepository.AD_ENGINE_LOAD_TIME_INIT, {
-			timestamp: this.startTime,
+			timestamp: now,
 		});
 	}
 
@@ -66,6 +66,24 @@ export class LoadTimesTracker {
 				this.trackLoadTime(eventName, Date.now());
 			});
 		});
+
+		communicationService.onSlotEvent(
+			AdSlotEvent.SLOT_REQUESTED_EVENT,
+			() => {
+				this.trackLoadTime('top_leaderboard_requested', Date.now());
+			},
+			'top_leaderboard',
+			true,
+		);
+
+		communicationService.onSlotEvent(
+			AdSlotEvent.SLOT_RESPONSE_RECEIVED,
+			() => {
+				this.trackLoadTime('top_leaderboard_received', Date.now());
+			},
+			'top_leaderboard',
+			true,
+		);
 
 		communicationService.on(eventsRepository.AD_ENGINE_SLOT_LOADED, (payload) => {
 			if (payload.name == 'top_leaderboard') {
