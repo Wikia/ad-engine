@@ -21,6 +21,9 @@ export function getWikiaContext(): object {
 				sizes: [[1, 1]],
 				position: 'native',
 			},
+			fandom_dt_galleries: {
+				sizes: [[728, 90]],
+			},
 		},
 	};
 }
