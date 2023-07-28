@@ -27,7 +27,6 @@ describe('Eyeota', () => {
 			.returns(Promise.resolve({} as any));
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		instantConfigStub.get.withArgs('icEyeota').returns(true);
-		instantConfigStub.get.withArgs('icIdentityPartners').returns(false);
 		tcfStub = global.sandbox
 			.stub(tcf, 'getTCData')
 			.returns(Promise.resolve({ tcString: 'test' }) as any);

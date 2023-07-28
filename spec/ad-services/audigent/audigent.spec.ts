@@ -27,7 +27,6 @@ describe('Audigent', () => {
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		instantConfigStub.get.withArgs('icAudigent').returns(true);
 		instantConfigStub.get.withArgs('icAudigentTrackingSampling').returns(0);
-		instantConfigStub.get.withArgs('icIdentityPartners').returns(false);
 
 		targetingServiceStub = global.sandbox.stub(targetingService);
 		global.sandbox.stub(WaitFor.prototype, 'until').returns(Promise.resolve());

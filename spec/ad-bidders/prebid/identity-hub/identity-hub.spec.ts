@@ -9,7 +9,6 @@ describe('Pubmatic IdentityHub', () => {
 
 	beforeEach(() => {
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
-		instantConfigStub.get.withArgs('icIdentityPartners').returns(false);
 		loadScriptSpy = global.sandbox.stub(utils.scriptLoader, 'loadScript');
 		loadScriptSpy.resolvesThis();
 		contextStub = global.sandbox.stub(context);
