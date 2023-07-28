@@ -16,9 +16,15 @@ body {
 
 	&.has-uap {
 		#top_leaderboard {
-			&.sticky-tlb {
+			&.bfaa-slot {
 				z-index: 5000001;
 			}
+		}
+	}
+
+	#top_leaderboard {
+		&.bfaa-template {
+			z-index: 5000001;
 		}
 	}
 }
