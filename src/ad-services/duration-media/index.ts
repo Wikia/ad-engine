@@ -8,9 +8,9 @@ export class DurationMedia extends BaseServiceSetup {
 		const libraryUrl: string = context.get('services.durationMedia.libraryUrl');
 
 		if (this.isEnabled('icDurationMedia', false) && libraryUrl) {
-			// DM is refreshing slots, so let's load it only after at least one slot is filled
+			// DM is using GPT events to listen on slot render, so let's load it after GPT
 			communicationService.on(
-				eventsRepository.AD_ENGINE_SLOT_LOADED,
+				eventsRepository.AD_ENGINE_GPT_READY,
 				() => {
 					utils.logger(logGroup, 'loading', libraryUrl);
 

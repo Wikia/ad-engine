@@ -1,5 +1,6 @@
 export * from './anyclip';
 export * from './audigent';
+export * from './brand-metrics';
 export * from './bt-rec';
 export * from './captify';
 export * from './confiant';
