@@ -4,7 +4,6 @@ import {
 	communicationService,
 	DiProcess,
 	eventsRepository,
-	IdentityHub,
 	jwpSetup,
 	LiveConnect,
 	LiveRampPixel,
@@ -20,7 +19,6 @@ export class NoAdsMode implements DiProcess {
 		private noAdsDetector: NoAdsDetector,
 		private ats: Ats,
 		private audigent: Audigent,
-		private identityHub: IdentityHub,
 		private liveConnect: LiveConnect,
 		private liveRampPixel: LiveRampPixel,
 	) {}
@@ -31,7 +29,7 @@ export class NoAdsMode implements DiProcess {
 		this.dispatchJWPlayerSetupAction();
 
 		this.pipeline
-			.add(this.liveRampPixel, this.ats, this.audigent, this.liveConnect, this.identityHub)
+			.add(this.liveRampPixel, this.ats, this.audigent, this.liveConnect)
 			.execute()
 			.then(() => {
 				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);
