@@ -22,6 +22,9 @@ export class IntentIQ {
 	private intentIqObject: IntentIqObject;
 
 	preloadScript(): Promise<void> {
+		if (!this.isEnabled()) {
+			return;
+		}
 		if (this.loadPromise) {
 			return this.loadPromise;
 		}
