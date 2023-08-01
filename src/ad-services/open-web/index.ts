@@ -6,19 +6,20 @@ import {
 	targetingService,
 	utils,
 } from '@ad-engine/core';
-import { PlacementHandler } from './utils/placement-handler';
+import { Injectable } from '@wikia/dependency-injection';
+import { PlacementsHandler } from './utils/placements-handler';
 
 const logGroup = 'open-web';
 
-export * from './utils/placement-handler';
-
+@Injectable()
 export class OpenWeb extends BaseServiceSetup {
-	protected placementHandler: PlacementHandler;
+	static MOBILE_REPLACE_REPEAT_SLOT_IDX = 2;
 
-	constructor(protected instantConfig: InstantConfigService = null) {
+	constructor(
+		protected instantConfig: InstantConfigService = null,
+		private placementsHandler: PlacementsHandler,
+	) {
 		super(instantConfig);
-
-		this.placementHandler = new PlacementHandler();
 	}
 
 	call(): void {
@@ -46,13 +47,13 @@ export class OpenWeb extends BaseServiceSetup {
 				return;
 			}
 
-			this.placementHandler.init();
-			if (this.placementHandler.isReady()) {
-				const postUniqueId = `wk_${siteId}_${articleId}`;
+			const postUniqueId = `wk_${siteId}_${articleId}`;
+			this.placementsHandler.build(postUniqueId);
+
+			if (this.placementsHandler.isDone()) {
 				const postUrl = window.location.origin + window.location.pathname;
 				const articleTitle = targetingService.get('wpage') || '';
 
-				this.placementHandler.buildPlacements(postUniqueId);
 				this.loadScript(config.spotId, postUniqueId, postUrl, articleTitle);
 			} else {
 				utils.logger(logGroup, 'disabled - builder failed');

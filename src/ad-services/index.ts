@@ -12,6 +12,8 @@ export * from './live-connect';
 export * from './liveramp-pixel';
 export * from './nielsen';
 export * from './open-web';
+export * from './open-web/utils/placements-builder';
+export * from './open-web/utils/placements-handler';
 export * from './optimizely';
 export * from './stroer';
 export * from './wunderkind';

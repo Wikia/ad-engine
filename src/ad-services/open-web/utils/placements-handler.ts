@@ -1,24 +1,29 @@
 import { context } from '@ad-engine/core';
+import { Injectable } from '@wikia/dependency-injection';
 import { PlacementsBuilder } from './placements-builder';
 
-export class PlacementHandler {
-	protected anchor: Element | null;
-	protected placementBuilder: PlacementsBuilder;
+@Injectable()
+export class PlacementsHandler {
+	private anchor: Element | null;
 
-	constructor() {
-		this.placementBuilder = new PlacementsBuilder();
-	}
+	constructor(private placementBuilder: PlacementsBuilder) {}
 
-	init() {
-		const selector = context.get('services.openweb.placementSelector');
+	private init() {
+		const selector = context.get('services.openWeb.placementSelector');
 		this.anchor = document.querySelector(selector);
 	}
 
-	public isReady(): boolean {
+	public isDone(): boolean {
 		return this.anchor !== null;
 	}
 
-	public buildPlacements(postUniqueId: string): void {
+	public build(postUniqueId: string): void {
+		this.init();
+
+		if (!this.isDone()) {
+			return;
+		}
+
 		const reactionElement = this.placementBuilder.buildReactionDivModule(postUniqueId);
 		const standaloneAdElement = this.placementBuilder.buildStandaloneAdUnit();
 

@@ -5,8 +5,10 @@ import {
 	CookieStorageAdapter,
 	eventsRepository,
 	InstantConfigService,
+	OpenWeb,
 	RepeatableSlotPlaceholderConfig,
 	scrollListener,
+	SlotPlaceholderConfig,
 	slotPlaceholderInjector,
 	UapLoadStatus,
 	utils,
@@ -147,13 +149,24 @@ export class UcpMobileSlotsDefinitionRepository {
 			repeatStart: 1,
 			repeatLimit: count,
 			repeatExceptions: [
-				(repeat) => {
-					return repeat === 2 ? { classList: ['openweb-slot'] } : null;
-				},
+				this.buildRepeatException(OpenWeb.MOBILE_REPLACE_REPEAT_SLOT_IDX, {
+					classList: ['openweb-slot'],
+					anchorSelector: context.get('templates.incontentAnchorSelector'),
+					insertMethod: 'before',
+				}),
 			],
 		};
 
 		slotPlaceholderInjector.injectAndRepeat(icbPlaceholderConfig, adSlotCategory);
+	}
+
+	private buildRepeatException(
+		repeatIdxToChange: number,
+		newConfigOverride: SlotPlaceholderConfig,
+	): (repeat: number) => SlotPlaceholderConfig | null {
+		return (repeat) => {
+			return repeat === repeatIdxToChange ? newConfigOverride : null;
+		};
 	}
 
 	getMobilePrefooterConfig(): SlotSetupDefinition {

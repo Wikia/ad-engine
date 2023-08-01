@@ -1,4 +1,4 @@
-import { OpenWeb, PlacementHandler } from '@wikia/ad-services';
+import { OpenWeb, PlacementsBuilder, PlacementsHandler } from '@wikia/ad-services';
 import { communicationService, EventOptions } from '@wikia/communication';
 import { context, InstantConfigService, utils } from '@wikia/core';
 import { expect } from 'chai';
@@ -25,11 +25,11 @@ describe('OpenWeb', () => {
 		communicationServiceStub = global.sandbox.stub(communicationService);
 
 		placementHandlerIsReadyStub = global.sandbox
-			.stub(PlacementHandler.prototype, 'isReady')
+			.stub(PlacementsHandler.prototype, 'isDone')
 			.returns(true);
-		placementHandlerBuildStub = global.sandbox.stub(PlacementHandler.prototype, 'buildPlacements');
+		placementHandlerBuildStub = global.sandbox.stub(PlacementsHandler.prototype, 'build');
 
-		service = new OpenWeb(instantConfigStub);
+		service = new OpenWeb(instantConfigStub, new PlacementsHandler(new PlacementsBuilder()));
 	});
 
 	afterEach(() => {

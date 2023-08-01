@@ -85,7 +85,7 @@ export const basicContext = {
 				'incontent_player',
 			],
 		},
-		openweb: {
+		openWeb: {
 			placementSelector: 'div[class*="openweb-slot"]',
 		},
 	},
