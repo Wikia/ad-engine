@@ -5,7 +5,7 @@ const isOptInByQueryParam = queryString.get('tracking-opt-in-status') === 'true'
 const isOptOutSaleByQueryParam = queryString.get('opt-out-sale-status') === 'true';
 
 function isOptedIn(): boolean {
-	return isOptInByQueryParam || !!context.get('options.trackingOptIn');
+	return isOptInByQueryParam || !!context.get('options.adsAllowed');
 }
 
 function isOptOutSale(): boolean {

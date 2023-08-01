@@ -122,8 +122,7 @@ export class IntentIQ {
 	isEnabled(): boolean {
 		return (
 			context.get('bidders.prebid.intentIQ') &&
-			context.get('options.trackingOptIn') &&
-			!context.get('options.optOutSale') &&
+			context.get('options.adsAllowed') &&
 			!utils.isCoppaSubject()
 		);
 	}

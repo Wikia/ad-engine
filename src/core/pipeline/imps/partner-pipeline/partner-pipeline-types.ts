@@ -2,6 +2,7 @@ export type PartnerStepUnion = PartnerInitializationProcess | FuncProcess;
 
 export interface PartnerInitializationProcessOptions {
 	dependencies?: Promise<any>[];
+	trackingRequired?: boolean;
 	timeout?: number;
 }
 

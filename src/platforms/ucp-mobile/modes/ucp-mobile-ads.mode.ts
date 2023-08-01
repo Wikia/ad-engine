@@ -8,6 +8,7 @@ import {
 	Captify,
 	communicationService,
 	Confiant,
+	context,
 	CoppaSetup,
 	DiProcess,
 	DoubleVerify,
@@ -62,24 +63,30 @@ export class UcpMobileAdsMode implements DiProcess {
 		this.pipeline
 			.add(
 				this.identitySetup,
-				this.coppaSetup,
+				this.coppaSetup.setOptions({
+					timeout: context.get('options.coppaTimeout'),
+				}),
 				this.liveRampPixel.setOptions({
 					dependencies: [this.coppaSetup.initialized],
+					timeout: context.get('options.coppaTimeout'),
 				}),
 				this.anyclip,
 				this.ats,
 				this.audigent.setOptions({
 					dependencies: [this.coppaSetup.initialized],
+					timeout: context.get('options.coppaTimeout'),
 				}),
 				this.bidders,
 				this.brandMetrics,
 				this.captify,
 				this.liveConnect.setOptions({
 					dependencies: [this.coppaSetup.initialized],
+					timeout: context.get('options.coppaTimeout'),
 				}),
 				this.wadRunner,
 				this.eyeota.setOptions({
 					dependencies: [this.coppaSetup.initialized],
+					timeout: context.get('options.coppaTimeout'),
 				}),
 				this.iasPublisherOptimization,
 				this.confiant,
@@ -98,6 +105,7 @@ export class UcpMobileAdsMode implements DiProcess {
 				}),
 				this.adEngineStackSetup.setOptions({
 					dependencies: [
+						this.coppaSetup.initialized,
 						this.bidders.initialized,
 						this.wadRunner.initialized,
 						this.gptSetup.initialized,
@@ -105,7 +113,7 @@ export class UcpMobileAdsMode implements DiProcess {
 					],
 					timeout: jwPlayerInhibitor.isRequiredToRun()
 						? jwPlayerInhibitor.getDelayTimeoutInMs()
-						: null,
+						: context.get('options.coppaTimeout'),
 				}),
 			)
 			.execute()

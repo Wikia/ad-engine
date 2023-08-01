@@ -38,15 +38,7 @@ export class JwplayerComscoreHandler {
 			return false;
 		}
 
-		if (context.get('options.geoRequiresConsent')) {
-			return context.get('options.trackingOptIn');
-		}
-
-		if (context.get('options.geoRequiresSignal')) {
-			return context.get('options.optOutSale');
-		}
-
-		return true;
+		return context.get('options.adsAllowed');
 	}
 
 	private track(payload: ComscorePayload): void {
