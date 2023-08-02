@@ -1,4 +1,4 @@
-import { context, DiProcess, universalAdPackage } from '@wikia/ad-engine';
+import { context, DiProcess, HIDDEN_AD_CLASS, universalAdPackage } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -275,7 +275,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 			},
 			'incontent-leader-plus-inc': {
-				defaultClasses: ['hidden-ad'],
+				defaultClasses: [HIDDEN_AD_CLASS],
 				defaultSizes: [
 					[728, 90],
 					[970, 250],

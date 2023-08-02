@@ -1,3 +1,4 @@
+import { HIDDEN_AD_CLASS } from '@wikia/core';
 import { getTopOffset } from '@wikia/core/utils';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
@@ -35,7 +36,7 @@ describe('dimensions', () => {
 		const removeSpy = sinon.spy(element.classList, 'remove');
 
 		expect(getTopOffset(element)).to.equal(300);
-		expect(adSpy.calledWith('hidden-ad')).to.equal(true);
-		expect(removeSpy.calledWith('hidden-ad')).to.equal(true);
+		expect(adSpy.calledWith(HIDDEN_AD_CLASS)).to.equal(true);
+		expect(removeSpy.calledWith(HIDDEN_AD_CLASS)).to.equal(true);
 	});
 });

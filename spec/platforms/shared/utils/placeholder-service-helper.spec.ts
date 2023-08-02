@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 
+import { HIDDEN_AD_CLASS } from '@wikia/core';
 import { PlaceholderServiceHelper } from '@wikia/platforms/shared/utils/placeholder-service-helper';
 
 describe('placeholder service helper', () => {
@@ -58,11 +59,11 @@ describe('placeholder service helper', () => {
 			placeholderHelper = new PlaceholderServiceHelper();
 		});
 
-		it("shouldHideAdLabel returns true if adLabel contains class '.hidden-ad'", () => {
+		it(`shouldHideAdLabel returns true if adLabel contains class .${HIDDEN_AD_CLASS}`, () => {
 			expect(placeholderHelper.shouldHideAdLabel(getMockElement(true))).to.equal(false);
 		});
 
-		it("shouldHideAdLabel returns false if adLabel does not contain class '.hidden-ad'", () => {
+		it(`shouldHideAdLabel returns false if adLabel does not contain class .${HIDDEN_AD_CLASS}`, () => {
 			expect(placeholderHelper.shouldHideAdLabel(getMockElement(false))).to.equal(true);
 		});
 	});

@@ -4,6 +4,7 @@ import {
 	communicationService,
 	context,
 	eventsRepository,
+	HIDDEN_AD_CLASS,
 	InstantConfigService,
 	RepeatableSlotPlaceholderConfig,
 	scrollListener,
@@ -28,7 +29,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 				placeholderConfig,
 				anchorSelector: '.top-leaderboard',
 				insertMethod: 'prepend',
-				classList: ['hidden-ad', 'ad-slot'],
+				classList: [HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
@@ -66,7 +67,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: '.main-page-tag-rcs, #rail-boxad-wrapper',
 				insertMethod: 'prepend',
-				classList: ['hidden-ad', 'ad-slot'],
+				classList: [HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
@@ -100,7 +101,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 				anchorPosition: 'belowFirstViewport',
 				avoidConflictWith: ['.ad-slot-icl'],
 				insertMethod: 'before',
-				classList: ['hidden-ad', 'ad-slot', 'ad-slot-icl'],
+				classList: [HIDDEN_AD_CLASS, 'ad-slot', 'ad-slot-icl'],
 			},
 			slotCreatorWrapperConfig: {
 				classList: ['ad-slot-placeholder', 'incontent-leaderboard', 'is-loading'],
@@ -175,7 +176,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: '#WikiaAdInContentPlaceHolder',
 				insertMethod: 'append',
-				classList: ['hidden-ad', 'ad-slot'],
+				classList: [HIDDEN_AD_CLASS, 'ad-slot'],
 				repeat: {
 					index: 1,
 					limit: 20,
@@ -269,7 +270,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: '.page',
 				insertMethod: 'before',
-				classList: ['hidden-ad', 'ad-slot'],
+				classList: [HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			activator: () => activateFloorAdhesionOnUAP(activateFloorAdhesion),
 		};

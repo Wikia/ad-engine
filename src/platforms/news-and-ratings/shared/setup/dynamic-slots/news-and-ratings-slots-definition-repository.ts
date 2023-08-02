@@ -4,6 +4,7 @@ import {
 	communicationService,
 	context,
 	eventsRepository,
+	HIDDEN_AD_CLASS,
 	InstantConfigService,
 	scrollListener,
 	utils,
@@ -27,7 +28,7 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: 'body',
 				insertMethod: 'prepend',
-				classList: ['hidden-ad', 'ad-slot'],
+				classList: [HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
@@ -57,7 +58,7 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: 'body',
 				insertMethod: 'append',
-				classList: ['hidden-ad', 'ad-slot'],
+				classList: [HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			activator: () =>
 				activateFloorAdhesionOnUAP(activateFloorAdhesion, !this.isFloorAdhesionNonUapApplicable()),
@@ -87,7 +88,7 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: 'body',
 				insertMethod: 'append',
-				classList: ['hidden-ad', 'ad-slot'],
+				classList: [HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			activator: () => {
 				const { dataset } = document.getElementById(slotName);

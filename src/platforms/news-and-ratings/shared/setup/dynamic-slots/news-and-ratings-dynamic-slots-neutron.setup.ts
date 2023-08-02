@@ -6,6 +6,7 @@ import {
 	Dictionary,
 	DiProcess,
 	eventsRepository,
+	HIDDEN_AD_CLASS,
 	targetingService,
 	utils,
 } from '@wikia/ad-engine';
@@ -144,7 +145,7 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 				insertMethod: 'alter',
 				anchorSelector: '',
 				anchorElement: domSlotElement,
-				classList: ['hidden-ad', 'ad-slot'],
+				classList: [HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			activator: () => {
 				context.push('state.adStack', { id: slotName });

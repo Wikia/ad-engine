@@ -9,6 +9,6 @@ export class FloorAdhesionAnchorHiddenHandler implements TemplateStateHandler {
 	async onEnter(): Promise<void> {
 		this.manipulator
 			.element(document.getElementById('floor_adhesion_anchor'))
-			.addClass(AdSlot.HIDDEN_CLASS);
+			.addClass(AdSlot.HIDDEN_AD_CLASS);
 	}
 }

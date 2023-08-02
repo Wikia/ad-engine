@@ -2,7 +2,7 @@
 @import '../shared/styles/mixin';
 @import '../shared/styles/uap/uap-variables';
 @import '../shared/styles/uap-porvata/porvata';
-@import '../shared/styles/common/hidden-ad';
+@import '../shared/styles/common/hidden-ad-helper';
 
 @mixin ucp-mobile-uap-styles() {
 	.has-uap {
@@ -67,7 +67,7 @@
 .gpt-ad {
 	text-align: center;
 
-	@include hidden-ad();
+	@include hidden-ad-helper();
 
 	& > div > iframe {
 		display: block;

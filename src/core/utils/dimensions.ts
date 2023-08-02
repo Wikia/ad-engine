@@ -1,3 +1,5 @@
+import { HIDDEN_AD_CLASS } from '..';
+
 export interface ElementOffset {
 	top: number;
 	left: number;
@@ -31,12 +33,12 @@ export function getElementOffset(element: HTMLElement): ElementOffset {
 		height: '',
 	};
 
-	if (element.classList.contains('hidden-ad')) {
+	if (element.classList.contains(HIDDEN_AD_CLASS)) {
 		hideAgain = true;
 		previousStyles.display = element.style.display;
 		previousStyles.height = element.style.height;
 
-		element.classList.remove('hidden-ad');
+		element.classList.remove(HIDDEN_AD_CLASS);
 		element.style.display = 'block';
 		element.style.height = '1px';
 	}
@@ -44,7 +46,7 @@ export function getElementOffset(element: HTMLElement): ElementOffset {
 	const offset: ElementOffset = calculateOffset(element);
 
 	if (hideAgain) {
-		element.classList.add('hidden-ad');
+		element.classList.add(HIDDEN_AD_CLASS);
 		element.style.display = previousStyles.display;
 		element.style.height = previousStyles.height;
 	}

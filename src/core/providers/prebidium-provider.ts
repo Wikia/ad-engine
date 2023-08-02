@@ -5,7 +5,7 @@ import {
 	ofType,
 } from '@ad-engine/communication';
 import { filter, take } from 'rxjs/operators';
-import { AdSlot } from '../models';
+import { AdSlot, HIDDEN_AD_CLASS } from '../models';
 import { pbjsFactory, targetingService } from '../services';
 import { IframeBuilder, logger } from '../utils';
 import { Provider } from './provider';
@@ -33,7 +33,7 @@ export class PrebidiumProvider implements Provider {
 
 				if (doc && adId) {
 					pbjs.renderAd(doc, adId);
-					adSlot.getElement()?.classList?.remove('hidden-ad');
+					adSlot.getElement()?.classList?.remove(HIDDEN_AD_CLASS);
 					adSlot.success();
 					logger(logGroup, adSlot.getSlotName(), 'slot added');
 				}

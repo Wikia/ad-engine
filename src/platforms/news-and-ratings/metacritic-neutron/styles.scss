@@ -1,6 +1,6 @@
 @import '../shared/styles/uap-styles.scss';
 @import '../shared/styles/out-of-page-styles';
-@import '../../shared/styles/common/hidden-ad';
+@import '../../shared/styles/common/hidden-ad-helper';
 
 body {
 	@include uap-styles();
@@ -17,7 +17,7 @@ body {
 .gpt-ad {
 	text-align: center;
 
-	@include hidden-ad();
+	@include hidden-ad-helper();
 
 	& > div > iframe {
 		display: block;

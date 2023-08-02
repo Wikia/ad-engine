@@ -1,5 +1,6 @@
 import {
 	AdSlot,
+	HIDDEN_AD_CLASS,
 	slotTweaker,
 	TEMPLATE,
 	TemplateStateHandler,
@@ -13,7 +14,7 @@ export class FloorAdhesionBootstrapHandler implements TemplateStateHandler {
 
 	async onEnter(transition: TemplateTransition<'display'>): Promise<void> {
 		this.adSlot.setConfigProperty('showManually', true);
-		this.adSlot.addClass(AdSlot.HIDDEN_CLASS);
+		this.adSlot.addClass(AdSlot.HIDDEN_AD_CLASS);
 
 		if (this.adSlot.isOutOfPage()) {
 			await slotTweaker.adjustIframeByContentSize(this.adSlot);
@@ -23,7 +24,7 @@ export class FloorAdhesionBootstrapHandler implements TemplateStateHandler {
 	}
 
 	async onLeave(): Promise<void> {
-		document.getElementById('floor_adhesion_anchor').classList.remove('hidden-ad');
+		document.getElementById('floor_adhesion_anchor').classList.remove(HIDDEN_AD_CLASS);
 		this.adSlot.show();
 	}
 }

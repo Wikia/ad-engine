@@ -15,6 +15,7 @@ import {
 	CookieStorageAdapter,
 	DiProcess,
 	eventsRepository,
+	HIDDEN_AD_CLASS,
 	Nativo,
 	slotImpactWatcher,
 	slotService,
@@ -56,7 +57,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				slotName: Nativo.FEED_AD_SLOT_NAME,
 				anchorSelector: '.recirculation-prefooter',
 				insertMethod: 'before',
-				classList: ['ntv-ad', 'hidden-ad'],
+				classList: ['ntv-ad', HIDDEN_AD_CLASS],
 			}),
 		]);
 
@@ -142,7 +143,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 							slotImpactWatcher.request({
 								id: icpSlotName,
 								priority: 6,
-								breakCallback: () => slot.getPlaceholder()?.classList.add('hidden-ad'),
+								breakCallback: () => slot.getPlaceholder()?.classList.add(HIDDEN_AD_CLASS),
 							});
 							communicationService.emit(eventsRepository.ANYCLIP_LATE_INJECT);
 						});
@@ -212,7 +213,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		const disableFloorAdhesion = () => {
 			slotService.disable(slotName);
 			slotImpactWatcher.disable([slotName]);
-			document.getElementById('floor_adhesion_anchor')?.classList.add('hidden-ad');
+			document.getElementById('floor_adhesion_anchor')?.classList.add(HIDDEN_AD_CLASS);
 		};
 
 		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {

@@ -59,12 +59,14 @@ export interface WinningBidderDetails {
 	price: number | string;
 }
 
+export const HIDDEN_AD_CLASS = 'hidden-ad';
+
 export class AdSlot {
 	static LOG_GROUP = 'AdSlot';
 
 	static AD_CLASS = 'gpt-ad';
 	static AD_SLOT_PLACEHOLDER_CLASS = 'ad-slot-placeholder';
-	static HIDDEN_CLASS = 'hidden-ad';
+	static HIDDEN_AD_CLASS = HIDDEN_AD_CLASS;
 
 	private customIframe: HTMLIFrameElement = null;
 
@@ -563,10 +565,10 @@ export class AdSlot {
 	/**
 	 * Hides adSlot.
 	 *
-	 * Adds class AdSlot.HIDDEN_CLASS to adSlot's element.
+	 * Adds class AdSlot.HIDDEN_AD_CLASS to adSlot's element.
 	 */
 	hideAdd(): void {
-		const added = this.addClass(AdSlot.HIDDEN_CLASS);
+		const added = this.addClass(AdSlot.HIDDEN_AD_CLASS);
 
 		if (added) {
 			this.emit(AdSlotEvent.HIDDEN_EVENT);
@@ -576,10 +578,10 @@ export class AdSlot {
 	/**
 	 * Shows adSlot.
 	 *
-	 * Removes class AdSlot.HIDDEN_CLASS from adSlot's element.
+	 * Removes class AdSlot.HIDDEN_AD_CLASS from adSlot's element.
 	 */
 	show(): void {
-		const removed = this.removeClass(AdSlot.HIDDEN_CLASS);
+		const removed = this.removeClass(AdSlot.HIDDEN_AD_CLASS);
 
 		if (removed) {
 			this.emit(AdSlotEvent.SHOWED_EVENT);

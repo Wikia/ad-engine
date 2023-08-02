@@ -1,4 +1,4 @@
-import { AdSlot } from '../models';
+import { AdSlot, HIDDEN_AD_CLASS } from '../models';
 import { isIframe, logger } from '../utils';
 import { messageBus } from './message-bus';
 
@@ -39,7 +39,7 @@ export class SlotTweaker {
 		const container = adSlot.getElement();
 
 		container.style.maxHeight = `${container.offsetHeight}px`;
-		container.classList.remove('hidden-ad');
+		container.classList.remove(HIDDEN_AD_CLASS);
 		container.classList.add('slot-animation');
 		container.style.maxHeight = `${container.scrollHeight}px`;
 	}
@@ -150,7 +150,7 @@ export class SlotTweaker {
 					case 'collapse':
 						this.collapse(adSlot);
 						break;
-					case 'hidden-ad':
+					case HIDDEN_AD_CLASS:
 						adSlot.hideAdd();
 						break;
 					case 'show':

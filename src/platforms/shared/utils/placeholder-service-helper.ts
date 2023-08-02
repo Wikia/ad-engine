@@ -1,4 +1,4 @@
-import { AdSlotEvent, AdSlotStatus } from '@wikia/ad-engine';
+import { AdSlotEvent, AdSlotStatus, HIDDEN_AD_CLASS } from '@wikia/ad-engine';
 
 export class PlaceholderServiceHelper {
 	statusesToStopLoadingSlot: string[] = [
@@ -23,7 +23,7 @@ export class PlaceholderServiceHelper {
 	};
 
 	displayPlaceholder = (placeholder: HTMLElement): void => {
-		placeholder.classList.remove('hidden-ad');
+		placeholder.classList.remove(HIDDEN_AD_CLASS);
 	};
 
 	shouldKeepPlaceholder = (eventName: string, slotStatus: string): boolean => {
@@ -47,7 +47,7 @@ export class PlaceholderServiceHelper {
 
 	hidePlaceholder = (placeholder: HTMLElement): void => {
 		if (this.shouldHidePlaceholder) {
-			placeholder.classList.add('hidden-ad');
+			placeholder.classList.add(HIDDEN_AD_CLASS);
 
 			this.hideWrapperIfExists(placeholder);
 		}
@@ -55,21 +55,21 @@ export class PlaceholderServiceHelper {
 
 	hideWrapperIfExists = (placeholder: HTMLElement): void => {
 		if (placeholder?.parentElement?.className.includes('-ads-container')) {
-			placeholder.parentElement.classList.add('hidden-ad');
+			placeholder.parentElement.classList.add(HIDDEN_AD_CLASS);
 		}
 	};
 
 	shouldHidePlaceholder = (placeholder: HTMLElement): boolean => {
-		return !placeholder.classList.contains('hidden-ad');
+		return !placeholder.classList.contains(HIDDEN_AD_CLASS);
 	};
 
 	hideAdLabel = (adLabel: HTMLElement): void => {
 		if (this.shouldHideAdLabel) {
-			adLabel.classList.add('hidden-ad');
+			adLabel.classList.add(HIDDEN_AD_CLASS);
 		}
 	};
 
 	shouldHideAdLabel = (adLabel: HTMLElement): boolean => {
-		return !adLabel.classList.contains('hidden-ad');
+		return !adLabel.classList.contains(HIDDEN_AD_CLASS);
 	};
 }
