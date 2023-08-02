@@ -59,6 +59,8 @@ export class NewsAndRatingsDynamicSlotsSetup implements DiProcess {
 			context.push('state.adStack', { id: adSlotName });
 		});
 
+		context.set('state.topLeaderboardExists', tlbExists);
+
 		if (!tlbExists) {
 			communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
 				btfBlockerService.finishFirstCall();
