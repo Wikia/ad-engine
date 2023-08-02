@@ -1,6 +1,7 @@
 @import './styles/original/variables';
 @import '../shared/styles/index';
 @import '../shared/styles/mixin';
+@import '../shared/styles/common/hidden-ad';
 
 $label-height: -24px;
 $space-between-uap-components: 30px;
@@ -168,10 +169,7 @@ $navbar-width: 66px;
 .gpt-ad {
 	text-align: center;
 
-	&.hidden-ad,
-	& .hidden-ad {
-		display: none;
-	}
+	@include hidden-ad();
 
 	& > div > iframe {
 		display: block;

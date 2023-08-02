@@ -1,0 +1,6 @@
+@mixin hidden-ad() {
+	&.hidden-ad,
+	& .hidden-ad {
+		display: none;
+	}
+}

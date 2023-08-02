@@ -1,6 +1,7 @@
 @import '../shared/styles/index';
 @import '../shared/styles/mixin';
 @import '../shared/styles/uap-porvata/porvata';
+@import '../shared/styles/common/hidden-ad';
 
 $global-navigation-width: 66px;
 $sticky-navigation-height: 46px;
@@ -107,10 +108,7 @@ $out-of-page-z-index: 402;
 .gpt-ad {
 	text-align: center;
 
-	&.hidden-ad,
-	& .hidden-ad {
-		display: none;
-	}
+	@include hidden-ad();
 
 	& > div > iframe {
 		display: block;
