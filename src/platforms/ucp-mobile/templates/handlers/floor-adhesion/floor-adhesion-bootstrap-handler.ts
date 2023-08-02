@@ -23,7 +23,7 @@ export class FloorAdhesionBootstrapHandler implements TemplateStateHandler {
 	}
 
 	async onLeave(): Promise<void> {
-		document.getElementById('floor_adhesion_anchor').classList.remove('hide');
+		document.getElementById('floor_adhesion_anchor').classList.remove('hidden-ad');
 		this.adSlot.show();
 	}
 }

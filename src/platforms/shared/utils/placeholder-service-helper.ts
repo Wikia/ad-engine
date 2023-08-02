@@ -23,7 +23,7 @@ export class PlaceholderServiceHelper {
 	};
 
 	displayPlaceholder = (placeholder: HTMLElement): void => {
-		placeholder.classList.remove('hide');
+		placeholder.classList.remove('hidden-ad');
 	};
 
 	shouldKeepPlaceholder = (eventName: string, slotStatus: string): boolean => {
@@ -47,7 +47,7 @@ export class PlaceholderServiceHelper {
 
 	hidePlaceholder = (placeholder: HTMLElement): void => {
 		if (this.shouldHidePlaceholder) {
-			placeholder.classList.add('hide');
+			placeholder.classList.add('hidden-ad');
 
 			this.hideWrapperIfExists(placeholder);
 		}
@@ -55,21 +55,21 @@ export class PlaceholderServiceHelper {
 
 	hideWrapperIfExists = (placeholder: HTMLElement): void => {
 		if (placeholder?.parentElement?.className.includes('-ads-container')) {
-			placeholder.parentElement.classList.add('hide');
+			placeholder.parentElement.classList.add('hidden-ad');
 		}
 	};
 
 	shouldHidePlaceholder = (placeholder: HTMLElement): boolean => {
-		return !placeholder.classList.contains('hide');
+		return !placeholder.classList.contains('hidden-ad');
 	};
 
 	hideAdLabel = (adLabel: HTMLElement): void => {
 		if (this.shouldHideAdLabel) {
-			adLabel.classList.add('hide');
+			adLabel.classList.add('hidden-ad');
 		}
 	};
 
 	shouldHideAdLabel = (adLabel: HTMLElement): boolean => {
-		return !adLabel.classList.contains('hide');
+		return !adLabel.classList.contains('hidden-ad');
 	};
 }

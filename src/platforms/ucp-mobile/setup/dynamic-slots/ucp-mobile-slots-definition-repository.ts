@@ -36,7 +36,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				placeholderConfig,
 				anchorSelector: '.top-leaderboard',
 				insertMethod: 'prepend',
-				classList: ['hide', 'ad-slot'],
+				classList: ['hidden-ad', 'ad-slot'],
 			},
 		};
 	}
@@ -68,7 +68,7 @@ export class UcpMobileSlotsDefinitionRepository {
 					? '.mobile-main-page__wiki-description'
 					: context.get('templates.incontentAnchorSelector'),
 				insertMethod: isHome ? 'after' : 'before',
-				classList: ['hide', 'ad-slot'],
+				classList: ['hidden-ad', 'ad-slot'],
 				avoidConflictWith: ['.ntv-ad'],
 			},
 			slotCreatorWrapperConfig: {
@@ -105,7 +105,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				anchorSelector: '.incontent-boxad',
 				avoidConflictWith: ['.ad-slot', '#incontent_player'],
 				insertMethod: 'append',
-				classList: ['hide', 'ad-slot'],
+				classList: ['hidden-ad', 'ad-slot'],
 				repeat: {
 					index: 1,
 					limit: 20,
@@ -166,10 +166,10 @@ export class UcpMobileSlotsDefinitionRepository {
 				},
 				anchorSelector: '.global-footer',
 				insertMethod: 'before',
-				classList: ['hide', 'ad-slot'],
+				classList: ['hidden-ad', 'ad-slot'],
 			},
 			slotCreatorWrapperConfig: {
-				classList: ['ad-slot-placeholder', 'mobile-prefooter', 'is-loading', 'hide'],
+				classList: ['ad-slot-placeholder', 'mobile-prefooter', 'is-loading', 'hidden-ad'],
 			},
 			activator: () => {
 				communicationService.on(
@@ -179,7 +179,7 @@ export class UcpMobileSlotsDefinitionRepository {
 							this.pushWaitingSlot(slotName);
 
 							const mobilePrefooter = document.querySelector('.mobile-prefooter');
-							mobilePrefooter.classList.remove('hide');
+							mobilePrefooter.classList.remove('hidden-ad');
 						}
 					},
 				);
@@ -218,7 +218,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				},
 				anchorSelector: '.bottom-leaderboard',
 				insertMethod: 'prepend',
-				classList: ['hide', 'ad-slot'],
+				classList: ['hidden-ad', 'ad-slot'],
 			},
 			slotCreatorWrapperConfig: null,
 			activator: () => {
@@ -287,7 +287,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: '#floor_adhesion_anchor',
 				insertMethod: 'append',
-				classList: ['hide', 'ad-slot'],
+				classList: ['hidden-ad', 'ad-slot'],
 			},
 			activator: () => activateFloorAdhesionOnUAP(activateFloorAdhesion, false),
 		};
@@ -305,7 +305,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: '#fandom-mobile-wrapper',
 				insertMethod: 'after',
-				classList: ['hide', 'ad-slot'],
+				classList: ['hidden-ad', 'ad-slot'],
 			},
 			activator: () => {
 				this.pushWaitingSlot(slotName);

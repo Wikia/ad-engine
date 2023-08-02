@@ -1,11 +1,11 @@
 export class ToggleVideo {
 	static add(video, container): void {
 		video.addEventListener('wikiaAdStarted', () => {
-			container.classList.remove('hide');
+			container.classList.remove('hidden-ad');
 		});
 
 		video.addEventListener('wikiaAdCompleted', () => {
-			container.classList.add('hide');
+			container.classList.add('hidden-ad');
 		});
 	}
 }

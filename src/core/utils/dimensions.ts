@@ -31,12 +31,12 @@ export function getElementOffset(element: HTMLElement): ElementOffset {
 		height: '',
 	};
 
-	if (element.classList.contains('hide')) {
+	if (element.classList.contains('hidden-ad')) {
 		hideAgain = true;
 		previousStyles.display = element.style.display;
 		previousStyles.height = element.style.height;
 
-		element.classList.remove('hide');
+		element.classList.remove('hidden-ad');
 		element.style.display = 'block';
 		element.style.height = '1px';
 	}
@@ -44,7 +44,7 @@ export function getElementOffset(element: HTMLElement): ElementOffset {
 	const offset: ElementOffset = calculateOffset(element);
 
 	if (hideAgain) {
-		element.classList.add('hide');
+		element.classList.add('hidden-ad');
 		element.style.display = previousStyles.display;
 		element.style.height = previousStyles.height;
 	}

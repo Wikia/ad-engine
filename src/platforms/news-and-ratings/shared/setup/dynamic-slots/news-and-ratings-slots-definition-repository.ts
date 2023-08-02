@@ -27,7 +27,7 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: 'body',
 				insertMethod: 'prepend',
-				classList: ['hide', 'ad-slot'],
+				classList: ['hidden-ad', 'ad-slot'],
 			},
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
@@ -57,7 +57,7 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: 'body',
 				insertMethod: 'append',
-				classList: ['hide', 'ad-slot'],
+				classList: ['hidden-ad', 'ad-slot'],
 			},
 			activator: () =>
 				activateFloorAdhesionOnUAP(activateFloorAdhesion, !this.isFloorAdhesionNonUapApplicable()),
@@ -87,7 +87,7 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: 'body',
 				insertMethod: 'append',
-				classList: ['hide', 'ad-slot'],
+				classList: ['hidden-ad', 'ad-slot'],
 			},
 			activator: () => {
 				const { dataset } = document.getElementById(slotName);

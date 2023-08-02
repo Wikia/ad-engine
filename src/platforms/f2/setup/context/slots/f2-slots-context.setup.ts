@@ -117,7 +117,7 @@ export class F2SlotsContextSetup implements DiProcess {
 			},
 			floor_adhesion: {
 				adProduct: 'floor_adhesion',
-				defaultClasses: ['hide'],
+				defaultClasses: ['hidden-ad'],
 				group: 'PF',
 				outOfPage: false,
 				targeting: {

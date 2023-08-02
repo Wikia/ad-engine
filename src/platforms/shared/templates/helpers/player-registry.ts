@@ -43,7 +43,7 @@ export class PlayerRegistry {
 	private createPlayerContainer(): HTMLDivElement {
 		const playerContainer = Porvata.createVideoContainer(this.adSlot.getElement());
 
-		playerContainer.parentElement.classList.add('hide');
+		playerContainer.parentElement.classList.add('hidden-ad');
 
 		return playerContainer;
 	}

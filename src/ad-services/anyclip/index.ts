@@ -98,7 +98,7 @@ export class Anyclip extends BaseServiceSetup {
 		return utils.scriptLoader
 			.loadScript(this.libraryUrl, true, playerContainer, this.params)
 			.then(() => {
-				playerContainer?.classList.remove('hide');
+				playerContainer?.classList.remove('hidden-ad');
 				utils.logger(logGroup, 'ready');
 
 				this.waitForSubscribeReady().then((isSubscribeReady) => {

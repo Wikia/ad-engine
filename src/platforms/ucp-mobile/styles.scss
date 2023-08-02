@@ -66,9 +66,9 @@
 .gpt-ad {
 	text-align: center;
 
-	&.hide,
-	& .hide {
-		display: none !important;
+	&.hidden-ad,
+	& .hidden-ad {
+		display: none;
 	}
 
 	& > div > iframe {
@@ -82,15 +82,15 @@
 		margin: 20px auto;
 	}
 
-	&.hide {
-		display: none !important;
+	&.hidden-ad {
+		display: none;
 	}
 }
 
-.top-ads-container.hide,
-.bottom-ads-container.hide,
-.ad-slot-placeholder.hide {
-	display: none !important;
+.top-ads-container.hidden-ad,
+.bottom-ads-container.hidden-ad,
+.ad-slot-placeholder.hidden-ad {
+	display: none;
 }
 
 .ntv-ad {
@@ -203,8 +203,8 @@
 		}
 	}
 
-	&.hide,
-	.hide {
+	&.hidden-ad,
+	.hidden-ad {
 		display: none;
 	}
 }
@@ -212,7 +212,7 @@
 body.bab-detected {
 	.top-ads-container,
 	.ad-slot-placeholder {
-		display: none !important;
+		display: none;
 	}
 }
 

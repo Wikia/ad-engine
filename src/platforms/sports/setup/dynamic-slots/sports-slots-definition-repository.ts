@@ -12,7 +12,7 @@ export class SportsSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: `#${slotName}`,
 				insertMethod: 'prepend',
-				classList: ['hide', 'ad-slot'],
+				classList: ['hidden-ad', 'ad-slot'],
 			},
 			activator: () => {
 				if (lazyLoaded) {

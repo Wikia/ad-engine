@@ -72,10 +72,10 @@ export class PorvataPlayer {
 		this.addEventListener('allAdsCompleted', () => this.setState('stopped'));
 
 		this.addEventListener('adCanPlay', () =>
-			this.dom.getInterfaceContainer().classList.remove('hide'),
+			this.dom.getInterfaceContainer().classList.remove('hidden-ad'),
 		);
 		this.addEventListener('wikiaAdCompleted', () =>
-			this.dom.getInterfaceContainer().classList.add('hide'),
+			this.dom.getInterfaceContainer().classList.add('hidden-ad'),
 		);
 	}
 

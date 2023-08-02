@@ -11,9 +11,9 @@ export class PorvataDom {
 		this.interfaceContainer = document.createElement('div');
 
 		this.playerContainer.classList.add('porvata', 'porvata-container');
-		this.videoContainer.classList.add('video-player', 'porvata-player', 'hide');
+		this.videoContainer.classList.add('video-player', 'porvata-player', 'hidden-ad');
 		this.videoElement?.classList.add('porvata-video');
-		this.interfaceContainer.classList.add('porvata-interface', 'hide');
+		this.interfaceContainer.classList.add('porvata-interface', 'hidden-ad');
 
 		this.playerContainer.appendChild(this.interfaceContainer);
 	}

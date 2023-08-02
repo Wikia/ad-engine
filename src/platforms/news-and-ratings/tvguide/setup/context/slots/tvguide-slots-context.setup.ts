@@ -275,7 +275,7 @@ export class TvGuideSlotsContextSetup implements DiProcess {
 				},
 			},
 			'incontent-leader-plus-inc': {
-				defaultClasses: ['hide'],
+				defaultClasses: ['hidden-ad'],
 				defaultSizes: [
 					[728, 90],
 					[970, 250],

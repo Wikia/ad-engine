@@ -16,9 +16,9 @@ body {
 .gpt-ad {
 	text-align: center;
 
-	&.hide,
-	& .hide {
-		display: none !important;
+	&.hidden-ad,
+	& .hidden-ad {
+		display: none;
 	}
 
 	& > div > iframe {

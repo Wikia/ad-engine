@@ -39,7 +39,7 @@ export class F2SlotsDefinitionRepository {
 				slotName,
 				anchorSelector: '.top-leaderboard',
 				insertMethod: 'prepend',
-				classList: ['hide'],
+				classList: ['hidden-ad'],
 			},
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
@@ -66,7 +66,7 @@ export class F2SlotsDefinitionRepository {
 				slotName,
 				anchorSelector: 'body',
 				insertMethod: 'append',
-				classList: ['hide', 'ad-slot'],
+				classList: ['hidden-ad', 'ad-slot'],
 			},
 			activator: () => activateFloorAdhesionOnUAP(activateFloorAdhesion),
 		};
@@ -87,7 +87,7 @@ export class F2SlotsDefinitionRepository {
 					slotName,
 					anchorSelector: '.feed-section__ad,.feed-layout__right-rail',
 					insertMethod: 'prepend',
-					classList: ['hide'],
+					classList: ['hidden-ad'],
 				},
 			};
 		}
@@ -100,7 +100,7 @@ export class F2SlotsDefinitionRepository {
 					slotName,
 					anchorSelector: '.article-layout__rail',
 					insertMethod: 'prepend',
-					classList: ['hide'],
+					classList: ['hidden-ad'],
 				},
 			};
 		}
@@ -113,7 +113,7 @@ export class F2SlotsDefinitionRepository {
 					slotName,
 					anchorSelector: '.article-layout__content',
 					insertMethod: 'append',
-					classList: ['hide'],
+					classList: ['hidden-ad'],
 				},
 			};
 		}
@@ -125,7 +125,7 @@ export class F2SlotsDefinitionRepository {
 				slotName,
 				anchorSelector: '.article-content.entry-content p:first-child',
 				insertMethod: 'after',
-				classList: ['hide'],
+				classList: ['hidden-ad'],
 			},
 		};
 	}
@@ -151,7 +151,7 @@ export class F2SlotsDefinitionRepository {
 				anchorPosition: 2,
 				anchorSelector: '.article-content h2, .article-content h3',
 				insertMethod: 'before',
-				classList: ['hide'],
+				classList: ['hidden-ad'],
 			},
 		};
 	}
@@ -171,7 +171,7 @@ export class F2SlotsDefinitionRepository {
 					slotName,
 					anchorSelector: '.search-box-bottom-wrapper,.wds-global-footer',
 					insertMethod: 'before',
-					classList: ['hide'],
+					classList: ['hidden-ad'],
 				},
 			};
 		}
@@ -183,7 +183,7 @@ export class F2SlotsDefinitionRepository {
 				slotName,
 				anchorSelector: '.article-layout-wrapper',
 				insertMethod: 'after',
-				classList: ['hide'],
+				classList: ['hidden-ad'],
 			},
 		};
 	}

@@ -8,9 +8,9 @@
 			width: 100%;
 		}
 
-		&.hide,
-		& .hide {
-			display: none !important;
+		&.hidden-ad,
+		& .hidden-ad {
+			display: none;
 		}
 	}
 }

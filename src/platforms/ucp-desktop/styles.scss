@@ -107,9 +107,9 @@ $out-of-page-z-index: 402;
 .gpt-ad {
 	text-align: center;
 
-	&.hide,
-	& .hide {
-		display: none !important;
+	&.hidden-ad,
+	& .hidden-ad {
+		display: none;
 	}
 
 	& > div > iframe {
@@ -138,8 +138,8 @@ $out-of-page-z-index: 402;
 		}
 	}
 
-	&.hide,
-	.hide {
+	&.hidden-ad,
+	.hidden-ad {
 		display: none;
 	}
 }
@@ -148,16 +148,16 @@ $out-of-page-z-index: 402;
 	position: relative;
 	.ae-translatable-label {
 		@include placement-label-text-styles(-24px);
-		&.hide {
+		&.hidden-ad {
 			display: none;
 		}
 	}
 }
 
-.top-ads-container.hide,
-.bottom-ads-container.hide,
-.ad-slot-placeholder.hide {
-	display: none !important;
+.top-ads-container.hidden-ad,
+.bottom-ads-container.hidden-ad,
+.ad-slot-placeholder.hidden-ad {
+	display: none;
 }
 
 .companion-stick {

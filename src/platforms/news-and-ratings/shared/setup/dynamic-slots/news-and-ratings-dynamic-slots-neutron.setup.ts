@@ -144,7 +144,7 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 				insertMethod: 'alter',
 				anchorSelector: '',
 				anchorElement: domSlotElement,
-				classList: ['hide', 'ad-slot'],
+				classList: ['hidden-ad', 'ad-slot'],
 			},
 			activator: () => {
 				context.push('state.adStack', { id: slotName });

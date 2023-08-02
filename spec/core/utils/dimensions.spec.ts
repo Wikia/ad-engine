@@ -35,7 +35,7 @@ describe('dimensions', () => {
 		const removeSpy = sinon.spy(element.classList, 'remove');
 
 		expect(getTopOffset(element)).to.equal(300);
-		expect(adSpy.calledWith('hide')).to.equal(true);
-		expect(removeSpy.calledWith('hide')).to.equal(true);
+		expect(adSpy.calledWith('hidden-ad')).to.equal(true);
+		expect(removeSpy.calledWith('hidden-ad')).to.equal(true);
 	});
 });

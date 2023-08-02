@@ -56,7 +56,7 @@ export class VideoBootstrapHandler implements TemplateStateHandler {
 	private handleEvents(player: PorvataPlayer): Observable<unknown> {
 		return merge(
 			fromEvent(player, 'adCanPlay').pipe(
-				tap(() => player.dom.getVideoContainer().classList.remove('hide')),
+				tap(() => player.dom.getVideoContainer().classList.remove('hidden-ad')),
 			),
 
 			fromEvent(player, 'wikiaAdStarted').pipe(
