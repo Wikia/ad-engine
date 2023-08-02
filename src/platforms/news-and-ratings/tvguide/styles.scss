@@ -16,7 +16,8 @@ body {
 
 	&.has-uap {
 		#top_leaderboard {
-			&.sticky-tlb {
+			&.sticky-tlb,
+			&.bfaa-template {
 				z-index: 5000001;
 			}
 		}

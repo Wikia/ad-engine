@@ -50,6 +50,14 @@ export function getRubiconDisplayContext(): object {
 				siteId: '148804',
 				zoneId: '704674',
 			},
+			fandom_dt_galleries: {
+				sizes: [[728, 90]],
+				siteId: '494482',
+				zoneId: '2942280',
+				targeting: {
+					loc: ['gallery'],
+				},
+			},
 		},
 	};
 }

@@ -92,6 +92,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'set opt in',
 		payload: props<GdprConsentPayload & CcpaSignalPayload>(),
 	},
+	AD_ENGINE_GPT_READY: {
+		name: 'GPT Ready',
+	},
 	AD_ENGINE_INSTANT_CONFIG_CACHE_RESET: {
 		name: 'Instant Config cache reset',
 	},
@@ -192,6 +195,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	IDENTITY_PARTNER_DATA_OBTAINED: {
 		name: 'Identity partner data obtained',
 		payload: payload<IdentityDataPayload>(),
+	},
+	INTENTIQ_PPID_NOT_SET_ON_TIME: {
+		name: 'IntentIQ PPID not set on time',
 	},
 	LIVE_CONNECT_STARTED: {
 		name: 'LiveConnect started',

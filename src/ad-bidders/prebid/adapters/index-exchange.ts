@@ -1,5 +1,5 @@
 import { context, utils } from '@ad-engine/core';
-import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
+import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class IndexExchange extends PrebidAdapter {
@@ -7,7 +7,6 @@ export class IndexExchange extends PrebidAdapter {
 	aliases = {
 		ix: [IndexExchange.bidderName],
 	};
-	maxCpm = EXTENDED_MAX_CPM;
 
 	constructor(options) {
 		super(options);
@@ -40,9 +39,14 @@ export class IndexExchange extends PrebidAdapter {
 			code,
 			mediaTypes: {
 				video: {
-					context: 'instream',
+					context: 'outstream',
 					playerSize: [640, 480],
-					plcmt: [2],
+					api: [2, 7],
+					mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg', 'application/javascript'],
+					protocols: [2, 3, 5, 6],
+					playbackmethod: [2],
+					plcmt: 2,
+					placement: 5,
 				},
 			},
 			ortb2Imp: {
@@ -57,6 +61,8 @@ export class IndexExchange extends PrebidAdapter {
 						siteId,
 						size: [640, 480],
 						video: {
+							context: 'outstream',
+							playerSize: [640, 480],
 							mimes: [
 								'video/mp4',
 								'video/x-flv',
@@ -64,10 +70,17 @@ export class IndexExchange extends PrebidAdapter {
 								'video/ogg',
 								'application/javascript',
 							],
-							minduration: 1,
-							maxduration: 30,
 							protocols: [2, 3, 5, 6],
-							api: [2],
+							api: [2, 7],
+							playbackmethod: [2],
+							w: 640,
+							h: 480,
+							minduration: 5,
+							maxduration: 30,
+							delivery: [2],
+							linearity: 1,
+							placement: 5,
+							pos: 3,
 						},
 					},
 				},

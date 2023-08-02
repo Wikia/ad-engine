@@ -1,3 +1,4 @@
+import { DataWarehouseTracker, trackingUrls } from '@platforms/shared';
 import { context, targetingService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -17,6 +18,8 @@ interface WidgetAdPayload {
 		title: string;
 		image: string;
 		description?: string;
+		lineItemId?: string;
+		creativeId?: string;
 	};
 }
 
@@ -35,6 +38,8 @@ export class UcpDesktopPerformanceAdsDefinitionRepository {
 		},
 	};
 
+	constructor(private dwTracker: DataWarehouseTracker) {}
+
 	async setup(): Promise<void> {
 		if (!context.get('options.performanceAds')) {
 			utils.logger(logGroup, 'Performance Ads disabled');
@@ -50,6 +55,7 @@ export class UcpDesktopPerformanceAdsDefinitionRepository {
 		if (this.popularPagesElement) {
 			await this.getDataFromAdServer();
 			this.fillPerformanceWidget('popularPages');
+			this.trackElementVisibility(this.popularPagesElement, 'popularPages');
 		}
 
 		new utils.WaitFor(() => !!document.querySelector(OTHERS_LIKE_YOU_SELECTOR), 50, 0, 250)
@@ -60,6 +66,7 @@ export class UcpDesktopPerformanceAdsDefinitionRepository {
 				if (this.othersLikeYouElement) {
 					await this.getDataFromAdServer();
 					this.fillPerformanceWidget('othersLikeYou');
+					this.trackElementVisibility(this.othersLikeYouElement, 'othersLikeYou');
 				}
 			});
 	}
@@ -162,5 +169,40 @@ export class UcpDesktopPerformanceAdsDefinitionRepository {
 
 	private triggerImpressionPixels(): void {
 		utils.scriptLoader.loadAsset(this.widgetData.data.impression, 'blob');
+	}
+
+	private trackElementVisibility(element: HTMLElement, type: PerformanceAdType): void {
+		if (!this.widgetData.type || !this.widgetData.type.includes(type)) {
+			return;
+		}
+
+		const minIntersectionRatio = 0.5;
+		const minVisibleTime = 500;
+
+		new IntersectionObserver(
+			(entries, observer) => {
+				entries.forEach((entry) => {
+					if (entry.intersectionRatio > minIntersectionRatio && entry.time > minVisibleTime) {
+						this.viewabilityCallToDW();
+						observer.disconnect();
+					}
+				});
+			},
+			{ threshold: minIntersectionRatio },
+		).observe(element);
+	}
+
+	private viewabilityCallToDW() {
+		const now = new Date();
+
+		this.dwTracker.track(
+			{
+				creative_id: this.widgetData.data.creativeId,
+				line_item_id: this.widgetData.data.lineItemId,
+				timestamp: now.getTime(),
+				tz_offset: now.getTimezoneOffset(),
+			},
+			trackingUrls.AD_ENG_VIEWABILITY,
+		);
 	}
 }
