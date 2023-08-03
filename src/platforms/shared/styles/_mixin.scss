@@ -58,9 +58,16 @@
 	}
 }
 
-@mixin hidden-ad-helper() {
+@mixin hidden-ad-helper-1() {
 	&.hidden-ad,
 	& .hidden-ad {
+		display: none !important;
+	}
+}
+
+@mixin hidden-ad-helper-2() {
+	&.hidden-ad,
+	.hidden-ad {
 		display: none !important;
 	}
 }

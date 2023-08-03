@@ -168,7 +168,7 @@ $navbar-width: 66px;
 .gpt-ad {
 	text-align: center;
 
-	@include hidden-ad-helper();
+	@include hidden-ad-helper-1();
 
 	& > div > iframe {
 		display: block;

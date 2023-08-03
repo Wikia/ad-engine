@@ -107,7 +107,7 @@ $out-of-page-z-index: 402;
 .gpt-ad {
 	text-align: center;
 
-	@include hidden-ad-helper();
+	@include hidden-ad-helper-1();
 
 	& > div > iframe {
 		display: block;
@@ -135,10 +135,7 @@ $out-of-page-z-index: 402;
 		}
 	}
 
-	&.hidden-ad,
-	.hidden-ad {
-		display: none;
-	}
+	@include hidden-ad-helper-2();
 }
 
 .ad-slot-placeholder.gallery-leaderboard {
