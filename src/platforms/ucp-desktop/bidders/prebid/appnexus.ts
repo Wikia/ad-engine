@@ -16,13 +16,6 @@ export function getAppnexusContext(): object {
 				],
 				position: 'atf',
 			},
-			bottom_leaderboard: {
-				sizes: [
-					[728, 90],
-					[970, 250],
-				],
-				position: 'btf',
-			},
 			incontent_boxad_1: {
 				sizes: [
 					[160, 600],
@@ -30,6 +23,13 @@ export function getAppnexusContext(): object {
 					[300, 250],
 				],
 				position: 'hivi',
+			},
+			bottom_leaderboard: {
+				sizes: [
+					[728, 90],
+					[970, 250],
+				],
+				position: 'btf',
 			},
 			ntv_ad: {
 				sizes: [[1, 1]],
