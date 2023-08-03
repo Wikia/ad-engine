@@ -61,6 +61,6 @@
 @mixin hidden-ad-helper() {
 	&.hidden-ad,
 	& .hidden-ad {
-		display: none;
+		display: none !important;
 	}
 }

@@ -154,7 +154,7 @@ $out-of-page-z-index: 402;
 .top-ads-container.hidden-ad,
 .bottom-ads-container.hidden-ad,
 .ad-slot-placeholder.hidden-ad {
-	display: none;
+	display: none !important;
 }
 
 .companion-stick {

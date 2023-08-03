@@ -179,7 +179,7 @@ $navbar-width: 66px;
 .top-ads-container.hidden-ad,
 .bottom-ads-container.hidden-ad,
 .ad-slot-placeholder.hidden-ad {
-	display: none;
+	display: none !important;
 }
 
 body {
