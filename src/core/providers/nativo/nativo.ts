@@ -171,7 +171,7 @@ export class Nativo {
 		if (!slot || slot.getSlotName() !== slotName) return;
 
 		if (adStatus === AdSlotStatus.STATUS_COLLAPSE) {
-			slot.hideAdd();
+			slot.hide();
 			if (slotName === Nativo.INCONTENT_AD_SLOT_NAME) {
 				this.replaceWithAffiliateUnit();
 			}

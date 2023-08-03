@@ -66,7 +66,6 @@ export class AdSlot {
 
 	static AD_CLASS = 'gpt-ad';
 	static AD_SLOT_PLACEHOLDER_CLASS = 'ad-slot-placeholder';
-	static HIDDEN_AD_CLASS = HIDDEN_AD_CLASS;
 
 	private customIframe: HTMLIFrameElement = null;
 
@@ -159,7 +158,7 @@ export class AdSlot {
 
 		this.addClass(AdSlot.AD_CLASS);
 		if (!this.enabled) {
-			this.hideAdd();
+			this.hide();
 		}
 	}
 
@@ -390,7 +389,7 @@ export class AdSlot {
 	disable(status: null | string = null): void {
 		this.enabled = false;
 		this.setStatus(status);
-		this.hideAdd();
+		this.hide();
 	}
 
 	destroy(): void {
@@ -456,7 +455,7 @@ export class AdSlot {
 			state: AdSlotStatus.STATUS_COLLAPSE,
 		});
 
-		this.hideAdd();
+		this.hide();
 		this.setStatus(status);
 	}
 
@@ -565,10 +564,10 @@ export class AdSlot {
 	/**
 	 * Hides adSlot.
 	 *
-	 * Adds class AdSlot.HIDDEN_AD_CLASS to adSlot's element.
+	 * Adds class HIDDEN_AD_CLASS to adSlot's element.
 	 */
-	hideAdd(): void {
-		const added = this.addClass(AdSlot.HIDDEN_AD_CLASS);
+	hide(): void {
+		const added = this.addClass(HIDDEN_AD_CLASS);
 
 		if (added) {
 			this.emit(AdSlotEvent.HIDDEN_EVENT);
@@ -578,10 +577,10 @@ export class AdSlot {
 	/**
 	 * Shows adSlot.
 	 *
-	 * Removes class AdSlot.HIDDEN_AD_CLASS from adSlot's element.
+	 * Removes class HIDDEN_AD_CLASS from adSlot's element.
 	 */
 	show(): void {
-		const removed = this.removeClass(AdSlot.HIDDEN_AD_CLASS);
+		const removed = this.removeClass(HIDDEN_AD_CLASS);
 
 		if (removed) {
 			this.emit(AdSlotEvent.SHOWED_EVENT);

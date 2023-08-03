@@ -162,7 +162,7 @@ export class FmrRotator {
 		if (context.get('options.floatingMedrecDestroyable')) {
 			slotService.remove(this.currentAdSlot);
 		} else {
-			this.currentAdSlot.hideAdd();
+			this.currentAdSlot.hide();
 		}
 
 		this.swapRecirculation(true);

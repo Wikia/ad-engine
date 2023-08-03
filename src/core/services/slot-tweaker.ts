@@ -151,7 +151,7 @@ export class SlotTweaker {
 						this.collapse(adSlot);
 						break;
 					case HIDDEN_AD_CLASS:
-						adSlot.hideAdd();
+						adSlot.hide();
 						break;
 					case 'show':
 						adSlot.show();
