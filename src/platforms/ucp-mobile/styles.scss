@@ -79,16 +79,12 @@
 		margin: 20px auto;
 	}
 
-	&.hidden-ad {
+	&.hidead {
 		display: none !important;
 	}
 }
 
-.top-ads-container.hidden-ad,
-.bottom-ads-container.hidden-ad,
-.ad-slot-placeholder.hidden-ad {
-	display: none !important;
-}
+@include hidden-ad-helper-3();
 
 .ntv-ad {
 	@include nativo;

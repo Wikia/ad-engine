@@ -59,15 +59,23 @@
 }
 
 @mixin hidden-ad-helper-1() {
-	&.hidden-ad,
-	& .hidden-ad {
+	&.hidead,
+	& .hidead {
 		display: none !important;
 	}
 }
 
 @mixin hidden-ad-helper-2() {
-	&.hidden-ad,
-	.hidden-ad {
+	&.hidead,
+	.hiddn-a {
 		display: none;
+	}
+}
+
+@mixin hidden-ad-helper-3() {
+	.top-ads-container.hidead,
+	.bottom-ads-container.hidead,
+	.ad-slot-placeholder.hidead {
+		display: none !important;
 	}
 }

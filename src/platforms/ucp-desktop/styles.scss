@@ -142,17 +142,13 @@ $out-of-page-z-index: 402;
 	position: relative;
 	.ae-translatable-label {
 		@include placement-label-text-styles(-24px);
-		&.hidden-ad {
+		&.hidead {
 			display: none;
 		}
 	}
 }
 
-.top-ads-container.hidden-ad,
-.bottom-ads-container.hidden-ad,
-.ad-slot-placeholder.hidden-ad {
-	display: none !important;
-}
+@include hidden-ad-helper-3();
 
 .companion-stick {
 	.page-content {

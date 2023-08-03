@@ -59,7 +59,7 @@ export interface WinningBidderDetails {
 	price: number | string;
 }
 
-export const HIDDEN_AD_CLASS = 'hidden-ad';
+export const HIDDEN_AD_CLASS = 'hidead';
 
 export class AdSlot {
 	static LOG_GROUP = 'AdSlot';
