@@ -10,7 +10,7 @@
 
 		&.hidden-ad,
 		& .hidden-ad {
-			display: none;
+			display: none !important;
 		}
 	}
 }
