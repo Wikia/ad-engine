@@ -57,3 +57,10 @@
 		opacity: 1;
 	}
 }
+
+@mixin hidden-ad-helper() {
+	&.hidden-ad,
+	& .hidden-ad {
+		display: none;
+	}
+}
