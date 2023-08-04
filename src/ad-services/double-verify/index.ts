@@ -1,46 +1,97 @@
-import { BaseServiceSetup, targetingService, utils } from '@ad-engine/core';
+import { BaseServiceSetup, slotService, targetingService, utils } from '@ad-engine/core';
 
 const logGroup = 'double-verify';
-const scriptUrl =
-	'//pub.doubleverify.com/signals/pub.js?ctx=28150781&cmp=DV1001654&signals=ids,bsc';
+const scriptUrl = 'https://pub.doubleverify.com/signals/pub.json';
+const ctx = '28150781';
+const cmp = 'DV1001654';
+const userAgent = 'ad-engine';
+const referer = 'https://fandom.com';
+
+interface AdUnit {
+	path: string;
+	sizes: string[];
+}
 
 export class DoubleVerify extends BaseServiceSetup {
-	call(): Promise<void> {
+	async call() {
 		if (!this.isEnabled('icDoubleVerify')) {
 			utils.logger(logGroup, 'disabled');
 			return Promise.resolve();
 		}
 
-		window.PQ = window.PQ || { cmd: [] };
+		const slots = this.getSlots();
+		const url = this.prepareURL(slots);
+		const headers = this.getHeaders();
 
-		this.setupSignalsLoad();
+		try {
+			const response = await fetch(url.href, { headers });
+			if (!response.ok) {
+				utils.logger(logGroup, 'Error fetching signals:');
+				return;
+			}
 
-		utils.logger(logGroup, 'loading', scriptUrl);
+			const signals = await response.json();
+			this.prepareTargeting(signals);
+		} catch (error) {
+			utils.logger(logGroup, 'Error fetching signals', error);
+		}
+	}
 
-		return utils.scriptLoader
-			.loadScript(scriptUrl, true, null, {
-				referrerpolicy: 'no-referrer-when-downgrade',
-			})
-			.then(() => {
-				utils.logger(logGroup, 'ready');
-			})
-			.catch(() => {
-				utils.logger(logGroup, 'error on loading');
+	private prepareTargeting(data: any) {
+		utils.logger(logGroup, 'setting targeting');
+		targetingService.set('ids', data['IDS']?.toString());
+		targetingService.set('bsc', data['BSC']);
+		targetingService.set('abs', data['ABC']?.toString());
+	}
+
+	private getHeaders() {
+		return {
+			referer,
+			'user-agent': userAgent,
+		};
+	}
+
+	private prepareURL(slots: AdUnit[]) {
+		const params = new URLSearchParams({
+			ctx,
+			cmp,
+			url: encodeURIComponent(referer),
+		});
+
+		for (const slot of slots) {
+			params.append(`adunits[${slot.path}][]`, slot.sizes.join(','));
+		}
+
+		const url = new URL(scriptUrl);
+		url.search = params.toString();
+
+		return url;
+	}
+
+	private getSlots(): AdUnit[] {
+		return Object.entries(slotService.slotConfigsMap)
+			.filter(([, value]) => Array.isArray(value?.defaultSizes))
+			.map(([key, value]) => {
+				return {
+					path: key,
+					sizes: this.mapSizes(value.defaultSizes),
+				};
 			});
 	}
 
-	private setupSignalsLoad() {
-		window.PQ.cmd.push(() => {
-			utils.logger(logGroup, 'getting signals');
-			window.PQ?.getTargeting({ signals: ['ids', 'bsc'] }, (error, targetingData) => {
-				if (error) {
-					return;
-				}
+	private mapSizes(adSlotSizes: any): string[] {
+		const sizes: string[] = [];
 
-				utils.logger(logGroup, 'setting targeting', targetingData);
-				targetingService.set('ids', targetingData['IDS']?.toString());
-				targetingService.set('bsc', targetingData['BSC']);
+		if (!Array.isArray(adSlotSizes)) {
+			return sizes;
+		}
+
+		Object.values(adSlotSizes)
+			.filter((value) => Array.isArray(value) && value.length === 2)
+			.forEach((value) => {
+				sizes.push(`${value[0]}x${value[1]}`);
 			});
-		});
+
+		return sizes;
 	}
 }
