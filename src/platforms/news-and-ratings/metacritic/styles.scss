@@ -20,7 +20,7 @@ body {
 .gpt-ad {
 	text-align: center;
 
-	@include hidden-ad-helper-1();
+	@include hidden-ad-helper();
 
 	& > div > iframe {
 		display: block;

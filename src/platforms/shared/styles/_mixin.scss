@@ -58,24 +58,13 @@
 	}
 }
 
-@mixin hidden-ad-helper-1() {
+@mixin hidden-ad-helper($important: true) {
 	&.hidead,
-	& .hidead {
-		display: none !important;
-	}
-}
-
-@mixin hidden-ad-helper-2() {
-	&.hidead,
-	.hiddn-a {
-		display: none;
-	}
-}
-
-@mixin hidden-ad-helper-3() {
-	.top-ads-container.hidead,
-	.bottom-ads-container.hidead,
-	.ad-slot-placeholder.hidead {
-		display: none !important;
+	.hidead {
+		@if $important == true {
+			display: none !important;
+		} @else {
+			display: none;
+		}
 	}
 }

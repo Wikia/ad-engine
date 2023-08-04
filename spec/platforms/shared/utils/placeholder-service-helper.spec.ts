@@ -59,12 +59,12 @@ describe('placeholder service helper', () => {
 			placeholderHelper = new PlaceholderServiceHelper();
 		});
 
-		it(`shouldHideAdLabel returns true if adLabel contains class .${HIDDEN_AD_CLASS}`, () => {
-			expect(placeholderHelper.shouldHideAdLabel(getMockElement(true))).to.equal(false);
+		it(`shouldHiddenAdLabel returns true if adLabel contains class .${HIDDEN_AD_CLASS}`, () => {
+			expect(placeholderHelper.shouldHiddenAdLabel(getMockElement(true))).to.equal(false);
 		});
 
-		it(`shouldHideAdLabel returns false if adLabel does not contain class .${HIDDEN_AD_CLASS}`, () => {
-			expect(placeholderHelper.shouldHideAdLabel(getMockElement(false))).to.equal(true);
+		it(`shouldHiddenAdLabel returns false if adLabel does not contain class .${HIDDEN_AD_CLASS}`, () => {
+			expect(placeholderHelper.shouldHiddenAdLabel(getMockElement(false))).to.equal(true);
 		});
 	});
 });

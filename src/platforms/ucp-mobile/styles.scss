@@ -66,7 +66,7 @@
 .gpt-ad {
 	text-align: center;
 
-	@include hidden-ad-helper-1();
+	@include hidden-ad-helper();
 
 	& > div > iframe {
 		display: block;
@@ -79,12 +79,14 @@
 		margin: 20px auto;
 	}
 
-	&.hidead {
-		display: none !important;
-	}
+	@include hidden-ad-helper();
 }
 
-@include hidden-ad-helper-3();
+.top-ads-container,
+.bottom-ads-container,
+.ad-slot-placeholder {
+	@include hidden-ad-helper();
+}
 
 .ntv-ad {
 	@include nativo;
@@ -196,7 +198,7 @@
 		}
 	}
 
-	@include hidden-ad-helper-2();
+	@include hidden-ad-helper(false);
 }
 
 body.bab-detected {

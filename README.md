@@ -90,7 +90,6 @@ export default customContext = {
 		incontent_boxad_1: {
 			defaultSizes: [[300, 250]],
 			repeat: {
-				additionalClasses: 'hidead',
 				index: 1,
 				insertBeforeSelector: '.main p',
 				limit: 5,
