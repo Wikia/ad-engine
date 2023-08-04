@@ -63,13 +63,13 @@ export class PlaceholderServiceHelper {
 		return !placeholder.classList.contains(HIDDEN_AD_CLASS);
 	};
 
-	hiddenAdLabel = (adLabel: HTMLElement): void => {
-		if (this.shouldHiddenAdLabel) {
+	hideAdLabel = (adLabel: HTMLElement): void => {
+		if (this.shouldHideAdLabel) {
 			adLabel.classList.add(HIDDEN_AD_CLASS);
 		}
 	};
 
-	shouldHiddenAdLabel = (adLabel: HTMLElement): boolean => {
+	shouldHideAdLabel = (adLabel: HTMLElement): boolean => {
 		return !adLabel.classList.contains(HIDDEN_AD_CLASS);
 	};
 }

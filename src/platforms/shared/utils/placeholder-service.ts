@@ -55,7 +55,7 @@ export class PlaceholderService {
 						const adLabel = adSlot.getAdLabel(adLabelParent);
 
 						if (adLabel) {
-							this.placeholderHelper.hiddenAdLabel(adLabel);
+							this.placeholderHelper.hideAdLabel(adLabel);
 						}
 
 						if (
