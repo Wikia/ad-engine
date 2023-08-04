@@ -15,6 +15,7 @@ export interface SlotPlaceholderConfig {
 	anchorSelector: string;
 	insertMethod: 'append' | 'prepend' | 'after' | 'before';
 	avoidConflictWith?: string[];
+	noLabel?: boolean;
 }
 
 export interface RepeatableSlotPlaceholderConfig extends SlotPlaceholderConfig {
@@ -74,6 +75,11 @@ class SlotPlaceholderInjector {
 
 	inject(placeholderConfig: SlotPlaceholderConfigType): HTMLElement | null {
 		const placeholder = this.createPlaceholder(placeholderConfig.classList);
+
+		if (!(placeholderConfig.noLabel || null)) {
+			this.addAdLabel(placeholder);
+		}
+
 		const anchorElement = this.findAnchorElement(
 			placeholderConfig.anchorSelector,
 			placeholderConfig.avoidConflictWith,
@@ -90,9 +96,7 @@ class SlotPlaceholderInjector {
 
 	private createPlaceholder(classList: string[]): HTMLElement {
 		const placeholder = document.createElement('div');
-
 		placeholder.classList.add(...classList);
-		this.addAdLabel(placeholder);
 
 		return placeholder;
 	}

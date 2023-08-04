@@ -3,6 +3,7 @@ import {
 	BaseServiceSetup,
 	context,
 	InstantConfigService,
+	SlotPlaceholderConfig,
 	targetingService,
 	utils,
 } from '@ad-engine/core';
@@ -11,15 +12,54 @@ import { PlacementsHandler } from './utils/placements-handler';
 
 const logGroup = 'open-web';
 
+interface OpenWebConfig {
+	isActive: boolean;
+	spotId: string;
+}
+
 @Injectable()
 export class OpenWeb extends BaseServiceSetup {
 	static MOBILE_REPLACE_REPEAT_SLOT_IDX = 2;
+	private config: OpenWebConfig;
+
+	private readConfig(instantConfig: InstantConfigService): void {
+		this.config = instantConfig.get('icOpenWeb', {
+			isActive: false,
+			spotId: 'n-a',
+		});
+	}
+
+	public isActive(): boolean {
+		if (!this.config) {
+			this.readConfig(this.instantConfig);
+		}
+
+		return this.config.isActive;
+	}
+
+	public buildIncontentBoxRepeatExceptionReplacementForMobile(): (
+		repeat: number,
+	) => SlotPlaceholderConfig | null {
+		const newConfigOverride: SlotPlaceholderConfig = <SlotPlaceholderConfig>{
+			classList: ['openweb-slot'],
+			anchorSelector: context.get('templates.incontentAnchorSelector'),
+			insertMethod: 'before',
+			noLabel: true,
+		};
+
+		return (repeat) => {
+			return repeat === OpenWeb.MOBILE_REPLACE_REPEAT_SLOT_IDX && this.isActive()
+				? newConfigOverride
+				: null;
+		};
+	}
 
 	constructor(
-		protected instantConfig: InstantConfigService = null,
-		private placementsHandler: PlacementsHandler,
+		protected instantConfig: InstantConfigService,
+		private placementsHandler: PlacementsHandler = null,
 	) {
 		super(instantConfig);
+		this.readConfig(instantConfig);
 	}
 
 	call(): void {
@@ -28,12 +68,7 @@ export class OpenWeb extends BaseServiceSetup {
 			return;
 		}
 
-		const config = this.instantConfig.get('icOpenWeb', {
-			isActive: false,
-			spotId: 'n-a',
-		});
-
-		if (!config?.isActive) {
+		if (!this.isActive()) {
 			utils.logger(logGroup, 'disabled - not activated');
 			return;
 		}
@@ -54,7 +89,7 @@ export class OpenWeb extends BaseServiceSetup {
 				const postUrl = window.location.origin + window.location.pathname;
 				const articleTitle = targetingService.get('wpage') || '';
 
-				this.loadScript(config.spotId, postUniqueId, postUrl, articleTitle);
+				this.loadScript(this.config.spotId, postUniqueId, postUrl, articleTitle);
 			} else {
 				utils.logger(logGroup, 'disabled - builder failed');
 			}
