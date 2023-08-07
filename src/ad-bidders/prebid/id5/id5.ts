@@ -1,4 +1,4 @@
-import { context, utils } from '@ad-engine/core';
+import { context, targetingService, utils } from '@ad-engine/core';
 import { UserIdConfig } from '../index';
 
 const logGroup = 'Id5';
@@ -51,6 +51,26 @@ class Id5 {
 		utils.logger(logGroup, 'config', config);
 
 		return config;
+	}
+
+	async setupAbTesting(pbjs: Pbjs): Promise<void> {
+		const controlGroup = await this.getControlGroup(pbjs);
+		utils.logger(logGroup, 'Control group', controlGroup);
+
+		this.setControlGroupAsTargetingParam(controlGroup);
+	}
+
+	private async getControlGroup(pbjs: Pbjs): Promise<boolean> {
+		await new utils.WaitFor(() => pbjs.getUserIds()?.id5id?.ext !== undefined, 10, 100).until();
+
+		return pbjs.getUserIds()?.id5id?.ext?.abTestingControlGroup;
+	}
+
+	private setControlGroupAsTargetingParam(controlGroup: boolean): void {
+		if (controlGroup !== undefined && typeof controlGroup === 'boolean') {
+			targetingService.set('id5_group', controlGroup);
+			utils.logger(logGroup, 'Control group set as targeting param');
+		}
 	}
 
 	private isEnabled(): boolean {

@@ -199,12 +199,17 @@ export class PrebidProvider extends BidderProvider {
 		}
 	}
 
-	private configureId5(): void {
+	private async configureId5(): Promise<void> {
 		const id5Config = id5.getConfig();
 
 		if (id5Config !== undefined) {
 			this.prebidConfig.userSync.userIds.push(id5Config);
 			this.prebidConfig.userSync.auctionDelay = 50;
+		}
+
+		if (id5Config.params.abTesting) {
+			const pbjs: Pbjs = await pbjsFactory.init();
+			await id5.setupAbTesting(pbjs);
 		}
 	}
 
