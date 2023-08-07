@@ -224,7 +224,9 @@ export class GptProvider implements Provider {
 			communicationService.emit(eventsRepository.INTENTIQ_PPID_NOT_SET_ON_TIME);
 		}
 
-		const ppid = intentIqPpid ? intentIqPpid : targetingService.get('ppid');
+		const ppid = context.get('services.intentIq.ppid.enabled')
+			? intentIqPpid
+			: targetingService.get('ppid');
 
 		if (ppid) {
 			const tag = window.googletag.pubads();
