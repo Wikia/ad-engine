@@ -34,7 +34,7 @@ export class OpenWeb extends BaseServiceSetup {
 			this.readConfig(this.instantConfig);
 		}
 
-		return this.config.isActive;
+		return this.config?.isActive || false;
 	}
 
 	public buildIncontentBoxRepeatExceptionReplacementForMobile(): (
