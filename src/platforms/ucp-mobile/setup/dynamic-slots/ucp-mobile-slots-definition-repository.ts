@@ -8,6 +8,7 @@ import {
 	OpenWeb,
 	RepeatableSlotPlaceholderConfig,
 	scrollListener,
+	SlotPlaceholderConfig,
 	slotPlaceholderInjector,
 	UapLoadStatus,
 	utils,
@@ -16,7 +17,7 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpMobileSlotsDefinitionRepository {
-	constructor(protected instantConfig: InstantConfigService) {}
+	constructor(protected instantConfig: InstantConfigService, private openWeb: OpenWeb) {}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
 		if (!this.isTopLeaderboardApplicable()) {
@@ -147,12 +148,25 @@ export class UcpMobileSlotsDefinitionRepository {
 			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder', '.incontent-boxad', '.openweb-slot'],
 			repeatStart: 1,
 			repeatLimit: count,
-			repeatExceptions: [
-				new OpenWeb(this.instantConfig).buildIncontentBoxRepeatExceptionReplacementForMobile(),
-			],
+			repeatExceptions: [this.buildOpenWebReplacement()],
 		};
 
 		slotPlaceholderInjector.injectAndRepeat(icbPlaceholderConfig, adSlotCategory);
+	}
+
+	private buildOpenWebReplacement(): (repeat: number) => SlotPlaceholderConfig | null {
+		const newConfigOverride: SlotPlaceholderConfig = <SlotPlaceholderConfig>{
+			classList: ['openweb-slot'],
+			anchorSelector: context.get('templates.incontentAnchorSelector'),
+			insertMethod: 'before',
+			noLabel: true,
+		};
+
+		return (repeat) => {
+			return repeat === OpenWeb.MOBILE_REPLACE_REPEAT_SLOT_IDX && this.openWeb.isActive()
+				? newConfigOverride
+				: null;
+		};
 	}
 
 	getMobilePrefooterConfig(): SlotSetupDefinition {

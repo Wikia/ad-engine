@@ -3,7 +3,6 @@ import {
 	BaseServiceSetup,
 	context,
 	InstantConfigService,
-	SlotPlaceholderConfig,
 	targetingService,
 	utils,
 } from '@ad-engine/core';
@@ -21,38 +20,6 @@ interface OpenWebConfig {
 export class OpenWeb extends BaseServiceSetup {
 	static MOBILE_REPLACE_REPEAT_SLOT_IDX = 2;
 	private config: OpenWebConfig;
-
-	private readConfig(instantConfig: InstantConfigService): void {
-		this.config = instantConfig.get('icOpenWeb', {
-			isActive: false,
-			spotId: 'n-a',
-		});
-	}
-
-	public isActive(): boolean {
-		if (!this.config) {
-			this.readConfig(this.instantConfig);
-		}
-
-		return this.config?.isActive || false;
-	}
-
-	public buildIncontentBoxRepeatExceptionReplacementForMobile(): (
-		repeat: number,
-	) => SlotPlaceholderConfig | null {
-		const newConfigOverride: SlotPlaceholderConfig = <SlotPlaceholderConfig>{
-			classList: ['openweb-slot'],
-			anchorSelector: context.get('templates.incontentAnchorSelector'),
-			insertMethod: 'before',
-			noLabel: true,
-		};
-
-		return (repeat) => {
-			return repeat === OpenWeb.MOBILE_REPLACE_REPEAT_SLOT_IDX && this.isActive()
-				? newConfigOverride
-				: null;
-		};
-	}
 
 	constructor(
 		protected instantConfig: InstantConfigService,
@@ -93,6 +60,21 @@ export class OpenWeb extends BaseServiceSetup {
 			} else {
 				utils.logger(logGroup, 'disabled - builder failed');
 			}
+		});
+	}
+
+	public isActive(): boolean {
+		if (!this.config) {
+			this.readConfig(this.instantConfig);
+		}
+
+		return this.config?.isActive || false;
+	}
+
+	private readConfig(instantConfig: InstantConfigService): void {
+		this.config = instantConfig.get('icOpenWeb', {
+			isActive: false,
+			spotId: 'n-a',
 		});
 	}
 
