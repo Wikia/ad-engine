@@ -7,6 +7,7 @@ import {
 	utils,
 } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
+import { OpenWebExperiment } from './utils/open-web-experiment';
 import { PlacementsHandler } from './utils/placements-handler';
 
 const logGroup = 'open-web';
@@ -24,13 +25,14 @@ export class OpenWeb extends BaseServiceSetup {
 	constructor(
 		protected instantConfig: InstantConfigService,
 		private placementsHandler: PlacementsHandler = null,
+		private openWebExperiment: OpenWebExperiment,
 	) {
 		super(instantConfig);
 		this.readConfig(instantConfig);
 	}
 
 	call(): void {
-		if (!this.isControlGroupInOpenWebReactionsExperiment()) {
+		if (!this.isEnabledExperiment()) {
 			utils.logger(logGroup, 'disabled - control group in experiment');
 			return;
 		}
@@ -83,9 +85,8 @@ export class OpenWeb extends BaseServiceSetup {
 		});
 	}
 
-	private isControlGroupInOpenWebReactionsExperiment() {
-		const isControlGroup = context.get('templates.openWebReactionsExperiment');
-		return isControlGroup;
+	private isEnabledExperiment() {
+		return this.openWebExperiment.isEnabledExperiment();
 	}
 
 	private loadScript(spotId: string, postUniqueId: string, postUrl: string, title: string): void {
