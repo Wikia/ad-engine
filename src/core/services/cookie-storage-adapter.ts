@@ -1,11 +1,11 @@
 import Cookies from 'js-cookie';
-import { StorageProvider } from './universal-storage';
+import { StorageAdapter } from './universal-storage';
 
 interface WikiaCookieAttributes extends Cookies.CookieAttributes {
 	overwrite: boolean;
 }
 
-export class CookieStorageAdapter implements StorageProvider {
+export class CookieStorageAdapter implements StorageAdapter {
 	private readonly cacheMaxAge = 30 * 60 * 1000;
 	private keysSeen = new Set<string>();
 

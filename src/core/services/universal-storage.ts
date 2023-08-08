@@ -1,6 +1,8 @@
 import { Dictionary } from '../models';
 
-export interface StorageProvider {
+export type StorageProvider = () => StorageAdapter;
+
+export interface StorageAdapter {
 	getItem(key: string): string;
 	setItem(key: string, input: string, timeToLiveMs?: number): void;
 	removeItem(key: string): void;
@@ -13,15 +15,33 @@ export interface Storage<T> {
 }
 
 export class UniversalStorage implements Storage<any> {
+	private storage: StorageAdapter;
 	private fallbackStorage: Dictionary = {};
 
-	constructor(private provider: StorageProvider = window.localStorage) {}
+	constructor(provider: StorageProvider = () => window.localStorage) {
+		try {
+			// when LocalStorage is not available, an exception is thrown in Chrome
+			this.storage = provider();
+		} catch (e) {
+			this.storage = {
+				getItem: (key: string) => this.fallbackStorage[key],
+				setItem: (key: string, value: Dictionary | string) => {
+					this.fallbackStorage[key] = value;
+				},
+				removeItem: (key: string): void => {
+					delete this.fallbackStorage[key];
+				},
+				clear: () => {
+					this.fallbackStorage = {};
+				},
+			};
+		}
+	}
 
 	isAvailable(): boolean {
 		try {
-			this.provider.setItem('ae3-provider-storage-test', '1');
-			this.provider.getItem('ae3-provider-storage-test');
-			this.provider.removeItem('ae3-provider-storage-test');
+			this.storage.setItem('ae3-provider-storage-test', '1');
+			this.storage.removeItem('ae3-provider-storage-test');
 			return true;
 		} catch (e) {
 			return false;
@@ -30,7 +50,7 @@ export class UniversalStorage implements Storage<any> {
 
 	getItem<T>(key: string): T | string {
 		try {
-			let value = this.provider.getItem(key);
+			let value = this.storage.getItem(key);
 			try {
 				value = JSON.parse(value);
 			} catch {
@@ -45,7 +65,7 @@ export class UniversalStorage implements Storage<any> {
 	setItem(key: string, input: Dictionary | string, timeToLiveMs?: number): boolean {
 		const value: string = input instanceof Object ? JSON.stringify(input) : input;
 		try {
-			this.provider.setItem(key, value, timeToLiveMs);
+			this.storage.setItem(key, value, timeToLiveMs);
 		} catch (e) {
 			console.warn(`Item ${key} wasn't set in the storage`, e);
 			this.fallbackStorage[key] = value;
@@ -55,7 +75,7 @@ export class UniversalStorage implements Storage<any> {
 
 	removeItem(key: string): void {
 		try {
-			return this.provider.removeItem(key);
+			return this.storage.removeItem(key);
 		} catch (e) {
 			delete this.fallbackStorage[key];
 		}
@@ -63,7 +83,7 @@ export class UniversalStorage implements Storage<any> {
 
 	clear(): void {
 		try {
-			this.provider.clear();
+			this.storage.clear();
 		} catch (e) {
 			this.fallbackStorage = {};
 		}

@@ -16,7 +16,7 @@ export class SessionCookie {
 		return SessionCookie.instance;
 	}
 
-	private readonly storage = new UniversalStorage(new CookieStorageAdapter());
+	private readonly storage = new UniversalStorage(() => new CookieStorageAdapter());
 	private readonly sessionCookieDefault = 'tracking_session_id';
 	private prefix = '';
 
