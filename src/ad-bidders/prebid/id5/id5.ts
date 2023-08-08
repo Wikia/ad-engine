@@ -68,7 +68,7 @@ class Id5 {
 
 	private setControlGroupAsTargetingParam(controlGroup: boolean): void {
 		if (controlGroup !== undefined && typeof controlGroup === 'boolean') {
-			targetingService.set('id5_group', controlGroup);
+			targetingService.set('id5_group', controlGroup === true ? '1' : '0');
 			utils.logger(logGroup, 'Control group set as targeting param');
 		}
 	}
