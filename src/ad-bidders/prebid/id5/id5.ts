@@ -86,7 +86,7 @@ class Id5 {
 		}
 
 		this.saveInStorage(this.id5GroupKey, controlGroup);
-		this.setControlGroupAsTargetingParam(controlGroup);
+		this.setTargeting(this.id5GroupKey, controlGroup);
 	}
 
 	private getControlGroupFromStorage(): id5GroupValue {
@@ -118,9 +118,9 @@ class Id5 {
 		utils.logger(logGroup, key, 'saved in storage', value);
 	}
 
-	private setControlGroupAsTargetingParam(controlGroup: id5GroupValue): void {
-		targetingService.set(this.id5GroupKey, controlGroup);
-		utils.logger(logGroup, 'Control group set as targeting param', controlGroup);
+	private setTargeting(key: string, value: string): void {
+		targetingService.set(key, value);
+		utils.logger(logGroup, 'set targeting', key, value);
 	}
 }
 
