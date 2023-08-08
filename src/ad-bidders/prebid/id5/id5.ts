@@ -81,6 +81,7 @@ class Id5 {
 		utils.logger(logGroup, 'Control group', controlGroup);
 
 		if (!controlGroup) {
+			utils.logger(logGroup, 'A/B Testing aborted - control group not found');
 			return;
 		}
 
@@ -99,7 +100,13 @@ class Id5 {
 	private async getControlGroupFromPbjsObject(pbjs: Pbjs): Promise<id5GroupValue> {
 		await new utils.WaitFor(() => pbjs.getUserIds()?.id5id?.ext !== undefined, 10, 20).until();
 
-		return pbjs.getUserIds()?.id5id?.ext?.abTestingControlGroup === true ? '1' : '0';
+		const controlGroup = pbjs.getUserIds()?.id5id?.ext?.abTestingControlGroup;
+
+		if (controlGroup === undefined) {
+			return;
+		}
+
+		return controlGroup === true ? '1' : '0';
 	}
 
 	private saveInStorage(key: string, value: string) {
