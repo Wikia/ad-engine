@@ -1,13 +1,20 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { BaseServiceSetup, context, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, localCache, utils } from '@ad-engine/core';
 
 const logGroup = 'system1';
 const scriptUrl = 'https://s.flocdn.com/@s1/embedded-search/embedded-search.js';
 const partnerId = '42232';
-const segments = {
-	mobile: 'fanmob00',
-	desktop: 'fan00',
+// const segments = {
+// 	mobile: 'fanmob00',
+// 	desktop: 'fan00',
+// };
+const themes = {
+	dark: 'dark',
+	light: 'light',
 };
+
+const cacheKey = 'adEngine_system1';
+const cacheTtl = 24 * 3600;
 
 export class System1 extends BaseServiceSetup {
 	private isLoaded = false;
@@ -51,13 +58,14 @@ export class System1 extends BaseServiceSetup {
 			category: this.getCategory(),
 			domain: this.getHostname(),
 			partnerId: partnerId,
-			isTest: true,
+			isTest: false,
 			onComplete: this.onSetupResolve,
 			onError: this.onSetupRejected,
 			query: this.getSearchQuery(),
 			segment: this.getSegment(),
 			signature: this.getSearchSignature(),
 			subId: this.getSubId(),
+			newSession: this.isNewSession(),
 		};
 	}
 
@@ -86,7 +94,8 @@ export class System1 extends BaseServiceSetup {
 	}
 
 	private getSegment(): string {
-		return context.get('state.isMobile') ? segments.mobile : segments.desktop;
+		//return context.get('state.isMobile') ? segments.mobile : segments.desktop;
+		return this.getTheme() === themes.dark ? 'fandomdark' : 'fanmob00';
 	}
 
 	private getSearchQuery(): string {
@@ -101,6 +110,26 @@ export class System1 extends BaseServiceSetup {
 		const pageType = context.get('wiki.opts.pageType') || '';
 
 		return pageType == 'search';
+	}
+
+	private getTheme(): string {
+		return (window.mw as any).config.get('isDarkTheme') ? themes.dark : themes.light;
+	}
+
+	private isNewSession() {
+		const cacheValue = localCache.getItem(cacheKey);
+
+		if (!cacheValue || cacheValue != this.getTheme()) {
+			this.addThemeToCache(this.getTheme());
+			utils.logger(logGroup, 'New session');
+			return true;
+		}
+
+		return false;
+	}
+
+	private addThemeToCache(isDarkTheme: string): void {
+		localCache.setItem(cacheKey, isDarkTheme, cacheTtl);
 	}
 
 	private onSetupResolve(): void {
