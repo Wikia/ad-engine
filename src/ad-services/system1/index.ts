@@ -4,10 +4,11 @@ import { BaseServiceSetup, context, localCache, utils } from '@ad-engine/core';
 const logGroup = 'system1';
 const scriptUrl = 'https://s.flocdn.com/@s1/embedded-search/embedded-search.js';
 const partnerId = '42232';
-// const segments = {
-// 	mobile: 'fanmob00',
-// 	desktop: 'fan00',
-// };
+const segments = {
+	mobile: 'fanmob00',
+	desktop: 'fan00',
+	darkTheme: 'fandomdark',
+};
 const themes = {
 	dark: 'dark',
 	light: 'light',
@@ -25,7 +26,7 @@ export class System1 extends BaseServiceSetup {
 			return Promise.resolve();
 		}
 
-		if (!this.isEnabled('icSystem1')) {
+		if (!this.isEnabled('icSystem1', false)) {
 			utils.logger(logGroup, 'disabled');
 			return Promise.resolve();
 		}
@@ -65,7 +66,7 @@ export class System1 extends BaseServiceSetup {
 			segment: this.getSegment(),
 			signature: this.getSearchSignature(),
 			subId: this.getSubId(),
-			newSession: this.isNewSession(),
+			newSession: this.isThemeChanged(),
 		};
 	}
 
@@ -95,7 +96,7 @@ export class System1 extends BaseServiceSetup {
 
 	private getSegment(): string {
 		//return context.get('state.isMobile') ? segments.mobile : segments.desktop;
-		return this.getTheme() === themes.dark ? 'fandomdark' : 'fanmob00';
+		return this.getTheme() === themes.dark ? segments.darkTheme : '';
 	}
 
 	private getSearchQuery(): string {
@@ -108,15 +109,14 @@ export class System1 extends BaseServiceSetup {
 
 	private isSearchPage(): boolean {
 		const pageType = context.get('wiki.opts.pageType') || '';
-
 		return pageType == 'search';
 	}
 
 	private getTheme(): string {
-		return (window.mw as any).config.get('isDarkTheme') ? themes.dark : themes.light;
+		return (window.mw as any)?.config?.get('isDarkTheme') ? themes.dark : themes.light;
 	}
 
-	private isNewSession() {
+	private isThemeChanged() {
 		const cacheValue = localCache.getItem(cacheKey);
 
 		if (!cacheValue || cacheValue != this.getTheme()) {
