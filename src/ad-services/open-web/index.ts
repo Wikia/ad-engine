@@ -30,6 +30,11 @@ export class OpenWeb extends BaseServiceSetup {
 	}
 
 	call(): void {
+		if (!this.isControlGroupInOpenWebReactionsExperiment()) {
+			utils.logger(logGroup, 'disabled - control group in experiment');
+			return;
+		}
+
 		if (context.get('state.isLogged')) {
 			utils.logger(logGroup, 'disabled - user is logged');
 			return;
@@ -76,6 +81,11 @@ export class OpenWeb extends BaseServiceSetup {
 			isActive: false,
 			spotId: 'n-a',
 		});
+	}
+
+	private isControlGroupInOpenWebReactionsExperiment() {
+		const isControlGroup = context.get('templates.openWebReactionsExperiment');
+		return isControlGroup;
 	}
 
 	private loadScript(spotId: string, postUniqueId: string, postUrl: string, title: string): void {

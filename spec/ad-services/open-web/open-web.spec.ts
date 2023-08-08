@@ -74,8 +74,21 @@ describe('OpenWeb', () => {
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
+	it('OpenWeb does not load script if it is control group in experiment', async () => {
+		prepareUAPevent(false);
+		instantConfigStub.get.withArgs('icOpenWeb').returns(fakeActiveConfigValue);
+		contextStub.get.withArgs('state.isLogged').returns(false);
+		contextStub.get.withArgs('templates.openWebReactionsExperiment').returns(false);
+
+		service.call();
+
+		expect(loadScriptStub.called).to.equal(false);
+	});
+
 	it('OpenWeb does load script for mobile-builder', async () => {
 		prepareUAPevent(false);
+		contextStub.get.withArgs('templates.openWebReactionsExperiment').returns(true);
+
 		instantConfigStub.get.withArgs('icOpenWeb').returns(fakeActiveConfigValue);
 		contextStub.get.withArgs('state.isLogged').returns(false);
 
@@ -88,6 +101,8 @@ describe('OpenWeb', () => {
 
 	it('OpenWeb does load script for desktop-builder', async () => {
 		prepareUAPevent(false);
+		contextStub.get.withArgs('templates.openWebReactionsExperiment').returns(true);
+
 		instantConfigStub.get.withArgs('icOpenWeb').returns(fakeActiveConfigValue);
 		contextStub.get.withArgs('state.isLogged').returns(false);
 

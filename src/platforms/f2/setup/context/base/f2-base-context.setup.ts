@@ -1,5 +1,5 @@
 import { BaseContextSetup, NoAdsDetector } from '@platforms/shared';
-import { context, InstantConfigService, utils } from '@wikia/ad-engine';
+import { context, InstantConfigService, Optimizely, utils } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { F2SrcAdapter } from '../../../utils/f2-src-adapter';
 import { F2State } from '../../../utils/f2-state';
@@ -12,8 +12,9 @@ export class F2BaseContextSetup extends BaseContextSetup {
 		private srcAdapter: F2SrcAdapter,
 		instantConfig: InstantConfigService,
 		noAdsDetector: NoAdsDetector,
+		optimizely: Optimizely,
 	) {
-		super(instantConfig, noAdsDetector);
+		super(instantConfig, noAdsDetector, optimizely);
 	}
 
 	execute(): void {

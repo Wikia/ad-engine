@@ -5,6 +5,7 @@ import {
 	DiProcess,
 	eventsRepository,
 	InstantConfigService,
+	Optimizely,
 	setupNpaContext,
 	setupRdpContext,
 	universalAdPackage,
@@ -12,12 +13,42 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { NoAdsDetector } from '../services/no-ads-detector';
+type optimizelyOpenWebExperiment = {
+	EXPERIMENT_ENABLED: string;
+	EXPERIMENT_VARIANT: string;
+};
+
+type optimizelyOpenWebExperimentVariants = {
+	CONTROL_GROUP: string;
+	AD_UNIT: string;
+};
+
+const OPTIMIZELY_DESKTOP_OPEN_WEB_EXPERIMENT: optimizelyOpenWebExperiment = {
+	EXPERIMENT_ENABLED: 'desktop_open_web',
+	EXPERIMENT_VARIANT: 'desktop_open_web_variant',
+};
+
+const OPTIMIZELY_DESKTOP_OPEN_WEB_EXPERIMENT_VARIANTS: optimizelyOpenWebExperimentVariants = {
+	CONTROL_GROUP: 'desktop_open_web_control_group',
+	AD_UNIT: 'desktop_open_web_ad_unit',
+};
+
+const OPTIMIZELY_MOBILE_OPEN_WEB_EXPERIMENT: optimizelyOpenWebExperiment = {
+	EXPERIMENT_ENABLED: 'mobile_open_web',
+	EXPERIMENT_VARIANT: 'mobile_open_web_variant',
+};
+
+const OPTIMIZELY_MOBILE_OPEN_WEB_EXPERIMENT_VARIANTS: optimizelyOpenWebExperimentVariants = {
+	CONTROL_GROUP: 'mobile_open_web_control_group',
+	AD_UNIT: 'mobile_open_web_replace_incontent',
+};
 
 @Injectable()
 export class BaseContextSetup implements DiProcess {
 	constructor(
 		protected instantConfig: InstantConfigService,
 		protected noAdsDetector: NoAdsDetector,
+		protected optimizely: Optimizely,
 	) {}
 
 	execute(): void {
@@ -66,6 +97,7 @@ export class BaseContextSetup implements DiProcess {
 
 	private setOptionsContext(): void {
 		this.setInContentExperiment();
+		this.setOpenWebReactionsExperiment();
 
 		context.set('options.performanceAds', this.instantConfig.get('icPerformanceAds'));
 		context.set('options.stickyTbExperiment', this.instantConfig.get('icStickyTbExperiment'));
@@ -129,6 +161,21 @@ export class BaseContextSetup implements DiProcess {
 			context.set('templates.incontentHeadersExperiment', true);
 		} else {
 			context.set('templates.incontentAnchorSelector', '.mw-parser-output > h2');
+		}
+	}
+	private setOpenWebReactionsExperiment(): void {
+		const isMobile = context.get('state.isMobile');
+		const experiment = isMobile
+			? OPTIMIZELY_MOBILE_OPEN_WEB_EXPERIMENT
+			: OPTIMIZELY_DESKTOP_OPEN_WEB_EXPERIMENT;
+		const variants = isMobile
+			? OPTIMIZELY_MOBILE_OPEN_WEB_EXPERIMENT_VARIANTS
+			: OPTIMIZELY_DESKTOP_OPEN_WEB_EXPERIMENT_VARIANTS;
+
+		const variant = this.optimizely.getVariant(experiment);
+		context.set('templates.openWebReactionsExperiment', variant !== variants.CONTROL_GROUP);
+		if (variant) {
+			this.optimizely.addVariantToTargeting(experiment, variant);
 		}
 	}
 
