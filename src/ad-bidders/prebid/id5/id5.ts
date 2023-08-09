@@ -10,7 +10,7 @@ interface Id5Config extends UserIdConfig {
 	};
 }
 
-type id5GroupValue = '1' | '0';
+type id5GroupValue = 'A' | 'B' | 'U';
 const logGroup = 'Id5';
 
 class Id5 {
@@ -80,20 +80,18 @@ class Id5 {
 
 		utils.logger(logGroup, 'Control group', controlGroup);
 
-		if (!controlGroup) {
-			utils.logger(logGroup, 'A/B Testing aborted - control group not found');
-			return;
-		}
-
-		this.saveInStorage(this.id5GroupKey, controlGroup);
 		this.setTargeting(this.id5GroupKey, controlGroup);
+
+		if (controlGroup && controlGroup !== 'U') {
+			this.saveInStorage(this.id5GroupKey, controlGroup);
+		}
 	}
 
 	private getControlGroupFromStorage(): id5GroupValue {
 		const storageValue = this.storage.getItem(this.id5GroupKey);
 
-		if (storageValue !== null && typeof storageValue === 'number') {
-			return storageValue === 1 ? '1' : '0';
+		if (storageValue !== null) {
+			return storageValue;
 		}
 	}
 
@@ -103,10 +101,10 @@ class Id5 {
 		const controlGroup = pbjs.getUserIds()?.id5id?.ext?.abTestingControlGroup;
 
 		if (controlGroup === undefined) {
-			return;
+			return 'U';
 		}
 
-		return controlGroup === true ? '1' : '0';
+		return controlGroup === true ? 'A' : 'B';
 	}
 
 	private saveInStorage(key: string, value: string) {
