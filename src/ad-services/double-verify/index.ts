@@ -4,63 +4,82 @@ const logGroup = 'double-verify';
 const scriptUrl = 'https://pub.doubleverify.com/signals/pub.json';
 const ctx = '28150781';
 const cmp = 'DV1001654';
-const userAgent = 'ad-engine';
-const referer = 'https://fandom.com';
+const referer = window.location.href;
 
 interface AdUnit {
 	path: string;
-	sizes: string[];
 }
 
 export class DoubleVerify extends BaseServiceSetup {
+	private isLoaded = false;
+
 	async call() {
-		if (!this.isEnabled('icDoubleVerify')) {
+		if (this.isLoaded) {
+			return true;
+		}
+
+		if (!this.isEnabled('icDoubleVerify', false)) {
 			utils.logger(logGroup, 'disabled');
 			return Promise.resolve();
 		}
 
 		const slots = this.getSlots();
-		const url = this.prepareURL(slots);
-		const headers = this.getHeaders();
+		const url = this.prepareRequestURL(slots);
+		const headers = this.getRequestHeaders();
 
 		try {
 			const response = await fetch(url.href, { headers });
+
 			if (!response.ok) {
-				utils.logger(logGroup, 'Error fetching signals:');
-				return;
+				utils.logger(logGroup, 'Error fetching signals');
+				return Promise.resolve();
 			}
 
 			const signals = await response.json();
+			this.isLoaded = true;
 			this.prepareTargeting(signals);
 		} catch (error) {
 			utils.logger(logGroup, 'Error fetching signals', error);
 		}
+
+		return Promise.resolve();
 	}
 
 	private prepareTargeting(data: any) {
-		utils.logger(logGroup, 'setting targeting');
+		utils.logger(logGroup, 'Setting targeting', data);
 		targetingService.set('ids', data['IDS']?.toString());
 		targetingService.set('bsc', data['BSC']);
 		targetingService.set('abs', data['ABC']?.toString());
+
+		this.addToSlotsTargeting(data['TVP'], 'tvp');
+		this.addToSlotsTargeting(data['VLP'], 'vlp');
 	}
 
-	private getHeaders() {
+	private addToSlotsTargeting(data: any, targetingKey: string) {
+		if (typeof data === 'object') {
+			Object.entries(data).forEach(([slotName, value]) => {
+				targetingService.set(targetingKey, value[''], slotName);
+			});
+		}
+	}
+
+	private getRequestHeaders() {
 		return {
 			referer,
-			'user-agent': userAgent,
+			'user-agent': window.navigator.userAgent,
 		};
 	}
 
-	private prepareURL(slots: AdUnit[]) {
+	private prepareRequestURL(slots: AdUnit[]) {
 		const params = new URLSearchParams({
 			ctx,
 			cmp,
 			url: encodeURIComponent(referer),
 		});
 
-		for (const slot of slots) {
-			params.append(`adunits[${slot.path}][]`, slot.sizes.join(','));
-		}
+		Object.entries(slots).forEach(([, slot]) => {
+			params.append(`adunits[${slot.path}][]`, '');
+		});
 
 		const url = new URL(scriptUrl);
 		url.search = params.toString();
@@ -69,29 +88,10 @@ export class DoubleVerify extends BaseServiceSetup {
 	}
 
 	private getSlots(): AdUnit[] {
-		return Object.entries(slotService.slotConfigsMap)
-			.filter(([, value]) => Array.isArray(value?.defaultSizes))
-			.map(([key, value]) => {
-				return {
-					path: key,
-					sizes: this.mapSizes(value.defaultSizes),
-				};
-			});
-	}
-
-	private mapSizes(adSlotSizes: any): string[] {
-		const sizes: string[] = [];
-
-		if (!Array.isArray(adSlotSizes)) {
-			return sizes;
-		}
-
-		Object.values(adSlotSizes)
-			.filter((value) => Array.isArray(value) && value.length === 2)
-			.forEach((value) => {
-				sizes.push(`${value[0]}x${value[1]}`);
-			});
-
-		return sizes;
+		return Object.entries(slotService.slotConfigsMap).map(([key]) => {
+			return {
+				path: key,
+			};
+		});
 	}
 }
