@@ -2,7 +2,7 @@ import { communicationService, eventsRepository } from '@ad-engine/communication
 import { BaseServiceSetup, context, localCache, utils } from '@ad-engine/core';
 
 const logGroup = 'system1';
-const scriptUrl = 'https://s.flocdn.com/@s1/embedded-search/embedded-search.js';
+const scriptUrl = '//s.flocdn.com/@s1/embedded-search/embedded-search.js';
 const partnerId = '42232';
 const segments = {
 	mobile: 'fanmob00',
@@ -49,7 +49,7 @@ export class System1 extends BaseServiceSetup {
 			});
 
 		const config = this.getConfig();
-		utils.logger(logGroup, config);
+		utils.logger(logGroup, 'Config', config);
 
 		window.s1search('config', config);
 	}
@@ -58,22 +58,22 @@ export class System1 extends BaseServiceSetup {
 		return {
 			category: this.getCategory(),
 			domain: this.getHostname(),
-			partnerId: partnerId,
 			isTest: false,
+			newSession: this.isThemeChanged(),
 			onComplete: this.onSetupResolve,
 			onError: this.onSetupRejected,
-			query: this.getSearchQuery(),
+			partnerId: partnerId,
 			segment: this.getSegment(),
 			signature: this.getSearchSignature(),
 			subId: this.getSubId(),
-			newSession: this.isThemeChanged(),
+			query: this.getSearchQuery(),
 		};
 	}
 
 	private getCategory(): string {
-		const filter = context.get('wiki.search_filter') || '';
+		const searchFilter = context.get('wiki.search_filter') || '';
 
-		switch (filter) {
+		switch (searchFilter) {
 			case 'videoOnly':
 				return 'video';
 			case 'imageOnly':
@@ -95,8 +95,11 @@ export class System1 extends BaseServiceSetup {
 	}
 
 	private getSegment(): string {
-		//return context.get('state.isMobile') ? segments.mobile : segments.desktop;
-		return this.getTheme() === themes.dark ? segments.darkTheme : '';
+		if (this.getTheme() === themes.dark) {
+			return segments.darkTheme;
+		}
+
+		return context.get('state.isMobile') ? segments.mobile : segments.desktop;
 	}
 
 	private getSearchQuery(): string {
@@ -119,17 +122,13 @@ export class System1 extends BaseServiceSetup {
 	private isThemeChanged() {
 		const cacheValue = localCache.getItem(cacheKey);
 
-		if (!cacheValue || cacheValue != this.getTheme()) {
-			this.addThemeToCache(this.getTheme());
+		if (!cacheValue || cacheValue !== this.getTheme()) {
+			localCache.setItem(cacheKey, this.getTheme(), cacheTtl);
 			utils.logger(logGroup, 'New session');
 			return true;
 		}
 
 		return false;
-	}
-
-	private addThemeToCache(isDarkTheme: string): void {
-		localCache.setItem(cacheKey, isDarkTheme, cacheTtl);
 	}
 
 	private onSetupResolve(): void {
