@@ -1,13 +1,16 @@
 import { PrebidProvider } from '@wikia/ad-bidders/prebid';
 import { id5 } from '@wikia/ad-bidders/prebid/id5';
-import { context } from '@wikia/core';
+import { context, targetingService } from '@wikia/core';
 import { expect } from 'chai';
+import { PbjsStub, stubPbjs } from '../../../core/services/pbjs.stub';
 
 const bidderConfig = {
 	enabled: false,
 };
 
 describe('Id5', () => {
+	let pbjsStub: PbjsStub;
+
 	const id5EnabledConfig = {
 		name: 'id5Id',
 		params: {
@@ -30,10 +33,15 @@ describe('Id5', () => {
 		context.set('options.optOutSale', false);
 		window.fandomContext.partners.directedAtChildren = false;
 		context.set('bidders.prebid.id5AbValue', undefined);
+		pbjsStub = stubPbjs(global.sandbox).pbjsStub;
+	});
+
+	afterEach(() => {
+		global.sandbox.restore();
 	});
 
 	after(() => {
-		window.fandomContext.partners.directedAtChildren = false;
+		window.fandomContext.partners.directedAtChildren = undefined;
 	});
 
 	it('Prebid config includes Id5 setup', () => {
@@ -73,5 +81,48 @@ describe('Id5', () => {
 		context.set('bidders.prebid.id5AbValue', 0.9);
 
 		expect(id5.getConfig().params.abTesting.controlGroupPct).to.eql(0.9);
+	});
+
+	describe('setupAbTesting', () => {
+		it('should not set targeting parameter if control group is not found', () => {
+			const targetingServiceStub = global.sandbox.stub(targetingService, 'set');
+
+			id5.setupAbTesting(pbjsStub);
+
+			expect(targetingServiceStub.called).to.eql(false);
+		});
+
+		it('should set targeting parameter to "U" if control group is undefined', async () => {
+			const targetingServiceStub = global.sandbox.stub(targetingService, 'set');
+			pbjsStub.getUserIds.returns({
+				id5id: { id: '1234567890abcdef', ext: { abTestingControlGroup: undefined } },
+			});
+
+			await id5.setupAbTesting(pbjsStub);
+
+			expect(targetingServiceStub.calledOnceWithExactly('id5_group', 'U')).to.be.true;
+		});
+
+		it('should set targeting parameter to "A" if control group is "true"', async () => {
+			const targetingServiceStub = global.sandbox.stub(targetingService, 'set');
+			pbjsStub.getUserIds.returns({
+				id5id: { id: '1234567890abcdef', ext: { abTestingControlGroup: true } },
+			});
+
+			await id5.setupAbTesting(pbjsStub);
+
+			expect(targetingServiceStub.calledOnceWithExactly('id5_group', 'A')).to.be.true;
+		});
+
+		it('should set targeting parameter to "B" if control group is "false"', async () => {
+			const targetingServiceStub = global.sandbox.stub(targetingService, 'set');
+			pbjsStub.getUserIds.returns({
+				id5id: { id: '1234567890abcdef', ext: { abTestingControlGroup: false } },
+			});
+
+			await id5.setupAbTesting(pbjsStub);
+
+			expect(targetingServiceStub.calledOnceWithExactly('id5_group', 'B')).to.be.true;
+		});
 	});
 });
