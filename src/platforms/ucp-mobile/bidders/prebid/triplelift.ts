@@ -10,6 +10,13 @@ export function getTripleliftContext(): object {
 				sizes: [[300, 250]],
 				inventoryCodes: ['Fandom_Mobile_InContent_prebid'],
 			},
+			gallery_leaderboard: {
+				sizes: [
+					[320, 100],
+					[320, 50],
+				],
+				inventoryCodes: ['fandom_mw_galleries'],
+			},
 			bottom_leaderboard: {
 				sizes: [
 					[300, 250],
