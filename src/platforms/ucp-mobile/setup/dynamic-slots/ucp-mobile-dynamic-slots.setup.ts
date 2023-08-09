@@ -23,6 +23,7 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { MobileGalleryLightboxHandler } from './specific-handler.ts/gallery-lightbox-handler';
 import { UcpMobileSlotsDefinitionRepository } from './ucp-mobile-slots-definition-repository';
 
 @Injectable()
@@ -40,6 +41,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		this.configureInterstitial();
 		this.registerFloorAdhesionCodePriority();
 		this.registerAdPlaceholderService();
+		this.handleMobileGalleryLightboxSlots();
 	}
 
 	private injectSlots(): void {
@@ -280,5 +282,9 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		const messageBoxService = new MessageBoxService(context.get('services.messageBox.enabled'));
 		const placeholderService = new PlaceholderService(messageBoxService);
 		placeholderService.init();
+	}
+
+	private handleMobileGalleryLightboxSlots(): void {
+		new MobileGalleryLightboxHandler(this.slotsDefinitionRepository).handle();
 	}
 }

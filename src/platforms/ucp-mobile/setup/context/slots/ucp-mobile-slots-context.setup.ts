@@ -193,6 +193,22 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				defaultSizes: [[300, 250]],
 				group: 'quiz',
 			},
+			gallery_leaderboard: {
+				adProduct: 'gallery_leaderboard',
+				bidderAlias: 'fandom_dt_galleries',
+				group: 'IG',
+				defaultSizes: [
+					[320, 100],
+					[320, 50],
+				],
+				targeting: {
+					loc: 'gallery',
+				},
+				placeholder: {
+					createLabel: true,
+					adLabelParent: '.ad-slot-placeholder.gallery-leaderboard',
+				},
+			},
 		};
 
 		slotsContext.setupSlotVideoContext();
