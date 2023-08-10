@@ -44,7 +44,7 @@ export class GalleryLightboxSetup {
 
 	private handleOnLoad(): void {
 		communicationService.on(
-			eventsRepository.PLATFORM_LIGHTBOX_MOBILE_READY,
+			eventsRepository.PLATFORM_LIGHTBOX_READY,
 			({ placementId }) => {
 				if (placementId !== this.slotName) {
 					return;
@@ -61,7 +61,7 @@ export class GalleryLightboxSetup {
 
 	private handleOnChange(): void {
 		communicationService.on(
-			eventsRepository.PLATFORM_LIGHTBOX_MOBILE_IMAGE_CHANGE,
+			eventsRepository.PLATFORM_LIGHTBOX_IMAGE_CHANGE,
 			({ placementId }) => {
 				utils.logger(
 					this.logGroup,
@@ -98,7 +98,7 @@ export class GalleryLightboxSetup {
 
 	private handleOnClose(): void {
 		communicationService.on(
-			eventsRepository.PLATFORM_LIGHTBOX_MOBILE_CLOSED,
+			eventsRepository.PLATFORM_LIGHTBOX_CLOSED,
 			({ placementId }) => {
 				if (placementId !== this.slotName) {
 					return;
