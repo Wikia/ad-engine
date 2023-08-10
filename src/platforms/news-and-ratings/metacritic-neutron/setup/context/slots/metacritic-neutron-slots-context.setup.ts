@@ -212,6 +212,8 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 			'incontent-leaderboard-middle': {
 				defaultSizes: [
 					[728, 90],
+					[970, 250],
+					[970, 66],
 					[5, 5],
 				],
 				targeting: {
