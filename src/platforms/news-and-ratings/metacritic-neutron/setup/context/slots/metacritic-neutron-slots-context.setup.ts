@@ -273,7 +273,12 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 				isVideo: true,
 			},
 			'incontent-leader-plus-middle': {
-				defaultSizes: [[728, 90]],
+				defaultSizes: [
+					[728, 90],
+					[970, 250],
+					[970, 66],
+					[5, 5],
+				],
 				targeting: {
 					pos_nr: 'middle',
 				},
