@@ -1,7 +1,7 @@
 import { BaseServiceSetup, slotService, targetingService, utils } from '@ad-engine/core';
 
 const logGroup = 'double-verify';
-const scriptUrl = 'https://pub.doubleverify.com/signals/pub.json';
+const scriptUrl = 'http:////pub.doubleverify.com/signals/pub.json';
 const ctx = '28150781';
 const cmp = 'DV1001654';
 const referer = window.location.href;
@@ -15,12 +15,12 @@ export class DoubleVerify extends BaseServiceSetup {
 
 	async call() {
 		if (this.isLoaded) {
-			return true;
+			return;
 		}
 
 		if (!this.isEnabled('icDoubleVerify', false)) {
 			utils.logger(logGroup, 'disabled');
-			return Promise.resolve();
+			return;
 		}
 
 		const slots = this.getSlots();
@@ -32,7 +32,7 @@ export class DoubleVerify extends BaseServiceSetup {
 
 			if (!response.ok) {
 				utils.logger(logGroup, 'Error fetching signals');
-				return Promise.resolve();
+				return;
 			}
 
 			const signals = await response.json();
@@ -42,7 +42,7 @@ export class DoubleVerify extends BaseServiceSetup {
 			utils.logger(logGroup, 'Error fetching signals', error);
 		}
 
-		return Promise.resolve();
+		return;
 	}
 
 	private prepareTargeting(data: any) {
