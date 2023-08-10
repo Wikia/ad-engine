@@ -146,6 +146,10 @@
 			height: 45px;
 		}
 	}
+
+	&.hide-under-lightbox {
+		display: none;
+	}
 }
 
 .ad-slot.porvata-outstream {

@@ -53,6 +53,7 @@ export class GalleryLightboxSetup {
 				insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]);
 				this.lockForFewSeconds();
 				this.isActive = true;
+				this.hideFlorAdhesion();
 				utils.logger(this.logGroup, 'Ad placement on Lightbox ready', placementId);
 			},
 			false,
@@ -112,6 +113,7 @@ export class GalleryLightboxSetup {
 				gallerySlot.destroy();
 				utils.logger(this.logGroup, 'Ad placement on Lightbox destroy', placementId);
 				this.isActive = false;
+				this.showFlorAdhesion();
 			},
 			false,
 		);
@@ -122,5 +124,15 @@ export class GalleryLightboxSetup {
 		setTimeout(() => {
 			this.refreshLock = false;
 		}, 2000);
+	}
+
+	private hideFlorAdhesion() {
+		const floor = document.getElementById('floor_adhesion_anchor');
+		floor.classList.add('hide-under-lightbox');
+	}
+
+	private showFlorAdhesion() {
+		const floor = document.getElementById('floor_adhesion_anchor');
+		floor.classList.remove('hide-under-lightbox');
 	}
 }
