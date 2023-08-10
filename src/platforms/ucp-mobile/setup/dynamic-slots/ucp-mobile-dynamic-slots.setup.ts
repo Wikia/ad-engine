@@ -1,4 +1,5 @@
 import {
+	GalleryLightboxSetup,
 	insertSlots,
 	MessageBoxService,
 	NativoSlotsDefinitionRepository,
@@ -23,7 +24,6 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { MobileGalleryLightboxHandler } from './specific-handler.ts/gallery-lightbox-handler';
 import { UcpMobileSlotsDefinitionRepository } from './ucp-mobile-slots-definition-repository';
 
 @Injectable()
@@ -285,6 +285,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	}
 
 	private handleMobileGalleryLightboxSlots(): void {
-		new MobileGalleryLightboxHandler(this.slotsDefinitionRepository).handle();
+		new GalleryLightboxSetup(this.slotsDefinitionRepository).handle();
 	}
 }

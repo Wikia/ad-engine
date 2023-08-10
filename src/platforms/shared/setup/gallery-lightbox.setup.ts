@@ -1,4 +1,3 @@
-import { insertSlots } from '@platforms/shared';
 import {
 	AdSlotStatus,
 	communicationService,
@@ -6,15 +5,21 @@ import {
 	slotService,
 	utils,
 } from '@wikia/ad-engine';
-import { UcpDesktopSlotsDefinitionRepository } from '../ucp-desktop-slots-definition-repository';
+import { UcpDesktopSlotsDefinitionRepository } from '../../ucp-desktop/setup/dynamic-slots/ucp-desktop-slots-definition-repository';
+import { UcpMobileSlotsDefinitionRepository } from '../../ucp-mobile/setup/dynamic-slots/ucp-mobile-slots-definition-repository';
+import { insertSlots } from '../utils/insert-slots';
 
-export class GalleryLightboxHandler {
+export class GalleryLightboxSetup {
 	private readonly slotName = 'gallery_leaderboard';
 	private refreshLock: boolean;
 	private logGroup = 'gallery-lightbox-handler';
 	private isActive: boolean;
 
-	constructor(private slotsDefinitionRepository: UcpDesktopSlotsDefinitionRepository) {
+	constructor(
+		private slotsDefinitionRepository:
+			| UcpMobileSlotsDefinitionRepository
+			| UcpDesktopSlotsDefinitionRepository,
+	) {
 		this.refreshLock = false;
 		this.isActive = true;
 	}
@@ -22,14 +27,24 @@ export class GalleryLightboxHandler {
 		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
 			this.handleOnLoadNoAd();
 			this.handleOnLoad();
-			this.handleOnClose();
 			this.handleOnChange();
+			this.handleOnClose();
 		});
+	}
+
+	private handleOnLoadNoAd(): void {
+		communicationService.onSlotEvent(
+			AdSlotStatus.STATUS_COLLAPSE,
+			() => {
+				this.refreshLock = true;
+			},
+			this.slotName,
+		);
 	}
 
 	private handleOnLoad(): void {
 		communicationService.on(
-			eventsRepository.PLATFORM_LIGHTBOX_READY,
+			eventsRepository.PLATFORM_LIGHTBOX_MOBILE_READY,
 			({ placementId }) => {
 				if (placementId !== this.slotName) {
 					return;
@@ -44,40 +59,9 @@ export class GalleryLightboxHandler {
 		);
 	}
 
-	private handleOnLoadNoAd(): void {
-		communicationService.onSlotEvent(
-			AdSlotStatus.STATUS_COLLAPSE,
-			() => {
-				this.refreshLock = true;
-			},
-			this.slotName,
-		);
-	}
-
-	private handleOnClose(): void {
-		communicationService.on(
-			eventsRepository.PLATFORM_LIGHTBOX_CLOSED,
-			({ placementId }) => {
-				if (placementId !== this.slotName) {
-					return;
-				}
-
-				const gallerySlot = slotService.get(this.slotName);
-				if (!gallerySlot) {
-					return;
-				}
-
-				gallerySlot.destroy();
-				utils.logger(this.logGroup, 'Ad placement on Lightbox destroy', placementId);
-				this.isActive = false;
-			},
-			false,
-		);
-	}
-
 	private handleOnChange(): void {
 		communicationService.on(
-			eventsRepository.PLATFORM_LIGHTBOX_IMAGE_CHANGE,
+			eventsRepository.PLATFORM_LIGHTBOX_MOBILE_IMAGE_CHANGE,
 			({ placementId }) => {
 				utils.logger(
 					this.logGroup,
@@ -107,6 +91,27 @@ export class GalleryLightboxHandler {
 				}, 100);
 
 				this.lockForFewSeconds();
+			},
+			false,
+		);
+	}
+
+	private handleOnClose(): void {
+		communicationService.on(
+			eventsRepository.PLATFORM_LIGHTBOX_MOBILE_CLOSED,
+			({ placementId }) => {
+				if (placementId !== this.slotName) {
+					return;
+				}
+
+				const gallerySlot = slotService.get(this.slotName);
+				if (!gallerySlot) {
+					return;
+				}
+
+				gallerySlot.destroy();
+				utils.logger(this.logGroup, 'Ad placement on Lightbox destroy', placementId);
+				this.isActive = false;
 			},
 			false,
 		);

@@ -1,4 +1,5 @@
 import {
+	GalleryLightboxSetup,
 	insertSlots,
 	NativoSlotsDefinitionRepository,
 	PlaceholderService,
@@ -17,7 +18,6 @@ import {
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { GalleryLightboxHandler } from './specific-handler/gallery-lightbox-handler';
 import { UcpDesktopPerformanceAdsDefinitionRepository } from './ucp-desktop-performance-ads-definition-repository';
 import { UcpDesktopSlotsDefinitionRepository } from './ucp-desktop-slots-definition-repository';
 
@@ -154,6 +154,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	}
 
 	private handleGalleryLightboxSlots(): void {
-		new GalleryLightboxHandler(this.slotsDefinitionRepository).handle();
+		new GalleryLightboxSetup(this.slotsDefinitionRepository).handle();
 	}
 }
