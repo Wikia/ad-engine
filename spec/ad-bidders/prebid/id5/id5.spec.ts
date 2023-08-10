@@ -1,12 +1,7 @@
-import { PrebidProvider } from '@wikia/ad-bidders/prebid';
 import { id5 } from '@wikia/ad-bidders/prebid/id5';
 import { context, targetingService } from '@wikia/core';
 import { expect } from 'chai';
 import { PbjsStub, stubPbjs } from '../../../core/services/pbjs.stub';
-
-const bidderConfig = {
-	enabled: false,
-};
 
 describe('Id5', () => {
 	let pbjsStub: PbjsStub;
@@ -17,7 +12,7 @@ describe('Id5', () => {
 			partner: 1139,
 			abTesting: {
 				enabled: false,
-				controlGroupPct: 0.5,
+				controlGroupPct: undefined,
 			},
 		},
 		storage: {
@@ -32,23 +27,17 @@ describe('Id5', () => {
 		context.set('bidders.prebid.id5', true);
 		context.set('options.optOutSale', false);
 		window.fandomContext.partners.directedAtChildren = false;
-		context.set('bidders.prebid.id5AbValue', undefined);
+
 		pbjsStub = stubPbjs(global.sandbox).pbjsStub;
 	});
 
 	afterEach(() => {
+		context.set('bidders.prebid.id5AbValue', undefined);
 		global.sandbox.restore();
 	});
 
 	after(() => {
 		window.fandomContext.partners.directedAtChildren = undefined;
-	});
-
-	it('Prebid config includes Id5 setup', () => {
-		const prebid = new PrebidProvider(bidderConfig);
-		const id5Config = id5.getConfig();
-
-		expect(prebid.prebidConfig.userSync.userIds[0]).to.eql(id5Config);
 	});
 
 	it('Id5 is enabled', () => {

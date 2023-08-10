@@ -37,13 +37,20 @@ class Id5 {
 
 		utils.logger(logGroup, 'enabled');
 
+		const id5AbValue: number = context.get('bidders.prebid.id5AbValue');
+		if (id5AbValue) {
+			utils.logger(logGroup, 'A/B testing enabled', 'value=', id5AbValue);
+		} else {
+			utils.logger(logGroup, 'A/B testing disabled');
+		}
+
 		const config = {
 			name: 'id5Id',
 			params: {
 				partner: 1139,
 				abTesting: {
-					enabled: false,
-					controlGroupPct: 0.5,
+					enabled: id5AbValue !== undefined,
+					controlGroupPct: id5AbValue,
 				},
 			},
 			storage: {
@@ -54,24 +61,9 @@ class Id5 {
 			},
 		};
 
-		this.configureAbTestingParameters(config);
-
 		utils.logger(logGroup, 'config', config);
 
 		return config;
-	}
-
-	private configureAbTestingParameters(config: Id5Config): void {
-		const id5AbValue = context.get('bidders.prebid.id5AbValue');
-
-		if (id5AbValue && typeof id5AbValue === 'number') {
-			config.params.abTesting.enabled = true;
-			config.params.abTesting.controlGroupPct = id5AbValue;
-
-			utils.logger(logGroup, 'A/B testing enabled', 'value', id5AbValue);
-		} else {
-			utils.logger(logGroup, 'A/B testing disabled');
-		}
 	}
 
 	async setupAbTesting(pbjs: Pbjs): Promise<void> {
