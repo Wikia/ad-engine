@@ -283,6 +283,74 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 					pos_nr: 'middle',
 				},
 			},
+			incontent_leaderboard: {
+				sizes: [
+					{
+						viewportSize: [970, 200],
+						sizes: [
+							[728, 90],
+							[970, 66],
+							[5, 5],
+							universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop,
+						],
+					},
+					{
+						viewportSize: [840, 200],
+						sizes: [[728, 90], [5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
+					},
+					{
+						viewportSize: [320, 200],
+						sizes: [[320, 50], [320, 100], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
+					},
+					{
+						viewportSize: [0, 0],
+						sizes: [[320, 50]],
+					},
+				],
+				defaultSizes: [
+					[728, 90],
+					[970, 250],
+					[970, 66],
+					[5, 5],
+				],
+				targeting: {
+					pos_nr: 'middle',
+				},
+			},
+			bottom_leaderboard: {
+				sizes: [
+					{
+						viewportSize: [970, 200],
+						sizes: [
+							[728, 90],
+							[970, 66],
+							[5, 5],
+							universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop,
+						],
+					},
+					{
+						viewportSize: [840, 200],
+						sizes: [[728, 90], [5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
+					},
+					{
+						viewportSize: [320, 200],
+						sizes: [[320, 50], [320, 100], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
+					},
+					{
+						viewportSize: [0, 0],
+						sizes: [[320, 50]],
+					},
+				],
+				defaultSizes: [
+					[728, 90],
+					[970, 250],
+					[970, 66],
+					[5, 5],
+				],
+				targeting: {
+					pos_nr: 'bottom',
+				},
+			},
 		};
 
 		context.set('slots', slots);
