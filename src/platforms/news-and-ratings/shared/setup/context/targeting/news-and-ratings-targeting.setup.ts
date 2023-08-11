@@ -33,6 +33,7 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 			uap_c: 'none',
 		});
 
+		this.setupPageType();
 		setupNpaContext();
 		setupRdpContext();
 	}
@@ -303,5 +304,11 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 			return false;
 		}
 		return true;
+	}
+
+	private setupPageType(): void {
+		const pageType: string =
+			window.fandomContext?.video?.playerLoaded === true ? 'video' : 'article';
+		targetingService.set('s2', pageType);
 	}
 }
