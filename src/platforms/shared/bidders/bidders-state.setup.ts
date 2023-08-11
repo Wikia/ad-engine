@@ -68,6 +68,7 @@ export class BiddersStateSetup implements DiProcess {
 				'bidders.prebid.id5Analytics.enabled',
 				this.instantConfig.get('icPrebidId5Analytics', false),
 			);
+			context.set('bidders.prebid.id5AbValue', this.instantConfig.get('icPrebidId5AB', 0));
 		}
 
 		context.set(

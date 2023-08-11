@@ -29,7 +29,10 @@ export function activateFloorAdhesionOnUAP(callback: () => void, withLoadedOnly 
 				firstCallSlotName,
 			);
 		} else if (!withLoadedOnly) {
-			if (!context.get(`slots.${firstCallSlotName}.defaultTemplates`).includes('stickyTlb')) {
+			if (
+				!context.get('state.topLeaderboardExists') ||
+				!context.get(`slots.${firstCallSlotName}.defaultTemplates`).includes('stickyTlb')
+			) {
 				callback();
 				return;
 			}
