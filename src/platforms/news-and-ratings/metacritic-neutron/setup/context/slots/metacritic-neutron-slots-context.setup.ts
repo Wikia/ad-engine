@@ -291,16 +291,21 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 							[728, 90],
 							[970, 66],
 							[5, 5],
-							universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop,
 						],
 					},
 					{
 						viewportSize: [840, 200],
-						sizes: [[728, 90], [5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
+						sizes: [
+							[728, 90],
+							[5, 5],
+						],
 					},
 					{
 						viewportSize: [320, 200],
-						sizes: [[320, 50], [320, 100], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
+						sizes: [
+							[320, 50],
+							[320, 100],
+						],
 					},
 					{
 						viewportSize: [0, 0],
@@ -325,16 +330,21 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 							[728, 90],
 							[970, 66],
 							[5, 5],
-							universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop,
 						],
 					},
 					{
 						viewportSize: [840, 200],
-						sizes: [[728, 90], [5, 5], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
+						sizes: [
+							[728, 90],
+							[5, 5],
+						],
 					},
 					{
 						viewportSize: [320, 200],
-						sizes: [[320, 50], [320, 100], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
+						sizes: [
+							[320, 50],
+							[320, 100],
+						],
 					},
 					{
 						viewportSize: [0, 0],
