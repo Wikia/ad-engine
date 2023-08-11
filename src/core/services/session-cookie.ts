@@ -41,18 +41,22 @@ export class SessionCookie {
 	}
 
 	getItem<T>(key: string): T | string {
-		return this.storage.getItem<T>(`${this.prefix}_${key}`);
+		return this.storage.getItem<T>(this.getKey(key));
 	}
 
 	setItem(key: string, input: Dictionary<unknown> | string, timeToLiveMs?: number): void {
-		this.storage.setItem(key, input, timeToLiveMs);
+		this.storage.setItem(this.getKey(key), input, timeToLiveMs);
 	}
 
 	removeItem(key: string): void {
-		this.storage.removeItem(`${this.prefix}_${key}`);
+		this.storage.removeItem(this.getKey(key));
 	}
 
 	clear(): void {
 		this.storage.clear();
+	}
+
+	private getKey(key: string): string {
+		return `${this.prefix}_${key}`;
 	}
 }
