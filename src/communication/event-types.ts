@@ -188,9 +188,6 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	EYEOTA_FAILED: {
 		name: 'Eyeota loading failed',
 	},
-	A9_WITHOUT_CONSENTS: {
-		name: 'A9 without consents',
-	},
 	IDENTITY_ENGINE_READY: {
 		category: '[IdentityEngine]',
 		name: 'Identity ready',
@@ -297,6 +294,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Ready',
 	},
 	// Bidders events //
+	A9_WITHOUT_CONSENTS: {
+		name: 'A9 without consents',
+	},
 	BIDDERS_BIDDING_DONE: {
 		category: '[Prebid]',
 		name: 'Bidding done',
