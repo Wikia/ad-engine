@@ -222,14 +222,12 @@ export class PrebidProvider extends BidderProvider {
 			utils.logger(logGroup, 'enabling ID5 Analytics');
 
 			(window as any).pbjs.que.push(() => {
-				(window as any).pbjs.enableAnalytics([
-					{
-						provider: 'id5Analytics',
-						options: {
-							pid: id5.getPartnerId(),
-						},
+				(window as any).pbjs.enableAnalytics({
+					provider: 'id5Analytics',
+					options: {
+						partnerId: id5.getPartnerId(),
 					},
-				]);
+				});
 			});
 		}
 	}
