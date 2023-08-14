@@ -361,6 +361,72 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 					pos_nr: 'bottom',
 				},
 			},
+			top_boxad: {
+				adProduct: 'top_boxad',
+				group: 'MR',
+				sizes: [
+					{
+						viewportSize: [840, 200],
+						sizes: [
+							[300, 250],
+							[300, 600],
+							[300, 1050],
+						],
+					},
+					{
+						viewportSize: [0, 0],
+						sizes: [
+							[320, 50],
+							[320, 100],
+							[300, 250],
+						],
+					},
+				],
+				defaultSizes: [
+					[300, 250],
+					[300, 600],
+					[300, 1050],
+				],
+				targeting: {
+					loc: 'top',
+					pos_nr: 'top',
+				},
+			},
+			incontent_boxad: {
+				adProduct: 'incontent_boxad',
+				bidderAlias: 'incontent_boxad',
+				group: 'HiVi',
+				recirculationElementSelector: '#recirculation-rail',
+				sizes: [
+					{
+						viewportSize: [840, 200],
+						sizes: [
+							[120, 600],
+							[160, 600],
+							[300, 250],
+							[300, 600],
+						],
+					},
+					{
+						viewportSize: [0, 0],
+						sizes: [
+							[320, 50],
+							[320, 100],
+							[300, 250],
+						],
+					},
+				],
+				defaultSizes: [
+					[120, 600],
+					[160, 600],
+					[300, 250],
+					[300, 600],
+				],
+				targeting: {
+					loc: 'hivi',
+					pos_nr: 'middle',
+				},
+			},
 		};
 
 		context.set('slots', slots);
