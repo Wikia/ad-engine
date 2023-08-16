@@ -13,7 +13,7 @@ export class LiveRampPixel extends BaseServiceSetup {
 	}
 
 	async call(): Promise<void> {
-		if (!this.isEnabled('icLiveRampPixel') || this.isEnabled('icIdentityPartners', false)) {
+		if (!this.isEnabled('icLiveRampPixel')) {
 			utils.logger(this.logGroup, 'pixel disabled');
 			return;
 		}

@@ -212,6 +212,8 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 			'incontent-leaderboard-middle': {
 				defaultSizes: [
 					[728, 90],
+					[970, 250],
+					[970, 66],
 					[5, 5],
 				],
 				targeting: {
@@ -269,6 +271,17 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 			},
 			video: {
 				isVideo: true,
+			},
+			'incontent-leader-plus-middle': {
+				defaultSizes: [
+					[728, 90],
+					[970, 250],
+					[970, 66],
+					[5, 5],
+				],
+				targeting: {
+					pos_nr: 'middle',
+				},
 			},
 		};
 
