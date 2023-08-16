@@ -65,5 +65,5 @@ interface WindowFandomContext {
 	tracking: Partial<ITrackingParameters>;
 	targeting: Partial<ITargetingParameters>;
 	partners: Partial<IPartnersParameters>;
-	video?: IVideoParameters;
+	video?: Partial<IVideoParameters>;
 }
