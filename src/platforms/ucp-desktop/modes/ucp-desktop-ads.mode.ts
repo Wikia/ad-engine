@@ -17,6 +17,7 @@ import {
 	jwPlayerInhibitor,
 	LiveConnect,
 	LiveRampPixel,
+	Lotame,
 	Nielsen,
 	PartnerPipeline,
 	PrebidNativeProvider,
@@ -50,6 +51,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 		private stroer: Stroer,
 		private wadRunner: WadRunner,
 		private wunderkind: Wunderkind,
+		private lotame: Lotame,
 	) {}
 
 	execute(): void {
@@ -72,6 +74,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 				this.nielsen,
 				this.prebidNativeProvider,
 				this.wunderkind,
+				this.lotame,
 				this.playerSetup.setOptions({
 					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
 				}),
