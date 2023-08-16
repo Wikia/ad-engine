@@ -54,7 +54,7 @@ interface ITargetingParameters {
 	[key: string]: string | number;
 }
 
-interface ITargetingParameters {
+interface IVideoParameters {
 	playerLoaded: boolean;
 	playerName: string;
 }
@@ -65,5 +65,5 @@ interface WindowFandomContext {
 	tracking: Partial<ITrackingParameters>;
 	targeting: Partial<ITargetingParameters>;
 	partners: Partial<IPartnersParameters>;
-	video?: Partial<IVideoParameters>;
+	video?: IVideoParameters;
 }
