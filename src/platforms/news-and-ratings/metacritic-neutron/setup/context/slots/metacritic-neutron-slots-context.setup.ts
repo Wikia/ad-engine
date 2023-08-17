@@ -290,15 +290,11 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 						sizes: [
 							[728, 90],
 							[970, 66],
-							[5, 5],
 						],
 					},
 					{
 						viewportSize: [840, 200],
-						sizes: [
-							[728, 90],
-							[5, 5],
-						],
+						sizes: [[728, 90]],
 					},
 					{
 						viewportSize: [320, 200],
@@ -316,7 +312,6 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 					[728, 90],
 					[970, 250],
 					[970, 66],
-					[5, 5],
 				],
 				targeting: {
 					pos_nr: 'middle',
@@ -329,15 +324,11 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 						sizes: [
 							[728, 90],
 							[970, 66],
-							[5, 5],
 						],
 					},
 					{
 						viewportSize: [840, 200],
-						sizes: [
-							[728, 90],
-							[5, 5],
-						],
+						sizes: [[728, 90]],
 					},
 					{
 						viewportSize: [320, 200],
@@ -355,7 +346,6 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 					[728, 90],
 					[970, 250],
 					[970, 66],
-					[5, 5],
 				],
 				targeting: {
 					pos_nr: 'bottom',
