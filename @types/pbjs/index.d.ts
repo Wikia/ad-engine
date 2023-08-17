@@ -164,6 +164,14 @@ interface PrebidTargetingForAdUnits {
 	[unitId: string]: PrebidTargeting;
 }
 
+interface PrebidUserIds {
+	id5id?: {
+		ext?: {
+			abTestingControlGroup?: boolean;
+		};
+	};
+}
+
 interface Pbjs {
 	adUnits: PrebidAdUnit[];
 
@@ -185,7 +193,7 @@ interface Pbjs {
 
 	getAdserverTargeting(): PrebidTargetingForAdUnits;
 
-	getUserIds(): object;
+	getUserIds(): PrebidUserIds;
 
 	setConfig(config: unknown): void;
 

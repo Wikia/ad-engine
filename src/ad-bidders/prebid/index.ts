@@ -199,12 +199,36 @@ export class PrebidProvider extends BidderProvider {
 		}
 	}
 
-	private configureId5(): void {
+	private async configureId5(): Promise<void> {
 		const id5Config = id5.getConfig();
 
-		if (id5Config !== undefined) {
-			this.prebidConfig.userSync.userIds.push(id5Config);
-			this.prebidConfig.userSync.auctionDelay = 50;
+		if (!id5Config) {
+			return;
+		}
+
+		this.prebidConfig.userSync.userIds.push(id5Config);
+		this.prebidConfig.userSync.auctionDelay = 50;
+
+		if (id5Config.params.abTesting.enabled) {
+			const pbjs: Pbjs = await pbjsFactory.init();
+			await id5.setupAbTesting(pbjs);
+		}
+
+		this.enableId5Analytics();
+	}
+
+	private enableId5Analytics(): void {
+		if (context.get('bidders.prebid.id5Analytics.enabled')) {
+			utils.logger(logGroup, 'enabling ID5 Analytics');
+
+			(window as any).pbjs.que.push(() => {
+				(window as any).pbjs.enableAnalytics({
+					provider: 'id5Analytics',
+					options: {
+						partnerId: id5.getPartnerId(),
+					},
+				});
+			});
 		}
 	}
 
