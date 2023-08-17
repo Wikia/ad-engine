@@ -18,7 +18,7 @@ export class DoubleVerify extends BaseServiceSetup {
 			return;
 		}
 
-		if (!this.isEnabled('icDoubleVerify', false)) {
+		if (!this.isEnabled('icDoubleVerify')) {
 			utils.logger(logGroup, 'disabled');
 			return;
 		}

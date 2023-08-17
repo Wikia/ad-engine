@@ -1,5 +1,11 @@
 import { DoubleVerify } from '@wikia/ad-services';
-import { InstantConfigService, targetingService, TargetingService, utils } from '@wikia/core';
+import {
+	context,
+	InstantConfigService,
+	targetingService,
+	TargetingService,
+	utils,
+} from '@wikia/core';
 import { expect } from 'chai';
 import sinon, { SinonStubbedInstance } from 'sinon';
 
@@ -15,6 +21,12 @@ describe('DoubleVerify', () => {
 			.returns(Promise.resolve({} as any));
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		targetingServiceStub = global.sandbox.stub(targetingService);
+
+		context.set('options.trackingOptIn', true);
+		context.set('options.optOutSale', false);
+		window.fandomContext = {
+			partners: { directedAtChildren: false },
+		} as any;
 
 		fetchStub = sinon.stub();
 		fetchStub.resolves({
