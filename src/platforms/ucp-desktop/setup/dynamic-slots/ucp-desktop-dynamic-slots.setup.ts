@@ -1,5 +1,5 @@
 import {
-	GalleryLightboxSetup,
+	GalleryLightboxHandler,
 	insertSlots,
 	NativoSlotsDefinitionRepository,
 	PlaceholderService,
@@ -154,6 +154,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	}
 
 	private handleGalleryLightboxSlots(): void {
-		new GalleryLightboxSetup(this.slotsDefinitionRepository).handle();
+		new GalleryLightboxHandler(this.slotsDefinitionRepository).handle();
 	}
 }

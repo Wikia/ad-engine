@@ -9,7 +9,7 @@ import { UcpDesktopSlotsDefinitionRepository } from '../../ucp-desktop/setup/dyn
 import { UcpMobileSlotsDefinitionRepository } from '../../ucp-mobile/setup/dynamic-slots/ucp-mobile-slots-definition-repository';
 import { insertSlots } from '../utils/insert-slots';
 
-export class GalleryLightboxSetup {
+export class GalleryLightboxHandler {
 	private readonly slotName = 'gallery_leaderboard';
 	private refreshLock: boolean;
 	private logGroup = 'gallery-lightbox-handler';
@@ -53,7 +53,7 @@ export class GalleryLightboxSetup {
 				insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]);
 				this.lockForFewSeconds();
 				this.isActive = true;
-				this.hideFlorAdhesion();
+				this.hideFloorAdhesion();
 				utils.logger(this.logGroup, 'Ad placement on Lightbox ready', placementId);
 			},
 			false,
@@ -113,7 +113,7 @@ export class GalleryLightboxSetup {
 				gallerySlot.destroy();
 				utils.logger(this.logGroup, 'Ad placement on Lightbox destroy', placementId);
 				this.isActive = false;
-				this.showFlorAdhesion();
+				this.showFloorAdhesion();
 			},
 			false,
 		);
@@ -126,12 +126,12 @@ export class GalleryLightboxSetup {
 		}, 2000);
 	}
 
-	private hideFlorAdhesion() {
+	private hideFloorAdhesion() {
 		const floor = document.getElementById('floor_adhesion_anchor');
 		floor.classList.add('hide-under-lightbox');
 	}
 
-	private showFlorAdhesion() {
+	private showFloorAdhesion() {
 		const floor = document.getElementById('floor_adhesion_anchor');
 		floor.classList.remove('hide-under-lightbox');
 	}
