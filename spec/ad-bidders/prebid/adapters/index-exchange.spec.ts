@@ -87,7 +87,7 @@ describe('IndexExchange bidder adapter', () => {
 				code: 'featured',
 				mediaTypes: {
 					video: {
-						context: 'outstream',
+						context: 'instream',
 						playerSize: [640, 480],
 						api: [2, 7],
 						mimes: [
@@ -115,7 +115,7 @@ describe('IndexExchange bidder adapter', () => {
 							siteId: '112233',
 							size: [640, 480],
 							video: {
-								context: 'outstream',
+								context: 'instream',
 								playerSize: [640, 480],
 								mimes: [
 									'video/mp4',
