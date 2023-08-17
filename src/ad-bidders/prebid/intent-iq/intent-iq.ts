@@ -73,6 +73,10 @@ export class IntentIQ {
 					'intent_iq_group',
 					this.intentIqObject.intentIqConfig.abTesting.currentTestGroup || 'U',
 				);
+				targetingService.set(
+					'intent_iq_ppid_group',
+					this.intentIqObject.intentIqConfig.abTesting.currentTestGroup || 'U',
+				);
 			});
 		}
 	}
