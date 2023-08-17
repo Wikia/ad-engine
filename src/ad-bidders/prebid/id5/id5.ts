@@ -14,6 +14,7 @@ type id5GroupValue = 'A' | 'B' | 'U';
 const logGroup = 'Id5';
 
 class Id5 {
+	private partnerId = 1139;
 	private storage;
 	private id5GroupKey = 'id5_group';
 
@@ -47,7 +48,7 @@ class Id5 {
 		const config = {
 			name: 'id5Id',
 			params: {
-				partner: 1139,
+				partner: this.partnerId,
 				abTesting: {
 					enabled: id5AbValue !== undefined,
 					controlGroupPct: id5AbValue,
@@ -64,6 +65,10 @@ class Id5 {
 		utils.logger(logGroup, 'config', config);
 
 		return config;
+	}
+
+	getPartnerId(): number {
+		return this.partnerId;
 	}
 
 	async setupAbTesting(pbjs: Pbjs): Promise<void> {
