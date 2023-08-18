@@ -124,7 +124,7 @@ export class System1 extends BaseServiceSetup {
 
 		if (!cacheValue || cacheValue !== this.getTheme()) {
 			localCache.setItem(cacheKey, this.getTheme(), cacheTtl);
-			utils.logger(logGroup, 'New session');
+			utils.logger(logGroup, 'Theme changed');
 			return true;
 		}
 
