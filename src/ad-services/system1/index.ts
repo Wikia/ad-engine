@@ -15,7 +15,7 @@ const themes = {
 };
 
 const cacheKey = 'adEngine_system1';
-const cacheTtl = 24 * 3600;
+const cacheTtl = 86400; // 24 * 3600;
 
 export class System1 extends BaseServiceSetup {
 	private isLoaded = false;
