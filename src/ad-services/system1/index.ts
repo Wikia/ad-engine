@@ -84,7 +84,7 @@ export class System1 extends BaseServiceSetup {
 	}
 
 	private getSubId(): string {
-		const formattedUrl = window.location.protocol + '//' + this.getHostname();
+		const formattedUrl = `${window.location.protocol}//${this.getHostname()}`;
 		const firstSubdomain = this.getHostname().split('.')[0];
 
 		return `${formattedUrl}?serp=${this.getSearchQuery()}&segment=${this.getSegment()}&domain=${firstSubdomain}`;
@@ -133,7 +133,7 @@ export class System1 extends BaseServiceSetup {
 
 	private onSetupResolve(): void {
 		utils.logger(logGroup, 'completed');
-		communicationService.emit(eventsRepository.SYSTEM1_LOADER);
+		communicationService.emit(eventsRepository.SYSTEM1_STARTED);
 	}
 
 	private onSetupRejected(message: string): void {
