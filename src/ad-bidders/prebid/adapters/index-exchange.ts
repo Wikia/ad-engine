@@ -39,7 +39,7 @@ export class IndexExchange extends PrebidAdapter {
 			code,
 			mediaTypes: {
 				video: {
-					context: 'outstream',
+					context: 'instream',
 					playerSize: [640, 480],
 					api: [2, 7],
 					mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg', 'application/javascript'],
@@ -61,7 +61,7 @@ export class IndexExchange extends PrebidAdapter {
 						siteId,
 						size: [640, 480],
 						video: {
-							context: 'outstream',
+							context: 'instream',
 							playerSize: [640, 480],
 							mimes: [
 								'video/mp4',

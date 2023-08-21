@@ -93,7 +93,8 @@ describe('IntentIQ', () => {
 					browserBlackList: 'Chrome',
 				}),
 			).to.be.true;
-			expect(targetingServiceStub.calledOnceWithExactly('intent_iq_group', 'A')).to.be.true;
+			expect(targetingServiceStub.calledWithExactly('intent_iq_group', 'A')).to.be.true;
+			expect(targetingServiceStub.calledWithExactly('intent_iq_ppid_group', 'A')).to.be.true;
 		});
 	});
 
