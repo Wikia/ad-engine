@@ -16,6 +16,7 @@ const eventsToTrack = {
 	captify_loaded: eventsRepository.CAPTIFY_LOADED,
 	eyeota_started: eventsRepository.EYEOTA_STARTED,
 	eyeota_failed: eventsRepository.EYEOTA_FAILED,
+	a9_without_consents: eventsRepository.A9_WITHOUT_CONSENTS,
 	intentiq_ppid_not_set_on_time: eventsRepository.INTENTIQ_PPID_NOT_SET_ON_TIME,
 };
 
