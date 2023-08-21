@@ -1,6 +1,7 @@
 import { context, DomListener } from '@wikia/core';
 import { WaitFor } from '@wikia/core/utils';
 import {
+	GalleryLightboxHandler,
 	NativoSlotsDefinitionRepository,
 	QuizSlotsDefinitionRepository,
 } from '@wikia/platforms/shared';
@@ -16,6 +17,9 @@ describe('floor_adhesion on ucp-mobile', () => {
 	const slotDefinitionRepositoryMock = new UcpMobileSlotsDefinitionRepository(instantConfig);
 	const nativoDefinitionRepositoryMock = new NativoSlotsDefinitionRepository(new DomListener());
 	const quizDefinitionRepositoryMock = new QuizSlotsDefinitionRepository();
+	const galleryLightboxHandlerMock = new GalleryLightboxHandler(
+		new UcpMobileSlotsDefinitionRepository(instantConfig),
+	);
 
 	before(() => {
 		context.set('slots.incontent_boxad_1', {});
@@ -59,6 +63,7 @@ describe('floor_adhesion on ucp-mobile', () => {
 			slotDefinitionRepositoryMock,
 			nativoDefinitionRepositoryMock,
 			quizDefinitionRepositoryMock,
+			galleryLightboxHandlerMock,
 		);
 
 		dynamicSlotSetup.execute();

@@ -5,8 +5,10 @@ import {
 	slotService,
 	utils,
 } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
 import { insertSlots, SlotsDefinitionRepository } from '../utils/insert-slots';
 
+@Injectable()
 export class GalleryLightboxHandler {
 	private readonly slotName = 'gallery_leaderboard';
 	private refreshLock: boolean;

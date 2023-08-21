@@ -28,6 +28,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		private nativoSlotDefinitionRepository: NativoSlotsDefinitionRepository,
 		private performanceAdsDefinitionRepository: UcpDesktopPerformanceAdsDefinitionRepository,
 		private quizSlotsDefinitionRepository: QuizSlotsDefinitionRepository,
+		private galleryLightboxHandler: GalleryLightboxHandler,
 	) {}
 
 	execute(): void {
@@ -154,6 +155,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	}
 
 	private handleGalleryLightboxSlots(): void {
-		new GalleryLightboxHandler(this.slotsDefinitionRepository).handle();
+		this.galleryLightboxHandler.handle();
 	}
 }
