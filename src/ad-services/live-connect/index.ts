@@ -26,7 +26,7 @@ const idConfigMapping: IdConfig[] = [
 export class LiveConnect extends BaseServiceSetup {
 	private storage;
 	private storageConfig: CachingStrategyConfig;
-	private defaultQfValue = '0.3';
+	private fallbackQf = '0.3';
 
 	call(): void {
 		if (
@@ -47,10 +47,6 @@ export class LiveConnect extends BaseServiceSetup {
 			utils.scriptLoader.loadScript(liveConnectScriptUrl, true, 'first').then(() => {
 				utils.logger(logGroup, 'loaded');
 				this.resolveAndTrackIds();
-				const customQf = this.instantConfig.get<number>('icLiveConnectQf')?.toString();
-				if (customQf) {
-					this.resolveAndTrackIds(customQf);
-				}
 			});
 		} else {
 			communicationService.emit(eventsRepository.LIVE_CONNECT_CACHED);
@@ -58,28 +54,28 @@ export class LiveConnect extends BaseServiceSetup {
 		}
 	}
 
-	resolveAndTrackIds(qf?: string): void {
+	resolveAndTrackIds(): void {
 		if (!window.liQ) {
 			utils.warner(logGroup, 'window.liQ not available for tracking');
 			return;
 		}
-
+		const customQf = this.instantConfig.get<number>('icLiveConnectQf')?.toString();
 		window.liQ.resolve(
 			(result) => {
-				this.trackIds(result, qf);
+				this.trackIds(result);
 			},
 			(err) => {
 				console.error(err);
 			},
-			{ qf: qf || this.defaultQfValue, resolve: idConfigMapping.map((config) => config.id) },
+			{ qf: customQf || this.fallbackQf, resolve: idConfigMapping.map((config) => config.id) },
 		);
 	}
 
-	trackIds(liQResponse: LiQResolveResponse, customQf?: string): void {
+	trackIds(liQResponse: LiQResolveResponse): void {
 		utils.logger(logGroup, 'resolve response:', liQResponse);
 
 		Object.keys(liQResponse).forEach((key) => {
-			const trackingKeyName = this.getTrackingKeyName(key) + (customQf ? `-${customQf}` : '');
+			const trackingKeyName = this.getTrackingKeyName(key);
 
 			if (this.isAvailableInStorage(trackingKeyName)) {
 				return;
