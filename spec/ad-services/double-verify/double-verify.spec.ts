@@ -39,6 +39,7 @@ describe('DoubleVerify', () => {
 
 	afterEach(() => {
 		loadScriptStub.resetHistory();
+		context.set('services.doubleVerify.slots', undefined);
 	});
 
 	it('DoubleVerify is disabled', async () => {
@@ -49,8 +50,17 @@ describe('DoubleVerify', () => {
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
+	it('DoubleVerify has empty configuration', async () => {
+		instantConfigStub.get.withArgs('icDoubleVerify').returns(true);
+
+		await doubleVerify.call();
+
+		expect(loadScriptStub.called).to.equal(false);
+	});
+
 	it('DoubleVerify is ready', async () => {
 		instantConfigStub.get.withArgs('icDoubleVerify').returns(true);
+		context.set('services.doubleVerify.slots', ['top_leaderboard']);
 
 		await doubleVerify.call();
 
@@ -59,6 +69,7 @@ describe('DoubleVerify', () => {
 
 	it('Prepare targeting', async () => {
 		instantConfigStub.get.withArgs('icDoubleVerify').returns(true);
+		context.set('services.doubleVerify.slots', ['top_leaderboard']);
 
 		const fakeResponse = {
 			ok: true,
@@ -87,6 +98,7 @@ describe('DoubleVerify', () => {
 
 	it('Prepare targeting - empty response', async () => {
 		instantConfigStub.get.withArgs('icDoubleVerify').returns(true);
+		context.set('services.doubleVerify.slots', ['top_leaderboard']);
 
 		const fakeResponse = {
 			ok: true,
@@ -98,5 +110,16 @@ describe('DoubleVerify', () => {
 		await doubleVerify.call();
 
 		expect(fetchStub.callCount).to.be.eq(1);
+	});
+
+	it('Check request', async () => {
+		instantConfigStub.get.withArgs('icDoubleVerify').returns(true);
+		context.set('services.doubleVerify.slots', ['top_leaderboard']);
+
+		await doubleVerify.call();
+
+		expect(fetchStub.getCall(0).args[0]).to.be.eq(
+			'https://pub.doubleverify.com/signals/pub.json?ctx=28150781&cmp=DV1001654&url=about%253Ablank&adunits%5Btop_leaderboard%5D%5B%5D=',
+		);
 	});
 });

@@ -33,6 +33,9 @@ export const basicContext = {
 			libraryUrl: '//player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/acins.js',
 			loadWithoutAnchor: true,
 		},
+		doubleVerify: {
+			slots: ['mpu_top'],
+		},
 		durationMedia: {
 			libraryUrl: '//tag.durationmedia.net/sites/11353/dm.js',
 		},

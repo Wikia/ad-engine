@@ -1,4 +1,4 @@
-import { BaseServiceSetup, slotService, targetingService, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, slotService, targetingService, utils } from '@ad-engine/core';
 
 const logGroup = 'double-verify';
 const scriptUrl = 'https://pub.doubleverify.com/signals/pub.json';
@@ -26,6 +26,12 @@ export class DoubleVerify extends BaseServiceSetup {
 		this.setInitialTargeting();
 
 		const slots = this.getSlots();
+
+		if (!slots) {
+			utils.logger(logGroup, 'Empty slots configuration');
+			return;
+		}
+
 		const url = this.prepareRequestURL(slots);
 		const headers = this.getRequestHeaders();
 
@@ -101,9 +107,15 @@ export class DoubleVerify extends BaseServiceSetup {
 	}
 
 	private getSlots(): AdUnit[] {
-		return Object.entries(slotService.slotConfigsMap).map(([key]) => {
+		const slots = context.get('services.doubleVerify.slots');
+
+		if (!slots) {
+			return;
+		}
+
+		return slots.map((slotName) => {
 			return {
-				path: key,
+				path: slotName,
 			};
 		});
 	}
