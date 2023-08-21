@@ -307,4 +307,9 @@ body:has(.notifications-box > .marketing-notifications > div) {
 	padding-bottom: 20px;
 
 	@include translatable-label();
+
+	#spotim-specific#spotim-specific div[class^='ads__AdChoiceContainer__wrapping'] {
+		color: #858585;
+		color: var(--theme-page-text-color);
+	}
 }
