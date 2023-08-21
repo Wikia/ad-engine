@@ -80,7 +80,6 @@ export const basicContext = {
 				'top_leaderboard',
 				'top_boxad',
 				'incontent_boxad_1',
-				'gallery_leaderboard',
 				'bottom_leaderboard',
 				'featured',
 				'incontent_player',
