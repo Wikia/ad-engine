@@ -1,4 +1,8 @@
-import { activateFloorAdhesionOnUAP, SlotSetupDefinition } from '@platforms/shared';
+import {
+	activateFloorAdhesionOnUAP,
+	SlotsDefinitionRepository,
+	SlotSetupDefinition,
+} from '@platforms/shared';
 import {
 	communicationService,
 	context,
@@ -14,7 +18,7 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class UcpMobileSlotsDefinitionRepository {
+export class UcpMobileSlotsDefinitionRepository implements SlotsDefinitionRepository {
 	constructor(protected instantConfig: InstantConfigService) {}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {

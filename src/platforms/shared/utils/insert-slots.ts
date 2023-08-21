@@ -7,6 +7,10 @@ export interface SlotSetupDefinition {
 	activator?: () => void;
 }
 
+export interface SlotsDefinitionRepository {
+	getGalleryLeaderboardConfig(): SlotSetupDefinition;
+}
+
 const logGroup = 'insert-slot';
 const slotCreator = new SlotCreator();
 

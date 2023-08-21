@@ -5,9 +5,7 @@ import {
 	slotService,
 	utils,
 } from '@wikia/ad-engine';
-import { UcpDesktopSlotsDefinitionRepository } from '../../ucp-desktop/setup/dynamic-slots/ucp-desktop-slots-definition-repository';
-import { UcpMobileSlotsDefinitionRepository } from '../../ucp-mobile/setup/dynamic-slots/ucp-mobile-slots-definition-repository';
-import { insertSlots } from '../utils/insert-slots';
+import { insertSlots, SlotsDefinitionRepository } from '../utils/insert-slots';
 
 export class GalleryLightboxHandler {
 	private readonly slotName = 'gallery_leaderboard';
@@ -15,11 +13,7 @@ export class GalleryLightboxHandler {
 	private logGroup = 'gallery-lightbox-handler';
 	private isActive: boolean;
 
-	constructor(
-		private slotsDefinitionRepository:
-			| UcpMobileSlotsDefinitionRepository
-			| UcpDesktopSlotsDefinitionRepository,
-	) {
+	constructor(private slotsDefinitionRepository: SlotsDefinitionRepository) {
 		this.refreshLock = false;
 		this.isActive = true;
 	}
