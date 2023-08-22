@@ -288,16 +288,8 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 	private handleMobileGalleryLightboxAdsSlots(): void {
 		if (!this.galleryLightbox.initialized) {
-			console.log(
-				'🚀 ~ file: ucp-mobile-dynamic-slots.setup.ts:290 ~ UcpMobileDynamicSlotsSetup ~ handleMobileGalleryLightboxAdsSlots ~ this.galleryLightbox:',
-				this.galleryLightbox,
-			);
 			this.galleryLightbox.handler = new GalleryLightboxAdsHandler(this.slotsDefinitionRepository);
 		}
-		console.log(
-			'🚀 ~ file: ucp-mobile-dynamic-slots.setup.ts:294 ~ UcpMobileDynamicSlotsSetup ~ handleMobileGalleryLightboxAdsSlots ~ this.galleryLightbox:',
-			this.galleryLightbox,
-		);
 		this.galleryLightbox.handler.handle();
 	}
 }
