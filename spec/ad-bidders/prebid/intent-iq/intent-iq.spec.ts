@@ -212,6 +212,16 @@ describe('IntentIQ', () => {
 			expect(trackPpidSpy.calledOnce).to.be.true;
 			expect(trackPpidSpy.calledWithExactly('12341234')).to.be.true;
 		});
+
+		it('PPID-related key-val is not being set when IntentIQ PPID is disabled', async () => {
+			contextStub.withArgs('services.intentIq.ppid.enabled').returns(false);
+			const intentIQ = new IntentIQ();
+			const trackPpidSpy = global.sandbox.spy(intentIQ, 'trackPpid');
+
+			await intentIQ.initialize(pbjsStub);
+
+			expect(trackPpidSpy.calledOnce).to.be.false;
+		});
 	});
 
 	describe('getPpid', () => {
