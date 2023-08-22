@@ -289,6 +289,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	private handleMobileGalleryLightboxAdsSlots(): void {
 		if (!this.galleryLightbox.initialized) {
 			this.galleryLightbox.handler = new GalleryLightboxAdsHandler(this.slotsDefinitionRepository);
+			this.galleryLightbox.initialized = true;
 		}
 		this.galleryLightbox.handler.handle();
 	}
