@@ -1,5 +1,6 @@
 import {
-	GalleryLightboxHandler,
+	GalleryLightboxAds,
+	GalleryLightboxAdsHandler,
 	insertSlots,
 	MessageBoxService,
 	NativoSlotsDefinitionRepository,
@@ -32,7 +33,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		private slotsDefinitionRepository: UcpMobileSlotsDefinitionRepository,
 		private nativoSlotDefinitionRepository: NativoSlotsDefinitionRepository,
 		private quizSlotsDefinitionRepository: QuizSlotsDefinitionRepository,
-		private galleryLightboxHandler: GalleryLightboxHandler,
+		private galleryLightbox: GalleryLightboxAds,
 	) {}
 
 	execute(): void {
@@ -42,7 +43,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		this.configureInterstitial();
 		this.registerFloorAdhesionCodePriority();
 		this.registerAdPlaceholderService();
-		this.handleMobileGalleryLightboxSlots();
+		this.handleMobileGalleryLightboxAdsSlots();
 	}
 
 	private injectSlots(): void {
@@ -285,7 +286,18 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		placeholderService.init();
 	}
 
-	private handleMobileGalleryLightboxSlots(): void {
-		this.galleryLightboxHandler.handle();
+	private handleMobileGalleryLightboxAdsSlots(): void {
+		if (!this.galleryLightbox.initialized) {
+			console.log(
+				'🚀 ~ file: ucp-mobile-dynamic-slots.setup.ts:290 ~ UcpMobileDynamicSlotsSetup ~ handleMobileGalleryLightboxAdsSlots ~ this.galleryLightbox:',
+				this.galleryLightbox,
+			);
+			this.galleryLightbox.handler = new GalleryLightboxAdsHandler(this.slotsDefinitionRepository);
+		}
+		console.log(
+			'🚀 ~ file: ucp-mobile-dynamic-slots.setup.ts:294 ~ UcpMobileDynamicSlotsSetup ~ handleMobileGalleryLightboxAdsSlots ~ this.galleryLightbox:',
+			this.galleryLightbox,
+		);
+		this.galleryLightbox.handler.handle();
 	}
 }

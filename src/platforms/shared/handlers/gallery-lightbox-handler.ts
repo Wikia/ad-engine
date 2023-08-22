@@ -8,8 +8,13 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 import { insertSlots, SlotsDefinitionRepository } from '../utils/insert-slots';
 
+export interface GalleryLightboxAds {
+	handler: GalleryLightboxAdsHandler;
+	initialized: boolean;
+}
+
 @Injectable()
-export class GalleryLightboxHandler {
+export class GalleryLightboxAdsHandler {
 	private readonly slotName = 'gallery_leaderboard';
 	private refreshLock: boolean;
 	private logGroup = 'gallery-lightbox-handler';

@@ -1,5 +1,5 @@
 import {
-	GalleryLightboxHandler,
+	GalleryLightboxAdsHandler,
 	insertSlots,
 	NativoSlotsDefinitionRepository,
 	PlaceholderService,
@@ -28,7 +28,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		private nativoSlotDefinitionRepository: NativoSlotsDefinitionRepository,
 		private performanceAdsDefinitionRepository: UcpDesktopPerformanceAdsDefinitionRepository,
 		private quizSlotsDefinitionRepository: QuizSlotsDefinitionRepository,
-		private galleryLightboxHandler: GalleryLightboxHandler,
+		private galleryLightboxHandler: GalleryLightboxAdsHandler,
 	) {}
 
 	execute(): void {
@@ -36,7 +36,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		this.configureTopLeaderboardAndCompanions();
 		this.configureFloorAdhesionCodePriority();
 		this.registerAdPlaceholderService();
-		this.handleGalleryLightboxSlots();
+		this.handleGalleryLightboxAdsSlots();
 	}
 
 	private injectSlots(): void {
@@ -154,7 +154,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		placeholderService.init();
 	}
 
-	private handleGalleryLightboxSlots(): void {
+	private handleGalleryLightboxAdsSlots(): void {
 		this.galleryLightboxHandler.handle();
 	}
 }
