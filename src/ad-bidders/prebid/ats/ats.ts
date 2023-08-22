@@ -5,7 +5,7 @@ const logGroup = 'ATS';
 
 export class Ats extends BaseServiceSetup {
 	static PLACEMENT_ID = '2161';
-	static ENVELOPE_STORAGE_NAME = '_lr_env';
+	static ENVELOPE_STORAGE_NAME = 'idl_env';
 	private isLoaded = false;
 	private launchpadScriptUrl =
 		'https://launchpad-wrapper.privacymanager.io/2f928425-1fbe-4680-b67a-c5f5ad831378/launchpad-liveramp.js';
