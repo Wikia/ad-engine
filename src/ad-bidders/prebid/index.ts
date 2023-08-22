@@ -134,7 +134,16 @@ export class PrebidProvider extends BidderProvider {
 						filter: 'include',
 					},
 				},
-				userIds: [],
+				userIds: [
+					{
+						name: 'pubCommonId',
+						storage: {
+							type: 'cookie',
+							name: '_pubcid',
+							expires: 365,
+						},
+					},
+				],
 				syncsPerBidder: 3,
 				syncDelay: 6000,
 			},
