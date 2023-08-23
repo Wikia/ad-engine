@@ -24,8 +24,8 @@ describe('LiveConnect', () => {
 		loadScriptStub = global.sandbox
 			.stub(utils.scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
-		context.set('options.trackingOptIn', true);
-		context.set('options.optOutSale', false);
+		context.set('options.adsAllowed', true);
+
 		context.set('wiki.targeting.directedAtChildren', false);
 		liveConnect = new LiveConnect(instantConfigStub);
 		window.fandomContext = {
@@ -60,15 +60,7 @@ describe('LiveConnect', () => {
 	});
 
 	it('Live Connect not called when user is not opted in', async () => {
-		context.set('options.trackingOptIn', false);
-
-		await liveConnect.call();
-
-		expect(loadScriptStub.called).to.equal(false);
-	});
-
-	it('Live Connect not called when user has opted out sale', async () => {
-		context.set('options.optOutSale', true);
+		context.set('options.adsAllowed', false);
 
 		await liveConnect.call();
 

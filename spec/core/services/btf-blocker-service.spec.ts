@@ -41,6 +41,7 @@ describe('btf-blocker-service', () => {
 		slotConfigs = {};
 		slotConfigs[firstCallSlot.getSlotName()] = { ...firstCallSlot.config };
 		slotConfigs[secondCallSlot.getSlotName()] = { ...secondCallSlot.config };
+		context.set('options.adsAllowed', true);
 
 		btfBlockerService.resetState();
 		btfBlockerService.init();

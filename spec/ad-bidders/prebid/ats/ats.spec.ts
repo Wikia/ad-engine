@@ -19,8 +19,7 @@ describe('ATS', () => {
 		};
 
 		context.set('bidders.liveRampATS.enabled', true);
-		context.set('options.optOutSale', false);
-		context.set('options.trackingOptIn', true);
+		context.set('options.adsAllowed', true);
 		context.set('options.options.geoRequiresConsent', false);
 		context.set('wiki.targeting.directedAtChildren', false);
 		context.set('wiki.opts.userEmailHashes', ['md5', 'sha1', 'sha256']);
@@ -51,7 +50,7 @@ describe('ATS', () => {
 	});
 
 	it('ATS is disabled if user has opted out sale', async () => {
-		context.set('options.optOutSale', true);
+		context.set('options.adsAllowed', false);
 
 		await ats.call();
 

@@ -74,7 +74,8 @@ describe('IntentIQ', () => {
 		});
 
 		it('should initialize when IntentIQ is enabled and consents are given', async () => {
-			contextStub.withArgs('options.trackingOptIn').returns(true);
+			contextStub.withArgs('options.adsAllowed').returns(true);
+
 			const targetingServiceStub = global.sandbox.stub(targetingService, 'set');
 			const intentIQ = new IntentIQ();
 
@@ -109,7 +110,7 @@ describe('IntentIQ', () => {
 		});
 
 		it('should report external win when IntentIQ is enabled and consents are given', async () => {
-			contextStub.withArgs('options.trackingOptIn').returns(true);
+			contextStub.withArgs('options.adsAllowed').returns(true);
 
 			const bid = PrebidBidFactory.getBid({
 				adId: 'ad-123',

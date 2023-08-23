@@ -23,7 +23,11 @@ class Id5 {
 	}
 
 	private isEnabled(): boolean {
-		return context.get('bidders.prebid.id5') && !context.get('') && !utils.isCoppaSubject();
+		return (
+			context.get('bidders.prebid.id5') &&
+			context.get('options.adsAllowed') &&
+			!utils.isCoppaSubject()
+		);
 	}
 
 	getConfig(): Id5Config {

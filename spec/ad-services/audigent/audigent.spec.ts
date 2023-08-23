@@ -35,8 +35,7 @@ describe('Audigent', () => {
 
 		window['au_seg'] = [];
 
-		context.set('options.trackingOptIn', true);
-		context.set('options.optOutSale', false);
+		context.set('options.adsAllowed', true);
 
 		context.set('wiki.targeting.directedAtChildren', false);
 		window.fandomContext.partners.directedAtChildren = false;
@@ -74,15 +73,7 @@ describe('Audigent', () => {
 	});
 
 	it('Audigent not called when user is not opted in', async () => {
-		context.set('options.trackingOptIn', false);
-
-		await audigent.call();
-
-		expect(loadScriptStub.called).to.equal(false);
-	});
-
-	it('Audigent not called when user has opted out sale', async () => {
-		context.set('options.optOutSale', true);
+		context.set('options.adsAllowed', false);
 
 		await audigent.call();
 
