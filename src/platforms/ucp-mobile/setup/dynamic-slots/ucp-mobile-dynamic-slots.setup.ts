@@ -289,11 +289,11 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	}
 
 	private handleMobileGalleryLightboxAdsSlots(): void {
-		const oldLogicBundleName = 'old_incontent_ads';
-		const includedInSpecificCommunitiesList =
-			window.fandomContext?.site?.tags?.bundles?.includes(oldLogicBundleName);
+		const excludedBundleTagName = 'old_incontent_ads';
+		const communityExcludedByTag =
+			window.fandomContext?.site?.tags?.bundles?.includes(excludedBundleTagName);
 
-		if (this.instantConfig.get('icMobileGalleryAds') && !includedInSpecificCommunitiesList) {
+		if (this.instantConfig.get('icMobileGalleryAds') && !communityExcludedByTag) {
 			if (!this.galleryLightbox.initialized) {
 				this.galleryLightbox.handler = new GalleryLightboxAdsHandler(
 					this.slotsDefinitionRepository,
