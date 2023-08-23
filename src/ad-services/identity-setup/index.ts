@@ -18,7 +18,7 @@ export class IdentitySetup extends BaseServiceSetup {
 	async identityEngineReady(): Promise<void> {
 		return window.ie.isReady.then(() => {
 			const ppid = globalContextService.getValue('tracking', 'ppid');
-			if (ppid) {
+			if (ppid && !context.get('services.intentIq.ppid.enabled')) {
 				targetingService.set('ppid', ppid);
 			}
 
