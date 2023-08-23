@@ -44,7 +44,7 @@
 		"mini-css-extract-plugin": "2.7.3",
 		"mocha": "10.2.0",
 		"mocha-jsdom": "2.0.0",
-		"mocha-junit-reporter": "2.2.0",
+		"mocha-junit-reporter": "2.2.1",
 		"node-sass": "8.0.0",
 		"nyc": "15.1.0",
 		"prettier": "2.8.4",
