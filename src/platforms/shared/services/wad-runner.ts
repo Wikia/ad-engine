@@ -9,12 +9,8 @@ import {
 import { trackBab } from '../tracking/bab-tracker';
 
 const defaultOnDetect = () => {
-	if (context.get('options.wad.btForce')) {
-		btForce.run();
-	} else {
-		btfBlockerService.finishFirstCall();
-		btRec.run();
-	}
+	btfBlockerService.finishFirstCall();
+	btRec.run();
 };
 
 export class WadRunner extends BaseServiceSetup {
@@ -26,7 +22,7 @@ export class WadRunner extends BaseServiceSetup {
 			context.set('options.wad.btForce', true);
 		}
 		if (context.get('options.wad.btForce')) {
-			this.onDetected();
+			btForce.run();
 		} else {
 			if (!this.detector.isEnabled()) {
 				return Promise.resolve();
