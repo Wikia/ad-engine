@@ -44,7 +44,7 @@ export class LiveConnect extends BaseServiceSetup {
 			utils.logger(logGroup, 'loading');
 			communicationService.emit(eventsRepository.LIVE_CONNECT_STARTED);
 
-			utils.scriptLoader.loadScript(liveConnectScriptUrl, true, 'first').then(() => {
+			utils.scriptLoader.loadScript(liveConnectScriptUrl, utils.ScriptLoadTime.document_complete, 'first').then(() => {
 				utils.logger(logGroup, 'loaded');
 				this.resolveAndTrackIds();
 			});

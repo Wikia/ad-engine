@@ -1,7 +1,7 @@
-import { context, slotService, utils } from '@ad-engine/core';
-import { PorvataPlayer } from '../../porvata-player';
-import { PorvataSettings } from '../../porvata-settings';
-import { PorvataPlugin } from '../porvata-plugin';
+import {context, slotService, utils} from '@ad-engine/core';
+import {PorvataPlayer} from '../../porvata-player';
+import {PorvataSettings} from '../../porvata-settings';
+import {PorvataPlugin} from '../porvata-plugin';
 
 const scriptUrl = '//static.adsafeprotected.com/vans-adapter-google-ima.js';
 const logGroup = 'ias-video-tracking';
@@ -28,7 +28,7 @@ class IasVideoTracker implements PorvataPlugin {
 
 	load(): Promise<Event> {
 		if (!this.scriptPromise) {
-			this.scriptPromise = utils.scriptLoader.loadScript(scriptUrl, true, 'first');
+			this.scriptPromise = utils.scriptLoader.loadScript(scriptUrl, utils.ScriptLoadTime.document_interactive, 'first');
 		}
 
 		return this.scriptPromise;

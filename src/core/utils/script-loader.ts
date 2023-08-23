@@ -2,21 +2,46 @@ export interface ScriptLoaderInterface {
 	loadScript(src: string): Promise<Event>;
 }
 
+export enum ScriptLoadTime {
+	async, defer, document_interactive, document_complete
+}
+
+const documentCompleteTimeout = 5000; // ICBM variable?
+
 class ScriptLoader implements ScriptLoaderInterface {
+	private readonly documentInteractivePromise: Promise<Event | void>;
+	private readonly documentCompletePromise: Promise<Event | void>;
+
+	constructor(private readonly window: Window, private readonly document: Document) {
+		this.documentInteractivePromise = document.readyState === "loading" ? new Promise((resolve) => {
+			this.document.addEventListener('DOMContentLoaded', (event) => {
+				resolve(event);
+			});
+		}) : Promise.resolve();
+
+		this.documentCompletePromise = document.readyState !== "complete" ? new Promise((resolve) => {
+			const timeout = setTimeout(resolve, documentCompleteTimeout);
+			this.window.addEventListener('load', (event) => {
+				clearTimeout(timeout);
+				resolve(event);
+			});
+		}) : Promise.resolve();
+	}
+
 	/**
 	 * Creates <script> tag
 	 */
-	createScript(
+	private createScript(
 		src: string,
-		isAsyncOrDeferOtherwise = true,
-		node: HTMLElement | string = null,
-		parameters: Record<string, string> = {},
-		datasets: Partial<DOMStringMap> = {},
+		scriptLoadTime: ScriptLoadTime,
+		node: HTMLElement | string,
+		parameters: Record<string, string>,
+		datasets: Partial<DOMStringMap>,
 	): HTMLScriptElement {
 		const script: HTMLScriptElement = document.createElement('script');
 
-		script.async = isAsyncOrDeferOtherwise;
-		script.defer = !isAsyncOrDeferOtherwise;
+		script.async = scriptLoadTime === ScriptLoadTime.async;
+		script.defer = scriptLoadTime === ScriptLoadTime.defer;
 		script.src = src;
 
 		Object.keys(parameters).forEach((parameter) => {
@@ -40,20 +65,17 @@ class ScriptLoader implements ScriptLoaderInterface {
 		return script;
 	}
 
-	/**
-	 * Injects <script> tag
-	 */
-	loadScript(
+	private createScriptPromise(
 		src: string,
-		isAsyncOrDeferOtherwise = true,
-		node: HTMLElement | string = null,
-		parameters: Record<string, string> = {},
-		datasets: Partial<DOMStringMap> = {},
+		scriptLoadTime,
+		node: HTMLElement | string,
+		parameters: Record<string, string>,
+		datasets: Partial<DOMStringMap>
 	): Promise<Event> {
 		return new Promise((resolve, reject) => {
 			const script: HTMLScriptElement = this.createScript(
 				src,
-				isAsyncOrDeferOtherwise,
+				scriptLoadTime,
 				node,
 				parameters,
 				datasets,
@@ -62,6 +84,38 @@ class ScriptLoader implements ScriptLoaderInterface {
 			script.onload = resolve;
 			script.onerror = reject;
 		});
+	}
+
+	private buildChainPromise(
+		waitPromise: Promise<Event | void>,
+		src: string,
+		scriptLoadTime,
+		node: HTMLElement | string,
+		parameters: Record<string, string>,
+		datasets: Partial<DOMStringMap>
+	): Promise<Event> {
+		return new Promise((resolve, reject) => waitPromise.then(
+			() => this.createScriptPromise(src, scriptLoadTime, node, parameters, datasets)
+				.then(resolve).catch(reject)));
+
+	}
+
+	/**
+	 * Injects <script> tag
+	 */
+	loadScript(
+		src: string,
+		scriptLoadTime : ScriptLoadTime = ScriptLoadTime.defer,
+		node: HTMLElement | string = null,
+		parameters: Record<string, string> = {},
+		datasets: Partial<DOMStringMap> = {},
+	): Promise<Event> {
+		if (scriptLoadTime === ScriptLoadTime.document_interactive) {
+			return this.buildChainPromise(this.documentInteractivePromise, src, scriptLoadTime, node, parameters, datasets);
+		} else if (scriptLoadTime === ScriptLoadTime.document_complete) {
+			return this.buildChainPromise(this.documentCompletePromise, src, scriptLoadTime, node, parameters, datasets);
+		}
+		return this.createScriptPromise(src, scriptLoadTime, node, parameters, datasets);
 	}
 
 	loadAsset(
@@ -114,4 +168,4 @@ class ScriptLoader implements ScriptLoaderInterface {
 	}
 }
 
-export const scriptLoader = new ScriptLoader();
+export const scriptLoader = new ScriptLoader(window, document);

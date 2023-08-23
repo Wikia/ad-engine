@@ -28,7 +28,7 @@ export class Wunderkind extends BaseServiceSetup {
 		const libraryUrl = `//tag.wknd.ai/5047/i.js`;
 		utils.logger(logGroup, 'loading', libraryUrl);
 
-		utils.scriptLoader.loadScript(libraryUrl).then(() => {
+		utils.scriptLoader.loadScript(libraryUrl, utils.ScriptLoadTime.document_complete).then(() => {
 			utils.logger(logGroup, 'ready');
 		});
 	}

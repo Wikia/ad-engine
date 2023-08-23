@@ -9,7 +9,7 @@ export class DurationMedia extends BaseServiceSetup {
 		if (this.isEnabled('icDurationMedia', false) && libraryUrl) {
 			utils.logger(logGroup, 'loading', libraryUrl);
 
-			utils.scriptLoader.loadScript(libraryUrl, false, null, { id: 'dm-script' }).then(() => {
+			utils.scriptLoader.loadScript(libraryUrl, utils.ScriptLoadTime.document_interactive, null, { id: 'dm-script' }).then(() => {
 				utils.logger(logGroup, 'ready');
 			});
 		} else {

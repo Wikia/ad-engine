@@ -30,7 +30,7 @@ export class IntentIQ {
 		}
 
 		this.loadPromise = utils.scriptLoader
-			.loadScript(this.intentIQScriptUrl, true, 'first')
+			.loadScript(this.intentIQScriptUrl, utils.ScriptLoadTime.document_interactive, 'first')
 			.then(() => {
 				this.loaded = true;
 				utils.logger(logGroup, 'loaded');

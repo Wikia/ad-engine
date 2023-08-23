@@ -14,7 +14,7 @@ export class Stroer extends BaseServiceSetup {
 
 		utils.logger(logGroup, 'loading', libraryUrl);
 
-		return utils.scriptLoader.loadScript(libraryUrl, false).then(() => {
+		return utils.scriptLoader.loadScript(libraryUrl, utils.ScriptLoadTime.document_complete).then(() => {
 			utils.logger(logGroup, 'ready');
 		});
 	}

@@ -96,7 +96,7 @@ export class Anyclip extends BaseServiceSetup {
 		utils.logger(logGroup, 'loading Anyclip asset', this.libraryUrl);
 
 		return utils.scriptLoader
-			.loadScript(this.libraryUrl, true, playerContainer, this.params)
+			.loadScript(this.libraryUrl, utils.ScriptLoadTime.document_interactive, playerContainer, this.params)
 			.then(() => {
 				playerContainer?.classList.remove('hide');
 				utils.logger(logGroup, 'ready');

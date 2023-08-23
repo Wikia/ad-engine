@@ -1,5 +1,5 @@
-import { logger, scriptLoader } from '../utils';
-import { context } from './context-service';
+import {logger, scriptLoader, ScriptLoadTime} from '../utils';
+import {context} from './context-service';
 
 const logGroup = 'pbjs-factory';
 
@@ -13,7 +13,7 @@ class PbjsFactory {
 		if (!this.instancePromise) {
 			const libraryUrl = context.get('bidders.prebid.libraryUrl');
 
-			scriptLoader.loadScript(libraryUrl, true, 'first');
+			scriptLoader.loadScript(libraryUrl, ScriptLoadTime.defer, 'first');
 
 			this.instancePromise = new Promise((resolve) =>
 				(window as any).pbjs.que.push(() => {

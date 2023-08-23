@@ -1,5 +1,5 @@
-import { utils } from '@ad-engine/core';
-import { A9Bid, A9BidConfig } from '../a9/types';
+import {utils} from '@ad-engine/core';
+import {A9Bid, A9BidConfig} from '../a9/types';
 
 export class Apstag {
 	private static instance: Apstag;
@@ -25,7 +25,7 @@ export class Apstag {
 	private insertScript(): void {
 		this.script = this.utils.scriptLoader.loadScript(
 			'//c.amazon-adsystem.com/aax2/apstag.js',
-			true,
+			utils.ScriptLoadTime.defer,
 			'first',
 		);
 	}

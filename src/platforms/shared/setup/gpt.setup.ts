@@ -13,7 +13,7 @@ export class GptSetup extends BaseServiceSetup {
 		const GPT_LIBRARY_URL = '//www.googletagservices.com/tag/js/gpt.js';
 
 		utils.logger('gpt-provider', 'loading GPT...');
-		return utils.scriptLoader.loadScript(GPT_LIBRARY_URL).then(() => {
+		return utils.scriptLoader.loadScript(GPT_LIBRARY_URL, utils.ScriptLoadTime.defer).then(() => {
 			utils.logger('gpt-provider', 'ready');
 			new MetricReporter().trackGptLibReady();
 			communicationService.emit(eventsRepository.AD_ENGINE_GPT_READY);

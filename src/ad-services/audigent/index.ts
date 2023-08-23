@@ -24,7 +24,7 @@ export class Audigent extends BaseServiceSetup {
 
 	static loadSegmentLibrary(): void {
 		Audigent.segmentsScriptLoader = utils.scriptLoader
-			.loadScript(DEFAULT_SEGMENTS_SCRIPT_URL, true, 'first')
+			.loadScript(DEFAULT_SEGMENTS_SCRIPT_URL, utils.ScriptLoadTime.document_interactive, 'first')
 			.then(() => {
 				communicationService.emit(eventsRepository.AUDIGENT_SEGMENT_LIBRARY_LOADED);
 			});
@@ -32,7 +32,7 @@ export class Audigent extends BaseServiceSetup {
 
 	loadMatchesLibrary(): void {
 		this.matchesTagScriptLoader = utils.scriptLoader
-			.loadScript(DEFAULT_MATCHES_SCRIPT_URL, true, 'first')
+			.loadScript(DEFAULT_MATCHES_SCRIPT_URL, utils.ScriptLoadTime.document_interactive, 'first')
 			.then(() => {
 				communicationService.emit(eventsRepository.AUDIGENT_MATCHES_LIBRARY_LOADED);
 			});

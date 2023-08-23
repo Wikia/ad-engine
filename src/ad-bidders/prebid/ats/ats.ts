@@ -29,8 +29,8 @@ export class Ats extends BaseServiceSetup {
 			return;
 		}
 		const [md5, sha1, sha256] = userEmailHashes;
-		const launchpadScript = utils.scriptLoader.loadScript(this.launchpadScriptUrl);
-		const launchpadBundleScript = utils.scriptLoader.loadScript(this.launchpadBundleScriptUrl);
+		const launchpadScript = utils.scriptLoader.loadScript(this.launchpadScriptUrl, utils.ScriptLoadTime.document_complete);
+		const launchpadBundleScript = utils.scriptLoader.loadScript(this.launchpadBundleScriptUrl, utils.ScriptLoadTime.document_complete);
 
 		return Promise.all([launchpadScript, launchpadBundleScript])
 			.then(() => this.waitForAts())

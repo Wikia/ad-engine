@@ -2,7 +2,7 @@ import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engin
 
 import { AdSlotStatus } from '../../models';
 import { Context, slotService, targetingService } from '../../services';
-import { logger, scriptLoader } from '../../utils';
+import { logger, ScriptLoadTime, scriptLoader } from '../../utils';
 
 const logGroup = 'nativo';
 const NATIVO_LIBRARY_URL = '//s.ntv.io/serve/load.js';
@@ -34,7 +34,7 @@ export class Nativo {
 		Nativo.log('Loading Nativo API...');
 
 		scriptLoader
-			.loadScript(NATIVO_LIBRARY_URL, true, null, {}, { ntvSetNoAutoStart: '' })
+			.loadScript(NATIVO_LIBRARY_URL, ScriptLoadTime.document_interactive, null, {}, { ntvSetNoAutoStart: '' })
 			.then(() => {
 				Nativo.log('Nativo API loaded.');
 				this.watchNtvEvents();

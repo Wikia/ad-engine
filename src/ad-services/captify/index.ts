@@ -36,11 +36,10 @@ export class Captify extends BaseServiceSetup {
 		const captifyPixelUrl = `https://p.cpx.to/p/${this.propertyId}/px.js`;
 
 		const section = document.getElementsByTagName('script')[0];
-		const elem = utils.scriptLoader.createScript(captifyPixelUrl, false, section);
 
-		elem.onload = () => {
+		utils.scriptLoader.loadScript(captifyPixelUrl, utils.ScriptLoadTime.document_complete, section).then(() => {
 			communicationService.emit(eventsRepository.CAPTIFY_LOADED);
 			utils.logger(logGroup, 'loaded');
-		};
+		});
 	}
 }

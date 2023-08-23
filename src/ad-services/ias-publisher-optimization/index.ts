@@ -52,7 +52,7 @@ export class IasPublisherOptimization extends BaseServiceSetup {
 		if (!this.isLoaded) {
 			utils.logger(logGroup, 'loading...');
 			this.isLoaded = true;
-			return utils.scriptLoader.loadScript(scriptUrl, true, 'first').then(() => {
+			return utils.scriptLoader.loadScript(scriptUrl, utils.ScriptLoadTime.document_interactive, 'first').then(() => {
 				utils.logger(logGroup, 'asset loaded');
 				this.setup();
 			});

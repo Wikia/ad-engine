@@ -29,7 +29,7 @@ export class Eyeota extends BaseServiceSetup {
 
 		utils.logger(logGroup, 'loading');
 		return utils.scriptLoader
-			.loadScript(await this.createScriptSource())
+			.loadScript(await this.createScriptSource(), utils.ScriptLoadTime.document_complete)
 			.then(() => {
 				communicationService.emit(eventsRepository.EYEOTA_STARTED);
 				utils.logger(logGroup, 'ready');

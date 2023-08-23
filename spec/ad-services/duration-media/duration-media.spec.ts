@@ -1,5 +1,4 @@
 import { DurationMedia } from '@wikia/ad-services';
-import { communicationService, eventsRepository } from '@wikia/communication';
 import { context, InstantConfigService, utils } from '@wikia/core';
 import { expect } from 'chai';
 
@@ -41,11 +40,9 @@ describe('Duration media service', () => {
 
 		await durationMedia.call();
 
-		communicationService.emit(eventsRepository.AD_ENGINE_GPT_READY);
-
 		expect(loadScriptStub.called).to.equal(true);
 		expect(
-			loadScriptStub.calledWith('//example.com/foo', false, null, {
+			loadScriptStub.calledWith('//example.com/foo', utils.ScriptLoadTime.document_interactive, null, {
 				id: 'dm-script',
 			}),
 		).to.equal(true);
