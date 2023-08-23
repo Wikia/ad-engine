@@ -55,6 +55,7 @@ export class GalleryLightboxAdsHandler {
 				this.lockForFewSeconds();
 				this.isActive = true;
 				this.hideFloorAdhesion();
+				this.showMobileGalleryAdPlaceholder();
 				utils.logger(this.logGroup, 'Ad placement on Lightbox ready', placementId);
 			},
 			false,
@@ -114,6 +115,7 @@ export class GalleryLightboxAdsHandler {
 				gallerySlot.destroy();
 				utils.logger(this.logGroup, 'Ad placement on Lightbox destroy', placementId);
 				this.isActive = false;
+				this.hideMobileGalleryAdPlaceholder();
 				this.showFloorAdhesion();
 			},
 			false,
@@ -127,6 +129,15 @@ export class GalleryLightboxAdsHandler {
 		}, 2000);
 	}
 
+	private hideMobileGalleryAdPlaceholder() {
+		const floor = document.getElementsByClassName('gallery-leaderboard')[0];
+		floor.classList.add('hide');
+	}
+
+	private showMobileGalleryAdPlaceholder() {
+		const floor = document.getElementsByClassName('gallery-leaderboard')[0];
+		floor.classList.remove('hide');
+	}
 	private hideFloorAdhesion() {
 		const floor = document.getElementById('floor_adhesion_anchor');
 		floor.classList.add('hide-under-lightbox');
