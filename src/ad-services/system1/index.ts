@@ -31,6 +31,15 @@ export class System1 extends BaseServiceSetup {
 			return Promise.resolve();
 		}
 
+		const oldLogicBundleName = 'old_incontent_ads';
+		const includedInSpecificCommunitiesList =
+			window.fandomContext?.site?.tags?.bundles?.includes(oldLogicBundleName);
+
+		if (includedInSpecificCommunitiesList) {
+			utils.logger(logGroup, 'on this wiki system1 is disabled');
+			return Promise.resolve();
+		}
+
 		if (!this.isLoaded) {
 			utils.logger(logGroup, 'loading...');
 			this.isLoaded = true;
