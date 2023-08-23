@@ -31,12 +31,12 @@ export class System1 extends BaseServiceSetup {
 			return Promise.resolve();
 		}
 
-		const oldLogicBundleName = 'old_incontent_ads';
-		const includedInSpecificCommunitiesList =
-			window.fandomContext?.site?.tags?.bundles?.includes(oldLogicBundleName);
+		const excludedBundleTagName = 'old_incontent_ads';
+		const communityExcludedByTag =
+			window.fandomContext?.site?.tags?.bundles?.includes(excludedBundleTagName);
 
-		if (includedInSpecificCommunitiesList) {
-			utils.logger(logGroup, 'on this wiki system1 is disabled');
+		if (communityExcludedByTag) {
+			utils.logger(logGroup, `community excluded by tag bundle=${excludedBundleTagName}`);
 			return Promise.resolve();
 		}
 
