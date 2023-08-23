@@ -24,6 +24,8 @@ export class WadRunner extends BaseServiceSetup {
 	async call(): Promise<void> {
 		if (this.instantConfig.get('icBTForce')) {
 			context.set('options.wad.btForce', true);
+		}
+		if (context.get('options.wad.btForce')) {
 			this.onDetected();
 		} else {
 			if (!this.detector.isEnabled()) {
