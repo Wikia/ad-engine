@@ -17,6 +17,7 @@ import {
 	CookieStorageAdapter,
 	DiProcess,
 	eventsRepository,
+	InstantConfigService,
 	Nativo,
 	slotImpactWatcher,
 	slotService,
@@ -34,6 +35,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		private nativoSlotDefinitionRepository: NativoSlotsDefinitionRepository,
 		private quizSlotsDefinitionRepository: QuizSlotsDefinitionRepository,
 		private galleryLightbox: GalleryLightboxAds,
+		protected instantConfig: InstantConfigService,
 	) {}
 
 	execute(): void {
@@ -287,10 +289,18 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	}
 
 	private handleMobileGalleryLightboxAdsSlots(): void {
-		if (!this.galleryLightbox.initialized) {
-			this.galleryLightbox.handler = new GalleryLightboxAdsHandler(this.slotsDefinitionRepository);
-			this.galleryLightbox.initialized = true;
+		const oldLogicBundleName = 'old_incontent_ads';
+		const includedInSpecificCommunitiesList =
+			window.fandomContext?.site?.tags?.bundles?.includes(oldLogicBundleName);
+
+		if (this.instantConfig.get('icMobileGalleryAds') && !includedInSpecificCommunitiesList) {
+			if (!this.galleryLightbox.initialized) {
+				this.galleryLightbox.handler = new GalleryLightboxAdsHandler(
+					this.slotsDefinitionRepository,
+				);
+				this.galleryLightbox.initialized = true;
+			}
+			this.galleryLightbox.handler.handle();
 		}
-		this.galleryLightbox.handler.handle();
 	}
 }

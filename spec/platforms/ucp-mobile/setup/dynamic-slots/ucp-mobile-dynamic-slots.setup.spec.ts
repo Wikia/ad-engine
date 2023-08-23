@@ -1,4 +1,4 @@
-import { context, DomListener } from '@wikia/core';
+import { context, DomListener, InstantConfigService } from '@wikia/core';
 import { WaitFor } from '@wikia/core/utils';
 import {
 	GalleryLightboxAdsHandler,
@@ -21,6 +21,7 @@ describe('floor_adhesion on ucp-mobile', () => {
 		handler: new GalleryLightboxAdsHandler(new UcpMobileSlotsDefinitionRepository(instantConfig)),
 		initialized: true,
 	};
+	const instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 
 	before(() => {
 		context.set('slots.incontent_boxad_1', {});
@@ -65,6 +66,7 @@ describe('floor_adhesion on ucp-mobile', () => {
 			nativoDefinitionRepositoryMock,
 			quizDefinitionRepositoryMock,
 			galleryLightboxAdsMock,
+			instantConfigStub,
 		);
 
 		dynamicSlotSetup.execute();
