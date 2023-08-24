@@ -273,6 +273,12 @@ body:has(.notifications-box > .marketing-notifications > div) {
 	}
 }
 
+body.mw-special-Search {
+	#gcsa-bottom {
+		margin-bottom: 20px;
+	}
+}
+
 @keyframes fade-in {
 	to {
 		opacity: 1;
