@@ -31,6 +31,15 @@ export class System1 extends BaseServiceSetup {
 			return Promise.resolve();
 		}
 
+		const excludedBundleTagName = 'old_incontent_ads';
+		const communityExcludedByTag =
+			window.fandomContext?.site?.tags?.bundles?.includes(excludedBundleTagName);
+
+		if (communityExcludedByTag) {
+			utils.logger(logGroup, `community excluded by tag bundle=${excludedBundleTagName}`);
+			return Promise.resolve();
+		}
+
 		if (!this.isLoaded) {
 			utils.logger(logGroup, 'loading...');
 			this.isLoaded = true;
