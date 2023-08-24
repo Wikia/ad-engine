@@ -12,7 +12,12 @@ import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })
 export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
-	private enabledSlots: string[] = ['top_boxad', 'incontent_boxad_1', 'bottom_leaderboard'];
+	private enabledSlots: string[] = [
+		'top_boxad',
+		'incontent_boxad_1',
+		'bottom_leaderboard',
+		'gallery_leaderboard',
+	];
 
 	constructor(@Inject(TEMPLATE.PARAMS) private params: UapParams) {}
 
