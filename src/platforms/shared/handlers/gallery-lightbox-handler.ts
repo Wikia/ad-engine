@@ -130,11 +130,15 @@ export class GalleryLightboxAdsHandler {
 	}
 
 	private hideMobileGalleryAdPlaceholder() {
+		const innerWrapper = document.getElementsByClassName('lightbox-wrapper-inner')[0];
+		innerWrapper.classList.remove('with-ad');
 		const floor = document.getElementsByClassName('gallery-leaderboard')[0];
 		floor.classList.add('hide');
 	}
 
 	private showMobileGalleryAdPlaceholder() {
+		const innerWrapper = document.getElementsByClassName('lightbox-wrapper-inner')[0];
+		innerWrapper.classList.add('with-ad');
 		const floor = document.getElementsByClassName('gallery-leaderboard')[0];
 		floor.classList.remove('hide');
 	}
