@@ -7,7 +7,7 @@ import {
 } from '@wikia/platforms/shared';
 import { UcpMobileDynamicSlotsSetup } from '@wikia/platforms/ucp-mobile/setup/dynamic-slots/ucp-mobile-dynamic-slots.setup';
 import { UcpMobileSlotsDefinitionRepository } from '@wikia/platforms/ucp-mobile/setup/dynamic-slots/ucp-mobile-slots-definition-repository';
-import { assert } from 'sinon';
+import { assert, createStubInstance } from 'sinon';
 
 describe('floor_adhesion on ucp-mobile', () => {
 	const instantConfig = {
@@ -21,7 +21,7 @@ describe('floor_adhesion on ucp-mobile', () => {
 		handler: new GalleryLightboxAdsHandler(new UcpMobileSlotsDefinitionRepository(instantConfig)),
 		initialized: true,
 	};
-	const instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
+	const instantConfigStub = createStubInstance(InstantConfigService);
 
 	before(() => {
 		context.set('slots.incontent_boxad_1', {});
