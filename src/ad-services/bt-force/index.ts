@@ -7,7 +7,7 @@ const logGroup = 'bt-force-loader';
  */
 class BTForce {
 	/**
-	 * Runs BT force rec service and injects code
+	 * Runs BT force service and injects code
 	 */
 	async run(): Promise<void> {
 		if (!this.isEnabled()) {
@@ -22,7 +22,7 @@ class BTForce {
 	}
 
 	/**
-	 * Checks if BT rec is enabled
+	 * Checks if BT force is enabled
 	 */
 	isEnabled(): boolean {
 		return context.get('options.wad.btForce');
