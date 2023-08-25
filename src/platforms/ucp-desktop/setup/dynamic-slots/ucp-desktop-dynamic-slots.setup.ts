@@ -1,4 +1,5 @@
 import {
+	GalleryLightboxAds,
 	GalleryLightboxAdsHandler,
 	insertSlots,
 	NativoSlotsDefinitionRepository,
@@ -28,7 +29,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		private nativoSlotDefinitionRepository: NativoSlotsDefinitionRepository,
 		private performanceAdsDefinitionRepository: UcpDesktopPerformanceAdsDefinitionRepository,
 		private quizSlotsDefinitionRepository: QuizSlotsDefinitionRepository,
-		private galleryLightboxHandler: GalleryLightboxAdsHandler,
+		private galleryLightbox: GalleryLightboxAds,
 	) {}
 
 	execute(): void {
@@ -155,6 +156,10 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	}
 
 	private handleGalleryLightboxAdsSlots(): void {
-		this.galleryLightboxHandler.handle();
+		if (!this.galleryLightbox.initialized) {
+			this.galleryLightbox.handler = new GalleryLightboxAdsHandler(this.slotsDefinitionRepository);
+			this.galleryLightbox.initialized = true;
+		}
+		this.galleryLightbox.handler.handle();
 	}
 }
