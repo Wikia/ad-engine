@@ -95,6 +95,9 @@ export const basicContext = {
 				'incontent_player',
 			],
 		},
+		openWeb: {
+			placementSelector: 'div[class*="openweb-slot"]',
+		},
 	},
 	slotGroups: {
 		VIDEO: ['FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
