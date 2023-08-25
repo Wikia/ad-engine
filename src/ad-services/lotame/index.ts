@@ -1,3 +1,4 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { BaseServiceSetup, utils } from '@ad-engine/core';
 
 interface LotameNamespace {
@@ -18,11 +19,13 @@ export class Lotame extends BaseServiceSetup {
 		}
 		utils.logger(this.logGroup, 'pixel enabled');
 		await utils.scriptLoader.loadScript(this.PIXEL_URL);
+		communicationService.dispatch(eventsRepository.LOTAME_LOADED);
 
 		const lotameTagInput = {
 			data: {},
 			config: {
 				clientId: Number(this.CLIENT_ID),
+				onTagReady: () => communicationService.dispatch(eventsRepository.LOTAME_READY),
 			},
 		};
 

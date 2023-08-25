@@ -224,6 +224,12 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Timestamp event',
 		payload: props<{ eventName: string; timestamp: number }>(),
 	},
+	LOTAME_LOADED: {
+		name: 'Lotame loaded',
+	},
+	LOTAME_READY: {
+		name: 'Lotame ready',
+	},
 	// Platforms events //
 	BINGEBOT_AD_SLOT_INJECTED: {
 		category: '[BingeBot]',
