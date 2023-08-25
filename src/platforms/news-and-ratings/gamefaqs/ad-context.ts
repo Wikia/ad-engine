@@ -40,7 +40,7 @@ export const basicContext = {
 			loadWithoutAnchor: true,
 		},
 		doubleVerify: {
-			slots: ['mpu_top'],
+			slots: ['mpu_top', 'top_leaderboard'],
 		},
 		durationMedia: {
 			libraryUrl: '//tag.durationmedia.net/sites/11354/dm.js',

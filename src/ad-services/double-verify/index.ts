@@ -1,4 +1,4 @@
-import { BaseServiceSetup, context, slotService, targetingService, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, targetingService, utils } from '@ad-engine/core';
 
 const logGroup = 'double-verify';
 const scriptUrl = 'https://pub.doubleverify.com/signals/pub.json';
@@ -12,6 +12,7 @@ interface AdUnit {
 
 export class DoubleVerify extends BaseServiceSetup {
 	private isLoaded = false;
+	private slots: string[] = [];
 
 	async call() {
 		if (this.isLoaded) {
@@ -23,19 +24,18 @@ export class DoubleVerify extends BaseServiceSetup {
 			return;
 		}
 
-		this.setInitialTargeting();
+		this.slots = context.get('services.doubleVerify.slots');
 
-		const slots = this.getSlots();
-
-		if (!slots) {
+		if (!this.slots) {
 			utils.logger(logGroup, 'Empty slots configuration');
 			return;
 		}
 
-		const url = this.prepareRequestURL(slots);
-		const headers = this.getRequestHeaders();
+		this.setInitialTargeting();
 
 		try {
+			const url = this.prepareRequestURL();
+			const headers = this.getRequestHeaders();
 			const response = await fetch(url.href, { headers });
 
 			if (!response.ok) {
@@ -58,9 +58,9 @@ export class DoubleVerify extends BaseServiceSetup {
 		targetingService.set('bsc', '-1');
 		targetingService.set('abs', '-1');
 
-		Object.entries(slotService.slotConfigsMap).forEach(([key]) => {
-			targetingService.set('tvp', '-1', key);
-			targetingService.set('vlp', '-1', key);
+		this.slots.forEach((slotName) => {
+			targetingService.set('tvp', '-1', slotName);
+			targetingService.set('vlp', '-1', slotName);
 		});
 	}
 
@@ -89,14 +89,16 @@ export class DoubleVerify extends BaseServiceSetup {
 		};
 	}
 
-	private prepareRequestURL(slots: AdUnit[]): URL {
+	private prepareRequestURL(): URL {
 		const params = new URLSearchParams({
 			ctx,
 			cmp,
 			url: encodeURIComponent(referer),
 		});
 
-		Object.entries(slots).forEach(([, slot]) => {
+		const adUnits = this.getAdUnitsForRequest();
+
+		Object.entries(adUnits).forEach(([, slot]) => {
 			params.append(`adunits[${slot.path}][]`, '');
 		});
 
@@ -106,14 +108,8 @@ export class DoubleVerify extends BaseServiceSetup {
 		return url;
 	}
 
-	private getSlots(): AdUnit[] {
-		const slots = context.get('services.doubleVerify.slots');
-
-		if (!slots) {
-			return;
-		}
-
-		return slots.map((slotName) => {
+	private getAdUnitsForRequest(): AdUnit[] {
+		return this.slots.map((slotName) => {
 			return {
 				path: slotName,
 			};

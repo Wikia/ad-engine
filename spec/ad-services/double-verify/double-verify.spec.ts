@@ -69,7 +69,7 @@ describe('DoubleVerify', () => {
 
 	it('Prepare targeting', async () => {
 		instantConfigStub.get.withArgs('icDoubleVerify').returns(true);
-		context.set('services.doubleVerify.slots', ['top_leaderboard']);
+		context.set('services.doubleVerify.slots', ['slot1', 'slot2', 'slot3']);
 
 		const fakeResponse = {
 			ok: true,
@@ -94,6 +94,26 @@ describe('DoubleVerify', () => {
 		expect(targetingServiceStub.set.calledWith('tvp', 'tvp-value1', 'slot1')).to.equal(true);
 		expect(targetingServiceStub.set.calledWith('tvp', 'tvp-value3', 'slot3')).to.equal(true);
 		expect(targetingServiceStub.set.calledWith('vlp', 'vlp-value2', 'slot2')).to.equal(true);
+	});
+
+	it('Default -1 values', async () => {
+		instantConfigStub.get.withArgs('icDoubleVerify').returns(true);
+		context.set('services.doubleVerify.slots', ['top_leaderboard']);
+
+		const fakeResponse = {
+			ok: true,
+			json: global.sandbox.stub().resolves({}),
+		};
+
+		fetchStub.onCall(0).resolves(fakeResponse);
+
+		await doubleVerify.call();
+
+		expect(targetingServiceStub.set.calledWith('ids', '-1')).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('bsc', '-1')).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('abs', '-1')).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('tvp', '-1', 'top_leaderboard')).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('vlp', '-1', 'top_leaderboard')).to.equal(true);
 	});
 
 	it('Prepare targeting - empty response', async () => {
