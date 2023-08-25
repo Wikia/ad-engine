@@ -93,6 +93,7 @@ export class GalleryLightboxAdsHandler {
 				}
 				setTimeout(() => {
 					insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]);
+					this.hideRegisterBox();
 				}, 100);
 
 				this.lockForFewSeconds();
@@ -134,14 +135,14 @@ export class GalleryLightboxAdsHandler {
 
 	private hideRegisterBox() {
 		const galleryLeaderboardAdSlot = document?.getElementsByClassName('gallery-leaderboard')?.[0];
-		galleryLeaderboardAdSlot?.getElementsByClassName('cm-register-box')?.[0].classList.add('hide');
+		galleryLeaderboardAdSlot?.getElementsByClassName('cm-register-box')?.[0]?.classList.add('hide');
 	}
 
 	private showRegisterBox() {
 		const galleryLeaderboardAdSlot = document?.getElementsByClassName('gallery-leaderboard')?.[0];
 		galleryLeaderboardAdSlot
 			?.getElementsByClassName('cm-register-box')?.[0]
-			.classList.remove('hide');
+			?.classList.remove('hide');
 	}
 
 	private hideMobileGalleryAdPlaceholder() {
@@ -158,8 +159,10 @@ export class GalleryLightboxAdsHandler {
 		floor?.classList?.remove('hide');
 	}
 	private hideFloorAdhesion() {
-		const floor = document?.getElementById('floor_adhesion_anchor');
-		floor?.classList?.add('hide-under-lightbox');
+		setTimeout(() => {
+			const floor = document?.getElementById('floor_adhesion_anchor');
+			floor?.classList?.add('hide-under-lightbox');
+		}, 100);
 	}
 
 	private showFloorAdhesion() {
