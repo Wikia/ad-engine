@@ -1,16 +1,14 @@
-import {
-	activateFloorAdhesionOnUAP,
-	SlotsDefinitionRepository,
-	SlotSetupDefinition,
-} from '@platforms/shared';
+import { activateFloorAdhesionOnUAP, SlotSetupDefinition } from '@platforms/shared';
 import {
 	communicationService,
 	context,
 	CookieStorageAdapter,
 	eventsRepository,
 	InstantConfigService,
+	OpenWeb,
 	RepeatableSlotPlaceholderConfig,
 	scrollListener,
+	SlotPlaceholderConfig,
 	slotPlaceholderInjector,
 	UapLoadStatus,
 	utils,
@@ -18,8 +16,8 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class UcpMobileSlotsDefinitionRepository implements SlotsDefinitionRepository {
-	constructor(protected instantConfig: InstantConfigService) {}
+export class UcpMobileSlotsDefinitionRepository {
+	constructor(protected instantConfig: InstantConfigService, private openWeb: OpenWeb) {}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
 		if (!this.isTopLeaderboardApplicable()) {
@@ -165,12 +163,28 @@ export class UcpMobileSlotsDefinitionRepository implements SlotsDefinitionReposi
 			classList: ['ad-slot-placeholder', 'incontent-boxad', 'is-loading'],
 			anchorSelector: context.get('templates.incontentAnchorSelector'),
 			insertMethod: 'before',
-			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder', '.incontent-boxad'],
+			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder', '.incontent-boxad', '.openweb-slot'],
 			repeatStart: 1,
 			repeatLimit: count,
+			repeatExceptions: [this.buildOpenWebReplacement()],
 		};
 
 		slotPlaceholderInjector.injectAndRepeat(icbPlaceholderConfig, adSlotCategory);
+	}
+
+	private buildOpenWebReplacement(): (repeat: number) => SlotPlaceholderConfig | null {
+		const newConfigOverride: SlotPlaceholderConfig = <SlotPlaceholderConfig>{
+			classList: ['openweb-slot'],
+			anchorSelector: context.get('templates.incontentAnchorSelector'),
+			insertMethod: 'before',
+			noLabel: true,
+		};
+
+		return (repeat) => {
+			return repeat === OpenWeb.MOBILE_REPLACE_REPEAT_SLOT_IDX && this.openWeb.isActive()
+				? newConfigOverride
+				: null;
+		};
 	}
 
 	getMobilePrefooterConfig(): SlotSetupDefinition {

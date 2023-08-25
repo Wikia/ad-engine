@@ -14,11 +14,20 @@ describe('floor_adhesion on ucp-mobile', () => {
 		get: () => [],
 	} as any;
 
-	const slotDefinitionRepositoryMock = new UcpMobileSlotsDefinitionRepository(instantConfig);
+	const openWebService = {
+		isActive: () => false,
+	} as any;
+
+	const slotDefinitionRepositoryMock = new UcpMobileSlotsDefinitionRepository(
+		instantConfig,
+		openWebService,
+	);
 	const nativoDefinitionRepositoryMock = new NativoSlotsDefinitionRepository(new DomListener());
 	const quizDefinitionRepositoryMock = new QuizSlotsDefinitionRepository();
 	const galleryLightboxAdsMock = {
-		handler: new GalleryLightboxAdsHandler(new UcpMobileSlotsDefinitionRepository(instantConfig)),
+		handler: new GalleryLightboxAdsHandler(
+			new UcpMobileSlotsDefinitionRepository(instantConfig, openWebService),
+		),
 		initialized: true,
 	};
 	const instantConfigStub = createStubInstance(InstantConfigService);

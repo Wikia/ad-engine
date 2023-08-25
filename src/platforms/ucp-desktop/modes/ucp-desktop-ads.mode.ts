@@ -18,6 +18,7 @@ import {
 	LiveConnect,
 	LiveRampPixel,
 	Nielsen,
+	OpenWeb,
 	PartnerPipeline,
 	PrebidNativeProvider,
 	Stroer,
@@ -46,6 +47,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 		private liveConnect: LiveConnect,
 		private liveRampPixel: LiveRampPixel,
 		private nielsen: Nielsen,
+		private openWeb: OpenWeb,
 		private playerSetup: PlayerSetup,
 		private prebidNativeProvider: PrebidNativeProvider,
 		private stroer: Stroer,
@@ -74,6 +76,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 				this.nielsen,
 				this.prebidNativeProvider,
 				this.wunderkind,
+				this.openWeb,
 				this.system1,
 				this.playerSetup.setOptions({
 					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
