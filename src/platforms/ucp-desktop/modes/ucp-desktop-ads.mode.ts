@@ -19,9 +19,11 @@ import {
 	LiveRampPixel,
 	Lotame,
 	Nielsen,
+	OpenWeb,
 	PartnerPipeline,
 	PrebidNativeProvider,
 	Stroer,
+	System1,
 	Wunderkind,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -46,9 +48,11 @@ export class UcpDesktopAdsMode implements DiProcess {
 		private liveConnect: LiveConnect,
 		private liveRampPixel: LiveRampPixel,
 		private nielsen: Nielsen,
+		private openWeb: OpenWeb,
 		private playerSetup: PlayerSetup,
 		private prebidNativeProvider: PrebidNativeProvider,
 		private stroer: Stroer,
+		private system1: System1,
 		private wadRunner: WadRunner,
 		private wunderkind: Wunderkind,
 		private lotame: Lotame,
@@ -75,6 +79,8 @@ export class UcpDesktopAdsMode implements DiProcess {
 				this.nielsen,
 				this.prebidNativeProvider,
 				this.wunderkind,
+				this.openWeb,
+				this.system1,
 				this.playerSetup.setOptions({
 					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
 				}),
