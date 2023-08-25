@@ -55,6 +55,7 @@ export class GalleryLightboxAdsHandler {
 				insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]);
 				this.lockForFewSeconds();
 				this.isActive = true;
+				this.hideRegisterBox();
 				this.hideFloorAdhesion();
 				this.showMobileGalleryAdPlaceholder();
 				utils.logger(this.logGroup, 'Ad placement on Lightbox ready', placementId);
@@ -118,6 +119,7 @@ export class GalleryLightboxAdsHandler {
 				this.isActive = false;
 				this.hideMobileGalleryAdPlaceholder();
 				this.showFloorAdhesion();
+				this.showRegisterBox();
 			},
 			false,
 		);
@@ -130,26 +132,38 @@ export class GalleryLightboxAdsHandler {
 		}, 2000);
 	}
 
+	private hideRegisterBox() {
+		const galleryLeaderboardAdSlot = document?.getElementsByClassName('gallery-leaderboard')?.[0];
+		galleryLeaderboardAdSlot?.getElementsByClassName('cm-register-box')?.[0].classList.add('hide');
+	}
+
+	private showRegisterBox() {
+		const galleryLeaderboardAdSlot = document?.getElementsByClassName('gallery-leaderboard')?.[0];
+		galleryLeaderboardAdSlot
+			?.getElementsByClassName('cm-register-box')?.[0]
+			.classList.remove('hide');
+	}
+
 	private hideMobileGalleryAdPlaceholder() {
-		const innerWrapper = document.getElementsByClassName('lightbox-wrapper-inner')[0];
-		innerWrapper.classList.remove('with-ad');
-		const floor = document.getElementsByClassName('gallery-leaderboard')[0];
-		floor.classList.add('hide');
+		const innerWrapper = document?.getElementsByClassName('lightbox-wrapper-inner')[0];
+		innerWrapper?.classList?.remove('with-ad');
+		const floor = document?.getElementsByClassName('gallery-leaderboard')[0];
+		floor?.classList?.add('hide');
 	}
 
 	private showMobileGalleryAdPlaceholder() {
-		const innerWrapper = document.getElementsByClassName('lightbox-wrapper-inner')[0];
-		innerWrapper.classList.add('with-ad');
-		const floor = document.getElementsByClassName('gallery-leaderboard')[0];
-		floor.classList.remove('hide');
+		const innerWrapper = document?.getElementsByClassName('lightbox-wrapper-inner')[0];
+		innerWrapper?.classList?.add('with-ad');
+		const floor = document?.getElementsByClassName('gallery-leaderboard')[0];
+		floor?.classList?.remove('hide');
 	}
 	private hideFloorAdhesion() {
-		const floor = document.getElementById('floor_adhesion_anchor');
-		floor.classList.add('hide-under-lightbox');
+		const floor = document?.getElementById('floor_adhesion_anchor');
+		floor?.classList?.add('hide-under-lightbox');
 	}
 
 	private showFloorAdhesion() {
-		const floor = document.getElementById('floor_adhesion_anchor');
-		floor.classList.remove('hide-under-lightbox');
+		const floor = document?.getElementById('floor_adhesion_anchor');
+		floor?.classList?.remove('hide-under-lightbox');
 	}
 }
