@@ -13,7 +13,14 @@ describe('floor_adhesion on ucp-mobile', () => {
 		get: () => [],
 	} as any;
 
-	const slotDefinitionRepositoryMock = new UcpMobileSlotsDefinitionRepository(instantConfig);
+	const openWebService = {
+		isActive: () => false,
+	} as any;
+
+	const slotDefinitionRepositoryMock = new UcpMobileSlotsDefinitionRepository(
+		instantConfig,
+		openWebService,
+	);
 	const nativoDefinitionRepositoryMock = new NativoSlotsDefinitionRepository(new DomListener());
 	const quizDefinitionRepositoryMock = new QuizSlotsDefinitionRepository();
 
