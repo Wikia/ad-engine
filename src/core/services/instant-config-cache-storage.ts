@@ -1,7 +1,8 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { InstantConfigCacheStorageService } from '@wikia/instant-config-loader';
+import { CookieStorageAdapter } from './cookie-storage-adapter';
 import { deserializeCache, serializeCache } from './instant-config-cache-storage-serializer';
-import { SessionCookie } from './session-cookie';
+import { UniversalStorage } from './universal-storage';
 
 export interface CacheDictionary {
 	[key: string]: CacheData;
@@ -26,16 +27,16 @@ export class InstantConfigCacheStorage implements InstantConfigCacheStorageServi
 		return InstantConfigCacheStorage.instance;
 	}
 
-	private readonly sessionCookie = SessionCookie.make();
+	private readonly cookieStorage = new UniversalStorage(new CookieStorageAdapter());
 	private cacheStorage: CacheDictionary;
+	private readonly cacheKey = 'basset';
 
 	private constructor() {
 		this.resetCache();
 	}
 
 	resetCache(): void {
-		this.sessionCookie.readSessionId();
-		const serializedCache = this.sessionCookie.getItem<string>('basset') || '';
+		const serializedCache = this.cookieStorage.getItem<string>(this.cacheKey) || '';
 		this.cacheStorage = deserializeCache(serializedCache);
 		communicationService.emit(eventsRepository.AD_ENGINE_INSTANT_CONFIG_CACHE_RESET);
 	}
@@ -66,7 +67,7 @@ export class InstantConfigCacheStorage implements InstantConfigCacheStorageServi
 			.reduce((result, { key, value }) => ({ ...result, [key]: value }), {});
 
 		const cacheToSave = serializeCache(cacheDictionaryWithCookie);
-		this.sessionCookie.setItem('basset', cacheToSave);
+		this.cookieStorage.setItem(this.cacheKey, cacheToSave);
 	}
 
 	/**
