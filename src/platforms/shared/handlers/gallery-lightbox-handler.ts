@@ -55,7 +55,6 @@ export class GalleryLightboxAdsHandler {
 				insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]);
 				this.lockForFewSeconds();
 				this.isActive = true;
-				this.hideRegisterBox();
 				this.hideFloorAdhesion();
 				this.showMobileGalleryAdPlaceholder();
 				utils.logger(this.logGroup, 'Ad placement on Lightbox ready', placementId);
@@ -93,7 +92,6 @@ export class GalleryLightboxAdsHandler {
 				}
 				setTimeout(() => {
 					insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]);
-					this.hideRegisterBox();
 				}, 100);
 
 				this.lockForFewSeconds();
@@ -120,7 +118,6 @@ export class GalleryLightboxAdsHandler {
 				this.isActive = false;
 				this.hideMobileGalleryAdPlaceholder();
 				this.showFloorAdhesion();
-				this.showRegisterBox();
 			},
 			false,
 		);
@@ -131,18 +128,6 @@ export class GalleryLightboxAdsHandler {
 		setTimeout(() => {
 			this.refreshLock = false;
 		}, 2000);
-	}
-
-	private hideRegisterBox() {
-		const galleryLeaderboardAdSlot = document?.getElementsByClassName('gallery-leaderboard')?.[0];
-		galleryLeaderboardAdSlot?.getElementsByClassName('cm-register-box')?.[0]?.classList.add('hide');
-	}
-
-	private showRegisterBox() {
-		const galleryLeaderboardAdSlot = document?.getElementsByClassName('gallery-leaderboard')?.[0];
-		galleryLeaderboardAdSlot
-			?.getElementsByClassName('cm-register-box')?.[0]
-			?.classList.remove('hide');
 	}
 
 	private hideMobileGalleryAdPlaceholder() {
