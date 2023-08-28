@@ -1,11 +1,10 @@
-import { context, InstantConfigCacheStorage, SessionCookie } from '@wikia/core/services';
+import { context, InstantConfigCacheStorage } from '@wikia/core/services';
 import { geoService } from '@wikia/core/utils';
 import { assert } from 'chai';
 import Cookies from 'js-cookie';
 import * as sinon from 'sinon';
 
 describe('Geo', () => {
-	const sessionCookie = SessionCookie.make();
 	const cacheStorage = InstantConfigCacheStorage.make();
 	let randomStub: sinon.SinonStub;
 	let cookiesGetStub: sinon.SinonStub;
@@ -400,7 +399,6 @@ describe('Geo', () => {
 	it('returns proper cached basset variables', () => {
 		cookiesGetStub.returns('basset_B_50:true');
 
-		sessionCookie.setSessionId('test');
 		cacheStorage.resetCache();
 
 		randomStub.returns(1);

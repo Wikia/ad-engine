@@ -29,6 +29,13 @@ export function getIndexExchangeContext(): object {
 				sizes: [[320, 480]],
 				siteId: '749519',
 			},
+			gallery_leaderboard: {
+				sizes: [
+					[320, 100],
+					[320, 50],
+				],
+				siteId: ['1019180'],
+			},
 			featured: {
 				siteId: '437503',
 			},
