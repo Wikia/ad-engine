@@ -15,6 +15,12 @@ export class UcpMobileA9ConfigSetup implements DiProcess {
 			mobile_in_content: {
 				sizes: [[300, 250]],
 			},
+			gallery_leaderboard: {
+				sizes: [
+					[320, 100],
+					[320, 50],
+				],
+			},
 			bottom_leaderboard: {
 				sizes: [
 					[320, 50],
