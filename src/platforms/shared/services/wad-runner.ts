@@ -21,21 +21,22 @@ export class WadRunner extends BaseServiceSetup {
 		if (this.instantConfig.get('icBTForce')) {
 			context.set('options.wad.btForce', true);
 		}
+
 		if (context.get('options.wad.btForce')) {
-			btForce.run();
-		} else {
-			if (!this.detector.isEnabled()) {
-				return Promise.resolve();
-			}
+			return btForce.run();
+		}
 
-			const isBabDetected = await this.detector.run();
-			context.set('options.wad.blocking', isBabDetected);
+		if (!this.detector.isEnabled()) {
+			return Promise.resolve();
+		}
 
-			trackBab(isBabDetected);
+		const isBabDetected = await this.detector.run();
+		context.set('options.wad.blocking', isBabDetected);
 
-			if (isBabDetected) {
-				this.onDetected();
-			}
+		trackBab(isBabDetected);
+
+		if (isBabDetected) {
+			this.onDetected();
 		}
 	}
 }
