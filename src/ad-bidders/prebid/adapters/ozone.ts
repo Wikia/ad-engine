@@ -6,7 +6,6 @@ export class Ozone extends PrebidAdapter {
 
 	constructor(options) {
 		super(options);
-		console.log('ozone');
 		this.dcn = options.dcn;
 	}
 

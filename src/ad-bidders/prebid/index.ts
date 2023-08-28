@@ -134,16 +134,7 @@ export class PrebidProvider extends BidderProvider {
 						filter: 'include',
 					},
 				},
-				userIds: [
-					{
-						name: 'pubCommonId',
-						storage: {
-							type: 'cookie',
-							name: '_pubcid',
-							expires: 365,
-						},
-					},
-				],
+				userIds: [],
 				syncsPerBidder: 3,
 				syncDelay: 6000,
 			},
@@ -197,7 +188,21 @@ export class PrebidProvider extends BidderProvider {
 
 	private configureUserSync(): void {
 		this.configureLiveRamp();
+		this.configureOzone();
 		this.configureId5();
+	}
+
+	private configureOzone(): void {
+		if (context.get('bidders.prebid.ozone')) {
+			this.prebidConfig.userSync.userIds.push({
+				name: 'pubCommonId',
+				storage: {
+					type: 'cookie',
+					name: '_pubcid',
+					expires: 365,
+				},
+			});
+		}
 	}
 
 	private configureLiveRamp(): void {
