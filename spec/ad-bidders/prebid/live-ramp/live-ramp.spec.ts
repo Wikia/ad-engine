@@ -10,7 +10,7 @@ const bidderConfig = {
 describe('Live Ramp', () => {
 	beforeEach(() => {
 		context.set('bidders.liveRampId.enabled', true);
-		context.set('options.optOutSale', false);
+		context.set('options.adsAllowed', true);
 		window.fandomContext.partners.directedAtChildren = false;
 	});
 
@@ -45,7 +45,7 @@ describe('Live Ramp', () => {
 	});
 
 	it('Live Ramp is disabled if user has opted out sale', () => {
-		context.set('options.optOutSale', true);
+		context.set('options.adsAllowed', false);
 
 		expect(liveRamp.getConfig()).to.eql(undefined);
 	});

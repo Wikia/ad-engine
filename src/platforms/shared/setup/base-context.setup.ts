@@ -114,6 +114,7 @@ export class BaseContextSetup implements DiProcess {
 			'options.video.comscoreJwpTracking',
 			this.instantConfig.get('icComscoreJwpTracking'),
 		);
+		context.set('options.coppaTimeout', this.instantConfig.get('icCoppaTimeout', 5_000));
 
 		this.setWadContext();
 	}

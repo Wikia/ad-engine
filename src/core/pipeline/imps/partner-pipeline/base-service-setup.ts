@@ -1,6 +1,6 @@
 import { Injectable } from '@wikia/dependency-injection';
 import { context, InstantConfigService } from '../../../services';
-import { isCoppaSubject } from '../../../utils/is-coppa-subject';
+import { isCoppaSubject } from '../../../utils';
 import {
 	PartnerInitializationProcess,
 	PartnerInitializationProcessOptions,
@@ -34,12 +34,7 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 				: this.getContextVariablesValue(configVariable);
 
 		if (trackingRequired) {
-			return (
-				variableValue &&
-				context.get('options.trackingOptIn') &&
-				!context.get('options.optOutSale') &&
-				!isCoppaSubject()
-			);
+			return variableValue && context.get('options.adsAllowed') && !isCoppaSubject();
 		}
 
 		return variableValue;

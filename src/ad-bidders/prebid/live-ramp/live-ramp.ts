@@ -29,7 +29,7 @@ class LiveRamp {
 	private isEnabled(): boolean {
 		return (
 			context.get('bidders.liveRampId.enabled') &&
-			!context.get('options.optOutSale') &&
+			context.get('options.adsAllowed') &&
 			!utils.isCoppaSubject()
 		);
 	}

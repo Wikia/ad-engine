@@ -40,9 +40,8 @@ describe('IAS Publisher Optimization', () => {
 		iasPublisherOptimization = new IasPublisherOptimization(instantConfigStub);
 
 		targetingServiceStub = global.sandbox.stub(targetingService);
+		context.set('options.adsAllowed', true);
 
-		context.set('options.trackingOptIn', true);
-		context.set('options.optOutSale', false);
 		window.fandomContext = {
 			partners: { directedAtChildren: false },
 		} as any;
@@ -70,15 +69,7 @@ describe('IAS Publisher Optimization', () => {
 	});
 
 	it('IAS Publisher Optimization is not called when user is not opted in', async () => {
-		context.set('options.trackingOptIn', false);
-
-		await iasPublisherOptimization.call();
-
-		expect(loadScriptStub.called).to.equal(false);
-	});
-
-	it('IAS Publisher Optimization is not called when user has opted out sale', async () => {
-		context.set('options.optOutSale', true);
+		context.set('options.adsAllowed', false);
 
 		await iasPublisherOptimization.call();
 
@@ -104,6 +95,7 @@ describe('IAS Publisher Optimization', () => {
 	});
 
 	it('IAS Publisher Optimization properly updates a targeting', async () => {
+		context.set('options.adsAllowed', true);
 		context.set('services.iasPublisherOptimization.slots', ['top_leaderboard']);
 		await iasPublisherOptimization.call();
 

@@ -25,7 +25,7 @@ describe('Id5', () => {
 
 	beforeEach(() => {
 		context.set('bidders.prebid.id5', true);
-		context.set('options.optOutSale', false);
+		context.set('options.adsAllowed', true);
 		window.fandomContext.partners.directedAtChildren = false;
 
 		pbjsStub = stubPbjs(global.sandbox).pbjsStub;
@@ -51,7 +51,7 @@ describe('Id5', () => {
 	});
 
 	it('Id5 is disabled if user has opted out sale', () => {
-		context.set('options.optOutSale', true);
+		context.set('options.adsAllowed', false);
 
 		expect(id5.getConfig()).to.eql(undefined);
 	});

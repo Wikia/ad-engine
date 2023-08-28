@@ -30,6 +30,7 @@ interface Window {
 	googleImaVansAdapter?: any;
 	googletag: googletag.Googletag;
 	headertag?: any;
+	ie?: IdentityEngineContext;
 	IntentIqObject?: IntentIqObject;
 	liQ?: LiQ;
 	mw?: MediaWiki;

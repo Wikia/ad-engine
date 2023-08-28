@@ -8,12 +8,15 @@ import {
 	Captify,
 	communicationService,
 	Confiant,
+	context,
+	CoppaSetup,
 	DiProcess,
 	DoubleVerify,
 	DurationMedia,
 	eventsRepository,
 	Eyeota,
 	IasPublisherOptimization,
+	IdentitySetup,
 	jwPlayerInhibitor,
 	LiveConnect,
 	LiveRampPixel,
@@ -54,21 +57,39 @@ export class UcpMobileAdsMode implements DiProcess {
 		private system1: System1,
 		private wadRunner: WadRunner,
 		private wunderkind: Wunderkind,
+		private identitySetup: IdentitySetup,
+		private coppaSetup: CoppaSetup,
 	) {}
 
 	execute(): void {
 		this.pipeline
 			.add(
-				this.liveRampPixel,
+				this.identitySetup,
+				this.coppaSetup.setOptions({
+					timeout: context.get('options.coppaTimeout'),
+				}),
+				this.liveRampPixel.setOptions({
+					dependencies: [this.coppaSetup.initialized],
+					timeout: context.get('options.coppaTimeout'),
+				}),
 				this.anyclip,
 				this.ats,
-				this.audigent,
+				this.audigent.setOptions({
+					dependencies: [this.coppaSetup.initialized],
+					timeout: context.get('options.coppaTimeout'),
+				}),
 				this.bidders,
 				this.brandMetrics,
 				this.captify,
-				this.liveConnect,
+				this.liveConnect.setOptions({
+					dependencies: [this.coppaSetup.initialized],
+					timeout: context.get('options.coppaTimeout'),
+				}),
 				this.wadRunner,
-				this.eyeota,
+				this.eyeota.setOptions({
+					dependencies: [this.coppaSetup.initialized],
+					timeout: context.get('options.coppaTimeout'),
+				}),
 				this.iasPublisherOptimization,
 				this.confiant,
 				this.durationMedia,
@@ -87,6 +108,7 @@ export class UcpMobileAdsMode implements DiProcess {
 				}),
 				this.adEngineStackSetup.setOptions({
 					dependencies: [
+						this.coppaSetup.initialized,
 						this.bidders.initialized,
 						this.wadRunner.initialized,
 						this.gptSetup.initialized,
@@ -94,7 +116,7 @@ export class UcpMobileAdsMode implements DiProcess {
 					],
 					timeout: jwPlayerInhibitor.isRequiredToRun()
 						? jwPlayerInhibitor.getDelayTimeoutInMs()
-						: null,
+						: context.get('options.coppaTimeout'),
 				}),
 			)
 			.execute()

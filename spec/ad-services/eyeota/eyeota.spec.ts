@@ -47,8 +47,8 @@ describe('Eyeota', () => {
 		instantConfigStub.get.withArgs('icEyeota').returns(undefined);
 		delete window.__tcfapi;
 
-		context.remove('options.trackingOptIn');
-		context.remove('options.optOutSale');
+		context.set('options.adsAllowed', true);
+
 		context.remove('wiki.targeting.directedAtChildren');
 		delete window.fandomContext;
 	});
@@ -68,15 +68,7 @@ describe('Eyeota', () => {
 	});
 
 	it('not called when user is not opted in', async () => {
-		context.set('options.trackingOptIn', false);
-
-		await eyeota.call();
-
-		expect(loadScriptStub.called).to.equal(false);
-	});
-
-	it('not called when user has opted out sale', async () => {
-		context.set('options.optOutSale', true);
+		context.set('options.adsAllowed', false);
 
 		await eyeota.call();
 
