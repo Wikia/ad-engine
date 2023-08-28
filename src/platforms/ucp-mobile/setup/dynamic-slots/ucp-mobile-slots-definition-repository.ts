@@ -52,6 +52,24 @@ export class UcpMobileSlotsDefinitionRepository {
 		return pageType !== 'special' || hasPortableInfobox || (hasPageHeader && !hasFeaturedVideo);
 	}
 
+	getGalleryLeaderboardConfig(): SlotSetupDefinition {
+		const slotName = 'gallery_leaderboard';
+		const placeholderConfig = context.get(`slots.${slotName}.placeholder`);
+
+		return {
+			slotCreatorConfig: {
+				slotName,
+				placeholderConfig,
+				anchorSelector: '.gallery-leaderboard',
+				insertMethod: 'prepend',
+				classList: ['ad-slot'],
+			},
+			activator: () => {
+				context.push('state.adStack', { id: slotName });
+			},
+		};
+	}
+
 	getTopBoxadConfig(): SlotSetupDefinition {
 		if (!this.isInContentApplicable()) {
 			return;
