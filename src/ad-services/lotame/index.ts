@@ -17,14 +17,10 @@ export class Lotame extends BaseServiceSetup {
 			utils.logger(this.logGroup, 'pixel disabled');
 			return;
 		}
-		utils.logger(this.logGroup, 'pixel enabled');
-		await utils.scriptLoader.loadScript(this.PIXEL_URL);
-		communicationService.dispatch(eventsRepository.LOTAME_LOADED);
-
 		const lotameTagInput = {
 			data: {},
 			config: {
-				clientId: Number(this.CLIENT_ID),
+				clientId: this.CLIENT_ID,
 				onTagReady: () => communicationService.dispatch(eventsRepository.LOTAME_READY),
 			},
 		};
@@ -34,5 +30,9 @@ export class Lotame extends BaseServiceSetup {
 		namespace.config = lotameConfig;
 		namespace.data = lotameTagInput.data || {};
 		namespace.cmd = namespace.cmd || [];
+
+		utils.logger(this.logGroup, 'pixel enabled');
+		await utils.scriptLoader.loadScript(this.PIXEL_URL);
+		communicationService.dispatch(eventsRepository.LOTAME_LOADED);
 	}
 }

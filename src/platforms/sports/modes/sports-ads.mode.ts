@@ -12,6 +12,7 @@ import {
 	IasPublisherOptimization,
 	LiveConnect,
 	LiveRampPixel,
+	Lotame,
 	PartnerPipeline,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -32,11 +33,13 @@ export class SportsAdsMode implements DiProcess {
 		private liveConnect: LiveConnect,
 		private liveRampPixel: LiveRampPixel,
 		private wadRunner: WadRunner,
+		private lotame: Lotame,
 	) {}
 
 	execute(): void {
 		this.pipeline
 			.add(
+				this.lotame,
 				this.liveRampPixel,
 				this.liveConnect,
 				this.bidders,
