@@ -98,7 +98,7 @@ export class DoubleVerify extends BaseServiceSetup {
 
 		const adUnits = this.getAdUnitsForRequest();
 
-		Object.entries(adUnits).forEach(([, slot]) => {
+		Object.values(adUnits).forEach((slot) => {
 			params.append(`adunits[${slot.path}][]`, '');
 		});
 
