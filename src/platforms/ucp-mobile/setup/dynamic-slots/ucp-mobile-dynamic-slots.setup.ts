@@ -1,4 +1,6 @@
 import {
+	GalleryLightboxAds,
+	GalleryLightboxAdsHandler,
 	insertSlots,
 	MessageBoxService,
 	NativoSlotsDefinitionRepository,
@@ -16,6 +18,7 @@ import {
 	DiProcess,
 	eventsRepository,
 	HIDDEN_AD_CLASS,
+	InstantConfigService,
 	Nativo,
 	slotImpactWatcher,
 	slotService,
@@ -32,6 +35,8 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		private slotsDefinitionRepository: UcpMobileSlotsDefinitionRepository,
 		private nativoSlotDefinitionRepository: NativoSlotsDefinitionRepository,
 		private quizSlotsDefinitionRepository: QuizSlotsDefinitionRepository,
+		private galleryLightbox: GalleryLightboxAds,
+		protected instantConfig: InstantConfigService,
 	) {}
 
 	execute(): void {
@@ -41,6 +46,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		this.configureInterstitial();
 		this.registerFloorAdhesionCodePriority();
 		this.registerAdPlaceholderService();
+		this.handleMobileGalleryLightboxAdsSlots();
 	}
 
 	private injectSlots(): void {
@@ -281,5 +287,21 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		const messageBoxService = new MessageBoxService(context.get('services.messageBox.enabled'));
 		const placeholderService = new PlaceholderService(messageBoxService);
 		placeholderService.init();
+	}
+
+	private handleMobileGalleryLightboxAdsSlots(): void {
+		const excludedBundleTagName = 'old_incontent_ads';
+		const communityExcludedByTag =
+			window.fandomContext?.site?.tags?.bundles?.includes(excludedBundleTagName);
+
+		if (this.instantConfig.get('icMobileGalleryAds') && !communityExcludedByTag) {
+			if (!this.galleryLightbox.initialized) {
+				this.galleryLightbox.handler = new GalleryLightboxAdsHandler(
+					this.slotsDefinitionRepository,
+				);
+				this.galleryLightbox.initialized = true;
+			}
+			this.galleryLightbox.handler.handle();
+		}
 	}
 }

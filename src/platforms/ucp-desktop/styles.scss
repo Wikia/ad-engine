@@ -321,3 +321,11 @@ body.is-content-expanded {
 	height: 20px;
 	margin: 0 10px 10px 0 !important;
 }
+
+.openweb-ad-unit {
+	margin: 0 -1em 1em;
+	#spotim-specific#spotim-specific div[class^='ads__AdChoiceContainer__wrapping'] {
+		color: #858585;
+		color: var(--theme-page-text-color);
+	}
+}
