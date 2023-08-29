@@ -135,7 +135,7 @@ export class GalleryLightboxAdsHandler {
 		innerWrapper?.classList?.remove('with-ad');
 
 		const gallerySlot = slotService.get(this.slotName);
-		gallerySlot?.getElement()?.classList?.add('hide');
+		gallerySlot?.getElement().parentElement?.classList?.add('hide');
 	}
 
 	private showMobileGalleryAdPlaceholder() {
@@ -143,7 +143,7 @@ export class GalleryLightboxAdsHandler {
 		innerWrapper?.classList?.add('with-ad');
 
 		const gallerySlot = slotService.get(this.slotName);
-		gallerySlot?.getElement()?.classList?.remove('hide');
+		gallerySlot?.getElement().parentElement?.classList?.remove('hide');
 	}
 	private hideFloorAdhesion() {
 		setTimeout(() => {
