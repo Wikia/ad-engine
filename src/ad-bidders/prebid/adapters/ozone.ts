@@ -44,7 +44,6 @@ export class Ozone extends PrebidAdapter {
 							{
 								settings: {},
 								targeting: {
-									page_type: 'article',
 									...this.getTargeting(code, this.customTargeting),
 								},
 							},
