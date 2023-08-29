@@ -39,7 +39,7 @@ export class DoubleVerify extends BaseServiceSetup {
 			const response = await fetch(url.href, { headers });
 
 			if (!response.ok) {
-				utils.logger(logGroup, 'Error fetching signals');
+				 throw new Error(''Error fetching signals');
 				return;
 			}
 
