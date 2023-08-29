@@ -6,6 +6,7 @@ import {
 	eventsRepository,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { getOzoneContext } from '../../../../../ucp-mobile/bidders/prebid/ozone';
 import { getAppnexusContext } from '../../../bidders/appnexus';
 import { getAppnexusAstContext } from '../../../bidders/appnexus-ast';
 import { getCriteoContext } from '../../../bidders/criteo';
@@ -33,6 +34,7 @@ export class GamefaqsPrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.kargo', getKargoContext(isDesktop));
 		context.set('bidders.prebid.medianet', getMedianetContext(isDesktop));
 		context.set('bidders.prebid.openx', getOpenXContext(isDesktop));
+		context.set('bidders.prebid.ozone', getOzoneContext());
 		context.set('bidders.prebid.pubmatic', getPubmaticContext(isDesktop));
 		context.set('bidders.prebid.rubicon', getRubiconContext(isDesktop));
 		context.set('bidders.prebid.rubicon_display', getRubiconDisplayContext(isDesktop));

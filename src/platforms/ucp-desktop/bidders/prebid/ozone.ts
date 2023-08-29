@@ -1,21 +1,20 @@
 export function getOzoneContext(): object {
 	return {
-		enabled: true,
-		dcn: '8a96945901757509a7551e039e180357',
+		enabled: false,
 		slots: {
 			top_boxad: {
 				sizes: [
 					[300, 250],
 					[300, 600],
 				],
-				pos: 'top_boxad',
+				position: 'atf',
 			},
 			incontent_boxad_1: {
 				sizes: [
-					[300, 250],
 					[300, 600],
+					[300, 250],
 				],
-				pos: 'incontent_boxad_1',
+				position: 'hivi',
 			},
 		},
 	};
