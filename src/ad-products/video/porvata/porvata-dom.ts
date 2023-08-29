@@ -1,4 +1,4 @@
-import { HIDDEN_AD_CLASS, vastDebugger } from '@ad-engine/core';
+import { AdSlot, vastDebugger } from '@ad-engine/core';
 
 export class PorvataDom {
 	private readonly interfaceContainer: HTMLElement;
@@ -11,9 +11,9 @@ export class PorvataDom {
 		this.interfaceContainer = document.createElement('div');
 
 		this.playerContainer.classList.add('porvata', 'porvata-container');
-		this.videoContainer.classList.add('video-player', 'porvata-player', HIDDEN_AD_CLASS);
+		this.videoContainer.classList.add('video-player', 'porvata-player', AdSlot.HIDDEN_AD_CLASS);
 		this.videoElement?.classList.add('porvata-video');
-		this.interfaceContainer.classList.add('porvata-interface', HIDDEN_AD_CLASS);
+		this.interfaceContainer.classList.add('porvata-interface', AdSlot.HIDDEN_AD_CLASS);
 
 		this.playerContainer.appendChild(this.interfaceContainer);
 	}

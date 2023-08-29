@@ -5,7 +5,6 @@ import {
 	communicationService,
 	createBottomPanel,
 	eventsRepository,
-	HIDDEN_AD_CLASS,
 	LearnMore,
 	ofType,
 	PlayerOverlay,
@@ -57,7 +56,7 @@ export class VideoBootstrapHandler implements TemplateStateHandler {
 	private handleEvents(player: PorvataPlayer): Observable<unknown> {
 		return merge(
 			fromEvent(player, 'adCanPlay').pipe(
-				tap(() => player.dom.getVideoContainer().classList.remove(HIDDEN_AD_CLASS)),
+				tap(() => player.dom.getVideoContainer().classList.remove(AdSlot.HIDDEN_AD_CLASS)),
 			),
 
 			fromEvent(player, 'wikiaAdStarted').pipe(

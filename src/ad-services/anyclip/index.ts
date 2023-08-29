@@ -1,8 +1,8 @@
 import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
 import {
+	AdSlot,
 	BaseServiceSetup,
 	context,
-	HIDDEN_AD_CLASS,
 	slotDataParamsUpdater,
 	slotService,
 	utils,
@@ -99,7 +99,7 @@ export class Anyclip extends BaseServiceSetup {
 		return utils.scriptLoader
 			.loadScript(this.libraryUrl, true, playerContainer, this.params)
 			.then(() => {
-				playerContainer?.classList.remove(HIDDEN_AD_CLASS);
+				playerContainer?.classList.remove(AdSlot.HIDDEN_AD_CLASS);
 				utils.logger(logGroup, 'ready');
 
 				this.waitForSubscribeReady().then((isSubscribeReady) => {

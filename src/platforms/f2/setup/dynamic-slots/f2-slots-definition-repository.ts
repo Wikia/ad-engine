@@ -1,7 +1,7 @@
 import { activateFloorAdhesionOnUAP, SlotSetupDefinition } from '@platforms/shared';
 import {
+	AdSlot,
 	context,
-	HIDDEN_AD_CLASS,
 	InstantConfigService,
 	scrollListener,
 	SlotCreatorWrapperConfig,
@@ -40,7 +40,7 @@ export class F2SlotsDefinitionRepository {
 				slotName,
 				anchorSelector: '.top-leaderboard',
 				insertMethod: 'prepend',
-				classList: [HIDDEN_AD_CLASS],
+				classList: [AdSlot.HIDDEN_AD_CLASS],
 			},
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
@@ -67,7 +67,7 @@ export class F2SlotsDefinitionRepository {
 				slotName,
 				anchorSelector: 'body',
 				insertMethod: 'append',
-				classList: [HIDDEN_AD_CLASS, 'ad-slot'],
+				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			activator: () => activateFloorAdhesionOnUAP(activateFloorAdhesion),
 		};
@@ -88,7 +88,7 @@ export class F2SlotsDefinitionRepository {
 					slotName,
 					anchorSelector: '.feed-section__ad,.feed-layout__right-rail',
 					insertMethod: 'prepend',
-					classList: [HIDDEN_AD_CLASS],
+					classList: [AdSlot.HIDDEN_AD_CLASS],
 				},
 			};
 		}
@@ -101,7 +101,7 @@ export class F2SlotsDefinitionRepository {
 					slotName,
 					anchorSelector: '.article-layout__rail',
 					insertMethod: 'prepend',
-					classList: [HIDDEN_AD_CLASS],
+					classList: [AdSlot.HIDDEN_AD_CLASS],
 				},
 			};
 		}
@@ -114,7 +114,7 @@ export class F2SlotsDefinitionRepository {
 					slotName,
 					anchorSelector: '.article-layout__content',
 					insertMethod: 'append',
-					classList: [HIDDEN_AD_CLASS],
+					classList: [AdSlot.HIDDEN_AD_CLASS],
 				},
 			};
 		}
@@ -126,7 +126,7 @@ export class F2SlotsDefinitionRepository {
 				slotName,
 				anchorSelector: '.article-content.entry-content p:first-child',
 				insertMethod: 'after',
-				classList: [HIDDEN_AD_CLASS],
+				classList: [AdSlot.HIDDEN_AD_CLASS],
 			},
 		};
 	}
@@ -152,7 +152,7 @@ export class F2SlotsDefinitionRepository {
 				anchorPosition: 2,
 				anchorSelector: '.article-content h2, .article-content h3',
 				insertMethod: 'before',
-				classList: [HIDDEN_AD_CLASS],
+				classList: [AdSlot.HIDDEN_AD_CLASS],
 			},
 		};
 	}
@@ -172,7 +172,7 @@ export class F2SlotsDefinitionRepository {
 					slotName,
 					anchorSelector: '.search-box-bottom-wrapper,.wds-global-footer',
 					insertMethod: 'before',
-					classList: [HIDDEN_AD_CLASS],
+					classList: [AdSlot.HIDDEN_AD_CLASS],
 				},
 			};
 		}
@@ -184,7 +184,7 @@ export class F2SlotsDefinitionRepository {
 				slotName,
 				anchorSelector: '.article-layout-wrapper',
 				insertMethod: 'after',
-				classList: [HIDDEN_AD_CLASS],
+				classList: [AdSlot.HIDDEN_AD_CLASS],
 			},
 		};
 	}

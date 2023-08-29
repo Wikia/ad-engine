@@ -1,6 +1,5 @@
 import {
 	AdSlot,
-	HIDDEN_AD_CLASS,
 	Porvata,
 	PorvataPlayer,
 	PorvataTemplateParams,
@@ -44,7 +43,7 @@ export class PlayerRegistry {
 	private createPlayerContainer(): HTMLDivElement {
 		const playerContainer = Porvata.createVideoContainer(this.adSlot.getElement());
 
-		playerContainer.parentElement.classList.add(HIDDEN_AD_CLASS);
+		playerContainer.parentElement.classList.add(AdSlot.HIDDEN_AD_CLASS);
 
 		return playerContainer;
 	}
