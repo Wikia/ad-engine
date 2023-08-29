@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { BaseServiceSetup, context, localCache, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, localCache, targetingService, utils } from '@ad-engine/core';
 
 const logGroup = 'system1';
 const scriptUrl = '//s.flocdn.com/@s1/embedded-search/embedded-search.js';
@@ -26,7 +26,7 @@ export class System1 extends BaseServiceSetup {
 			return Promise.resolve();
 		}
 
-		if (!this.isEnabled('icSystem1', false)) {
+		if (!this.isEnabled('icSystem1', false) || this.isKidWiki()) {
 			utils.logger(logGroup, 'disabled');
 			return Promise.resolve();
 		}
@@ -148,5 +148,9 @@ export class System1 extends BaseServiceSetup {
 	private onSetupRejected(message: string): void {
 		utils.logger(logGroup, 'Error: ' + message);
 		communicationService.emit(eventsRepository.SYSTEM1_FAILED);
+	}
+
+	private isKidWiki(): boolean {
+		return targetingService.get('kid_wiki') === '1';
 	}
 }
