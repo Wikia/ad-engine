@@ -39,8 +39,7 @@ export class DoubleVerify extends BaseServiceSetup {
 			const response = await fetch(url.href, { headers });
 
 			if (!response.ok) {
-				 throw new Error(''Error fetching signals');
-				return;
+				throw new Error('Error fetching signals');
 			}
 
 			const signals = await response.json();
