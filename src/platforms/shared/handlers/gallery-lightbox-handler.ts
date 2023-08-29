@@ -37,7 +37,6 @@ export class GalleryLightboxAdsHandler {
 		communicationService.onSlotEvent(
 			AdSlotStatus.STATUS_COLLAPSE,
 			() => {
-				this.hideMobileGalleryAdPlaceholder();
 				this.refreshLock = true;
 			},
 			this.slotName,
