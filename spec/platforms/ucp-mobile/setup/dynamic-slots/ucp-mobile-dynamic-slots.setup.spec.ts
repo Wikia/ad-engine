@@ -1,21 +1,36 @@
-import { context, DomListener } from '@wikia/core';
+import { context, DomListener, InstantConfigService } from '@wikia/core';
 import { WaitFor } from '@wikia/core/utils';
 import {
+	GalleryLightboxAdsHandler,
 	NativoSlotsDefinitionRepository,
 	QuizSlotsDefinitionRepository,
 } from '@wikia/platforms/shared';
 import { UcpMobileDynamicSlotsSetup } from '@wikia/platforms/ucp-mobile/setup/dynamic-slots/ucp-mobile-dynamic-slots.setup';
 import { UcpMobileSlotsDefinitionRepository } from '@wikia/platforms/ucp-mobile/setup/dynamic-slots/ucp-mobile-slots-definition-repository';
-import { assert } from 'sinon';
+import { assert, createStubInstance } from 'sinon';
 
 describe('floor_adhesion on ucp-mobile', () => {
 	const instantConfig = {
 		get: () => [],
 	} as any;
 
-	const slotDefinitionRepositoryMock = new UcpMobileSlotsDefinitionRepository(instantConfig);
+	const openWebService = {
+		isActive: () => false,
+	} as any;
+
+	const slotDefinitionRepositoryMock = new UcpMobileSlotsDefinitionRepository(
+		instantConfig,
+		openWebService,
+	);
 	const nativoDefinitionRepositoryMock = new NativoSlotsDefinitionRepository(new DomListener());
 	const quizDefinitionRepositoryMock = new QuizSlotsDefinitionRepository();
+	const galleryLightboxAdsMock = {
+		handler: new GalleryLightboxAdsHandler(
+			new UcpMobileSlotsDefinitionRepository(instantConfig, openWebService),
+		),
+		initialized: true,
+	};
+	const instantConfigStub = createStubInstance(InstantConfigService);
 
 	before(() => {
 		context.set('slots.incontent_boxad_1', {});
@@ -59,6 +74,8 @@ describe('floor_adhesion on ucp-mobile', () => {
 			slotDefinitionRepositoryMock,
 			nativoDefinitionRepositoryMock,
 			quizDefinitionRepositoryMock,
+			galleryLightboxAdsMock,
+			instantConfigStub,
 		);
 
 		dynamicSlotSetup.execute();

@@ -220,9 +220,21 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'No nativo ad',
 		payload: props<{ slotName: string }>(),
 	},
+	SYSTEM1_STARTED: {
+		name: 'System1 started',
+	},
+	SYSTEM1_FAILED: {
+		name: 'System1 loading failed',
+	},
 	TIMESTAMP_EVENT: {
 		name: 'Timestamp event',
 		payload: props<{ eventName: string; timestamp: number }>(),
+	},
+	LOTAME_LOADED: {
+		name: 'Lotame loaded',
+	},
+	LOTAME_READY: {
+		name: 'Lotame ready',
 	},
 	// Platforms events //
 	BINGEBOT_AD_SLOT_INJECTED: {
@@ -294,6 +306,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Ready',
 	},
 	// Bidders events //
+	A9_WITHOUT_CONSENTS: {
+		name: 'A9 without consents',
+	},
 	BIDDERS_BIDDING_DONE: {
 		category: '[Prebid]',
 		name: 'Bidding done',

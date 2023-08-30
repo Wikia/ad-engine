@@ -51,6 +51,7 @@ interface Window {
 		loadSignals?: (signals: string[]) => void;
 	};
 	RLQ?: any;
+	s1search?: any;
 	sessionId?: string;
 	session_id?: string;
 	SilverSurferSDK?: SilverSurferSDK;

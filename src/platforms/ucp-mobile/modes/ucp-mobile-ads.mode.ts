@@ -17,10 +17,13 @@ import {
 	jwPlayerInhibitor,
 	LiveConnect,
 	LiveRampPixel,
+	Lotame,
 	Nielsen,
+	OpenWeb,
 	PartnerPipeline,
 	PrebidNativeProvider,
 	Stroer,
+	System1,
 	Wunderkind,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -45,16 +48,20 @@ export class UcpMobileAdsMode implements DiProcess {
 		private liveConnect: LiveConnect,
 		private liveRampPixel: LiveRampPixel,
 		private nielsen: Nielsen,
+		private openWeb: OpenWeb,
 		private playerSetup: PlayerSetup,
 		private prebidNativeProvider: PrebidNativeProvider,
 		private stroer: Stroer,
+		private system1: System1,
 		private wadRunner: WadRunner,
 		private wunderkind: Wunderkind,
+		private lotame: Lotame,
 	) {}
 
 	execute(): void {
 		this.pipeline
 			.add(
+				this.lotame,
 				this.liveRampPixel,
 				this.anyclip,
 				this.ats,
@@ -69,9 +76,11 @@ export class UcpMobileAdsMode implements DiProcess {
 				this.confiant,
 				this.durationMedia,
 				this.stroer,
+				this.system1,
 				this.nielsen,
 				this.prebidNativeProvider,
 				this.wunderkind,
+				this.openWeb,
 				this.playerSetup.setOptions({
 					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
 				}),
