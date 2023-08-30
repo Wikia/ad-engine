@@ -37,7 +37,6 @@ export class GalleryLightboxAdsHandler {
 		communicationService.onSlotEvent(
 			AdSlotStatus.STATUS_COLLAPSE,
 			() => {
-				this.hideMobileGalleryAdPlaceholder();
 				this.refreshLock = true;
 			},
 			this.slotName,
@@ -116,7 +115,6 @@ export class GalleryLightboxAdsHandler {
 				gallerySlot.destroy();
 				utils.logger(this.logGroup, 'Ad placement on Lightbox destroy', placementId);
 				this.isActive = false;
-				this.hideMobileGalleryAdPlaceholder();
 				this.showFloorAdhesion();
 			},
 			false,
@@ -130,20 +128,12 @@ export class GalleryLightboxAdsHandler {
 		}, 2000);
 	}
 
-	private hideMobileGalleryAdPlaceholder() {
-		const innerWrapper = document?.getElementsByClassName('lightbox-wrapper-inner')[0];
-		innerWrapper?.classList?.remove('with-ad');
-
-		const gallerySlot = slotService.get(this.slotName);
-		gallerySlot?.getElement().parentElement?.classList?.add('hide');
-	}
-
 	private showMobileGalleryAdPlaceholder() {
 		const innerWrapper = document?.getElementsByClassName('lightbox-wrapper-inner')[0];
 		innerWrapper?.classList?.add('with-ad');
 
-		const gallerySlot = slotService.get(this.slotName);
-		gallerySlot?.getElement().parentElement?.classList?.remove('hide');
+		const galleryPlaceholder = document.getElementsByClassName('gallery-leaderboard')?.[0];
+		galleryPlaceholder?.classList?.remove('hide');
 	}
 	private hideFloorAdhesion() {
 		setTimeout(() => {
