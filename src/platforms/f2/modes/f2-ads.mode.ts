@@ -10,6 +10,7 @@ import {
 	jwPlayerInhibitor,
 	LiveConnect,
 	LiveRampPixel,
+	Lotame,
 	Nielsen,
 	PartnerPipeline,
 } from '@wikia/ad-engine';
@@ -30,11 +31,13 @@ export class F2AdsMode implements DiProcess {
 		private pipeline: PartnerPipeline,
 		private playerSetup: PlayerSetup,
 		private wadRunner: WadRunner,
+		private lotame: Lotame,
 	) {}
 
 	execute(): void {
 		this.pipeline
 			.add(
+				this.lotame,
 				this.liveRampPixel,
 				this.audigent,
 				this.captify,
