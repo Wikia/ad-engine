@@ -37,12 +37,20 @@ export function getPubmaticContext(): object {
 					'/5441/INCONTENT_BOXAD_1_300x600@300x600',
 				],
 			},
+			incontent_leaderboard: {
+				sizes: [[728, 90]],
+				ids: ['5315748'],
+			},
 			bottom_leaderboard: {
 				sizes: [
 					[728, 90],
 					[970, 250],
 				],
 				ids: ['/5441/BOTTOM_LEADERBOARD_728x90@728x90', '/5441/BOTTOM_LEADERBOARD_970x250@970x250'],
+			},
+			fandom_dt_galleries: {
+				sizes: [[720, 90]],
+				ids: ['5244133'],
 			},
 		},
 	};

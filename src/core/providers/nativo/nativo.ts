@@ -34,7 +34,7 @@ export class Nativo {
 		Nativo.log('Loading Nativo API...');
 
 		scriptLoader
-			.loadScript(NATIVO_LIBRARY_URL, 'text/javascript', true, null, {}, { ntvSetNoAutoStart: '' })
+			.loadScript(NATIVO_LIBRARY_URL, true, null, {}, { ntvSetNoAutoStart: '' })
 			.then(() => {
 				Nativo.log('Nativo API loaded.');
 				this.watchNtvEvents();

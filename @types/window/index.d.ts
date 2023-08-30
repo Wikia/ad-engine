@@ -51,9 +51,9 @@ interface Window {
 		loadSignals?: (signals: string[]) => void;
 	};
 	RLQ?: any;
+	s1search?: any;
 	sessionId?: string;
 	session_id?: string;
-	Sailthru?: Sailthru;
 	SilverSurferSDK?: SilverSurferSDK;
 	// Fandom JWPlayer sets the sponsored videos list
 	sponsoredVideos?: string[];

@@ -1,4 +1,4 @@
-import { AdSlot, AdSlotStatus, sailthru } from '@wikia/ad-engine';
+import { AdSlot, AdSlotStatus } from '@wikia/ad-engine';
 import { MessageBoxCreator } from './message-box-creator';
 import type { MessageBoxType } from './message-box-type';
 
@@ -10,9 +10,7 @@ export class MessageBoxService {
 
 	constructor(isEnabledConfigurationFlag: boolean) {
 		this.messageBoxCreator = new MessageBoxCreator();
-		this.types = sailthru.isEnabled()
-			? ['REGISTER', 'FANLAB', 'NEWSLETTER_FORM', 'NEWSLETTER_LINK']
-			: ['REGISTER', 'FANLAB', 'NEWSLETTER_LINK'];
+		this.types = ['REGISTER', 'FANLAB', 'NEWSLETTER_LINK'];
 		this.isEnabled = isEnabledConfigurationFlag;
 	}
 
@@ -43,6 +41,7 @@ export class MessageBoxService {
 		if (
 			this.isTopLeaderboard(placeholder) ||
 			this.isBottomLeaderoard(placeholder) ||
+			this.isGalleryLeaderboard(placeholder) ||
 			this.hasAlreadyMessageBox(placeholder)
 		) {
 			return false;
@@ -57,6 +56,10 @@ export class MessageBoxService {
 
 	isBottomLeaderoard(placeholder: HTMLElement): boolean {
 		return placeholder.classList.contains('bottom-leaderboard');
+	}
+
+	isGalleryLeaderboard(placeholder: HTMLElement): boolean {
+		return placeholder.classList.contains('gallery-leaderboard');
 	}
 
 	hasAlreadyMessageBox(placeholder: HTMLElement): boolean {

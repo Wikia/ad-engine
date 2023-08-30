@@ -36,6 +36,14 @@ export function getRubiconDisplayContext(): object {
 				siteId: '23565',
 				zoneId: '2229522',
 			},
+			gallery_leaderboard: {
+				sizes: [
+					[320, 100],
+					[320, 50],
+				],
+				siteId: '23565',
+				zoneId: '2964780',
+			},
 		},
 	};
 }

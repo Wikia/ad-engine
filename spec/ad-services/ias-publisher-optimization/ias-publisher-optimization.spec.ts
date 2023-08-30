@@ -100,9 +100,7 @@ describe('IAS Publisher Optimization', () => {
 		await iasPublisherOptimization.call();
 
 		expect(loadScriptStub.called).to.equal(true);
-		expect(
-			loadScriptStub.calledWith('//cdn.adsafeprotected.com/iasPET.1.js', 'text/javascript', true),
-		).to.equal(true);
+		expect(loadScriptStub.calledWith('//cdn.adsafeprotected.com/iasPET.1.js', true)).to.equal(true);
 	});
 
 	it('IAS Publisher Optimization properly updates a targeting', async () => {

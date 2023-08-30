@@ -5,8 +5,10 @@ import {
 	CookieStorageAdapter,
 	eventsRepository,
 	InstantConfigService,
+	OpenWeb,
 	RepeatableSlotPlaceholderConfig,
 	scrollListener,
+	SlotPlaceholderConfig,
 	slotPlaceholderInjector,
 	UapLoadStatus,
 	utils,
@@ -15,7 +17,7 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpMobileSlotsDefinitionRepository {
-	constructor(protected instantConfig: InstantConfigService) {}
+	constructor(protected instantConfig: InstantConfigService, private openWeb: OpenWeb) {}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
 		if (!this.isTopLeaderboardApplicable()) {
@@ -48,6 +50,24 @@ export class UcpMobileSlotsDefinitionRepository {
 		const hasPortableInfobox = !!document.querySelector('.portable-infobox');
 
 		return pageType !== 'special' || hasPortableInfobox || (hasPageHeader && !hasFeaturedVideo);
+	}
+
+	getGalleryLeaderboardConfig(): SlotSetupDefinition {
+		const slotName = 'gallery_leaderboard';
+		const placeholderConfig = context.get(`slots.${slotName}.placeholder`);
+
+		return {
+			slotCreatorConfig: {
+				slotName,
+				placeholderConfig,
+				anchorSelector: '.gallery-leaderboard',
+				insertMethod: 'prepend',
+				classList: ['ad-slot'],
+			},
+			activator: () => {
+				context.push('state.adStack', { id: slotName });
+			},
+		};
 	}
 
 	getTopBoxadConfig(): SlotSetupDefinition {
@@ -143,12 +163,28 @@ export class UcpMobileSlotsDefinitionRepository {
 			classList: ['ad-slot-placeholder', 'incontent-boxad', 'is-loading'],
 			anchorSelector: context.get('templates.incontentAnchorSelector'),
 			insertMethod: 'before',
-			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder', '.incontent-boxad'],
+			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder', '.incontent-boxad', '.openweb-slot'],
 			repeatStart: 1,
 			repeatLimit: count,
+			repeatExceptions: [this.buildOpenWebReplacement()],
 		};
 
 		slotPlaceholderInjector.injectAndRepeat(icbPlaceholderConfig, adSlotCategory);
+	}
+
+	private buildOpenWebReplacement(): (repeat: number) => SlotPlaceholderConfig | null {
+		const newConfigOverride: SlotPlaceholderConfig = <SlotPlaceholderConfig>{
+			classList: ['openweb-slot'],
+			anchorSelector: context.get('templates.incontentAnchorSelector'),
+			insertMethod: 'before',
+			noLabel: true,
+		};
+
+		return (repeat) => {
+			return repeat === OpenWeb.MOBILE_REPLACE_REPEAT_SLOT_IDX && this.openWeb.isActive()
+				? newConfigOverride
+				: null;
+		};
 	}
 
 	getMobilePrefooterConfig(): SlotSetupDefinition {

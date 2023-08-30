@@ -1,4 +1,6 @@
 import {
+	GalleryLightboxAds,
+	GalleryLightboxAdsHandler,
 	insertSlots,
 	NativoSlotsDefinitionRepository,
 	PlaceholderService,
@@ -17,7 +19,6 @@ import {
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { GalleryLightboxHandler } from './specific-handler/gallery-lightbox-handler';
 import { UcpDesktopPerformanceAdsDefinitionRepository } from './ucp-desktop-performance-ads-definition-repository';
 import { UcpDesktopSlotsDefinitionRepository } from './ucp-desktop-slots-definition-repository';
 
@@ -28,6 +29,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		private nativoSlotDefinitionRepository: NativoSlotsDefinitionRepository,
 		private performanceAdsDefinitionRepository: UcpDesktopPerformanceAdsDefinitionRepository,
 		private quizSlotsDefinitionRepository: QuizSlotsDefinitionRepository,
+		private galleryLightbox: GalleryLightboxAds,
 	) {}
 
 	execute(): void {
@@ -35,7 +37,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		this.configureTopLeaderboardAndCompanions();
 		this.configureFloorAdhesionCodePriority();
 		this.registerAdPlaceholderService();
-		this.handleGalleryLightboxSlots();
+		this.handleGalleryLightboxAdsSlots();
 	}
 
 	private injectSlots(): void {
@@ -153,7 +155,11 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		placeholderService.init();
 	}
 
-	private handleGalleryLightboxSlots(): void {
-		new GalleryLightboxHandler(this.slotsDefinitionRepository).handle();
+	private handleGalleryLightboxAdsSlots(): void {
+		if (!this.galleryLightbox.initialized) {
+			this.galleryLightbox.handler = new GalleryLightboxAdsHandler(this.slotsDefinitionRepository);
+			this.galleryLightbox.initialized = true;
+		}
+		this.galleryLightbox.handler.handle();
 	}
 }

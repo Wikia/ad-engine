@@ -1,36 +1,27 @@
 import { context, utils } from '@ad-engine/core';
+import { Ats } from '../ats';
+import { UserIdConfig } from '../index';
 
 const logGroup = 'LiveRamp';
 
-interface LiveRampConfig {
-	userSync?: {
-		userIds: object[];
-	};
-}
-
 class LiveRamp {
-	getConfig(): LiveRampConfig {
+	getConfig(): UserIdConfig {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
-			return {};
+			return;
 		}
 
 		utils.logger(logGroup, 'enabled');
 		return {
-			userSync: {
-				userIds: [
-					{
-						name: 'identityLink',
-						params: {
-							pid: '2161',
-						},
-						storage: {
-							type: 'cookie',
-							name: 'idl_env',
-							expires: 1,
-						},
-					},
-				],
+			name: 'identityLink',
+			params: {
+				pid: Ats.PLACEMENT_ID,
+			},
+			storage: {
+				type: 'html5',
+				name: Ats.ENVELOPE_STORAGE_NAME,
+				expires: 1,
+				refreshInSeconds: 1800,
 			},
 		};
 	}

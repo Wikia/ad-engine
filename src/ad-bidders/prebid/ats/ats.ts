@@ -4,6 +4,8 @@ import Cookies from 'js-cookie';
 const logGroup = 'ATS';
 
 export class Ats extends BaseServiceSetup {
+	static PLACEMENT_ID = '2161';
+	static ENVELOPE_STORAGE_NAME = 'idl_env';
 	private isLoaded = false;
 	private launchpadScriptUrl =
 		'https://launchpad-wrapper.privacymanager.io/2f928425-1fbe-4680-b67a-c5f5ad831378/launchpad-liveramp.js';
@@ -24,7 +26,6 @@ export class Ats extends BaseServiceSetup {
 
 		const userEmailHashes: [string, string, string] = context.get('wiki.opts.userEmailHashes');
 		if (!Array.isArray(userEmailHashes) || userEmailHashes?.length !== 3) {
-			utils.logger(logGroup, userEmailHashes);
 			return;
 		}
 		const [md5, sha1, sha256] = userEmailHashes;

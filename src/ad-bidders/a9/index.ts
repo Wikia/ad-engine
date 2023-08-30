@@ -13,6 +13,7 @@ import {
 	SlotConfig,
 	slotService,
 	targetingService,
+	trackingOptIn,
 	Usp,
 	usp,
 	utils,
@@ -125,6 +126,12 @@ export class A9Provider extends BidderProvider {
 			}
 
 			this.apstag.init(this.getApstagConfig(signalData));
+
+			if (!trackingOptIn.isOptedIn() || trackingOptIn.isOptOutSale()) {
+				utils.logger(logGroup, 'A9 was initialized without consents');
+				communicationService.emit(eventsRepository.A9_WITHOUT_CONSENTS);
+			}
+
 			this.loaded = true;
 		}
 	}

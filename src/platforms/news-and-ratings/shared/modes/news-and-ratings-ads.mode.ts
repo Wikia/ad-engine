@@ -1,4 +1,4 @@
-import { GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
+import { AdEngineStackSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
 	Anyclip,
 	Audigent,
@@ -13,6 +13,7 @@ import {
 	IasPublisherOptimization,
 	LiveConnect,
 	LiveRampPixel,
+	Lotame,
 	PartnerPipeline,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -21,6 +22,7 @@ import { Injectable } from '@wikia/dependency-injection';
 export class NewsAndRatingsAdsMode implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,
+		private adEngineStackSetup: AdEngineStackSetup,
 		private anyclip: Anyclip,
 		private audigent: Audigent,
 		private bidders: Bidders,
@@ -34,11 +36,13 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 		private liveRampPixel: LiveRampPixel,
 		private playerSetup: PlayerSetup,
 		private wadRunner: WadRunner,
+		private lotame: Lotame,
 	) {}
 
 	execute(): void {
 		this.pipeline
 			.add(
+				this.lotame,
 				this.anyclip,
 				this.bidders,
 				this.wadRunner,
@@ -49,12 +53,19 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 				this.iasPublisherOptimization,
 				this.captify,
 				this.durationMedia,
-				this.playerSetup,
-				this.gptSetup.setOptions({
-					dependencies: [this.wadRunner.initialized, this.bidders.initialized],
+				this.playerSetup.setOptions({
+					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
 				}),
+				this.gptSetup,
 				this.doubleVerify.setOptions({
 					dependencies: [this.gptSetup.initialized],
+				}),
+				this.adEngineStackSetup.setOptions({
+					dependencies: [
+						this.bidders.initialized,
+						this.wadRunner.initialized,
+						this.gptSetup.initialized,
+					],
 				}),
 			)
 			.execute()

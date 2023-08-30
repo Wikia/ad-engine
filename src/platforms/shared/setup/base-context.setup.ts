@@ -119,12 +119,12 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setInContentExperiment(): void {
-		const top500bundleName = 'top500';
+		const oldLogicBundleName = 'old_incontent_ads';
 		const wiki: MediaWikiAdsContext = context.get('wiki');
 
 		if (
 			this.instantConfig.get('icExperiments', []).includes('incontentHeaders') &&
-			wiki?.targeting?.adTagManagerTags?.bundles?.includes(top500bundleName)
+			!wiki?.targeting?.adTagManagerTags?.bundles?.includes(oldLogicBundleName)
 		) {
 			context.set('templates.incontentHeadersExperiment', true);
 		} else {
@@ -150,12 +150,15 @@ export class BaseContextSetup implements DiProcess {
 			this.instantConfig.get('icInterventionTracking'),
 		);
 		context.set('services.nativo.enabled', this.instantConfig.get('icNativo'));
-		context.set('services.sailthru.enabled', this.instantConfig.get('icSailthru'));
 		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
 		context.set('services.ppidRepository', this.instantConfig.get('icPpidRepository'));
 		context.set('services.identityTtl', this.instantConfig.get('icIdentityTtl'));
 		context.set('services.identityPartners', this.instantConfig.get('icIdentityPartners'));
-		context.set('services.ageGateHandling', this.instantConfig.get('icAgeGateHandling'));
+		context.set('services.intentIq.ppid.enabled', this.instantConfig.get('icIntentIqPpid', false));
+		context.set(
+			'services.intentIq.ppid.tracking.enabled',
+			this.instantConfig.get('icIntentIqPpidTracking', false),
+		);
 
 		context.set(
 			'services.messageBox.enabled',
@@ -176,9 +179,6 @@ export class BaseContextSetup implements DiProcess {
 			'bidders.prebid.disableSendAllBids',
 			this.instantConfig.get('icPrebidDisableSendAllBids'),
 		);
-		context.set('bidders.identityHub.enabled', this.instantConfig.get('icPubmaticIdentityHub'));
-		// TODO: Remove after ADEN-13043 release & data confirmation
-		context.set('bidders.identityHubV2.enabled', this.instantConfig.get('icPubmaticIdentityHubV2'));
 		context.set('bidders.liveRampId.enabled', this.instantConfig.get('icLiveRampId'));
 		context.set('bidders.liveRampATS.enabled', this.instantConfig.get('icLiveRampATS'));
 		context.set(

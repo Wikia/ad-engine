@@ -20,7 +20,7 @@ export const basicContext = {
 		prebid: {
 			enabled: false,
 			bidsRefreshing: {
-				slots: ['incontent_boxad_1', 'incontent_leaderboard'],
+				slots: ['gallery_leaderboard', 'incontent_boxad_1', 'incontent_leaderboard'],
 			},
 		},
 	},
@@ -83,6 +83,9 @@ export const basicContext = {
 			appName: 'fandomdesktop',
 			fallback:
 				'https://script.wikia.nocookie.net/fandom-ae-assets/icbm/prod/icbm_state_fandomdesktop.json',
+		},
+		openWeb: {
+			placementSelector: '#WikiaAdInContentPlaceHolder',
 		},
 	},
 	slotGroups: {

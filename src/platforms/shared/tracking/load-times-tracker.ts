@@ -16,6 +16,10 @@ const eventsToTrack = {
 	captify_loaded: eventsRepository.CAPTIFY_LOADED,
 	eyeota_started: eventsRepository.EYEOTA_STARTED,
 	eyeota_failed: eventsRepository.EYEOTA_FAILED,
+	a9_without_consents: eventsRepository.A9_WITHOUT_CONSENTS,
+	intentiq_ppid_not_set_on_time: eventsRepository.INTENTIQ_PPID_NOT_SET_ON_TIME,
+	lotame_loaded: eventsRepository.LOTAME_LOADED,
+	lotame_ready: eventsRepository.LOTAME_READY,
 };
 
 export class LoadTimesTracker {
@@ -39,7 +43,7 @@ export class LoadTimesTracker {
 	initStartTime(): void {
 		const now = new Date();
 		if (!this.startTime) {
-			this.startTime = now.getTime();
+			this.startTime = utils.getTimeOrigin();
 			this.tzOffset = now.getTimezoneOffset();
 		}
 		communicationService.emit(eventsRepository.AD_ENGINE_LOAD_TIME_INIT, {

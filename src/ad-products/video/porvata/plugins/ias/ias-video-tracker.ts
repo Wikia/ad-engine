@@ -28,12 +28,7 @@ class IasVideoTracker implements PorvataPlugin {
 
 	load(): Promise<Event> {
 		if (!this.scriptPromise) {
-			this.scriptPromise = utils.scriptLoader.loadScript(
-				scriptUrl,
-				'text/javascript',
-				true,
-				'first',
-			);
+			this.scriptPromise = utils.scriptLoader.loadScript(scriptUrl, true, 'first');
 		}
 
 		return this.scriptPromise;

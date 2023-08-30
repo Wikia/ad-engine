@@ -16,7 +16,7 @@ export class IdentitySetup implements DiProcess {
 		return new Promise<void>((resolve) => {
 			communicationService.on(eventsRepository.IDENTITY_ENGINE_READY, () => {
 				const ppid = globalContextService.getValue('tracking', 'ppid');
-				if (ppid) {
+				if (ppid && !context.get('services.intentIq.ppid.enabled')) {
 					targetingService.set('ppid', ppid);
 				}
 

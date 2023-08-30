@@ -64,14 +64,17 @@ interface PrebidNativeImageType {
 }
 
 interface PrebidVideoType {
-	context?: string;
 	playerSize: number[];
-	mimes?: string[];
+	context?: string;
 	api?: number[];
-	linearity?: number;
-	maxduration?: number;
 	protocols?: number[];
+	minduration?: number;
+	maxduration?: number;
+	mimes?: string[];
+	placement?: number;
+	linearity?: number;
 	playbackmethod?: number[];
+	plcmt?: number | number[];
 }
 
 interface PrebidMediaTypes {
@@ -139,7 +142,7 @@ interface PrebidRequestOptions {
 
 interface PrebidSettings {
 	[key: string]: {
-		adserverTargeting: {
+		adserverTargeting?: {
 			key: string;
 			val: (bidResponse: any) => string;
 		}[];
@@ -155,6 +158,18 @@ interface PrebidTargeting {
 	hb_size?: string;
 
 	[key: string]: string | string[];
+}
+
+interface PrebidTargetingForAdUnits {
+	[unitId: string]: PrebidTargeting;
+}
+
+interface PrebidUserIds {
+	id5id?: {
+		ext?: {
+			abTestingControlGroup?: boolean;
+		};
+	};
 }
 
 interface Pbjs {
@@ -176,7 +191,9 @@ interface Pbjs {
 
 	getAdserverTargetingForAdUnitCode(adUnitCode: string): PrebidTargeting;
 
-	getUserIds(): object;
+	getAdserverTargeting(): PrebidTargetingForAdUnits;
+
+	getUserIds(): PrebidUserIds;
 
 	setConfig(config: unknown): void;
 

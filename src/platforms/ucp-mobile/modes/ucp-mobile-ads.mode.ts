@@ -1,27 +1,29 @@
-import { GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
+import { AdEngineStackSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
 	Anyclip,
 	Ats,
 	Audigent,
 	Bidders,
+	BrandMetrics,
 	Captify,
 	communicationService,
 	Confiant,
-	context,
 	DiProcess,
 	DoubleVerify,
 	DurationMedia,
 	eventsRepository,
 	Eyeota,
 	IasPublisherOptimization,
-	IdentityHub,
 	jwPlayerInhibitor,
 	LiveConnect,
 	LiveRampPixel,
+	Lotame,
 	Nielsen,
+	OpenWeb,
 	PartnerPipeline,
 	PrebidNativeProvider,
 	Stroer,
+	System1,
 	Wunderkind,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -30,10 +32,12 @@ import { Injectable } from '@wikia/dependency-injection';
 export class UcpMobileAdsMode implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,
+		private adEngineStackSetup: AdEngineStackSetup,
 		private anyclip: Anyclip,
 		private ats: Ats,
 		private audigent: Audigent,
 		private bidders: Bidders,
+		private brandMetrics: BrandMetrics,
 		private captify: Captify,
 		private confiant: Confiant,
 		private doubleVerify: DoubleVerify,
@@ -41,25 +45,29 @@ export class UcpMobileAdsMode implements DiProcess {
 		private eyeota: Eyeota,
 		private gptSetup: GptSetup,
 		private iasPublisherOptimization: IasPublisherOptimization,
-		private identityHub: IdentityHub,
 		private liveConnect: LiveConnect,
 		private liveRampPixel: LiveRampPixel,
 		private nielsen: Nielsen,
+		private openWeb: OpenWeb,
 		private playerSetup: PlayerSetup,
 		private prebidNativeProvider: PrebidNativeProvider,
 		private stroer: Stroer,
+		private system1: System1,
 		private wadRunner: WadRunner,
 		private wunderkind: Wunderkind,
+		private lotame: Lotame,
 	) {}
 
 	execute(): void {
 		this.pipeline
 			.add(
+				this.lotame,
 				this.liveRampPixel,
 				this.anyclip,
 				this.ats,
 				this.audigent,
 				this.bidders,
+				this.brandMetrics,
 				this.captify,
 				this.liveConnect,
 				this.wadRunner,
@@ -68,23 +76,28 @@ export class UcpMobileAdsMode implements DiProcess {
 				this.confiant,
 				this.durationMedia,
 				this.stroer,
-				this.identityHub,
+				this.system1,
 				this.nielsen,
 				this.prebidNativeProvider,
 				this.wunderkind,
+				this.openWeb,
 				this.playerSetup.setOptions({
 					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
-					timeout: context.get('options.jwpMaxDelayTimeout'),
 				}),
-				this.gptSetup.setOptions({
-					dependencies: [
-						this.playerSetup.initialized,
-						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
-						this.iasPublisherOptimization.IASReady,
-					],
-				}),
+				this.gptSetup,
 				this.doubleVerify.setOptions({
 					dependencies: [this.gptSetup.initialized],
+				}),
+				this.adEngineStackSetup.setOptions({
+					dependencies: [
+						this.bidders.initialized,
+						this.wadRunner.initialized,
+						this.gptSetup.initialized,
+						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
+					],
+					timeout: jwPlayerInhibitor.isRequiredToRun()
+						? jwPlayerInhibitor.getDelayTimeoutInMs()
+						: null,
 				}),
 			)
 			.execute()
