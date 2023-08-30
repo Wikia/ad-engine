@@ -59,7 +59,7 @@ export class MessageBoxService {
 	}
 
 	isGalleryLeaderboard(placeholder: HTMLElement): boolean {
-		return placeholder.classList.contains('gallery_leaderboard');
+		return placeholder.classList.contains('gallery-leaderboard');
 	}
 
 	hasAlreadyMessageBox(placeholder: HTMLElement): boolean {
