@@ -7,13 +7,13 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
-import { getOzoneContext } from '../../../../../ucp-mobile/bidders/prebid/ozone';
 import { getAppnexusContext } from '../../../bidders/appnexus';
 import { getCriteoContext } from '../../../bidders/criteo';
 import { getIndexExchangeContext } from '../../../bidders/index-exchange';
 import { getKargoContext } from '../../../bidders/kargo';
 import { getMedianetContext } from '../../../bidders/medianet';
 import { getOpenXContext } from '../../../bidders/openx';
+import { getOzoneContext } from '../../../bidders/ozone';
 import { getPubmaticContext } from '../../../bidders/pubmatic';
 import { getRubiconDisplayContext } from '../../../bidders/rubicon-display';
 import { getYahooSspContext } from '../../../bidders/yahoossp';
