@@ -58,7 +58,7 @@
 	}
 }
 
-@mixin hidden-ad-helper($important: true) {
+@mixin hidden-ad($important: true) {
 	&.hidead,
 	.hidead {
 		@if $important == true {
