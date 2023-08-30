@@ -35,7 +35,7 @@ class InMemoryStorage implements StorageProvider {
 	}
 }
 export class UniversalStorage implements Storage<any> {
-	private fallbackStorage: Dictionary = {};
+	private fallbackStorage = new InMemoryStorage();
 	private provider: StorageProvider;
 
 	constructor(storageProvider: StorageAdapter = () => window.localStorage) {
@@ -54,7 +54,7 @@ export class UniversalStorage implements Storage<any> {
 		}
 		if (useFallback) {
 			logger(logGroup, `StorageProvider doesn't work, fallback to the InMemoryProvider`);
-			this.provider = new InMemoryStorage();
+			this.provider = this.fallbackStorage;
 		}
 	}
 
@@ -79,7 +79,7 @@ export class UniversalStorage implements Storage<any> {
 			}
 			return value as any;
 		} catch (e) {
-			return this.fallbackStorage[key];
+			return this.fallbackStorage.getItem(key);
 		}
 	}
 
@@ -89,7 +89,7 @@ export class UniversalStorage implements Storage<any> {
 			this.provider.setItem(key, value, timeToLiveMs);
 		} catch (e) {
 			logger(logGroup, `Item ${key} wasn't set in the storage`, e);
-			this.fallbackStorage[key] = value;
+			this.fallbackStorage.setItem(key, value);
 		}
 		return true;
 	}
@@ -98,7 +98,7 @@ export class UniversalStorage implements Storage<any> {
 		try {
 			return this.provider.removeItem(key);
 		} catch (e) {
-			delete this.fallbackStorage[key];
+			this.fallbackStorage.removeItem(key);
 		}
 	}
 
@@ -106,7 +106,7 @@ export class UniversalStorage implements Storage<any> {
 		try {
 			this.provider.clear();
 		} catch (e) {
-			this.fallbackStorage = {};
+			this.fallbackStorage.clear();
 		}
 	}
 }
