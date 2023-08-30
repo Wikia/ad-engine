@@ -39,7 +39,6 @@ export class UniversalStorage implements Storage<any> {
 	private provider: StorageProvider;
 
 	constructor(storageProvider: StorageAdapter = () => window.localStorage) {
-		let useFallback = false;
 		try {
 			// Chrome throws error even during simple attempt to access local or session storage if they are disabled
 			// So before setItem / removeItem test let's try setup provider first
@@ -47,12 +46,10 @@ export class UniversalStorage implements Storage<any> {
 			// Next test storage
 			// In case of local / session storage are not available it will throw error during setItem attempt
 			if (!this.isAvailable()) {
-				useFallback = true;
+				logger(logGroup, `StorageProvider doesn't work, fallback to the InMemoryProvider`);
+				this.provider = this.fallbackStorage;
 			}
 		} catch {
-			useFallback = true;
-		}
-		if (useFallback) {
 			logger(logGroup, `StorageProvider doesn't work, fallback to the InMemoryProvider`);
 			this.provider = this.fallbackStorage;
 		}
