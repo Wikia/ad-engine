@@ -34,7 +34,7 @@ export class GamespotPrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.indexExchange', getIndexExchangeContext(isDesktop));
 		context.set('bidders.prebid.kargo', getKargoContext(isDesktop));
 		context.set('bidders.prebid.medianet', getMedianetContext(isDesktop));
-		context.set('bidders.prebid.ozone', getOzoneContext());
+		context.set('bidders.prebid.ozone', getOzoneContext(isDesktop));
 		context.set('bidders.prebid.openx', getOpenXContext(isDesktop));
 		context.set('bidders.prebid.pubmatic', getPubmaticContext(isDesktop));
 		context.set('bidders.prebid.rubicon', getRubiconContext(isDesktop));

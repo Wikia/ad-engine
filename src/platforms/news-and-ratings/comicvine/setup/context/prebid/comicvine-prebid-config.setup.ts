@@ -31,7 +31,7 @@ export class ComicvinePrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.kargo', getKargoContext(isDesktop));
 		context.set('bidders.prebid.medianet', getMedianetContext(isDesktop));
 		context.set('bidders.prebid.pubmatic', getPubmaticContext(isDesktop));
-		context.set('bidders.prebid.ozone', getOzoneContext());
+		context.set('bidders.prebid.ozone', getOzoneContext(isDesktop));
 		context.set('bidders.prebid.rubicon_display', getRubiconDisplayContext(isDesktop));
 		context.set('bidders.prebid.wikia', getWikiaContext());
 		context.set('bidders.prebid.yahoossp', getYahooSspContext(isDesktop));
