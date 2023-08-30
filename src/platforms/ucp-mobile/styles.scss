@@ -82,7 +82,7 @@
 .gpt-ad {
 	text-align: center;
 
-	@include hidden-ad-helper();
+	@include hidden-ad();
 
 	& > div > iframe {
 		display: block;
@@ -95,13 +95,13 @@
 		margin: 20px auto;
 	}
 
-	@include hidden-ad-helper();
+	@include hidden-ad();
 }
 
 .top-ads-container,
 .bottom-ads-container,
 .ad-slot-placeholder {
-	@include hidden-ad-helper();
+	@include hidden-ad();
 }
 
 .ntv-ad {
@@ -206,7 +206,7 @@
 		}
 	}
 
-	@include hidden-ad-helper(false);
+	@include hidden-ad(false);
 }
 
 body.bab-detected {
