@@ -17,6 +17,7 @@ import {
 	jwPlayerInhibitor,
 	LiveConnect,
 	LiveRampPixel,
+	Lotame,
 	Nielsen,
 	OpenWeb,
 	PartnerPipeline,
@@ -54,11 +55,13 @@ export class UcpMobileAdsMode implements DiProcess {
 		private system1: System1,
 		private wadRunner: WadRunner,
 		private wunderkind: Wunderkind,
+		private lotame: Lotame,
 	) {}
 
 	execute(): void {
 		this.pipeline
 			.add(
+				this.lotame,
 				this.liveRampPixel,
 				this.anyclip,
 				this.ats,

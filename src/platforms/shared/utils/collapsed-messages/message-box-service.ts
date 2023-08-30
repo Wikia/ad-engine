@@ -41,6 +41,7 @@ export class MessageBoxService {
 		if (
 			this.isTopLeaderboard(placeholder) ||
 			this.isBottomLeaderoard(placeholder) ||
+			this.isGalleryLeaderboard(placeholder) ||
 			this.hasAlreadyMessageBox(placeholder)
 		) {
 			return false;
@@ -55,6 +56,10 @@ export class MessageBoxService {
 
 	isBottomLeaderoard(placeholder: HTMLElement): boolean {
 		return placeholder.classList.contains('bottom-leaderboard');
+	}
+
+	isGalleryLeaderboard(placeholder: HTMLElement): boolean {
+		return placeholder.classList.contains('gallery-leaderboard');
 	}
 
 	hasAlreadyMessageBox(placeholder: HTMLElement): boolean {
