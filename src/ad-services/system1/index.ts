@@ -26,7 +26,7 @@ export class System1 extends BaseServiceSetup {
 			return Promise.resolve();
 		}
 
-		if (!this.isEnabled('icSystem1', false)) {
+		if (!this.isEnabled('icSystem1', false) || utils.isCoppaSubject()) {
 			utils.logger(logGroup, 'disabled');
 			return Promise.resolve();
 		}
