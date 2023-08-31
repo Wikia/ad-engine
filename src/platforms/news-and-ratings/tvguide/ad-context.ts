@@ -68,6 +68,9 @@ export const basicContext = {
 			libraryUrl: '//player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/lre.js',
 			loadWithoutAnchor: true,
 		},
+		doubleVerify: {
+			slots: ['mpu-plus-top', 'top_leaderboard'],
+		},
 		durationMedia: {
 			libraryUrl: '//tag.durationmedia.net/sites/11359/dm.js',
 		},
