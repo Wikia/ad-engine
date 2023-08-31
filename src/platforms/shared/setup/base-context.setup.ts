@@ -190,6 +190,8 @@ export class BaseContextSetup implements DiProcess {
 			'templates.sizeOverwritingMap',
 			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes,
 		);
+		context.set('bidders.s2s.bidders', this.instantConfig.get('icPrebidS2sBidders'));
+		context.set('bidders.s2s.enabled', this.instantConfig.get('icPrebidS2s'));
 	}
 
 	private setupStickySlotContext(): void {

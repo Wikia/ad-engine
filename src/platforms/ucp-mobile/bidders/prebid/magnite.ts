@@ -5,20 +5,12 @@ export function getMagniteContext(): object {
 		slots: {
 			mobile_prefooter: {
 				sizes: [[300, 250]],
-				targeting: {
-					loc: ['top'],
-				},
-				position: 'atf',
 			},
 			mobile_top_leaderboard: {
 				sizes: [
 					[320, 50],
 					[320, 100],
 				],
-				targeting: {
-					loc: ['top'],
-				},
-				position: 'atf',
 			},
 		},
 	};

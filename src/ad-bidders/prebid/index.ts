@@ -269,22 +269,28 @@ export class PrebidProvider extends BidderProvider {
 	}
 
 	private configureS2sBidding(): object {
-		if (context.get('bidders.prebid.mgnipbs.enabled')) {
+		if (context.get('bidders.s2s.enabled')) {
+			const s2sBidders = context.get('bidders.s2s.bidders') || [];
+
+			const extPrebidBidders: Record<string, { wrappername: string }> = {};
+
+			s2sBidders.forEach((name) => {
+				extPrebidBidders[name] = {
+					wrappername: 'Web_Server',
+				};
+			});
+
 			return {
 				s2sConfig: [
 					{
 						accountId: 7450,
-						bidders: ['mgnipbs'],
+						bidders: s2sBidders,
 						defaultVendor: 'rubicon',
 						coopSync: true,
 						userSyncLimit: 8,
 						allowUnknownBidderCodes: true,
 						extPrebid: {
-							bidders: {
-								mgnipbs: {
-									wrappername: 'Web_Server',
-								},
-							},
+							extPrebidBidders,
 						},
 					},
 				],
