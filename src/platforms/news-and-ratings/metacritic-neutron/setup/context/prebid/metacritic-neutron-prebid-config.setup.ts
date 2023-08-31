@@ -13,7 +13,6 @@ import { getIndexExchangeContext } from '../../../bidders/index-exchange';
 import { getKargoContext } from '../../../bidders/kargo';
 import { getMedianetContext } from '../../../bidders/medianet';
 import { getOpenXContext } from '../../../bidders/openx';
-import { getOzoneContext } from '../../../bidders/ozone';
 import { getPubmaticContext } from '../../../bidders/pubmatic';
 import { getRubiconDisplayContext } from '../../../bidders/rubicon-display';
 import { getYahooSspContext } from '../../../bidders/yahoossp';
@@ -31,7 +30,6 @@ export class MetacriticNeutronPrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.kargo', getKargoContext(isDesktop));
 		context.set('bidders.prebid.medianet', getMedianetContext(isDesktop));
 		context.set('bidders.prebid.openx', getOpenXContext(isDesktop));
-		context.set('bidders.prebid.ozone', getOzoneContext(isDesktop));
 		context.set('bidders.prebid.pubmatic', getPubmaticContext(isDesktop));
 		context.set('bidders.prebid.rubicon_display', getRubiconDisplayContext(isDesktop));
 		context.set('bidders.prebid.yahoossp', getYahooSspContext(isDesktop));
