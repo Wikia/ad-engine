@@ -8,6 +8,7 @@ import { getKargoContext } from '../../../bidders/prebid/kargo';
 import { getMedianetContext } from '../../../bidders/prebid/medianet';
 import { getNobidContext } from '../../../bidders/prebid/nobid';
 import { getOpenXContext } from '../../../bidders/prebid/openx';
+import { getOzoneContext } from '../../../bidders/prebid/ozone';
 import { getPubmaticContext } from '../../../bidders/prebid/pubmatic';
 import { getRoundelContext } from '../../../bidders/prebid/roundel';
 import { getRubiconContext } from '../../../bidders/prebid/rubicon';
@@ -28,6 +29,7 @@ export class UcpDesktopPrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.medianet', getMedianetContext());
 		context.set('bidders.prebid.nobid', getNobidContext());
 		context.set('bidders.prebid.openx', getOpenXContext());
+		context.set('bidders.prebid.ozone', getOzoneContext());
 		context.set('bidders.prebid.pubmatic', getPubmaticContext());
 		context.set('bidders.prebid.roundel', getRoundelContext());
 		context.set('bidders.prebid.rubicon', getRubiconContext());
