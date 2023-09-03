@@ -1,9 +1,9 @@
-import { Magnite } from '@wikia/ad-bidders/prebid/adapters/magnite';
+import { MagniteS2s } from '@wikia/ad-bidders/prebid/adapters/magniteS2s';
 import { expect } from 'chai';
 
 describe('Magnite bidder adapter', () => {
 	it('can be enabled', () => {
-		const magnite = new Magnite({
+		const magnite = new MagniteS2s({
 			enabled: true,
 			slots: {},
 		});
@@ -12,7 +12,7 @@ describe('Magnite bidder adapter', () => {
 	});
 
 	it('prepareAdUnits returns data in correct shape', () => {
-		const magnite = new Magnite({
+		const magnite = new MagniteS2s({
 			enabled: true,
 			slots: {
 				top_boxad: {
@@ -32,6 +32,7 @@ describe('Magnite bidder adapter', () => {
 				bids: [
 					{
 						bidder: 'mgnipbs',
+						params: {},
 					},
 				],
 			},

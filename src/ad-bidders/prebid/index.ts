@@ -271,12 +271,13 @@ export class PrebidProvider extends BidderProvider {
 	private configureS2sBidding(): object {
 		if (context.get('bidders.s2s.enabled')) {
 			const s2sBidders = context.get('bidders.s2s.bidders') || [];
+			utils.logger(logGroup, 'Prebid s2s enabled', s2sBidders);
 
 			const extPrebidBidders: Record<string, { wrappername: string }> = {};
 
 			s2sBidders.forEach((name) => {
 				extPrebidBidders[name] = {
-					wrappername: 'Web_Server',
+					wrappername: `7450_${name}`,
 				};
 			});
 

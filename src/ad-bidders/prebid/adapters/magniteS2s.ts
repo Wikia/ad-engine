@@ -1,7 +1,7 @@
 import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
 
-export class Magnite extends PrebidAdapter {
+export class MagniteS2s extends PrebidAdapter {
 	static bidderName = 'mgnipbs';
 	accountId: number;
 
@@ -12,7 +12,7 @@ export class Magnite extends PrebidAdapter {
 	}
 
 	get bidderName(): string {
-		return Magnite.bidderName;
+		return MagniteS2s.bidderName;
 	}
 
 	prepareConfigForAdUnit(code, { sizes }: PrebidAdSlotConfig): PrebidAdUnit {
