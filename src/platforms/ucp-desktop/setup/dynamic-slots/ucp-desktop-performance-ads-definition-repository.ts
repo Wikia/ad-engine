@@ -142,7 +142,7 @@ export class UcpDesktopPerformanceAdsDefinitionRepository {
 	private fillOthersLikeYou(wide = false) {
 		utils.logger(logGroup, 'Filling othersLikeYou');
 
-		const image = this.othersLikeYouElement.querySelector(
+		const imageElement = this.othersLikeYouElement.querySelector(
 			'div:not(.recommendations__article-title)',
 		);
 		const title = this.othersLikeYouElement.querySelector('.recommendations__article-title');
@@ -151,17 +151,13 @@ export class UcpDesktopPerformanceAdsDefinitionRepository {
 		this.othersLikeYouElement.setAttribute('target', '_blank');
 		this.othersLikeYouElement.classList.add('performance-ad');
 
-		image.setAttribute('src', this.widgetData.data.image);
-		image.setAttribute('style', `background-image: url(${this.widgetData.data.image});`);
+		imageElement.querySelector('img')?.setAttribute('src', this.widgetData.data.image);
 		title.innerHTML = this.widgetData.data.title;
 
 		if (wide) {
 			this.othersLikeYouElement.nextSibling?.remove();
 			this.othersLikeYouElement.setAttribute('style', 'width: 200px;');
-			image.setAttribute(
-				'style',
-				`background-image: url(${this.widgetData.data.image}); width: 200px;`,
-			);
+			imageElement.setAttribute('style', `width: 200px;`);
 		}
 
 		this.triggerImpressionPixels();
