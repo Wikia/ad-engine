@@ -269,28 +269,30 @@ export class PrebidProvider extends BidderProvider {
 	}
 
 	private configureS2sBidding(): object {
-		if (context.get('bidders.s2s.enabled')) {
-			const s2sBidders = context.get('bidders.s2s.bidders') || [];
-			utils.logger(logGroup, 'Prebid s2s enabled', s2sBidders);
-
-			const extPrebidBidders = this.prepareExtPrebidBiders(s2sBidders);
-
-			return {
-				s2sConfig: [
-					{
-						accountId: 7450,
-						bidders: s2sBidders,
-						defaultVendor: 'rubicon',
-						coopSync: true,
-						userSyncLimit: 8,
-						allowUnknownBidderCodes: true,
-						extPrebid: {
-							extPrebidBidders,
-						},
-					},
-				],
-			};
+		if (!context.get('bidders.s2s.enabled')) {
+			return;
 		}
+
+		const s2sBidders = context.get('bidders.s2s.bidders') || [];
+		utils.logger(logGroup, 'Prebid s2s enabled', s2sBidders);
+
+		const extPrebidBidders = this.prepareExtPrebidBiders(s2sBidders);
+
+		return {
+			s2sConfig: [
+				{
+					accountId: 7450,
+					bidders: s2sBidders,
+					defaultVendor: 'rubicon',
+					coopSync: true,
+					userSyncLimit: 8,
+					allowUnknownBidderCodes: true,
+					extPrebid: {
+						extPrebidBidders,
+					},
+				},
+			],
+		};
 	}
 
 	private prepareExtPrebidBiders(s2sBidders: string[]): Record<string, { wrappername: string }> {
