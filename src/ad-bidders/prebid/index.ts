@@ -273,13 +273,7 @@ export class PrebidProvider extends BidderProvider {
 			const s2sBidders = context.get('bidders.s2s.bidders') || [];
 			utils.logger(logGroup, 'Prebid s2s enabled', s2sBidders);
 
-			const extPrebidBidders: Record<string, { wrappername: string }> = {};
-
-			s2sBidders.forEach((name) => {
-				extPrebidBidders[name] = {
-					wrappername: `7450_${name}`,
-				};
-			});
+			const extPrebidBidders = this.prepareExtPrebidBiders(s2sBidders);
 
 			return {
 				s2sConfig: [
@@ -297,6 +291,18 @@ export class PrebidProvider extends BidderProvider {
 				],
 			};
 		}
+	}
+
+	private prepareExtPrebidBiders(s2sBidders: string[]): Record<string, { wrappername: string }> {
+		const extPrebidBidders: Record<string, { wrappername: string }> = {};
+
+		s2sBidders.forEach((name) => {
+			extPrebidBidders[name] = {
+				wrappername: `7450_${name}`,
+			};
+		});
+
+		return extPrebidBidders;
 	}
 
 	async configureAdUnits(adUnits: PrebidAdUnit[] = []): Promise<void> {

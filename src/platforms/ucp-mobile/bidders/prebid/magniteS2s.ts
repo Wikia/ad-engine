@@ -1,4 +1,4 @@
-export function getMagniteContext(): object {
+export function getMagniteS2sContext(): object {
 	return {
 		enabled: false,
 		accountId: 7450,
