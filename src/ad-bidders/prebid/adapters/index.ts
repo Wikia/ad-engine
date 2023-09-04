@@ -10,6 +10,7 @@ export * from './medianet';
 export * from './nobid';
 export * from './ogury';
 export * from './openx';
+export * from './ozone';
 export * from './pubmatic';
 export * from './roundel';
 export * from './rubicon';

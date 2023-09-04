@@ -42,6 +42,9 @@ const basicContext = {
 const futheadContext = {
 	application: 'futhead',
 	services: {
+		doubleVerify: {
+			slots: ['cdm-zone-01', 'cdm-zone-02', 'cdm-zone-03', 'cdm-zone-04', 'cdm-zone-06'],
+		},
 		durationMedia: {
 			libraryUrl: '//tag.durationmedia.net/sites/10654/dm.js',
 		},
@@ -60,6 +63,9 @@ const futheadContext = {
 const mutheadContext = {
 	application: 'muthead',
 	services: {
+		doubleVerify: {
+			slots: ['cdm-zone-01', 'cdm-zone-02', 'cdm-zone-03', 'cdm-zone-04', 'cdm-zone-06'],
+		},
 		durationMedia: {
 			libraryUrl: '//tag.durationmedia.net/sites/10655/dm.js',
 		},

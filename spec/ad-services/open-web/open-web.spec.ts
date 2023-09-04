@@ -1,5 +1,4 @@
 import { OpenWeb, PlacementsBuilder, PlacementsHandler } from '@wikia/ad-services';
-import { OpenWebExperiment } from '@wikia/ad-services/open-web/utils/open-web-experiment';
 import { communicationService, EventOptions } from '@wikia/communication';
 import { context, InstantConfigService, utils } from '@wikia/core';
 import { expect } from 'chai';
@@ -10,8 +9,7 @@ describe('OpenWeb', () => {
 		contextStub,
 		communicationServiceStub,
 		placementHandlerBuildStub,
-		placementHandlerIsReadyStub,
-		openWebExperimentStub;
+		placementHandlerIsReadyStub;
 	let service: OpenWeb;
 	const fakeActiveConfigValue = {
 		isActive: true,
@@ -30,13 +28,8 @@ describe('OpenWeb', () => {
 			.stub(PlacementsHandler.prototype, 'isDone')
 			.returns(true);
 		placementHandlerBuildStub = global.sandbox.stub(PlacementsHandler.prototype, 'build');
-		openWebExperimentStub = global.sandbox.createStubInstance(OpenWebExperiment);
 
-		service = new OpenWeb(
-			instantConfigStub,
-			new PlacementsHandler(new PlacementsBuilder()),
-			openWebExperimentStub,
-		);
+		service = new OpenWeb(instantConfigStub, new PlacementsHandler(new PlacementsBuilder()));
 	});
 
 	afterEach(() => {
@@ -81,20 +74,8 @@ describe('OpenWeb', () => {
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
-	it('OpenWeb does not load script if it is control group in experiment', async () => {
-		prepareUAPevent(false);
-		instantConfigStub.get.withArgs('icOpenWeb').returns(fakeActiveConfigValue);
-		contextStub.get.withArgs('state.isLogged').returns(false);
-		openWebExperimentStub.isEnabledExperiment.returns(false);
-
-		service.call();
-
-		expect(loadScriptStub.called).to.equal(false);
-	});
-
 	it('OpenWeb does load script for mobile-builder', async () => {
 		prepareUAPevent(false);
-		openWebExperimentStub.isEnabledExperiment.returns(true);
 
 		instantConfigStub.get.withArgs('icOpenWeb').returns(fakeActiveConfigValue);
 		contextStub.get.withArgs('state.isLogged').returns(false);
@@ -108,7 +89,6 @@ describe('OpenWeb', () => {
 
 	it('OpenWeb does load script for desktop-builder', async () => {
 		prepareUAPevent(false);
-		openWebExperimentStub.isEnabledExperiment.returns(true);
 
 		instantConfigStub.get.withArgs('icOpenWeb').returns(fakeActiveConfigValue);
 		contextStub.get.withArgs('state.isLogged').returns(false);
