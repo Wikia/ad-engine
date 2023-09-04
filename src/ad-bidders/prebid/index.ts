@@ -65,6 +65,8 @@ const videoGranularity = {
 	],
 };
 
+const s2sRubiconAccountId = 7450;
+
 interface PrebidConfig extends BidderConfig {
 	[bidderName: string]: { enabled: boolean; slots: Dictionary } | boolean;
 }
@@ -281,7 +283,7 @@ export class PrebidProvider extends BidderProvider {
 		return {
 			s2sConfig: [
 				{
-					accountId: 7450,
+					accountId: s2sRubiconAccountId,
 					bidders: s2sBidders,
 					defaultVendor: 'rubicon',
 					coopSync: true,
@@ -300,7 +302,7 @@ export class PrebidProvider extends BidderProvider {
 
 		s2sBidders.forEach((name) => {
 			extPrebidBidders[name] = {
-				wrappername: `7450_${name}`,
+				wrappername: `${s2sRubiconAccountId}_${name}`,
 			};
 		});
 
