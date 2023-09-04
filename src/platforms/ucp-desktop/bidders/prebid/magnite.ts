@@ -21,12 +21,6 @@ export function getMagniteContext(): object {
 			incontent_boxad: {
 				sizes: [[300, 250]],
 			},
-			floor_adhesion: {
-				sizes: [
-					[320, 50],
-					[320, 100],
-				],
-			},
 			bottom_leaderboard: {
 				sizes: [
 					[728, 90],
