@@ -402,6 +402,7 @@ export class PrebidProvider extends BidderProvider {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
 		await intentIQ.initialize(pbjs);
+		await id5.waitForUid(pbjs);
 
 		pbjs.requestBids({
 			adUnits,

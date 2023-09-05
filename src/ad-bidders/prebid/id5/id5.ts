@@ -104,6 +104,14 @@ class Id5 {
 		return controlGroup === true ? 'A' : 'B';
 	}
 
+	async waitForUid(pbjs: Pbjs): Promise<boolean> {
+		return new utils.WaitFor(
+			() => pbjs.getUserIds()?.id5id?.uid !== undefined && pbjs.getUserIds()?.id5id?.uid !== '',
+			10,
+			20,
+		).until();
+	}
+
 	private saveInStorage(key: string, value: string) {
 		if (this.storage.getItem(key) !== null) {
 			return;
