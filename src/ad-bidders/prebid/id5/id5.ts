@@ -17,6 +17,7 @@ class Id5 {
 	private partnerId = 1139;
 	private storage;
 	private id5GroupKey = 'id5_group';
+	private configured = false;
 
 	constructor() {
 		this.storage = new UniversalStorage();
@@ -104,12 +105,18 @@ class Id5 {
 		return controlGroup === true ? 'A' : 'B';
 	}
 
-	async waitForUid(pbjs: Pbjs): Promise<boolean> {
+	async waitUntilConfigured(pbjs: Pbjs): Promise<boolean> {
+		if (this.configured) {
+			return;
+		}
+
 		return new utils.WaitFor(
 			() => pbjs.getUserIds()?.id5id?.uid !== undefined && pbjs.getUserIds()?.id5id?.uid !== '',
 			10,
 			20,
-		).until();
+		)
+			.until()
+			.then(() => (this.configured = true));
 	}
 
 	private saveInStorage(key: string, value: string) {
