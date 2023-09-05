@@ -26,6 +26,9 @@ export const basicContext = {
 		},
 	},
 	services: {
+		doubleVerify: {
+			slots: ['mpu_top', 'top_leaderboard'],
+		},
 		durationMedia: {
 			libraryUrl: '//tag.durationmedia.net/sites/11356/dm.js',
 		},
