@@ -4,6 +4,7 @@ import {
 	SlotSetupDefinition,
 } from '@platforms/shared';
 import {
+	Anyclip,
 	btRec,
 	communicationService,
 	context,
@@ -275,11 +276,15 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
 			},
-			activator: () => activateFloorAdhesionOnUAP(activateFloorAdhesion),
+			activator: () =>
+				activateFloorAdhesionOnUAP(
+					activateFloorAdhesion,
+					!context.get('options.isFloorAdhesionNonUapApplicable'),
+				),
 		};
 	}
 
 	private isFloorAdhesionApplicable(): boolean {
-		return !context.get('custom.hasFeaturedVideo');
+		return !context.get('custom.hasFeaturedVideo') && !Anyclip.isApplicable();
 	}
 }

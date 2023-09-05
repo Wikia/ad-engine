@@ -24,6 +24,7 @@ export class UcpDesktopExperimentsSetup implements DiProcess {
 	execute(): void {
 		this.configurePerformanceAdsExperiment();
 		this.configureFloorAdhesionExperiment();
+		this.configureFloorAdhesionNonUapExperiment();
 	}
 
 	private configurePerformanceAdsExperiment(): void {
@@ -53,5 +54,9 @@ export class UcpDesktopExperimentsSetup implements DiProcess {
 			context.set('options.ntc.floorEnabled', isNewVariant);
 			this.optimizely.addVariantToTargeting(OPTIMIZELY_NTC_2_0, targetingVariantName);
 		}
+	}
+
+	private configureFloorAdhesionNonUapExperiment() {
+		context.set('options.isFloorAdhesionNonUapApplicable', true);
 	}
 }
