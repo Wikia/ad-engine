@@ -50,7 +50,7 @@ export function getPubmaticContext(): object {
 			},
 			fandom_dt_galleries: {
 				sizes: [[728, 90]],
-				ids: ['5244133@728x90'],
+				ids: ['5244133'],
 			},
 		},
 	};
