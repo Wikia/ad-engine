@@ -221,7 +221,7 @@ export class PrebidProvider extends BidderProvider {
 		}
 
 		this.prebidConfig.userSync.userIds.push(id5Config);
-		this.prebidConfig.userSync.auctionDelay = 50;
+		this.prebidConfig.userSync.auctionDelay = context.get('bidders.prebid.id5AuctionDelay');
 
 		if (id5Config.params.abTesting.enabled) {
 			const pbjs: Pbjs = await pbjsFactory.init();
