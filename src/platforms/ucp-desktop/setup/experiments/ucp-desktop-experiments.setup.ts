@@ -17,6 +17,17 @@ const OPTIMIZELY_NTC_2_0_VARIANTS = {
 	UNDEFINED: 'ntc20_adhesion_undefined',
 };
 
+const OPTIMIZELY_ADHESION_NON_UAP = {
+	EXPERIMENT_ENABLED: 'desktop_adhesion',
+	EXPERIMENT_VARIANT: 'desktop_adhesion_variant',
+};
+
+const OPTIMIZELY_ADHESION_NON_UAP_VARIANTS = {
+	CONTROL_GROUP: 'desktop_adhesion_control_group',
+	SHOW_ADHESION: 'desktop_adhesion_show_adhesion',
+	UNDEFINED: 'desktop_adhesion_show_undefined',
+};
+
 @Injectable()
 export class UcpDesktopExperimentsSetup implements DiProcess {
 	constructor(private optimizely: Optimizely) {}
@@ -57,6 +68,19 @@ export class UcpDesktopExperimentsSetup implements DiProcess {
 	}
 
 	private configureFloorAdhesionNonUapExperiment() {
-		context.set('options.isFloorAdhesionNonUapApplicable', true);
+		this.optimizely.addVariantToTargeting(
+			OPTIMIZELY_ADHESION_NON_UAP,
+			OPTIMIZELY_ADHESION_NON_UAP_VARIANTS.UNDEFINED,
+		);
+
+		const variant = this.optimizely.getVariant(OPTIMIZELY_ADHESION_NON_UAP);
+
+		if (variant) {
+			context.set(
+				'options.isFloorAdhesionNonUapApplicable',
+				variant === OPTIMIZELY_ADHESION_NON_UAP_VARIANTS.SHOW_ADHESION,
+			);
+			this.optimizely.addVariantToTargeting(OPTIMIZELY_ADHESION_NON_UAP, variant);
+		}
 	}
 }

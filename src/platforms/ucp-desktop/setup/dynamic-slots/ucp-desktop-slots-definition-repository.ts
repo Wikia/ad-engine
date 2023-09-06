@@ -4,7 +4,6 @@ import {
 	SlotSetupDefinition,
 } from '@platforms/shared';
 import {
-	Anyclip,
 	btRec,
 	communicationService,
 	context,
@@ -285,6 +284,6 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 	}
 
 	private isFloorAdhesionApplicable(): boolean {
-		return !context.get('custom.hasFeaturedVideo') && !Anyclip.isApplicable();
+		return !context.get('custom.hasFeaturedVideo');
 	}
 }
