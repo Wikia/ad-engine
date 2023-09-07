@@ -1,4 +1,6 @@
 import {
+	AdSlot,
+	AdSlotEvent,
 	AdSlotStatus,
 	communicationService,
 	eventsRepository,
@@ -55,7 +57,7 @@ export class GalleryLightboxAdsHandler {
 				this.lockForFewSeconds();
 				this.isActive = true;
 				this.hideFloorAdhesion();
-				this.showMobileGalleryAdPlaceholder();
+				this.showMobileGalleryAdPlaceholder(this.slotName);
 				utils.logger(this.logGroup, 'Ad placement on Lightbox ready', placementId);
 			},
 			false,
@@ -115,6 +117,7 @@ export class GalleryLightboxAdsHandler {
 				gallerySlot.destroy();
 				utils.logger(this.logGroup, 'Ad placement on Lightbox destroy', placementId);
 				this.isActive = false;
+				this.disableMobileGalleryAdPlaceholder(this.slotName);
 				this.showFloorAdhesion();
 			},
 			false,
@@ -128,13 +131,25 @@ export class GalleryLightboxAdsHandler {
 		}, 2000);
 	}
 
-	private showMobileGalleryAdPlaceholder() {
-		const innerWrapper = document?.getElementsByClassName('lightbox-wrapper-inner')[0];
+	private disableMobileGalleryAdPlaceholder(slotName: string) {
+		const innerWrapper = document?.getElementsByClassName('lightbox-wrapper-inner')?.[0];
+		innerWrapper?.classList?.remove('with-ad');
+
+		const callback = (payload: { slot: AdSlot }) => payload.slot.disable();
+		communicationService.onSlotEvent(AdSlotEvent.SLOT_LOADED_EVENT, callback, slotName, true);
+	}
+
+	private showMobileGalleryAdPlaceholder(slotName: string) {
+		const innerWrapper = document?.getElementsByClassName('lightbox-wrapper-inner')?.[0];
 		innerWrapper?.classList?.add('with-ad');
 
-		const galleryPlaceholder = document.getElementsByClassName('gallery-leaderboard')?.[0];
-		galleryPlaceholder?.classList?.remove('hide');
+		// TODO: Remove it
+		document.getElementsByClassName('gallery-leaderboard')?.[0]?.classList?.remove('hide');
+
+		const callback = (payload: { slot: AdSlot }) => payload.slot.enable();
+		communicationService.onSlotEvent(AdSlotEvent.SLOT_LOADED_EVENT, callback, slotName, true);
 	}
+
 	private hideFloorAdhesion() {
 		setTimeout(() => {
 			const floor = document?.getElementById('floor_adhesion_anchor');
