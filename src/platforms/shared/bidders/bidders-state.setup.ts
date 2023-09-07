@@ -72,7 +72,7 @@ export class BiddersStateSetup implements DiProcess {
 			context.set('bidders.prebid.id5AbValue', this.instantConfig.get('icPrebidId5AB', 0));
 			context.set(
 				'bidders.prebid.id5AuctionDelay',
-				this.instantConfig.get('icPrebidId5AuctionDelay', 100),
+				this.instantConfig.get('icPrebidId5AuctionDelay', 50),
 			);
 		}
 
