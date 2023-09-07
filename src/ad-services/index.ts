@@ -12,6 +12,7 @@ export * from './ias-publisher-optimization';
 export * from './identity-setup';
 export * from './live-connect';
 export * from './liveramp-pixel';
+export * from './lotame';
 export * from './nielsen';
 export * from './open-web';
 export * from './open-web/utils/placements-builder';

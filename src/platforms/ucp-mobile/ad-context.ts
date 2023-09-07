@@ -14,13 +14,13 @@ export const basicContext = {
 			videoEnabled: false,
 			amazonId: '3115',
 			bidsRefreshing: {
-				slots: ['featured', 'mobile_in_content'],
+				slots: ['featured', 'gallery_leaderboard', 'mobile_in_content'],
 			},
 		},
 		prebid: {
 			enabled: false,
 			bidsRefreshing: {
-				slots: ['mobile_in_content'],
+				slots: ['gallery_leaderboard', 'mobile_in_content'],
 			},
 		},
 	},
@@ -62,6 +62,16 @@ export const basicContext = {
 			widgetname: '001w000001Y8ud2AAB_M6237',
 			libraryUrl: 'https://player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/lre.js',
 			latePageInject: true,
+		},
+		doubleVerify: {
+			slots: [
+				'top_leaderboard',
+				'top_boxad',
+				'incontent_boxad_1',
+				'bottom_leaderboard',
+				'featured',
+				'incontent_player',
+			],
 		},
 		durationMedia: {
 			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',

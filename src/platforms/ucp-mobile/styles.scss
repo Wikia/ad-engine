@@ -162,6 +162,10 @@
 			height: 45px;
 		}
 	}
+
+	&.hide-under-lightbox {
+		display: none;
+	}
 }
 
 .ad-slot.porvata-outstream {
@@ -274,6 +278,12 @@ body:has(.notifications-box > .marketing-notifications > div) {
 		.newsletter-submit {
 			flex: 1;
 		}
+	}
+}
+
+body.mw-special-Search {
+	#gcsa-bottom {
+		margin-bottom: 20px;
 	}
 }
 

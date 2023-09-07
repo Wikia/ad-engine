@@ -1,4 +1,8 @@
-import { activateFloorAdhesionOnUAP, SlotSetupDefinition } from '@platforms/shared';
+import {
+	activateFloorAdhesionOnUAP,
+	SlotsDefinitionRepository,
+	SlotSetupDefinition,
+} from '@platforms/shared';
 import {
 	btRec,
 	communicationService,
@@ -15,7 +19,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { FmrRotator } from '../../utils/fmr-rotator';
 
 @Injectable()
-export class UcpDesktopSlotsDefinitionRepository {
+export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepository {
 	constructor(protected instantConfig: InstantConfigService) {}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
@@ -271,7 +275,11 @@ export class UcpDesktopSlotsDefinitionRepository {
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
 			},
-			activator: () => activateFloorAdhesionOnUAP(activateFloorAdhesion),
+			activator: () =>
+				activateFloorAdhesionOnUAP(
+					activateFloorAdhesion,
+					!context.get('options.isFloorAdhesionNonUapApplicable'),
+				),
 		};
 	}
 
