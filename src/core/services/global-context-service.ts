@@ -76,7 +76,7 @@ export class GlobalContextService {
 	}
 
 	hasBundle(key: string): boolean {
-		return window.fandomContext.site?.tags?.bundles?.includes(key);
+		return window.fandomContext?.site?.tags?.bundles?.includes(key);
 	}
 }
 
