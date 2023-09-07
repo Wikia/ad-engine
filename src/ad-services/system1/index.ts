@@ -1,5 +1,11 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { BaseServiceSetup, context, localCache, utils } from '@ad-engine/core';
+import {
+	BaseServiceSetup,
+	context,
+	globalContextService,
+	localCache,
+	utils,
+} from '@ad-engine/core';
 
 const logGroup = 'system1';
 const scriptUrl = '//s.flocdn.com/@s1/embedded-search/embedded-search.js';
@@ -31,9 +37,8 @@ export class System1 extends BaseServiceSetup {
 			return Promise.resolve();
 		}
 
-		const excludedBundleTagName = 'old_incontent_ads';
-		const communityExcludedByTag =
-			window.fandomContext?.site?.tags?.bundles?.includes(excludedBundleTagName);
+		const excludedBundleTagName = 'sensitive';
+		const communityExcludedByTag = globalContextService.hasBundle(excludedBundleTagName);
 
 		if (communityExcludedByTag) {
 			utils.logger(logGroup, `community excluded by tag bundle=${excludedBundleTagName}`);

@@ -17,6 +17,7 @@ import {
 	CookieStorageAdapter,
 	DiProcess,
 	eventsRepository,
+	globalContextService,
 	InstantConfigService,
 	Nativo,
 	slotImpactWatcher,
@@ -289,9 +290,8 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	}
 
 	private handleMobileGalleryLightboxAdsSlots(): void {
-		const excludedBundleTagName = 'old_incontent_ads';
-		const communityExcludedByTag =
-			window.fandomContext?.site?.tags?.bundles?.includes(excludedBundleTagName);
+		const excludedBundleTagName = 'sensitive';
+		const communityExcludedByTag = globalContextService.hasBundle(excludedBundleTagName);
 
 		if (this.instantConfig.get('icMobileGalleryAds') && !communityExcludedByTag) {
 			if (!this.galleryLightbox.initialized) {
