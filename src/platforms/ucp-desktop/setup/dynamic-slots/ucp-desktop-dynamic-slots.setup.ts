@@ -50,9 +50,14 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
 		]);
 
-		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () =>
-			insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]),
-		);
+		if (context.get('options.isFloorAdhesionNonUapApplicable')) {
+			insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
+			slotService.enable('floor_adhesion');
+		} else {
+			communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () =>
+				insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]),
+			);
+		}
 
 		communicationService.on(eventsRepository.RAIL_READY, () => {
 			insertSlots([this.slotsDefinitionRepository.getIncontentBoxadConfig()]);
