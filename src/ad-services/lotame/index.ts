@@ -17,8 +17,18 @@ export class Lotame extends BaseServiceSetup {
 			utils.logger(this.logGroup, 'pixel disabled');
 			return;
 		}
+
+		const siteTags = { ...window.fandomContext?.site?.tags, bundles: [] };
+		const taxonomyTags = Object.values(siteTags)
+			.map((tag, i) => tag.map((value) => Object.keys(siteTags)[i] + ': ' + value))
+			.flat();
+
 		const lotameTagInput = {
-			data: {},
+			data: {
+				behaviors: {
+					med: taxonomyTags,
+				},
+			},
 			config: {
 				clientId: this.CLIENT_ID,
 				onTagReady: () => communicationService.dispatch(eventsRepository.LOTAME_READY),
