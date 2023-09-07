@@ -7,6 +7,15 @@ interface LotameNamespace {
 	cmd?: object[];
 }
 
+export function mapTaxonomyToLotameBehaviorTags(tags: TaxonomyTags = {}): string[] {
+	// bundles are internal tags and should not be sent to Lotame
+	const taxonomyTags = { ...tags, bundles: [] };
+
+	return Object.values(taxonomyTags)
+		.map((tag, i) => tag.map((value) => Object.keys(taxonomyTags)[i] + ': ' + value))
+		.flat();
+}
+
 export class Lotame extends BaseServiceSetup {
 	private CLIENT_ID = 17364;
 	private logGroup = 'Lotame';
@@ -18,15 +27,13 @@ export class Lotame extends BaseServiceSetup {
 			return;
 		}
 
-		const siteTags = { ...window.fandomContext?.site?.tags, bundles: [] };
-		const taxonomyTags = Object.values(siteTags)
-			.map((tag, i) => tag.map((value) => Object.keys(siteTags)[i] + ': ' + value))
-			.flat();
+		const siteTags = window.fandomContext?.site?.tags;
+		const behaviorTags = mapTaxonomyToLotameBehaviorTags(siteTags);
 
 		const lotameTagInput = {
 			data: {
 				behaviors: {
-					med: taxonomyTags,
+					med: behaviorTags,
 				},
 			},
 			config: {
