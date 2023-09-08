@@ -146,7 +146,7 @@ export class GalleryLightboxAdsHandler {
 
 	private disableMobileGalleryAdPlaceholder(slotName: string) {
 		const callback = (payload: { slot: AdSlot }) => payload.slot.disable();
-		communicationService.onSlotEvent(AdSlotEvent.SLOT_LOADED_EVENT, callback, slotName, true);
+		communicationService.onSlotEvent(AdSlotEvent.DESTROY_EVENT, callback, slotName, true);
 	}
 
 	private enableMobileGalleryAdPlaceholder(slotName: string) {
