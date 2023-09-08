@@ -57,7 +57,8 @@ export class GalleryLightboxAdsHandler {
 				this.lockForFewSeconds();
 				this.isActive = true;
 				this.hideFloorAdhesion();
-				this.showMobileGalleryAdPlaceholder(this.slotName);
+				this.initSlot(this.slotName);
+				this.enableMobileGalleryAdPlaceholder(this.slotName);
 				utils.logger(this.logGroup, 'Ad placement on Lightbox ready', placementId);
 			},
 			false,
@@ -131,21 +132,24 @@ export class GalleryLightboxAdsHandler {
 		}, 2000);
 	}
 
-	private disableMobileGalleryAdPlaceholder(slotName: string) {
-		const innerWrapper = document?.getElementsByClassName('lightbox-wrapper-inner')?.[0];
-		innerWrapper?.classList?.remove('with-ad');
+	private initSlot(slotName: string) {
+		const callback = (payload: { slot: AdSlot }) => {
+			const adSlotPlaceholder = payload?.slot?.element?.parentElement;
+			adSlotPlaceholder?.classList.remove('is-loading');
+			adSlotPlaceholder?.parentElement?.classList.add('with-ad');
 
+			// TODO: Remove this line after https://github.com/Wikia/unified-platform/pull/15086 is merged and deployed
+			adSlotPlaceholder.classList.remove('hide');
+		};
+		communicationService.onSlotEvent(AdSlotEvent.SLOT_LOADED_EVENT, callback, slotName, true);
+	}
+
+	private disableMobileGalleryAdPlaceholder(slotName: string) {
 		const callback = (payload: { slot: AdSlot }) => payload.slot.disable();
 		communicationService.onSlotEvent(AdSlotEvent.SLOT_LOADED_EVENT, callback, slotName, true);
 	}
 
-	private showMobileGalleryAdPlaceholder(slotName: string) {
-		const innerWrapper = document?.getElementsByClassName('lightbox-wrapper-inner')?.[0];
-		innerWrapper?.classList?.add('with-ad');
-
-		// TODO: Remove it
-		document.getElementsByClassName('gallery-leaderboard')?.[0]?.classList?.remove('hide');
-
+	private enableMobileGalleryAdPlaceholder(slotName: string) {
 		const callback = (payload: { slot: AdSlot }) => payload.slot.enable();
 		communicationService.onSlotEvent(AdSlotEvent.SLOT_LOADED_EVENT, callback, slotName, true);
 	}
