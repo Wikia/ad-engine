@@ -135,8 +135,8 @@ export class GalleryLightboxAdsHandler {
 	private initSlot(slotName: string) {
 		const callback = (payload: { slot: AdSlot }) => {
 			const adSlotPlaceholder = payload?.slot?.element?.parentElement;
-			adSlotPlaceholder?.classList.remove('is-loading');
 			adSlotPlaceholder?.parentElement?.classList.add('with-ad');
+			adSlotPlaceholder?.classList.remove('is-loading');
 
 			// TODO: Remove this line after https://github.com/Wikia/unified-platform/pull/15086 is merged and deployed
 			adSlotPlaceholder.classList.remove('hide');
