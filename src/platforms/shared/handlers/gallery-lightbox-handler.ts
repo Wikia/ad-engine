@@ -18,6 +18,7 @@ export interface GalleryLightboxAds {
 @Injectable()
 export class GalleryLightboxAdsHandler {
 	private readonly slotName = 'gallery_leaderboard';
+	private readonly slotPlaceholderClassName = 'gallery-leaderboard';
 	private refreshLock: boolean;
 	private logGroup = 'gallery-lightbox-handler';
 	private isActive: boolean;
@@ -57,8 +58,8 @@ export class GalleryLightboxAdsHandler {
 				this.lockForFewSeconds();
 				this.isActive = true;
 				this.hideFloorAdhesion();
-				this.initSlot(this.slotName);
-				this.enableMobileGalleryAdPlaceholder(this.slotName);
+				this.initSlot();
+				this.enableMobileGalleryAdPlaceholder();
 				utils.logger(this.logGroup, 'Ad placement on Lightbox ready', placementId);
 			},
 			false,
@@ -118,7 +119,7 @@ export class GalleryLightboxAdsHandler {
 				gallerySlot.destroy();
 				utils.logger(this.logGroup, 'Ad placement on Lightbox destroy', placementId);
 				this.isActive = false;
-				this.disableMobileGalleryAdPlaceholder(this.slotName);
+				this.disableMobileGalleryAdPlaceholder();
 				this.showFloorAdhesion();
 			},
 			false,
@@ -132,26 +133,23 @@ export class GalleryLightboxAdsHandler {
 		}, 2000);
 	}
 
-	private initSlot(slotName: string) {
-		const callback = (payload: { slot: AdSlot }) => {
-			const adSlotPlaceholder = payload?.slot?.element?.parentElement;
-			adSlotPlaceholder?.parentElement?.classList.add('with-ad');
-			adSlotPlaceholder?.classList.remove('is-loading');
+	private initSlot() {
+		const adSlotPlaceholder = document.getElementsByClassName(this.slotPlaceholderClassName)?.[0];
+		adSlotPlaceholder?.parentElement?.classList.add('with-ad');
+		adSlotPlaceholder?.classList.remove('is-loading');
 
-			// TODO: Remove this line after https://github.com/Wikia/unified-platform/pull/15086 is merged and deployed
-			adSlotPlaceholder.classList.remove('hide');
-		};
-		communicationService.onSlotEvent(AdSlotEvent.SLOT_LOADED_EVENT, callback, slotName, true);
+		// TODO: Remove this line after https://github.com/Wikia/unified-platform/pull/15086 is merged and deployed
+		adSlotPlaceholder?.classList.remove('hide');
 	}
 
-	private disableMobileGalleryAdPlaceholder(slotName: string) {
+	private disableMobileGalleryAdPlaceholder() {
 		const callback = (payload: { slot: AdSlot }) => payload.slot.disable();
-		communicationService.onSlotEvent(AdSlotEvent.DESTROY_EVENT, callback, slotName, true);
+		communicationService.onSlotEvent(AdSlotEvent.DESTROY_EVENT, callback, this.slotName, true);
 	}
 
-	private enableMobileGalleryAdPlaceholder(slotName: string) {
+	private enableMobileGalleryAdPlaceholder() {
 		const callback = (payload: { slot: AdSlot }) => payload.slot.enable();
-		communicationService.onSlotEvent(AdSlotEvent.SLOT_LOADED_EVENT, callback, slotName, true);
+		communicationService.onSlotEvent(AdSlotEvent.SLOT_LOADED_EVENT, callback, this.slotName, true);
 	}
 
 	private hideFloorAdhesion() {
