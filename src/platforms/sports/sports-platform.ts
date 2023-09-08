@@ -2,7 +2,8 @@ import {
 	AdEngineRunnerSetup,
 	BaseContextSetup,
 	BiddersStateSetup,
-	bootstrapAndGetConsent,
+	bootstrap,
+	ConsentManagementPlatformSetup,
 	ensureGeoCookie,
 	InstantConfigSetup,
 	LabradorSetup,
@@ -12,6 +13,7 @@ import {
 	NoAdsDetector,
 	NoAdsMode,
 	PlatformContextSetup,
+	PreloadedLibrariesSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
@@ -23,6 +25,7 @@ import {
 	IdentitySetup,
 	parallel,
 	ProcessPipeline,
+	sequential,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -48,7 +51,11 @@ export class SportsPlatform {
 			() => document.body.classList.add(`ae-${selectApplication('futhead', 'muthead')}`),
 			() => ensureGeoCookie(),
 			PlatformContextSetup,
-			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
+			() => bootstrap(),
+			parallel(
+				sequential(InstantConfigSetup, PreloadedLibrariesSetup),
+				ConsentManagementPlatformSetup,
+			),
 			TrackingParametersSetup,
 			MetricReporterSetup,
 			MetricReporter,

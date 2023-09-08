@@ -1,7 +1,8 @@
 import {
 	AdEngineRunnerSetup,
 	BiddersStateSetup,
-	bootstrapAndGetConsent,
+	bootstrap,
+	ConsentManagementPlatformSetup,
 	InstantConfigSetup,
 	LabradorSetup,
 	LoadTimesSetup,
@@ -11,6 +12,7 @@ import {
 	NoAdsExperimentSetup,
 	NoAdsMode,
 	PlatformContextSetup,
+	PreloadedLibrariesSetup,
 	SequentialMessagingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
@@ -24,6 +26,7 @@ import {
 	IdentitySetup,
 	parallel,
 	ProcessPipeline,
+	sequential,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
@@ -45,7 +48,11 @@ export class UcpDesktopPlatform {
 		this.pipeline.add(
 			() => context.extend(basicContext),
 			PlatformContextSetup,
-			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
+			() => bootstrap(),
+			parallel(
+				sequential(InstantConfigSetup, PreloadedLibrariesSetup),
+				ConsentManagementPlatformSetup,
+			),
 			TrackingParametersSetup,
 			MetricReporterSetup,
 			MetricReporter,

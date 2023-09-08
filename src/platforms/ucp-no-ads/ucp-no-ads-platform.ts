@@ -1,6 +1,7 @@
 import {
 	BaseContextSetup,
-	bootstrapAndGetConsent,
+	bootstrap,
+	ConsentManagementPlatformSetup,
 	InstantConfigSetup,
 	MetricReporter,
 	MetricReporterSetup,
@@ -23,7 +24,8 @@ export class UcpNoAdsPlatform {
 		this.pipeline.add(
 			UcpNoAdsWikiContextSetup,
 			PlatformContextSetup,
-			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
+			() => bootstrap(),
+			parallel(InstantConfigSetup, ConsentManagementPlatformSetup),
 			TrackingParametersSetup,
 			MetricReporterSetup,
 			MetricReporter,

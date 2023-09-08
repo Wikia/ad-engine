@@ -1,6 +1,7 @@
 import {
 	AdEngineRunnerSetup,
-	bootstrapAndGetConsent,
+	bootstrap,
+	ConsentManagementPlatformSetup,
 	InstantConfigSetup,
 	LabradorSetup,
 	LoadTimesSetup,
@@ -44,7 +45,8 @@ export class F2Platform {
 			() => context.extend(basicContext),
 			() => context.set('state.isMobile', f2env.isPageMobile),
 			PlatformContextSetup,
-			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
+			() => bootstrap(),
+			parallel(InstantConfigSetup, ConsentManagementPlatformSetup),
 			F2IocSetup,
 			TrackingParametersSetup,
 			MetricReporterSetup,

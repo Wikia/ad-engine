@@ -1,6 +1,7 @@
 import {
 	BaseContextSetup,
-	bootstrapAndGetConsent,
+	bootstrap,
+	ConsentManagementPlatformSetup,
 	InstantConfigSetup,
 	NoAdsDetector,
 	NoAdsMode,
@@ -30,7 +31,8 @@ export class BingeBotPlatform {
 	execute(): void {
 		this.pipeline.add(
 			() => context.extend(basicContext),
-			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
+			() => bootstrap(),
+			parallel(InstantConfigSetup, ConsentManagementPlatformSetup),
 			BaseContextSetup,
 			BingeBotSlotsContextSetup,
 			BingeBotTargetingSetup,
