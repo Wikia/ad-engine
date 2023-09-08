@@ -135,6 +135,7 @@ export class PrebidProvider extends BidderProvider {
 					},
 				},
 				userIds: [],
+				auctionDelay: context.get('bidders.prebid.auctionDelay') || 50,
 				syncsPerBidder: 3,
 				syncDelay: 6000,
 			},
@@ -187,8 +188,6 @@ export class PrebidProvider extends BidderProvider {
 	}
 
 	private configureUserSync(): void {
-		this.prebidConfig.userSync.auctionDelay = context.get('bidders.prebid.auctionDelay');
-
 		this.configureLiveRamp();
 		this.configureOzone();
 		this.configureId5();
