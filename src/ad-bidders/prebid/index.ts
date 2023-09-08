@@ -281,6 +281,10 @@ export class PrebidProvider extends BidderProvider {
 		const extPrebidBidders = this.prepareExtPrebidBiders(s2sBidders);
 
 		return {
+			cache: {
+				url: 'https://prebid-server.rubiconproject.com/cache',
+				ignoreBidderCacheKey: true,
+			},
 			s2sConfig: [
 				{
 					accountId: s2sRubiconAccountId,
@@ -290,6 +294,9 @@ export class PrebidProvider extends BidderProvider {
 					userSyncLimit: 8,
 					allowUnknownBidderCodes: true,
 					extPrebid: {
+						cache: {
+							vastxml: { returnCreative: false },
+						},
 						extPrebidBidders,
 					},
 				},
@@ -302,7 +309,7 @@ export class PrebidProvider extends BidderProvider {
 
 		s2sBidders.forEach((name) => {
 			extPrebidBidders[name] = {
-				wrappername: `${s2sRubiconAccountId}_${name}`,
+				wrappername: `${s2sRubiconAccountId}_Web_Server`,
 			};
 		});
 
