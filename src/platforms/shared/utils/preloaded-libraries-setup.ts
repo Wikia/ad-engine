@@ -3,7 +3,6 @@ import {
 	context,
 	DiProcess,
 	InstantConfigService,
-	InstantConfigServiceInterface,
 	intentIQ,
 	pbjsFactory,
 } from '@wikia/ad-engine';
@@ -24,7 +23,7 @@ export class PreloadedLibrariesSetup implements DiProcess {
 
 	private preloadLibraries() {
 		if (this.instantConfig.get('icPrebid')) {
-			context.set('bidders.prebid.libraryUrl', this.getPrebidLibraryUrl(this.instantConfig));
+			context.set('bidders.prebid.libraryUrl', this.getPrebidLibraryUrl());
 
 			pbjsFactory.init().then(() => {
 				if (this.instantConfig.get('icPrebidIntentIQ')) {
@@ -38,8 +37,8 @@ export class PreloadedLibrariesSetup implements DiProcess {
 		}
 	}
 
-	private getPrebidLibraryUrl(instantConfig: InstantConfigServiceInterface): string {
-		let url: string = instantConfig.get('icPrebidVersion', 'latest/min.js');
+	private getPrebidLibraryUrl(): string {
+		let url: string = this.instantConfig.get('icPrebidVersion', 'latest/min.js');
 
 		if (!prebidLibraryUrlPattern.test(url)) {
 			url = 'latest/min.js';
