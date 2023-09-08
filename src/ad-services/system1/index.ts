@@ -20,6 +20,7 @@ const cacheTtl = 86400; // 24 * 3600;
 const blockedBotUserAgents = [
 	'(former https://www.admantx.com + https://integralads.com/about-ias/)',
 	'(https://gumgum.com/verity; verity-support@gumgum.com',
+	'peer39_crawler/1.0',
 ];
 
 export class System1 extends BaseServiceSetup {
