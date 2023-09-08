@@ -90,9 +90,12 @@ describe('PrebidProvider bidder', () => {
 					userSyncLimit: 8,
 					allowUnknownBidderCodes: true,
 					extPrebid: {
+						cache: {
+							vastxml: { returnCreative: false },
+						},
 						extPrebidBidders: {
-							test: { wrappername: '7450_test' },
-							test1: { wrappername: '7450_test1' },
+							test: { wrappername: '7450_Web_Server' },
+							test1: { wrappername: '7450_Web_Server' },
 						},
 					},
 				},
