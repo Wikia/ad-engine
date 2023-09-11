@@ -88,6 +88,8 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 			mappedAdTags[key] = value;
 		}
 
+		context.set('custom.pageType', mappedAdTags['pname']);
+
 		return mappedAdTags;
 	}
 
