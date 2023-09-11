@@ -24,7 +24,7 @@ export class Ozone extends PrebidAdapter {
 		return Ozone.bidderName;
 	}
 
-	prepareConfigForAdUnit(code, { sizes, pos }: PrebidAdSlotConfig): PrebidAdUnit {
+	prepareConfigForAdUnit(code, { sizes, pos, placementId }: PrebidAdSlotConfig): PrebidAdUnit {
 		return {
 			code: code,
 			mediaTypes: {
@@ -36,10 +36,10 @@ export class Ozone extends PrebidAdapter {
 				{
 					bidder: 'ozone',
 					params: {
-						publisherId: 'OZONETEST001',
-						siteId: '4204204201',
-						placementId: '8000000326',
-						pos,
+						publisherId: 'OZONEFAN0001',
+						siteId: '1500000156',
+						placementId: placementId,
+						pos: pos,
 						customData: [
 							{
 								settings: {},
