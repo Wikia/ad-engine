@@ -96,8 +96,8 @@ describe('IntentIQ', () => {
 				}),
 				'3',
 			).to.be.true;
-			expect(targetingServiceStub.calledWithExactly('intent_iq_group', 'A'), '4').to.be.true;
-			expect(targetingServiceStub.calledWithExactly('intent_iq_ppid_group', 'A'), '5').to.be.true;
+			expect(targetingServiceStub.calledWithExactly('intent_iq_group', 'A')).to.be.true;
+			expect(targetingServiceStub.calledWithExactly('intent_iq_ppid_group', 'A')).to.be.true;
 		});
 	});
 
