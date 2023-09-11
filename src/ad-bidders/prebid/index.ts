@@ -20,7 +20,6 @@ import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider
 import { adaptersRegistry } from './adapters-registry';
 import { Ats } from './ats';
 import { id5 } from './id5';
-import { intentIQ } from './intent-iq';
 import { liveRamp } from './live-ramp';
 import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice, roundBucketCpm } from './price-helper';
@@ -214,7 +213,7 @@ export class PrebidProvider extends BidderProvider {
 		}
 	}
 
-	private async configureId5(): Promise<void> {
+	private configureId5(): void {
 		const id5Config = id5.getConfig();
 
 		if (!id5Config) {
@@ -224,26 +223,10 @@ export class PrebidProvider extends BidderProvider {
 		this.prebidConfig.userSync.userIds.push(id5Config);
 
 		if (id5Config.params.abTesting.enabled) {
-			const pbjs: Pbjs = await pbjsFactory.init();
-			await id5.setupAbTesting(pbjs);
+			pbjsFactory.init().then((pbjs: Pbjs) => id5.setupAbTesting(pbjs));
 		}
 
-		this.enableId5Analytics();
-	}
-
-	private enableId5Analytics(): void {
-		if (context.get('bidders.prebid.id5Analytics.enabled')) {
-			utils.logger(logGroup, 'enabling ID5 Analytics');
-
-			(window as any).pbjs.que.push(() => {
-				(window as any).pbjs.enableAnalytics({
-					provider: 'id5Analytics',
-					options: {
-						partnerId: id5.getPartnerId(),
-					},
-				});
-			});
-		}
+		id5.enableAnalytics();
 	}
 
 	private configureTCF(): object {
@@ -376,11 +359,6 @@ export class PrebidProvider extends BidderProvider {
 		};
 
 		pbjs.onEvent('bidResponse', trackBid);
-		pbjs.onEvent(
-			'adRenderSucceeded',
-			(response: { adId: string; bid: PrebidBidResponse; doc: Document | null }) =>
-				intentIQ.reportPrebidWin(response.bid),
-		);
 	}
 
 	private mapResponseToTrackingBidDefinition(response: PrebidBidResponse): TrackingBidDefinition {
@@ -400,8 +378,6 @@ export class PrebidProvider extends BidderProvider {
 		timeout: number = this.timeout,
 	): Promise<void> {
 		const pbjs: Pbjs = await pbjsFactory.init();
-
-		await intentIQ.initialize(pbjs);
 
 		pbjs.requestBids({
 			adUnits,

@@ -1,5 +1,5 @@
 import { IntentIQ } from '@wikia/ad-bidders/prebid/intent-iq';
-import { context, DEFAULT_MAX_DELAY, targetingService, utils } from '@wikia/core';
+import { context, targetingService, utils } from '@wikia/core';
 import { expect } from 'chai';
 import { SinonSpy, SinonStub } from 'sinon';
 import { PbjsStub, stubPbjs } from '../../../core/services/pbjs.stub';
@@ -40,7 +40,9 @@ describe('IntentIQ', () => {
 			.withArgs('services.intentIq.ppid.enabled')
 			.returns(true)
 			.withArgs('services.intentIq.ppid.tracking.enabled')
-			.returns(true);
+			.returns(true)
+			.withArgs('bidders.prebid.auctionDelay')
+			.returns(50);
 
 		window.IntentIqObject = function IntentIqMock(config) {
 			intentIqNewSpy(config);
@@ -62,12 +64,12 @@ describe('IntentIQ', () => {
 		global.sandbox.restore();
 	});
 
-	describe('initialize', () => {
-		it('should not initialize when IntentIQ is disabled', async () => {
+	describe('load', () => {
+		it('should not load when IntentIQ is disabled', async () => {
 			contextStub.withArgs('bidders.prebid.intentIQ').returns(false);
 			const intentIQ = new IntentIQ();
 
-			await intentIQ.initialize(pbjsStub);
+			await intentIQ.load();
 
 			expect(loadScriptStub.notCalled).to.be.true;
 			expect(intentIqNewSpy.notCalled).to.be.true;
@@ -78,7 +80,7 @@ describe('IntentIQ', () => {
 			const targetingServiceStub = global.sandbox.stub(targetingService, 'set');
 			const intentIQ = new IntentIQ();
 
-			await intentIQ.initialize(pbjsStub);
+			await intentIQ.load();
 
 			expect(loadScriptStub.calledOnce).to.be.true;
 			expect(intentIqNewSpy.calledOnce).to.be.true;
@@ -86,15 +88,16 @@ describe('IntentIQ', () => {
 				intentIqNewSpy.calledWithMatch({
 					partner: 1187275693,
 					pbjs: pbjsStub,
-					timeoutInMillis: DEFAULT_MAX_DELAY,
+					timeoutInMillis: 50,
 					ABTestingConfigurationSource: 'percentage',
 					abPercentage: 97,
 					manualWinReportEnabled: true,
 					browserBlackList: 'Chrome',
 				}),
+				'3',
 			).to.be.true;
-			expect(targetingServiceStub.calledWithExactly('intent_iq_group', 'A')).to.be.true;
-			expect(targetingServiceStub.calledWithExactly('intent_iq_ppid_group', 'A')).to.be.true;
+			expect(targetingServiceStub.calledWithExactly('intent_iq_group', 'A'), '4').to.be.true;
+			expect(targetingServiceStub.calledWithExactly('intent_iq_ppid_group', 'A'), '5').to.be.true;
 		});
 	});
 
@@ -124,7 +127,7 @@ describe('IntentIQ', () => {
 			});
 
 			const intentIQ = new IntentIQ();
-			await intentIQ.initialize(pbjsStub);
+			await intentIQ.load();
 
 			await intentIQ.reportPrebidWin(bid);
 
@@ -218,7 +221,7 @@ describe('IntentIQ', () => {
 			const intentIQ = new IntentIQ();
 			const trackPpidSpy = global.sandbox.spy(intentIQ, 'trackPpid');
 
-			await intentIQ.initialize(pbjsStub);
+			await intentIQ.load();
 
 			expect(trackPpidSpy.calledOnce).to.be.false;
 		});

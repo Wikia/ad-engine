@@ -84,6 +84,21 @@ class Id5 {
 		}
 	}
 
+	enableAnalytics(): void {
+		if (context.get('bidders.prebid.id5Analytics.enabled')) {
+			utils.logger(logGroup, 'enabling ID5 Analytics');
+
+			(window as any).pbjs.que.push(() => {
+				(window as any).pbjs.enableAnalytics({
+					provider: 'id5Analytics',
+					options: {
+						partnerId: id5.getPartnerId(),
+					},
+				});
+			});
+		}
+	}
+
 	private getControlGroupFromStorage(): id5GroupValue {
 		const storageValue = this.storage.getItem(this.id5GroupKey);
 

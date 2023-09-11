@@ -20,6 +20,8 @@ const eventsToTrack = {
 	intentiq_ppid_not_set_on_time: eventsRepository.INTENTIQ_PPID_NOT_SET_ON_TIME,
 	lotame_loaded: eventsRepository.LOTAME_LOADED,
 	lotame_ready: eventsRepository.LOTAME_READY,
+	intentIq_loaded: eventsRepository.INTENTIQ_LOADED,
+	intentIq_ready: eventsRepository.INTENTIQ_READY,
 };
 
 export class LoadTimesTracker {

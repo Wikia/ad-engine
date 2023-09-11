@@ -1,3 +1,4 @@
+import { intentIQ } from '@wikia/ad-bidders';
 import { Audigent } from '@wikia/ad-services';
 import { context, InstantConfigService, pbjsFactory } from '@wikia/core';
 import { Binding, Container } from '@wikia/dependency-injection';
@@ -41,16 +42,22 @@ describe('InstantConfigSetup', () => {
 			.withArgs('icPrebid')
 			.returns(true)
 			.withArgs('icAudigent')
+			.returns(true)
+			.withArgs('icPrebidIntentIQ')
 			.returns(true);
 		const contextSetStub = global.sandbox.stub(context, 'set');
-		const pbjsFactoryInitStub = global.sandbox.stub(pbjsFactory, 'init').resolves();
-		const audigentLoadSegmentLibraryStub = global.sandbox.stub(Audigent, 'loadSegmentLibrary');
+		const pbjsFactoryInitStub = global.sandbox.stub(pbjsFactory, 'init').resolvesThis();
+		const audigentLoadSegmentLibraryStub = global.sandbox
+			.stub(Audigent, 'loadSegmentLibrary')
+			.resolvesThis();
+		const intentIqStub = global.sandbox.stub(intentIQ, 'load').resolvesThis();
 		const instantConfigSetup = new InstantConfigSetup(container);
 
 		await instantConfigSetup.execute();
 
 		expect(contextSetStub.calledOnceWith('bidders.prebid.libraryUrl')).to.be.true;
 		expect(pbjsFactoryInitStub.calledOnce).to.be.true;
+		expect(intentIqStub.calledOnce).to.be.true;
 		expect(audigentLoadSegmentLibraryStub.calledOnce).to.be.true;
 	});
 });
