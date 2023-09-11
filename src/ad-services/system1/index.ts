@@ -17,6 +17,12 @@ const themes = {
 const cacheKey = 'adEngine_system1';
 const cacheTtl = 86400; // 24 * 3600;
 
+const blockedBotUserAgents = [
+	'(former https://www.admantx.com + https://integralads.com/about-ias/)',
+	'(https://gumgum.com/verity; verity-support@gumgum.com',
+	'peer39_crawler/1.0',
+];
+
 export class System1 extends BaseServiceSetup {
 	private isLoaded = false;
 
@@ -26,7 +32,7 @@ export class System1 extends BaseServiceSetup {
 			return Promise.resolve();
 		}
 
-		if (!this.isEnabled('icSystem1', false) || utils.isCoppaSubject()) {
+		if (!this.isEnabled('icSystem1', false) || utils.isCoppaSubject() || this.isBot()) {
 			utils.logger(logGroup, 'disabled');
 			return Promise.resolve();
 		}
@@ -148,5 +154,11 @@ export class System1 extends BaseServiceSetup {
 	private onSetupRejected(message: string): void {
 		utils.logger(logGroup, 'Error: ' + message);
 		communicationService.emit(eventsRepository.SYSTEM1_FAILED);
+	}
+
+	private isBot(): boolean {
+		const { userAgent } = window.navigator;
+
+		return blockedBotUserAgents.some((botUserAgent) => userAgent.includes(botUserAgent));
 	}
 }
