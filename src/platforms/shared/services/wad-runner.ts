@@ -33,7 +33,7 @@ export class WadRunner extends BaseServiceSetup {
 		const isBabDetected = await this.detector.run();
 		context.set('options.wad.blocking', isBabDetected);
 
-		trackBab(isBabDetected);
+		trackBab(isBabDetected, 'wad-runner');
 
 		if (isBabDetected) {
 			this.onDetected();
