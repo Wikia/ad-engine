@@ -82,10 +82,7 @@
 .gpt-ad {
 	text-align: center;
 
-	&.hide,
-	& .hide {
-		display: none !important;
-	}
+	@include hidden-ad();
 
 	& > div > iframe {
 		display: block;
@@ -98,15 +95,13 @@
 		margin: 20px auto;
 	}
 
-	&.hide {
-		display: none !important;
-	}
+	@include hidden-ad();
 }
 
-.top-ads-container.hide,
-.bottom-ads-container.hide,
-.ad-slot-placeholder.hide {
-	display: none !important;
+.top-ads-container,
+.bottom-ads-container,
+.ad-slot-placeholder {
+	@include hidden-ad();
 }
 
 .ntv-ad {
@@ -211,10 +206,7 @@
 		}
 	}
 
-	&.hide,
-	.hide {
-		display: none;
-	}
+	@include hidden-ad(false);
 }
 
 body.bab-detected {

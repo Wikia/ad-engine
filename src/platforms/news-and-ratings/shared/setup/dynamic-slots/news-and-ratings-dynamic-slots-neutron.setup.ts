@@ -1,5 +1,6 @@
 import { insertSlots, SlotSetupDefinition } from '@platforms/shared';
 import {
+	AdSlot,
 	AdSlotEvent,
 	communicationService,
 	context,
@@ -144,7 +145,7 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 				insertMethod: 'alter',
 				anchorSelector: '',
 				anchorElement: domSlotElement,
-				classList: ['hide', 'ad-slot'],
+				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
