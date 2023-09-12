@@ -6,6 +6,7 @@ export class Ozone extends PrebidAdapter {
 	static bidderName = 'ozone';
 	dcn: string;
 	customTargeting: Dictionary;
+	private testGroup: string;
 
 	constructor(options) {
 		super(options);
@@ -18,13 +19,16 @@ export class Ozone extends PrebidAdapter {
 			lang: [targetingService.get('wikiLanguage') || targetingService.get('lang') || 'en'],
 		};
 		this.dcn = options.dcn;
+		this.testGroup = Math.floor(Math.random() * 100).toString();
+
+		targetingService.set('testgroup', this.testGroup);
 	}
 
 	get bidderName(): string {
 		return Ozone.bidderName;
 	}
 
-	prepareConfigForAdUnit(code, { sizes, pos }: PrebidAdSlotConfig): PrebidAdUnit {
+	prepareConfigForAdUnit(code, { sizes, pos, placementId }: PrebidAdSlotConfig): PrebidAdUnit {
 		return {
 			code: code,
 			mediaTypes: {
@@ -36,16 +40,17 @@ export class Ozone extends PrebidAdapter {
 				{
 					bidder: 'ozone',
 					params: {
-						publisherId: 'OZONETEST001',
-						siteId: '4204204201',
-						placementId: '8000000326',
-						pos,
+						publisherId: 'OZONEFAN0001',
+						siteId: '1500000156',
+						placementId: placementId,
+						pos: pos,
 						customData: [
 							{
 								settings: {},
 								targeting: {
 									...this.getTargeting(code, this.customTargeting),
 								},
+								testgroup: this.testGroup,
 							},
 						],
 					},

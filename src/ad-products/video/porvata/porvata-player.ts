@@ -1,4 +1,4 @@
-import { AdSlotStatus, Dictionary, utils } from '@ad-engine/core';
+import { AdSlot, AdSlotStatus, Dictionary, utils } from '@ad-engine/core';
 import { GoogleImaWrapper } from './google-ima-wrapper';
 import { NativeFullscreen } from './native-fullscreen';
 import { PorvataDom } from './porvata-dom';
@@ -72,10 +72,10 @@ export class PorvataPlayer {
 		this.addEventListener('allAdsCompleted', () => this.setState('stopped'));
 
 		this.addEventListener('adCanPlay', () =>
-			this.dom.getInterfaceContainer().classList.remove('hide'),
+			this.dom.getInterfaceContainer().classList.remove(AdSlot.HIDDEN_AD_CLASS),
 		);
 		this.addEventListener('wikiaAdCompleted', () =>
-			this.dom.getInterfaceContainer().classList.add('hide'),
+			this.dom.getInterfaceContainer().classList.add(AdSlot.HIDDEN_AD_CLASS),
 		);
 	}
 
