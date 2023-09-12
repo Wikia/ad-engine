@@ -16,6 +16,7 @@ export class BiddersStateSetup implements DiProcess {
 		medianet: 'icPrebidMedianet',
 		nobid: 'icPrebidNobid',
 		ogury: 'icPrebidOgury',
+		ozone: 'icPrebidOzone',
 		openx: 'icPrebidOpenX',
 		pubmatic: 'icPrebidPubmatic',
 		rubicon_display: 'icPrebidRubiconDisplay',
@@ -62,6 +63,10 @@ export class BiddersStateSetup implements DiProcess {
 				this.enableIfApplicable('testBidder', 'icPrebidTestBidder');
 			}
 
+			context.set(
+				'bidders.prebid.auctionDelay',
+				this.instantConfig.get('icPrebidAuctionDelay', 50),
+			);
 			context.set('bidders.prebid.intentIQ', this.instantConfig.get('icPrebidIntentIQ', false));
 			context.set('bidders.prebid.id5', this.instantConfig.get('icPrebidId5', false));
 			context.set(

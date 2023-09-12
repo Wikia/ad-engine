@@ -276,7 +276,11 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 				insertMethod: 'before',
 				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
-			activator: () => activateFloorAdhesionOnUAP(activateFloorAdhesion),
+			activator: () =>
+				activateFloorAdhesionOnUAP(
+					activateFloorAdhesion,
+					!context.get('options.isFloorAdhesionNonUapApplicable'),
+				),
 		};
 	}
 

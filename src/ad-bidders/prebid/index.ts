@@ -135,6 +135,7 @@ export class PrebidProvider extends BidderProvider {
 					},
 				},
 				userIds: [],
+				auctionDelay: context.get('bidders.prebid.auctionDelay') || 50,
 				syncsPerBidder: 3,
 				syncDelay: 6000,
 			},
@@ -188,7 +189,21 @@ export class PrebidProvider extends BidderProvider {
 
 	private configureUserSync(): void {
 		this.configureLiveRamp();
+		this.configureOzone();
 		this.configureId5();
+	}
+
+	private configureOzone(): void {
+		if (context.get('bidders.prebid.ozone')) {
+			this.prebidConfig.userSync.userIds.push({
+				name: 'pubCommonId',
+				storage: {
+					type: 'cookie',
+					name: '_pubcid',
+					expires: 365,
+				},
+			});
+		}
 	}
 
 	private configureLiveRamp(): void {
@@ -207,7 +222,6 @@ export class PrebidProvider extends BidderProvider {
 		}
 
 		this.prebidConfig.userSync.userIds.push(id5Config);
-		this.prebidConfig.userSync.auctionDelay = 50;
 
 		if (id5Config.params.abTesting.enabled) {
 			const pbjs: Pbjs = await pbjsFactory.init();

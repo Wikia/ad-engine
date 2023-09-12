@@ -10,7 +10,7 @@ export class GptSetup extends BaseServiceSetup {
 	}
 
 	call(): Promise<void> {
-		const GPT_LIBRARY_URL = '//www.googletagservices.com/tag/js/gpt.js';
+		const GPT_LIBRARY_URL = 'https://securepubads.g.doubleclick.net/tag/js/gpt.js';
 
 		utils.logger('gpt-provider', 'loading GPT...');
 		return utils.scriptLoader.loadScript(GPT_LIBRARY_URL).then(() => {
