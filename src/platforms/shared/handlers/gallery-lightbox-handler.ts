@@ -18,7 +18,6 @@ export interface GalleryLightboxAds {
 @Injectable()
 export class GalleryLightboxAdsHandler {
 	private readonly slotName = 'gallery_leaderboard';
-	private readonly slotPlaceholderClassName = 'gallery-leaderboard';
 	private refreshLock: boolean;
 	private logGroup = 'gallery-lightbox-handler';
 	private isActive: boolean;
@@ -134,12 +133,15 @@ export class GalleryLightboxAdsHandler {
 	}
 
 	private initSlot() {
-		const adSlotPlaceholder = document.getElementsByClassName(this.slotPlaceholderClassName)?.[0];
-		adSlotPlaceholder?.parentElement?.classList.add('with-ad');
-		adSlotPlaceholder?.classList.remove('is-loading');
-
-		// TODO: Remove this line after https://github.com/Wikia/unified-platform/pull/15086 is merged and deployed
-		adSlotPlaceholder?.classList.remove('hide');
+		const callback = ({ slot }: { slot: AdSlot }) => {
+			console.log(
+				'🚀 ~ file: gallery-lightbox-handler.ts:139 ~ GalleryLightboxAdsHandler ~ callback ~ slot:',
+				slot,
+			);
+			slot?.element?.parentElement?.parentElement?.classList.add('with-ad');
+			slot?.element?.parentElement?.classList.remove('hide');
+		};
+		communicationService.onSlotEvent(AdSlotEvent.SLOT_LOADED_EVENT, callback, this.slotName, true);
 	}
 
 	private disableMobileGalleryAdPlaceholder() {
