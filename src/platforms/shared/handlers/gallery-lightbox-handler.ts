@@ -57,7 +57,7 @@ export class GalleryLightboxAdsHandler {
 				this.lockForFewSeconds();
 				this.isActive = true;
 				this.hideFloorAdhesion();
-				this.enableMobileGalleryAdPlaceholder();
+				this.initMobileGalleryAdPlaceholder();
 				utils.logger(this.logGroup, 'Ad placement on Lightbox ready', placementId);
 			},
 			false,
@@ -117,7 +117,6 @@ export class GalleryLightboxAdsHandler {
 				gallerySlot.destroy();
 				utils.logger(this.logGroup, 'Ad placement on Lightbox destroy', placementId);
 				this.isActive = false;
-				this.disableMobileGalleryAdPlaceholder();
 				this.showFloorAdhesion();
 			},
 			false,
@@ -131,18 +130,13 @@ export class GalleryLightboxAdsHandler {
 		}, 2000);
 	}
 
-	private enableMobileGalleryAdPlaceholder() {
+	private initMobileGalleryAdPlaceholder() {
 		const callback = ({ slot }: { slot: AdSlot }) => {
 			slot?.element?.parentElement?.parentElement?.classList.add('with-ad');
 			slot?.element?.parentElement?.classList.remove('hide');
 			slot?.enable();
 		};
 		communicationService.onSlotEvent(AdSlotEvent.SLOT_LOADED_EVENT, callback, this.slotName, true);
-	}
-
-	private disableMobileGalleryAdPlaceholder() {
-		const callback = (payload: { slot: AdSlot }) => payload.slot.disable();
-		communicationService.onSlotEvent(AdSlotEvent.DESTROY_EVENT, callback, this.slotName, true);
 	}
 
 	private hideFloorAdhesion() {
