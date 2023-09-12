@@ -24,6 +24,7 @@ import {
 	IdentitySetup,
 	parallel,
 	ProcessPipeline,
+	whenPageLoaded,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
@@ -61,15 +62,17 @@ export class UcpDesktopPlatform {
 			UcpDesktopTemplatesSetup,
 			SequentialMessagingSetup,
 			BiddersStateSetup,
-			conditional(() => this.noAdsDetector.isAdsMode(), {
-				yes: UcpDesktopAdsMode,
-				no: NoAdsMode,
-			}),
-			NoAdsExperimentSetup,
-			LabradorSetup,
-			TrackingSetup,
-			AdEngineRunnerSetup,
-			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
+			whenPageLoaded(
+				conditional(() => this.noAdsDetector.isAdsMode(), {
+					yes: UcpDesktopAdsMode,
+					no: NoAdsMode,
+				}),
+				NoAdsExperimentSetup,
+				LabradorSetup,
+				TrackingSetup,
+				AdEngineRunnerSetup,
+				() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
+			),
 		);
 
 		this.pipeline.execute();
