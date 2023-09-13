@@ -65,6 +65,8 @@ const videoGranularity = {
 	],
 };
 
+const s2sRubiconAccountId = 7450;
+
 interface PrebidConfig extends BidderConfig {
 	[bidderName: string]: { enabled: boolean; slots: Dictionary } | boolean;
 }
@@ -149,6 +151,7 @@ export class PrebidProvider extends BidderProvider {
 			...this.prebidConfig,
 			...this.configureTargeting(),
 			...this.configureTCF(),
+			...this.configureS2sBidding(),
 		};
 
 		this.configureUserSync();
@@ -265,6 +268,52 @@ export class PrebidProvider extends BidderProvider {
 		}
 
 		return {};
+	}
+
+	private configureS2sBidding(): object {
+		if (!context.get('bidders.s2s.enabled')) {
+			return;
+		}
+
+		const s2sBidders = context.get('bidders.s2s.bidders') || [];
+		utils.logger(logGroup, 'Prebid s2s enabled', s2sBidders);
+
+		const extPrebidBidders = this.prepareExtPrebidBiders(s2sBidders);
+
+		return {
+			cache: {
+				url: 'https://prebid-server.rubiconproject.com/cache',
+				ignoreBidderCacheKey: true,
+			},
+			s2sConfig: [
+				{
+					accountId: s2sRubiconAccountId,
+					bidders: s2sBidders,
+					defaultVendor: 'rubicon',
+					coopSync: true,
+					userSyncLimit: 8,
+					allowUnknownBidderCodes: true,
+					extPrebid: {
+						cache: {
+							vastxml: { returnCreative: false },
+						},
+						extPrebidBidders,
+					},
+				},
+			],
+		};
+	}
+
+	private prepareExtPrebidBiders(s2sBidders: string[]): Record<string, { wrappername: string }> {
+		const extPrebidBidders: Record<string, { wrappername: string }> = {};
+
+		s2sBidders.forEach((name) => {
+			extPrebidBidders[name] = {
+				wrappername: `${s2sRubiconAccountId}_Web_Server`,
+			};
+		});
+
+		return extPrebidBidders;
 	}
 
 	async configureAdUnits(adUnits: PrebidAdUnit[] = []): Promise<void> {
