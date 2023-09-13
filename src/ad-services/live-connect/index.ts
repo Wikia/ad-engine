@@ -114,7 +114,7 @@ export class LiveConnect extends BaseServiceSetup {
 		if (this.storageConfig.type === 'local') {
 			this.storage = localCache;
 		} else {
-			this.storage = new UniversalStorage(window.sessionStorage);
+			this.storage = new UniversalStorage(() => window.sessionStorage);
 		}
 	}
 

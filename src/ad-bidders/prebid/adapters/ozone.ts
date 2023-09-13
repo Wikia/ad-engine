@@ -6,6 +6,7 @@ export class Ozone extends PrebidAdapter {
 	static bidderName = 'ozone';
 	dcn: string;
 	customTargeting: Dictionary;
+	private testGroup: string;
 
 	constructor(options) {
 		super(options);
@@ -18,6 +19,9 @@ export class Ozone extends PrebidAdapter {
 			lang: [targetingService.get('wikiLanguage') || targetingService.get('lang') || 'en'],
 		};
 		this.dcn = options.dcn;
+		this.testGroup = Math.floor(Math.random() * 100).toString();
+
+		targetingService.set('testgroup', this.testGroup);
 	}
 
 	get bidderName(): string {
@@ -46,6 +50,7 @@ export class Ozone extends PrebidAdapter {
 								targeting: {
 									...this.getTargeting(code, this.customTargeting),
 								},
+								testgroup: this.testGroup,
 							},
 						],
 					},

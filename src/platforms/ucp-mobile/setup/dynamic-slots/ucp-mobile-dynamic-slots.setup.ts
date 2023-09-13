@@ -9,6 +9,7 @@ import {
 	slotsContext,
 } from '@platforms/shared';
 import {
+	AdSlot,
 	AdSlotEvent,
 	AdSlotStatus,
 	btfBlockerService,
@@ -63,7 +64,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				slotName: Nativo.FEED_AD_SLOT_NAME,
 				anchorSelector: '.recirculation-prefooter',
 				insertMethod: 'before',
-				classList: ['ntv-ad', 'hide'],
+				classList: ['ntv-ad', AdSlot.HIDDEN_AD_CLASS],
 			}),
 		]);
 
@@ -149,7 +150,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 							slotImpactWatcher.request({
 								id: icpSlotName,
 								priority: 6,
-								breakCallback: () => slot.getPlaceholder()?.classList.add('hide'),
+								breakCallback: () => slot.getPlaceholder()?.classList.add(AdSlot.HIDDEN_AD_CLASS),
 							});
 							communicationService.emit(eventsRepository.ANYCLIP_LATE_INJECT);
 						});
@@ -219,7 +220,9 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		const disableFloorAdhesion = () => {
 			slotService.disable(slotName);
 			slotImpactWatcher.disable([slotName]);
-			document.getElementById('floor_adhesion_anchor')?.classList.add('hide');
+			document
+				.getElementById('floor_adhesion_anchor')
+				?.classList.add('hide', AdSlot.HIDDEN_AD_CLASS);
 		};
 
 		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {

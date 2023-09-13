@@ -1,5 +1,5 @@
 import { SlotSetupDefinition } from '@platforms/shared';
-import { context } from '@wikia/ad-engine';
+import { AdSlot, context } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class SportsSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: `#${slotName}`,
 				insertMethod: 'prepend',
-				classList: ['hide', 'ad-slot'],
+				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			activator: () => {
 				if (lazyLoaded) {
