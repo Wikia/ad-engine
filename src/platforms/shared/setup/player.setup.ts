@@ -12,7 +12,7 @@ const logGroup = 'player-setup';
 export class PlayerSetup extends BaseServiceSetup {
 	call() {
 		const showAds = !context.get('options.wad.blocking');
-		const strategyRulesEnabled = true;
+		const strategyRulesEnabled = context.get('options.video.enableStrategyRules');
 
 		if (showAds) {
 			utils.logger(logGroup, 'with ads');
