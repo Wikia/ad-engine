@@ -1,7 +1,8 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { InstantConfigCacheStorageService } from '@wikia/instant-config-loader';
+import { utils } from '../index';
 import { CookieStorageAdapter } from './cookie-storage-adapter';
-import { deserializeCache, serializeCache } from './instant-config-cache-storage-serializer';
+import { deserializeCache } from './instant-config-cache-storage-serializer';
 import { UniversalStorage } from './universal-storage';
 
 export interface CacheDictionary {
@@ -15,6 +16,8 @@ export interface CacheData {
 	result: boolean;
 	withCookie?: boolean;
 }
+
+const logGroup = 'instant-config-service';
 
 export class InstantConfigCacheStorage implements InstantConfigCacheStorageService {
 	private static instance: InstantConfigCacheStorage;
@@ -38,7 +41,7 @@ export class InstantConfigCacheStorage implements InstantConfigCacheStorageServi
 	resetCache(): void {
 		const serializedCache = this.cookieStorage.getItem<string>(this.cacheKey) || '';
 		this.cacheStorage = deserializeCache(serializedCache);
-		communicationService.emit(eventsRepository.AD_ENGINE_INSTANT_CONFIG_CACHE_RESET);
+		utils.logger(logGroup, 'reset cache', this.cacheStorage);
 	}
 
 	get(id: string): CacheData {
@@ -51,23 +54,10 @@ export class InstantConfigCacheStorage implements InstantConfigCacheStorageServi
 		if (data.withCookie) {
 			communicationService.on(eventsRepository.AD_ENGINE_CONSENT_READY, ({ gdprConsent }) => {
 				if (gdprConsent) {
-					this.synchronizeCookie();
+					this.resetCache();
 				}
 			});
 		}
-	}
-
-	private synchronizeCookie(): void {
-		const cacheDictionaryWithCookie: CacheDictionary = Object.keys(this.cacheStorage)
-			.map((key) => ({
-				key,
-				value: this.cacheStorage[key],
-			}))
-			.filter(({ value }) => value.withCookie)
-			.reduce((result, { key, value }) => ({ ...result, [key]: value }), {});
-
-		const cacheToSave = serializeCache(cacheDictionaryWithCookie);
-		this.cookieStorage.setItem(this.cacheKey, cacheToSave);
 	}
 
 	/**
