@@ -6,7 +6,10 @@ import { DataWarehouseTracker } from './data-warehouse';
  * @param {'wad-runner' | 'bt'} detector source of Ad Block detection
  * @returns {void}
  */
-export function trackBab(isBabDetected: boolean, detector: 'wad-runner' | 'bt'): void {
+export function trackBab(
+	isBabDetected: boolean,
+	detector: 'wad-runner' | 'wad-runner-bt' | 'bt',
+): void {
 	const dataWarehouseTracker = new DataWarehouseTracker();
 
 	dataWarehouseTracker.track({
