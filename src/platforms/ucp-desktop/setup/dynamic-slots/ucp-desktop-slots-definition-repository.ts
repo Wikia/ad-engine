@@ -232,14 +232,24 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 			return;
 		}
 
+		const isAnyClipExperimentEnabled = true;
+
 		return {
-			slotCreatorConfig: {
-				slotName,
-				anchorSelector: context.get('templates.incontentAnchorSelector'),
-				anchorPosition: 'belowFirstViewport',
-				avoidConflictWith: ['.incontent-leaderboard'],
-				insertMethod: 'before',
-			},
+			slotCreatorConfig: isAnyClipExperimentEnabled
+				? {
+						slotName,
+						anchorSelector: '.page-content',
+						avoidConflictWith: ['.incontent-leaderboard'],
+						insertMethod: 'before',
+						classList: ['anyclip-experiment'],
+				  }
+				: {
+						slotName,
+						anchorSelector: context.get('templates.incontentAnchorSelector'),
+						anchorPosition: 'belowFirstViewport',
+						avoidConflictWith: ['.incontent-leaderboard'],
+						insertMethod: 'before',
+				  },
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
 			},
