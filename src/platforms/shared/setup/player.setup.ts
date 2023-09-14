@@ -14,22 +14,17 @@ export class PlayerSetup extends BaseServiceSetup {
 		const showAds = !context.get('options.wad.blocking');
 		const strategyRulesEnabled = context.get('options.video.enableStrategyRules');
 
-		if (showAds) {
-			utils.logger(logGroup, 'with ads');
+		if (showAds && !strategyRulesEnabled) {
+			utils.logger(logGroup, 'JWP with ads controlled by AdEngine enabled');
 
-			if (!strategyRulesEnabled) {
-				new JWPlayerManager().manage();
-			} else {
-				utils.logger(
-					logGroup,
-					'JWP Strategy Rules enabled - AdEngine does not control ads in JWP anymore',
-				);
-			}
-		} else {
-			utils.logger(logGroup, 'ad block detected, without ads');
-		}
+			new JWPlayerManager().manage();
+			communicationService.dispatch(jwpSetup({ showAds: showAds, autoplayDisabled: false }));
+		} else if (strategyRulesEnabled) {
+			utils.logger(
+				logGroup,
+				'JWP Strategy Rules enabled - AdEngine does not control ads in JWP anymore',
+			);
 
-		if (strategyRulesEnabled) {
 			communicationService.dispatch(
 				jwpSetup({
 					showAds: showAds,
@@ -39,7 +34,8 @@ export class PlayerSetup extends BaseServiceSetup {
 				}),
 			);
 		} else {
-			communicationService.dispatch(jwpSetup({ showAds: showAds, autoplayDisabled: false }));
+			utils.logger(logGroup, 'ad block detected, without ads');
+			communicationService.dispatch(jwpSetup({ showAds: false, autoplayDisabled: false }));
 		}
 	}
 
@@ -52,7 +48,7 @@ export class PlayerSetup extends BaseServiceSetup {
 				adProduct: 'featured',
 				slotNameSuffix: '',
 			},
-		})
+		});
 
 		return utils.buildVastUrl(16 / 9, slotName, {
 			videoAdUnitId,
