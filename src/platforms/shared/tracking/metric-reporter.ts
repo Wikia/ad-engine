@@ -96,6 +96,13 @@ export class MetricReporter {
 		});
 	}
 
+	public trackLoadTimeVarianted(variant: string): void {
+		this.sendToMeteringSystem({
+			action: `init-variant-${variant}`,
+			duration: Math.round(utils.getTimeDelta()),
+		});
+	}
+
 	private trackGamSlotRequest(): void {
 		communicationService.onSlotEvent(AdSlotEvent.SLOT_REQUESTED_EVENT, ({ slot }) => {
 			this.sendSlotInfoToMeteringSystem(slot, 'request');
