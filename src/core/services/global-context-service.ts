@@ -74,6 +74,10 @@ export class GlobalContextService {
 		}
 		utils.logger(this.logGroup, 'Attempting to retrieve invalid category in context!');
 	}
+
+	hasBundle(key: string): boolean {
+		return window.fandomContext?.site?.tags?.bundles?.includes(key);
+	}
 }
 
 export const globalContextService = new GlobalContextService();
