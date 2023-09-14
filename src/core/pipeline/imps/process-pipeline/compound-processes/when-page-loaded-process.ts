@@ -17,7 +17,7 @@ class WhenPageLoadedProcess<T> implements CompoundProcess<ProcessStepUnion<T>[]>
 		const pipeline = this.container.get(ProcessPipeline);
 
 		if (!waitingForPageLoadedActivated) {
-			new MetricReporter().trackLoadTimeVarianted('plw-disabled');
+			new MetricReporter().setTrackingVariant('plw-disabled').trackLoadTimeVarianted();
 			return pipeline.add(...payload).execute();
 		}
 
@@ -46,7 +46,7 @@ class WhenPageLoadedProcess<T> implements CompoundProcess<ProcessStepUnion<T>[]>
 		}
 
 		this.fired = true;
-		new MetricReporter().trackLoadTimeVarianted('plw-enabled');
+		new MetricReporter().setTrackingVariant('plw-enabled').trackLoadTimeVarianted();
 		return pipeline.add(...payload).execute();
 	}
 }

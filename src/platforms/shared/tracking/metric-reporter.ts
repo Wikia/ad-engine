@@ -95,9 +95,15 @@ export class MetricReporter {
 		});
 	}
 
-	public trackLoadTimeVarianted(variant: string): void {
+	public setTrackingVariant(variant: string): this {
+		context.set('metering.system.additional.variant.plw', variant);
+		return this;
+	}
+
+	public trackLoadTimeVarianted(): void {
+		const variant = context.get('metering.system.additional.variant.plw');
 		this.sendToMeteringSystem({
-			action: `init-variant-${variant}`,
+			action: `load-variant-${variant}`,
 			duration: Math.round(utils.getTimeDelta()),
 		});
 	}
@@ -105,6 +111,19 @@ export class MetricReporter {
 	private trackGamSlotRequest(): void {
 		communicationService.onSlotEvent(AdSlotEvent.SLOT_REQUESTED_EVENT, ({ slot }) => {
 			this.sendSlotInfoToMeteringSystem(slot, 'request');
+			this.trackGamSlotTimedInfo(slot, 'request');
+		});
+	}
+
+	private trackGamSlotTimedInfo(slot: AdSlot, state: string): void {
+		const variant = context.get('metering.system.additional.variant.plw');
+		if (!variant || !REPORTABLE_SLOTS.stateMetric.includes(slot.getSlotName())) {
+			return;
+		}
+
+		this.sendToMeteringSystem({
+			action: `${slot.getSlotName()}-${state}-variant-${variant}`,
+			duration: Math.round(utils.getTimeDelta()),
 		});
 	}
 
