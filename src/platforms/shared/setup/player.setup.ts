@@ -46,15 +46,16 @@ export class PlayerSetup extends BaseServiceSetup {
 	private generateVastUrlForJWPlayer() {
 		const slotName = 'featured';
 		const src = context.get('src');
+		const videoAdUnitId = utils.stringBuilder.build(context.get('slots.featured.videoAdUnit'), {
+			slotConfig: {
+				group: 'VIDEO',
+				adProduct: 'featured',
+				slotNameSuffix: '',
+			},
+		})
 
 		return utils.buildVastUrl(16 / 9, slotName, {
-			videoAdUnitId: utils.stringBuilder.build(context.get('slots.featured.videoAdUnit'), {
-				slotConfig: {
-					group: 'VIDEO',
-					adProduct: 'featured',
-					slotNameSuffix: '',
-				},
-			}),
+			videoAdUnitId,
 			correlator: Math.round(Math.random() * 10000000000),
 			vpos: 'preroll',
 			customParams: `src=${src}&pos=${slotName}&rv=1`,
