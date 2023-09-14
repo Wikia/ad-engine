@@ -41,6 +41,7 @@ export class InstantConfigCacheStorage implements InstantConfigCacheStorageServi
 	resetCache(): void {
 		const serializedCache = this.cookieStorage.getItem<string>(this.cacheKey) || '';
 		this.cacheStorage = deserializeCache(serializedCache);
+		communicationService.emit(eventsRepository.AD_ENGINE_INSTANT_CONFIG_CACHE_RESET);
 		utils.logger(logGroup, 'reset cache', this.cacheStorage);
 	}
 
