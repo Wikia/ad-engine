@@ -136,7 +136,17 @@ export class GalleryLightboxAdsHandler {
 			slot?.element?.parentElement?.classList.remove(AdSlot.HIDDEN_AD_CLASS);
 			slot?.enable();
 		};
-		communicationService.onSlotEvent(AdSlotEvent.SLOT_LOADED_EVENT, callback, this.slotName, true);
+		const adSlot = slotService.get('gallery_leaderboard');
+		if (adSlot) {
+			callback({ slot: adSlot });
+		} else {
+			communicationService.onSlotEvent(
+				AdSlotEvent.SLOT_LOADED_EVENT,
+				callback,
+				this.slotName,
+				true,
+			);
+		}
 	}
 
 	private hideFloorAdhesion() {
