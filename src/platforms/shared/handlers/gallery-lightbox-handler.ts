@@ -133,7 +133,7 @@ export class GalleryLightboxAdsHandler {
 	private initMobileGalleryAdPlaceholder() {
 		const callback = ({ slot }: { slot: AdSlot }) => {
 			slot?.element?.parentElement?.parentElement?.classList.add('with-ad');
-			slot?.element?.parentElement?.classList.remove('hide');
+			slot?.element?.parentElement?.classList.remove(AdSlot.HIDDEN_AD_CLASS);
 			slot?.enable();
 		};
 		communicationService.onSlotEvent(AdSlotEvent.SLOT_LOADED_EVENT, callback, this.slotName, true);
