@@ -14,15 +14,16 @@ export interface SlotsDefinitionRepository {
 const logGroup = 'insert-slot';
 const slotCreator = new SlotCreator();
 
-export function insertSlots(slotsToInsert: SlotSetupDefinition[]): void {
-	slotsToInsert
+export function insertSlots(slotsToInsert: SlotSetupDefinition[]): HTMLElement[] {
+	return slotsToInsert
 		.filter((config) => !!config)
-		.forEach(({ slotCreatorConfig, slotCreatorWrapperConfig, activator }) => {
+		.map(({ slotCreatorConfig, slotCreatorWrapperConfig, activator }) => {
 			try {
-				slotCreator.createSlot(slotCreatorConfig, slotCreatorWrapperConfig);
+				const slot = slotCreator.createSlot(slotCreatorConfig, slotCreatorWrapperConfig);
 				if (activator) {
 					activator();
 				}
+				return slot;
 			} catch (e) {
 				utils.logger(logGroup, e.message);
 
