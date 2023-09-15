@@ -10,6 +10,7 @@ import {
 	context,
 	eventsRepository,
 	InstantConfigService,
+	Optimizely,
 	RepeatableSlotPlaceholderConfig,
 	scrollListener,
 	slotPlaceholderInjector,
@@ -19,9 +20,20 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 import { FmrRotator } from '../../utils/fmr-rotator';
 
+const OPTIMIZELY_ANYCLIP_PLACEMENT_EXPERIMENT = {
+	EXPERIMENT_ENABLED: 'anyclip_placement',
+	EXPERIMENT_VARIANT: 'anyclip_placement_variant',
+};
+
+const OPTIMIZELY_ANYCLIP_PLACEMENT_EXPERIMENT_VARIANTS = {
+	FEATURED_VIDEO: 'anyclip_placement_featured_video',
+	ORIGINAL: 'anyclip_placement_original',
+	UNDEFINED: 'anyclip_placement_undefined',
+};
+
 @Injectable()
 export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepository {
-	constructor(protected instantConfig: InstantConfigService) {}
+	constructor(protected instantConfig: InstantConfigService, protected optimizely: Optimizely) {}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
 		const slotName = 'top_leaderboard';
@@ -232,10 +244,21 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 			return;
 		}
 
-		const isAnyClipExperimentEnabled = true;
+		this.optimizely.addVariantToTargeting(
+			OPTIMIZELY_ANYCLIP_PLACEMENT_EXPERIMENT,
+			OPTIMIZELY_ANYCLIP_PLACEMENT_EXPERIMENT_VARIANTS.UNDEFINED,
+		);
+		const variant = this.optimizely.getVariant(OPTIMIZELY_ANYCLIP_PLACEMENT_EXPERIMENT);
+
+		if (variant) {
+			this.optimizely.addVariantToTargeting(OPTIMIZELY_ANYCLIP_PLACEMENT_EXPERIMENT, variant);
+		}
+
+		const isAnyclipInFeaturedVideoPlacement =
+			variant === OPTIMIZELY_ANYCLIP_PLACEMENT_EXPERIMENT_VARIANTS.FEATURED_VIDEO;
 
 		return {
-			slotCreatorConfig: isAnyClipExperimentEnabled
+			slotCreatorConfig: isAnyclipInFeaturedVideoPlacement
 				? {
 						slotName,
 						anchorSelector: '.page-content',
