@@ -7,9 +7,20 @@ interface LotameNamespace {
 	cmd?: object[];
 }
 
+const TAXONOMY_TAGS_TO_KEEP = ['gnre', 'media', 'pform', 'pub', 'theme', 'tv'];
+
+export function removeIrrelevantTags(obj: TaxonomyTags): TaxonomyTags {
+	const result = {};
+
+	for (const prop of TAXONOMY_TAGS_TO_KEEP) {
+		if (obj[prop]) result[prop] = obj[prop];
+	}
+
+	return result;
+}
+
 export function mapTaxonomyToLotameBehaviorTags(tags: TaxonomyTags = {}): string[] {
-	// bundles are internal tags and should not be sent to Lotame
-	const taxonomyTags = { ...tags, bundles: [] };
+	const taxonomyTags = removeIrrelevantTags(tags);
 
 	return Object.values(taxonomyTags)
 		.map((tag, i) => tag.map((value) => Object.keys(taxonomyTags)[i] + ': ' + value))
