@@ -39,7 +39,7 @@ export function getPubmaticContext(): object {
 			},
 			incontent_leaderboard: {
 				sizes: [[728, 90]],
-				ids: ['5315748'],
+				ids: ['5315748@728x90'],
 			},
 			bottom_leaderboard: {
 				sizes: [
@@ -49,8 +49,8 @@ export function getPubmaticContext(): object {
 				ids: ['/5441/BOTTOM_LEADERBOARD_728x90@728x90', '/5441/BOTTOM_LEADERBOARD_970x250@970x250'],
 			},
 			fandom_dt_galleries: {
-				sizes: [[720, 90]],
-				ids: ['5244133'],
+				sizes: [[728, 90]],
+				ids: ['/5441/FANDOM_DT_GALLERIES_728x90@728x90', '5244133'],
 			},
 		},
 	};

@@ -4,6 +4,7 @@ import {
 	Dictionary,
 	DiProcess,
 	eventsRepository,
+	globalContextService,
 	InstantConfigService,
 	setupNpaContext,
 	setupRdpContext,
@@ -119,12 +120,12 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setInContentExperiment(): void {
-		const oldLogicBundleName = 'old_incontent_ads';
-		const wiki: MediaWikiAdsContext = context.get('wiki');
+		const excludedBundleTagName = 'sensitive';
+		const communityExcludedByTag = globalContextService.hasBundle(excludedBundleTagName);
 
 		if (
 			this.instantConfig.get('icExperiments', []).includes('incontentHeaders') &&
-			!wiki?.targeting?.adTagManagerTags?.bundles?.includes(oldLogicBundleName)
+			!communityExcludedByTag
 		) {
 			context.set('templates.incontentHeadersExperiment', true);
 		} else {
@@ -190,6 +191,8 @@ export class BaseContextSetup implements DiProcess {
 			'templates.sizeOverwritingMap',
 			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes,
 		);
+		context.set('bidders.s2s.bidders', this.instantConfig.get('icPrebidS2sBidders', []));
+		context.set('bidders.s2s.enabled', this.instantConfig.get('icPrebidS2sBidders', []).length > 0);
 	}
 
 	private setupStickySlotContext(): void {

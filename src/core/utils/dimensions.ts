@@ -1,3 +1,5 @@
+import { AdSlot } from '..';
+
 export interface ElementOffset {
 	top: number;
 	left: number;
@@ -31,12 +33,12 @@ export function getElementOffset(element: HTMLElement): ElementOffset {
 		height: '',
 	};
 
-	if (element.classList.contains('hide')) {
+	if (element.classList.contains(AdSlot.HIDDEN_AD_CLASS)) {
 		hideAgain = true;
 		previousStyles.display = element.style.display;
 		previousStyles.height = element.style.height;
 
-		element.classList.remove('hide');
+		element.classList.remove(AdSlot.HIDDEN_AD_CLASS);
 		element.style.display = 'block';
 		element.style.height = '1px';
 	}
@@ -44,7 +46,7 @@ export function getElementOffset(element: HTMLElement): ElementOffset {
 	const offset: ElementOffset = calculateOffset(element);
 
 	if (hideAgain) {
-		element.classList.add('hide');
+		element.classList.add(AdSlot.HIDDEN_AD_CLASS);
 		element.style.display = previousStyles.display;
 		element.style.height = previousStyles.height;
 	}
