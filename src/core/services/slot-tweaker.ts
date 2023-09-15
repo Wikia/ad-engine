@@ -39,7 +39,7 @@ export class SlotTweaker {
 		const container = adSlot.getElement();
 
 		container.style.maxHeight = `${container.offsetHeight}px`;
-		container.classList.remove('hide');
+		container.classList.remove(AdSlot.HIDDEN_AD_CLASS);
 		container.classList.add('slot-animation');
 		container.style.maxHeight = `${container.scrollHeight}px`;
 	}
@@ -150,7 +150,7 @@ export class SlotTweaker {
 					case 'collapse':
 						this.collapse(adSlot);
 						break;
-					case 'hide':
+					case AdSlot.HIDDEN_AD_CLASS:
 						adSlot.hide();
 						break;
 					case 'show':

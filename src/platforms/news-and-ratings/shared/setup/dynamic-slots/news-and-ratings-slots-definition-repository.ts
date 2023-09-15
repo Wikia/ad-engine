@@ -1,5 +1,6 @@
 import { activateFloorAdhesionOnUAP, SlotSetupDefinition } from '@platforms/shared';
 import {
+	AdSlot,
 	Anyclip,
 	communicationService,
 	context,
@@ -27,7 +28,7 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: 'body',
 				insertMethod: 'prepend',
-				classList: ['hide', 'ad-slot'],
+				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
@@ -57,7 +58,7 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: 'body',
 				insertMethod: 'append',
-				classList: ['hide', 'ad-slot'],
+				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			activator: () =>
 				activateFloorAdhesionOnUAP(activateFloorAdhesion, !this.isFloorAdhesionNonUapApplicable()),
@@ -87,7 +88,7 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: 'body',
 				insertMethod: 'append',
-				classList: ['hide', 'ad-slot'],
+				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			activator: () => {
 				const { dataset } = document.getElementById(slotName);

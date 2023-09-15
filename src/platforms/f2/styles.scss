@@ -168,10 +168,7 @@ $navbar-width: 66px;
 .gpt-ad {
 	text-align: center;
 
-	&.hide,
-	& .hide {
-		display: none !important;
-	}
+	@include hidden-ad();
 
 	& > div > iframe {
 		display: block;
@@ -179,10 +176,10 @@ $navbar-width: 66px;
 	}
 }
 
-.top-ads-container.hide,
-.bottom-ads-container.hide,
-.ad-slot-placeholder.hide {
-	display: none !important;
+.top-ads-container,
+.bottom-ads-container,
+.ad-slot-placeholder {
+	@include hidden-ad();
 }
 
 body {
