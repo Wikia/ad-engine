@@ -27,10 +27,7 @@ body {
 .gpt-ad {
 	text-align: center;
 
-	&.hide,
-	& .hide {
-		display: none !important;
-	}
+	@include hidden-ad();
 
 	& > div > iframe {
 		display: block;

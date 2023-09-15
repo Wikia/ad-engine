@@ -27,7 +27,7 @@ export class InstantConfigCacheStorage implements InstantConfigCacheStorageServi
 		return InstantConfigCacheStorage.instance;
 	}
 
-	private readonly cookieStorage = new UniversalStorage(new CookieStorageAdapter());
+	private readonly cookieStorage = new UniversalStorage(() => new CookieStorageAdapter());
 	private cacheStorage: CacheDictionary;
 	private readonly cacheKey = 'basset';
 

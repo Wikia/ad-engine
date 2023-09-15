@@ -1,5 +1,5 @@
 import { slotsContext } from '@platforms/shared';
-import { context, DiProcess, universalAdPackage } from '@wikia/ad-engine';
+import { AdSlot, context, DiProcess, universalAdPackage } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -117,7 +117,7 @@ export class F2SlotsContextSetup implements DiProcess {
 			},
 			floor_adhesion: {
 				adProduct: 'floor_adhesion',
-				defaultClasses: ['hide'],
+				defaultClasses: [AdSlot.HIDDEN_AD_CLASS],
 				group: 'PF',
 				outOfPage: false,
 				targeting: {
