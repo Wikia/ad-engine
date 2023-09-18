@@ -4,11 +4,12 @@ import { InstantConfigService } from '../../../../services';
 import { ProcessPipeline } from '../process-pipeline';
 import { CompoundProcess, CompoundProcessStep, ProcessStepUnion } from '../process-pipeline-types';
 
-const WAIT_FOR_PAGE_LOAD_TIMEOUT = 2000;
+const DEFAULT_WAIT_FOR_PAGE_LOAD_TIMEOUT = 1500;
 
 @Injectable({ scope: 'Transient' })
 class WhenPageLoadedProcess<T> implements CompoundProcess<ProcessStepUnion<T>[]> {
 	private fired = false;
+	private timeoutId: NodeJS.Timeout | null = null;
 
 	constructor(private container: Container, private instantConfigService: InstantConfigService) {}
 
@@ -27,14 +28,23 @@ class WhenPageLoadedProcess<T> implements CompoundProcess<ProcessStepUnion<T>[]>
 
 		this.runSafeTimeout(pipeline, payload);
 		window.onload = () => {
+			this.killSafeTimeout();
 			this.addExecutePipeline(pipeline, payload);
 		};
 	}
 
 	private runSafeTimeout(pipeline: ProcessPipeline, payload: ProcessStepUnion<T>[]): void {
-		setTimeout(() => {
+		const icbmTimeout = this.instantConfigService.get(
+			'pageLoadWaitTimeout',
+			DEFAULT_WAIT_FOR_PAGE_LOAD_TIMEOUT,
+		);
+		this.timeoutId = setTimeout(() => {
 			this.addExecutePipeline(pipeline, payload);
-		}, WAIT_FOR_PAGE_LOAD_TIMEOUT);
+		}, icbmTimeout);
+	}
+
+	private killSafeTimeout(): void {
+		clearTimeout(this.timeoutId);
 	}
 
 	private addExecutePipeline(
