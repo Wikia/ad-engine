@@ -1,5 +1,7 @@
 interface Window {
 	__iasPET?: IasPet;
+	__SPOTIM_ADS_DISABLED__?: boolean;
+	__SPOTIM_DISABLE_ADS__?: () => void;
 	__tcfapi: WindowTCF;
 	__uspapi?: WindowUSP;
 	AdEngine_adType?: ManualAdType;

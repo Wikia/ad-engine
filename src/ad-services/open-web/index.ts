@@ -30,6 +30,8 @@ export class OpenWeb extends BaseServiceSetup {
 	}
 
 	call(): void {
+		this.disableAdsIfUAP();
+
 		if (context.get('state.isLogged')) {
 			utils.logger(logGroup, 'disabled - user is logged');
 			return;
@@ -43,24 +45,17 @@ export class OpenWeb extends BaseServiceSetup {
 		const articleId = targetingService.get('post_id') || targetingService.get('artid');
 		const siteId = targetingService.get('s1');
 
-		communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
-			if (action.isLoaded) {
-				utils.logger(logGroup, 'disabled - UAP is loaded');
-				return;
-			}
+		const postUniqueId = `wk_${siteId}_${articleId}`;
+		this.placementsHandler.build(postUniqueId);
 
-			const postUniqueId = `wk_${siteId}_${articleId}`;
-			this.placementsHandler.build(postUniqueId);
+		if (this.placementsHandler.isDone()) {
+			const postUrl = window.location.origin + window.location.pathname;
+			const articleTitle = targetingService.get('wpage') || '';
 
-			if (this.placementsHandler.isDone()) {
-				const postUrl = window.location.origin + window.location.pathname;
-				const articleTitle = targetingService.get('wpage') || '';
-
-				this.loadScript(this.config.spotId, postUniqueId, postUrl, articleTitle);
-			} else {
-				utils.logger(logGroup, 'disabled - builder failed');
-			}
-		});
+			this.loadScript(this.config.spotId, postUniqueId, postUrl, articleTitle);
+		} else {
+			utils.logger(logGroup, 'disabled - builder failed');
+		}
 	}
 
 	public isActive(): boolean {
@@ -69,6 +64,16 @@ export class OpenWeb extends BaseServiceSetup {
 		}
 
 		return this.config?.isActive || false;
+	}
+
+	private disableAdsIfUAP() {
+		communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
+			if (action.isLoaded) {
+				utils.logger(logGroup, 'ads disabled - UAP is loaded');
+				window.__SPOTIM_ADS_DISABLED__ = true;
+				window.__SPOTIM_DISABLE_ADS__ && window.__SPOTIM_DISABLE_ADS__();
+			}
+		});
 	}
 
 	private readConfig(instantConfig: InstantConfigService): void {
