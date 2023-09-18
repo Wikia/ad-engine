@@ -9,22 +9,10 @@ interface LotameNamespace {
 
 const TAXONOMY_TAGS_TO_KEEP = ['gnre', 'media', 'pform', 'pub', 'theme', 'tv'];
 
-export function removeIrrelevantTags(obj: TaxonomyTags): TaxonomyTags {
-	const result = {};
-
-	for (const prop of TAXONOMY_TAGS_TO_KEEP) {
-		if (obj[prop]) result[prop] = obj[prop];
-	}
-
-	return result;
-}
-
 export function mapTaxonomyToLotameBehaviorTags(tags: TaxonomyTags = {}): string[] {
-	const taxonomyTags = removeIrrelevantTags(tags);
-
-	return Object.values(taxonomyTags)
-		.map((tag, i) => tag.map((value) => Object.keys(taxonomyTags)[i] + ': ' + value))
-		.flat();
+	return Object.entries(tags)
+		.filter(([key]) => TAXONOMY_TAGS_TO_KEEP.includes(key))
+		.flatMap(([key, value]) => value.map((v) => `${key}: ${v}`));
 }
 
 export class Lotame extends BaseServiceSetup {
