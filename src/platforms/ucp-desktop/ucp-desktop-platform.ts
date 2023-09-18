@@ -22,9 +22,9 @@ import {
 	context,
 	eventsRepository,
 	IdentitySetup,
+	pageLoadPhase,
 	parallel,
 	ProcessPipeline,
-	whenPageLoaded,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
@@ -62,7 +62,7 @@ export class UcpDesktopPlatform {
 			UcpDesktopTemplatesSetup,
 			SequentialMessagingSetup,
 			BiddersStateSetup,
-			whenPageLoaded(
+			pageLoadPhase(
 				conditional(() => this.noAdsDetector.isAdsMode(), {
 					yes: UcpDesktopAdsMode,
 					no: NoAdsMode,
