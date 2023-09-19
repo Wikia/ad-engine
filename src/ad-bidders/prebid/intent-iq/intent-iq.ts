@@ -98,11 +98,11 @@ export class IntentIQ {
 	}
 
 	isEnabled(): boolean {
-		const a2 = context.get('options.trackingOptIn');
-		const a3 = !context.get('options.optOutSale');
-		const a4 = !utils.isCoppaSubject();
-
-		return a2 && a3 && a4;
+		return (
+			context.get('options.trackingOptIn') &&
+			!context.get('options.optOutSale') &&
+			!utils.isCoppaSubject()
+		);
 	}
 }
 
