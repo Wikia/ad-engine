@@ -67,7 +67,7 @@ export class DoubleVerify extends BaseServiceSetup {
 		utils.logger(logGroup, 'Setting targeting', data);
 		targetingService.set('ids', data['IDS']?.toString());
 		targetingService.set('bsc', data['BSC']);
-		targetingService.set('abs', data['ABC']?.toString());
+		targetingService.set('abs', data['ABS']?.toString());
 
 		this.addToSlotsTargeting(data['TVP'], 'tvp');
 		this.addToSlotsTargeting(data['VLP'], 'vlp');

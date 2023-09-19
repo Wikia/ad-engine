@@ -76,7 +76,7 @@ describe('DoubleVerify', () => {
 			json: global.sandbox.stub().resolves({
 				IDS: '12345',
 				BSC: 'bsc-data',
-				ABC: 'abc-data',
+				ABS: 'abs-data',
 				TVP: { slot1: { '': 'tvp-value1' }, slot3: { '': 'tvp-value3' } },
 				VLP: { slot2: { '': 'vlp-value2' } },
 			}),
@@ -90,7 +90,7 @@ describe('DoubleVerify', () => {
 
 		expect(targetingServiceStub.set.calledWith('ids', '12345')).to.equal(true);
 		expect(targetingServiceStub.set.calledWith('bsc', 'bsc-data')).to.equal(true);
-		expect(targetingServiceStub.set.calledWith('abs', 'abc-data')).to.equal(true);
+		expect(targetingServiceStub.set.calledWith('abs', 'abs-data')).to.equal(true);
 		expect(targetingServiceStub.set.calledWith('tvp', 'tvp-value1', 'slot1')).to.equal(true);
 		expect(targetingServiceStub.set.calledWith('tvp', 'tvp-value3', 'slot3')).to.equal(true);
 		expect(targetingServiceStub.set.calledWith('vlp', 'vlp-value2', 'slot2')).to.equal(true);
