@@ -1,17 +1,16 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { context, externalLogger, targetingService, utils } from '@ad-engine/core';
+import { context, externalLogger, pbjsFactory, targetingService, utils } from '@ad-engine/core';
 
 const logGroup = 'IntentIQ';
 
 export class IntentIQ {
 	private loadPromise: Promise<void>;
-	private loaded = false;
 	private fandomId = 1187275693;
 	private intentIQScriptUrl =
 		'//script.wikia.nocookie.net/fandom-ae-assets/intentiq/5.4/IIQUniversalID.js';
 	private intentIqObject: IntentIqObject;
 
-	preloadScript(): Promise<void> {
+	load(): Promise<void> {
 		if (!this.isEnabled()) {
 			return;
 		}
@@ -22,48 +21,59 @@ export class IntentIQ {
 		this.loadPromise = utils.scriptLoader
 			.loadScript(this.intentIQScriptUrl, true, 'first')
 			.then(() => {
-				this.loaded = true;
 				utils.logger(logGroup, 'loaded');
+				communicationService.emit(eventsRepository.INTENTIQ_LOADED);
+				return this.init();
 			});
+		return this.loadPromise;
 	}
 
-	async initialize(pbjs: Pbjs): Promise<void> {
-		if (!this.isEnabled()) {
-			utils.logger(logGroup, 'disabled');
-			return;
-		}
-		communicationService.emit(eventsRepository.INTENTIQ_STARTED);
-		if (!this.loaded) {
-			await this.preloadScript();
-			await new utils.WaitFor(() => window.IntentIqObject !== undefined, 10, 10).until();
-		}
+	private async init() {
+		return pbjsFactory.init().then((pbjs: Pbjs) => {
+			pbjs.onEvent(
+				'adRenderSucceeded',
+				(response: { adId: string; bid: PrebidBidResponse; doc: Document | null }) =>
+					this.reportPrebidWin(response.bid),
+			);
+			this.callIntentIq(pbjs);
+		});
+	}
 
+	private callIntentIq(pbjs: Pbjs): void {
+		if (!window.IntentIqObject) {
+			utils.logger(logGroup, 'no IntentIqObject available!');
+		}
 		if (!this.intentIqObject) {
+			communicationService.emit(eventsRepository.INTENTIQ_STARTED);
+
 			const domainName = window.location.hostname.includes('.fandom.com')
 				? 'fandom.com'
 				: window.location.hostname;
 
-			return new Promise((resolve) => {
-				this.intentIqObject = new window.IntentIqObject({
-					partner: this.fandomId,
-					pbjs,
-					timeoutInMillis: context.get(''),
-					ABTestingConfigurationSource: 'percentage',
-					abPercentage: 97,
-					manualWinReportEnabled: true,
-					browserBlackList: 'Chrome',
-					domainName,
-					callback: (data) => {
-						utils.logger(logGroup, 'got data', data);
-						communicationService.emit(eventsRepository.INTENTIQ_RESOLVED);
-						resolve();
-					},
-				});
+			this.intentIqObject = new window.IntentIqObject({
+				partner: this.fandomId,
+				pbjs,
+				timeoutInMillis: context.get('bidders.prebid.auctionDelay') || 50,
+				ABTestingConfigurationSource: 'percentage',
+				abPercentage: 97,
+				manualWinReportEnabled: true,
+				browserBlackList: 'Chrome',
+				domainName,
+				callback: (data) => {
+					communicationService.emit(eventsRepository.INTENTIQ_RESOLVED);
+					utils.logger(logGroup, 'got data', data);
+				},
+			});
+			targetingService.set(
+				'intent_iq_group',
+				this.intentIqObject.intentIqConfig.abTesting.currentTestGroup || 'U',
+			);
+			if (context.get('services.intentIq.ppid.enabled')) {
 				targetingService.set(
-					'intent_iq_group',
+					'intent_iq_ppid_group',
 					this.intentIqObject.intentIqConfig.abTesting.currentTestGroup || 'U',
 				);
-			});
+			}
 		}
 	}
 

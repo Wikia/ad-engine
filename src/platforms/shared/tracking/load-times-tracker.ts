@@ -21,6 +21,8 @@ const eventsToTrack = {
 	intentid_resolved: eventsRepository.INTENTIQ_RESOLVED,
 	lotame_loaded: eventsRepository.LOTAME_LOADED,
 	lotame_ready: eventsRepository.LOTAME_READY,
+	intentIq_loaded: eventsRepository.INTENTIQ_LOADED,
+	intentIq_ready: eventsRepository.INTENTIQ_READY,
 };
 
 export class LoadTimesTracker {
