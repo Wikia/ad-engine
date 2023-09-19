@@ -196,8 +196,11 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Identity partner data obtained',
 		payload: payload<IdentityDataPayload>(),
 	},
-	INTENTIQ_PPID_NOT_SET_ON_TIME: {
-		name: 'IntentIQ PPID not set on time',
+	INTENTIQ_STARTED: {
+		name: 'IntentIQ Started',
+	},
+	INTENTIQ_RESOLVED: {
+		name: 'IntentIQ Resolved',
 	},
 	LIVE_CONNECT_STARTED: {
 		name: 'LiveConnect started',

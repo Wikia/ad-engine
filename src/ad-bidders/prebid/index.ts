@@ -450,7 +450,9 @@ export class PrebidProvider extends BidderProvider {
 	): Promise<void> {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
+		utils.logger(logGroup, 'prebid requesting bids', adUnits);
 		await intentIQ.initialize(pbjs);
+		utils.logger(logGroup, 'prebid initialized intentIQ', adUnits);
 
 		pbjs.requestBids({
 			adUnits,
