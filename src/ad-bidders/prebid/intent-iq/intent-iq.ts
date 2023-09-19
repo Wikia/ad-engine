@@ -11,9 +11,6 @@ export class IntentIQ {
 	private intentIqObject: IntentIqObject;
 
 	load(): Promise<void> {
-		if (!this.isEnabled()) {
-			return;
-		}
 		if (this.loadPromise) {
 			return this.loadPromise;
 		}
@@ -22,7 +19,6 @@ export class IntentIQ {
 			.loadScript(this.intentIQScriptUrl, true, 'first')
 			.then(() => {
 				utils.logger(logGroup, 'loaded');
-				communicationService.emit(eventsRepository.INTENTIQ_LOADED);
 				return this.init();
 			});
 		return this.loadPromise;
@@ -30,18 +26,24 @@ export class IntentIQ {
 
 	private async init() {
 		return pbjsFactory.init().then((pbjs: Pbjs) => {
-			pbjs.onEvent(
-				'adRenderSucceeded',
-				(response: { adId: string; bid: PrebidBidResponse; doc: Document | null }) =>
-					this.reportPrebidWin(response.bid),
-			);
-			this.callIntentIq(pbjs);
+			communicationService.on(eventsRepository.AD_ENGINE_CONSENT_READY, () => {
+				if (!this.isEnabled()) {
+					return;
+				}
+				pbjs.onEvent(
+					'adRenderSucceeded',
+					(response: { adId: string; bid: PrebidBidResponse; doc: Document | null }) =>
+						this.reportPrebidWin(response.bid),
+				);
+				this.callIntentIq(pbjs);
+			});
 		});
 	}
 
 	private callIntentIq(pbjs: Pbjs): void {
 		if (!window.IntentIqObject) {
 			utils.logger(logGroup, 'no IntentIqObject available!');
+			communicationService.emit(eventsRepository.INTENTIQ_NOT_LOADED);
 		}
 		if (!this.intentIqObject) {
 			communicationService.emit(eventsRepository.INTENTIQ_STARTED);
@@ -53,7 +55,7 @@ export class IntentIQ {
 			this.intentIqObject = new window.IntentIqObject({
 				partner: this.fandomId,
 				pbjs,
-				timeoutInMillis: context.get('bidders.prebid.auctionDelay') || 50,
+				timeoutInMillis: context.get('services.intentIq.timeout') || 2000,
 				ABTestingConfigurationSource: 'percentage',
 				abPercentage: 97,
 				manualWinReportEnabled: true,
@@ -68,12 +70,6 @@ export class IntentIQ {
 				'intent_iq_group',
 				this.intentIqObject.intentIqConfig.abTesting.currentTestGroup || 'U',
 			);
-			if (context.get('services.intentIq.ppid.enabled')) {
-				targetingService.set(
-					'intent_iq_ppid_group',
-					this.intentIqObject.intentIqConfig.abTesting.currentTestGroup || 'U',
-				);
-			}
 		}
 	}
 
@@ -102,12 +98,11 @@ export class IntentIQ {
 	}
 
 	isEnabled(): boolean {
-		return (
-			context.get('bidders.prebid.intentIQ') &&
-			context.get('options.trackingOptIn') &&
-			!context.get('options.optOutSale') &&
-			!utils.isCoppaSubject()
-		);
+		const a2 = context.get('options.trackingOptIn');
+		const a3 = !context.get('options.optOutSale');
+		const a4 = !utils.isCoppaSubject();
+
+		return a2 && a3 && a4;
 	}
 }
 

@@ -202,6 +202,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	INTENTIQ_RESOLVED: {
 		name: 'IntentIQ Resolved',
 	},
+	INTENTIQ_NOT_LOADED: {
+		name: 'IntentIQ Not Loaded',
+	},
 	LIVE_CONNECT_STARTED: {
 		name: 'LiveConnect started',
 	},

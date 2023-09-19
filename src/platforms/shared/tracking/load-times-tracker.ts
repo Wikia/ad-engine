@@ -17,12 +17,11 @@ const eventsToTrack = {
 	eyeota_started: eventsRepository.EYEOTA_STARTED,
 	eyeota_failed: eventsRepository.EYEOTA_FAILED,
 	a9_without_consents: eventsRepository.A9_WITHOUT_CONSENTS,
-	intentid_started: eventsRepository.INTENTIQ_STARTED,
-	intentid_resolved: eventsRepository.INTENTIQ_RESOLVED,
+	intentiq_started: eventsRepository.INTENTIQ_STARTED,
+	intentiq_not_loaded: eventsRepository.INTENTIQ_NOT_LOADED,
+	intentiq_resolved: eventsRepository.INTENTIQ_RESOLVED,
 	lotame_loaded: eventsRepository.LOTAME_LOADED,
 	lotame_ready: eventsRepository.LOTAME_READY,
-	intentIq_loaded: eventsRepository.INTENTIQ_LOADED,
-	intentIq_ready: eventsRepository.INTENTIQ_READY,
 };
 
 export class LoadTimesTracker {
