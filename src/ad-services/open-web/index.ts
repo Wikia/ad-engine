@@ -30,8 +30,6 @@ export class OpenWeb extends BaseServiceSetup {
 	}
 
 	call(): void {
-		this.disableAdsIfUAP();
-
 		if (context.get('state.isLogged')) {
 			utils.logger(logGroup, 'disabled - user is logged');
 			return;
@@ -42,6 +40,29 @@ export class OpenWeb extends BaseServiceSetup {
 			return;
 		}
 
+		const isMobile = context.get('state.isMobile');
+
+		if (isMobile) {
+			this.runOnUapLoadStatus(() => this.init(), false);
+		} else {
+			this.init();
+			this.runOnUapLoadStatus(() => {
+				utils.logger(logGroup, 'ads disabled - UAP is loaded');
+				window.__SPOTIM_ADS_DISABLED__ = true;
+				window.__SPOTIM_DISABLE_ADS__ && window.__SPOTIM_DISABLE_ADS__();
+			}, true);
+		}
+	}
+
+	public isActive(): boolean {
+		if (!this.config) {
+			this.readConfig(this.instantConfig);
+		}
+
+		return this.config?.isActive || false;
+	}
+
+	private init(): void {
 		const articleId = targetingService.get('post_id') || targetingService.get('artid');
 		const siteId = targetingService.get('s1');
 
@@ -58,20 +79,10 @@ export class OpenWeb extends BaseServiceSetup {
 		}
 	}
 
-	public isActive(): boolean {
-		if (!this.config) {
-			this.readConfig(this.instantConfig);
-		}
-
-		return this.config?.isActive || false;
-	}
-
-	private disableAdsIfUAP() {
+	private runOnUapLoadStatus(callback: () => void, ifIsLoaded: boolean): void {
 		communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
-			if (action.isLoaded) {
-				utils.logger(logGroup, 'ads disabled - UAP is loaded');
-				window.__SPOTIM_ADS_DISABLED__ = true;
-				window.__SPOTIM_DISABLE_ADS__ && window.__SPOTIM_DISABLE_ADS__();
+			if (action.isLoaded === ifIsLoaded) {
+				callback();
 			}
 		});
 	}

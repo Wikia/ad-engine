@@ -9,7 +9,8 @@ describe('OpenWeb', () => {
 		contextStub,
 		communicationServiceStub,
 		placementHandlerBuildStub,
-		placementHandlerIsReadyStub;
+		placementHandlerIsReadyStub,
+		spotimDisableAdsStub;
 	let service: OpenWeb;
 	const fakeActiveConfigValue = {
 		isActive: true,
@@ -29,11 +30,16 @@ describe('OpenWeb', () => {
 			.returns(true);
 		placementHandlerBuildStub = global.sandbox.stub(PlacementsHandler.prototype, 'build');
 
+		spotimDisableAdsStub = global.sandbox.stub();
+		window.__SPOTIM_DISABLE_ADS__ = spotimDisableAdsStub;
+
 		service = new OpenWeb(instantConfigStub, new PlacementsHandler(new PlacementsBuilder()));
 	});
 
 	afterEach(() => {
 		loadScriptStub.resetHistory();
+		spotimDisableAdsStub.resetHistory();
+		window.__SPOTIM_ADS_DISABLED__ = undefined;
 	});
 
 	function prepareUAPevent(isLoaded: boolean) {
@@ -64,10 +70,11 @@ describe('OpenWeb', () => {
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
-	it('OpenWeb does not load script if UAP is loaded', async () => {
+	it('OpenWeb does not load script if UAP is loaded on mobile', async () => {
 		prepareUAPevent(true);
 		instantConfigStub.get.withArgs('icOpenWeb').returns(fakeActiveConfigValue);
 		contextStub.get.withArgs('state.isLogged').returns(false);
+		contextStub.get.withArgs('state.isMobile').returns(true);
 
 		service.call();
 
@@ -98,5 +105,17 @@ describe('OpenWeb', () => {
 		expect(loadScriptStub.called).to.equal(true);
 		expect(placementHandlerIsReadyStub.called).to.equal(true);
 		expect(placementHandlerBuildStub.called).to.equal(true);
+	});
+
+	it('OpenWeb disables ads if UAP is loaded on desktop', async () => {
+		prepareUAPevent(true);
+		instantConfigStub.get.withArgs('icOpenWeb').returns(fakeActiveConfigValue);
+		contextStub.get.withArgs('state.isLogged').returns(false);
+
+		service.call();
+
+		expect(loadScriptStub.called).to.equal(true);
+		expect(window.__SPOTIM_ADS_DISABLED__).to.equal(true);
+		expect(spotimDisableAdsStub.called).to.equal(true);
 	});
 });
