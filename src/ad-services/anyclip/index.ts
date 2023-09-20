@@ -27,7 +27,7 @@ export class Anyclip extends BaseServiceSetup {
 	}
 
 	private get widgetname(): string {
-		return context.get('services.anyclip.widgetname') || '001w000001Y8ud2_19593';
+		return context.get('services.anyclip.widgetname') || '001w000001Y8ud2AAB_M8376';
 	}
 
 	private get libraryUrl(): string {
