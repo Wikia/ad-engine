@@ -102,7 +102,7 @@ describe('Anyclip', () => {
 
 		expect(anyclip.params).to.deep.equal({
 			pubname: 'fandomcom',
-			widgetname: '001w000001Y8ud2_19593',
+			widgetname: '001w000001Y8ud2AAB_M8376',
 		});
 	});
 });
