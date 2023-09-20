@@ -24,10 +24,13 @@ const eventsToTrack = {
 
 export class LoadTimesTracker {
 	private static instance: LoadTimesTracker;
+	private dataWarehouseTracker: DataWarehouseTracker;
 	private startTime: number;
 	private tzOffset: number;
+	private eventArray = [];
 
 	private constructor() {
+		this.dataWarehouseTracker = new DataWarehouseTracker();
 		this.initStartTime();
 		this.initLoadTimesTracker();
 	}
@@ -60,6 +63,12 @@ export class LoadTimesTracker {
 	}
 
 	initLoadTimesTracker(): void {
+		document.addEventListener('readystatechange', () => {
+			if (document.readyState === 'complete') {
+				this.dispatchAndEmptyEventArray();
+			}
+		});
+
 		communicationService.on(eventsRepository.AD_ENGINE_LOAD_TIME_INIT, (payload) => {
 			this.trackLoadTime('load_time_init', payload.timestamp);
 		});
@@ -77,18 +86,28 @@ export class LoadTimesTracker {
 		});
 	}
 
-	private trackLoadTime(eventName: string, timestamp: number): void {
-		const dataWarehouseTracker = new DataWarehouseTracker();
+	private dispatchAndEmptyEventArray(): void {
+		this.eventArray.forEach((event) => this.dispatchTrackEvent(event));
+		this.eventArray = [];
+	}
 
-		dataWarehouseTracker.track(
-			{
-				event_name: eventName,
-				browser_ts: timestamp,
-				load_time: timestamp - this.getStartTime(),
-				tz_offset: this.getTimezoneOffset(),
-				country: utils.geoService.getCountryCode() || '',
-			},
-			trackingUrls.AD_ENG_LOAD_TIMES,
-		);
+	private dispatchTrackEvent(event): void {
+		this.dataWarehouseTracker.track(event, trackingUrls.AD_ENG_LOAD_TIMES);
+	}
+
+	private trackLoadTime(eventName: string, timestamp: number): void {
+		const event = {
+			event_name: eventName,
+			browser_ts: timestamp,
+			load_time: timestamp - this.getStartTime(),
+			tz_offset: this.getTimezoneOffset(),
+			country: utils.geoService.getCountryCode() || '',
+		};
+
+		if (document.readyState !== 'complete') {
+			this.eventArray.push(event);
+		} else {
+			this.dispatchTrackEvent(event);
+		}
 	}
 }
