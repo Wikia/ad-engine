@@ -1,5 +1,4 @@
 import { Container, Injectable } from '@wikia/dependency-injection';
-import { MetricReporter } from '../../../../../../platforms/shared';
 import { ProcessPipeline } from '../../process-pipeline';
 import {
 	CompoundProcess,
@@ -63,7 +62,6 @@ class DOMContentLoadedPhaseProcess<T> implements CompoundProcess<ProcessStepUnio
 		}
 
 		this.fired = true;
-		new MetricReporter().setTrackingVariant('dcl-enabled').trackLoadTimeVarianted();
 		return pipeline.add(...payload).execute();
 	}
 }

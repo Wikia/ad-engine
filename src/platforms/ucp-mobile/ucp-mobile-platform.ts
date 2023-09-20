@@ -20,8 +20,10 @@ import {
 	communicationService,
 	conditional,
 	context,
+	domContentLoadedPhase,
 	eventsRepository,
 	IdentitySetup,
+	pageLoadPhase,
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
@@ -46,7 +48,7 @@ export class UcpMobilePlatform {
 			() => context.extend(basicContext),
 			() => context.set('state.isMobile', true),
 			PlatformContextSetup,
-			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
+			domContentLoadedPhase(parallel(InstantConfigSetup, () => bootstrapAndGetConsent())),
 			TrackingParametersSetup,
 			MetricReporterSetup,
 			MetricReporter,
@@ -61,16 +63,18 @@ export class UcpMobilePlatform {
 			UcpMobileTemplatesSetup,
 			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM will break
 			BiddersStateSetup,
-			conditional(() => this.noAdsDetector.isAdsMode(), {
-				yes: UcpMobileAdsMode,
-				no: NoAdsMode,
-			}),
-			NoAdsExperimentSetup,
-			LabradorSetup,
-			UcpMobileExperimentsSetup,
-			TrackingSetup,
-			AdEngineRunnerSetup,
-			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
+			pageLoadPhase(
+				conditional(() => this.noAdsDetector.isAdsMode(), {
+					yes: UcpMobileAdsMode,
+					no: NoAdsMode,
+				}),
+				NoAdsExperimentSetup,
+				LabradorSetup,
+				UcpMobileExperimentsSetup,
+				TrackingSetup,
+				AdEngineRunnerSetup,
+				() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
+			),
 		);
 
 		this.pipeline.execute();
