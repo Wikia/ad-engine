@@ -1,25 +1,18 @@
 import { communicationService, eventsRepository } from '@wikia/communication';
-import {
-	CacheData,
-	InstantConfigCacheStorage,
-} from '@wikia/core/services/instant-config-cache-storage';
-import { SessionCookie } from '@wikia/core/services/session-cookie';
+import { CacheData, InstantConfigCacheStorage, UniversalStorage } from '@wikia/core';
 import { expect } from 'chai';
-import { SinonSpy, SinonStub } from 'sinon';
+import { SinonStub } from 'sinon';
 
 describe('Instant Config Cache Storage', () => {
 	const cacheStorage = InstantConfigCacheStorage.make();
 	let getItemStub: SinonStub;
 	let setItemStub: SinonStub;
-	let readSessionIdSpy: SinonSpy;
 
 	beforeEach(() => {
-		getItemStub = global.sandbox.stub(SessionCookie.prototype, 'getItem');
-		setItemStub = global.sandbox.stub(SessionCookie.prototype, 'setItem');
-		readSessionIdSpy = global.sandbox.spy(SessionCookie.prototype, 'readSessionId');
+		getItemStub = global.sandbox.stub(UniversalStorage.prototype, 'getItem');
+		setItemStub = global.sandbox.stub(UniversalStorage.prototype, 'setItem');
 
 		cacheStorage.resetCache();
-		readSessionIdSpy.resetHistory();
 		getItemStub.resetHistory();
 	});
 

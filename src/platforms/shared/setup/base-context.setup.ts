@@ -4,6 +4,7 @@ import {
 	Dictionary,
 	DiProcess,
 	eventsRepository,
+	globalContextService,
 	InstantConfigService,
 	setupNpaContext,
 	setupRdpContext,
@@ -119,12 +120,12 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setInContentExperiment(): void {
-		const top500bundleName = 'top500';
-		const wiki: MediaWikiAdsContext = context.get('wiki');
+		const excludedBundleTagName = 'sensitive';
+		const communityExcludedByTag = globalContextService.hasBundle(excludedBundleTagName);
 
 		if (
 			this.instantConfig.get('icExperiments', []).includes('incontentHeaders') &&
-			wiki?.targeting?.adTagManagerTags?.bundles?.includes(top500bundleName)
+			!communityExcludedByTag
 		) {
 			context.set('templates.incontentHeadersExperiment', true);
 		} else {
@@ -179,9 +180,6 @@ export class BaseContextSetup implements DiProcess {
 			'bidders.prebid.disableSendAllBids',
 			this.instantConfig.get('icPrebidDisableSendAllBids'),
 		);
-		context.set('bidders.identityHub.enabled', this.instantConfig.get('icPubmaticIdentityHub'));
-		// TODO: Remove after ADEN-13043 release & data confirmation
-		context.set('bidders.identityHubV2.enabled', this.instantConfig.get('icPubmaticIdentityHubV2'));
 		context.set('bidders.liveRampId.enabled', this.instantConfig.get('icLiveRampId'));
 		context.set('bidders.liveRampATS.enabled', this.instantConfig.get('icLiveRampATS'));
 		context.set(
@@ -193,6 +191,8 @@ export class BaseContextSetup implements DiProcess {
 			'templates.sizeOverwritingMap',
 			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes,
 		);
+		context.set('bidders.s2s.bidders', this.instantConfig.get('icPrebidS2sBidders', []));
+		context.set('bidders.s2s.enabled', this.instantConfig.get('icPrebidS2sBidders', []).length > 0);
 	}
 
 	private setupStickySlotContext(): void {

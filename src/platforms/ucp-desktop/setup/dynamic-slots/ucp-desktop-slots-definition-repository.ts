@@ -1,5 +1,10 @@
-import { activateFloorAdhesionOnUAP, SlotSetupDefinition } from '@platforms/shared';
 import {
+	activateFloorAdhesionOnUAP,
+	SlotsDefinitionRepository,
+	SlotSetupDefinition,
+} from '@platforms/shared';
+import {
+	AdSlot,
 	btRec,
 	communicationService,
 	context,
@@ -15,7 +20,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { FmrRotator } from '../../utils/fmr-rotator';
 
 @Injectable()
-export class UcpDesktopSlotsDefinitionRepository {
+export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepository {
 	constructor(protected instantConfig: InstantConfigService) {}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
@@ -28,7 +33,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 				placeholderConfig,
 				anchorSelector: '.top-leaderboard',
 				insertMethod: 'prepend',
-				classList: ['hide', 'ad-slot'],
+				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
@@ -66,7 +71,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: '.main-page-tag-rcs, #rail-boxad-wrapper',
 				insertMethod: 'prepend',
-				classList: ['hide', 'ad-slot'],
+				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
@@ -100,7 +105,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 				anchorPosition: 'belowFirstViewport',
 				avoidConflictWith: ['.ad-slot-icl'],
 				insertMethod: 'before',
-				classList: ['hide', 'ad-slot', 'ad-slot-icl'],
+				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot', 'ad-slot-icl'],
 			},
 			slotCreatorWrapperConfig: {
 				classList: ['ad-slot-placeholder', 'incontent-leaderboard', 'is-loading'],
@@ -175,7 +180,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: '#WikiaAdInContentPlaceHolder',
 				insertMethod: 'append',
-				classList: ['hide', 'ad-slot'],
+				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
 				repeat: {
 					index: 1,
 					limit: 20,
@@ -269,9 +274,13 @@ export class UcpDesktopSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: '.page',
 				insertMethod: 'before',
-				classList: ['hide', 'ad-slot'],
+				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
-			activator: () => activateFloorAdhesionOnUAP(activateFloorAdhesion),
+			activator: () =>
+				activateFloorAdhesionOnUAP(
+					activateFloorAdhesion,
+					!context.get('options.isFloorAdhesionNonUapApplicable'),
+				),
 		};
 	}
 

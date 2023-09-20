@@ -19,6 +19,7 @@ import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
 import { Ats } from './ats';
+import { id5 } from './id5';
 import { intentIQ } from './intent-iq';
 import { liveRamp } from './live-ramp';
 import { getSettings } from './prebid-settings';
@@ -64,8 +65,16 @@ const videoGranularity = {
 	],
 };
 
+const s2sRubiconAccountId = 7450;
+
 interface PrebidConfig extends BidderConfig {
 	[bidderName: string]: { enabled: boolean; slots: Dictionary } | boolean;
+}
+
+export interface UserIdConfig {
+	name: string;
+	params: object;
+	storage: object;
 }
 
 communicationService.onSlotEvent(AdSlotEvent.VIDEO_AD_IMPRESSION, ({ slot }) =>
@@ -127,6 +136,8 @@ export class PrebidProvider extends BidderProvider {
 						filter: 'include',
 					},
 				},
+				userIds: [],
+				auctionDelay: context.get('bidders.prebid.auctionDelay') || 50,
 				syncsPerBidder: 3,
 				syncDelay: 6000,
 			},
@@ -139,9 +150,11 @@ export class PrebidProvider extends BidderProvider {
 		this.prebidConfig = {
 			...this.prebidConfig,
 			...this.configureTargeting(),
-			...this.configureLiveRamp(),
 			...this.configureTCF(),
+			...this.configureS2sBidding(),
 		};
+
+		this.configureUserSync();
 
 		this.applyConfig(this.prebidConfig);
 		this.configureAdUnits();
@@ -177,8 +190,63 @@ export class PrebidProvider extends BidderProvider {
 		};
 	}
 
-	private configureLiveRamp(): object {
-		return liveRamp.getConfig();
+	private configureUserSync(): void {
+		this.configureLiveRamp();
+		this.configureOzone();
+		this.configureId5();
+	}
+
+	private configureOzone(): void {
+		if (context.get('bidders.prebid.ozone')) {
+			this.prebidConfig.userSync.userIds.push({
+				name: 'pubCommonId',
+				storage: {
+					type: 'cookie',
+					name: '_pubcid',
+					expires: 365,
+				},
+			});
+		}
+	}
+
+	private configureLiveRamp(): void {
+		const liveRampConfig = liveRamp.getConfig();
+		if (liveRampConfig !== undefined) {
+			this.prebidConfig.userSync.userIds.push(liveRampConfig);
+			this.prebidConfig.userSync.syncDelay = 3000;
+		}
+	}
+
+	private async configureId5(): Promise<void> {
+		const id5Config = id5.getConfig();
+
+		if (!id5Config) {
+			return;
+		}
+
+		this.prebidConfig.userSync.userIds.push(id5Config);
+
+		if (id5Config.params.abTesting.enabled) {
+			const pbjs: Pbjs = await pbjsFactory.init();
+			await id5.setupAbTesting(pbjs);
+		}
+
+		this.enableId5Analytics();
+	}
+
+	private enableId5Analytics(): void {
+		if (context.get('bidders.prebid.id5Analytics.enabled')) {
+			utils.logger(logGroup, 'enabling ID5 Analytics');
+
+			(window as any).pbjs.que.push(() => {
+				(window as any).pbjs.enableAnalytics({
+					provider: 'id5Analytics',
+					options: {
+						partnerId: id5.getPartnerId(),
+					},
+				});
+			});
+		}
 	}
 
 	private configureTCF(): object {
@@ -200,6 +268,52 @@ export class PrebidProvider extends BidderProvider {
 		}
 
 		return {};
+	}
+
+	private configureS2sBidding(): object {
+		if (!context.get('bidders.s2s.enabled')) {
+			return;
+		}
+
+		const s2sBidders = context.get('bidders.s2s.bidders') || [];
+		utils.logger(logGroup, 'Prebid s2s enabled', s2sBidders);
+
+		const extPrebidBidders = this.prepareExtPrebidBiders(s2sBidders);
+
+		return {
+			cache: {
+				url: 'https://prebid-server.rubiconproject.com/cache',
+				ignoreBidderCacheKey: true,
+			},
+			s2sConfig: [
+				{
+					accountId: s2sRubiconAccountId,
+					bidders: s2sBidders,
+					defaultVendor: 'rubicon',
+					coopSync: true,
+					userSyncLimit: 8,
+					allowUnknownBidderCodes: true,
+					extPrebid: {
+						cache: {
+							vastxml: { returnCreative: false },
+						},
+						extPrebidBidders,
+					},
+				},
+			],
+		};
+	}
+
+	private prepareExtPrebidBiders(s2sBidders: string[]): Record<string, { wrappername: string }> {
+		const extPrebidBidders: Record<string, { wrappername: string }> = {};
+
+		s2sBidders.forEach((name) => {
+			extPrebidBidders[name] = {
+				wrappername: `${s2sRubiconAccountId}_Web_Server`,
+			};
+		});
+
+		return extPrebidBidders;
 	}
 
 	async configureAdUnits(adUnits: PrebidAdUnit[] = []): Promise<void> {

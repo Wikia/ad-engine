@@ -20,7 +20,7 @@ export const basicContext = {
 		prebid: {
 			enabled: false,
 			bidsRefreshing: {
-				slots: ['incontent_boxad_1', 'incontent_leaderboard'],
+				slots: ['gallery_leaderboard', 'incontent_boxad_1', 'incontent_leaderboard'],
 			},
 		},
 	},
@@ -60,6 +60,18 @@ export const basicContext = {
 			'.mw-parser-output > h2,.mw-parser-output > h3,.mw-parser-output > h4,.mw-parser-output > h5',
 	},
 	services: {
+		doubleVerify: {
+			slots: [
+				'top_leaderboard',
+				'top_boxad',
+				'incontent_boxad_1',
+				'incontent_leaderboard',
+				'gallery_leaderboard',
+				'bottom_leaderboard',
+				'featured',
+				'incontent_player',
+			],
+		},
 		durationMedia: {
 			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',
 		},
@@ -83,6 +95,9 @@ export const basicContext = {
 			appName: 'fandomdesktop',
 			fallback:
 				'https://script.wikia.nocookie.net/fandom-ae-assets/icbm/prod/icbm_state_fandomdesktop.json',
+		},
+		openWeb: {
+			placementSelector: '#WikiaAdInContentPlaceHolder',
 		},
 	},
 	slotGroups: {

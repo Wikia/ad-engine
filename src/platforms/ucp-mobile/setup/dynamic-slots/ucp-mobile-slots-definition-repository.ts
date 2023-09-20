@@ -1,12 +1,15 @@
 import { activateFloorAdhesionOnUAP, SlotSetupDefinition } from '@platforms/shared';
 import {
+	AdSlot,
 	communicationService,
 	context,
 	CookieStorageAdapter,
 	eventsRepository,
 	InstantConfigService,
+	OpenWeb,
 	RepeatableSlotPlaceholderConfig,
 	scrollListener,
+	SlotPlaceholderConfig,
 	slotPlaceholderInjector,
 	UapLoadStatus,
 	utils,
@@ -15,7 +18,7 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpMobileSlotsDefinitionRepository {
-	constructor(protected instantConfig: InstantConfigService) {}
+	constructor(protected instantConfig: InstantConfigService, private openWeb: OpenWeb) {}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
 		if (!this.isTopLeaderboardApplicable()) {
@@ -36,7 +39,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				placeholderConfig,
 				anchorSelector: '.top-leaderboard',
 				insertMethod: 'prepend',
-				classList: ['hide', 'ad-slot'],
+				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 		};
 	}
@@ -48,6 +51,24 @@ export class UcpMobileSlotsDefinitionRepository {
 		const hasPortableInfobox = !!document.querySelector('.portable-infobox');
 
 		return pageType !== 'special' || hasPortableInfobox || (hasPageHeader && !hasFeaturedVideo);
+	}
+
+	getGalleryLeaderboardConfig(): SlotSetupDefinition {
+		const slotName = 'gallery_leaderboard';
+		const placeholderConfig = context.get(`slots.${slotName}.placeholder`);
+
+		return {
+			slotCreatorConfig: {
+				slotName,
+				placeholderConfig,
+				anchorSelector: '.gallery-leaderboard',
+				insertMethod: 'prepend',
+				classList: ['ad-slot'],
+			},
+			activator: () => {
+				context.push('state.adStack', { id: slotName });
+			},
+		};
 	}
 
 	getTopBoxadConfig(): SlotSetupDefinition {
@@ -68,7 +89,7 @@ export class UcpMobileSlotsDefinitionRepository {
 					? '.mobile-main-page__wiki-description'
 					: context.get('templates.incontentAnchorSelector'),
 				insertMethod: isHome ? 'after' : 'before',
-				classList: ['hide', 'ad-slot'],
+				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
 				avoidConflictWith: ['.ntv-ad'],
 			},
 			slotCreatorWrapperConfig: {
@@ -105,7 +126,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				anchorSelector: '.incontent-boxad',
 				avoidConflictWith: ['.ad-slot', '#incontent_player'],
 				insertMethod: 'append',
-				classList: ['hide', 'ad-slot'],
+				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
 				repeat: {
 					index: 1,
 					limit: 20,
@@ -143,12 +164,28 @@ export class UcpMobileSlotsDefinitionRepository {
 			classList: ['ad-slot-placeholder', 'incontent-boxad', 'is-loading'],
 			anchorSelector: context.get('templates.incontentAnchorSelector'),
 			insertMethod: 'before',
-			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder', '.incontent-boxad'],
+			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder', '.incontent-boxad', '.openweb-slot'],
 			repeatStart: 1,
 			repeatLimit: count,
+			repeatExceptions: [this.buildOpenWebReplacement()],
 		};
 
 		slotPlaceholderInjector.injectAndRepeat(icbPlaceholderConfig, adSlotCategory);
+	}
+
+	private buildOpenWebReplacement(): (repeat: number) => SlotPlaceholderConfig | null {
+		const newConfigOverride: SlotPlaceholderConfig = <SlotPlaceholderConfig>{
+			classList: ['openweb-slot'],
+			anchorSelector: context.get('templates.incontentAnchorSelector'),
+			insertMethod: 'before',
+			noLabel: true,
+		};
+
+		return (repeat) => {
+			return repeat === OpenWeb.MOBILE_REPLACE_REPEAT_SLOT_IDX && this.openWeb.isActive()
+				? newConfigOverride
+				: null;
+		};
 	}
 
 	getMobilePrefooterConfig(): SlotSetupDefinition {
@@ -166,10 +203,15 @@ export class UcpMobileSlotsDefinitionRepository {
 				},
 				anchorSelector: '.global-footer',
 				insertMethod: 'before',
-				classList: ['hide', 'ad-slot'],
+				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			slotCreatorWrapperConfig: {
-				classList: ['ad-slot-placeholder', 'mobile-prefooter', 'is-loading', 'hide'],
+				classList: [
+					'ad-slot-placeholder',
+					'mobile-prefooter',
+					'is-loading',
+					AdSlot.HIDDEN_AD_CLASS,
+				],
 			},
 			activator: () => {
 				communicationService.on(
@@ -179,7 +221,7 @@ export class UcpMobileSlotsDefinitionRepository {
 							this.pushWaitingSlot(slotName);
 
 							const mobilePrefooter = document.querySelector('.mobile-prefooter');
-							mobilePrefooter.classList.remove('hide');
+							mobilePrefooter.classList.remove(AdSlot.HIDDEN_AD_CLASS);
 						}
 					},
 				);
@@ -218,7 +260,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				},
 				anchorSelector: '.bottom-leaderboard',
 				insertMethod: 'prepend',
-				classList: ['hide', 'ad-slot'],
+				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			slotCreatorWrapperConfig: null,
 			activator: () => {
@@ -287,7 +329,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: '#floor_adhesion_anchor',
 				insertMethod: 'append',
-				classList: ['hide', 'ad-slot'],
+				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			activator: () => activateFloorAdhesionOnUAP(activateFloorAdhesion, false),
 		};
@@ -305,7 +347,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: '#fandom-mobile-wrapper',
 				insertMethod: 'after',
-				classList: ['hide', 'ad-slot'],
+				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			activator: () => {
 				this.pushWaitingSlot(slotName);

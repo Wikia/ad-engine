@@ -212,6 +212,8 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 			'incontent-leaderboard-middle': {
 				defaultSizes: [
 					[728, 90],
+					[970, 250],
+					[970, 66],
 					[5, 5],
 				],
 				targeting: {
@@ -269,6 +271,151 @@ export class MetacriticNeutronSlotsContextSetup implements DiProcess {
 			},
 			video: {
 				isVideo: true,
+			},
+			'incontent-leader-plus-middle': {
+				defaultSizes: [
+					[728, 90],
+					[970, 250],
+					[970, 66],
+					[5, 5],
+				],
+				targeting: {
+					pos_nr: 'middle',
+				},
+			},
+			incontent_leaderboard: {
+				sizes: [
+					{
+						viewportSize: [970, 200],
+						sizes: [
+							[728, 90],
+							[970, 66],
+						],
+					},
+					{
+						viewportSize: [840, 200],
+						sizes: [[728, 90]],
+					},
+					{
+						viewportSize: [320, 200],
+						sizes: [
+							[320, 50],
+							[320, 100],
+						],
+					},
+					{
+						viewportSize: [0, 0],
+						sizes: [[320, 50]],
+					},
+				],
+				defaultSizes: [
+					[728, 90],
+					[970, 250],
+					[970, 66],
+				],
+				targeting: {
+					pos_nr: 'middle',
+				},
+			},
+			bottom_leaderboard: {
+				sizes: [
+					{
+						viewportSize: [970, 200],
+						sizes: [
+							[728, 90],
+							[970, 66],
+						],
+					},
+					{
+						viewportSize: [840, 200],
+						sizes: [[728, 90]],
+					},
+					{
+						viewportSize: [320, 200],
+						sizes: [
+							[320, 50],
+							[320, 100],
+						],
+					},
+					{
+						viewportSize: [0, 0],
+						sizes: [[320, 50]],
+					},
+				],
+				defaultSizes: [
+					[728, 90],
+					[970, 250],
+					[970, 66],
+				],
+				targeting: {
+					pos_nr: 'bottom',
+				},
+			},
+			top_boxad: {
+				adProduct: 'top_boxad',
+				group: 'MR',
+				sizes: [
+					{
+						viewportSize: [840, 200],
+						sizes: [
+							[300, 250],
+							[300, 600],
+							[300, 1050],
+						],
+					},
+					{
+						viewportSize: [0, 0],
+						sizes: [
+							[320, 50],
+							[320, 100],
+							[300, 250],
+						],
+					},
+				],
+				defaultSizes: [
+					[300, 250],
+					[300, 600],
+					[300, 1050],
+				],
+				targeting: {
+					loc: 'top',
+					pos_nr: 'top',
+				},
+			},
+			incontent_boxad: {
+				adProduct: 'incontent_boxad',
+				bidderAlias: 'incontent_boxad',
+				group: 'HiVi',
+				recirculationElementSelector: '#recirculation-rail',
+				sizes: [
+					{
+						viewportSize: [840, 200],
+						sizes: [
+							[120, 600],
+							[160, 600],
+							[300, 250],
+							[300, 600],
+						],
+					},
+					{
+						viewportSize: [0, 0],
+						sizes: [
+							[320, 50],
+							[320, 100],
+							[300, 250],
+						],
+					},
+				],
+				defaultSizes: [
+					[120, 600],
+					[160, 600],
+					[300, 250],
+					[300, 600],
+				],
+				targeting: {
+					loc: 'hivi',
+					pos_nr: 'middle',
+				},
 			},
 		};
 

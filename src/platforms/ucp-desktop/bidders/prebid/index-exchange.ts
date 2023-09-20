@@ -24,6 +24,10 @@ export function getIndexExchangeContext(): object {
 				],
 				siteId: '185049',
 			},
+			incontent_leaderboard: {
+				sizes: [[728, 90]],
+				siteId: '1019179',
+			},
 			bottom_leaderboard: {
 				sizes: [
 					[728, 90],
@@ -33,6 +37,10 @@ export function getIndexExchangeContext(): object {
 			},
 			featured: {
 				siteId: '437502',
+			},
+			fandom_dt_galleries: {
+				sizes: [[728, 90]],
+				siteId: '1001381',
 			},
 		},
 	};

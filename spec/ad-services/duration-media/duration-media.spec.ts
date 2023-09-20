@@ -41,7 +41,7 @@ describe('Duration media service', () => {
 
 		await durationMedia.call();
 
-		communicationService.emit(eventsRepository.AD_ENGINE_SLOT_LOADED);
+		communicationService.emit(eventsRepository.AD_ENGINE_GPT_READY);
 
 		expect(loadScriptStub.called).to.equal(true);
 		expect(

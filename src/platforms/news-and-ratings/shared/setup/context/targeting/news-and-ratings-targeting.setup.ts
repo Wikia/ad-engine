@@ -23,6 +23,7 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 			...this.getForcedCampaignsTargeting(),
 		};
 
+		this.setPageLevelTargeting(targeting);
 		this.setSlotLevelTargeting(targeting, customConfig);
 
 		targetingService.extend({
@@ -33,6 +34,7 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 			uap_c: 'none',
 		});
 
+		this.setupPageType();
 		setupNpaContext();
 		setupRdpContext();
 	}
@@ -267,9 +269,17 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 			({ slot: adSlot }) => {
 				adSlot.setTargetingConfigProperty('sl', this.getSlValue(adSlot, customConfig));
 				adSlot.setTargetingConfigProperty('iid', this.getIidValue(adSlot, targeting));
+				adSlot.setTargetingConfigProperty('pageType', targeting.pname ?? '-1');
 			},
 			false,
 		);
+	}
+
+	setPageLevelTargeting(targeting) {
+		targetingService.set('pageType', targeting['pageType'] ?? '-1');
+		targetingService.set('pname', targeting['pname'] ?? '-1');
+		targetingService.set('ptype', targeting['ptype'] ?? '-1');
+		context.set('custom.pageType', targeting['pname'] ?? 'front-door');
 	}
 
 	getSlValue(adSlot, customConfig) {
@@ -303,5 +313,11 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 			return false;
 		}
 		return true;
+	}
+
+	private setupPageType(): void {
+		const pageType: string =
+			window.fandomContext?.video?.playerLoaded === true ? 'video' : 'article';
+		targetingService.set('s2', pageType);
 	}
 }

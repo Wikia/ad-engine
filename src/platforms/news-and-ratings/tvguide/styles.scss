@@ -16,7 +16,8 @@ body {
 
 	&.has-uap {
 		#top_leaderboard {
-			&.sticky-tlb {
+			&.sticky-tlb,
+			&.bfaa-template {
 				z-index: 5000001;
 			}
 		}
@@ -26,10 +27,7 @@ body {
 .gpt-ad {
 	text-align: center;
 
-	&.hide,
-	& .hide {
-		display: none !important;
-	}
+	@include hidden-ad();
 
 	& > div > iframe {
 		display: block;

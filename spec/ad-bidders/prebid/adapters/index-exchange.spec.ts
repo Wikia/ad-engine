@@ -104,6 +104,8 @@ describe('IndexExchange bidder adapter', () => {
 							siteId: '112233',
 							size: [640, 480],
 							video: {
+								context: 'instream',
+								playerSize: [640, 480],
 								mimes: [
 									'video/mp4',
 									'video/x-flv',
@@ -115,6 +117,8 @@ describe('IndexExchange bidder adapter', () => {
 								maxduration: 30,
 								protocols: [2, 3, 5, 6],
 								api: [2],
+								w: 640,
+								h: 480,
 							},
 						},
 					},

@@ -56,6 +56,8 @@ export class IndexExchange extends PrebidAdapter {
 						siteId,
 						size: [640, 480],
 						video: {
+							context: 'instream',
+							playerSize: [640, 480],
 							mimes: [
 								'video/mp4',
 								'video/x-flv',
@@ -67,6 +69,8 @@ export class IndexExchange extends PrebidAdapter {
 							maxduration: 30,
 							protocols: [2, 3, 5, 6],
 							api: [2],
+							w: 640,
+							h: 480,
 						},
 					},
 				},
