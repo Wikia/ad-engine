@@ -20,6 +20,7 @@ import {
 	communicationService,
 	conditional,
 	context,
+	domContentLoadedPhase,
 	eventsRepository,
 	IdentitySetup,
 	pageLoadPhase,
@@ -46,7 +47,7 @@ export class UcpDesktopPlatform {
 		this.pipeline.add(
 			() => context.extend(basicContext),
 			PlatformContextSetup,
-			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
+			domContentLoadedPhase(parallel(InstantConfigSetup, () => bootstrapAndGetConsent())),
 			TrackingParametersSetup,
 			MetricReporterSetup,
 			MetricReporter,

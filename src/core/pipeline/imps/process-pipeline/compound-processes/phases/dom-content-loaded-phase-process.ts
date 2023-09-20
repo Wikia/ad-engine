@@ -1,6 +1,5 @@
 import { Container, Injectable } from '@wikia/dependency-injection';
 import { MetricReporter } from '../../../../../../platforms/shared';
-import { InstantConfigService } from '../../../../../services';
 import { ProcessPipeline } from '../../process-pipeline';
 import {
 	CompoundProcess,
@@ -8,50 +7,44 @@ import {
 	ProcessStepUnion,
 } from '../../process-pipeline-types';
 
-const DEFAULT_WAIT_FOR_PAGE_LOAD_TIMEOUT = 1500;
+const DEFAULT_WAIT_FOR_DOM_CONTENT_LOADED_TIMEOUT = 500;
 
-interface PageLoadPhaseIcbmStructure {
-	wait: boolean;
+interface DOMContentLoadedPhaseIcbmStructure {
 	timeout: number;
 }
 
 @Injectable({ scope: 'Transient' })
-class PageLoadPhaseProcess<T> implements CompoundProcess<ProcessStepUnion<T>[]> {
+class DOMContentLoadedPhaseProcess<T> implements CompoundProcess<ProcessStepUnion<T>[]> {
 	private fired = false;
 	private timeoutId: NodeJS.Timeout | null = null;
-	private readonly config: PageLoadPhaseIcbmStructure;
+	private readonly config: DOMContentLoadedPhaseIcbmStructure;
 
-	constructor(private container: Container, instantConfigService: InstantConfigService) {
-		this.config = instantConfigService.get('pageLoadPhase', {
-			wait: true,
-			timeout: DEFAULT_WAIT_FOR_PAGE_LOAD_TIMEOUT,
-		});
+	// This phase is being used when loading ICBM variables, therefore InstantConfig cannot be used here.
+	constructor(private container: Container) {
+		this.config = {
+			timeout: DEFAULT_WAIT_FOR_DOM_CONTENT_LOADED_TIMEOUT,
+		};
 	}
 
 	execute(payload: ProcessStepUnion<T>[]): Promise<void> | void {
 		const pipeline = this.container.get(ProcessPipeline);
 
-		if (!this.config.wait) {
-			new MetricReporter().setTrackingVariant('plw-disabled').trackLoadTimeVarianted();
-			return pipeline.add(...payload).execute();
-		}
-
-		if (document.readyState === 'complete') {
-			console.debug('[AEPERF] window.onload already fired');
+		if (document.readyState !== 'loading') {
+			console.debug('[AEPERF] DOMContentLoaded already fired');
 			return this.addExecutePipeline(pipeline, payload);
 		}
 
 		this.runSafeTimeout(pipeline, payload);
-		window.onload = () => {
-			console.debug('[AEPERF] window.onload event fired');
+		document.addEventListener('DOMContentLoaded', () => {
+			console.debug('[AEPERF] DOMContentLoaded event fired');
 			this.killSafeTimeout();
 			return this.addExecutePipeline(pipeline, payload);
-		};
+		});
 	}
 
 	private runSafeTimeout(pipeline: ProcessPipeline, payload: ProcessStepUnion<T>[]): void {
 		this.timeoutId = setTimeout(() => {
-			console.debug('[AEPERF] window.onload not fired');
+			console.debug('[AEPERF] DOMContentLoaded not fired');
 			return this.addExecutePipeline(pipeline, payload);
 		}, this.config.timeout);
 	}
@@ -70,16 +63,16 @@ class PageLoadPhaseProcess<T> implements CompoundProcess<ProcessStepUnion<T>[]> 
 		}
 
 		this.fired = true;
-		new MetricReporter().setTrackingVariant('plw-enabled').trackLoadTimeVarianted();
+		new MetricReporter().setTrackingVariant('dcl-enabled').trackLoadTimeVarianted();
 		return pipeline.add(...payload).execute();
 	}
 }
 
-export function pageLoadPhase<T>(
+export function domContentLoadedPhase<T>(
 	...steps: ProcessStepUnion<T>[]
 ): CompoundProcessStep<ProcessStepUnion<T>[]> {
 	return {
-		process: PageLoadPhaseProcess,
+		process: DOMContentLoadedPhaseProcess,
 		payload: steps,
 	};
 }

@@ -22,7 +22,9 @@ export class InstantConfigSetup implements DiProcess {
 	constructor(private container: Container) {}
 
 	async execute(): Promise<void> {
+		const start = Date.now();
 		const instantConfig = await new InstantConfigService().init();
+		console.debug('[AEPERF] InstantConfigSetup', Date.now() - start, 'ms');
 
 		this.container.bind(InstantConfigService).value(instantConfig);
 		this.container.bind(InstantConfigCacheStorage).value(InstantConfigCacheStorage.make());

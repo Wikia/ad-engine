@@ -9,6 +9,7 @@ export * from './pipeline/imps/partner-pipeline';
 export * from './pipeline/imps/process-pipeline/compound-processes/conditional-process';
 export * from './pipeline/imps/process-pipeline/compound-processes/once-process';
 export * from './pipeline/imps/process-pipeline/compound-processes/parallel-process';
+export * from './pipeline/imps/process-pipeline/compound-processes/phases/dom-content-loaded-phase-process';
 export * from './pipeline/imps/process-pipeline/compound-processes/phases/page-load-phase-process';
 export * from './pipeline/imps/process-pipeline/compound-processes/sequential-process';
 export * from './pipeline/imps/process-pipeline/process-pipeline';
