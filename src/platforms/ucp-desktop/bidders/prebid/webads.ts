@@ -7,7 +7,7 @@ export function getWebadsContext(): object {
 					[728, 90],
 					[970, 250],
 				],
-				placementId: '64a7e9b6c87e0b22eed4d57f_64a690add98d1515f8a3a126',
+				placementId: '648079843898112402b6dfdc_64776650c7fa31d6c63e1d5f',
 				accountId: '647765b7705d4fca3b3e1d58',
 			},
 			top_boxad: {
