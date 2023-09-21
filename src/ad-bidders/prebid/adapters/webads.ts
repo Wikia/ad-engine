@@ -1,7 +1,7 @@
 import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
 
-export class Webads extends PrebidAdapter {
+export class WebAds extends PrebidAdapter {
 	static bidderName = 'relevantdigital';
 
 	constructor(options) {
@@ -9,7 +9,7 @@ export class Webads extends PrebidAdapter {
 	}
 
 	get bidderName(): string {
-		return Webads.bidderName;
+		return WebAds.bidderName;
 	}
 
 	prepareConfigForAdUnit(
