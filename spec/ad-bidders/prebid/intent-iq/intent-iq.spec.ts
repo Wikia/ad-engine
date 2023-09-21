@@ -1,16 +1,22 @@
 import { IntentIQ } from '@wikia/ad-bidders/prebid/intent-iq';
-import { context } from '@wikia/core';
+import { communicationService, eventsRepository } from '@wikia/communication';
+import { context, utils } from '@wikia/core';
 import { expect } from 'chai';
 import { SinonSpy } from 'sinon';
+import { stubPbjs } from '../../../core/services/pbjs.stub';
 import { PrebidBidFactory } from '../prebid-bid.factory';
 
 describe('IntentIQ', () => {
 	let intentIqNewSpy: SinonSpy;
 	let intentIqReportSpy: SinonSpy;
+	let loadScriptStub;
 	let contextStub;
 
 	beforeEach(() => {
 		intentIqNewSpy = global.sandbox.spy();
+		loadScriptStub = global.sandbox.stub(utils.scriptLoader, 'loadScript');
+		loadScriptStub.returns(Promise.resolve());
+
 		intentIqReportSpy = global.sandbox.spy();
 		contextStub = global.sandbox
 			.stub(context, 'get')
@@ -18,6 +24,7 @@ describe('IntentIQ', () => {
 			.returns(true)
 			.withArgs('bidders.prebid.auctionDelay')
 			.returns(50);
+		stubPbjs(global.sandbox).pbjsStub;
 
 		window.IntentIqObject = function IntentIqMock(config) {
 			intentIqNewSpy(config);
@@ -65,6 +72,9 @@ describe('IntentIQ', () => {
 			});
 
 			const intentIQ = new IntentIQ();
+
+			communicationService.emit(eventsRepository.AD_ENGINE_CONSENT_READY);
+
 			await intentIQ.load();
 
 			await intentIQ.reportPrebidWin(bid);
