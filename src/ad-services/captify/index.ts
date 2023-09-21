@@ -7,7 +7,7 @@ export class Captify extends BaseServiceSetup {
 	private propertyId = 12974;
 
 	async call(): Promise<void> {
-		if (!this.isEnabled('icCaptify')) {
+		if (!this.isEnabled('icCaptify') || this.isEnabled('icIdentityPartners', false)) {
 			utils.logger(logGroup, 'disabled');
 
 			return Promise.resolve();
