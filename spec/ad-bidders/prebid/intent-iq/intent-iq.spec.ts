@@ -1,6 +1,6 @@
 import { IntentIQ } from '@wikia/ad-bidders/prebid/intent-iq';
 import { communicationService, eventsRepository } from '@wikia/communication';
-import { context, utils } from '@wikia/core';
+import { context, targetingService, utils } from '@wikia/core';
 import { expect } from 'chai';
 import { SinonSpy } from 'sinon';
 import { stubPbjs } from '../../../core/services/pbjs.stub';
@@ -11,6 +11,7 @@ describe('IntentIQ', () => {
 	let intentIqReportSpy: SinonSpy;
 	let loadScriptStub;
 	let contextStub;
+	let pbjsStub;
 
 	beforeEach(() => {
 		intentIqNewSpy = global.sandbox.spy();
@@ -24,7 +25,7 @@ describe('IntentIQ', () => {
 			.returns(true)
 			.withArgs('bidders.prebid.auctionDelay')
 			.returns(50);
-		stubPbjs(global.sandbox).pbjsStub;
+		pbjsStub = stubPbjs(global.sandbox).pbjsStub;
 
 		window.IntentIqObject = function IntentIqMock(config) {
 			intentIqNewSpy(config);
@@ -44,6 +45,27 @@ describe('IntentIQ', () => {
 
 	afterEach(() => {
 		global.sandbox.restore();
+	});
+	it('should initialize when IntentIQ is enabled and consents are given', async () => {
+		contextStub.withArgs('options.trackingOptIn').returns(true);
+		const targetingServiceStub = global.sandbox.stub(targetingService, 'set');
+		const intentIQ = new IntentIQ();
+
+		await intentIQ.load();
+
+		expect(intentIqNewSpy.calledOnce).to.be.true;
+		expect(targetingServiceStub.calledWithExactly('intent_iq_group', 'A')).to.be.true;
+		expect(
+			intentIqNewSpy.calledWithMatch({
+				partner: 1187275693,
+				pbjs: pbjsStub,
+				timeoutInMillis: 2000,
+				ABTestingConfigurationSource: 'percentage',
+				abPercentage: 97,
+				manualWinReportEnabled: true,
+				browserBlackList: 'Chrome',
+			}),
+		).to.be.true;
 	});
 
 	describe('reportExternalWin', () => {
