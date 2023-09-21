@@ -1,6 +1,7 @@
 export * from './bidders/bidders-state.setup';
 export * from './bidders/wikia-adapter';
 export * from './bootstrap';
+export * from './consent/consent-management-platform.setup';
 export * from './context/targeting/targeting-strategies/models/open-rtb2';
 export * from './context/targeting/ucp-targeting.setup';
 export * from './dynamic-slots/activate-floor-adhesion-on-uap';
@@ -89,3 +90,4 @@ export * from './utils/insert-slots';
 export * from './utils/instant-config.setup';
 export * from './utils/placeholder-service';
 export * from './utils/placeholder-service-helper';
+export * from './utils/preloaded-libraries-setup';

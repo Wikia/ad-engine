@@ -1,16 +1,17 @@
 import {
 	AdEngineRunnerSetup,
 	BiddersStateSetup,
-	bootstrapAndGetConsent,
+	bootstrap,
+	ConsentManagementPlatformSetup,
 	InstantConfigSetup,
 	LabradorSetup,
 	LoadTimesSetup,
-	MetricReporter,
 	MetricReporterSetup,
 	NoAdsDetector,
 	NoAdsExperimentSetup,
 	NoAdsMode,
 	PlatformContextSetup,
+	PreloadedLibrariesSetup,
 	SequentialMessagingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
@@ -26,6 +27,7 @@ import {
 	pageLoadPhase,
 	parallel,
 	ProcessPipeline,
+	sequential,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
@@ -48,10 +50,15 @@ export class UcpMobilePlatform {
 			() => context.extend(basicContext),
 			() => context.set('state.isMobile', true),
 			PlatformContextSetup,
-			domContentLoadedPhase(parallel(InstantConfigSetup, () => bootstrapAndGetConsent())),
+			domContentLoadedPhase(
+				() => bootstrap(),
+				parallel(
+					sequential(InstantConfigSetup, PreloadedLibrariesSetup),
+					ConsentManagementPlatformSetup,
+				),
+			),
 			TrackingParametersSetup,
 			MetricReporterSetup,
-			MetricReporter,
 			UcpMobileBaseContextSetup,
 			UcpMobileSlotsContextSetup,
 			IdentitySetup,

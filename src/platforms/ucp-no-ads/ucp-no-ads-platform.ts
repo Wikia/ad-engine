@@ -1,15 +1,21 @@
 import {
 	BaseContextSetup,
-	bootstrapAndGetConsent,
+	bootstrap,
+	ConsentManagementPlatformSetup,
 	InstantConfigSetup,
-	MetricReporter,
 	MetricReporterSetup,
 	NoAdsMode,
 	PlatformContextSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
-import { context, IdentitySetup, parallel, ProcessPipeline } from '@wikia/ad-engine';
+import {
+	context,
+	domContentLoadedPhase,
+	IdentitySetup,
+	parallel,
+	ProcessPipeline,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { UcpNoAdsWikiContextSetup } from './setup/wiki-context.setup';
 
@@ -23,10 +29,12 @@ export class UcpNoAdsPlatform {
 		this.pipeline.add(
 			UcpNoAdsWikiContextSetup,
 			PlatformContextSetup,
-			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
+			domContentLoadedPhase(
+				() => bootstrap(),
+				parallel(InstantConfigSetup, ConsentManagementPlatformSetup),
+			),
 			TrackingParametersSetup,
 			MetricReporterSetup,
-			MetricReporter,
 			BaseContextSetup,
 			IdentitySetup,
 			TrackingSetup,

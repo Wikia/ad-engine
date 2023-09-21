@@ -2,24 +2,27 @@ import {
 	CcpaSignalPayload,
 	communicationService,
 	context,
+	DiProcess,
 	eventsRepository,
 	GdprConsentPayload,
 	utils,
 } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
 
 const logGroup = 'tracking-opt-in-wrapper';
 
 /**
  * Wraps all functionality for the consent management system
  */
-class TrackingOptInWrapper {
+@Injectable()
+export class ConsentManagementPlatformSetup implements DiProcess {
 	constructor() {
 		window.ads = window.ads || ({} as MediaWikiAds);
 
 		this.installConsentQueue();
 	}
 
-	async init(): Promise<void> {
+	async execute(): Promise<void> {
 		return new Promise((resolve) => {
 			utils.logger(logGroup, 'Waiting for consents');
 
@@ -63,5 +66,3 @@ class TrackingOptInWrapper {
 		});
 	}
 }
-
-export const trackingOptInWrapper = new TrackingOptInWrapper();
