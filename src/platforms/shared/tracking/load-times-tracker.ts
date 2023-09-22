@@ -1,4 +1,5 @@
 import { communicationService, eventsRepository, utils } from '@wikia/ad-engine';
+import { AdEngineStageSetup } from '../setup/ad-engine-stage.setup';
 import { trackingUrls } from '../setup/tracking-urls';
 import { DataWarehouseTracker } from './data-warehouse';
 
@@ -25,12 +26,14 @@ const eventsToTrack = {
 export class LoadTimesTracker {
 	private static instance: LoadTimesTracker;
 	private dataWarehouseTracker: DataWarehouseTracker;
+	private adEngineStageSetup: AdEngineStageSetup;
 	private startTime: number;
 	private tzOffset: number;
 	private eventArray = [];
 
 	private constructor() {
 		this.dataWarehouseTracker = new DataWarehouseTracker();
+		this.adEngineStageSetup = new AdEngineStageSetup();
 		this.initStartTime();
 		this.initLoadTimesTracker();
 	}
@@ -104,10 +107,13 @@ export class LoadTimesTracker {
 			country: utils.geoService.getCountryCode() || '',
 		};
 
-		if (document.readyState !== 'complete') {
-			this.eventArray.push(event);
-		} else {
-			this.dispatchTrackEvent(event);
-		}
+		this.adEngineStageSetup
+			.afterDocumentCompleted()
+			.then(() => {
+				this.dispatchTrackEvent(event);
+			})
+			.catch(() => {
+				this.eventArray.push(event);
+			});
 	}
 }
