@@ -16,6 +16,10 @@ describe('PreloadedLibrariesSetup', () => {
 
 	beforeEach(() => {
 		scriptLoaderStub = global.sandbox.stub(utils.scriptLoader, 'loadScript').resolvesThis();
+		global.sandbox
+			.stub(context, 'get')
+			.withArgs('options.preload')
+			.returns({ gpt: true, apstag: true, prebid: true, intentIq: true, audigent: true });
 	});
 
 	it('should preloadLibraries', async () => {
