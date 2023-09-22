@@ -1,5 +1,3 @@
-// Create tests for global-timeout class from spec/core/utils/global-timeout.spec.ts
-
 import { globalTimeout } from '@wikia/core/utils/global-timeout';
 import { expect } from 'chai';
 
