@@ -15,36 +15,46 @@ const prebidLibraryUrlPattern = new RegExp(
 	`^(${prebidLibraryUrlLocation.replaceAll('.', '\\.')})?[^/]+/[^/]+$`,
 );
 
+export interface PreloadOptions {
+	gpt?: boolean;
+	audigent?: boolean;
+	prebid?: boolean;
+	apstag?: boolean;
+	intentIq?: boolean;
+}
+
 @Injectable()
 export class PreloadedLibrariesSetup implements DiProcess {
-	constructor(private instantConfig: InstantConfigService, private gptSetup: GptSetup) {}
+	private readonly options: PreloadOptions;
+
+	constructor(private instantConfig: InstantConfigService, private gptSetup: GptSetup) {
+		this.options = context.get('options.preload');
+	}
 
 	async execute(): Promise<void> {
 		this.preloadLibraries();
-		return this.gptSetup.call();
+		return this.options.gpt ? this.gptSetup.call() : Promise.resolve();
 	}
 
 	private preloadLibraries() {
-		if (this.instantConfig.get('icPrebid')) {
+		if (this.options.prebid && this.instantConfig.get('icPrebid')) {
 			context.set('bidders.prebid.libraryUrl', this.getPrebidLibraryUrl());
 
 			pbjsFactory.init().then(() => {
-				if (this.instantConfig.get('icPrebidIntentIQ')) {
+				if (this.options.intentIq && this.instantConfig.get('icPrebidIntentIQ')) {
 					return intentIQ.preloadScript();
 				}
 			});
 		}
 
-		if (this.instantConfig.get('icA9Bidder')) {
+		if (this.options.apstag && this.instantConfig.get('icA9Bidder')) {
 			A9Provider.initApstag();
 		}
 
-		if (this.instantConfig.get('icAudigent')) {
+		if (this.options.audigent && this.instantConfig.get('icAudigent')) {
 			Audigent.loadSegmentLibrary();
 		}
 	}
-
-	pu;
 
 	private getPrebidLibraryUrl(): string {
 		let url: string = this.instantConfig.get('icPrebidVersion', 'latest/min.js');
