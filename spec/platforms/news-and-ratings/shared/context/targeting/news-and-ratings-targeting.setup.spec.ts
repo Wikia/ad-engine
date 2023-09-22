@@ -105,7 +105,7 @@ describe('News and Ratings Targeting Setup', () => {
 			};
 
 			const expectedMappedAdTags = {
-				contentid_nr: 'test-cid',
+				slug: 'test-cid',
 				pform: 'test-con',
 				gnre: 'test-genre',
 				tv: 'test-network',
