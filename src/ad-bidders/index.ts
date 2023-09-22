@@ -19,7 +19,7 @@ interface BiddersProviders {
 const logGroup = 'bidders';
 
 export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
-	private biddersProviders: BiddersProviders = {};
+	static biddersProviders: BiddersProviders = {};
 	private realSlotPrices = {};
 
 	constructor() {
@@ -53,7 +53,7 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 	}
 
 	getBiddersProviders(): (A9Provider | PrebidProvider)[] {
-		return Object.values(this.biddersProviders);
+		return Object.values(Bidders.biddersProviders);
 	}
 
 	async getBidParameters(slotName): Promise<Dictionary> {
@@ -105,23 +105,25 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 	}
 
 	call(): Promise<void> {
-		const config = context.get('bidders') || {};
+		//const config = context.get('bidders') || {};
 		const promise = utils.createExtendedPromise();
 
-		if (config.prebid && config.prebid.enabled) {
-			this.biddersProviders.prebid = new PrebidProvider(config.prebid, config.timeout);
-		}
+		// if (config.prebid && config.prebid.enabled) {
+		// 	Bidders.biddersProviders.prebid = new PrebidProvider(config.prebid, config.timeout);
+		// }
 
-		if (A9Provider.isEnabled()) {
-			this.biddersProviders.a9 = new A9Provider(config.a9, config.timeout);
-		} else {
-			utils.logger(logGroup, 'A9 has been disabled');
-		}
+		// if (A9Provider.isEnabled()) {
+		// 	Bidders.biddersProviders.a9 = new A9Provider(config.a9, config.timeout);
+		// } else {
+		// 	utils.logger(logGroup, 'A9 has been disabled');
+		// }
 
 		if (!this.getBiddersProviders().length) {
 			utils.logger(logGroup, 'resolving call() promise because of no bidder providers');
 			return Promise.resolve();
 		}
+
+		utils.logger(logGroup, 'add response listeners', Bidders.biddersProviders);
 
 		this.getBiddersProviders().forEach((provider) => {
 			provider.addResponseListener(() => {
@@ -160,8 +162,8 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 	}
 
 	private hasAllResponses(): boolean {
-		const missingProviders = Object.keys(this.biddersProviders).filter((providerName) => {
-			const provider = this.biddersProviders[providerName];
+		const missingProviders = Object.keys(Bidders.biddersProviders).filter((providerName) => {
+			const provider = Bidders.biddersProviders[providerName];
 
 			return !provider.hasResponse();
 		});
@@ -170,8 +172,10 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 	}
 }
 
+export * from './a9/a9-runner';
 export * from './prebid/ats';
 export * from './prebid/intent-iq';
 export * from './prebid/live-ramp';
 export * from './prebid/native';
+export * from './prebid/prebid-runner';
 export * from './wrappers';
