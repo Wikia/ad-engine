@@ -1,4 +1,5 @@
 import { Container, Injectable } from '@wikia/dependency-injection';
+import { context } from '../../../../../services';
 import { ProcessPipeline } from '../../process-pipeline';
 import {
 	CompoundProcess,
@@ -21,7 +22,9 @@ class DOMContentLoadedPhaseProcess<T> implements CompoundProcess<ProcessStepUnio
 	// This phase is being used when loading ICBM variables, therefore InstantConfig cannot be used here.
 	constructor(private container: Container) {
 		this.config = {
-			timeout: DEFAULT_WAIT_FOR_DOM_CONTENT_LOADED_TIMEOUT,
+			timeout:
+				context.get('options.phases.domContentLoadedTimeout') ||
+				DEFAULT_WAIT_FOR_DOM_CONTENT_LOADED_TIMEOUT,
 		};
 	}
 
@@ -57,7 +60,6 @@ class DOMContentLoadedPhaseProcess<T> implements CompoundProcess<ProcessStepUnio
 		payload: ProcessStepUnion<T>[],
 	): Promise<void> | void {
 		if (this.fired) {
-			console.log('AEPERF fired');
 			return;
 		}
 

@@ -124,5 +124,9 @@ export const basicContext = {
 				enabled: false,
 			},
 		},
+		phases: {
+			domContentLoadedTimeout: 500,
+			pageLoadedTimeout: 1500,
+		},
 	},
 };

@@ -1,6 +1,6 @@
 import { Container, Injectable } from '@wikia/dependency-injection';
 import { MetricReporter } from '../../../../../../platforms/shared';
-import { InstantConfigService } from '../../../../../services';
+import { context, InstantConfigService } from '../../../../../services';
 import { ProcessPipeline } from '../../process-pipeline';
 import {
 	CompoundProcess,
@@ -24,7 +24,8 @@ class PageLoadPhaseProcess<T> implements CompoundProcess<ProcessStepUnion<T>[]> 
 	constructor(private container: Container, instantConfigService: InstantConfigService) {
 		this.config = instantConfigService.get('pageLoadPhase', {
 			wait: true,
-			timeout: DEFAULT_WAIT_FOR_PAGE_LOAD_TIMEOUT,
+			timeout:
+				context.get('options.phases.pageLoadedTimeout') || DEFAULT_WAIT_FOR_PAGE_LOAD_TIMEOUT,
 		});
 	}
 
@@ -65,7 +66,6 @@ class PageLoadPhaseProcess<T> implements CompoundProcess<ProcessStepUnion<T>[]> 
 		payload: ProcessStepUnion<T>[],
 	): Promise<void> | void {
 		if (this.fired) {
-			console.log('AEPERF fired');
 			return;
 		}
 

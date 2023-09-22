@@ -120,5 +120,9 @@ export const basicContext = {
 				},
 			},
 		},
+		phases: {
+			domContentLoadedTimeout: 750,
+			pageLoadedTimeout: 2250,
+		},
 	},
 };
