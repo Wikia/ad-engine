@@ -40,6 +40,7 @@ export class PlayerSetup extends BaseServiceSetup {
 	}
 
 	private generateVastUrlForJWPlayer() {
+		const aspectRatio = 16 / 9;
 		const slotName = 'featured';
 		const src = context.get('src');
 		const videoAdUnitId = utils.stringBuilder.build(context.get('slots.featured.videoAdUnit'), {
@@ -50,7 +51,7 @@ export class PlayerSetup extends BaseServiceSetup {
 			},
 		});
 
-		return utils.buildVastUrl(16 / 9, slotName, {
+		return utils.buildVastUrl(aspectRatio, slotName, {
 			videoAdUnitId,
 			correlator: Math.round(Math.random() * 10000000000),
 			vpos: 'preroll',
