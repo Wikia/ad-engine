@@ -22,12 +22,14 @@ export class Apstag {
 		this.addRenderImpHook();
 	}
 
-	private insertScript(): void {
-		this.script = this.utils.scriptLoader.loadScript(
-			'//c.amazon-adsystem.com/aax2/apstag.js',
-			true,
-			'first',
-		);
+	insertScript(): void {
+		if (!this.script) {
+			this.script = this.utils.scriptLoader.loadScript(
+				'//c.amazon-adsystem.com/aax2/apstag.js',
+				true,
+				'first',
+			);
+		}
 	}
 
 	private configure(): void {

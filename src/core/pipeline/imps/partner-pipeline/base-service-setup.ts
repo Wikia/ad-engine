@@ -1,6 +1,7 @@
 import { Injectable } from '@wikia/dependency-injection';
 import { context, InstantConfigService } from '../../../services';
-import { isCoppaSubject } from '../../../utils/is-coppa-subject';
+import { isCoppaSubject } from '../../../utils';
+import { globalTimeout } from '../../../utils/global-timeout';
 import {
 	PartnerInitializationProcess,
 	PartnerInitializationProcessOptions,
@@ -9,22 +10,12 @@ import {
 @Injectable()
 export class BaseServiceSetup implements PartnerInitializationProcess {
 	options: PartnerInitializationProcessOptions;
-	initializationTimeout;
 	resolve: () => void;
 	initialized: Promise<void>;
+	private initializationTimeout: Promise<void>;
 
 	constructor(protected instantConfig: InstantConfigService = null) {
 		this.resetInitialized();
-	}
-
-	private getContextVariablesValue(contextVariables: string | string[]): boolean {
-		if (typeof contextVariables === 'string') {
-			return context.get(contextVariables);
-		} else {
-			return contextVariables
-				.map((contextVariable) => context.get(contextVariable))
-				.reduce((previousValue, currentValue) => previousValue && currentValue, true);
-		}
 	}
 
 	public isEnabled(configVariable: string | string[], trackingRequired = true): boolean {
@@ -52,7 +43,6 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 
 	setInitialized(): void {
 		this.resolve();
-		clearTimeout(this.initializationTimeout);
 	}
 
 	public resetInitialized(): void {
@@ -69,22 +59,40 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 	call(): void | Promise<any> {}
 
 	async execute(): Promise<void> {
-		const maxInitializationTime = this.options?.timeout || this.getDelayTimeoutInMs();
+		// const maxInitializationTime = this.options?.timeout;
+		this.initializationTimeout = this.getTimeoutPromise();
 
 		if (this.options?.dependencies) {
-			Promise.race([
-				new Promise((res) => setTimeout(res, maxInitializationTime)),
-				Promise.all(this.options.dependencies),
-			]).then(async () => {
-				await this.call();
+			Promise.race([this.initializationTimeout, Promise.all(this.options.dependencies)]).then(
+				async () => {
+					await this.call();
+					this.setInitialized();
+				},
+			);
+		} else {
+			this.initializationTimeout.then(() => {
 				this.setInitialized();
 			});
-		} else {
-			this.initializationTimeout = setTimeout(() => {
-				this.setInitialized();
-			}, maxInitializationTime);
 			await this.call();
 			this.setInitialized();
 		}
+	}
+
+	private getContextVariablesValue(contextVariables: string | string[]): boolean {
+		if (typeof contextVariables === 'string') {
+			return context.get(contextVariables);
+		} else {
+			return contextVariables
+				.map((contextVariable) => context.get(contextVariable))
+				.reduce((previousValue, currentValue) => previousValue && currentValue, true);
+		}
+	}
+
+	private getTimeoutPromise(): Promise<void> {
+		return this.options?.timeout
+			? new Promise((resolve) => {
+					setTimeout(resolve, this.options.timeout);
+			  })
+			: globalTimeout.get('partner-pipeline');
 	}
 }
