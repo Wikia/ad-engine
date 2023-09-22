@@ -1,5 +1,4 @@
 import {
-	Apstag,
 	Audigent,
 	communicationService,
 	context,
@@ -35,8 +34,6 @@ export class InstantConfigSetup implements DiProcess {
 	private preloadLibraries(instantConfig: InstantConfigService) {
 		if (instantConfig.get('icPrebid')) {
 			context.set('bidders.prebid.libraryUrl', instantConfig.get('icPrebidVersion'));
-
-			Apstag.make();
 
 			pbjsFactory.init().then(() => {
 				if (instantConfig.get('icPrebidIntentIQ')) {

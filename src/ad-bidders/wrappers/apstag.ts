@@ -23,14 +23,12 @@ export class Apstag {
 	}
 
 	insertScript(): void {
-		if (!this.script) {
 			this.script = this.utils.scriptLoader.loadScript(
 				'//c.amazon-adsystem.com/aax2/apstag.js',
 				true,
 				'first',
 			);
 		}
-	}
 
 	private configure(): void {
 		window.apstag = window.apstag || { _Q: [] };
