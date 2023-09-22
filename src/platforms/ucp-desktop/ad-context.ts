@@ -131,5 +131,9 @@ export const basicContext = {
 			apstag: false,
 			intentIq: true,
 		},
+		phases: {
+			domContentLoadedTimeout: 500,
+			pageLoadedTimeout: 1500,
+		},
 	},
 };
