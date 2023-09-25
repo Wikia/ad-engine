@@ -14,7 +14,11 @@ export class MetacriticNeutronTargetingSetup implements DiProcess {
 	private getS0(): string {
 		const path = window.location.pathname;
 
-		if (path.startsWith('/game/') || path.startsWith('/browse/game/')) {
+		if (
+			path.startsWith('/game/') ||
+			path.startsWith('/browse/game/') ||
+			targetingService.get('section') === 'games'
+		) {
 			return 'gaming';
 		}
 
