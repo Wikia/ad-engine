@@ -236,6 +236,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	LOTAME_READY: {
 		name: 'Lotame ready',
 	},
+	APSTAG_HEM_SENT: {
+		name: 'Apstag HEM sent',
+	},
 	// Platforms events //
 	BINGEBOT_AD_SLOT_INJECTED: {
 		category: '[BingeBot]',

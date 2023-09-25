@@ -1,6 +1,8 @@
-import { utils } from '@ad-engine/core';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { context, utils } from '@ad-engine/core';
 import { A9Bid, A9BidConfig } from '../a9/types';
 
+const logGroup = 'Apstag';
 export class Apstag {
 	private static instance: Apstag;
 
@@ -28,6 +30,32 @@ export class Apstag {
 			true,
 			'first',
 		);
+	}
+
+	public sendMediaWikiHEM(): void {
+		const userEmailHashes: [string, string, string] = context.get('wiki.opts.userEmailHashes');
+		if (!Array.isArray(userEmailHashes) || userEmailHashes?.length !== 3) {
+			return;
+		}
+		const record = userEmailHashes[2];
+		Apstag.sendHEM(record);
+	}
+
+	public static sendHEM(record: string): void {
+		if (localStorage.getItem('apstagHEMsent') === '1' || !context.get('bidders.a9.rpa')) {
+			return;
+		}
+
+		const tokenConfig = { hashedRecords: [{ type: 'email', record }] };
+		try {
+			utils.logger(logGroup, 'Sending HEM to apstag', tokenConfig);
+
+			window.apstag.rpa(tokenConfig);
+			localStorage.setItem('apstagHEMsent', '1');
+			communicationService.emit(eventsRepository.LOTAME_LOADED);
+		} catch (e) {
+			utils.logger(logGroup, 'Error sending HEM to apstag', e);
+		}
 	}
 
 	private configure(): void {
@@ -65,6 +93,7 @@ export class Apstag {
 	async init(apsConfig): Promise<void> {
 		await this.script;
 		window.apstag.init(apsConfig);
+		this.sendMediaWikiHEM();
 	}
 
 	async fetchBids(bidsConfig: A9BidConfig): Promise<A9Bid[]> {
