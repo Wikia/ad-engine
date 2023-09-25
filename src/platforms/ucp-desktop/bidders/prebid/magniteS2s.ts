@@ -18,7 +18,7 @@ export function getMagniteS2sContext(): object {
 			incontent_leaderboard: {
 				sizes: [[728, 90]],
 			},
-			incontent_boxad: {
+			incontent_boxad_1: {
 				sizes: [[300, 250]],
 			},
 			bottom_leaderboard: {
@@ -27,7 +27,13 @@ export function getMagniteS2sContext(): object {
 					[970, 250],
 				],
 			},
-			fandom_dt_video: {
+			fandom_dt_galleries: {
+				sizes: [[728, 90]],
+			},
+			featured: {
+				sizes: [[0, 0]],
+			},
+			incontent_player: {
 				sizes: [[0, 0]],
 			},
 		},

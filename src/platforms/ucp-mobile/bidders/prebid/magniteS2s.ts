@@ -12,7 +12,7 @@ export function getMagniteS2sContext(): object {
 					[320, 100],
 				],
 			},
-			incontent_boxad: {
+			mobile_in_content: {
 				sizes: [[300, 250]],
 			},
 			bottom_leaderboard: {
@@ -28,13 +28,19 @@ export function getMagniteS2sContext(): object {
 					[320, 100],
 				],
 			},
-			fandom_mw_galleries: {
+			interstitial: {
+				sizes: [[320, 480]],
+			},
+			gallery_leaderboard: {
 				sizes: [
 					[320, 100],
 					[320, 50],
 				],
 			},
-			fandom_mw_video: {
+			featured: {
+				sizes: [[0, 0]],
+			},
+			incontent_player: {
 				sizes: [[0, 0]],
 			},
 		},
