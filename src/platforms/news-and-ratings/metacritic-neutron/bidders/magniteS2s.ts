@@ -1,68 +1,67 @@
 export function getMagniteS2sContext(isDesktop: boolean): object {
 	const desktopSlots = {
-		metacritic_dt_top_leaderboard: {
+		'omni-skybox-leader-nav': {
+			sizes: [[728, 90]],
+		},
+		'omni-skybox-leaderboard-nav': {
+			sizes: [[728, 90]],
+		},
+		'incontent-leader-plus-top': {
 			sizes: [
+				[970, 250],
 				[728, 90],
-				[970, 66],
 			],
 		},
-		metacritic_bottom_leaderboard_dt: {
+		'incontent-leaderboard-top': {
+			sizes: [[728, 90]],
+		},
+		'incontent-leader-plus-bottom': {
 			sizes: [
 				[728, 90],
 				[970, 250],
 			],
 		},
-		metacritic_ic_leaderboard_dt: {
+		'incontent-leaderboard-bottom': {
 			sizes: [[728, 90]],
 		},
-		metacritic_dt_floor_adhesion: {
-			sizes: [
-				[728, 90],
-				[320, 50],
-				[320, 100],
-			],
+		'mpu-plus-top': {
+			sizes: [[300, 250]],
 		},
-		metacritic_top_boxad_dt: {
-			sizes: [
-				[300, 250],
-				[300, 600],
-			],
+		'mpu-top': {
+			sizes: [[300, 250]],
+		},
+		'mpu-middle': {
+			sizes: [[300, 250]],
+		},
+		'mpu-bottom': {
+			sizes: [[300, 250]],
 		},
 	};
 
 	const mobileSlots = {
-		metacritic_adhesion_mw: {
+		'mobile-omni-skybox-plus-nav': {
+			sizes: [[320, 50]],
+		},
+		'mobile-banner-plus': {
 			sizes: [
 				[320, 50],
-				[320, 100],
+				[300, 250],
 			],
 		},
-		metacritic_bottom_leaderboard_mw: {
+		'mobile-incontent-plus': {
+			sizes: [
+				[300, 250],
+				[320, 50],
+			],
+		},
+		'mobile-incontent-plus-bottom': {
 			sizes: [
 				[320, 50],
-				[320, 100],
+				[300, 250],
 			],
 		},
-		metacritic_ic_leaderboard_mw: {
-			sizes: [
-				[320, 50],
-				[320, 100],
-			],
-		},
-		metacritic_mw_floor_adhesion: {
-			sizes: [
-				[320, 50],
-				[320, 100],
-			],
-		},
-		metacritic_mw_top_leaderboard: {
-			sizes: [
-				[320, 50],
-				[320, 100],
-			],
-		},
-		metacritic_top_boxad_mw: {
-			sizes: [[320, 250]],
+		'leaderboard-middle': {
+			sizes: [[728, 90]],
 		},
 	};
 
