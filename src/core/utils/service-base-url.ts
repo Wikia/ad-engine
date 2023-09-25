@@ -1,9 +1,5 @@
 export function getServicesBaseURL() {
-	const fandomDomains = ['fandom.com', 'muthead.com', 'futhead.com'];
-
-	return fandomDomains.find((domain) => window.location.hostname.includes(domain))
-		? 'https://services.fandom.com/'
-		: 'https://services.fandom-dev.' +
-				(location.hostname.match(/(?!\.)(pl|us)$/) || ['us'])[0] +
-				'/';
+	return document.currentScript && 'src' in document.currentScript
+		? new URL(document.currentScript.src).origin + '/'
+		: 'https://services.fandom.com/';
 }
