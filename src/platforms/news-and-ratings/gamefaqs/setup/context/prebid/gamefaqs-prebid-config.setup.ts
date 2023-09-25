@@ -32,7 +32,6 @@ export class GamefaqsPrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.criteo', getCriteoContext(isDesktop));
 		context.set('bidders.prebid.indexExchange', getIndexExchangeContext(isDesktop));
 		context.set('bidders.prebid.kargo', getKargoContext(isDesktop));
-		context.set('bidders.prebid.mgnipbs', getMagniteS2sContext(isDesktop));
 		context.set('bidders.prebid.medianet', getMedianetContext(isDesktop));
 		context.set('bidders.prebid.mgnipbs', getMagniteS2sContext(isDesktop));
 		context.set('bidders.prebid.openx', getOpenXContext(isDesktop));
