@@ -1,60 +1,147 @@
 export function getMagniteS2sContext(isDesktop: boolean): object {
 	const desktopSlots = {
-		'gamespot_dt_ic-lb': {
-			sizes: [
-				[728, 90],
-				[970, 250],
-				[970, 66],
-			],
+		mpu_top: {
+			sizes: [[300, 250]],
 		},
-		'gamespot_dt_bottom-lb': {
-			sizes: [
-				[728, 90],
-				[970, 250],
-				[970, 66],
-			],
-		},
-		'gamespot_dt_ic-boxad': {
+		mpu_plus_top: {
 			sizes: [
 				[300, 250],
 				[300, 600],
-				[160, 600],
 			],
 		},
-		gamespot_dt_top_boxad: {
+		mpu_middle: {
+			sizes: [[300, 250]],
+		},
+		mpu_bottom: {
+			sizes: [[300, 250]],
+		},
+		overlay_mpu_top: {
+			sizes: [[300, 250]],
+		},
+		'mpu-top-inc': {
+			sizes: [[300, 250]],
+		},
+		'mpu-bottom-inc': {
+			sizes: [[300, 250]],
+		},
+		'native-mpu': {
+			sizes: [[300, 250]],
+		},
+		'nav-ad-plus-leader': {
 			sizes: [
-				[300, 250],
-				[300, 600],
+				[728, 90],
+				[970, 250],
+			],
+		},
+		'leader-plus-inc': {
+			sizes: [
+				[728, 90],
+				[970, 250],
+			],
+		},
+		'leader-bottom-inc': {
+			sizes: [[728, 90]],
+		},
+		'leader-ad-plus-top': {
+			sizes: [
+				[728, 90],
+				[970, 250],
+			],
+		},
+		'leader-ad-plus-middle': {
+			sizes: [
+				[728, 90],
+				[970, 250],
+			],
+		},
+		'incontent-ad-plus-billboard-bottom': {
+			sizes: [
+				[728, 90],
+				[970, 250],
+			],
+		},
+		leader_plus_top: {
+			sizes: [
+				[728, 90],
+				[970, 250],
+			],
+		},
+		leader_top: {
+			sizes: [[728, 90]],
+		},
+		leader_bottom: {
+			sizes: [[728, 90]],
+		},
+		overlay_leader_top: {
+			sizes: [[728, 90]],
+		},
+		leader_middle: {
+			sizes: [[728, 90]],
+		},
+		'sky-leader-plus-top': {
+			sizes: [
+				[728, 90],
+				[970, 250],
+			],
+		},
+		'incontent-ad': {
+			sizes: [[728, 90]],
+		},
+		'incontent-ad-inc': {
+			sizes: [[728, 90]],
+		},
+		'skybox-nav': {
+			sizes: [
+				[728, 90],
+				[970, 250],
 			],
 		},
 	};
 
 	const mobileSlots = {
-		gamespot_adhesion_mw: {
-			sizes: [
-				[320, 50],
-				[320, 100],
-			],
+		'mobile-native': {
+			sizes: [[300, 250]],
 		},
-		gamespot_mw_bottom_lb: {
-			sizes: [
-				[320, 50],
-				[320, 100],
-			],
+		'mobile-mpu': {
+			sizes: [[300, 250]],
 		},
-		'gamespot_mw_ic-boxad': {
-			sizes: [
-				[320, 50],
-				[320, 100],
-			],
+		'mobile-incontent-ad-inc': {
+			sizes: [[300, 250]],
 		},
-		'gamespot_mw_ic-lb': {
-			sizes: [
-				[320, 50],
-				[320, 100],
-			],
+		'mobile-flex-inc': {
+			sizes: [[300, 250]],
 		},
-		gamespot_mw_top_boxad: {
+		'mobile-incontent-plus': {
+			sizes: [[300, 250]],
+		},
+		'mobile-incontent-plus-bottom': {
+			sizes: [[300, 250]],
+		},
+		'mobile-incontent-ad': {
+			sizes: [[300, 250]],
+		},
+		'mobile-mpu-bottom': {
+			sizes: [[300, 250]],
+		},
+		'mobile-native-plus-top': {
+			sizes: [[300, 250]],
+		},
+		'mobile-incontent-ad-plus-inc': {
+			sizes: [[300, 250]],
+		},
+		'mobile-incontent-all': {
+			sizes: [[300, 250]],
+		},
+		'mobile-flex-bottom': {
+			sizes: [[300, 250]],
+		},
+		'mobile-autoplay-plus': {
+			sizes: [[300, 250]],
+		},
+		'mobile-highimpact-plus': {
+			sizes: [[300, 250]],
+		},
+		'mobile-skybox-nav': {
 			sizes: [
 				[320, 50],
 				[320, 100],
