@@ -14,14 +14,18 @@ export class MetacriticNeutronTargetingSetup implements DiProcess {
 	private getS0(): string {
 		const path = window.location.pathname;
 
-		if (
-			path.startsWith('/game/') ||
-			path.startsWith('/browse/game/') ||
-			targetingService.get('section') === 'games'
-		) {
+		if (this.isGameSubpage(path)) {
 			return 'gaming';
 		}
 
 		return 'ent';
+	}
+
+	private isGameSubpage(path: string): boolean {
+		return (
+			path.startsWith('/game/') ||
+			path.startsWith('/browse/game/') ||
+			targetingService.get('section') === 'games'
+		);
 	}
 }
