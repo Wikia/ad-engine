@@ -12,6 +12,27 @@ export function getMagniteS2sContext(): object {
 					[320, 100],
 				],
 			},
+			bottom_leaderboard: {
+				sizes: [
+					[300, 250],
+					[320, 50],
+				],
+			},
+			floor_adhesion: {
+				sizes: [
+					[320, 50],
+					[320, 100],
+				],
+			},
+			fandom_mw_galleries: {
+				sizes: [
+					[320, 50],
+					[320, 100],
+				],
+			},
+			fandom_mw_video: {
+				sizes: [[0, 0]],
+			},
 		},
 	};
 }
