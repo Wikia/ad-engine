@@ -3,6 +3,7 @@ import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class WebAds extends PrebidAdapter {
 	static bidderName = 'relevantdigital';
+	private accountId = '647765b7705d4fca3b3e1d58';
 
 	constructor(options) {
 		super(options);
@@ -12,10 +13,7 @@ export class WebAds extends PrebidAdapter {
 		return WebAds.bidderName;
 	}
 
-	prepareConfigForAdUnit(
-		code,
-		{ accountId, sizes, placementId }: PrebidAdSlotConfig,
-	): PrebidAdUnit {
+	prepareConfigForAdUnit(code, { sizes, placementId }: PrebidAdSlotConfig): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
@@ -28,7 +26,7 @@ export class WebAds extends PrebidAdapter {
 					bidder: this.bidderName,
 					params: {
 						placementId,
-						accountId,
+						accountId: this.accountId,
 						pbsHost: 'webads-pbs.relevant-digital.com',
 					},
 				},
