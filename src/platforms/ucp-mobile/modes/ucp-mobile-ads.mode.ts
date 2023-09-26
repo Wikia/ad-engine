@@ -1,5 +1,6 @@
 import { AdEngineStackSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
+	A9Runner,
 	Anyclip,
 	Ats,
 	Audigent,
@@ -22,6 +23,7 @@ import {
 	OpenWeb,
 	PartnerPipeline,
 	PrebidNativeProvider,
+	PrebidRunner,
 	Stroer,
 	System1,
 	Wunderkind,
@@ -32,6 +34,7 @@ import { Injectable } from '@wikia/dependency-injection';
 export class UcpMobileAdsMode implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,
+		private a9Runner: A9Runner,
 		private adEngineStackSetup: AdEngineStackSetup,
 		private anyclip: Anyclip,
 		private ats: Ats,
@@ -51,6 +54,7 @@ export class UcpMobileAdsMode implements DiProcess {
 		private openWeb: OpenWeb,
 		private playerSetup: PlayerSetup,
 		private prebidNativeProvider: PrebidNativeProvider,
+		private prebidRunner: PrebidRunner,
 		private stroer: Stroer,
 		private system1: System1,
 		private wadRunner: WadRunner,
@@ -66,7 +70,11 @@ export class UcpMobileAdsMode implements DiProcess {
 				this.anyclip,
 				this.ats,
 				this.audigent,
-				this.bidders,
+				this.a9Runner,
+				this.prebidRunner,
+				this.bidders.setOptions({
+					dependencies: [this.a9Runner.initialized, this.prebidRunner.initialized],
+				}),
 				this.brandMetrics,
 				this.captify,
 				this.liveConnect,
@@ -82,9 +90,7 @@ export class UcpMobileAdsMode implements DiProcess {
 				this.wunderkind,
 				this.openWeb,
 				this.gptSetup.setOptions({
-					dependencies: [
-						this.bidders.initialized,
-					]
+					dependencies: [this.bidders.initialized],
 				}),
 				this.playerSetup.setOptions({
 					dependencies: [this.bidders.initialized, this.wadRunner.initialized],

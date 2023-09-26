@@ -1,5 +1,6 @@
 import { AdEngineStackSetup, GptSetup, WadRunner } from '@platforms/shared';
 import {
+	A9Runner,
 	Audigent,
 	Bidders,
 	Captify,
@@ -14,6 +15,7 @@ import {
 	LiveRampPixel,
 	Lotame,
 	PartnerPipeline,
+	PrebidRunner,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -21,6 +23,7 @@ import { Injectable } from '@wikia/dependency-injection';
 export class SportsAdsMode implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,
+		private a9Runner: A9Runner,
 		private adEngineStackSetup: AdEngineStackSetup,
 		private audigent: Audigent,
 		private bidders: Bidders,
@@ -32,6 +35,7 @@ export class SportsAdsMode implements DiProcess {
 		private iasPublisherOptimization: IasPublisherOptimization,
 		private liveConnect: LiveConnect,
 		private liveRampPixel: LiveRampPixel,
+		private prebidRunner: PrebidRunner,
 		private wadRunner: WadRunner,
 		private lotame: Lotame,
 	) {}
@@ -42,7 +46,11 @@ export class SportsAdsMode implements DiProcess {
 				this.lotame,
 				this.liveRampPixel,
 				this.liveConnect,
-				this.bidders,
+				this.a9Runner,
+				this.prebidRunner,
+				this.bidders.setOptions({
+					dependencies: [this.a9Runner.initialized, this.prebidRunner.initialized],
+				}),
 				this.captify,
 				this.wadRunner,
 				this.audigent,

@@ -105,18 +105,7 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 	}
 
 	call(): Promise<void> {
-		//const config = context.get('bidders') || {};
 		const promise = utils.createExtendedPromise();
-
-		// if (config.prebid && config.prebid.enabled) {
-		// 	Bidders.biddersProviders.prebid = new PrebidProvider(config.prebid, config.timeout);
-		// }
-
-		// if (A9Provider.isEnabled()) {
-		// 	Bidders.biddersProviders.a9 = new A9Provider(config.a9, config.timeout);
-		// } else {
-		// 	utils.logger(logGroup, 'A9 has been disabled');
-		// }
 
 		if (!this.getBiddersProviders().length) {
 			utils.logger(logGroup, 'resolving call() promise because of no bidder providers');
