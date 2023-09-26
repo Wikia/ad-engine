@@ -18,9 +18,8 @@ export class PlayerSetup extends BaseServiceSetup {
 
 		if (showAds && !strategyRulesEnabled) {
 			utils.logger(logGroup, 'JWP with ads controlled by AdEngine enabled');
-
 			new JWPlayerManager().manage();
-			communicationService.dispatch(jwpSetup({ showAds: showAds, autoplayDisabled: false }));
+			communicationService.dispatch(jwpSetup({ showAds, autoplayDisabled: false }));
 		} else if (strategyRulesEnabled) {
 			utils.logger(
 				logGroup,
@@ -29,7 +28,7 @@ export class PlayerSetup extends BaseServiceSetup {
 
 			communicationService.dispatch(
 				jwpSetup({
-					showAds: showAds,
+					showAds,
 					autoplayDisabled: false,
 					vastUrl: this.generateVastUrlForJWPlayer(),
 					strategyRulesEnabled,
@@ -37,6 +36,7 @@ export class PlayerSetup extends BaseServiceSetup {
 			);
 		} else {
 			utils.logger(logGroup, 'ad block detected, without ads');
+			new JWPlayerManager().manage();
 			communicationService.dispatch(jwpSetup({ showAds: false, autoplayDisabled: false }));
 		}
 	}
