@@ -75,6 +75,7 @@ interface PrebidVideoType {
 	linearity?: number;
 	playbackmethod?: number[];
 	plcmt?: number | number[];
+	placement?: number;
 }
 
 interface PrebidMediaTypes {
