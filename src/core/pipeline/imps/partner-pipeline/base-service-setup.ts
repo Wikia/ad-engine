@@ -1,5 +1,4 @@
 import { Injectable } from '@wikia/dependency-injection';
-import { utils } from '../../../index';
 import { context, InstantConfigService } from '../../../services';
 import { isCoppaSubject, WaitFor } from '../../../utils';
 import { GlobalTimeout } from '../../../utils/global-timeout';
@@ -8,22 +7,18 @@ import {
 	PartnerInitializationProcessOptions,
 } from './partner-pipeline-types';
 
-let services = 0;
-
 @Injectable()
 export class BaseServiceSetup implements PartnerInitializationProcess {
 	options: PartnerInitializationProcessOptions;
 	resolve: () => void;
 	initialized: Promise<void>;
 	private initializationTimeout: Promise<void>;
-	private services: number;
 
 	constructor(
 		protected readonly instantConfig: InstantConfigService = null,
 		protected readonly globalTimeout: GlobalTimeout = null,
 	) {
 		this.resetInitialized();
-		this.services = services++;
 	}
 
 	public isEnabled(configVariable: string | string[], trackingRequired = true): boolean {
@@ -91,7 +86,6 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 			});
 		} else {
 			return new WaitFor(() => !!this.globalTimeout).until().then(() => {
-				utils.logger('DEBUG', 'BaseServiceSetup', `Created global timeout (${this.services})`);
 				return this.globalTimeout.get('partner-pipeline');
 			});
 		}
