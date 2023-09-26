@@ -1,6 +1,8 @@
+import { Injectable } from '@wikia/dependency-injection';
 import { logger } from './logger';
 
-class GlobalTimeout {
+@Injectable({ scope: 'Singleton' })
+export class GlobalTimeout {
 	private timeouts: { [key: string]: Promise<void> } = {};
 
 	get(label: string): Promise<void> {
@@ -24,5 +26,3 @@ class GlobalTimeout {
 		return this.timeouts[label];
 	}
 }
-
-export const globalTimeout = new GlobalTimeout();

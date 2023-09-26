@@ -1,11 +1,14 @@
 import { Injectable } from '@wikia/dependency-injection';
+import { utils } from '../../../index';
 import { context, InstantConfigService } from '../../../services';
-import { isCoppaSubject } from '../../../utils';
-import { globalTimeout } from '../../../utils/global-timeout';
+import { isCoppaSubject, WaitFor } from '../../../utils';
+import { GlobalTimeout } from '../../../utils/global-timeout';
 import {
 	PartnerInitializationProcess,
 	PartnerInitializationProcessOptions,
 } from './partner-pipeline-types';
+
+let services = 0;
 
 @Injectable()
 export class BaseServiceSetup implements PartnerInitializationProcess {
@@ -13,9 +16,14 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 	resolve: () => void;
 	initialized: Promise<void>;
 	private initializationTimeout: Promise<void>;
+	private services: number;
 
-	constructor(protected instantConfig: InstantConfigService = null) {
+	constructor(
+		protected readonly instantConfig: InstantConfigService = null,
+		protected readonly globalTimeout: GlobalTimeout = null,
+	) {
 		this.resetInitialized();
+		this.services = services++;
 	}
 
 	public isEnabled(configVariable: string | string[], trackingRequired = true): boolean {
@@ -51,31 +59,19 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 		});
 	}
 
-	getDelayTimeoutInMs(): number {
-		return context.get('options.maxDelayTimeout');
-	}
-
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	call(): void | Promise<any> {}
 
 	async execute(): Promise<void> {
-		// const maxInitializationTime = this.options?.timeout;
 		this.initializationTimeout = this.getTimeoutPromise();
-
-		if (this.options?.dependencies) {
-			Promise.race([this.initializationTimeout, Promise.all(this.options.dependencies)]).then(
-				async () => {
-					await this.call();
-					this.setInitialized();
-				},
-			);
-		} else {
-			this.initializationTimeout.then(() => {
-				this.setInitialized();
-			});
-			await this.call();
+		this.initializationTimeout.then(() => {
 			this.setInitialized();
+		});
+		if (this.options?.dependencies) {
+			await Promise.all(this.options.dependencies);
 		}
+		await this.call();
+		this.setInitialized();
 	}
 
 	private getContextVariablesValue(contextVariables: string | string[]): boolean {
@@ -89,10 +85,15 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 	}
 
 	private getTimeoutPromise(): Promise<void> {
-		return this.options?.timeout
-			? new Promise((resolve) => {
-					setTimeout(resolve, this.options.timeout);
-			  })
-			: globalTimeout.get('partner-pipeline');
+		if (this.options?.timeout) {
+			return new Promise((resolve) => {
+				setTimeout(resolve, this.options.timeout);
+			});
+		} else {
+			return new WaitFor(() => !!this.globalTimeout).until().then(() => {
+				utils.logger('DEBUG', 'BaseServiceSetup', `Created global timeout (${this.services})`);
+				return this.globalTimeout.get('partner-pipeline');
+			});
+		}
 	}
 }

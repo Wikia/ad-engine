@@ -1,10 +1,14 @@
 import { Injectable } from '@wikia/dependency-injection';
 import { context } from '../../../services';
-import { globalTimeout } from '../../../utils/global-timeout';
+import { GlobalTimeout } from '../../../utils/global-timeout';
 import { PartnerStepUnion } from './partner-pipeline-types';
 
 @Injectable({ scope: 'Transient' })
 export class PartnerPipeline {
+	constructor(private readonly globalTimeout: GlobalTimeout) {
+		this.globalTimeout.set('partner-pipeline', context.get('options.maxDelayTimeout'));
+	}
+
 	private steps: PartnerStepUnion[] = [];
 
 	add(...steps: PartnerStepUnion[]): this {
@@ -14,8 +18,7 @@ export class PartnerPipeline {
 	}
 
 	execute(payload: Promise<void>[] = []): Promise<void[]> {
-		globalTimeout.set('partner-pipeline', context.get('options.maxDelayTimeout'));
-
+		// This setTimeout is necessary to ensure proper order in EventLoop
 		this.steps.forEach((step) => {
 			if (typeof step === 'function') {
 				const instance = step({});

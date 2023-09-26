@@ -1,7 +1,12 @@
-import { globalTimeout } from '@wikia/core/utils/global-timeout';
+import { GlobalTimeout } from '@wikia/core/utils/global-timeout';
 import { expect } from 'chai';
 
 describe('globalTimeout', () => {
+	let globalTimeout: GlobalTimeout;
+	beforeEach(() => {
+		globalTimeout = new GlobalTimeout();
+	});
+
 	it('should set timeout', async () => {
 		const label = 'test';
 		const timeout = 10000;
