@@ -125,7 +125,7 @@ export const basicContext = {
 			},
 		},
 		preload: {
-			gpt: true,
+			gpt: false,
 			audigent: true,
 			prebid: true,
 			apstag: false,
