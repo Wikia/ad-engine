@@ -3,6 +3,42 @@ import { context } from '@wikia/core';
 import { expect } from 'chai';
 
 describe('Pubmatic bidder adapter', () => {
+	const EXPECTED_VIDEO_AD_UNIT_CONFIG = {
+		code: 'featured',
+		mediaTypes: {
+			video: {
+				playerSize: [640, 480],
+				context: 'instream',
+			},
+		},
+		bids: [
+			{
+				bidder: 'pubmatic',
+				params: {
+					adSlot: '1636187@0x0',
+					publisherId: '112233',
+					video: {
+						mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
+						skippable: true,
+						minduration: 1,
+						maxduration: 30,
+						startdelay: 0,
+						playbackmethod: [2, 3],
+						api: [2],
+						protocols: [2, 3, 5, 6],
+						linearity: 1,
+						placement: 1,
+						plcmt: 2,
+					},
+				},
+			},
+		],
+	};
+
+	afterEach(() => {
+		context.remove('bidders.prebid.forceVideoPlacement3');
+	});
+
 	it('can be enabled', () => {
 		const pubmatic = new Pubmatic({
 			enabled: true,
@@ -73,38 +109,35 @@ describe('Pubmatic bidder adapter', () => {
 		});
 		context.set('slots.featured.isVideo', true);
 
-		expect(pubmatic.prepareAdUnits()).to.deep.equal([
-			{
-				code: 'featured',
+		expect(pubmatic.prepareAdUnits()).to.deep.equal([EXPECTED_VIDEO_AD_UNIT_CONFIG]);
+	});
+
+	it('prepareAdUnits for video returns data in correct shape when placement is forced', () => {
+		const pubmatic = new Pubmatic({
+			enabled: true,
+			publisherId: '112233',
+			slots: {
+				featured: {
+					sizes: [[0, 0]],
+					ids: ['1636187@0x0'],
+				},
+			},
+		});
+		context.set('slots.featured.isVideo', true);
+		context.set('bidders.prebid.forceVideoPlacement3', true);
+		const expectedVideoAdUnitConfig = {
+			...EXPECTED_VIDEO_AD_UNIT_CONFIG,
+			...{
 				mediaTypes: {
 					video: {
 						playerSize: [640, 480],
 						context: 'instream',
+						placement: 3,
 					},
 				},
-				bids: [
-					{
-						bidder: 'pubmatic',
-						params: {
-							adSlot: '1636187@0x0',
-							publisherId: '112233',
-							video: {
-								mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
-								skippable: true,
-								minduration: 1,
-								maxduration: 30,
-								startdelay: 0,
-								playbackmethod: [2, 3],
-								api: [2],
-								protocols: [2, 3, 5, 6],
-								linearity: 1,
-								placement: 1,
-								plcmt: 2,
-							},
-						},
-					},
-				],
 			},
-		]);
+		};
+
+		expect(pubmatic.prepareAdUnits()).to.deep.equal([expectedVideoAdUnitConfig]);
 	});
 });

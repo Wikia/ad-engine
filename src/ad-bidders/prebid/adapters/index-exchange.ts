@@ -42,7 +42,6 @@ export class IndexExchange extends PrebidAdapter {
 					context: 'instream',
 					playerSize: [640, 480],
 					plcmt: [2],
-					placement: 3,
 				},
 			},
 			ortb2Imp: {
