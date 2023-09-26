@@ -85,6 +85,7 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 				setTimeout(resolve, this.options.timeout);
 			});
 		} else {
+			// This WaitFor is necessary to ensure proper injection to BaseServiceSetup.
 			return new WaitFor(() => !!this.globalTimeout).until().then(() => {
 				return this.globalTimeout.get('partner-pipeline');
 			});

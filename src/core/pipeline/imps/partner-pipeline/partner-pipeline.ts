@@ -18,7 +18,6 @@ export class PartnerPipeline {
 	}
 
 	execute(payload: Promise<void>[] = []): Promise<void[]> {
-		// This setTimeout is necessary to ensure proper order in EventLoop
 		this.steps.forEach((step) => {
 			if (typeof step === 'function') {
 				const instance = step({});
