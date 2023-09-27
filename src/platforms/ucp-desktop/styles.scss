@@ -329,3 +329,9 @@ body.is-content-expanded {
 		color: var(--theme-page-text-color);
 	}
 }
+
+.anyclip-experiment .ac-widget-placeholder {
+	width: 100% !important;
+	margin-bottom: 18px !important;
+	max-width: 858px;
+}

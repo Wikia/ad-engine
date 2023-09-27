@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "146.0.28",
+	"version": "146.0.43",
 	"description": "Wikia AdEngine",
 	"license": "Apache-2.0",
 	"repository": {
@@ -34,6 +34,7 @@
 		"chai": "4.3.7",
 		"css-loader": "6.7.3",
 		"eslint": "8.35.0",
+		"eslint-config-prettier": "9.0.0",
 		"eslint-plugin-no-only-tests": "3.1.0",
 		"fork-ts-checker-webpack-plugin": "8.0.0",
 		"husky": "8.0.3",
