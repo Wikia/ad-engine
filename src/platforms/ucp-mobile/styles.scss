@@ -161,6 +161,8 @@
 	&.hide-under-lightbox {
 		display: none;
 	}
+
+	@include hidden-ad(false);
 }
 
 .ad-slot.porvata-outstream {
