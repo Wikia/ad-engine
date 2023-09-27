@@ -65,9 +65,11 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 
 		const mappedAdTags = {};
 
-		for (const [key, value] of Object.entries(adTagsToMap)) {
+		for (const [key, orgValue] of Object.entries(adTagsToMap)) {
+			const value = NewsAndRatingsTargetingSetup.splitMultiValueTag(orgValue);
+
 			if (key === 'cid') {
-				mappedAdTags['slug'] = value.split(',')[0] ?? 'null';
+				mappedAdTags['slug'] = orgValue.split(',')[0] ?? 'null';
 				continue;
 			}
 
@@ -85,11 +87,16 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 				mappedAdTags['tv'] = value;
 				continue;
 			}
-
 			mappedAdTags[key] = value;
 		}
 
 		return mappedAdTags;
+	}
+
+	private static splitMultiValueTag(value: string): string | string[] {
+		const values = value && value.split(',');
+
+		return values && values.length > 1 ? values : value;
 	}
 
 	getViewGuid() {
