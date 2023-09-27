@@ -96,7 +96,7 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 	private static splitMultiValueTag(value: string): string | string[] {
 		const values = value?.split(',');
 
-		return values && values.length > 1 ? values : value;
+		return values?.length > 1 ? values : value;
 	}
 
 	getViewGuid() {
