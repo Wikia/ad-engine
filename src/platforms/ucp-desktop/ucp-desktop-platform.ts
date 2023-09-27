@@ -8,9 +8,9 @@ import {
 	MetricReporter,
 	MetricReporterSetup,
 	NoAdsDetector,
-	NoAdsExperimentSetup,
 	NoAdsMode,
 	PlatformContextSetup,
+	PostAdStackPartnersSetup,
 	SequentialMessagingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
@@ -65,11 +65,11 @@ export class UcpDesktopPlatform {
 				yes: UcpDesktopAdsMode,
 				no: NoAdsMode,
 			}),
-			NoAdsExperimentSetup,
 			LabradorSetup,
 			TrackingSetup,
 			AdEngineRunnerSetup,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
+			PostAdStackPartnersSetup,
 		);
 
 		this.pipeline.execute();

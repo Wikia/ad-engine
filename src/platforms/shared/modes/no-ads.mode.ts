@@ -1,13 +1,9 @@
 import {
-	Ats,
 	Audigent,
 	communicationService,
 	DiProcess,
 	eventsRepository,
-	Eyeota,
 	jwpSetup,
-	LiveConnect,
-	LiveRampPixel,
 	PartnerPipeline,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -18,11 +14,7 @@ export class NoAdsMode implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,
 		private noAdsDetector: NoAdsDetector,
-		private ats: Ats,
 		private audigent: Audigent,
-		private eyeota: Eyeota,
-		private liveConnect: LiveConnect,
-		private liveRampPixel: LiveRampPixel,
 	) {}
 
 	execute(): void {
@@ -31,7 +23,7 @@ export class NoAdsMode implements DiProcess {
 		this.dispatchJWPlayerSetupAction();
 
 		this.pipeline
-			.add(this.liveRampPixel, this.ats, this.audigent, this.eyeota, this.liveConnect)
+			.add(this.audigent)
 			.execute()
 			.then(() => {
 				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);

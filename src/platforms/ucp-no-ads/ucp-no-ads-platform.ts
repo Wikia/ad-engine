@@ -6,6 +6,7 @@ import {
 	MetricReporterSetup,
 	NoAdsMode,
 	PlatformContextSetup,
+	PostAdStackPartnersSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
@@ -31,6 +32,7 @@ export class UcpNoAdsPlatform {
 			IdentitySetup,
 			TrackingSetup,
 			NoAdsMode,
+			PostAdStackPartnersSetup,
 		);
 		this.pipeline.execute();
 	}

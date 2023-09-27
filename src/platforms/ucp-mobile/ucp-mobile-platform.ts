@@ -8,9 +8,9 @@ import {
 	MetricReporter,
 	MetricReporterSetup,
 	NoAdsDetector,
-	NoAdsExperimentSetup,
 	NoAdsMode,
 	PlatformContextSetup,
+	PostAdStackPartnersSetup,
 	SequentialMessagingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
@@ -65,12 +65,12 @@ export class UcpMobilePlatform {
 				yes: UcpMobileAdsMode,
 				no: NoAdsMode,
 			}),
-			NoAdsExperimentSetup,
 			LabradorSetup,
 			UcpMobileExperimentsSetup,
 			TrackingSetup,
 			AdEngineRunnerSetup,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
+			PostAdStackPartnersSetup,
 		);
 
 		this.pipeline.execute();
