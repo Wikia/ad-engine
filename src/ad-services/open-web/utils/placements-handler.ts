@@ -27,7 +27,12 @@ export class PlacementsHandler {
 		const reactionElement = this.placementBuilder.buildReactionDivModule(postUniqueId);
 		const standaloneAdElement = this.placementBuilder.buildStandaloneAdUnit();
 
-		this.anchor.prepend(standaloneAdElement);
-		this.anchor.prepend(reactionElement);
+		const wrapper = document.createElement('div');
+		wrapper.classList.add('openweb-wrapper');
+
+		wrapper.prepend(standaloneAdElement);
+		wrapper.prepend(reactionElement);
+
+		this.anchor.prepend(wrapper);
 	}
 }

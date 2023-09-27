@@ -98,6 +98,16 @@ export class OpenWeb extends BaseServiceSetup {
 			)
 			.then(() => {
 				utils.logger(logGroup, 'ready');
+
+				setTimeout(() => this.moveAfterViewability(), 5000);
 			});
+	}
+
+	private moveAfterViewability(): void {
+		const openWebWrapper = document.querySelector('.openweb-wrapper');
+		const stickyWrapper = document.querySelector('.sticky-modules-wrapper');
+
+		stickyWrapper.parentNode.insertBefore(openWebWrapper, stickyWrapper);
+		utils.logger(logGroup, 'move after viewability');
 	}
 }
