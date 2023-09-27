@@ -282,14 +282,17 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'incontent_player';
+		const controlledSectionId = document
+			.querySelector('.mw-parser-output > h2:first-of-type')
+			?.getAttribute('aria-controls');
 
 		return {
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: '.incontent-boxad',
-				anchorPosition: 'belowScrollPosition',
+				anchorSelector: `#${controlledSectionId}`,
+				anchorPosition: 'firstViable',
 				insertMethod: 'prepend',
-				avoidConflictWith: ['.ad-slot', '#incontent_boxad_1'],
+				avoidConflictWith: [],
 			},
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
