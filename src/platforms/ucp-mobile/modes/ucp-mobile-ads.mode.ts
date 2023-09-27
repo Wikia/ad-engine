@@ -91,7 +91,6 @@ export class UcpMobileAdsMode implements DiProcess {
 				this.adEngineStackSetup.setOptions({
 					dependencies: [
 						this.bidders.initialized,
-						this.wadRunner.initialized,
 						this.gptSetup.initialized,
 						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
 					],
