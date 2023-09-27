@@ -56,7 +56,7 @@ describe('IndexExchange bidder adapter', () => {
 	});
 
 	afterEach(() => {
-		context.remove('bidders.prebid.forceVideoPlacement3');
+		context.remove('bidders.prebid.forceInArticleVideoPlacement');
 	});
 
 	it('can be enabled', () => {

@@ -37,7 +37,7 @@ describe('Pubmatic bidder adapter', () => {
 	};
 
 	afterEach(() => {
-		context.remove('bidders.prebid.forceVideoPlacement3');
+		context.remove('bidders.prebid.forceInArticleVideoPlacement');
 	});
 
 	it('can be enabled', () => {
@@ -125,7 +125,7 @@ describe('Pubmatic bidder adapter', () => {
 			},
 		});
 		context.set('slots.featured.isVideo', true);
-		context.set('bidders.prebid.forceVideoPlacement3', true);
+		context.set('bidders.prebid.forceInArticleVideoPlacement', true);
 		const expectedVideoAdUnitConfig = {
 			...EXPECTED_VIDEO_AD_UNIT_CONFIG,
 			...{

@@ -43,7 +43,9 @@ export abstract class PrebidAdapter {
 	}
 
 	prepareAdUnits(): PrebidAdUnit[] {
-		const forcedPlacementForVideoEnabled = context.get('bidders.prebid.forceVideoPlacement3');
+		const forcedPlacementForVideoEnabled = context.get(
+			'bidders.prebid.forceInArticleVideoPlacement',
+		);
 		const callback = forcedPlacementForVideoEnabled
 			? this.adUnitConfigWithForcedPlacementForVideo
 			: this.defaultAdUnitConfig;
