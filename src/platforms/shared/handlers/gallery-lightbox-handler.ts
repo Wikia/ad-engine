@@ -1,4 +1,5 @@
 import {
+	AdSlot,
 	AdSlotStatus,
 	communicationService,
 	eventsRepository,
@@ -50,12 +51,11 @@ export class GalleryLightboxAdsHandler {
 				if (placementId !== this.slotName) {
 					return;
 				}
-
-				insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]);
+				const slots = insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]);
+				this.initMobileGalleryAdPlaceholder(slots?.[0]);
 				this.lockForFewSeconds();
 				this.isActive = true;
 				this.hideFloorAdhesion();
-				this.showMobileGalleryAdPlaceholder();
 				utils.logger(this.logGroup, 'Ad placement on Lightbox ready', placementId);
 			},
 			false,
@@ -128,13 +128,11 @@ export class GalleryLightboxAdsHandler {
 		}, 2000);
 	}
 
-	private showMobileGalleryAdPlaceholder() {
-		const innerWrapper = document?.getElementsByClassName('lightbox-wrapper-inner')[0];
-		innerWrapper?.classList?.add('with-ad');
-
-		const galleryPlaceholder = document.getElementsByClassName('gallery-leaderboard')?.[0];
-		galleryPlaceholder?.classList?.remove('hide');
+	private initMobileGalleryAdPlaceholder(slot: HTMLElement) {
+		slot?.parentElement?.parentElement?.classList.add('with-ad');
+		slot?.parentElement?.classList.remove(AdSlot.HIDDEN_AD_CLASS);
 	}
+
 	private hideFloorAdhesion() {
 		setTimeout(() => {
 			const floor = document?.getElementById('floor_adhesion_anchor');
