@@ -70,7 +70,7 @@ export class TrackingSetup {
 					);
 
 					if (['liveConnect', 'MediaWiki-sha256'].includes(partnerName)) {
-						Apstag.sendHEM(partnerIdentityId);
+						Apstag.make().sendHEM(partnerIdentityId);
 					}
 				},
 				false,

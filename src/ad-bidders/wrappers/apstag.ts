@@ -38,18 +38,18 @@ export class Apstag {
 			return;
 		}
 		const record = userEmailHashes[2];
-		Apstag.sendHEM(record);
+		this.sendHEM(record);
 	}
 
-	public static sendHEM(record: string): void {
+	public async sendHEM(record: string): Promise<void> {
 		if (localStorage.getItem('apstagHEMsent') === '1' || !context.get('bidders.a9.rpa')) {
 			return;
 		}
 
 		const tokenConfig = { hashedRecords: [{ type: 'email', record }] };
 		try {
+			await this.script;
 			utils.logger(logGroup, 'Sending HEM to apstag', tokenConfig);
-
 			window.apstag.rpa(tokenConfig);
 			localStorage.setItem('apstagHEMsent', '1');
 			communicationService.emit(eventsRepository.LOTAME_LOADED);
