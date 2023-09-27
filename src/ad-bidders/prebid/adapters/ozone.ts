@@ -10,6 +10,7 @@ export class Ozone extends PrebidAdapter {
 
 	constructor(options) {
 		super(options);
+		this.testGroup = Math.floor(Math.random() * 100).toString();
 		this.customTargeting = {
 			s1: [
 				context.get('wiki.targeting.wikiIsTop1000')
@@ -17,11 +18,13 @@ export class Ozone extends PrebidAdapter {
 					: 'not a top1k wiki',
 			],
 			lang: [targetingService.get('wikiLanguage') || targetingService.get('lang') || 'en'],
+			testgroup: [this.testGroup],
 		};
 		this.dcn = options.dcn;
-		this.testGroup = Math.floor(Math.random() * 100).toString();
 
-		targetingService.set('testgroup', this.testGroup);
+		if (this.enabled) {
+			targetingService.set('testgroup', this.testGroup);
+		}
 	}
 
 	get bidderName(): string {
@@ -50,7 +53,6 @@ export class Ozone extends PrebidAdapter {
 								targeting: {
 									...this.getTargeting(code, this.customTargeting),
 								},
-								testgroup: this.testGroup,
 							},
 						],
 					},
