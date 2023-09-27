@@ -100,7 +100,7 @@ export class OpenWeb extends BaseServiceSetup {
 				utils.logger(logGroup, 'ready');
 
 				if (!context.get('state.isMobile')) {
-					setTimeout(() => this.moveAfterViewability(), 5000);
+					setTimeout(() => this.moveAfterViewability(), 7000);
 				}
 			});
 	}

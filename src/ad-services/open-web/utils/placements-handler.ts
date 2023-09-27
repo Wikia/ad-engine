@@ -24,11 +24,21 @@ export class PlacementsHandler {
 			return;
 		}
 
+		const anchorParent = this.anchor.parentNode;
+		const openWebWrapper = this.getOpenWebWrapper(postUniqueId);
+
+		anchorParent?.insertBefore(openWebWrapper, this.anchor);
+	}
+
+	private getOpenWebWrapper(postUniqueId: string): HTMLDivElement {
 		const reactionElement = this.placementBuilder.buildReactionDivModule(postUniqueId);
 		const standaloneAdElement = this.placementBuilder.buildStandaloneAdUnit();
-		const anchorParent = this.anchor.parentNode;
 
-		anchorParent?.insertBefore(reactionElement, this.anchor);
-		anchorParent?.insertBefore(standaloneAdElement, this.anchor);
+		const openWebWrapper = document.createElement('div');
+		openWebWrapper.classList.add('open-web-wrapper');
+		openWebWrapper.prepend(standaloneAdElement);
+		openWebWrapper.prepend(reactionElement);
+
+		return openWebWrapper;
 	}
 }
