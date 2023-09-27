@@ -26,13 +26,9 @@ export class PlacementsHandler {
 
 		const reactionElement = this.placementBuilder.buildReactionDivModule(postUniqueId);
 		const standaloneAdElement = this.placementBuilder.buildStandaloneAdUnit();
+		const anchorParent = this.anchor.parentNode;
 
-		const wrapper = document.createElement('div');
-		wrapper.classList.add('openweb-wrapper');
-
-		wrapper.prepend(standaloneAdElement);
-		wrapper.prepend(reactionElement);
-
-		this.anchor.prepend(wrapper);
+		anchorParent?.insertBefore(reactionElement, this.anchor);
+		anchorParent?.insertBefore(standaloneAdElement, this.anchor);
 	}
 }

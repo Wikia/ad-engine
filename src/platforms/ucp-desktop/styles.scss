@@ -58,6 +58,14 @@ $out-of-page-z-index: 402;
 	}
 
 	@include expanded-slot();
+
+	.replaced-rail-modules-wrapper {
+		display: contents;
+
+		.sticky-modules-wrapper {
+			padding-top: 30px;
+		}
+	}
 }
 
 @mixin wiki-floor-adhesion() {

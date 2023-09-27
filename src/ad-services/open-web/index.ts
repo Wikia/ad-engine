@@ -99,15 +99,21 @@ export class OpenWeb extends BaseServiceSetup {
 			.then(() => {
 				utils.logger(logGroup, 'ready');
 
-				setTimeout(() => this.moveAfterViewability(), 5000);
+				if (!context.get('state.isMobile')) {
+					setTimeout(() => this.moveAfterViewability(), 5000);
+				}
 			});
 	}
 
 	private moveAfterViewability(): void {
-		const openWebWrapper = document.querySelector('.openweb-wrapper');
-		const stickyWrapper = document.querySelector('.sticky-modules-wrapper');
+		const stickyWrapperClassName = 'sticky-modules-wrapper';
+		const stickyWrapper = document.querySelector(`.${stickyWrapperClassName}`);
+		const wikiaAdInContentPlaceHolder = document.getElementById('WikiaAdInContentPlaceHolder');
 
-		stickyWrapper.parentNode.insertBefore(openWebWrapper, stickyWrapper);
+		stickyWrapper?.classList.remove(stickyWrapperClassName);
+		stickyWrapper?.classList.add('replaced-rail-modules-wrapper');
+		wikiaAdInContentPlaceHolder?.classList.add(stickyWrapperClassName);
+
 		utils.logger(logGroup, 'move after viewability');
 	}
 }
