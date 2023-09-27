@@ -1,5 +1,5 @@
 import { Aliases, context, Dictionary, targetingService } from '@ad-engine/core';
-import { PrebidAdapterConfig, PrebidAdSlotConfig } from './prebid-models';
+import { PrebidAdapterConfig, PrebidAdSlotConfig, PrebidVideoPlacements } from './prebid-models';
 
 export abstract class PrebidAdapter {
 	static bidderName: string;
@@ -36,7 +36,7 @@ export abstract class PrebidAdapter {
 		const adUnitConfig = this.prepareConfigForAdUnit(slotName, this.slots[slotName]);
 
 		if (adUnitConfig.mediaTypes?.video) {
-			adUnitConfig.mediaTypes.video.placement = 3;
+			adUnitConfig.mediaTypes.video.placement = PrebidVideoPlacements.IN_ARTICLE;
 		}
 
 		return adUnitConfig;

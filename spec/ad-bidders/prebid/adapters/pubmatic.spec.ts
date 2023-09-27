@@ -1,4 +1,5 @@
 import { Pubmatic } from '@wikia/ad-bidders/prebid/adapters/pubmatic';
+import { PrebidVideoPlacements } from '@wikia/ad-bidders/prebid/prebid-models';
 import { context } from '@wikia/core';
 import { expect } from 'chai';
 
@@ -132,7 +133,7 @@ describe('Pubmatic bidder adapter', () => {
 					video: {
 						playerSize: [640, 480],
 						context: 'instream',
-						placement: 3,
+						placement: PrebidVideoPlacements.IN_ARTICLE,
 					},
 				},
 			},
