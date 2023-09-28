@@ -17,6 +17,7 @@ import { getRubiconContext } from '../../../bidders/prebid/rubicon';
 import { getRubiconDisplayContext } from '../../../bidders/prebid/rubicon-display';
 import { getTripleliftContext } from '../../../bidders/prebid/triplelift';
 import { getVerizonContext } from '../../../bidders/prebid/verizon';
+import { getWebadsContext } from '../../../bidders/prebid/webads';
 import { getWikiaContext } from '../../../bidders/prebid/wikia';
 import { getWikiaVideoContext } from '../../../bidders/prebid/wikia-video';
 
@@ -36,6 +37,7 @@ export class UcpMobilePrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.openx', getOpenXContext());
 		context.set('bidders.prebid.ozone', getOzoneContext());
 		context.set('bidders.prebid.pubmatic', getPubmaticContext());
+		context.set('bidders.prebid.relevantdigital', getWebadsContext());
 		context.set('bidders.prebid.rubicon', getRubiconContext());
 		context.set('bidders.prebid.rubicon_display', getRubiconDisplayContext());
 		context.set('bidders.prebid.triplelift', getTripleliftContext());
