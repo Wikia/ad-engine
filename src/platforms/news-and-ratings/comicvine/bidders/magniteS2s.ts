@@ -1,76 +1,64 @@
 export function getMagniteS2sContext(isDesktop: boolean): object {
 	const desktopSlots = {
-		leader_plus_top: {
+		'comicvine_dt_ic-lb': {
 			sizes: [
 				[728, 90],
 				[970, 250],
+				[970, 66],
 			],
 		},
-		'sky-leader-plus-top': {
+		'comicvine_dt_bottom-lb': {
 			sizes: [
 				[728, 90],
 				[970, 250],
+				[970, 66],
 			],
 		},
-		'skybox-nav': {
+		'comicvine_dt_ic-boxad': {
 			sizes: [
-				[728, 90],
-				[970, 250],
+				[300, 250],
+				[300, 600],
+				[160, 600],
 			],
 		},
-		leader_top: {
-			sizes: [[728, 90]],
-		},
-		mpu_top: {
-			sizes: [[300, 250]],
-		},
-		mpu_bottom: {
-			sizes: [[300, 250]],
-		},
-		leader_bottom: {
-			sizes: [[728, 90]],
-		},
-		overlay_leader_top: {
-			sizes: [[728, 90]],
-		},
-		overlay_mpu_top: {
-			sizes: [[300, 250]],
+		comicvine_dt_top_boxad: {
+			sizes: [
+				[300, 250],
+				[300, 600],
+			],
 		},
 	};
 
 	const mobileSlots = {
-		'mobile-skybox-nav': {
+		comicvine_adhesion_mw: {
 			sizes: [
 				[320, 50],
 				[320, 100],
 			],
 		},
-		'mobile-native': {
-			sizes: [[300, 250]],
-		},
-		'mobile-mpu-banner-bottom': {
+		comicvine_mw_bottom_lb: {
 			sizes: [
-				[300, 250],
 				[320, 50],
+				[320, 100],
 			],
 		},
-		'mobile-native-plus-top': {
-			sizes: [[300, 250]],
-		},
-		'mobile-highimpact-plus': {
+		'comicvine_mw_ic-boxad': {
 			sizes: [
-				[300, 250],
 				[320, 50],
+				[320, 100],
 			],
 		},
-		'incontent-mobile-flex': {
+		'comicvine_mw_ic-lb': {
 			sizes: [
-				[300, 250],
 				[320, 50],
+				[320, 100],
 			],
 		},
-		'mobile-banner': {
-			sizes: [[300, 250]],
+		comicvine_mw_top_boxad: {
+			sizes: [
+				[320, 50],
+				[320, 100],
+			],
 		},
 	};
 
