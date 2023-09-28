@@ -90,6 +90,9 @@ describe('PrebidProvider bidder', () => {
 					userSyncLimit: 8,
 					allowUnknownBidderCodes: true,
 					extPrebid: {
+						aliases: {
+							mgnipbs: 'rubicon',
+						},
 						cache: {
 							vastxml: { returnCreative: false },
 						},
