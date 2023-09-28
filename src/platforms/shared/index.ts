@@ -1,6 +1,7 @@
 export * from './bidders/bidders-state.setup';
 export * from './bidders/wikia-adapter';
 export * from './bootstrap';
+export * from './consent/consent-management-platform.setup';
 export * from './context/targeting/targeting-strategies/models/open-rtb2';
 export * from './context/targeting/ucp-targeting.setup';
 export * from './dynamic-slots/activate-floor-adhesion-on-uap';
@@ -25,6 +26,7 @@ export * from './setup/metric-reporter.setup';
 export * from './setup/platform-context.setup';
 export * from './setup/player.setup';
 export * from './setup/post-ad-stack-partners.setup';
+export * from './setup/preloaded-libraries-setup';
 export * from './setup/slots-config-extender';
 export * from './setup/tracking-parameters.setup';
 export * from './setup/tracking-urls';

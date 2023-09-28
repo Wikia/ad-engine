@@ -1,12 +1,8 @@
-import { logVersion, utils } from '@wikia/ad-engine';
-import { trackingOptInWrapper } from './consent/tracking-opt-in-wrapper';
+import { logVersion } from '@wikia/ad-engine';
+import { ensureGeoCookie } from './ensure-geo-cookie';
 
-export async function bootstrapAndGetConsent(): Promise<void> {
+export async function bootstrap(): Promise<void> {
 	logVersion();
 
-	utils.geoService.setUpGeoData();
-
-	await trackingOptInWrapper.init();
-
-	utils.geoService.setUpGeoData();
+	await ensureGeoCookie();
 }

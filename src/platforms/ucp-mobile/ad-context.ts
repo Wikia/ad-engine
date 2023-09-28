@@ -120,5 +120,12 @@ export const basicContext = {
 				},
 			},
 		},
+		preload: {
+			gpt: true,
+			audigent: true,
+			prebid: true,
+			apstag: false,
+			intentIq: true,
+		},
 	},
 };
