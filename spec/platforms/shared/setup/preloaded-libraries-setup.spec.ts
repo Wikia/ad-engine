@@ -8,7 +8,7 @@ import {
 	utils,
 } from '@wikia/core';
 import { GptSetup } from '@wikia/platforms/shared';
-import { PreloadedLibrariesSetup } from '@wikia/platforms/shared/utils/preloaded-libraries-setup';
+import { PreloadedLibrariesSetup } from '@wikia/platforms/shared/setup/preloaded-libraries-setup';
 import { expect } from 'chai';
 
 describe('PreloadedLibrariesSetup', () => {

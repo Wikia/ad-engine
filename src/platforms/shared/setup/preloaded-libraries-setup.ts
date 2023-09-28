@@ -8,7 +8,7 @@ import {
 	pbjsFactory,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { GptSetup } from '../setup/gpt.setup';
+import { GptSetup } from './gpt.setup';
 
 const prebidLibraryUrlLocation = '//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/';
 const prebidLibraryUrlPattern = new RegExp(

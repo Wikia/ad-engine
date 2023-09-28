@@ -121,8 +121,8 @@ export const basicContext = {
 			},
 		},
 		preload: {
-			gpt: false,
-			audigent: false,
+			gpt: true,
+			audigent: true,
 			prebid: true,
 			apstag: false,
 			intentIq: true,
