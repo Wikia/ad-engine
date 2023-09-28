@@ -1,6 +1,6 @@
 import { Injectable } from '@wikia/dependency-injection';
 import { context, InstantConfigService } from '../../../services';
-import { isCoppaSubject, WaitFor } from '../../../utils';
+import { isCoppaSubject, logger, WaitFor } from '../../../utils';
 import { GlobalTimeout } from '../../../utils/global-timeout';
 import {
 	PartnerInitializationProcess,
@@ -61,6 +61,9 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 		this.initializationTimeout = this.getTimeoutPromise();
 		this.initializationTimeout.then(() => {
 			this.setInitialized();
+			if (!this.initialized) {
+				logger('base-service-setup', 'timeout reached');
+			}
 		});
 		if (this.options?.dependencies) {
 			await Promise.all(this.options.dependencies);
