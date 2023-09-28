@@ -171,8 +171,6 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 }
 
 export * from './a9/index';
-export * from './prebid/ats';
 export * from './prebid/intent-iq';
-export * from './prebid/live-ramp';
 export * from './prebid/native';
 export * from './wrappers';
