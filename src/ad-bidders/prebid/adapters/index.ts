@@ -18,6 +18,7 @@ export * from './rubicon-display';
 export * from './test-bidder';
 export * from './triplelift';
 export * from './verizon';
+export * from './webads';
 export * from './wikia';
 export * from './wikia-video';
 export * from './yahoossp';
