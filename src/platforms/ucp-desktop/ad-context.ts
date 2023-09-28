@@ -128,7 +128,7 @@ export const basicContext = {
 			gpt: true,
 			audigent: true,
 			prebid: true,
-			apstag: false,
+			apstag: true,
 			intentIq: true,
 		},
 	},
