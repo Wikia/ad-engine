@@ -6,7 +6,6 @@ interface Window {
 	ads?: MediaWikiAds;
 	adsQueue?: any;
 	anyclip?: AnyclipApi;
-	ats?: ATS;
 	// TODO: Remove after ADEN-13043 release & data confirmation
 	PWT?: { jsLoaded: () => void };
 	IHPWT?: { jsLoaded: () => void };

@@ -24,14 +24,14 @@ export function getMagniteS2sContext(): object {
 					[320, 100],
 				],
 			},
+			incontent_boxad: {
+				sizes: [[300, 250]],
+			},
 			fandom_mw_galleries: {
 				sizes: [
 					[320, 50],
 					[320, 100],
 				],
-			},
-			fandom_mw_video: {
-				sizes: [[0, 0]],
 			},
 		},
 	};
