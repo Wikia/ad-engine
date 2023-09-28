@@ -1,6 +1,6 @@
 import {
-	AdEngineRunnerSetup,
 	BiddersStateSetup,
+	BiddersTargetingUpdater,
 	bootstrapAndGetConsent,
 	InstantConfigSetup,
 	LabradorSetup,
@@ -59,16 +59,16 @@ export class UcpMobilePlatform {
 			UcpMobileA9ConfigSetup,
 			UcpMobileDynamicSlotsSetup,
 			UcpMobileTemplatesSetup,
+			UcpMobileExperimentsSetup,
 			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM will break
 			BiddersStateSetup,
+			BiddersTargetingUpdater,
+			LabradorSetup,
+			TrackingSetup,
 			conditional(() => this.noAdsDetector.isAdsMode(), {
 				yes: UcpMobileAdsMode,
 				no: NoAdsMode,
 			}),
-			LabradorSetup,
-			UcpMobileExperimentsSetup,
-			TrackingSetup,
-			AdEngineRunnerSetup,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 			PostAdStackPartnersSetup,
 		);

@@ -10,7 +10,7 @@ import { Injectable } from '@wikia/dependency-injection';
 const logGroup = 'ad-engine';
 
 @Injectable()
-export class AdEngineRunnerSetup implements DiProcess {
+export class BiddersTargetingUpdater implements DiProcess {
 	constructor(private bidders: Bidders) {}
 
 	execute(): void {

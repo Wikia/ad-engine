@@ -1,7 +1,7 @@
 import {
-	AdEngineRunnerSetup,
 	BaseContextSetup,
 	BiddersStateSetup,
+	BiddersTargetingUpdater,
 	bootstrapAndGetConsent,
 	ensureGeoCookie,
 	InstantConfigSetup,
@@ -64,7 +64,7 @@ export class SportsPlatform {
 			SportsTemplatesSetup,
 			LabradorSetup,
 			TrackingSetup,
-			AdEngineRunnerSetup,
+			BiddersTargetingUpdater,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 		);
 
