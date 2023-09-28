@@ -37,6 +37,12 @@ export abstract class PrebidAdapter {
 
 		if (adUnitConfig.mediaTypes?.video) {
 			adUnitConfig.mediaTypes.video.placement = PrebidVideoPlacements.IN_ARTICLE;
+
+			adUnitConfig.bids.map(({ params }) => {
+				if (params.video?.placement) {
+					params.video.placement = PrebidVideoPlacements.IN_ARTICLE;
+				}
+			});
 		}
 
 		return adUnitConfig;

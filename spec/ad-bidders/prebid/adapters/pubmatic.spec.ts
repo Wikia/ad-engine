@@ -4,7 +4,7 @@ import { context } from '@wikia/core';
 import { expect } from 'chai';
 
 describe('Pubmatic bidder adapter', () => {
-	const EXPECTED_VIDEO_AD_UNIT_CONFIG = {
+	const EXPECTED_VIDEO_AD_UNIT_CONFIG_DEFAULT = {
 		code: 'featured',
 		mediaTypes: {
 			video: {
@@ -29,6 +29,39 @@ describe('Pubmatic bidder adapter', () => {
 						protocols: [2, 3, 5, 6],
 						linearity: 1,
 						placement: 1,
+						plcmt: 2,
+					},
+				},
+			},
+		],
+	};
+
+	const EXPECTED_VIDEO_AD_UNIT_CONFIG_FORCED_IN_ARTICLE_PLACEMENT = {
+		code: 'featured',
+		mediaTypes: {
+			video: {
+				playerSize: [640, 480],
+				context: 'instream',
+				placement: PrebidVideoPlacements.IN_ARTICLE,
+			},
+		},
+		bids: [
+			{
+				bidder: 'pubmatic',
+				params: {
+					adSlot: '1636187@0x0',
+					publisherId: '112233',
+					video: {
+						mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
+						skippable: true,
+						minduration: 1,
+						maxduration: 30,
+						startdelay: 0,
+						playbackmethod: [2, 3],
+						api: [2],
+						protocols: [2, 3, 5, 6],
+						linearity: 1,
+						placement: PrebidVideoPlacements.IN_ARTICLE,
 						plcmt: 2,
 					},
 				},
@@ -110,7 +143,7 @@ describe('Pubmatic bidder adapter', () => {
 		});
 		context.set('slots.featured.isVideo', true);
 
-		expect(pubmatic.prepareAdUnits()).to.deep.equal([EXPECTED_VIDEO_AD_UNIT_CONFIG]);
+		expect(pubmatic.prepareAdUnits()).to.deep.equal([EXPECTED_VIDEO_AD_UNIT_CONFIG_DEFAULT]);
 	});
 
 	it('prepareAdUnits for video returns data in correct shape when placement is forced', () => {
@@ -126,19 +159,9 @@ describe('Pubmatic bidder adapter', () => {
 		});
 		context.set('slots.featured.isVideo', true);
 		context.set('bidders.prebid.forceInArticleVideoPlacement', true);
-		const expectedVideoAdUnitConfig = {
-			...EXPECTED_VIDEO_AD_UNIT_CONFIG,
-			...{
-				mediaTypes: {
-					video: {
-						playerSize: [640, 480],
-						context: 'instream',
-						placement: PrebidVideoPlacements.IN_ARTICLE,
-					},
-				},
-			},
-		};
 
-		expect(pubmatic.prepareAdUnits()).to.deep.equal([expectedVideoAdUnitConfig]);
+		expect(pubmatic.prepareAdUnits()).to.deep.equal([
+			EXPECTED_VIDEO_AD_UNIT_CONFIG_FORCED_IN_ARTICLE_PLACEMENT,
+		]);
 	});
 });
