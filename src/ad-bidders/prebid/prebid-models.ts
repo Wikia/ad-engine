@@ -13,6 +13,7 @@ export interface PrebidAdapterConfig {
 }
 
 export interface PrebidAdSlotConfig {
+	accountId?: string;
 	adCode?: string;
 	adUnitId?: string;
 	alias?: string;
