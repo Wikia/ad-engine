@@ -28,8 +28,8 @@ export class PostAdStackPartnersSetup implements DiProcess {
 	) {}
 
 	execute(): void {
-		utils.logger('post-ad-stack-partners', 'starting');
-		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () =>
+		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+			utils.logger('post-ad-stack-partners', 'starting');
 			this.pipeline
 				.add(
 					this.lotame,
@@ -43,7 +43,7 @@ export class PostAdStackPartnersSetup implements DiProcess {
 				.execute()
 				.then(() => {
 					utils.logger('post-ad-stack-partners', 'finished');
-				}),
-		);
+				});
+		});
 	}
 }
