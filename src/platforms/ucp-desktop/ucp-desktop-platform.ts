@@ -1,6 +1,6 @@
 import {
-	AdEngineRunnerSetup,
 	BiddersStateSetup,
+	BiddersTargetingUpdater,
 	bootstrap,
 	ConsentManagementPlatformSetup,
 	InstantConfigSetup,
@@ -66,13 +66,13 @@ export class UcpDesktopPlatform {
 			UcpDesktopTemplatesSetup,
 			SequentialMessagingSetup,
 			BiddersStateSetup,
+			BiddersTargetingUpdater,
+			LabradorSetup,
+			TrackingSetup,
 			conditional(() => this.noAdsDetector.isAdsMode(), {
 				yes: UcpDesktopAdsMode,
 				no: NoAdsMode,
 			}),
-			LabradorSetup,
-			TrackingSetup,
-			AdEngineRunnerSetup,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 			PostAdStackPartnersSetup,
 		);

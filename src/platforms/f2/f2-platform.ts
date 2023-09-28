@@ -1,5 +1,5 @@
 import {
-	AdEngineRunnerSetup,
+	BiddersTargetingUpdater,
 	bootstrap,
 	ConsentManagementPlatformSetup,
 	InstantConfigSetup,
@@ -60,7 +60,7 @@ export class F2Platform {
 			LabradorSetup,
 			F2ExperimentsSetup,
 			TrackingSetup,
-			AdEngineRunnerSetup,
+			BiddersTargetingUpdater,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 		);
 

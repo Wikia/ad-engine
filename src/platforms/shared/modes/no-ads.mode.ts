@@ -27,6 +27,7 @@ export class NoAdsMode implements DiProcess {
 			.execute()
 			.then(() => {
 				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);
+				communicationService.emit(eventsRepository.AD_ENGINE_STACK_START);
 			});
 	}
 
