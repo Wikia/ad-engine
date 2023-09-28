@@ -34,6 +34,7 @@ export class InstantConfigSetup implements DiProcess {
 	private preloadLibraries(instantConfig: InstantConfigService) {
 		if (instantConfig.get('icPrebid')) {
 			context.set('bidders.prebid.libraryUrl', instantConfig.get('icPrebidVersion'));
+			pbjsFactory.init();
 
 			if (instantConfig.get('icPrebidIntentIQ')) {
 				intentIQ.load();

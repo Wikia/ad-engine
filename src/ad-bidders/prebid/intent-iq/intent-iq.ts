@@ -27,9 +27,6 @@ export class IntentIQ {
 	private async init() {
 		return pbjsFactory.init().then((pbjs: Pbjs) => {
 			communicationService.on(eventsRepository.AD_ENGINE_CONSENT_READY, () => {
-				if (!this.isEnabled()) {
-					return;
-				}
 				pbjs.onEvent(
 					'adRenderSucceeded',
 					(response: { adId: string; bid: PrebidBidResponse; doc: Document | null }) =>

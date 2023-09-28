@@ -21,8 +21,6 @@ describe('IntentIQ', () => {
 		intentIqReportSpy = global.sandbox.spy();
 		contextStub = global.sandbox
 			.stub(context, 'get')
-			.withArgs('bidders.prebid.intentIQ')
-			.returns(true)
 			.withArgs('bidders.prebid.auctionDelay')
 			.returns(50);
 		pbjsStub = stubPbjs(global.sandbox).pbjsStub;
