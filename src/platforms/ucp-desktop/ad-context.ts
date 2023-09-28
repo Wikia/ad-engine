@@ -125,11 +125,16 @@ export const basicContext = {
 			},
 		},
 		preload: {
-			gpt: true,
+			gpt: false,
 			audigent: true,
 			prebid: true,
 			apstag: true,
 			intentIq: true,
+		},
+		phases: {
+			domContentLoadedTimeout: 500,
+			impatientPageLoadedTimeout: 1200,
+			pageLoadedTimeout: 1500,
 		},
 	},
 };

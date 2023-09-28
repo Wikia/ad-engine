@@ -23,6 +23,8 @@ import {
 	context,
 	eventsRepository,
 	IdentitySetup,
+	impatientPageLoadPhase,
+	pageLoadPhase,
 	parallel,
 	ProcessPipeline,
 	sequential,
@@ -48,7 +50,7 @@ export class UcpMobilePlatform {
 			() => context.extend(basicContext),
 			() => context.set('state.isMobile', true),
 			PlatformContextSetup,
-			() => bootstrap(),
+			impatientPageLoadPhase(() => bootstrap()),
 			parallel(
 				sequential(InstantConfigSetup, PreloadedLibrariesSetup),
 				ConsentManagementPlatformSetup,
@@ -70,10 +72,12 @@ export class UcpMobilePlatform {
 			BiddersTargetingUpdater,
 			LabradorSetup,
 			TrackingSetup,
-			conditional(() => this.noAdsDetector.isAdsMode(), {
-				yes: UcpMobileAdsMode,
-				no: NoAdsMode,
-			}),
+			pageLoadPhase(
+				conditional(() => this.noAdsDetector.isAdsMode(), {
+					yes: UcpMobileAdsMode,
+					no: NoAdsMode,
+				}),
+			),
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 			PostAdStackPartnersSetup,
 		);

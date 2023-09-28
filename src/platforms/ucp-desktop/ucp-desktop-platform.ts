@@ -23,6 +23,8 @@ import {
 	context,
 	eventsRepository,
 	IdentitySetup,
+	impatientPageLoadPhase,
+	pageLoadPhase,
 	parallel,
 	ProcessPipeline,
 	sequential,
@@ -47,7 +49,7 @@ export class UcpDesktopPlatform {
 		this.pipeline.add(
 			() => context.extend(basicContext),
 			PlatformContextSetup,
-			() => bootstrap(),
+			impatientPageLoadPhase(() => bootstrap()),
 			parallel(
 				sequential(InstantConfigSetup, PreloadedLibrariesSetup),
 				ConsentManagementPlatformSetup,
@@ -69,10 +71,12 @@ export class UcpDesktopPlatform {
 			BiddersTargetingUpdater,
 			LabradorSetup,
 			TrackingSetup,
-			conditional(() => this.noAdsDetector.isAdsMode(), {
-				yes: UcpDesktopAdsMode,
-				no: NoAdsMode,
-			}),
+			pageLoadPhase(
+				conditional(() => this.noAdsDetector.isAdsMode(), {
+					yes: UcpDesktopAdsMode,
+					no: NoAdsMode,
+				}),
+			),
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 			PostAdStackPartnersSetup,
 		);
