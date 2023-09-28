@@ -1,70 +1,64 @@
 export function getMagniteS2sContext(isDesktop: boolean): object {
 	const desktopSlots = {
-		leader_plus_top: {
+		'giantbomb_dt_ic-lb': {
 			sizes: [
 				[728, 90],
 				[970, 250],
+				[970, 66],
 			],
 		},
-		leader_top: {
-			sizes: [[728, 90]],
-		},
-		mpu_top: {
-			sizes: [[300, 250]],
-		},
-		mpu_bottom: {
-			sizes: [[300, 250]],
-		},
-		leader_bottom: {
-			sizes: [[728, 90]],
-		},
-		overlay_leader_top: {
-			sizes: [[728, 90]],
-		},
-		overlay_mpu_top: {
-			sizes: [[300, 250]],
-		},
-		'sky-leader-plus-top': {
+		'giantbomb_dt_bottom-lb': {
 			sizes: [
 				[728, 90],
 				[970, 250],
+				[970, 66],
+			],
+		},
+		'giantbomb_dt_ic-boxad': {
+			sizes: [
+				[300, 250],
+				[300, 600],
+				[160, 600],
+			],
+		},
+		giantbomb_dt_top_boxad: {
+			sizes: [
+				[300, 250],
+				[300, 600],
 			],
 		},
 	};
 
 	const mobileSlots = {
-		'mobile-native': {
-			sizes: [[300, 250]],
-		},
-		'mobile-mpu-banner-bottom': {
+		giantbomb_adhesion_mw: {
 			sizes: [
-				[300, 250],
 				[320, 50],
+				[320, 100],
 			],
 		},
-		'mobile-highimpact-plus': {
+		giantbomb_mw_bottom_lb: {
 			sizes: [
-				[300, 250],
 				[320, 50],
+				[320, 100],
 			],
 		},
-		'incontent-mobile-flex': {
+		'giantbomb_mw_ic-boxad': {
 			sizes: [
-				[300, 250],
 				[320, 50],
+				[320, 100],
 			],
 		},
-		'mobile-banner': {
-			sizes: [[320, 50]],
-		},
-		'mobile-banner-plus': {
+		'giantbomb_mw_ic-lb': {
 			sizes: [
-				[300, 250],
 				[320, 50],
+				[320, 100],
 			],
 		},
-		'mobile-mpu': {
-			sizes: [[300, 250]],
+		giantbomb_mw_top_boxad: {
+			sizes: [
+				[320, 50],
+				[320, 100],
+			],
 		},
 	};
 
