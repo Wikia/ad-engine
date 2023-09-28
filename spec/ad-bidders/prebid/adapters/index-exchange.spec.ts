@@ -1,8 +1,51 @@
 import { IndexExchange } from '@wikia/ad-bidders/prebid/adapters/index-exchange';
+import { PrebidVideoPlacements } from '@wikia/ad-bidders/prebid/prebid-models';
 import { context } from '@wikia/core';
 import { expect } from 'chai';
 
 describe('IndexExchange bidder adapter', () => {
+	const EXPECTED_VIDEO_AD_UNIT_CONFIG = {
+		code: 'featured',
+		mediaTypes: {
+			video: {
+				context: 'instream',
+				playerSize: [640, 480],
+				plcmt: [2],
+			},
+		},
+		ortb2Imp: {
+			ext: {
+				gpid: '/5441/something/_PB/featured',
+			},
+		},
+		bids: [
+			{
+				bidder: 'indexExchange',
+				params: {
+					siteId: '112233',
+					size: [640, 480],
+					video: {
+						context: 'instream',
+						playerSize: [640, 480],
+						mimes: [
+							'video/mp4',
+							'video/x-flv',
+							'video/webm',
+							'video/ogg',
+							'application/javascript',
+						],
+						minduration: 1,
+						maxduration: 30,
+						protocols: [2, 3, 5, 6],
+						api: [2],
+						w: 640,
+						h: 480,
+					},
+				},
+			},
+		],
+	};
+
 	before(() => {
 		context.extend({
 			adUnitId: '/5441/something/_{custom.pageType}/{slotConfig.adProduct}',
@@ -10,6 +53,10 @@ describe('IndexExchange bidder adapter', () => {
 				pageType: 'PB',
 			},
 		});
+	});
+
+	afterEach(() => {
+		context.remove('bidders.prebid.forceInArticleVideoPlacement');
 	});
 
 	it('can be enabled', () => {
@@ -82,48 +129,34 @@ describe('IndexExchange bidder adapter', () => {
 		});
 		context.set('slots.featured.isVideo', true);
 
-		expect(indexExchange.prepareAdUnits()).to.deep.equal([
-			{
-				code: 'featured',
+		expect(indexExchange.prepareAdUnits()).to.deep.equal([EXPECTED_VIDEO_AD_UNIT_CONFIG]);
+	});
+
+	it('prepareAdUnits for video returns data in correct shape when placement is forced', () => {
+		const indexExchange = new IndexExchange({
+			enabled: true,
+			slots: {
+				featured: {
+					siteId: '112233',
+				},
+			},
+		});
+		context.set('slots.featured.isVideo', true);
+		context.set('bidders.prebid.forceInArticleVideoPlacement', true);
+		const expectedVideoAdUnitConfig = {
+			...EXPECTED_VIDEO_AD_UNIT_CONFIG,
+			...{
 				mediaTypes: {
 					video: {
 						context: 'instream',
+						placement: PrebidVideoPlacements.IN_ARTICLE,
 						playerSize: [640, 480],
 						plcmt: [2],
 					},
 				},
-				ortb2Imp: {
-					ext: {
-						gpid: '/5441/something/_PB/featured',
-					},
-				},
-				bids: [
-					{
-						bidder: 'indexExchange',
-						params: {
-							siteId: '112233',
-							size: [640, 480],
-							video: {
-								context: 'instream',
-								playerSize: [640, 480],
-								mimes: [
-									'video/mp4',
-									'video/x-flv',
-									'video/webm',
-									'video/ogg',
-									'application/javascript',
-								],
-								minduration: 1,
-								maxduration: 30,
-								protocols: [2, 3, 5, 6],
-								api: [2],
-								w: 640,
-								h: 480,
-							},
-						},
-					},
-				],
 			},
-		]);
+		};
+
+		expect(indexExchange.prepareAdUnits()).to.deep.equal([expectedVideoAdUnitConfig]);
 	});
 });
