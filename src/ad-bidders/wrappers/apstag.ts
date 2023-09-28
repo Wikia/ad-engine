@@ -52,7 +52,7 @@ export class Apstag {
 			utils.logger(logGroup, 'Sending HEM to apstag', tokenConfig);
 			window.apstag.rpa(tokenConfig);
 			localStorage.setItem('apstagHEMsent', '1');
-			communicationService.emit(eventsRepository.LOTAME_LOADED);
+			communicationService.emit(eventsRepository.A9_APSTAG_HEM_SENT);
 		} catch (e) {
 			utils.logger(logGroup, 'Error sending HEM to apstag', e);
 		}

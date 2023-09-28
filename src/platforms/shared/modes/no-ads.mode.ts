@@ -1,7 +1,9 @@
 import {
+	Apstag,
 	Ats,
 	Audigent,
 	communicationService,
+	context,
 	DiProcess,
 	eventsRepository,
 	Eyeota,
@@ -29,6 +31,9 @@ export class NoAdsMode implements DiProcess {
 		this.removeAdSlotsPlaceholders();
 		this.noAdsDetector.addReasons(window.ads.context.opts.noAdsReasons);
 		this.dispatchJWPlayerSetupAction();
+		if (context.get('state.isLogged')) {
+			Apstag.make().sendMediaWikiHEM();
+		}
 
 		this.pipeline
 			.add(this.liveRampPixel, this.ats, this.audigent, this.eyeota, this.liveConnect)

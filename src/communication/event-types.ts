@@ -236,9 +236,6 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	LOTAME_READY: {
 		name: 'Lotame ready',
 	},
-	APSTAG_HEM_SENT: {
-		name: 'Apstag HEM sent',
-	},
 	// Platforms events //
 	BINGEBOT_AD_SLOT_INJECTED: {
 		category: '[BingeBot]',
@@ -311,6 +308,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	// Bidders events //
 	A9_WITHOUT_CONSENTS: {
 		name: 'A9 without consents',
+	},
+	A9_APSTAG_HEM_SENT: {
+		name: 'A9 Apstag HEM sent',
 	},
 	BIDDERS_BIDDING_DONE: {
 		category: '[Prebid]',
