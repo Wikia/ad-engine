@@ -53,9 +53,10 @@ export abstract class PrebidAdapter {
 			'bidders.prebid.forceInArticleVideoPlacement',
 		);
 		const factoryCallback = forcedPlacementForVideoEnabled
-			? this.adUnitConfigWithForcedPlacementForVideoFactory
-			: this.adUnitConfigDefaultFactory;
-		return Object.keys(this.slots).map(factoryCallback.bind(this));
+			? this.adUnitConfigWithForcedPlacementForVideoFactory.bind(this)
+			: this.adUnitConfigDefaultFactory.bind(this);
+
+		return Object.keys(this.slots).map(factoryCallback);
 	}
 
 	protected getTargeting(placementName: string, customTargeting = {}): Dictionary {
