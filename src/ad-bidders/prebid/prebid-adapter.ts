@@ -28,11 +28,11 @@ export abstract class PrebidAdapter {
 
 	abstract get bidderName(): string;
 
-	private defaultAdUnitConfig(slotName: string) {
+	private adUnitConfigDefaultFactory(slotName: string) {
 		return this.prepareConfigForAdUnit(slotName, this.slots[slotName]);
 	}
 
-	private adUnitConfigWithForcedPlacementForVideo(slotName: string) {
+	private adUnitConfigWithForcedPlacementForVideoFactory(slotName: string) {
 		const adUnitConfig = this.prepareConfigForAdUnit(slotName, this.slots[slotName]);
 
 		if (adUnitConfig.mediaTypes?.video) {
@@ -52,10 +52,10 @@ export abstract class PrebidAdapter {
 		const forcedPlacementForVideoEnabled = context.get(
 			'bidders.prebid.forceInArticleVideoPlacement',
 		);
-		const callback = forcedPlacementForVideoEnabled
-			? this.adUnitConfigWithForcedPlacementForVideo
-			: this.defaultAdUnitConfig;
-		return Object.keys(this.slots).map(callback.bind(this));
+		const factoryCallback = forcedPlacementForVideoEnabled
+			? this.adUnitConfigWithForcedPlacementForVideoFactory
+			: this.adUnitConfigDefaultFactory;
+		return Object.keys(this.slots).map(factoryCallback.bind(this));
 	}
 
 	protected getTargeting(placementName: string, customTargeting = {}): Dictionary {
