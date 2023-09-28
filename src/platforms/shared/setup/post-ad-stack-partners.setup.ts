@@ -1,5 +1,4 @@
 import {
-	Ats,
 	BrandMetrics,
 	Captify,
 	DiProcess,
@@ -17,7 +16,6 @@ import { Injectable } from '@wikia/dependency-injection';
 export class PostAdStackPartnersSetup implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,
-		private ats: Ats,
 		private brandMetrics: BrandMetrics,
 		private captify: Captify,
 		private eyeota: Eyeota,
@@ -31,7 +29,6 @@ export class PostAdStackPartnersSetup implements DiProcess {
 		utils.logger('post-ad-stack-partners', 'starting');
 		return this.pipeline
 			.add(
-				this.ats,
 				this.lotame,
 				this.liveConnect,
 				this.liveRampPixel,
