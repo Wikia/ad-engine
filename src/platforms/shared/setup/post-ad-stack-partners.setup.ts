@@ -1,9 +1,7 @@
 import {
 	BrandMetrics,
 	Captify,
-	communicationService,
 	DiProcess,
-	eventsRepository,
 	Eyeota,
 	LiveConnect,
 	LiveRampPixel,
@@ -28,22 +26,20 @@ export class PostAdStackPartnersSetup implements DiProcess {
 	) {}
 
 	execute(): void {
-		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
-			utils.logger('post-ad-stack-partners', 'starting');
-			this.pipeline
-				.add(
-					this.lotame,
-					this.liveConnect,
-					this.liveRampPixel,
-					this.brandMetrics,
-					this.eyeota,
-					this.captify,
-					this.nielsen,
-				)
-				.execute()
-				.then(() => {
-					utils.logger('post-ad-stack-partners', 'finished');
-				});
-		});
+		utils.logger('post-ad-stack-partners', 'starting');
+		this.pipeline
+			.add(
+				this.lotame,
+				this.liveConnect,
+				this.liveRampPixel,
+				this.brandMetrics,
+				this.eyeota,
+				this.captify,
+				this.nielsen,
+			)
+			.execute()
+			.then(() => {
+				utils.logger('post-ad-stack-partners', 'finished');
+			});
 	}
 }

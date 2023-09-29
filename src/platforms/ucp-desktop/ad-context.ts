@@ -133,7 +133,7 @@ export const basicContext = {
 		},
 		phases: {
 			domContentLoadedTimeout: 500,
-			impatientPageLoadedTimeout: 1200,
+			beforePageLoadedTimeout: 1200,
 			pageLoadedTimeout: 1500,
 		},
 	},

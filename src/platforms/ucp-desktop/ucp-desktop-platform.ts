@@ -18,13 +18,15 @@ import {
 	UcpTargetingSetup,
 } from '@platforms/shared';
 import {
+	AdEngineConfigurationPhase,
+	AdEngineInitialPhase,
+	AdEnginePartnersPhase,
+	AdEngineStackStartPhase,
 	communicationService,
 	conditional,
 	context,
 	eventsRepository,
 	IdentitySetup,
-	impatientPageLoadPhase,
-	pageLoadPhase,
 	parallel,
 	ProcessPipeline,
 	sequential,
@@ -48,8 +50,10 @@ export class UcpDesktopPlatform {
 		// Config
 		this.pipeline.add(
 			() => context.extend(basicContext),
+			async () => await AdEngineInitialPhase,
 			PlatformContextSetup,
-			impatientPageLoadPhase(() => bootstrap()),
+			() => bootstrap(),
+			async () => await AdEngineConfigurationPhase,
 			parallel(
 				sequential(InstantConfigSetup, PreloadedLibrariesSetup),
 				ConsentManagementPlatformSetup,
@@ -70,14 +74,14 @@ export class UcpDesktopPlatform {
 			BiddersStateSetup,
 			BiddersTargetingUpdater,
 			LabradorSetup,
-			TrackingSetup,
-			pageLoadPhase(
-				conditional(() => this.noAdsDetector.isAdsMode(), {
-					yes: UcpDesktopAdsMode,
-					no: NoAdsMode,
-				}),
-			),
+			async () => await AdEnginePartnersPhase,
+			conditional(() => this.noAdsDetector.isAdsMode(), {
+				yes: UcpDesktopAdsMode,
+				no: NoAdsMode,
+			}),
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
+			async () => await AdEngineStackStartPhase,
+			TrackingSetup,
 			PostAdStackPartnersSetup,
 		);
 
