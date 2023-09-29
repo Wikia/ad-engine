@@ -1,5 +1,4 @@
 import { communicationService, eventsRepository, utils } from '@wikia/ad-engine';
-import { AdEngineStageSetup } from '../setup/ad-engine-stage.setup';
 import { trackingUrls } from '../setup/tracking-urls';
 import { DataWarehouseTracker } from './data-warehouse';
 
@@ -26,14 +25,11 @@ const eventsToTrack = {
 export class LoadTimesTracker {
 	private static instance: LoadTimesTracker;
 	private dataWarehouseTracker: DataWarehouseTracker;
-	private adEngineStageSetup: AdEngineStageSetup;
 	private startTime: number;
 	private tzOffset: number;
-	private eventArray = [];
 
 	private constructor() {
 		this.dataWarehouseTracker = new DataWarehouseTracker();
-		this.adEngineStageSetup = new AdEngineStageSetup();
 		this.initStartTime();
 		this.initLoadTimesTracker();
 	}
@@ -66,12 +62,6 @@ export class LoadTimesTracker {
 	}
 
 	initLoadTimesTracker(): void {
-		document.addEventListener('readystatechange', () => {
-			if (document.readyState === 'complete') {
-				this.dispatchAndEmptyEventArray();
-			}
-		});
-
 		communicationService.on(eventsRepository.AD_ENGINE_LOAD_TIME_INIT, (payload) => {
 			this.trackLoadTime('load_time_init', payload.timestamp);
 		});
@@ -89,31 +79,16 @@ export class LoadTimesTracker {
 		});
 	}
 
-	private dispatchAndEmptyEventArray(): void {
-		this.eventArray.forEach((event) => this.dispatchTrackEvent(event));
-		this.eventArray = [];
-	}
-
-	private dispatchTrackEvent(event): void {
-		this.dataWarehouseTracker.track(event, trackingUrls.AD_ENG_LOAD_TIMES);
-	}
-
 	private trackLoadTime(eventName: string, timestamp: number): void {
-		const event = {
-			event_name: eventName,
-			browser_ts: timestamp,
-			load_time: timestamp - this.getStartTime(),
-			tz_offset: this.getTimezoneOffset(),
-			country: utils.geoService.getCountryCode() || '',
-		};
-
-		this.adEngineStageSetup
-			.afterDocumentCompleted()
-			.then(() => {
-				this.dispatchTrackEvent(event);
-			})
-			.catch(() => {
-				this.eventArray.push(event);
-			});
+		this.dataWarehouseTracker.track(
+			{
+				event_name: eventName,
+				browser_ts: timestamp,
+				load_time: timestamp - this.getStartTime(),
+				tz_offset: this.getTimezoneOffset(),
+				country: utils.geoService.getCountryCode() || '',
+			},
+			trackingUrls.AD_ENG_LOAD_TIMES,
+		);
 	}
 }

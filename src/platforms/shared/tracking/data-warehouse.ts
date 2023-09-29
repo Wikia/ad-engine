@@ -1,5 +1,6 @@
 import { context, targetingService, trackingOptIn, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { AdEngineStageSetup } from '../setup/ad-engine-stage.setup';
 import { TrackingUrl, trackingUrls } from '../setup/tracking-urls';
 import { dwTrafficAggregator } from './data-warehouse-utils/dw-traffic-aggregator';
 import { TrackingParams } from './models/tracking-params';
@@ -17,6 +18,21 @@ export type DataWarehouseParams = TrackingParams & TimeBasedParams;
 
 @Injectable()
 export class DataWarehouseTracker {
+	private adEngineStageSetup: AdEngineStageSetup;
+	eventsArray = [];
+
+	constructor() {
+		this.adEngineStageSetup = new AdEngineStageSetup();
+		this.init();
+	}
+
+	init() {
+		document.addEventListener('readystatechange', () => {
+			if (document.readyState === 'complete') {
+				this.dispatchAndEmptyEventArray();
+			}
+		});
+	}
 	/**
 	 * Call all of the setup trackers
 	 */
@@ -87,7 +103,7 @@ export class DataWarehouseTracker {
 
 		const url = this.buildDataWarehouseUrl(params, trackingURL.url);
 
-		this.sendRequest(url, params);
+		this.handleDwEvent(url, params);
 	}
 
 	/**
@@ -110,13 +126,18 @@ export class DataWarehouseTracker {
 		delete params.value;
 
 		let url = this.buildDataWarehouseUrl(params, eventUrl);
-		this.sendRequest(url, params, type);
+		this.handleDwEvent(url, params, type);
 
 		// For video player events, send same data to additional endpoint
 		if (params.eventName === 'videoplayerevent') {
 			url = this.buildDataWarehouseUrl(params, videoEventUrl);
-			this.sendRequest(url, params, type);
+			this.handleDwEvent(url, params, type);
 		}
+	}
+
+	private dispatchAndEmptyEventArray(): void {
+		this.eventsArray.forEach(({ url, params, type }) => this.sendRequest(url, params, type));
+		this.eventsArray = [];
 	}
 
 	private getTimeBasedParams(): TimeBasedParams {
@@ -141,6 +162,18 @@ export class DataWarehouseTracker {
 	/**
 	 * Send the get request
 	 */
+
+	private handleDwEvent(url: string, params: DataWarehouseParams, type = 'Event'): void {
+		this.adEngineStageSetup
+			.afterDocumentCompleted()
+			.then(() => {
+				this.sendRequest(url, params, type);
+			})
+			.catch(() => {
+				this.eventsArray.push({ url, params, type });
+			});
+	}
+
 	private sendRequest(url: string, params: DataWarehouseParams, type = 'Event'): void {
 		const request = new XMLHttpRequest();
 
