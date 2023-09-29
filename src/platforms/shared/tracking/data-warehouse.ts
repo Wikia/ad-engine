@@ -2,6 +2,7 @@ import { context, targetingService, trackingOptIn, utils } from '@wikia/ad-engin
 import { Injectable } from '@wikia/dependency-injection';
 import { AdEngineStageSetup } from '../setup/ad-engine-stage.setup';
 import { TrackingUrl, trackingUrls } from '../setup/tracking-urls';
+import { BatchProcessor } from './batch-processor';
 import { dwTrafficAggregator } from './data-warehouse-utils/dw-traffic-aggregator';
 import { TrackingParams } from './models/tracking-params';
 
@@ -136,26 +137,8 @@ export class DataWarehouseTracker {
 	}
 
 	private dispatchAndEmptyEventArray(): void {
-		const batchedArray = [...this.eventsArray].reduce((resultArray, item, index) => {
-			const chunkIndex = Math.floor(index / 10);
-
-			if (!resultArray[chunkIndex]) {
-				resultArray[chunkIndex] = [];
-			}
-
-			resultArray[chunkIndex].push(item);
-
-			return resultArray;
-		}, []);
-
-		const batchTimer = setInterval(() => {
-			if (batchedArray.length > 0) {
-				const batchToSend = batchedArray.shift();
-				batchToSend.forEach(({ url, params, type }) => this.sendRequest(url, params, type));
-			} else {
-				clearInterval(batchTimer);
-			}
-		}, 1000);
+		const batchProcessor = new BatchProcessor(this.eventsArray, 5, 1000);
+		batchProcessor.dispatchEventsWithTimeout(this.sendRequest);
 
 		this.eventsArray = [];
 	}
