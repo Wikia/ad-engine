@@ -4,10 +4,10 @@ function browserPhasePromise(
 	check: () => boolean,
 	container: any,
 	event: string,
-	ttl: number,
+	tts: number,
 ): Promise<void> {
 	return new Promise((resolve) => {
-		const logGroup = `ae-promise-${event}-ttl-${ttl}`;
+		const logGroup = `ae-promise-${event}-tts-${tts}`;
 		let resolved = false;
 
 		function setResolvedState(msg: string) {
@@ -22,9 +22,9 @@ function browserPhasePromise(
 			setResolvedState('resolved by check');
 			return;
 		}
-		const timeout = ttl - (new Date().getTime() - getTimeOrigin());
+		const timeout = tts - (new Date().getTime() - getTimeOrigin());
 		if (timeout <= 0) {
-			setResolvedState('resolved after ttl');
+			setResolvedState('resolved after tts');
 			return;
 		}
 
@@ -39,15 +39,15 @@ function browserPhasePromise(
 	});
 }
 
-export function domContentLoadedWithTtlPromise(ttl: number) {
+export function domContentLoadedPromise(tts: number) {
 	return browserPhasePromise(
 		() => document.readyState !== 'loading',
 		document,
 		'DOMContentLoaded',
-		ttl,
+		tts,
 	);
 }
 
-export function docLoadedWithTtlPromise(ttl: number) {
-	return browserPhasePromise(() => document.readyState === 'complete', window, 'load', ttl);
+export function documentLoadedPromise(tts: number) {
+	return browserPhasePromise(() => document.readyState === 'complete', window, 'load', tts);
 }

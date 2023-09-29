@@ -1,28 +1,26 @@
-import { eventsRepository } from '@ad-engine/communication';
-import { context } from '../services';
-import { docLoadedWithTtlPromise, domContentLoadedWithTtlPromise } from './browser-phase-promise';
-import { waitForEventPromise } from './wait-for-event-promise';
+export const DEFAULT_INITIAL_PHASE_TTS = 500;
+export const DEFAULT_CONFIGURATION_PHASE_TTS = 1000;
+export const DEFAULT_PARTNERS_PHASE_TTS = 1500;
 
-const DEFAULT_WAIT_FOR_DOM_CONTENT_LOADED_TTL = 500;
-const DEFAULT_FIRST_WAIT_FOR_PAGE_LOAD_TTL = 1000;
-const DEFAULT_SECOND_FOR_PAGE_LOAD_TTL = 1500;
+export const DEFAULT_WAIT_STACK_START_TIMEOUT = 2000;
+export const DEFAULT_WAIT_AD_CALL_TIMEOUT = 1000;
 
-const DEFAULT_WAIT_FOR_AD_STACK_START_TIMEOUT = 2000;
+export interface AdEnginePhases {
+	initial: Promise<void>;
+	configuration: Promise<void>;
+	partners: Promise<void>;
+	stackStart: Promise<void>;
+	firstAdCall: Promise<void>;
+}
 
-export const AdEngineInitialPhase: Promise<void> = domContentLoadedWithTtlPromise(
-	context.get('options.phases.domContentLoadedTimeout') || DEFAULT_WAIT_FOR_DOM_CONTENT_LOADED_TTL,
-);
+// Needs to be setup by Pipeline to get configuration variables
+export const adEnginePhases: AdEnginePhases = {
+	initial: undefined,
+	configuration: undefined,
+	partners: undefined,
+	stackStart: undefined,
+	firstAdCall: undefined,
+};
 
-export const AdEngineConfigurationPhase: Promise<void> = docLoadedWithTtlPromise(
-	context.get('options.phases.pageLoadedTimeout') || DEFAULT_FIRST_WAIT_FOR_PAGE_LOAD_TTL,
-);
-
-export const AdEnginePartnersPhase: Promise<void> = docLoadedWithTtlPromise(
-	context.get('options.phases.beforePageLoadedTimeout') || DEFAULT_SECOND_FOR_PAGE_LOAD_TTL,
-);
-
-export const AdEngineStackStartPhase: Promise<void> = waitForEventPromise(
-	eventsRepository.AD_ENGINE_STACK_START,
-	context.get('options.phases.adEngineStackStartTimeout') ||
-		DEFAULT_WAIT_FOR_AD_STACK_START_TIMEOUT,
-);
+export * from './browser-phase-promise';
+export * from './wait-for-event-promise';
