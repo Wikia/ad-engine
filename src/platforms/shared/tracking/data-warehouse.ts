@@ -136,7 +136,27 @@ export class DataWarehouseTracker {
 	}
 
 	private dispatchAndEmptyEventArray(): void {
-		this.eventsArray.forEach(({ url, params, type }) => this.sendRequest(url, params, type));
+		const batchedArray = [...this.eventsArray].reduce((resultArray, item, index) => {
+			const chunkIndex = Math.floor(index / 10);
+
+			if (!resultArray[chunkIndex]) {
+				resultArray[chunkIndex] = [];
+			}
+
+			resultArray[chunkIndex].push(item);
+
+			return resultArray;
+		}, []);
+
+		const batchTimer = setInterval(() => {
+			if (batchedArray.length > 0) {
+				const batchToSend = batchedArray.shift();
+				batchToSend.forEach(({ url, params, type }) => this.sendRequest(url, params, type));
+			} else {
+				clearInterval(batchTimer);
+			}
+		}, 1000);
+
 		this.eventsArray = [];
 	}
 
