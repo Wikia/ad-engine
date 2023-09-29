@@ -115,8 +115,7 @@ export class BaseContextSetup implements DiProcess {
 			'options.video.comscoreJwpTracking',
 			this.instantConfig.get('icComscoreJwpTracking'),
 		);
-		// context.set('options.delayEvents', this.instantConfig.get('icDelayEvents'));
-		context.set('options.delayEvents', { enabled: true, batchSize: 7, delay: 1000 });
+		context.set('options.delayEvents', this.instantConfig.get('icDelayEvents'));
 
 		this.setWadContext();
 	}
