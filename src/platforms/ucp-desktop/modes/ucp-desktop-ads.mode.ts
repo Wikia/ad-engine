@@ -1,6 +1,8 @@
 import { AdEngineStackSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
+	A9Runner,
 	Anyclip,
+	Ats,
 	Audigent,
 	Bidders,
 	BrandMetrics,
@@ -21,6 +23,7 @@ import {
 	OpenWeb,
 	PartnerPipeline,
 	PrebidNativeProvider,
+	PrebidRunner,
 	Stroer,
 	System1,
 	Wunderkind,
@@ -31,8 +34,10 @@ import { Injectable } from '@wikia/dependency-injection';
 export class UcpDesktopAdsMode implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,
+		private a9Runner: A9Runner,
 		private adEngineStackSetup: AdEngineStackSetup,
 		private anyclip: Anyclip,
+		private ats: Ats,
 		private audigent: Audigent,
 		private bidders: Bidders,
 		private brandMetrics: BrandMetrics,
@@ -48,6 +53,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 		private nielsen: Nielsen,
 		private openWeb: OpenWeb,
 		private playerSetup: PlayerSetup,
+		private prebidRunner: PrebidRunner,
 		private prebidNativeProvider: PrebidNativeProvider,
 		private stroer: Stroer,
 		private system1: System1,
@@ -62,8 +68,13 @@ export class UcpDesktopAdsMode implements DiProcess {
 				this.lotame,
 				this.liveRampPixel,
 				this.anyclip,
+				this.ats,
 				this.audigent,
-				this.bidders,
+				this.a9Runner,
+				this.prebidRunner,
+				this.bidders.setOptions({
+					dependencies: [this.a9Runner.initialized, this.prebidRunner.initialized],
+				}),
 				this.brandMetrics,
 				this.liveConnect,
 				this.wadRunner,

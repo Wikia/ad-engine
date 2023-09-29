@@ -73,54 +73,5 @@ describe('Bidders', () => {
 					expect(true).to.be.false;
 				});
 		});
-
-		it('should call all enabled bidderProviders', () => {
-			global.sandbox.stub(A9Provider.prototype, 'callBids').callsFake((cb) => {
-				cb();
-			});
-			global.sandbox.stub(PrebidProvider.prototype, 'callBids').callsFake((cb) => {
-				cb();
-			});
-			global.sandbox.stub(A9Provider.prototype, 'hasResponse').returns(true);
-			global.sandbox.stub(PrebidProvider.prototype, 'hasResponse').returns(true);
-			const a9CallStub = global.sandbox.stub(A9Provider.prototype, 'call').callThrough();
-			const prebidCallStub = global.sandbox.stub(PrebidProvider.prototype, 'call').callThrough();
-
-			global.sandbox
-				.stub(context, 'get')
-				.withArgs('bidders')
-				.returns({
-					a9: {
-						enabled: true,
-						amazonId: '12345',
-						slots: {
-							top_leaderboard: {
-								type: 'display',
-								sizes: [[728, 90]],
-							},
-						},
-					},
-					prebid: {
-						enabled: true,
-					},
-				})
-				.withArgs('bidders.prebid')
-				.returns({})
-				.withArgs('bidders.a9.enabled')
-				.returns(true)
-				.withArgs('bidders.coppaA9')
-				.returns(false);
-
-			const bidders = new Bidders();
-			return bidders
-				.call()
-				.then(() => {
-					expect(a9CallStub.calledOnce).to.equal(true, 'should call A9 provider');
-					expect(prebidCallStub.calledOnce).to.equal(true, 'should call prebid provider');
-				})
-				.catch(() => {
-					expect(true).to.be.false;
-				});
-		});
 	});
 });
