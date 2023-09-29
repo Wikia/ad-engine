@@ -136,7 +136,7 @@ export const basicContext = {
 			partnersDelay: 300,
 
 			adStackStartTimeout: 2000,
-			firstAdCallTimeout: 1000,
+			firstAdCallTimeout: 3000,
 		},
 	},
 };
