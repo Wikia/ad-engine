@@ -1,20 +1,29 @@
-import { getTimeOrigin, logger } from '../utils';
+import { getTimeDelta, logger } from '../utils';
 
 function browserPhasePromise(
 	check: () => boolean,
+	timeoutProvider: () => number,
 	container: any,
 	event: string,
-	tts: number,
+	delayOnEvent?: number,
 ): Promise<void> {
 	return new Promise((resolve) => {
-		const logGroup = `ae-promise-${event}-tts-${tts}`;
+		const timeout = timeoutProvider();
 		let resolved = false;
 
-		function setResolvedState(msg: string) {
-			if (!resolved) {
-				logger(logGroup, msg);
+		function setResolvedState(msg: string, onEvent = false) {
+			if (resolved) {
+				return;
+			}
+			const resolveThis = () => {
+				logger(`wait-${event}`, `${msg}, timeout: ${timeout}, delay: ${delayOnEvent ?? 0}`);
 				resolved = true;
 				resolve();
+			};
+			if (delayOnEvent && onEvent) {
+				setTimeout(resolveThis, delayOnEvent);
+			} else {
+				resolveThis();
 			}
 		}
 
@@ -22,9 +31,8 @@ function browserPhasePromise(
 			setResolvedState('resolved by check');
 			return;
 		}
-		const timeout = tts - (new Date().getTime() - getTimeOrigin());
 		if (timeout <= 0) {
-			setResolvedState('resolved after tts');
+			setResolvedState('resolved after timeout');
 			return;
 		}
 
@@ -33,8 +41,8 @@ function browserPhasePromise(
 		}, timeout);
 
 		container.addEventListener(event, () => {
-			setResolvedState('resolved on event');
 			clearTimeout(timeoutId);
+			setResolvedState('resolved on event', true);
 		});
 	});
 }
@@ -42,12 +50,18 @@ function browserPhasePromise(
 export function domContentLoadedPromise(tts: number) {
 	return browserPhasePromise(
 		() => document.readyState !== 'loading',
+		() => tts - getTimeDelta(),
 		document,
 		'DOMContentLoaded',
-		tts,
 	);
 }
 
-export function documentLoadedPromise(tts: number) {
-	return browserPhasePromise(() => document.readyState === 'complete', window, 'load', tts);
+export function documentLoadedPromise(timeout: number, delayOnEvent?: number) {
+	return browserPhasePromise(
+		() => document.readyState === 'complete',
+		() => timeout,
+		window,
+		'load',
+		delayOnEvent,
+	);
 }

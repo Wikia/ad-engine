@@ -126,17 +126,22 @@ export const basicContext = {
 		},
 		preload: {
 			gpt: false,
-			audigent: true,
+			audigent: false,
 			prebid: true,
 			apstag: true,
 			intentIq: true,
 		},
 		phases: {
-			initialTts: 500,
-			configurationTts: 1200,
-			partnersTts: 1500,
+			initialTts: 700,
+
+			configurationTimeout: 700,
+			configurationDelay: 100,
+
+			partnersTimeout: 1000,
+			partnersDelay: 200,
+
 			adStackStartTimeout: 1500,
-			firstAdCallTimeout: 1000,
+			firstAdCallTimeout: 500,
 		},
 	},
 };

@@ -12,6 +12,14 @@ export function getTimeOrigin() {
 	return window.performance?.timeOrigin ?? BACKUP_ORIGIN_TIME;
 }
 
+export function getTimeInteractive(defaultDelta?: number) {
+	return (
+		getTimeOrigin() +
+		((window.performance?.getEntriesByType('navigation')[0] as PerformanceNavigationTiming)
+			?.domInteractive ?? defaultDelta)
+	);
+}
+
 export function getTimeDelta(): number {
 	return Date.now() - getTimeOrigin();
 }
