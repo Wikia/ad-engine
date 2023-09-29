@@ -20,7 +20,7 @@ export type DataWarehouseParams = TrackingParams & TimeBasedParams;
 @Injectable()
 export class DataWarehouseTracker {
 	private adEngineStageSetup: AdEngineStageSetup;
-	eventsArray = [];
+	private eventsArray = [];
 
 	constructor() {
 		this.adEngineStageSetup = new AdEngineStageSetup();
@@ -28,12 +28,15 @@ export class DataWarehouseTracker {
 	}
 
 	init() {
-		document.addEventListener('readystatechange', () => {
-			if (document.readyState === 'complete') {
-				this.dispatchAndEmptyEventArray();
-			}
-		});
+		if (context.get('options.delayEvents.enabled')) {
+			document.addEventListener('readystatechange', () => {
+				if (document.readyState === 'complete') {
+					this.dispatchAndEmptyEventArray();
+				}
+			});
+		}
 	}
+
 	/**
 	 * Call all of the setup trackers
 	 */
@@ -137,9 +140,10 @@ export class DataWarehouseTracker {
 	}
 
 	private dispatchAndEmptyEventArray(): void {
-		const batchProcessor = new BatchProcessor(this.eventsArray, 5, 1000);
-		batchProcessor.dispatchEventsWithTimeout(this.sendRequest);
+		const { batchSize, delay } = context.get('options.delayEvents');
+		const batchProcessor = new BatchProcessor(this.eventsArray, batchSize, delay);
 
+		batchProcessor.dispatchEventsWithTimeout(this.sendRequest);
 		this.eventsArray = [];
 	}
 
@@ -167,14 +171,18 @@ export class DataWarehouseTracker {
 	 */
 
 	private handleDwEvent(url: string, params: DataWarehouseParams, type = 'Event'): void {
-		this.adEngineStageSetup
-			.afterDocumentCompleted()
-			.then(() => {
-				this.sendRequest(url, params, type);
-			})
-			.catch(() => {
-				this.eventsArray.push({ url, params, type });
-			});
+		if (context.get('options.delayEvents.enabled')) {
+			this.adEngineStageSetup
+				.afterDocumentCompleted()
+				.then(() => {
+					this.sendRequest(url, params, type);
+				})
+				.catch(() => {
+					this.eventsArray.push({ url, params, type });
+				});
+		} else {
+			this.sendRequest(url, params, type);
+		}
 	}
 
 	private sendRequest(url: string, params: DataWarehouseParams, type = 'Event'): void {
