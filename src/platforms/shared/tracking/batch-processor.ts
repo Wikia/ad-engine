@@ -1,5 +1,5 @@
 export class BatchProcessor {
-	private batchedTasks = [];
+	batchedTasks = [];
 
 	constructor(private tasksList: any[], private batchSize: number, private delay: number) {
 		this.batchTasks();
