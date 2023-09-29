@@ -79,7 +79,6 @@ export class UcpDesktopPlatform {
 				no: NoAdsMode,
 			}),
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
-			async () => await adEnginePhases.stackStart,
 			TrackingSetup,
 			async () => await adEnginePhases.firstAdCall,
 			PostAdStackPartnersSetup,
