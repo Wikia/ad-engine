@@ -74,7 +74,7 @@ export class UcpMobilePlatform {
 			BiddersStateSetup,
 			BiddersTargetingUpdater,
 			LabradorSetup,
-			async () => await adEnginePhases.configuration,
+			async () => await adEnginePhases.partners,
 			conditional(() => this.noAdsDetector.isAdsMode(), {
 				yes: UcpMobileAdsMode,
 				no: NoAdsMode,
