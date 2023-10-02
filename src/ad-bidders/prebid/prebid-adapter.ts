@@ -1,6 +1,10 @@
 import { Aliases, context, Dictionary, targetingService } from '@ad-engine/core';
 import { PrebidAdapterConfig, PrebidAdSlotConfig, PrebidVideoPlacements } from './prebid-models';
 
+interface BidderSettings {
+	storageAllowed?: boolean | string[];
+}
+
 export abstract class PrebidAdapter {
 	static bidderName: string;
 	aliases?: Aliases;
@@ -9,6 +13,7 @@ export abstract class PrebidAdapter {
 	enabled: boolean;
 	slots: any;
 	pageTargeting: Dictionary;
+	bidderSettings?: BidderSettings;
 
 	constructor({ enabled, slots }: PrebidAdapterConfig) {
 		this.enabled = enabled;
