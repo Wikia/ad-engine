@@ -1,3 +1,4 @@
+import { Optimizely } from '@wikia/ad-services';
 import { communicationService } from '@wikia/communication';
 import { context } from '@wikia/core';
 import { PlayerSetup } from '@wikia/platforms/shared';
@@ -31,7 +32,7 @@ describe('PlayerSetup', () => {
 		};
 
 		dispatch = global.sandbox.spy(communicationService, 'dispatch');
-		const playerSetup = new PlayerSetup();
+		const playerSetup = new PlayerSetup(new Optimizely());
 		playerSetup.call();
 
 		expect(dispatch.withArgs(expectedDispatchArg).calledOnce);
