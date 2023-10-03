@@ -1,20 +1,18 @@
 import { context, utils } from '@ad-engine/core';
 import { trackBab } from '../../platforms/shared';
 
-const logGroup = 'bt-loader';
+const logGroup = 'bt-force-loader';
 type BTDetail = { detail: { ab: boolean } };
-
 /**
  * BT service handler
  */
-class BTRec {
+class BTForce {
 	/**
-	 * Runs BT rec service and injects code
+	 * Runs BT force service and injects code
 	 */
 	async run(): Promise<void> {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
-
 			return Promise.resolve();
 		}
 
@@ -27,21 +25,15 @@ class BTRec {
 		});
 	}
 
-	/**
-	 * Checks if BT rec is enabled
-	 */
-	isEnabled(): boolean {
-		return context.get('options.wad.btRec.enabled') && context.get('options.wad.blocking');
-	}
 	btDetectionEvents() {
 		// BTAADetection event - tells us that BT finished Ad Blocker check on their side
 		// detail.ab : boolean - ad block detected
 		const handleDetectionEvent = (e: BTDetail & CustomEvent) => {
 			if (e.detail.ab) {
 				utils.logger(logGroup, 'BTAADetection - AdBlock detected');
-				trackBab(true, 'wad-runner-bt');
+				trackBab(true, 'bt');
 			} else {
-				trackBab(false, 'wad-runner-bt');
+				trackBab(false, 'bt');
 			}
 			window.removeEventListener('BTAADetection', handleDetectionEvent);
 		};
@@ -58,22 +50,23 @@ class BTRec {
 	}
 
 	/**
-	 * Injects BT script
+	 * Checks if BT force is enabled
 	 */
-	private loadScript(): Promise<Event> {
-		const btLibraryUrl =
-			context.get('options.wad.btRec.loaderUrl') || '//btloader.com/tag?h=wikia-inc-com&upapi=true';
-
-		return utils.scriptLoader.loadScript(btLibraryUrl, true, 'first');
+	isEnabled(): boolean {
+		return context.get('options.wad.btForce');
 	}
 
 	/**
-	 * Inserts BT side units
+	 * Injects BT script
 	 */
+	private loadScript(): Promise<Event> {
+		const btLibraryUrl = 'https://btloader.com/tag?o=5199505043488768&upapi=true';
+		return utils.scriptLoader.loadScript(btLibraryUrl, true, 'first');
+	}
+
 	private insertSideUnits(): void {
 		if (
 			context.get('state.isMobile') ||
-			!context.get('options.wad.btRec.sideUnits') ||
 			document.body.classList.contains('is-content-expanded') ||
 			document.documentElement.classList.contains('is-content-expanded')
 		) {
@@ -114,4 +107,4 @@ class BTRec {
 	}
 }
 
-export const btRec = new BTRec();
+export const btForce = new BTForce();
