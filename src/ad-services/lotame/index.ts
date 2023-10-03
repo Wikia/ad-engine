@@ -7,13 +7,12 @@ interface LotameNamespace {
 	cmd?: object[];
 }
 
-export function mapTaxonomyToLotameBehaviorTags(tags: TaxonomyTags = {}): string[] {
-	// bundles are internal tags and should not be sent to Lotame
-	const taxonomyTags = { ...tags, bundles: [] };
+const TAXONOMY_TAGS_TO_KEEP = ['gnre', 'media', 'pform', 'pub', 'theme', 'tv'];
 
-	return Object.values(taxonomyTags)
-		.map((tag, i) => tag.map((value) => Object.keys(taxonomyTags)[i] + ': ' + value))
-		.flat();
+export function mapTaxonomyToLotameBehaviorTags(tags: TaxonomyTags = {}): string[] {
+	return Object.entries(tags)
+		.filter(([key]) => TAXONOMY_TAGS_TO_KEEP.includes(key))
+		.flatMap(([key, value]) => value.map((v) => `${key}: ${v}`));
 }
 
 export class Lotame extends BaseServiceSetup {

@@ -1,7 +1,6 @@
 import { AdEngineStackSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
 	Anyclip,
-	Ats,
 	Audigent,
 	Bidders,
 	BrandMetrics,
@@ -34,7 +33,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 		private pipeline: PartnerPipeline,
 		private adEngineStackSetup: AdEngineStackSetup,
 		private anyclip: Anyclip,
-		private ats: Ats,
 		private audigent: Audigent,
 		private bidders: Bidders,
 		private brandMetrics: BrandMetrics,
@@ -64,7 +62,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 				this.lotame,
 				this.liveRampPixel,
 				this.anyclip,
-				this.ats,
 				this.audigent,
 				this.bidders,
 				this.brandMetrics,
