@@ -1,8 +1,9 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { context, utils } from '@ad-engine/core';
-import { A9Bid, A9BidConfig } from '../a9/types';
+import { context, externalLogger, targetingService, Usp, usp, utils } from '@ad-engine/core';
+import { A9Bid, A9BidConfig, A9CCPA, ApstagConfig } from '../a9/types';
 
 const logGroup = 'Apstag';
+
 export class Apstag {
 	private static instance: Apstag;
 
@@ -17,6 +18,7 @@ export class Apstag {
 	private script: Promise<Event>;
 	private renderImpEndCallbacks = [];
 	utils = utils;
+	usp: Usp = usp;
 
 	private constructor() {
 		this.insertScript();
@@ -90,7 +92,14 @@ export class Apstag {
 		window.apstag._Q.push([command, args]);
 	}
 
-	async init(apsConfig): Promise<void> {
+	async init(): Promise<void> {
+		let signalData = null;
+
+		if (this.usp.exists) {
+			signalData = await this.usp.getSignalData();
+		}
+
+		const apsConfig = this.getApstagConfig(signalData);
 		await this.script;
 		window.apstag.init(apsConfig);
 		this.sendMediaWikiHEM();
@@ -128,5 +137,31 @@ export class Apstag {
 			throw new Error('onRenderImpEnd used with callback not being a function');
 		}
 		this.renderImpEndCallbacks.push(callback);
+	}
+
+	private getApstagConfig(signalData: SignalData): ApstagConfig {
+		const amazonId = context.get('bidders.a9.amazonId');
+		const ortb2 = targetingService.get('openrtb2', 'openrtb2');
+		externalLogger.log('openrtb2 signals', { signals: JSON.stringify(ortb2) });
+
+		return {
+			pubID: amazonId,
+			videoAdServer: 'DFP',
+			deals: true,
+			...Apstag.getCcpaIfApplicable(signalData),
+			signals: { ortb2 },
+		};
+	}
+
+	private static getCcpaIfApplicable(signalData: SignalData): Partial<A9CCPA> {
+		if (signalData && signalData.uspString) {
+			return {
+				params: {
+					us_privacy: signalData.uspString,
+				},
+			};
+		}
+
+		return {};
 	}
 }

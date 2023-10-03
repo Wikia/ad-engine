@@ -30,7 +30,7 @@ export class NoAdsMode implements DiProcess {
 		this.noAdsDetector.addReasons(window.ads.context.opts.noAdsReasons);
 		this.dispatchJWPlayerSetupAction();
 		if (context.get('state.isLogged')) {
-			Apstag.make().sendMediaWikiHEM();
+			Apstag.make().init();
 		}
 
 		this.pipeline
