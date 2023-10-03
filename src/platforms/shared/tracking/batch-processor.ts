@@ -1,7 +1,11 @@
-export class BatchProcessor {
-	batchedTasks = [];
+interface Task {
+	[key: string]: string;
+}
 
-	constructor(private tasksList: any[], private batchSize: number, private delay: number) {
+export class BatchProcessor {
+	batchedTasks: Task[][] = [];
+
+	constructor(private tasksList: Task[], private batchSize: number, private delay: number) {
 		this.batchTasks();
 	}
 
@@ -19,7 +23,7 @@ export class BatchProcessor {
 		}, []);
 	}
 
-	dispatchEventsWithTimeout(callback): void {
+	dispatchEventsWithTimeout(taskProcessor): void {
 		const batchTimer = setInterval(() => {
 			if (this.batchedTasks.length <= 0) {
 				clearInterval(batchTimer);
@@ -27,7 +31,7 @@ export class BatchProcessor {
 			}
 
 			const batchToSend = this.batchedTasks.shift();
-			batchToSend.forEach((task) => callback(task));
+			batchToSend.forEach((task) => taskProcessor(task));
 		}, this.delay);
 	}
 }
