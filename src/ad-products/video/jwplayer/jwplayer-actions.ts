@@ -21,5 +21,10 @@ export const jwpReady = globalAction(
 
 export const jwpSetup = globalAction(
 	'[Ad Engine] Setup JWPlayer',
-	props<{ showAds: boolean; autoplayDisabled: boolean }>(),
+	props<{
+		showAds: boolean;
+		autoplayDisabled: boolean;
+		vastUrl?: string;
+		strategyRulesEnabled?: boolean;
+	}>(),
 );
