@@ -3,7 +3,7 @@ import { adaptersRegistry } from './adapters-registry';
 export function createAdapterSpecificSettings(adaptersList): PrebidSettings | undefined {
 	const adaptersSettings = {};
 
-	adaptersList.forEach(({ bidderName, bidderSettings }) => {
+	adaptersList.forEach(({ bidderName, bidderSettings, aliases }) => {
 		if (!bidderName) {
 			return;
 		}
@@ -26,6 +26,12 @@ export function createAdapterSpecificSettings(adaptersList): PrebidSettings | un
 		}
 
 		adaptersSettings[bidderName] = settings;
+
+		if (typeof aliases === 'object') {
+			Object.keys(aliases)
+				.filter((alias) => !adaptersSettings[alias])
+				.forEach((alias) => (adaptersSettings[alias] = settings));
+		}
 	});
 
 	return adaptersSettings;
