@@ -11,6 +11,7 @@ import { getAppnexusAstContext } from '../../../bidders/appnexus-ast';
 import { getCriteoContext } from '../../../bidders/criteo';
 import { getIndexExchangeContext } from '../../../bidders/index-exchange';
 import { getKargoContext } from '../../../bidders/kargo';
+import { getMagniteS2sContext } from '../../../bidders/magniteS2s';
 import { getMedianetContext } from '../../../bidders/medianet';
 import { getOpenXContext } from '../../../bidders/openx';
 import { getPubmaticContext } from '../../../bidders/pubmatic';
@@ -32,6 +33,7 @@ export class GamefaqsPrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.indexExchange', getIndexExchangeContext(isDesktop));
 		context.set('bidders.prebid.kargo', getKargoContext(isDesktop));
 		context.set('bidders.prebid.medianet', getMedianetContext(isDesktop));
+		context.set('bidders.prebid.mgnipbs', getMagniteS2sContext(isDesktop));
 		context.set('bidders.prebid.openx', getOpenXContext(isDesktop));
 		context.set('bidders.prebid.pubmatic', getPubmaticContext(isDesktop));
 		context.set('bidders.prebid.rubicon', getRubiconContext(isDesktop));
