@@ -171,21 +171,22 @@ export class DataWarehouseTracker {
 	 */
 
 	private handleDwEvent(url: string, params: DataWarehouseParams, type = 'Event'): void {
+		const event = { url, params, type };
 		if (context.get('options.delayEvents.enabled')) {
 			this.adEngineStageSetup
 				.afterDocumentCompleted()
 				.then(() => {
-					this.sendRequest(url, params, type);
+					this.sendRequest(event);
 				})
 				.catch(() => {
-					this.eventsArray.push({ url, params, type });
+					this.eventsArray.push(event);
 				});
 		} else {
-			this.sendRequest(url, params, type);
+			this.sendRequest(event);
 		}
 	}
 
-	private sendRequest(url: string, params: DataWarehouseParams, type = 'Event'): void {
+	private sendRequest({ url, params, type = 'Event' }): void {
 		const request = new XMLHttpRequest();
 
 		request.open('GET', url, true);

@@ -19,14 +19,15 @@ export class BatchProcessor {
 		}, []);
 	}
 
-	dispatchEventsWithTimeout(sendRequest): void {
+	dispatchEventsWithTimeout(callback): void {
 		const batchTimer = setInterval(() => {
-			if (this.batchedTasks.length > 0) {
-				const batchToSend = this.batchedTasks.shift();
-				batchToSend.forEach(({ url, params, type }) => sendRequest(url, params, type));
-			} else {
+			if (this.batchedTasks.length <= 0) {
 				clearInterval(batchTimer);
+				return;
 			}
+
+			const batchToSend = this.batchedTasks.shift();
+			batchToSend.forEach((task) => callback(task));
 		}, this.delay);
 	}
 }
