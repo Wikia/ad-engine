@@ -35,7 +35,11 @@ export abstract class PrebidAdapter {
 	private adUnitConfigWithForcedPlacementForVideoFactory(slotName: string) {
 		const adUnitConfig = this.prepareConfigForAdUnit(slotName, this.slots[slotName]);
 
-		if (adUnitConfig.mediaTypes?.video) {
+		if (!adUnitConfig) {
+			console.warn('Wrong ad unit config for slot: ', slotName, this.bidderName);
+		}
+
+		if (adUnitConfig?.mediaTypes?.video) {
 			adUnitConfig.mediaTypes.video.placement = PrebidVideoPlacements.IN_ARTICLE;
 
 			adUnitConfig.bids.map(({ params }) => {
