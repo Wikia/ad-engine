@@ -8,6 +8,14 @@ export function createAdapterSpecificSettings(adaptersList): PrebidSettings | un
 			return;
 		}
 
+		const replaceFirstEmptyConfigurationForAlias = () => {
+			if (typeof aliases === 'object') {
+				Object.keys(aliases)
+					.filter((alias) => !adaptersSettings[alias])
+					.forEach((alias) => (adaptersSettings[alias] = settings));
+			}
+		};
+
 		let settings = {
 			adserverTargeting: [
 				{
@@ -27,11 +35,7 @@ export function createAdapterSpecificSettings(adaptersList): PrebidSettings | un
 
 		adaptersSettings[bidderName] = settings;
 
-		if (typeof aliases === 'object') {
-			Object.keys(aliases)
-				.filter((alias) => !adaptersSettings[alias])
-				.forEach((alias) => (adaptersSettings[alias] = settings));
-		}
+		replaceFirstEmptyConfigurationForAlias();
 	});
 
 	return adaptersSettings;
