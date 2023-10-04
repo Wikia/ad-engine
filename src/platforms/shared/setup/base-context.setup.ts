@@ -120,12 +120,18 @@ export class BaseContextSetup implements DiProcess {
 
 	private setInContentExperiment(): void {
 		const excludedBundleTagName = 'sensitive';
+		const top500BundleTagName = 'top500';
 		const communityExcludedByTag = globalContextService.hasBundle(excludedBundleTagName);
+		const communityWithTop500Tag = globalContextService.hasBundle(top500BundleTagName);
 
-		if (
-			this.instantConfig.get('icExperiments', []).includes('incontentHeaders') &&
-			!communityExcludedByTag
-		) {
+		const isMobile = context.get('state.isMobile');
+		const isInContentHeadersExperiment = this.instantConfig
+			.get('icExperiments', [])
+			.includes('incontentHeaders');
+		const isDesktopExperiment = !isMobile && !communityExcludedByTag;
+		const isMobileExperiment = isMobile && !communityExcludedByTag && communityWithTop500Tag;
+
+		if (isInContentHeadersExperiment && (isDesktopExperiment || isMobileExperiment)) {
 			context.set('templates.incontentHeadersExperiment', true);
 		} else {
 			context.set('templates.incontentAnchorSelector', '.mw-parser-output > h2');
