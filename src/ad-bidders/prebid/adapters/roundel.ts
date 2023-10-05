@@ -7,6 +7,9 @@ export class Roundel extends PrebidAdapter {
 	aliases = {
 		ix: [Roundel.bidderName],
 	};
+	bidderSettings = {
+		storageAllowed: true,
+	};
 
 	constructor(options) {
 		super(options);
