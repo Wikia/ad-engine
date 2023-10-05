@@ -3,6 +3,9 @@ import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class Nobid extends PrebidAdapter {
 	static bidderName = 'nobid';
+	bidderSettings = {
+		storageAllowed: true,
+	};
 
 	constructor(options) {
 		super(options);

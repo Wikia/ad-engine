@@ -3,6 +3,9 @@ import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class Kargo extends PrebidAdapter {
 	static bidderName = 'kargo';
+	bidderSettings = {
+		storageAllowed: true,
+	};
 
 	constructor(options) {
 		super(options);
