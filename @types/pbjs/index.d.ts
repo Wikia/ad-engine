@@ -87,7 +87,7 @@ interface PrebidMediaTypes {
 
 interface PrebidBid {
 	bidder: string;
-	params?: unknown;
+	params?: Record<string, any>;
 	labelAny?: string[];
 	labelAll?: string[];
 }
@@ -148,6 +148,7 @@ interface PrebidSettings {
 		}[];
 		suppressEmptyKeys: boolean;
 		allowZeroCpmBids: boolean;
+		storageAllowed?: boolean;
 	};
 }
 

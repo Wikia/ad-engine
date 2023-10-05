@@ -110,11 +110,11 @@ export class BaseContextSetup implements DiProcess {
 			'options.video.uapJWPLineItemIds',
 			this.instantConfig.get('icUAPJWPlayerLineItemIds'),
 		);
-		context.set('options.video.pauseJWPlayerAd', this.instantConfig.get('icPauseJWPlayerAd'));
 		context.set(
 			'options.video.comscoreJwpTracking',
 			this.instantConfig.get('icComscoreJwpTracking'),
 		);
+		context.set('options.delayEvents', this.instantConfig.get('icDelayEvents'));
 
 		this.setWadContext();
 	}
@@ -179,12 +179,6 @@ export class BaseContextSetup implements DiProcess {
 		context.set(
 			'bidders.prebid.disableSendAllBids',
 			this.instantConfig.get('icPrebidDisableSendAllBids'),
-		);
-		context.set('bidders.liveRampId.enabled', this.instantConfig.get('icLiveRampId'));
-		context.set('bidders.liveRampATS.enabled', this.instantConfig.get('icLiveRampATS'));
-		context.set(
-			'bidders.liveRampATSAnalytics.enabled',
-			this.instantConfig.get('icLiveRampATSAnalytics'),
 		);
 		context.set('bidders.prebid.native.enabled', this.instantConfig.get('icPrebidNative'));
 		context.set(

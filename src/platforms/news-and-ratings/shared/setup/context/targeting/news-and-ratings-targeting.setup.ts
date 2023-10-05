@@ -65,9 +65,11 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 
 		const mappedAdTags = {};
 
-		for (const [key, value] of Object.entries(adTagsToMap)) {
+		for (const [key, orgValue] of Object.entries(adTagsToMap)) {
+			const value = NewsAndRatingsTargetingSetup.splitMultiValueTag(orgValue);
+
 			if (key === 'cid') {
-				mappedAdTags['contentid_nr'] = value;
+				mappedAdTags['slug'] = orgValue.split(',')[0] ?? 'null';
 				continue;
 			}
 
@@ -85,11 +87,16 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 				mappedAdTags['tv'] = value;
 				continue;
 			}
-
 			mappedAdTags[key] = value;
 		}
 
 		return mappedAdTags;
+	}
+
+	private static splitMultiValueTag(value: string): string | string[] {
+		const values = value?.split(',');
+
+		return values?.length > 1 ? values : value;
 	}
 
 	getViewGuid() {
@@ -279,6 +286,9 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 		targetingService.set('pageType', targeting['pageType'] ?? '-1');
 		targetingService.set('pname', targeting['pname'] ?? '-1');
 		targetingService.set('ptype', targeting['ptype'] ?? '-1');
+		targetingService.set('slug', targeting['slug'] ?? '-1');
+		targetingService.set('pid', targeting['pid'] ?? '-1');
+		targetingService.set('section', targeting['section'] ?? '-1');
 		context.set('custom.pageType', targeting['pname'] ?? 'front-door');
 	}
 

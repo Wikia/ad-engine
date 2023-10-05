@@ -114,6 +114,22 @@ export class OpenWeb extends BaseServiceSetup {
 			)
 			.then(() => {
 				utils.logger(logGroup, 'ready');
+
+				if (!context.get('state.isMobile')) {
+					setTimeout(() => this.moveAfterViewability(), 7000);
+				}
 			});
+	}
+
+	private moveAfterViewability(): void {
+		const stickyWrapperClassName = 'sticky-modules-wrapper';
+		const stickyWrapper = document.querySelector(`.${stickyWrapperClassName}`);
+		const wikiaAdInContentPlaceHolder = document.getElementById('WikiaAdInContentPlaceHolder');
+
+		stickyWrapper?.classList.remove(stickyWrapperClassName);
+		stickyWrapper?.classList.add('replaced-rail-modules-wrapper');
+		wikiaAdInContentPlaceHolder?.classList.add(stickyWrapperClassName);
+
+		utils.logger(logGroup, 'move after viewability');
 	}
 }

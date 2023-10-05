@@ -2,6 +2,7 @@ import {
 	babDetection,
 	BaseServiceSetup,
 	btfBlockerService,
+	btForce,
 	btRec,
 	context,
 } from '@wikia/ad-engine';
@@ -17,6 +18,14 @@ export class WadRunner extends BaseServiceSetup {
 	public onDetected: () => void = defaultOnDetect;
 
 	async call(): Promise<void> {
+		if (this.instantConfig.get('icBTForce')) {
+			context.set('options.wad.btForce', true);
+		}
+
+		if (context.get('options.wad.btForce')) {
+			return btForce.run();
+		}
+
 		if (!this.detector.isEnabled()) {
 			return Promise.resolve();
 		}
@@ -24,7 +33,7 @@ export class WadRunner extends BaseServiceSetup {
 		const isBabDetected = await this.detector.run();
 		context.set('options.wad.blocking', isBabDetected);
 
-		trackBab(isBabDetected);
+		trackBab(isBabDetected, 'wad-runner');
 
 		if (isBabDetected) {
 			this.onDetected();

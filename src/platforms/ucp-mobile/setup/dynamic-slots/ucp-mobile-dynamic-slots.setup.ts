@@ -217,12 +217,17 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		const slotName = 'floor_adhesion';
 		let ntcOverride = false;
 		let codePriorityActive = false;
-		const disableFloorAdhesion = () => {
-			slotService.disable(slotName);
-			slotImpactWatcher.disable([slotName]);
+
+		const hideFloorAdhesionAnchor = () => {
 			document
 				.getElementById('floor_adhesion_anchor')
 				?.classList.add('hide', AdSlot.HIDDEN_AD_CLASS);
+		};
+
+		const disableFloorAdhesion = () => {
+			slotService.disable(slotName);
+			slotImpactWatcher.disable([slotName]);
+			hideFloorAdhesionAnchor();
 		};
 
 		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {
@@ -237,12 +242,18 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 		communicationService.onSlotEvent(
 			AdSlotStatus.STATUS_COLLAPSE,
-			() => slotImpactWatcher.disable([slotName]),
+			() => {
+				slotImpactWatcher.disable([slotName]);
+				hideFloorAdhesionAnchor();
+			},
 			slotName,
 		);
 		communicationService.onSlotEvent(
 			AdSlotStatus.STATUS_FORCED_COLLAPSE,
-			() => slotImpactWatcher.disable([slotName]),
+			() => {
+				slotImpactWatcher.disable([slotName]);
+				hideFloorAdhesionAnchor();
+			},
 			slotName,
 		);
 		communicationService.onSlotEvent(

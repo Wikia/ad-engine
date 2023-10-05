@@ -58,6 +58,18 @@ $out-of-page-z-index: 402;
 	}
 
 	@include expanded-slot();
+
+	.open-web-wrapper {
+		margin-top: 24px;
+	}
+
+	.replaced-rail-modules-wrapper {
+		display: contents;
+
+		.sticky-modules-wrapper {
+			padding-top: 24px;
+		}
+	}
 }
 
 @mixin wiki-floor-adhesion() {
@@ -328,4 +340,10 @@ body.is-content-expanded {
 		color: #858585;
 		color: var(--theme-page-text-color);
 	}
+}
+
+.anyclip-experiment .ac-widget-placeholder {
+	width: 100% !important;
+	margin-bottom: 18px !important;
+	max-width: 858px;
 }
