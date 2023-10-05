@@ -6,6 +6,9 @@ import { PrebidAdSlotConfig } from '../prebid-models';
 export class Appnexus extends PrebidAdapter {
 	static bidderName = 'appnexus';
 	placements: Dictionary<string>;
+	bidderSettings = {
+		storageAllowed: true,
+	};
 
 	constructor(options) {
 		super(options);
