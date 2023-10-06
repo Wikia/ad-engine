@@ -110,11 +110,11 @@ export class BaseContextSetup implements DiProcess {
 			'options.video.uapJWPLineItemIds',
 			this.instantConfig.get('icUAPJWPlayerLineItemIds'),
 		);
-		context.set('options.video.pauseJWPlayerAd', this.instantConfig.get('icPauseJWPlayerAd'));
 		context.set(
 			'options.video.comscoreJwpTracking',
 			this.instantConfig.get('icComscoreJwpTracking'),
 		);
+		context.set('options.delayEvents', this.instantConfig.get('icDelayEvents'));
 
 		this.setWadContext();
 	}

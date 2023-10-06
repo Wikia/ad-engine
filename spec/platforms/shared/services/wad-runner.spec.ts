@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { BabDetection } from '@wikia/core';
+import { BabDetection, InstantConfigService } from '@wikia/core';
 import { WadRunner } from '@wikia/platforms/shared';
 
 function createDetectionRunStub(returnValue: boolean) {
@@ -15,19 +15,19 @@ function createDetectionRunStub(returnValue: boolean) {
 describe('Wikia AdBlock Detector runner', () => {
 	const babDetectionStub = sinon.createStubInstance(BabDetection);
 	const onDetected = sinon.spy();
+
 	let wadRunner: WadRunner;
 
 	beforeEach(() => {
-		wadRunner = new WadRunner();
+		const instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
+		wadRunner = new WadRunner(instantConfigStub);
 		wadRunner.detector = babDetectionStub;
 		wadRunner.onDetected = onDetected;
 	});
 
 	it('does not call onDetect callback when ad detection is disabled', async () => {
 		babDetectionStub.isEnabled.returns(false);
-
 		await wadRunner.call();
-
 		expect(onDetected.called).to.equal(false);
 	});
 
