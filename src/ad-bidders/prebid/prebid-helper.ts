@@ -14,17 +14,38 @@ function isUsedAsAlias(code): boolean {
 	});
 }
 
+function getSlotNameByAlias(code): string | undefined {
+	return Object.keys(context.get('slots')).find((slotName) => {
+		const bidderAlias = context.get(`slots.${slotName}.bidderAlias`);
+
+		return bidderAlias === code && slotService.getState(slotName);
+	});
+}
+
+function existDivElement(code): boolean {
+	return document.querySelector(`div[id="${code}"]`) !== null;
+}
+
 export function isSlotApplicable(code): boolean {
+	const codeIsUsedAsAlias = isUsedAsAlias(code);
 	// This can be simplified once we get rid of uppercase slot names
 	const isApplicable = context.get(`slots.${code}`)
 		? slotService.getState(code)
-		: isUsedAsAlias(code);
+		: codeIsUsedAsAlias;
 
 	if (!(context.get('bidders.prebid.filter') === 'static') || code.includes('video')) {
 		return isApplicable;
 	}
 
-	return document.querySelector(`div[id="${code}"]`) !== null ? isApplicable : false;
+	if (codeIsUsedAsAlias) {
+		const slotNameByAlias = getSlotNameByAlias(code);
+
+		if (slotNameByAlias && existDivElement(slotNameByAlias)) {
+			return isApplicable;
+		}
+	}
+
+	return existDivElement(code) ? isApplicable : false;
 }
 
 function isValidPrice(bid: PrebidBidResponse): boolean {

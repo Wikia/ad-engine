@@ -19,6 +19,7 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 			},
 			top_leaderboard: {
 				firstCall: true,
+				bidderAlias: 'comicvine_dt_728x90_1',
 				adProduct: 'top_leaderboard',
 				group: 'LB',
 				sizes: [
@@ -51,6 +52,7 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 			},
 			floor_adhesion: {
 				adProduct: 'floor_adhesion',
+				bidderAlias: 'comicvine_dt_728x90_2',
 				group: 'PF',
 				targeting: {
 					loc: 'footer',
@@ -74,6 +76,7 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 				],
 			},
 			leader_plus_top: {
+				bidderAlias: 'comicvine_dt_728x90_3',
 				defaultSizes: [
 					[728, 90],
 					[970, 250],
@@ -85,6 +88,7 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 				},
 			},
 			'sky-leader-plus-top': {
+				bidderAlias: 'comicvine_dt_728x90_4',
 				defaultSizes: [
 					[728, 90],
 					[970, 250],
@@ -96,6 +100,7 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 				},
 			},
 			leader_top: {
+				bidderAlias: 'comicvine_dt_728x90_5',
 				defaultSizes: [
 					[728, 90],
 					[970, 66],
@@ -105,18 +110,21 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 				},
 			},
 			mpu_top: {
+				bidderAlias: 'comicvine_dt_300x250_1',
 				defaultSizes: [[300, 250]],
 				targeting: {
 					pos_nr: 'top',
 				},
 			},
 			mpu_bottom: {
+				bidderAlias: 'comicvine_dt_300x250_2',
 				defaultSizes: [[300, 250]],
 				targeting: {
 					pos_nr: 'bottom',
 				},
 			},
 			leader_bottom: {
+				bidderAlias: 'comicvine_dt_728x90_5',
 				defaultSizes: [
 					[728, 90],
 					[970, 66],
@@ -126,6 +134,7 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 				},
 			},
 			overlay_leader_top: {
+				bidderAlias: 'comicvine_dt_728x90_5',
 				defaultSizes: [
 					[728, 90],
 					[970, 66],
@@ -135,6 +144,7 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 				},
 			},
 			overlay_mpu_top: {
+				bidderAlias: 'comicvine_dt_300x250_3',
 				defaultSizes: [[300, 250]],
 				targeting: {
 					pos_nr: 'top',
@@ -150,6 +160,7 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 				},
 			},
 			'mobile-native': {
+				bidderAlias: 'comicvine_mw_300x250_1',
 				defaultSizes: [
 					[300, 250],
 					[11, 11],
@@ -160,6 +171,7 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 				},
 			},
 			'mobile-mpu-banner-bottom': {
+				bidderAlias: 'comicvine_mw_300x250_2',
 				defaultSizes: [
 					[300, 250],
 					[320, 50],
@@ -169,6 +181,7 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 				},
 			},
 			'mobile-native-plus-top': {
+				bidderAlias: 'comicvine_mw_300x250_3',
 				defaultSizes: [
 					[300, 250],
 					[11, 11],
@@ -179,6 +192,7 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 				},
 			},
 			'mobile-highimpact-plus': {
+				bidderAlias: 'comicvine_mw_300x250_4',
 				defaultSizes: [
 					[300, 250],
 					[320, 50],
@@ -189,6 +203,7 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 				},
 			},
 			'incontent-mobile-flex': {
+				bidderAlias: 'comicvine_mw_300x250_4',
 				defaultSizes: [
 					[300, 250],
 					[320, 50],
@@ -198,6 +213,7 @@ export class ComicvineSlotsContextSetup implements DiProcess {
 				},
 			},
 			'mobile-banner': {
+				bidderAlias: 'comicvine_mw_320x50_1',
 				defaultSizes: [[320, 50]],
 				targeting: {
 					pos_nr: '1',

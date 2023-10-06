@@ -57,5 +57,21 @@ describe('getDealsTargetingFromBid', () => {
 			const result = isSlotApplicable('slot-123');
 			expect(result).to.be.true;
 		});
+
+		it('- standard alias (filter=static & adDisplay slots)', () => {
+			context.set('slots', {
+				'slot-123': {
+					bidderAlias: 'slot-321',
+				},
+			});
+
+			context.set('bidders.prebid.filter', 'static');
+			const querySelectorStub = global.sandbox.stub(document, 'querySelector');
+			const dummyElement = document.createElement('div');
+			querySelectorStub.returns(dummyElement);
+
+			const result = isSlotApplicable('slot-321');
+			expect(result).to.be.true;
+		});
 	});
 });
