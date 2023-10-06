@@ -1,14 +1,22 @@
 import { adaptersRegistry } from './adapters-registry';
 
 export function createAdapterSpecificSettings(adaptersList): PrebidSettings | undefined {
-	const adaptersAdServerTargeting = {};
+	const adaptersSettings = {};
 
-	adaptersList.forEach(({ bidderName }) => {
+	adaptersList.forEach(({ bidderName, bidderSettings, aliases }) => {
 		if (!bidderName) {
 			return;
 		}
 
-		adaptersAdServerTargeting[bidderName] = {
+		const replaceFirstEmptyConfigurationForAlias = () => {
+			if (typeof aliases === 'object') {
+				Object.keys(aliases)
+					.filter((alias) => !adaptersSettings[alias])
+					.forEach((alias) => (adaptersSettings[alias] = settings));
+			}
+		};
+
+		let settings = {
 			adserverTargeting: [
 				{
 					key: `hb_deal_${bidderName}`,
@@ -20,9 +28,17 @@ export function createAdapterSpecificSettings(adaptersList): PrebidSettings | un
 			suppressEmptyKeys: true,
 			allowZeroCpmBids: true,
 		};
+
+		if (bidderSettings) {
+			settings = { ...settings, ...bidderSettings };
+		}
+
+		adaptersSettings[bidderName] = settings;
+
+		replaceFirstEmptyConfigurationForAlias();
 	});
 
-	return adaptersAdServerTargeting;
+	return adaptersSettings;
 }
 
 export function getSettings(): PrebidSettings {

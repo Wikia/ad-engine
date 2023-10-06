@@ -7,6 +7,9 @@ export class AppnexusAst extends PrebidAdapter {
 	aliases = {
 		appnexus: [AppnexusAst.bidderName],
 	};
+	bidderSettings = {
+		storageAllowed: true,
+	};
 
 	debugPlacementId: string;
 	isDebugMode: boolean;
