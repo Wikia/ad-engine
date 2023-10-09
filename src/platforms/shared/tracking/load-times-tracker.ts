@@ -14,8 +14,6 @@ const eventsToTrack = {
 	audigent_segment_library_loaded: eventsRepository.AUDIGENT_SEGMENT_LIBRARY_LOADED,
 	audigent_segments_ready: eventsRepository.AUDIGENT_SEGMENTS_READY,
 	captify_loaded: eventsRepository.CAPTIFY_LOADED,
-	experian_started: eventsRepository.EXPERIAN_STARTED,
-	experian_loaded: eventsRepository.EXPERIAN_LOADED,
 	eyeota_started: eventsRepository.EYEOTA_STARTED,
 	eyeota_failed: eventsRepository.EYEOTA_FAILED,
 	a9_without_consents: eventsRepository.A9_WITHOUT_CONSENTS,
