@@ -5,6 +5,7 @@ interface PrebidMarkBidRequest {
 
 interface PrebidAdUnit {
 	code: string;
+	forcePush?: boolean;
 	bids: PrebidBid[];
 	fpd?: {
 		context: {

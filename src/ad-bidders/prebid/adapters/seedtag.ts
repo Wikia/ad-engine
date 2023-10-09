@@ -14,25 +14,47 @@ export class Seedtag extends PrebidAdapter {
 
 	prepareConfigForAdUnit(
 		code,
-		{ sizes, publisherId, adUnitId, placement }: PrebidAdSlotConfig,
-	): PrebidAdUnit {
-		return {
-			code,
-			mediaTypes: {
-				banner: {
-					sizes,
-				},
-			},
-			bids: [
-				{
-					bidder: this.bidderName,
-					params: {
-						publisherId,
-						adUnitId,
-						placement: placement ?? 'inBanner',
+		{ sizes, publisherId, adUnitId, placement, customCodes }: PrebidAdSlotConfig,
+	): PrebidAdUnit | PrebidAdUnit[] {
+		if (Array.isArray(adUnitId)) {
+			return adUnitId.map((id, idx) => ({
+				code: customCodes && Array.isArray(customCodes) ? customCodes[idx] : code,
+				forcePush: customCodes && Array.isArray(customCodes),
+				mediaTypes: {
+					banner: {
+						sizes: [sizes[idx]],
 					},
 				},
-			],
-		};
+				bids: [
+					{
+						bidder: this.bidderName,
+						params: {
+							publisherId,
+							adUnitId: id,
+							placement: placement ?? 'inBanner',
+						},
+					},
+				],
+			}));
+		} else {
+			return {
+				code,
+				mediaTypes: {
+					banner: {
+						sizes,
+					},
+				},
+				bids: [
+					{
+						bidder: this.bidderName,
+						params: {
+							publisherId,
+							adUnitId,
+							placement: placement ?? 'inBanner',
+						},
+					},
+				],
+			};
+		}
 	}
 }

@@ -29,7 +29,10 @@ export abstract class PrebidAdapter {
 		});
 	}
 
-	abstract prepareConfigForAdUnit(code: string, config: PrebidAdSlotConfig): PrebidAdUnit;
+	abstract prepareConfigForAdUnit(
+		code: string,
+		config: PrebidAdSlotConfig,
+	): PrebidAdUnit | PrebidAdUnit[];
 
 	abstract get bidderName(): string;
 
@@ -44,7 +47,7 @@ export abstract class PrebidAdapter {
 			console.warn('Wrong ad unit config for slot: ', slotName, this.bidderName);
 		}
 
-		if (adUnitConfig?.mediaTypes?.video) {
+		if (!Array.isArray(adUnitConfig) && adUnitConfig?.mediaTypes?.video) {
 			adUnitConfig.mediaTypes.video.placement = PrebidVideoPlacements.IN_ARTICLE;
 
 			adUnitConfig.bids.map(({ params }) => {
@@ -65,7 +68,11 @@ export abstract class PrebidAdapter {
 			? this.adUnitConfigWithForcedPlacementForVideoFactory.bind(this)
 			: this.adUnitConfigDefaultFactory.bind(this);
 
-		return Object.keys(this.slots).map(factoryCallback);
+		let adUnits = Object.keys(this.slots).map(factoryCallback);
+		if (adUnits && Array.isArray(adUnits) && adUnits.length > 0) {
+			adUnits = adUnits.flat();
+		}
+		return <PrebidAdUnit[]>adUnits;
 	}
 
 	protected getTargeting(placementName: string, customTargeting = {}): Dictionary {

@@ -102,7 +102,7 @@ class AdaptersRegistry {
 				const adapterAdUnits = adapter.prepareAdUnits();
 
 				adapterAdUnits.forEach((adUnit) => {
-					if (adUnit && isSlotApplicable(adUnit.code)) {
+					if ((adUnit && isSlotApplicable(adUnit.code)) || (adUnit && adUnit.forcePush)) {
 						adUnits.push(adUnit);
 					}
 				});
