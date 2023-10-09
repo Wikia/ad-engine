@@ -1,7 +1,6 @@
 export function getSeedtagContext(): object {
-	console.log('>>> Context');
 	return {
-		enabled: false,
+		enabled: true,
 		slots: {
 			top_leaderboard: {
 				sizes: [

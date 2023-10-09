@@ -6,7 +6,6 @@ export class Seedtag extends PrebidAdapter {
 
 	constructor(options) {
 		super(options);
-		console.log('>>> seedtag 1');
 	}
 
 	get bidderName(): string {
