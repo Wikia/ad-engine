@@ -36,6 +36,7 @@ export interface PrebidAdSlotConfig {
 	parameters?: object;
 	placement?: string;
 	placementId?: string | number;
+	publisherId?: string;
 	pos?: string;
 	position?: string;
 	productId?: string;
