@@ -36,11 +36,11 @@ export interface PrebidAdSlotConfig {
 	parameters?: object;
 	placement?: string;
 	placementId?: string | number;
-	publisherId?: string;
 	pos?: string;
 	position?: string;
 	productId?: string;
 	pubId?: string | number;
+	publisherId?: string;
 	site?: string | number;
 	siteId?: string | number;
 	size?: [number, number];

@@ -41,14 +41,10 @@ export function getSeedtagContext(): object {
 				adUnitId: '29832715',
 				placement: 'inScreen',
 			},
-			floor_adhesion: {
-				sizes: [
-					[320, 50],
-					[320, 100],
-				],
+			featured: {
+				sizes: [[0, 0]],
 				publisherId: '7908-0833-01',
-				adUnitId: '29832715',
-				placement: 'inScreen',
+				adUnitId: '29832808',
 			},
 		},
 	};
