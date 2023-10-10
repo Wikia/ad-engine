@@ -23,8 +23,6 @@ export class Experian extends BaseServiceSetup {
 	}
 
 	insertExperianPixel(): void {
-		const element = document.createElement('img');
-		element.src = this.getExperianPixelUrl();
-		document.body.appendChild(element);
+		utils.assetLoader.loadPixel(this.getExperianPixelUrl());
 	}
 }

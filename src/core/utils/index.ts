@@ -1,4 +1,5 @@
 export * from './ad-label-helper';
+export * from './asset-loader';
 export * from './client';
 export * from './decorate';
 export * from './dimensions';
