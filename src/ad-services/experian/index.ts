@@ -5,6 +5,8 @@ const logGroup = partnerName;
 
 export class Experian extends BaseServiceSetup {
 	private PARTNER_ID = 3442;
+	private PIXEL_URL = `https://pixel.tapad.com/idsync/ex/receive
+		?partner_id=${this.PARTNER_ID}&partner_device_id=`;
 
 	call(): void {
 		if (!this.isEnabled('icExperian')) {
@@ -17,8 +19,7 @@ export class Experian extends BaseServiceSetup {
 	private getExperianPixelUrl(): string {
 		const ppid = targetingService.get('ppid');
 
-		return `https://pixel.tapad.com/idsync/ex/receive
-		?partner_id=${this.PARTNER_ID}&partner_device_id=${ppid}`;
+		return this.PIXEL_URL + ppid;
 	}
 
 	insertExperianPixel(): void {
