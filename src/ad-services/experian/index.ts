@@ -1,3 +1,4 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { BaseServiceSetup, targetingService, utils } from '@ad-engine/core';
 
 const partnerName = 'experian';
@@ -23,6 +24,7 @@ export class Experian extends BaseServiceSetup {
 	}
 
 	insertExperianPixel(): void {
+		communicationService.emit(eventsRepository.EXPERIAN_STARTED);
 		utils.assetLoader.loadPixel(this.getExperianPixelUrl());
 	}
 }
