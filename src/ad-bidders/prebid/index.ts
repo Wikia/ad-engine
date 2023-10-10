@@ -240,7 +240,7 @@ export class PrebidProvider extends BidderProvider {
 						complete: 1,
 						nodes: [
 							{
-								asi: 'http://webads.eu ',
+								asi: 'http://webads.eu',
 								sid: '310035',
 								hp: 1,
 							},
