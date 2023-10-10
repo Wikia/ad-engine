@@ -25,10 +25,12 @@ const eventsToTrack = {
 
 export class LoadTimesTracker {
 	private static instance: LoadTimesTracker;
+	private dataWarehouseTracker: DataWarehouseTracker;
 	private startTime: number;
 	private tzOffset: number;
 
 	private constructor() {
+		this.dataWarehouseTracker = new DataWarehouseTracker();
 		this.initStartTime();
 		this.initLoadTimesTracker();
 	}
@@ -79,9 +81,7 @@ export class LoadTimesTracker {
 	}
 
 	private trackLoadTime(eventName: string, timestamp: number): void {
-		const dataWarehouseTracker = new DataWarehouseTracker();
-
-		dataWarehouseTracker.track(
+		this.dataWarehouseTracker.track(
 			{
 				event_name: eventName,
 				browser_ts: timestamp,

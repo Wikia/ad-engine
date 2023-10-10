@@ -1,6 +1,8 @@
 import { context, targetingService, trackingOptIn, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { AdEngineStageSetup } from '../setup/ad-engine-stage.setup';
 import { TrackingUrl, trackingUrls } from '../setup/tracking-urls';
+import { BatchProcessor } from './batch-processor';
 import { dwTrafficAggregator } from './data-warehouse-utils/dw-traffic-aggregator';
 import { TrackingParams } from './models/tracking-params';
 
@@ -17,6 +19,24 @@ export type DataWarehouseParams = TrackingParams & TimeBasedParams;
 
 @Injectable()
 export class DataWarehouseTracker {
+	private adEngineStageSetup: AdEngineStageSetup;
+	private eventsArray = [];
+
+	constructor() {
+		this.adEngineStageSetup = new AdEngineStageSetup();
+		this.init();
+	}
+
+	init() {
+		if (context.get('options.delayEvents.enabled')) {
+			document.addEventListener('readystatechange', () => {
+				if (document.readyState === 'complete') {
+					this.dispatchAndEmptyEventArray();
+				}
+			});
+		}
+	}
+
 	/**
 	 * Call all of the setup trackers
 	 */
@@ -87,7 +107,7 @@ export class DataWarehouseTracker {
 
 		const url = this.buildDataWarehouseUrl(params, trackingURL.url);
 
-		this.sendRequest(url, params);
+		this.handleDwEvent(url, params);
 	}
 
 	/**
@@ -110,13 +130,21 @@ export class DataWarehouseTracker {
 		delete params.value;
 
 		let url = this.buildDataWarehouseUrl(params, eventUrl);
-		this.sendRequest(url, params, type);
+		this.handleDwEvent(url, params, type);
 
 		// For video player events, send same data to additional endpoint
 		if (params.eventName === 'videoplayerevent') {
 			url = this.buildDataWarehouseUrl(params, videoEventUrl);
-			this.sendRequest(url, params, type);
+			this.handleDwEvent(url, params, type);
 		}
+	}
+
+	private dispatchAndEmptyEventArray(): void {
+		const { batchSize, delay } = context.get('options.delayEvents');
+		const batchProcessor = new BatchProcessor(this.eventsArray, batchSize, delay);
+
+		batchProcessor.dispatchEventsWithTimeout(this.sendRequest);
+		this.eventsArray = [];
 	}
 
 	private getTimeBasedParams(): TimeBasedParams {
@@ -141,7 +169,24 @@ export class DataWarehouseTracker {
 	/**
 	 * Send the get request
 	 */
-	private sendRequest(url: string, params: DataWarehouseParams, type = 'Event'): void {
+
+	private handleDwEvent(url: string, params: DataWarehouseParams, type = 'Event'): void {
+		const event = { url, params, type };
+		if (context.get('options.delayEvents.enabled')) {
+			this.adEngineStageSetup
+				.afterDocumentCompleted()
+				.then(() => {
+					this.sendRequest(event);
+				})
+				.catch(() => {
+					this.eventsArray.push(event);
+				});
+		} else {
+			this.sendRequest(event);
+		}
+	}
+
+	private sendRequest({ url, params, type = 'Event' }): void {
 		const request = new XMLHttpRequest();
 
 		request.open('GET', url, true);

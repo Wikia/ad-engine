@@ -148,6 +148,7 @@ interface PrebidSettings {
 		}[];
 		suppressEmptyKeys: boolean;
 		allowZeroCpmBids: boolean;
+		storageAllowed?: boolean;
 	};
 }
 
