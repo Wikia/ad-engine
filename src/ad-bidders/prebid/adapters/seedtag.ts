@@ -34,7 +34,7 @@ export class Seedtag extends PrebidAdapter {
 					params: {
 						publisherId,
 						adUnitId,
-						placement: placement,
+						placement,
 					},
 				},
 			],
