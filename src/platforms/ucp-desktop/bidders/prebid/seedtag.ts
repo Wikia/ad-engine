@@ -27,7 +27,7 @@ export function getSeedtagContext(): object {
 				placement: 'inBanner',
 			},
 			incontent_boxad: {
-				sizes: [[300, 50]],
+				sizes: [[300, 250]],
 				publisherId: '7908-0833-01',
 				adUnitId: '29832792',
 				placement: 'inArticle',
