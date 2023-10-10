@@ -78,7 +78,6 @@ jobs:
                 "order": "DESC",
                 "on_property": "mergedAt"
               },
-              "max_back_track_time_days": 1,
               "template": "#{{CHANGELOG}}\n\nUncategorized: \n\n#{{UNCATEGORIZED}}\n",
               "pr_template": "- **#{{TITLE}} (PR: ##{{NUMBER}})**\n\t Created By : #{{AUTHOR}}\n\t Merged At : #{{MERGED_AT}}"
             }
