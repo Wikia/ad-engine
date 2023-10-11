@@ -18,7 +18,7 @@ export class Seedtag extends PrebidAdapter {
 		{ sizes, publisherId, adUnitId, placement = 'inBanner' }: PrebidAdSlotConfig,
 	): PrebidAdUnit {
 		if (context.get(`slots.${code}.isVideo`)) {
-			return this.getVideoConfig(code, publisherId, adUnitId);
+			return this.getVideoConfig(code, publisherId, adUnitId, sizes);
 		}
 
 		return {
@@ -41,12 +41,12 @@ export class Seedtag extends PrebidAdapter {
 		};
 	}
 
-	getVideoConfig(code, publisherId, adUnitId): PrebidAdUnit {
+	getVideoConfig(code, publisherId, adUnitId, sizes): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
 				video: {
-					playerSize: [640, 480],
+					playerSize: sizes.length > 0 ? sizes[0] : [640, 480],
 					context: 'instream',
 					mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
 					skip: 1,
