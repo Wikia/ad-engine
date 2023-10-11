@@ -1,10 +1,13 @@
 import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
 import {
 	AdSlot,
+	AdSlotEvent,
+	AdSlotStatus,
 	BaseServiceSetup,
 	context,
 	slotDataParamsUpdater,
 	slotService,
+	targetingService,
 	utils,
 } from '@ad-engine/core';
 import { AnyclipTracker } from './anyclip-tracker';
@@ -112,6 +115,7 @@ export class Anyclip extends BaseServiceSetup {
 
 					this.waitForPlayerAdSlot().then(() => {
 						this.tracker.trackInit();
+						this.registerAdImpressionHandler();
 					});
 
 					isSubscribeReady
@@ -119,6 +123,32 @@ export class Anyclip extends BaseServiceSetup {
 						: utils.logger(logGroup, 'Anyclip global subscribe function not set');
 				});
 			});
+	}
+
+	private registerAdImpressionHandler() {
+		const subscribe = window[SUBSCRIBE_FUNC_NAME];
+		let anyclipAdsCounter = 0;
+
+		const onAdImpression = () => {
+			anyclipAdsCounter++;
+			utils.logger(logGroup, 'Ad impression in Anyclip detected!', anyclipAdsCounter);
+
+			const slotName = 'incontent_player';
+			targetingService.set('rv', anyclipAdsCounter, slotName);
+			const playerAdSlot = slotService.get(slotName);
+			playerAdSlot.setStatus(AdSlotStatus.STATUS_SUCCESS);
+			playerAdSlot.emit(AdSlotEvent.SLOT_RENDERED_EVENT);
+			playerAdSlot.emit(AdSlotEvent.VIDEO_AD_IMPRESSION);
+		};
+
+		if (typeof subscribe === 'function') {
+			subscribe(onAdImpression, 'adImpression');
+		} else {
+			utils.logger(
+				logGroup,
+				'No Anyclip subscribe function available (lreSubscribe does not exist?)...',
+			);
+		}
 	}
 
 	private loadOnUapStatus({ isLoaded, adProduct }: UapLoadStatus) {
