@@ -12,7 +12,7 @@ import {
 	Experian,
 	IasPublisherOptimization,
 	jwPlayerInhibitor,
-	// OpenWeb,
+	OpenWeb,
 	PartnerPipeline,
 	PrebidNativeProvider,
 	Stroer,
@@ -35,15 +35,14 @@ export class UcpDesktopAdsMode implements DiProcess {
 		private experian: Experian,
 		private gptSetup: GptSetup,
 		private iasPublisherOptimization: IasPublisherOptimization,
-		// private openWeb: OpenWeb,
+		private openWeb: OpenWeb,
 		private playerSetup: PlayerSetup,
 		private prebidNativeProvider: PrebidNativeProvider,
 		private stroer: Stroer,
 		private system1: System1,
 		private wadRunner: WadRunner,
 		private wunderkind: Wunderkind,
-	) // private lotame: Lotame,
-	{}
+	) {}
 
 	execute(): void {
 		this.pipeline
@@ -53,14 +52,13 @@ export class UcpDesktopAdsMode implements DiProcess {
 				this.bidders,
 				this.experian,
 				this.wadRunner,
-				// this.eyeota,
 				this.iasPublisherOptimization,
 				this.confiant,
 				this.durationMedia,
 				this.stroer,
 				this.prebidNativeProvider,
 				this.wunderkind,
-				// this.openWeb,
+				this.openWeb,
 				this.system1,
 				this.playerSetup.setOptions({
 					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
