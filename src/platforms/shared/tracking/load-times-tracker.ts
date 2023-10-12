@@ -23,6 +23,8 @@ const eventsToTrack = {
 	intentiq_done: eventsRepository.INTENTIQ_DONE,
 	lotame_loaded: eventsRepository.LOTAME_LOADED,
 	lotame_ready: eventsRepository.LOTAME_READY,
+	id5_start: eventsRepository.ID5_START,
+	id5_done: eventsRepository.ID5_DONE,
 };
 
 export class LoadTimesTracker {
