@@ -1,10 +1,9 @@
 import { Apstag } from '@wikia/ad-bidders';
 import { A9Provider } from '@wikia/ad-bidders/a9';
-import { context, targetingService } from '@wikia/core';
+import { context, DEFAULT_MAX_DELAY, targetingService } from '@wikia/core';
 import { expect } from 'chai';
 import { SinonStub } from 'sinon';
 
-// TODO: fixme, fix A9Provider tests, add Apstag tests as well
 describe('A9Provider', () => {
 	let bidderConfig;
 
@@ -115,7 +114,7 @@ describe('A9Provider', () => {
 		});
 	});
 
-	describe('init', () => {
+	describe('call', () => {
 		let apstagInitStub: SinonStub;
 		let apstagFetchBids: SinonStub;
 
@@ -131,47 +130,38 @@ describe('A9Provider', () => {
 			targetingService.set('openrtb2', {}, 'openrtb2');
 		});
 
-		// it('should initialize Apstag with config and fetch bids', () => {
-		// 	const a9 = new A9Provider(bidderConfig);
-		//
-		// 	a9.init();
-		//
-		// 	expect(
-		// 		apstagInitStub.calledOnceWithExactly({
-		// 			pubID: bidderConfig.amazonId,
-		// 			videoAdServer: 'DFP',
-		// 			deals: true,
-		// 			signals: { ortb2: {} },
-		// 		}),
-		// 	).to.equal(true, 'init called with wrong arguments');
-		// 	expect(
-		// 		apstagFetchBids.calledOnceWithExactly({
-		// 			slots: a9.getA9SlotsDefinitions(Object.keys(bidderConfig.slots)),
-		// 			timeout: DEFAULT_MAX_DELAY,
-		// 		}),
-		// 	).to.equal(true, 'fetchBids called with wrong arguments');
-		// });
+		it('should initialize Apstag with config and fetch bids', () => {
+			const a9 = new A9Provider(bidderConfig);
 
-		// it('should initialize Apstag with CCPA config and fetch bids', () => {
-		// 	const a9 = new A9Provider(bidderConfig);
-		//
-		// 	a9.init();
-		//
-		// 	expect(
-		// 		apstagInitStub.calledOnceWithExactly({
-		// 			pubID: bidderConfig.amazonId,
-		// 			videoAdServer: 'DFP',
-		// 			deals: true,
-		// 			params: { us_privacy: '1---' },
-		// 			signals: { ortb2: {} },
-		// 		}),
-		// 	).to.equal(true, 'init called with wrong arguments');
-		// 	expect(
-		// 		apstagFetchBids.calledOnceWithExactly({
-		// 			slots: a9.getA9SlotsDefinitions(Object.keys(bidderConfig.slots)),
-		// 			timeout: DEFAULT_MAX_DELAY,
-		// 		}),
-		// 	).to.equal(true, 'fetchBids called with wrong arguments');
-		// });
+			a9.call();
+
+			expect(apstagInitStub.calledOnceWithExactly()).to.equal(
+				true,
+				'init called with wrong arguments',
+			);
+			expect(
+				apstagFetchBids.calledOnceWithExactly({
+					slots: a9.getA9SlotsDefinitions(Object.keys(bidderConfig.slots)),
+					timeout: DEFAULT_MAX_DELAY,
+				}),
+			).to.equal(true, 'fetchBids called with wrong arguments');
+		});
+
+		it('should initialize Apstag with CCPA config and fetch bids', () => {
+			const a9 = new A9Provider(bidderConfig);
+
+			a9.call();
+
+			expect(apstagInitStub.calledOnceWithExactly()).to.equal(
+				true,
+				'init called with wrong arguments',
+			);
+			expect(
+				apstagFetchBids.calledOnceWithExactly({
+					slots: a9.getA9SlotsDefinitions(Object.keys(bidderConfig.slots)),
+					timeout: DEFAULT_MAX_DELAY,
+				}),
+			).to.equal(true, 'fetchBids called with wrong arguments');
+		});
 	});
 });

@@ -1,5 +1,13 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { context, externalLogger, targetingService, Usp, usp, utils } from '@ad-engine/core';
+import {
+	context,
+	externalLogger,
+	targetingService,
+	UniversalStorage,
+	Usp,
+	usp,
+	utils,
+} from '@ad-engine/core';
 import { A9Bid, A9BidConfig, A9CCPA, ApstagConfig } from '../a9/types';
 
 const logGroup = 'Apstag';
@@ -9,18 +17,30 @@ export class Apstag {
 
 	static make(): Apstag {
 		if (!Apstag.instance) {
-			Apstag.instance = new Apstag();
+			Apstag.reset();
 		}
+
+		return Apstag.instance;
+	}
+
+	/**
+	 * @deprecated
+	 * Used in unit tests.
+	 */
+	static reset(): Apstag {
+		Apstag.instance = new Apstag();
 
 		return Apstag.instance;
 	}
 
 	private script: Promise<Event>;
 	private renderImpEndCallbacks = [];
+	storage: UniversalStorage;
 	utils = utils;
 	usp: Usp = usp;
 
 	private constructor() {
+		this.storage = new UniversalStorage();
 		this.insertScript();
 		this.configure();
 		this.addRenderImpHook();
@@ -44,7 +64,7 @@ export class Apstag {
 	}
 
 	public async sendHEM(record: string): Promise<void> {
-		if (localStorage.getItem('apstagHEMsent') === '1' || !context.get('bidders.a9.rpa')) {
+		if (this.storage.getItem('apstagHEMsent') === '1' || !context.get('bidders.a9.rpa')) {
 			return;
 		}
 
@@ -53,7 +73,7 @@ export class Apstag {
 			await this.script;
 			utils.logger(logGroup, 'Sending HEM to apstag', tokenConfig);
 			window.apstag.rpa(tokenConfig);
-			localStorage.setItem('apstagHEMsent', '1');
+			this.storage.setItem('apstagHEMsent', '1');
 			communicationService.emit(eventsRepository.A9_APSTAG_HEM_SENT);
 		} catch (e) {
 			utils.logger(logGroup, 'Error sending HEM to apstag', e);
