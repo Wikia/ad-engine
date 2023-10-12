@@ -4,6 +4,7 @@ import {
 	Captify,
 	communicationService,
 	DiProcess,
+	Experian,
 	Eyeota,
 	LiveConnect,
 	LiveRampPixel,
@@ -25,6 +26,7 @@ export class PartnersSetup implements DiProcess {
 		private brandMetrics: BrandMetrics,
 		private captify: Captify,
 		private eyeota: Eyeota,
+		private experian: Experian,
 		private liveRampPixel: LiveRampPixel,
 		private nielsen: Nielsen,
 		private lotame: Lotame,
@@ -59,6 +61,7 @@ export class PartnersSetup implements DiProcess {
 				this.liveRampPixel,
 				this.brandMetrics,
 				this.eyeota,
+				this.experian,
 				this.captify,
 				this.nielsen,
 			)

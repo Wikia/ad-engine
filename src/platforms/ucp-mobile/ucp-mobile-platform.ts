@@ -10,6 +10,7 @@ import {
 	NoAdsDetector,
 	NoAdsExperimentSetup,
 	NoAdsMode,
+	PartnersSetup,
 	PlatformContextSetup,
 	SequentialMessagingSetup,
 	TrackingParametersSetup,
@@ -70,6 +71,7 @@ export class UcpMobilePlatform {
 			UcpMobileExperimentsSetup,
 			TrackingSetup,
 			AdEngineRunnerSetup,
+			PartnersSetup,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 		);
 
