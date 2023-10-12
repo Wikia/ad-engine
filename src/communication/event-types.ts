@@ -245,6 +245,12 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	LOTAME_READY: {
 		name: 'Lotame ready',
 	},
+	ID5_START: {
+		name: 'Id5 start',
+	},
+	ID5_DONE: {
+		name: 'Id5 done',
+	},
 	// Platforms events //
 	BINGEBOT_AD_SLOT_INJECTED: {
 		category: '[BingeBot]',
