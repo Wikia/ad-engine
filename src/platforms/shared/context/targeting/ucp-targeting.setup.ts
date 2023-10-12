@@ -9,6 +9,7 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { getOptimizelyActiveVariations } from '../../utils/optimizely';
 import { createFandomContext } from './targeting-strategies/factories/create-fandom-context';
 import { createOpenRtb2Context } from './targeting-strategies/factories/create-open-rtb2-context';
 import { createSelectedStrategy } from './targeting-strategies/factories/create-selected-strategy';
@@ -53,6 +54,18 @@ export class UcpTargetingSetup implements DiProcess {
 			'bundles',
 			utils.targeting.getTargetingBundles(this.instantConfig.get('icTargetingBundles')),
 		);
+
+		const optimizelyVariations = getOptimizelyActiveVariations();
+
+		if (optimizelyVariations) {
+			const optimizelyTargeting = Object.keys(optimizelyVariations).map((experimentId) => {
+				return `${experimentId}_${optimizelyVariations[experimentId].id}`;
+			});
+
+			if (optimizelyTargeting.length) {
+				targetingService.set('optimizely', optimizelyTargeting);
+			}
+		}
 
 		if (this.instantConfig.get<boolean>('icOpenRtb2Context')) {
 			targetingService.set('openrtb2', createOpenRtb2Context(fandomContext), 'openrtb2');
