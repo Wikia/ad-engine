@@ -17,6 +17,8 @@ import { Injectable } from '@wikia/dependency-injection';
 @Injectable()
 export class PartnersSetup implements DiProcess {
 	private firstCallSlotName = 'top_leaderboard';
+	private safeTimeout = 5000;
+	private fired = false;
 
 	constructor(
 		private pipeline: PartnerPipeline,
@@ -31,6 +33,9 @@ export class PartnersSetup implements DiProcess {
 
 	execute(): void {
 		utils.logger('ad-stack-partners', 'waiting ...');
+		setTimeout(() => {
+			this.pipelineExecute();
+		}, this.safeTimeout);
 		communicationService.onSlotEvent(
 			AdSlotEvent.SLOT_RENDERED_EVENT,
 			() => {
@@ -42,6 +47,11 @@ export class PartnersSetup implements DiProcess {
 	}
 
 	pipelineExecute(): void {
+		if (this.fired) {
+			return;
+		}
+		this.fired = true;
+
 		this.pipeline
 			.add(
 				this.lotame,
