@@ -182,6 +182,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	CAPTIFY_LOADED: {
 		name: 'Captify loaded',
 	},
+	EXPERIAN_STARTED: {
+		name: 'Experian started',
+	},
 	EYEOTA_STARTED: {
 		name: 'Eyeota started',
 	},

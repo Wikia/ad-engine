@@ -15,6 +15,7 @@ export * from './pubmatic';
 export * from './roundel';
 export * from './rubicon';
 export * from './rubicon-display';
+export * from './seedtag';
 export * from './test-bidder';
 export * from './triplelift';
 export * from './verizon';
