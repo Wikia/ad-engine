@@ -7,9 +7,8 @@ export class LiveRampPixel extends BaseServiceSetup {
 	private PIXEL_URL = `https://idsync.rlcdn.com/${this.PIXEL_ID}.gif?partner_uid=`;
 
 	insertLiveRampPixel(token): void {
-		const element = document.createElement('img');
-		element.src = this.PIXEL_URL + token;
-		document.body.appendChild(element);
+		const pixelUrl = this.PIXEL_URL + token;
+		utils.assetLoader.loadPixel(pixelUrl);
 	}
 
 	async call(): Promise<void> {

@@ -20,13 +20,14 @@ export class BiddersStateSetup implements DiProcess {
 		ozone: 'icPrebidOzone',
 		openx: 'icPrebidOpenX',
 		pubmatic: 'icPrebidPubmatic',
+		relevantdigital: 'icPrebidWebAds',
 		rubicon_display: 'icPrebidRubiconDisplay',
 		roundel: 'icPrebidRoundel',
 		rubicon: 'icPrebidRubicon',
+		seedtag: 'icPrebidSeedtag',
 		triplelift: 'icPrebidTriplelift',
 		verizon: 'icPrebidVerizon',
 		yahoossp: 'icPrebidYahooSsp',
-		relevantdigital: 'icPrebidWebAds',
 	};
 	private notCoppaCompliantBidders: Array<keyof typeof this.prebidBidders> = ['kargo', 'verizon'];
 
