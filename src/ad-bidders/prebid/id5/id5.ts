@@ -1,3 +1,4 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { context, targetingService, UniversalStorage, utils } from '@ad-engine/core';
 import { UserIdConfig } from '../index';
 
@@ -37,6 +38,7 @@ class Id5 {
 		}
 
 		utils.logger(logGroup, 'enabled');
+		communicationService.emit(eventsRepository.ID5_START);
 
 		const id5AbValue: number = context.get('bidders.prebid.id5AbValue');
 		if (id5AbValue) {
