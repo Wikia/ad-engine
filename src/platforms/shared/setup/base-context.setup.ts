@@ -121,11 +121,21 @@ export class BaseContextSetup implements DiProcess {
 
 	private setInContentExperiment(): void {
 		const excludedBundleTagName = 'sensitive';
+		const top500BundleTagName = 'top500';
 		const communityExcludedByTag = globalContextService.hasBundle(excludedBundleTagName);
+		const communityWithTop500Tag = globalContextService.hasBundle(top500BundleTagName);
+
+		const isMobile = context.get('state.isMobile');
+		const isInContentHeadersExperiment = this.instantConfig
+			.get('icExperiments', [])
+			.includes('incontentHeaders');
+		const isDesktopExperiment = !isMobile;
+		const isMobileExperiment = isMobile && communityWithTop500Tag;
 
 		if (
-			this.instantConfig.get('icExperiments', []).includes('incontentHeaders') &&
-			!communityExcludedByTag
+			isInContentHeadersExperiment &&
+			!communityExcludedByTag &&
+			(isDesktopExperiment || isMobileExperiment)
 		) {
 			context.set('templates.incontentHeadersExperiment', true);
 		} else {
