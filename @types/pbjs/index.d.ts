@@ -75,6 +75,8 @@ interface PrebidVideoType {
 	linearity?: number;
 	playbackmethod?: number[];
 	plcmt?: number | number[];
+	skip?: number;
+	startdelay?: number;
 }
 
 interface PrebidMediaTypes {
@@ -87,7 +89,7 @@ interface PrebidMediaTypes {
 
 interface PrebidBid {
 	bidder: string;
-	params?: unknown;
+	params?: Record<string, any>;
 	labelAny?: string[];
 	labelAll?: string[];
 }
@@ -148,6 +150,7 @@ interface PrebidSettings {
 		}[];
 		suppressEmptyKeys: boolean;
 		allowZeroCpmBids: boolean;
+		storageAllowed?: boolean;
 	};
 }
 

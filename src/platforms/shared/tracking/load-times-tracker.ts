@@ -14,6 +14,7 @@ const eventsToTrack = {
 	audigent_segment_library_loaded: eventsRepository.AUDIGENT_SEGMENT_LIBRARY_LOADED,
 	audigent_segments_ready: eventsRepository.AUDIGENT_SEGMENTS_READY,
 	captify_loaded: eventsRepository.CAPTIFY_LOADED,
+	experian_started: eventsRepository.EXPERIAN_STARTED,
 	eyeota_started: eventsRepository.EYEOTA_STARTED,
 	eyeota_failed: eventsRepository.EYEOTA_FAILED,
 	a9_without_consents: eventsRepository.A9_WITHOUT_CONSENTS,
@@ -24,10 +25,12 @@ const eventsToTrack = {
 
 export class LoadTimesTracker {
 	private static instance: LoadTimesTracker;
+	private dataWarehouseTracker: DataWarehouseTracker;
 	private startTime: number;
 	private tzOffset: number;
 
 	private constructor() {
+		this.dataWarehouseTracker = new DataWarehouseTracker();
 		this.initStartTime();
 		this.initLoadTimesTracker();
 	}
@@ -78,9 +81,7 @@ export class LoadTimesTracker {
 	}
 
 	private trackLoadTime(eventName: string, timestamp: number): void {
-		const dataWarehouseTracker = new DataWarehouseTracker();
-
-		dataWarehouseTracker.track(
+		this.dataWarehouseTracker.track(
 			{
 				event_name: eventName,
 				browser_ts: timestamp,

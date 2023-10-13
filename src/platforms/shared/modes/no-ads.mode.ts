@@ -1,9 +1,9 @@
 import {
-	Ats,
 	Audigent,
 	communicationService,
 	DiProcess,
 	eventsRepository,
+	Experian,
 	Eyeota,
 	jwpSetup,
 	LiveConnect,
@@ -18,10 +18,10 @@ export class NoAdsMode implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,
 		private noAdsDetector: NoAdsDetector,
-		private ats: Ats,
 		private audigent: Audigent,
 		private eyeota: Eyeota,
 		private liveConnect: LiveConnect,
+		private experian: Experian,
 		private liveRampPixel: LiveRampPixel,
 	) {}
 
@@ -31,7 +31,7 @@ export class NoAdsMode implements DiProcess {
 		this.dispatchJWPlayerSetupAction();
 
 		this.pipeline
-			.add(this.liveRampPixel, this.ats, this.audigent, this.eyeota, this.liveConnect)
+			.add(this.liveRampPixel, this.audigent, this.eyeota, this.liveConnect, this.experian)
 			.execute()
 			.then(() => {
 				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);

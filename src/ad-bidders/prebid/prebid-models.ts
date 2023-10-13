@@ -1,5 +1,14 @@
 import { Dictionary } from '@ad-engine/core';
 
+export enum PrebidVideoPlacements {
+	// https://www.iab.com/wp-content/uploads/2016/03/OpenRTB-API-Specification-Version-2-5-FINAL.pdf
+	IN_STREAM = 1,
+	IN_BANNER = 2,
+	IN_ARTICLE = 3,
+	IN_FEED = 4,
+	FLOATING = 5,
+}
+
 export type PrebidConfig = {
 	enabled: boolean;
 	bidsRefreshing: {
@@ -13,6 +22,7 @@ export interface PrebidAdapterConfig {
 }
 
 export interface PrebidAdSlotConfig {
+	accountId?: string;
 	adCode?: string;
 	adUnitId?: string;
 	alias?: string;
@@ -30,6 +40,7 @@ export interface PrebidAdSlotConfig {
 	position?: string;
 	productId?: string;
 	pubId?: string | number;
+	publisherId?: string;
 	site?: string | number;
 	siteId?: string | number;
 	size?: [number, number];
