@@ -11,7 +11,7 @@ let adEngineInstance: AdEngine;
 export class GptSetup extends BaseServiceSetup {
 	call(): Promise<Event> {
 		utils.logger('GPT Setup', 'Called');
-		const GPT_LIBRARY_URL = '//www.googletagservices.com/tag/js/gpt.js';
+		const GPT_LIBRARY_URL = 'https://securepubads.g.doubleclick.net/tag/js/gpt.js';
 
 		utils.logger('gpt-provider', 'loading GPT...');
 		const gptLoaded = utils.scriptLoader.loadScript(GPT_LIBRARY_URL);
