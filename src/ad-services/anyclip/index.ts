@@ -2,11 +2,11 @@ import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engin
 import {
 	AdSlot,
 	AdSlotEvent,
-	AdSlotStatus,
 	BaseServiceSetup,
 	context,
 	slotDataParamsUpdater,
 	slotService,
+	slotTweaker,
 	targetingService,
 	utils,
 } from '@ad-engine/core';
@@ -134,10 +134,11 @@ export class Anyclip extends BaseServiceSetup {
 			utils.logger(logGroup, 'Ad impression in Anyclip detected!', anyclipAdsCounter);
 
 			const slotName = 'incontent_player';
-			targetingService.set('rv', anyclipAdsCounter, slotName);
 			const playerAdSlot = slotService.get(slotName);
-			playerAdSlot.setStatus(AdSlotStatus.STATUS_SUCCESS);
-			playerAdSlot.emit(AdSlotEvent.SLOT_RENDERED_EVENT);
+
+			targetingService.set('rv', anyclipAdsCounter, slotName);
+			slotTweaker.setDataParam(playerAdSlot, 'gptSlotParams', targetingService.dump(slotName));
+
 			playerAdSlot.emit(AdSlotEvent.VIDEO_AD_IMPRESSION);
 		};
 
