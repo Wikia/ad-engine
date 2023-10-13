@@ -29,6 +29,8 @@ const blockedBotUserAgents = [
 	'peer39_crawler/1.0',
 ];
 
+const excludedBundleTags = ['sensitive', 'disabled_search_ads'];
+
 export class System1 extends BaseServiceSetup {
 	private isLoaded = false;
 
@@ -38,16 +40,8 @@ export class System1 extends BaseServiceSetup {
 			return Promise.resolve();
 		}
 
-		if (!this.isEnabled('icSystem1', false) || utils.isCoppaSubject() || this.isBot()) {
+		if (this.isDisabled()) {
 			utils.logger(logGroup, 'disabled');
-			return Promise.resolve();
-		}
-
-		const excludedBundleTagName = 'sensitive';
-		const communityExcludedByTag = globalContextService.hasBundle(excludedBundleTagName);
-
-		if (communityExcludedByTag) {
-			utils.logger(logGroup, `community excluded by tag bundle=${excludedBundleTagName}`);
 			return Promise.resolve();
 		}
 
@@ -165,5 +159,27 @@ export class System1 extends BaseServiceSetup {
 		const { userAgent } = window.navigator;
 
 		return blockedBotUserAgents.some((botUserAgent) => userAgent.includes(botUserAgent));
+	}
+
+	private isDisabled(): boolean {
+		return (
+			!this.isEnabled('icSystem1', false) ||
+			utils.isCoppaSubject() ||
+			this.isBot() ||
+			this.isExcludedByBundleTag()
+		);
+	}
+
+	private isExcludedByBundleTag(): boolean {
+		for (const excludedBundleTagName in excludedBundleTags) {
+			const communityExcludedByTag = globalContextService.hasBundle(excludedBundleTagName);
+
+			if (communityExcludedByTag) {
+				utils.logger(logGroup, `community excluded by tag bundle=${excludedBundleTagName}`);
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
