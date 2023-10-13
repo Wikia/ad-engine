@@ -16,10 +16,11 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class PartnersSetup implements DiProcess {
+export class UcpPartnersSetup implements DiProcess {
 	private firstCallSlotName = 'top_leaderboard';
 	private safeTimeout = 5000;
 	private fired = false;
+	private logGroup = 'ad-stack-partners';
 
 	constructor(
 		private pipeline: PartnerPipeline,
@@ -34,21 +35,21 @@ export class PartnersSetup implements DiProcess {
 	) {}
 
 	execute(): void {
-		utils.logger('ad-stack-partners', 'waiting ...');
+		utils.logger(this.logGroup, 'waiting ...');
 		setTimeout(() => {
 			this.pipelineExecute();
 		}, this.safeTimeout);
 		communicationService.onSlotEvent(
 			AdSlotEvent.SLOT_RENDERED_EVENT,
 			() => {
-				utils.logger('ad-stack-partners', 'starting');
+				utils.logger(this.logGroup, 'starting');
 				this.pipelineExecute();
 			},
 			this.firstCallSlotName,
 		);
 	}
 
-	pipelineExecute(): void {
+	private pipelineExecute(): void {
 		if (this.fired) {
 			return;
 		}
@@ -67,7 +68,7 @@ export class PartnersSetup implements DiProcess {
 			)
 			.execute()
 			.then(() => {
-				utils.logger('ad-stack-partners', 'finished');
+				utils.logger(this.logGroup, 'finished');
 			});
 	}
 }
