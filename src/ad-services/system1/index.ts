@@ -171,7 +171,7 @@ export class System1 extends BaseServiceSetup {
 	}
 
 	private isExcludedByBundleTag(): boolean {
-		for (const excludedBundleTagName in excludedBundleTags) {
+		for (const excludedBundleTagName of excludedBundleTags) {
 			const communityExcludedByTag = globalContextService.hasBundle(excludedBundleTagName);
 
 			if (communityExcludedByTag) {
