@@ -6,8 +6,12 @@ const logGroup = partnerName;
 
 export class Experian extends BaseServiceSetup {
 	private PARTNER_ID = 3442;
+	private PARTNER_URL =
+		'https://https://services.fandom.com/identity-storage' +
+		'/external/experian/receiveid?id=${TA_DEVICE_ID}&partner=TAPAD';
 	private PIXEL_URL = `https://pixel.tapad.com/idsync/ex/receive
-		?partner_id=${this.PARTNER_ID}&partner_device_id=`;
+		?partner_id=${this.PARTNER_ID}&partner_url=${this.PARTNER_URL}
+		&partner_device_id=`;
 
 	call(): void {
 		if (!this.isEnabled('icExperian')) {
