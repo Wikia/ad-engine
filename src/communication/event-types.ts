@@ -202,6 +202,12 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	INTENTIQ_PPID_NOT_SET_ON_TIME: {
 		name: 'IntentIQ PPID not set on time',
 	},
+	INTENTIQ_START: {
+		name: 'IntentIQ start',
+	},
+	INTENTIQ_DONE: {
+		name: 'IntentIQ done',
+	},
 	LIVE_CONNECT_STARTED: {
 		name: 'LiveConnect started',
 	},
@@ -238,6 +244,12 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	},
 	LOTAME_READY: {
 		name: 'Lotame ready',
+	},
+	ID5_START: {
+		name: 'Id5 start',
+	},
+	ID5_DONE: {
+		name: 'Id5 done',
 	},
 	// Platforms events //
 	BINGEBOT_AD_SLOT_INJECTED: {
