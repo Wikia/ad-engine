@@ -40,7 +40,7 @@ export class System1 extends BaseServiceSetup {
 			return Promise.resolve();
 		}
 
-		if (this.isDisabled()) {
+		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
 			return Promise.resolve();
 		}
@@ -53,6 +53,15 @@ export class System1 extends BaseServiceSetup {
 				this.setup();
 			});
 		}
+	}
+
+	isEnabled(): boolean {
+		return (
+			super.isEnabled('icSystem1', false) &&
+			!utils.isCoppaSubject() &&
+			!this.isBot() &&
+			!this.isExcludedByBundleTag()
+		);
 	}
 
 	private setup(): void {
@@ -159,15 +168,6 @@ export class System1 extends BaseServiceSetup {
 		const { userAgent } = window.navigator;
 
 		return blockedBotUserAgents.some((botUserAgent) => userAgent.includes(botUserAgent));
-	}
-
-	private isDisabled(): boolean {
-		return (
-			!this.isEnabled('icSystem1', false) ||
-			utils.isCoppaSubject() ||
-			this.isBot() ||
-			this.isExcludedByBundleTag()
-		);
 	}
 
 	private isExcludedByBundleTag(): boolean {
