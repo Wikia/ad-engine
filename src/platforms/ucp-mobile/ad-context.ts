@@ -54,7 +54,7 @@ export const basicContext = {
 	},
 	templates: {
 		incontentAnchorSelector:
-			'.mw-parser-output > h2,.mw-parser-output > section > h3,.mw-parser-output > section > h4,.mw-parser-output > section > h5',
+			'.mw-parser-output > h2,.mw-parser-output > section > h3,.mw-parser-output > section > h4,.mw-parser-output > section > h5,.mw-parser-output > h3,.mw-parser-output > h4,.mw-parser-output > h5',
 	},
 	services: {
 		anyclip: {
