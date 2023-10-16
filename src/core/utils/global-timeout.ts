@@ -19,7 +19,6 @@ export class GlobalTimeout {
 		this.timeouts[label] = new Promise((resolve) => {
 			setTimeout(() => {
 				resolve();
-				delete this.timeouts[label];
 			}, timeout);
 		});
 
