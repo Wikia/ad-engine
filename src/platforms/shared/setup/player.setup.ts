@@ -3,6 +3,7 @@ import {
 	BaseServiceSetup,
 	communicationService,
 	context,
+	InstantConfigService,
 	JWPlayerManager,
 	jwpSetup,
 	Optimizely,
@@ -26,8 +27,12 @@ const OPTIMIZELY_STRATEGY_RULES_EXPERIMENT_VARIANTS = {
 
 @Injectable()
 export class PlayerSetup extends BaseServiceSetup {
-	constructor(protected optimizely: Optimizely) {
-		super();
+	constructor(
+		protected instantConfig: InstantConfigService,
+		protected globalTimeout: utils.GlobalTimeout,
+		protected optimizely: Optimizely,
+	) {
+		super(instantConfig, globalTimeout);
 	}
 
 	call() {
