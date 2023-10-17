@@ -1,9 +1,16 @@
 import { Injectable } from '@wikia/dependency-injection';
+import { context } from '../../../services';
+import { GlobalTimeout } from '../../../utils/global-timeout';
 import { PartnerStepUnion } from './partner-pipeline-types';
 
 @Injectable({ scope: 'Transient' })
 export class PartnerPipeline {
-	steps: PartnerStepUnion[] = [];
+	constructor(private readonly globalTimeout: GlobalTimeout) {
+		this.globalTimeout.set('partner-pipeline', context.get('options.maxDelayTimeout'));
+	}
+
+	private steps: PartnerStepUnion[] = [];
+
 	add(...steps: PartnerStepUnion[]): this {
 		this.steps = steps;
 
