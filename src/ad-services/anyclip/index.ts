@@ -1,15 +1,13 @@
 import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
 import {
 	AdSlot,
-	AdSlotEvent,
 	BaseServiceSetup,
 	context,
 	slotDataParamsUpdater,
 	slotService,
-	slotTweaker,
-	targetingService,
 	utils,
 } from '@ad-engine/core';
+import { AnyclipBidsRefresher } from './anyclip-bids-refresher';
 import { AnyclipTracker } from './anyclip-tracker';
 
 const logGroup = 'Anyclip';
@@ -47,6 +45,7 @@ export class Anyclip extends BaseServiceSetup {
 	}
 
 	private tracker: AnyclipTracker;
+	private bidRefresher: AnyclipBidsRefresher;
 
 	call() {
 		if (context.get('custom.hasFeaturedVideo') || !this.isEnabled('icAnyclipPlayer', false)) {
@@ -57,6 +56,7 @@ export class Anyclip extends BaseServiceSetup {
 		utils.logger(logGroup, 'initialized', this.pubname, this.widgetname, this.libraryUrl);
 
 		this.tracker = new AnyclipTracker(SUBSCRIBE_FUNC_NAME);
+		this.bidRefresher = new AnyclipBidsRefresher(SUBSCRIBE_FUNC_NAME);
 
 		if (context.get('services.anyclip.loadWithoutAnchor')) {
 			communicationService.on(
@@ -115,7 +115,7 @@ export class Anyclip extends BaseServiceSetup {
 
 					this.waitForPlayerAdSlot().then(() => {
 						this.tracker.trackInit();
-						this.registerAdImpressionHandler();
+						this.bidRefresher.trySubscribingBidRefreshing();
 					});
 
 					isSubscribeReady
@@ -123,34 +123,6 @@ export class Anyclip extends BaseServiceSetup {
 						: utils.logger(logGroup, 'Anyclip global subscribe function not set');
 				});
 			});
-	}
-
-	private registerAdImpressionHandler() {
-		const subscribe = window[SUBSCRIBE_FUNC_NAME];
-		let anyclipAdsCounter = 0;
-
-		const onAdImpression = () => {
-			anyclipAdsCounter++;
-			utils.logger(logGroup, 'Ad impression in Anyclip detected!', anyclipAdsCounter);
-
-			const slotName = 'incontent_player';
-			const playerAdSlot = slotService.get(slotName);
-
-			targetingService.set('rv', anyclipAdsCounter, slotName);
-			slotTweaker.setDataParam(playerAdSlot, 'gptSlotParams', targetingService.dump(slotName));
-
-			playerAdSlot.emit(AdSlotEvent.VIDEO_AD_IMPRESSION); // refreshes video bids
-			playerAdSlot.emit(AdSlotEvent.VIDEO_AD_USED); // refreshes bidders targeting
-		};
-
-		if (typeof subscribe === 'function') {
-			subscribe(onAdImpression, 'adImpression');
-		} else {
-			utils.logger(
-				logGroup,
-				'No Anyclip subscribe function available (lreSubscribe does not exist?)...',
-			);
-		}
 	}
 
 	private loadOnUapStatus({ isLoaded, adProduct }: UapLoadStatus) {
