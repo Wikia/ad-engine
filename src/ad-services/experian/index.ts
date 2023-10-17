@@ -1,17 +1,14 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { BaseServiceSetup, targetingService, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, targetingService, utils } from '@ad-engine/core';
 
 const partnerName = 'experian';
 const logGroup = partnerName;
 
 export class Experian extends BaseServiceSetup {
 	private PARTNER_ID = 3442;
-	private PARTNER_URL =
-		'https://https://services.fandom.com/identity-storage' +
-		'/external/experian/receiveid?id=${TA_DEVICE_ID}&partner=TAPAD';
-	private PIXEL_URL = `https://pixel.tapad.com/idsync/ex/receive
-		?partner_id=${this.PARTNER_ID}&partner_url=${this.PARTNER_URL}
-		&partner_device_id=`;
+	private PARTNER_URL_CORE =
+		'https://services.fandom.com/identity-storage' + '/external/experian/receiveid';
+	private EXPERIAN_URL = 'https://pixel.tapad.com/idsync/ex/receive';
 
 	call(): void {
 		if (!this.isEnabled('icExperian')) {
@@ -23,8 +20,12 @@ export class Experian extends BaseServiceSetup {
 
 	private getExperianPixelUrl(): string {
 		const ppid = targetingService.get('ppid');
+		const pv_unique_id = context.get('wiki.pvUID');
+		const partner_url = `${this.PARTNER_URL_CORE}/${pv_unique_id}?id=\${TA_DEVICE_ID}
+			&partner=TAPAD`;
 
-		return this.PIXEL_URL + ppid;
+		return `${this.EXPERIAN_URL}?partner_id=${this.PARTNER_ID}
+		&partner_device_id=${ppid}&partner_url=${partner_url}`;
 	}
 
 	insertExperianPixel(): void {
