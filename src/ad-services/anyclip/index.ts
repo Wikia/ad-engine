@@ -140,6 +140,7 @@ export class Anyclip extends BaseServiceSetup {
 			slotTweaker.setDataParam(playerAdSlot, 'gptSlotParams', targetingService.dump(slotName));
 
 			playerAdSlot.emit(AdSlotEvent.VIDEO_AD_IMPRESSION); // refreshes video bids
+			playerAdSlot.emit(AdSlotEvent.VIDEO_AD_USED); // refreshes bidders targeting
 		};
 
 		if (typeof subscribe === 'function') {
