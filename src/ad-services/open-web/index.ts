@@ -23,9 +23,10 @@ export class OpenWeb extends BaseServiceSetup {
 
 	constructor(
 		protected instantConfig: InstantConfigService,
+		protected globalTimeout: utils.GlobalTimeout = null,
 		private placementsHandler: PlacementsHandler = null,
 	) {
-		super(instantConfig);
+		super(instantConfig, globalTimeout);
 		this.readConfig(instantConfig);
 	}
 

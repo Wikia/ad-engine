@@ -29,7 +29,7 @@ describe('OpenWeb', () => {
 			.returns(true);
 		placementHandlerBuildStub = global.sandbox.stub(PlacementsHandler.prototype, 'build');
 
-		service = new OpenWeb(instantConfigStub, new PlacementsHandler(new PlacementsBuilder()));
+		service = new OpenWeb(instantConfigStub, null, new PlacementsHandler(new PlacementsBuilder()));
 	});
 
 	afterEach(() => {

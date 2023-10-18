@@ -220,6 +220,7 @@ export class PrebidProvider extends BidderProvider {
 		}
 
 		this.enableId5Analytics();
+		communicationService.emit(eventsRepository.ID5_DONE);
 	}
 
 	private enableId5Analytics(): void {
