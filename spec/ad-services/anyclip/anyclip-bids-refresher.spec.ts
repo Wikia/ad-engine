@@ -8,6 +8,7 @@ describe('AnyclipBidsRefresher', () => {
 	let serviceSlotGetStub;
 	const fakeIncontentPlayerSlot = {
 		emit: spy(),
+		getElement: spy(),
 	};
 
 	beforeEach(() => {
