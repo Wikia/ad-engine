@@ -1,10 +1,8 @@
-import { AdSlotEvent, slotService, slotTweaker, targetingService, utils } from '@ad-engine/core';
+import { AdSlotEvent, slotService, utils } from '@ad-engine/core';
 
 const logGroup = 'Anyclip';
 
 export class AnyclipBidsRefresher {
-	private adsCounter = 0;
-
 	constructor(private subscribeFuncName: string) {}
 
 	public trySubscribingBidRefreshing() {
@@ -21,16 +19,12 @@ export class AnyclipBidsRefresher {
 	}
 
 	private onAdImpressionHandler() {
-		this.adsCounter++;
-		utils.logger(logGroup, 'Ad impression in Anyclip detected!', this.adsCounter);
+		utils.logger(logGroup, 'AnyclipBidsRefresher: ad impression in Anyclip detected - refreshing');
 
 		const slotName = 'incontent_player';
 		const playerAdSlot = slotService.get(slotName);
 
-		targetingService.set('rv', this.adsCounter, slotName);
-		slotTweaker.setDataParam(playerAdSlot, 'gptSlotParams', targetingService.dump(slotName));
-
-		playerAdSlot.emit(AdSlotEvent.VIDEO_AD_IMPRESSION); // refreshes video bids
+		playerAdSlot.emit(AdSlotEvent.VIDEO_AD_IMPRESSION); // removes video bids
 		playerAdSlot.emit(AdSlotEvent.VIDEO_AD_USED); // refreshes bidders targeting
 	}
 }
