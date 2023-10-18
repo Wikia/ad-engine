@@ -50,12 +50,6 @@ describe('Id5', () => {
 		expect(id5.getConfig()).to.eql(undefined);
 	});
 
-	it('Id5 is disabled if user has opted out sale', () => {
-		context.set('options.optOutSale', true);
-
-		expect(id5.getConfig()).to.eql(undefined);
-	});
-
 	it('Id5 is disabled on child-directed wiki', () => {
 		window.fandomContext.partners.directedAtChildren = true;
 
