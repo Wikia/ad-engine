@@ -1,3 +1,4 @@
+import { filterVideoBids } from '@platforms/shared';
 import { context, DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { getAppnexusContext } from '../../../bidders/prebid/appnexus';
@@ -20,38 +21,6 @@ import { getVerizonContext } from '../../../bidders/prebid/verizon';
 import { getWebadsContext } from '../../../bidders/prebid/webads';
 import { getWikiaContext } from '../../../bidders/prebid/wikia';
 import { getWikiaVideoContext } from '../../../bidders/prebid/wikia-video';
-
-function filterVideoBids(bidderContext) {
-	const hasFeaturedVideo = context.get('custom.hasFeaturedVideo');
-	const bidConfigSlotNames = Object.keys(bidderContext.slots);
-	const hasFeaturedBidConfig = bidderContext.slots && bidConfigSlotNames.includes('featured');
-	const hasIncontentPlayerBidConfig =
-		bidderContext.slots && bidConfigSlotNames.includes('incontent_player');
-
-	if (hasFeaturedVideo && hasIncontentPlayerBidConfig) {
-		const newVideoSlotsConfig = {
-			...bidderContext.slots,
-		};
-		delete newVideoSlotsConfig['incontent_player'];
-
-		return {
-			...bidderContext,
-			slots: newVideoSlotsConfig,
-		};
-	} else if (!hasFeaturedVideo && hasFeaturedBidConfig) {
-		const newVideoSlotsConfig = {
-			...bidderContext.slots,
-		};
-		delete newVideoSlotsConfig['featured'];
-
-		return {
-			...bidderContext,
-			slots: newVideoSlotsConfig,
-		};
-	}
-
-	return bidderContext;
-}
 
 @Injectable()
 export class UcpMobilePrebidConfigSetup implements DiProcess {
