@@ -14,6 +14,7 @@ import {
 	SequentialMessagingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
+	UcpPartnersSetup,
 	UcpTargetingSetup,
 } from '@platforms/shared';
 import {
@@ -69,6 +70,7 @@ export class UcpDesktopPlatform {
 			LabradorSetup,
 			TrackingSetup,
 			AdEngineRunnerSetup,
+			UcpPartnersSetup,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 		);
 

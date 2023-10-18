@@ -18,7 +18,7 @@ export class Ozone extends PrebidAdapter {
 					: 'not a top1k wiki',
 			],
 			lang: [targetingService.get('wikiLanguage') || targetingService.get('lang') || 'en'],
-			testgroup: [this.testGroup],
+			testgroup: this.testGroup,
 		};
 		this.dcn = options.dcn;
 

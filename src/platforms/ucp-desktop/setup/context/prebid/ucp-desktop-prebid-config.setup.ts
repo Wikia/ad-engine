@@ -15,6 +15,7 @@ import { getPubmaticContext } from '../../../bidders/prebid/pubmatic';
 import { getRoundelContext } from '../../../bidders/prebid/roundel';
 import { getRubiconContext } from '../../../bidders/prebid/rubicon';
 import { getRubiconDisplayContext } from '../../../bidders/prebid/rubicon-display';
+import { getSeedtagContext } from '../../../bidders/prebid/seedtag';
 import { getTripleliftContext } from '../../../bidders/prebid/triplelift';
 import { getVerizonContext } from '../../../bidders/prebid/verizon';
 import { getWebadsContext } from '../../../bidders/prebid/webads';
@@ -38,6 +39,7 @@ export class UcpDesktopPrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.roundel', filterVideoBids(getRoundelContext()));
 		context.set('bidders.prebid.rubicon', filterVideoBids(getRubiconContext()));
 		context.set('bidders.prebid.rubicon_display', filterVideoBids(getRubiconDisplayContext()));
+		context.set('bidders.prebid.seedtag', filterVideoBids(getSeedtagContext()));
 		context.set('bidders.prebid.triplelift', filterVideoBids(getTripleliftContext()));
 		context.set('bidders.prebid.verizon', filterVideoBids(getVerizonContext()));
 		context.set('bidders.prebid.relevantdigital', filterVideoBids(getWebadsContext()));
