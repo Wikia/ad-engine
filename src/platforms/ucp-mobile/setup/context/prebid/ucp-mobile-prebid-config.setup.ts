@@ -21,11 +21,41 @@ import { getWebadsContext } from '../../../bidders/prebid/webads';
 import { getWikiaContext } from '../../../bidders/prebid/wikia';
 import { getWikiaVideoContext } from '../../../bidders/prebid/wikia-video';
 
+function toggleVideoSlotsBids(bidderContext) {
+	const hasFeaturedVideo = context.get('custom.hasFeaturedVideo');
+	const bidConfigSlotNames = Object.keys(bidderContext.slots);
+	const hasBidderVideoSlots =
+		bidderContext.slots &&
+		(bidConfigSlotNames.includes('featured') || bidConfigSlotNames.includes('incontent_player'));
+
+	if (hasBidderVideoSlots && hasFeaturedVideo) {
+		const newVideoSlotsConfig = {
+			featured: { ...bidderContext.slots['featured'] },
+		};
+
+		return {
+			...bidderContext,
+			slots: newVideoSlotsConfig,
+		};
+	} else if (hasBidderVideoSlots) {
+		const newVideoSlotsConfig = {
+			incontent_player: { ...bidderContext.slots['incontent_player'] },
+		};
+
+		return {
+			...bidderContext,
+			slots: newVideoSlotsConfig,
+		};
+	}
+
+	return bidderContext;
+}
+
 @Injectable()
 export class UcpMobilePrebidConfigSetup implements DiProcess {
 	execute(): void {
 		context.set('bidders.prebid.appnexus', getAppnexusContext());
-		context.set('bidders.prebid.appnexusAst', getAppnexusAstContext());
+		context.set('bidders.prebid.appnexusAst', toggleVideoSlotsBids(getAppnexusAstContext()));
 		context.set('bidders.prebid.freewheel', getFreewheelContext());
 		context.set('bidders.prebid.gumgum', getGumgumContext());
 		context.set('bidders.prebid.indexExchange', getIndexExchangeContext());
