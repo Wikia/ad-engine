@@ -90,7 +90,11 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 		} else {
 			// This WaitFor is necessary to ensure proper injection to BaseServiceSetup.
 			return new WaitFor(() => !!this.globalTimeout).until().then(() => {
-				return this.globalTimeout.get('partner-pipeline');
+				return (
+					this.globalTimeout?.get?.('partner-pipeline') ||
+					this.globalTimeout['partner-pipeline'] ||
+					Promise.resolve()
+				);
 			});
 		}
 	}
