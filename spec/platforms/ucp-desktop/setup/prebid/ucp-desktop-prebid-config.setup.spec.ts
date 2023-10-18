@@ -1,10 +1,10 @@
 import { context } from '@wikia/core';
-import { UcpMobilePrebidConfigSetup } from '@wikia/platforms/ucp-mobile/setup/context/prebid/ucp-mobile-prebid-config.setup';
+import { UcpDesktopPrebidConfigSetup } from '@wikia/platforms/ucp-desktop/setup/context/prebid/ucp-desktop-prebid-config.setup';
 import { getVideoBiddersWithVideoSlots } from '../../../../helpers/get-video-bidders-with-video-slots';
 
 import { expect } from 'chai';
 
-describe('ucp-mobile prebid setup', () => {
+describe('ucp-desktop prebid setup', () => {
 	after(() => {
 		context.remove('custom.hasFeaturedVideo');
 		context.remove('bidders.prebid');
@@ -12,7 +12,7 @@ describe('ucp-mobile prebid setup', () => {
 
 	it('filters out featured slot when JWP is not on the page', () => {
 		context.set('custom.hasFeaturedVideo', false);
-		const setup = new UcpMobilePrebidConfigSetup();
+		const setup = new UcpDesktopPrebidConfigSetup();
 
 		setup.execute();
 
@@ -25,7 +25,7 @@ describe('ucp-mobile prebid setup', () => {
 
 	it('filters out incontent_player slot when JWP is on the page', () => {
 		context.set('custom.hasFeaturedVideo', true);
-		const setup = new UcpMobilePrebidConfigSetup();
+		const setup = new UcpDesktopPrebidConfigSetup();
 
 		setup.execute();
 
