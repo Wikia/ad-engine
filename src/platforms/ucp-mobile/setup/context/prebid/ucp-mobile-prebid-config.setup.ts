@@ -54,25 +54,25 @@ function toggleVideoSlotsBids(bidderContext) {
 @Injectable()
 export class UcpMobilePrebidConfigSetup implements DiProcess {
 	execute(): void {
-		context.set('bidders.prebid.appnexus', getAppnexusContext());
+		context.set('bidders.prebid.appnexus', toggleVideoSlotsBids(getAppnexusContext()));
 		context.set('bidders.prebid.appnexusAst', toggleVideoSlotsBids(getAppnexusAstContext()));
-		context.set('bidders.prebid.freewheel', getFreewheelContext());
-		context.set('bidders.prebid.gumgum', getGumgumContext());
-		context.set('bidders.prebid.indexExchange', getIndexExchangeContext());
-		context.set('bidders.prebid.kargo', getKargoContext());
-		context.set('bidders.prebid.mgnipbs', getMagniteS2sContext());
-		context.set('bidders.prebid.medianet', getMedianetContext());
-		context.set('bidders.prebid.nobid', getNobidContext());
-		context.set('bidders.prebid.ogury', getOguryContext());
-		context.set('bidders.prebid.openx', getOpenXContext());
-		context.set('bidders.prebid.ozone', getOzoneContext());
-		context.set('bidders.prebid.pubmatic', getPubmaticContext());
-		context.set('bidders.prebid.relevantdigital', getWebadsContext());
-		context.set('bidders.prebid.rubicon', getRubiconContext());
-		context.set('bidders.prebid.rubicon_display', getRubiconDisplayContext());
-		context.set('bidders.prebid.triplelift', getTripleliftContext());
-		context.set('bidders.prebid.verizon', getVerizonContext());
-		context.set('bidders.prebid.wikia', getWikiaContext());
-		context.set('bidders.prebid.wikiaVideo', getWikiaVideoContext());
+		context.set('bidders.prebid.freewheel', toggleVideoSlotsBids(getFreewheelContext()));
+		context.set('bidders.prebid.gumgum', toggleVideoSlotsBids(getGumgumContext()));
+		context.set('bidders.prebid.indexExchange', toggleVideoSlotsBids(getIndexExchangeContext()));
+		context.set('bidders.prebid.kargo', toggleVideoSlotsBids(getKargoContext()));
+		context.set('bidders.prebid.mgnipbs', toggleVideoSlotsBids(getMagniteS2sContext()));
+		context.set('bidders.prebid.medianet', toggleVideoSlotsBids(getMedianetContext()));
+		context.set('bidders.prebid.nobid', toggleVideoSlotsBids(getNobidContext()));
+		context.set('bidders.prebid.ogury', toggleVideoSlotsBids(getOguryContext()));
+		context.set('bidders.prebid.openx', toggleVideoSlotsBids(getOpenXContext()));
+		context.set('bidders.prebid.ozone', toggleVideoSlotsBids(getOzoneContext()));
+		context.set('bidders.prebid.pubmatic', toggleVideoSlotsBids(getPubmaticContext()));
+		context.set('bidders.prebid.relevantdigital', toggleVideoSlotsBids(getWebadsContext()));
+		context.set('bidders.prebid.rubicon', toggleVideoSlotsBids(getRubiconContext()));
+		context.set('bidders.prebid.rubicon_display', toggleVideoSlotsBids(getRubiconDisplayContext()));
+		context.set('bidders.prebid.triplelift', toggleVideoSlotsBids(getTripleliftContext()));
+		context.set('bidders.prebid.verizon', toggleVideoSlotsBids(getVerizonContext()));
+		context.set('bidders.prebid.wikia', toggleVideoSlotsBids(getWikiaContext()));
+		context.set('bidders.prebid.wikiaVideo', toggleVideoSlotsBids(getWikiaVideoContext()));
 	}
 }
