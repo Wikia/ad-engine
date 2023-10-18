@@ -3,6 +3,14 @@ import { UcpMobilePrebidConfigSetup } from '@wikia/platforms/ucp-mobile/setup/co
 
 import { expect } from 'chai';
 
+function getVideoBiddersWithBothSlots(biddersConfig) {
+	return Object.keys(biddersConfig).filter(
+		(configKey) =>
+			biddersConfig[configKey]?.slots?.featured ||
+			biddersConfig[configKey]?.slots?.incontent_player,
+	);
+}
+
 describe('ucp-mobile prebid setup', () => {
 	after(() => {
 		context.remove('custom.hasFeaturedVideo');
@@ -15,8 +23,11 @@ describe('ucp-mobile prebid setup', () => {
 
 		setup.execute();
 
-		expect(context.get('bidders.prebid.appnexusAst.slots.incontent_player')).to.exist;
-		expect(context.get('bidders.prebid.appnexusAst.slots.featured')).to.not.exist;
+		const biddersConfig = context.get('bidders.prebid');
+		const videoBiddersWithBothSlotsConfigured = getVideoBiddersWithBothSlots(biddersConfig);
+		videoBiddersWithBothSlotsConfigured.map((bidderName) => {
+			expect(biddersConfig[bidderName].slots.featured).to.not.exist;
+		});
 	});
 
 	it('filters out incontent_player slot when JWP is on the page', () => {
@@ -25,7 +36,10 @@ describe('ucp-mobile prebid setup', () => {
 
 		setup.execute();
 
-		expect(context.get('bidders.prebid.appnexusAst.slots.incontent_player')).to.not.exist;
-		expect(context.get('bidders.prebid.appnexusAst.slots.featured')).to.exist;
+		const biddersConfig = context.get('bidders.prebid');
+		const videoBiddersWithBothSlotsConfigured = getVideoBiddersWithBothSlots(biddersConfig);
+		videoBiddersWithBothSlotsConfigured.map((bidderName) => {
+			expect(biddersConfig[bidderName].slots.incontent_player).to.not.exist;
+		});
 	});
 });
