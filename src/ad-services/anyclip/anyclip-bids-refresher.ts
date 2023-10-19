@@ -1,4 +1,11 @@
-import { AdSlotEvent, slotService, slotTweaker, targetingService, utils } from '@ad-engine/core';
+import {
+	AdSlot,
+	AdSlotEvent,
+	slotService,
+	slotTweaker,
+	targetingService,
+	utils,
+} from '@ad-engine/core';
 
 const logGroup = 'Anyclip';
 
@@ -24,7 +31,11 @@ export class AnyclipBidsRefresher {
 		const slotName = 'incontent_player';
 		const playerAdSlot = slotService.get(slotName);
 
-		playerAdSlot.emit(AdSlotEvent.VIDEO_AD_IMPRESSION); // removes video bids
+		this.sendSignalToRemoveBids(playerAdSlot);
 		slotTweaker.setDataParam(playerAdSlot, 'gptSlotParams', targetingService.dump(slotName));
+	}
+
+	private sendSignalToRemoveBids(playerAdSlot: AdSlot) {
+		playerAdSlot.emit(AdSlotEvent.VIDEO_AD_IMPRESSION);
 	}
 }
