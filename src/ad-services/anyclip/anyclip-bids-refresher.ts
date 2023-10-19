@@ -25,7 +25,6 @@ export class AnyclipBidsRefresher {
 		const playerAdSlot = slotService.get(slotName);
 
 		playerAdSlot.emit(AdSlotEvent.VIDEO_AD_IMPRESSION); // removes video bids
-		playerAdSlot.emit(AdSlotEvent.VIDEO_AD_USED); // refreshes bidders targeting
 		slotTweaker.setDataParam(playerAdSlot, 'gptSlotParams', targetingService.dump(slotName));
 	}
 }

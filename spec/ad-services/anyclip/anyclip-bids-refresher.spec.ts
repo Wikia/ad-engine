@@ -37,6 +37,5 @@ describe('AnyclipBidsRefresher', () => {
 		expect(fakeIncontentPlayerSlot.emit.getCalls()[0].firstArg).equal(
 			AdSlotEvent.VIDEO_AD_IMPRESSION,
 		);
-		expect(fakeIncontentPlayerSlot.emit.getCalls()[1].firstArg).equal(AdSlotEvent.VIDEO_AD_USED);
 	});
 });
