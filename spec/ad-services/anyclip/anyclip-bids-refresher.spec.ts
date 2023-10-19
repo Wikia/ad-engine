@@ -14,26 +14,24 @@ describe('AnyclipBidsRefresher', () => {
 	beforeEach(() => {
 		serviceSlotGetStub = stub(slotService, 'get' as any);
 		serviceSlotGetStub.returns(fakeIncontentPlayerSlot);
+
+		window['existingSubscribeFunction'] = (callback) => callback();
+		window['undefinedSubscribeFunction'] = undefined;
 	});
 
 	afterEach(() => {
-		window['testSubscribeFunc'] = undefined;
 		serviceSlotGetStub.restore();
 	});
 
 	it('does not emit events to refresh bids when the subscribe function is not called', () => {
-		const refresher = new AnyclipBidsRefresher('testSubscribeFunc');
+		const refresher = new AnyclipBidsRefresher('undefinedSubscribeFunction');
 		refresher.trySubscribingBidRefreshing();
 		expect(fakeIncontentPlayerSlot.emit.callCount).equal(0);
 	});
 
 	it('emits events to refresh bids when the subscribe function is called', () => {
-		const fakeSubscribe = (callback) => callback();
-		window['testSubscribeFunc'] = fakeSubscribe;
-
-		const refresher = new AnyclipBidsRefresher('testSubscribeFunc');
+		const refresher = new AnyclipBidsRefresher('existingSubscribeFunction');
 		refresher.trySubscribingBidRefreshing();
-
 		expect(fakeIncontentPlayerSlot.emit.getCalls()[0].firstArg).equal(
 			AdSlotEvent.VIDEO_AD_IMPRESSION,
 		);
