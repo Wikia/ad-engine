@@ -168,7 +168,15 @@ export class PrebidProvider extends BidderProvider {
 				enableSendAllBids: false,
 				targetingControls: {
 					alwaysIncludeDeals: true,
-					allowTargetingKeys: ['AD_ID', 'BIDDER', 'DEAL', 'PRICE_BUCKET', 'SIZE', 'UUID'],
+					allowTargetingKeys: [
+						'AD_ID',
+						'BIDDER',
+						'DEAL',
+						'PRICE_BUCKET',
+						'SIZE',
+						'UUID',
+						'CACHE_HOST',
+					],
 				},
 			};
 		}
@@ -181,7 +189,15 @@ export class PrebidProvider extends BidderProvider {
 			},
 			targetingControls: {
 				alwaysIncludeDeals: true,
-				allowTargetingKeys: ['AD_ID', 'BIDDER', 'PRICE_BUCKET', 'UUID', 'SIZE', 'DEAL'],
+				allowTargetingKeys: [
+					'AD_ID',
+					'BIDDER',
+					'PRICE_BUCKET',
+					'UUID',
+					'SIZE',
+					'DEAL',
+					'CACHE_HOST',
+				],
 				allowSendAllBidsTargetingKeys: ['AD_ID', 'PRICE_BUCKET', 'UUID', 'SIZE', 'DEAL'],
 			},
 		};
