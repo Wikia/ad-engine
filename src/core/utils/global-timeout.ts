@@ -3,7 +3,7 @@ import { logger } from './logger';
 
 @Injectable({ scope: 'Singleton' })
 export class GlobalTimeout {
-	private timeouts: Record<string, Promise<void>> = {};
+	public timeouts: Record<string, Promise<void>> = {};
 
 	get(label: string): Promise<void> {
 		logger('global-timeout', `Getting timeout ${label}`);

@@ -1,6 +1,4 @@
-import { BaseServiceSetup } from '@wikia/ad-engine';
-
-export class AdEngineStageSetup extends BaseServiceSetup {
+export class AdEngineStageSetup {
 	async afterDocumentCompleted(): Promise<void> {
 		return new Promise((resolve, reject) => {
 			if (document.readyState === 'complete') {
