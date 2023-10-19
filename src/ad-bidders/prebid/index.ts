@@ -86,11 +86,10 @@ async function markWinningVideoBidAsUsed(adSlot: AdSlot): Promise<void> {
 	// Mark ad as rendered
 	const adId: string = targetingService.get('hb_adid', adSlot.getSlotName());
 
-	utils.logger(logGroup, 'marking video bid as used', adSlot.getSlotName(), adId);
-
 	if (adId) {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
+		utils.logger(logGroup, 'marking video bid as used', adSlot.getSlotName(), adId);
 		pbjs.markWinningBidAsUsed({ adId });
 		adSlot.emit(AdSlotEvent.VIDEO_AD_USED);
 	}
