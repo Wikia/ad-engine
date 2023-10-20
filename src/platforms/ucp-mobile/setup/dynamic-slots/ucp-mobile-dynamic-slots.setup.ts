@@ -139,21 +139,8 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
 			({ slot }) => {
 				if (slot.getSlotName() === icpSlotName) {
+					communicationService.emit(eventsRepository.ANYCLIP_LATE_INJECT);
 					slot.getPlaceholder()?.classList.remove('is-loading');
-
-					const noTries = 2500;
-					const retryTimeout = 500;
-
-					new utils.WaitFor(() => slotImpactWatcher.isAvailable(6), noTries, 0, retryTimeout)
-						.until()
-						.then(() => {
-							slotImpactWatcher.request({
-								id: icpSlotName,
-								priority: 6,
-								breakCallback: () => slot.getPlaceholder()?.classList.add(AdSlot.HIDDEN_AD_CLASS),
-							});
-							communicationService.emit(eventsRepository.ANYCLIP_LATE_INJECT);
-						});
 				}
 			},
 			false,
@@ -217,6 +204,12 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		const slotName = 'floor_adhesion';
 		let ntcOverride = false;
 		let codePriorityActive = false;
+		let anyclipFloatingShown = true;
+
+		const toggleAnyclipFloatingPlayer = () => {
+			window?.anyclip?.getWidget()?.floatingModeToggle(!anyclipFloatingShown);
+			anyclipFloatingShown = !anyclipFloatingShown;
+		};
 
 		const hideFloorAdhesionAnchor = () => {
 			document
@@ -245,6 +238,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			() => {
 				slotImpactWatcher.disable([slotName]);
 				hideFloorAdhesionAnchor();
+				toggleAnyclipFloatingPlayer();
 			},
 			slotName,
 		);
@@ -253,6 +247,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			() => {
 				slotImpactWatcher.disable([slotName]);
 				hideFloorAdhesionAnchor();
+				toggleAnyclipFloatingPlayer();
 			},
 			slotName,
 		);
@@ -260,6 +255,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			AdSlotStatus.STATUS_SUCCESS,
 			() => {
 				codePriorityActive = true;
+				toggleAnyclipFloatingPlayer();
 
 				communicationService.on(
 					eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED,
@@ -288,6 +284,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 						if (payload.status === AdSlotEvent.HIDDEN_EVENT) {
 							codePriorityActive = false;
 							slotImpactWatcher.disable([slotName, 'interstitial']);
+							toggleAnyclipFloatingPlayer();
 						}
 					},
 					slotName,
