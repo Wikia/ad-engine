@@ -4,7 +4,7 @@ import {
 	communicationService,
 	CommunicationService,
 } from '@wikia/communication/communication-service';
-import { context, InstantConfigService, utils } from '@wikia/core';
+import { context, utils } from '@wikia/core';
 import { WaitFor } from '@wikia/core/utils';
 import { expect } from 'chai';
 import { SinonStubbedInstance } from 'sinon';
@@ -15,16 +15,14 @@ describe('Anyclip', () => {
 	const mockIsApplicable = () => true;
 	const mockIsNotApplicable = () => false;
 
-	let loadScriptStub, instantConfigStub;
+	let loadScriptStub;
 	let communicationServiceStub: SinonStubbedInstance<CommunicationService>;
 
 	beforeEach(() => {
 		global.sandbox.stub(WaitFor.prototype, 'until').returns(Promise.resolve());
 		loadScriptStub = global.sandbox.spy(utils.scriptLoader, 'loadScript');
-		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
-		instantConfigStub.get.withArgs('icAnyclipPlayer').returns(true);
 		mockedIsApplicable = global.sandbox.spy();
-		anyclip = new Anyclip(instantConfigStub);
+		anyclip = new Anyclip();
 
 		context.set('custom.hasFeaturedVideo', false);
 		context.set('services.anyclip.enabled', true);
@@ -91,7 +89,7 @@ describe('Anyclip', () => {
 		context.set('services.anyclip.pubname', 'test-pubname');
 		context.set('services.anyclip.widgetname', 'test-widget');
 
-		anyclip = new Anyclip(instantConfigStub);
+		anyclip = new Anyclip();
 
 		expect(anyclip.params).to.deep.equal({
 			pubname: 'test-pubname',
@@ -100,7 +98,7 @@ describe('Anyclip', () => {
 	});
 
 	it('sets up the default Anyclip params when none is provided via the context', () => {
-		anyclip = new Anyclip(instantConfigStub);
+		anyclip = new Anyclip();
 
 		expect(anyclip.params).to.deep.equal({
 			pubname: 'fandomcom',
