@@ -27,6 +27,7 @@ describe('Anyclip', () => {
 		anyclip = new Anyclip(instantConfigStub);
 
 		context.set('custom.hasFeaturedVideo', false);
+		context.set('services.anyclip.enabled', true);
 		context.set('services.anyclip.loadWithoutAnchor', true);
 
 		communicationServiceStub = global.sandbox.stub(communicationService);
@@ -43,21 +44,22 @@ describe('Anyclip', () => {
 		global.sandbox.restore();
 
 		context.remove('custom.hasFeaturedVideo');
+		context.remove('services.anyclip.enabled');
 		context.remove('services.anyclip.loadWithoutAnchor');
 		context.remove('services.anyclip.isApplicable');
 		context.remove('services.anyclip.pubname');
 		context.remove('services.anyclip.widgetname');
 	});
 
-	it('does not load the player when disabled in the instant-config', () => {
-		instantConfigStub.get.withArgs('icAnyclipPlayer').returns(false);
+	it('does not load the player when disabled', () => {
+		context.set('services.anyclip.enabled', false);
 		context.set('services.anyclip.isApplicable', mockedIsApplicable);
 
 		anyclip.call();
 		expect(mockedIsApplicable.called).to.equal(false);
 	});
 
-	it('loads the script when isApplicable is not a function (FCP)', () => {
+	it('loads the script when isApplicable is not a function', () => {
 		anyclip.call();
 
 		expect(loadScriptStub.called).to.equal(true);

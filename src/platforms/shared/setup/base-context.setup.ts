@@ -83,11 +83,11 @@ export class BaseContextSetup implements DiProcess {
 		context.set('options.maxDelayTimeout', this.instantConfig.get('icAdEngineDelay', 2000));
 		context.set('options.delayEvents', this.instantConfig.get('icDelayEvents'));
 
-		this.setVideoContext();
+		this.setupVideo();
 		this.setWadContext();
 	}
 
-	private setVideoContext(): void {
+	private setupVideo(): void {
 		context.set(
 			'options.video.playAdsOnNextVideo',
 			!!this.instantConfig.get('icFeaturedVideoAdsFrequency'),
@@ -122,10 +122,9 @@ export class BaseContextSetup implements DiProcess {
 		);
 
 		context.set('services.anyclip.enabled', this.instantConfig.get('icAnyclipPlayer'));
-		if (this.instantConfig.get('icConnatixPlayer')) {
-			context.set('services.connatix.enabled', true);
-			context.set('services.anyclip.enabled', false);
-		}
+		context.set('services.anyclip.isApplicable', () => {
+			return context.get('custom.hasFeaturedVideo') || this.instantConfig.get('icConnatixPlayer');
+		});
 	}
 
 	private setInContentExperiment(): void {

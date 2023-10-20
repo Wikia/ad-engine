@@ -46,10 +46,7 @@ export class Anyclip extends BaseServiceSetup {
 	private tracker: AnyclipTracker;
 
 	call() {
-		if (
-			context.get('custom.hasFeaturedVideo') ||
-			!this.isEnabled('services.anyclip.enabled', false)
-		) {
+		if (!this.isEnabled('services.anyclip.enabled', false)) {
 			utils.logger(logGroup, 'disabled');
 			return;
 		}
