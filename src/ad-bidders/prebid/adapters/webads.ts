@@ -4,6 +4,9 @@ import { PrebidAdSlotConfig } from '../prebid-models';
 export class WebAds extends PrebidAdapter {
 	static bidderName = 'relevantdigital';
 	private accountId = '647765b7705d4fca3b3e1d58';
+	bidderSettings = {
+		storageAllowed: true,
+	};
 
 	constructor(options) {
 		super(options);

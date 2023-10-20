@@ -1,6 +1,8 @@
 import { context, utils } from '@ad-engine/core';
+import { trackBab } from '../../platforms/shared';
 
 const logGroup = 'bt-loader';
+type BTDetail = { detail: { ab: boolean } };
 
 /**
  * BT service handler
@@ -16,6 +18,7 @@ class BTRec {
 			return Promise.resolve();
 		}
 
+		this.btDetectionEvents();
 		this.insertSideUnits();
 
 		utils.logger(logGroup, 'loading');
@@ -29,6 +32,29 @@ class BTRec {
 	 */
 	isEnabled(): boolean {
 		return context.get('options.wad.btRec.enabled') && context.get('options.wad.blocking');
+	}
+	btDetectionEvents() {
+		// BTAADetection event - tells us that BT finished Ad Blocker check on their side
+		// detail.ab : boolean - ad block detected
+		const handleDetectionEvent = (e: BTDetail & CustomEvent) => {
+			if (e.detail.ab) {
+				utils.logger(logGroup, 'BTAADetection - AdBlock detected');
+				trackBab(true, 'wad-runner-bt');
+			} else {
+				trackBab(false, 'wad-runner-bt');
+			}
+			window.removeEventListener('BTAADetection', handleDetectionEvent);
+		};
+		window.addEventListener('BTAADetection', handleDetectionEvent);
+
+		// AcceptableAdsInit event - tells us that BT is trying to recover ads now
+		const handleRecoveryEvent = (e: CustomEvent) => {
+			if (e.detail) {
+				utils.logger(logGroup, 'AcceptableAdsInit');
+			}
+			window.removeEventListener('AcceptableAdsInit', handleRecoveryEvent);
+		};
+		window.addEventListener('AcceptableAdsInit', handleRecoveryEvent);
 	}
 
 	/**

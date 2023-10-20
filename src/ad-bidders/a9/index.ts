@@ -9,28 +9,16 @@ import {
 	context,
 	DEFAULT_MAX_DELAY,
 	Dictionary,
-	externalLogger,
 	SlotConfig,
 	slotService,
 	targetingService,
 	trackingOptIn,
-	Usp,
-	usp,
 	utils,
 } from '@ad-engine/core';
 import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { Apstag } from '../wrappers';
-import {
-	A9Bid,
-	A9Bids,
-	A9CCPA,
-	A9Config,
-	A9SlotConfig,
-	A9SlotDefinition,
-	ApstagConfig,
-	PriceMap,
-} from './types';
+import { A9Bid, A9Bids, A9Config, A9SlotConfig, A9SlotDefinition, PriceMap } from './types';
 
 const logGroup = 'A9Provider';
 
@@ -38,18 +26,6 @@ export class A9Provider extends BidderProvider {
 	static A9_CLASS = 'a9-ad';
 	static VIDEO_TTL = 10 * 60 * 1000; // 10 minutes for video bid to expire
 	private static isApstagConfigured = false;
-
-	private static getCcpaIfApplicable(signalData: SignalData): Partial<A9CCPA> {
-		if (signalData && signalData.uspString) {
-			return {
-				params: {
-					us_privacy: signalData.uspString,
-				},
-			};
-		}
-
-		return {};
-	}
 
 	private static mapResponseToTrackingBidDefinition(
 		slotName: string,
@@ -81,7 +57,6 @@ export class A9Provider extends BidderProvider {
 
 	apstag: Apstag = Apstag.make();
 	bids: A9Bids = {};
-	usp: Usp = usp;
 	priceMap: PriceMap = {};
 	targetingKeys: string[] = [];
 
@@ -103,17 +78,7 @@ export class A9Provider extends BidderProvider {
 		return this.targetingKeys;
 	}
 
-	init(signalData: SignalData = {}): void {
-		this.initIfNotLoaded(signalData);
-
-		this.bids = {};
-		this.priceMap = {};
-		const a9Slots = this.getA9SlotsDefinitions(this.slotsNames);
-
-		this.fetchBids(a9Slots);
-	}
-
-	private initIfNotLoaded(signalData: SignalData): void {
+	private initIfNotLoaded(): void {
 		if (!this.loaded) {
 			if (context.get('custom.hasFeaturedVideo')) {
 				communicationService.onSlotEvent(AdSlotEvent.VIDEO_AD_IMPRESSION, ({ slot }) =>
@@ -129,7 +94,7 @@ export class A9Provider extends BidderProvider {
 				);
 			}
 
-			this.apstag.init(this.getApstagConfig(signalData));
+			this.apstag.init();
 
 			if (!trackingOptIn.isOptedIn() || trackingOptIn.isOptOutSale()) {
 				utils.logger(logGroup, 'A9 was initialized without consents');
@@ -163,19 +128,6 @@ export class A9Provider extends BidderProvider {
 				targetingService.remove(key, adSlot.getSlotName());
 			});
 		}
-	}
-
-	private getApstagConfig(signalData: SignalData): ApstagConfig {
-		const ortb2 = targetingService.get('openrtb2', 'openrtb2');
-		externalLogger.log('openrtb2 signals', { signals: JSON.stringify(ortb2) });
-
-		return {
-			pubID: this.amazonId,
-			videoAdServer: 'DFP',
-			deals: true,
-			...A9Provider.getCcpaIfApplicable(signalData),
-			signals: { ortb2 },
-		};
 	}
 
 	/**
@@ -379,13 +331,13 @@ export class A9Provider extends BidderProvider {
 	}
 
 	protected async callBids(): Promise<void> {
-		let signalData = null;
+		this.initIfNotLoaded();
 
-		if (this.usp.exists) {
-			signalData = await this.usp.getSignalData();
-		}
+		this.bids = {};
+		this.priceMap = {};
+		const a9Slots = this.getA9SlotsDefinitions(this.slotsNames);
 
-		this.init(signalData);
+		this.fetchBids(a9Slots);
 	}
 
 	calculatePrices(): void {

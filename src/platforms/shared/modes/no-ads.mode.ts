@@ -1,6 +1,8 @@
 import {
+	Apstag,
 	Audigent,
 	communicationService,
+	context,
 	DiProcess,
 	eventsRepository,
 	jwpSetup,
@@ -21,6 +23,9 @@ export class NoAdsMode implements DiProcess {
 		this.removeAdSlotsPlaceholders();
 		this.noAdsDetector.addReasons(window.ads.context.opts.noAdsReasons);
 		this.dispatchJWPlayerSetupAction();
+		if (context.get('state.isLogged')) {
+			Apstag.make().init();
+		}
 
 		this.pipeline
 			.add(this.audigent)

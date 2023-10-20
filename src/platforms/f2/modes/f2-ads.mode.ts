@@ -6,6 +6,7 @@ import {
 	DiProcess,
 	DoubleVerify,
 	eventsRepository,
+	Experian,
 	IasPublisherOptimization,
 	jwPlayerInhibitor,
 	LiveConnect,
@@ -23,6 +24,7 @@ export class F2AdsMode implements DiProcess {
 		private audigent: Audigent,
 		private captify: Captify,
 		private doubleVerify: DoubleVerify,
+		private experian: Experian,
 		private gptSetup: GptSetup,
 		private iasPublisherOptimization: IasPublisherOptimization,
 		private liveConnect: LiveConnect,
@@ -42,6 +44,7 @@ export class F2AdsMode implements DiProcess {
 				this.audigent,
 				this.captify,
 				this.liveConnect,
+				this.experian,
 				this.iasPublisherOptimization,
 				this.nielsen,
 				this.wadRunner,
@@ -49,9 +52,7 @@ export class F2AdsMode implements DiProcess {
 					dependencies: [this.wadRunner.initialized],
 				}),
 				this.gptSetup,
-				this.doubleVerify.setOptions({
-					dependencies: [this.gptSetup.initialized],
-				}),
+				this.doubleVerify,
 				this.adEngineStackSetup.setOptions({
 					dependencies: [
 						this.wadRunner.initialized,

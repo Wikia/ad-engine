@@ -10,6 +10,7 @@ import {
 	DoubleVerify,
 	DurationMedia,
 	eventsRepository,
+	Experian,
 	IasPublisherOptimization,
 	LiveConnect,
 	LiveRampPixel,
@@ -30,6 +31,7 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 		private confiant: Confiant,
 		private doubleVerify: DoubleVerify,
 		private durationMedia: DurationMedia,
+		private experian: Experian,
 		private gptSetup: GptSetup,
 		private iasPublisherOptimization: IasPublisherOptimization,
 		private liveConnect: LiveConnect,
@@ -48,6 +50,7 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 				this.wadRunner,
 				this.liveRampPixel,
 				this.liveConnect,
+				this.experian,
 				this.audigent,
 				this.confiant,
 				this.iasPublisherOptimization,
@@ -57,9 +60,7 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
 				}),
 				this.gptSetup,
-				this.doubleVerify.setOptions({
-					dependencies: [this.gptSetup.initialized],
-				}),
+				this.doubleVerify,
 				this.adEngineStackSetup.setOptions({
 					dependencies: [
 						this.bidders.initialized,
