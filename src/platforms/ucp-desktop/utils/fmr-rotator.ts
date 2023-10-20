@@ -12,7 +12,7 @@ import {
 } from '@wikia/ad-engine';
 
 interface FmrRotatorConfig {
-	positionToRunAlways: number;
+	topPositionToRun: number;
 }
 
 export class FmrRotator {
@@ -163,11 +163,11 @@ export class FmrRotator {
 
 	private isCorrectPositionReached(): boolean {
 		const isStickyOnTop = () => {
-			if (!this.refreshInfo.positionTopToViewport || !this.config.positionToRunAlways) {
+			if (!this.refreshInfo.positionTopToViewport || !this.config.topPositionToRun) {
 				return false;
 			}
 
-			return this.refreshInfo.positionTopToViewport < this.config.positionToRunAlways;
+			return this.refreshInfo.positionTopToViewport < this.config.topPositionToRun;
 		};
 
 		const isStartPositionReached = () => this.refreshInfo.startPosition <= window.scrollY;
