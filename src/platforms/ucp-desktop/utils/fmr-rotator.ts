@@ -11,6 +11,10 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 
+interface FmrRotatorConfig {
+	positionToRunAlways: number;
+}
+
 export class FmrRotator {
 	private nextSlotName: string;
 	private currentAdSlot: AdSlot;
@@ -19,12 +23,18 @@ export class FmrRotator {
 		recSlotViewed: 2000,
 		refreshDelay: utils.queryString.isUrlParamSet('fmr-debug') ? 2000 : 10000,
 		startPosition: 0,
+		positionTopToViewport: undefined,
 		repeatIndex: 1,
 		repeatLimit: 20,
 	};
 	private rotatorListener: string;
 
-	constructor(private slotName: string, private fmrPrefix: string, private btRec) {}
+	constructor(
+		private slotName: string,
+		private fmrPrefix: string,
+		private btRec,
+		private config: FmrRotatorConfig,
+	) {}
 
 	rotateSlot(): void {
 		this.nextSlotName = this.slotName;
@@ -99,6 +109,8 @@ export class FmrRotator {
 			this.refreshInfo.startPosition =
 				utils.getTopOffset(this.recirculationElement) -
 				(document.querySelector('.fandom-sticky-header')?.clientHeight || 0);
+			this.refreshInfo.positionTopToViewport =
+				this.recirculationElement?.getBoundingClientRect()?.top;
 			this.startFirstRotation();
 		}, this.refreshInfo.refreshDelay);
 	}
@@ -116,7 +128,7 @@ export class FmrRotator {
 
 	private startFirstRotation(): void {
 		this.runNowOrOnScroll(
-			() => this.isInViewport() && this.isStartPositionReached(),
+			() => this.isInViewport() && this.isCorrectPositionReached(),
 			this.pushNextSlot.bind(this),
 		);
 	}
@@ -149,8 +161,18 @@ export class FmrRotator {
 		return recirculationElementInViewport || adSlotInViewport;
 	}
 
-	private isStartPositionReached(): boolean {
-		return this.refreshInfo.startPosition <= window.scrollY;
+	private isCorrectPositionReached(): boolean {
+		const isStickyOnTop = () => {
+			if (!this.refreshInfo.positionTopToViewport || !this.config.positionToRunAlways) {
+				return false;
+			}
+
+			return this.refreshInfo.positionTopToViewport < this.config.positionToRunAlways;
+		};
+
+		const isStartPositionReached = () => this.refreshInfo.startPosition <= window.scrollY;
+
+		return isStartPositionReached() || isStickyOnTop();
 	}
 
 	private pushNextSlot(): void {
