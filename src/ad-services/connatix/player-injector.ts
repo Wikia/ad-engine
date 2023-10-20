@@ -24,7 +24,6 @@ export class PlayerInjector implements PlayerInjectorInterface {
 
 		const incontentPlayerContainer = document.getElementById('incontent_player');
 		incontentPlayerContainer.appendChild(connatixPlayer);
-		incontentPlayerContainer.classList.remove('hide');
 	}
 
 	private createPlayerTags(cid: string): HTMLElement {
