@@ -17,8 +17,8 @@ export class Connatix extends BaseServiceSetup {
 		super();
 
 		const cnxPlayer = new ConnatixPlayer();
-		this.playerInjector = new PlayerInjector(cnxPlayer);
-		this.scriptLoader = utils.scriptLoader;
+		this.playerInjector = playerInjector ? playerInjector : new PlayerInjector(cnxPlayer);
+		this.scriptLoader = scriptLoader ? scriptLoader : utils.scriptLoader;
 	}
 
 	async call(): Promise<void> {
