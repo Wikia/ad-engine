@@ -10,8 +10,7 @@ export class Connatix extends BaseServiceSetup {
 	}
 
 	isEnabled(): boolean {
-		// return context.get('services.connatix.enabled');
-		return true;
+		return context.get('services.connatix.enabled');
 	}
 
 	constructor(private scriptLoader, private playerInjector: PlayerInjectorInterface) {
