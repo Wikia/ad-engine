@@ -81,6 +81,11 @@ export class Anyclip extends BaseServiceSetup {
 		window?.anyclip?.widgets?.forEach((w) => w?.destroy());
 	}
 
+	static toggleFloating(newFloatingValue: boolean) {
+		utils.logger(logGroup, 'toggling Anyclip floating to: ', newFloatingValue);
+		window?.anyclip?.getWidget()?.floatingModeToggle(newFloatingValue);
+	}
+
 	get params(): Record<string, string> {
 		return {
 			pubname: this.pubname,

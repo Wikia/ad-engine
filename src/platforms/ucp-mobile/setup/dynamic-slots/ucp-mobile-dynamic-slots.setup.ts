@@ -12,6 +12,7 @@ import {
 	AdSlot,
 	AdSlotEvent,
 	AdSlotStatus,
+	Anyclip,
 	btfBlockerService,
 	communicationService,
 	context,
@@ -207,7 +208,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		let anyclipFloatingShown = true;
 
 		const toggleAnyclipFloatingPlayer = () => {
-			window?.anyclip?.getWidget()?.floatingModeToggle(!anyclipFloatingShown);
+			Anyclip.toggleFloating(!anyclipFloatingShown);
 			anyclipFloatingShown = !anyclipFloatingShown;
 		};
 
@@ -238,7 +239,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			() => {
 				slotImpactWatcher.disable([slotName]);
 				hideFloorAdhesionAnchor();
-				toggleAnyclipFloatingPlayer();
 			},
 			slotName,
 		);
@@ -247,7 +247,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			() => {
 				slotImpactWatcher.disable([slotName]);
 				hideFloorAdhesionAnchor();
-				toggleAnyclipFloatingPlayer();
 			},
 			slotName,
 		);
