@@ -1,5 +1,5 @@
 import { Anyclip } from '@wikia/ad-services';
-import { context, DomListener, InstantConfigService } from '@wikia/core';
+import { AdSlot, AdSlotStatus, context, DomListener, InstantConfigService } from '@wikia/core';
 import { WaitFor } from '@wikia/core/utils';
 import {
 	GalleryLightboxAdsHandler,
@@ -69,6 +69,17 @@ describe('floor_adhesion on ucp-mobile', () => {
 		prepareAndExecuteDynamicSlotSetup();
 
 		assert.notCalled(getFloorAdhesionConfigSpy);
+	});
+
+	it("is toggling Anyclip's floating state when floor_adhesion loads", () => {
+		context.set('custom.hasFeaturedVideo', false);
+
+		const floorAdhesionAdSlotMock = new AdSlot({ id: 'floor_adhesion' });
+		const anyclipToggleFloatingSpy = global.sandbox.spy(anyclipMock, 'toggleFloating');
+		prepareAndExecuteDynamicSlotSetup();
+		floorAdhesionAdSlotMock.emit(AdSlotStatus.STATUS_SUCCESS);
+
+		assert.called(anyclipToggleFloatingSpy);
 	});
 
 	function prepareAndExecuteDynamicSlotSetup() {
