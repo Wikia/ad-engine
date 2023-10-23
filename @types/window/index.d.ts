@@ -60,4 +60,9 @@ interface Window {
 	utag_data?: any;
 	wgCookiePath?: string;
 	XMLHttpRequest?: any;
+	optimizely?: {
+		get?: (type: string) => {
+			getVariationMap: () => Record<string, { id: string; name: string }>;
+		};
+	};
 }

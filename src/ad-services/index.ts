@@ -7,6 +7,7 @@ export * from './captify';
 export * from './confiant';
 export * from './double-verify';
 export * from './duration-media';
+export * from './experian';
 export * from './eyeota';
 export * from './ias-publisher-optimization';
 export * from './identity-setup';

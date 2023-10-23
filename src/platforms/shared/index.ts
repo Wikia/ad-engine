@@ -28,6 +28,7 @@ export * from './setup/player.setup';
 export * from './setup/slots-config-extender';
 export * from './setup/tracking-parameters.setup';
 export * from './setup/tracking-urls';
+export * from './setup/ucp-partners-setup';
 export * from './slots/slots-context';
 export * from './templates/configs/uap-dom-elements';
 export * from './templates/handlers/advertisement-label-handler';

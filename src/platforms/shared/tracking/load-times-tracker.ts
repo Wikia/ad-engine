@@ -14,12 +14,18 @@ const eventsToTrack = {
 	audigent_segment_library_loaded: eventsRepository.AUDIGENT_SEGMENT_LIBRARY_LOADED,
 	audigent_segments_ready: eventsRepository.AUDIGENT_SEGMENTS_READY,
 	captify_loaded: eventsRepository.CAPTIFY_LOADED,
+	experian_started: eventsRepository.EXPERIAN_STARTED,
 	eyeota_started: eventsRepository.EYEOTA_STARTED,
 	eyeota_failed: eventsRepository.EYEOTA_FAILED,
 	a9_without_consents: eventsRepository.A9_WITHOUT_CONSENTS,
+	a9_apstag_hem_sent: eventsRepository.A9_APSTAG_HEM_SENT,
 	intentiq_ppid_not_set_on_time: eventsRepository.INTENTIQ_PPID_NOT_SET_ON_TIME,
+	intentiq_start: eventsRepository.INTENTIQ_START,
+	intentiq_done: eventsRepository.INTENTIQ_DONE,
 	lotame_loaded: eventsRepository.LOTAME_LOADED,
 	lotame_ready: eventsRepository.LOTAME_READY,
+	id5_start: eventsRepository.ID5_START,
+	id5_done: eventsRepository.ID5_DONE,
 };
 
 export class LoadTimesTracker {
