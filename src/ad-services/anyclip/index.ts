@@ -7,6 +7,7 @@ import {
 	slotService,
 	utils,
 } from '@ad-engine/core';
+import { AnyclipBidsRefresher } from './anyclip-bids-refresher';
 import { AnyclipTracker } from './anyclip-tracker';
 
 const logGroup = 'Anyclip';
@@ -44,6 +45,7 @@ export class Anyclip extends BaseServiceSetup {
 	}
 
 	private tracker: AnyclipTracker;
+	private bidRefresher: AnyclipBidsRefresher;
 
 	call() {
 		if (context.get('custom.hasFeaturedVideo') || !this.isEnabled('icAnyclipPlayer', false)) {
@@ -54,6 +56,7 @@ export class Anyclip extends BaseServiceSetup {
 		utils.logger(logGroup, 'initialized', this.pubname, this.widgetname, this.libraryUrl);
 
 		this.tracker = new AnyclipTracker(SUBSCRIBE_FUNC_NAME);
+		this.bidRefresher = new AnyclipBidsRefresher(SUBSCRIBE_FUNC_NAME);
 
 		if (context.get('services.anyclip.loadWithoutAnchor')) {
 			communicationService.on(
@@ -112,6 +115,7 @@ export class Anyclip extends BaseServiceSetup {
 
 					this.waitForPlayerAdSlot().then(() => {
 						this.tracker.trackInit();
+						this.bidRefresher.trySubscribingBidRefreshing();
 					});
 
 					isSubscribeReady

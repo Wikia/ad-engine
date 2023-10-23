@@ -1,12 +1,17 @@
 import { Optimizely } from '@wikia/ad-services';
 import { communicationService } from '@wikia/communication';
-import { context } from '@wikia/core';
+import { context, InstantConfigService } from '@wikia/core';
 import { PlayerSetup } from '@wikia/platforms/shared';
 import { expect } from 'chai';
 import { SinonSpy } from 'sinon';
 
 describe('PlayerSetup', () => {
 	let dispatch: SinonSpy;
+	let instantConfigStub;
+
+	before(() => {
+		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
+	});
 
 	afterEach(() => {
 		global.sandbox.restore();
@@ -32,7 +37,7 @@ describe('PlayerSetup', () => {
 		};
 
 		dispatch = global.sandbox.spy(communicationService, 'dispatch');
-		const playerSetup = new PlayerSetup(new Optimizely());
+		const playerSetup = new PlayerSetup(instantConfigStub, null, new Optimizely());
 		playerSetup.call();
 
 		expect(dispatch.withArgs(expectedDispatchArg).calledOnce);

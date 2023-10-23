@@ -42,6 +42,7 @@ export class IntentIQ {
 			utils.logger(logGroup, 'disabled');
 			return;
 		}
+		communicationService.emit(eventsRepository.INTENTIQ_START);
 
 		if (!this.loaded) {
 			await this.preloadScript();
@@ -79,6 +80,7 @@ export class IntentIQ {
 						this.intentIqObject.intentIqConfig.abTesting.currentTestGroup || 'U',
 					);
 				}
+				communicationService.emit(eventsRepository.INTENTIQ_DONE);
 			});
 		}
 	}

@@ -40,7 +40,7 @@ describe('Eyeota', () => {
 
 		targetingServiceStub = global.sandbox.stub(targetingService);
 
-		eyeota = new Eyeota(instantConfigStub);
+		eyeota = new Eyeota(instantConfigStub, null);
 	});
 
 	afterEach(() => {

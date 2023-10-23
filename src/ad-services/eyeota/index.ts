@@ -1,5 +1,11 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { BaseServiceSetup, targetingService, tcf, utils } from '@ad-engine/core';
+import {
+	BaseServiceSetup,
+	InstantConfigService,
+	targetingService,
+	tcf,
+	utils,
+} from '@ad-engine/core';
 
 const logGroup = 'eyeota';
 const pid = 'r8rcb20';
@@ -17,8 +23,11 @@ export function parseContextTags(tags: TaxonomyTags): string {
 }
 
 export class Eyeota extends BaseServiceSetup {
-	constructor(props) {
-		super(props);
+	constructor(
+		protected instantConfig: InstantConfigService,
+		protected globalTimeout: utils.GlobalTimeout = null,
+	) {
+		super(instantConfig, globalTimeout);
 	}
 	async call(): Promise<void> {
 		if (!this.isEnabled('icEyeota')) {

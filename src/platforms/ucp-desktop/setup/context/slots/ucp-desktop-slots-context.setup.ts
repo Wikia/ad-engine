@@ -62,7 +62,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 			incontent_boxad_1: {
 				adProduct: 'incontent_boxad_1',
-				bidderAlias: 'incontent_boxad_1',
 				group: 'HiVi',
 				recirculationElementSelector: '#recirculation-rail',
 				sizes: [],
@@ -172,7 +171,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 			gallery_leaderboard: {
 				adProduct: 'gallery_leaderboard',
-				bidderAlias: 'fandom_dt_galleries',
 				group: 'IG',
 				defaultSizes: [[728, 90]],
 				targeting: {
