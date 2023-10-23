@@ -154,6 +154,7 @@ export class PrebidProvider extends BidderProvider {
 		};
 
 		this.configureUserSync();
+		this.configureSChain();
 
 		this.applyConfig(this.prebidConfig);
 		this.configureAdUnits();
@@ -222,6 +223,34 @@ export class PrebidProvider extends BidderProvider {
 
 		this.enableId5Analytics();
 		communicationService.emit(eventsRepository.ID5_DONE);
+	}
+
+	private configureSChain(): void {
+		this.configureWebAdsSChain();
+	}
+
+	private async configureWebAdsSChain(): Promise<void> {
+		const pbjs: Pbjs = await pbjsFactory.init();
+
+		pbjs.setBidderConfig({
+			bidders: ['relevantdigital'],
+			config: {
+				schain: {
+					validation: 'strict',
+					config: {
+						ver: '1.0',
+						complete: 1,
+						nodes: [
+							{
+								asi: 'http://webads.eu',
+								sid: '310035',
+								hp: 1,
+							},
+						],
+					},
+				},
+			},
+		});
 	}
 
 	private enableId5Analytics(): void {
