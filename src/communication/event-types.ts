@@ -114,6 +114,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	AD_ENGINE_STACK_START: {
 		name: 'Ad Stack started',
 	},
+	AD_ENGINE_STACK_COMPLETED: {
+		name: 'Ad Stack completed',
+	},
 	AD_ENGINE_TEMPLATE_LOADED: {
 		name: 'Template loaded',
 		payload: props<GeneralPayload>(),

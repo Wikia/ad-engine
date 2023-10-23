@@ -14,7 +14,6 @@ import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-exte
 import {
 	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
-	NewsAndRatingsAnyclipSetup,
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsDynamicSlotsSetup,
 	NewsAndRatingsTargetingSetup,
@@ -23,6 +22,7 @@ import {
 import { basicContext } from './ad-context';
 import { GamefaqsA9ConfigSetup } from './setup/context/a9/gamefaqs-a9-config.setup';
 import { GamefaqsPrebidConfigSetup } from './setup/context/prebid/gamefaqs-prebid-config.setup';
+import { GameFAQsAnyclipSetup } from './setup/context/slots/gamefaqs-anyclip.setup';
 import { GamefaqsSlotsContextSetup } from './setup/context/slots/gamefaqs-slots-context.setup';
 import { GamefaqsTargetingSetup } from './setup/context/targeting/gamefaqs-targeting.setup';
 import { GamefaqsTemplatesSetup } from './templates/gamefaqs-templates.setup';
@@ -49,7 +49,7 @@ export class GamefaqsPlatform {
 			LoadTimesSetup,
 			GamefaqsSlotsContextSetup,
 			SlotsConfigurationExtender,
-			NewsAndRatingsAnyclipSetup,
+			GameFAQsAnyclipSetup,
 			NewsAndRatingsDynamicSlotsSetup,
 			GamefaqsPrebidConfigSetup,
 			GamefaqsA9ConfigSetup,
