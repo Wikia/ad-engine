@@ -324,9 +324,6 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	A9_WITHOUT_CONSENTS: {
 		name: 'A9 without consents',
 	},
-	A9_APSTAG_HEM_SENT: {
-		name: 'A9 Apstag HEM sent',
-	},
 	BIDDERS_BIDDING_DONE: {
 		category: '[Prebid]',
 		name: 'Bidding done',
