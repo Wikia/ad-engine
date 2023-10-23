@@ -4,6 +4,7 @@ import {
 	BaseServiceSetup,
 	context,
 	Dictionary,
+	InstantConfigService,
 	SlotPriceProvider,
 	targetingService,
 	utils,
@@ -22,8 +23,11 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 	private biddersProviders: BiddersProviders = {};
 	private realSlotPrices = {};
 
-	constructor() {
-		super();
+	constructor(
+		protected instantConfig: InstantConfigService,
+		protected globalTimeout: utils.GlobalTimeout,
+	) {
+		super(instantConfig, globalTimeout);
 
 		communicationService.onSlotEvent(AdSlotEvent.VIDEO_AD_REQUESTED, ({ slot }) => {
 			slot.updateWinningPbBidderDetails();

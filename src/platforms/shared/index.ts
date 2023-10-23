@@ -1,4 +1,5 @@
 export * from './bidders/bidders-state.setup';
+export * from './bidders/filter-video-bids';
 export * from './bidders/wikia-adapter';
 export * from './bootstrap';
 export * from './context/targeting/targeting-strategies/models/open-rtb2';
@@ -28,6 +29,7 @@ export * from './setup/player.setup';
 export * from './setup/slots-config-extender';
 export * from './setup/tracking-parameters.setup';
 export * from './setup/tracking-urls';
+export * from './setup/ucp-partners-setup';
 export * from './slots/slots-context';
 export * from './templates/configs/uap-dom-elements';
 export * from './templates/handlers/advertisement-label-handler';

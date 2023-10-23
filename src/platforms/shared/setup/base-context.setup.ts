@@ -114,17 +114,28 @@ export class BaseContextSetup implements DiProcess {
 			'options.video.comscoreJwpTracking',
 			this.instantConfig.get('icComscoreJwpTracking'),
 		);
+		context.set('options.delayEvents', this.instantConfig.get('icDelayEvents'));
 
 		this.setWadContext();
 	}
 
 	private setInContentExperiment(): void {
 		const excludedBundleTagName = 'sensitive';
+		const top500BundleTagName = 'top500';
 		const communityExcludedByTag = globalContextService.hasBundle(excludedBundleTagName);
+		const communityWithTop500Tag = globalContextService.hasBundle(top500BundleTagName);
+
+		const isMobile = context.get('state.isMobile');
+		const isInContentHeadersExperiment = this.instantConfig
+			.get('icExperiments', [])
+			.includes('incontentHeaders');
+		const isDesktopExperiment = !isMobile;
+		const isMobileExperiment = isMobile && communityWithTop500Tag;
 
 		if (
-			this.instantConfig.get('icExperiments', []).includes('incontentHeaders') &&
-			!communityExcludedByTag
+			isInContentHeadersExperiment &&
+			!communityExcludedByTag &&
+			(isDesktopExperiment || isMobileExperiment)
 		) {
 			context.set('templates.incontentHeadersExperiment', true);
 		} else {
@@ -186,6 +197,7 @@ export class BaseContextSetup implements DiProcess {
 		);
 		context.set('bidders.s2s.bidders', this.instantConfig.get('icPrebidS2sBidders', []));
 		context.set('bidders.s2s.enabled', this.instantConfig.get('icPrebidS2sBidders', []).length > 0);
+		context.set('bidders.a9.rpa', this.instantConfig.get('icA9HEM'));
 	}
 
 	private setupStickySlotContext(): void {

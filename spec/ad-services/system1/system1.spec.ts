@@ -1,5 +1,11 @@
 import { System1 } from '@wikia/ad-services';
-import { context, InstantConfigService, localCache, utils } from '@wikia/core';
+import {
+	context,
+	globalContextService,
+	InstantConfigService,
+	localCache,
+	utils,
+} from '@wikia/core';
 import { expect } from 'chai';
 
 describe('System1', () => {
@@ -8,7 +14,8 @@ describe('System1', () => {
 		contextStub,
 		system1Config,
 		system1: System1,
-		localCacheStub;
+		localCacheStub,
+		globalContextServiceStub;
 	const globalOriginalMW: any = window.mw;
 
 	beforeEach(() => {
@@ -18,6 +25,7 @@ describe('System1', () => {
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		contextStub = global.sandbox.stub(context);
 		localCacheStub = global.sandbox.stub(localCache);
+		globalContextServiceStub = global.sandbox.stub(globalContextService);
 
 		system1 = new System1(instantConfigStub);
 
@@ -48,6 +56,24 @@ describe('System1', () => {
 
 	it('System1 is disabled', async () => {
 		configureStubs(false, 'search');
+
+		await system1.call();
+
+		expect(loadScriptStub.called).to.equal(false);
+	});
+
+	it('System1 is disabled if wiki has excluded bundle', async () => {
+		configureStubs(true, 'search');
+		globalContextServiceStub.hasBundle.withArgs('disabled_search_ads').returns(true);
+
+		await system1.call();
+
+		expect(loadScriptStub.called).to.equal(false);
+	});
+
+	it('System1 is disabled if COPPA', async () => {
+		configureStubs(true, 'search');
+		globalContextServiceStub.getValue.returns(true);
 
 		await system1.call();
 

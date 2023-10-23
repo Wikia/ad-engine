@@ -3,6 +3,9 @@ import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class Triplelift extends PrebidAdapter {
 	static bidderName = 'triplelift';
+	bidderSettings = {
+		storageAllowed: true,
+	};
 
 	constructor(options) {
 		super(options);

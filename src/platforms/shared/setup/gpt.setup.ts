@@ -4,10 +4,7 @@ import { MetricReporter } from '../tracking/metric-reporter';
 const GPT_TIMEOUT_MS = 10 * 1000;
 
 export class GptSetup extends BaseServiceSetup {
-	constructor() {
-		super();
-		this.options = { timeout: GPT_TIMEOUT_MS };
-	}
+	options = { timeout: GPT_TIMEOUT_MS };
 
 	call(): Promise<void> {
 		const GPT_LIBRARY_URL = 'https://securepubads.g.doubleclick.net/tag/js/gpt.js';
