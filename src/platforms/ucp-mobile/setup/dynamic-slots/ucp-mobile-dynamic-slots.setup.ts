@@ -37,6 +37,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		private slotsDefinitionRepository: UcpMobileSlotsDefinitionRepository,
 		private nativoSlotDefinitionRepository: NativoSlotsDefinitionRepository,
 		private quizSlotsDefinitionRepository: QuizSlotsDefinitionRepository,
+		private anyclip: Anyclip,
 		private galleryLightbox: GalleryLightboxAds,
 		protected instantConfig: InstantConfigService,
 	) {}
@@ -205,11 +206,9 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		const slotName = 'floor_adhesion';
 		let ntcOverride = false;
 		let codePriorityActive = false;
-		let anyclipFloatingShown = true;
 
 		const toggleAnyclipFloatingPlayer = () => {
-			Anyclip.toggleFloating(!anyclipFloatingShown);
-			anyclipFloatingShown = !anyclipFloatingShown;
+			this.anyclip.toggleFloating();
 		};
 
 		const hideFloorAdhesionAnchor = () => {

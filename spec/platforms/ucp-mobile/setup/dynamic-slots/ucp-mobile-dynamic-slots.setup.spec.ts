@@ -1,3 +1,4 @@
+import { Anyclip } from '@wikia/ad-services';
 import { context, DomListener, InstantConfigService } from '@wikia/core';
 import { WaitFor } from '@wikia/core/utils';
 import {
@@ -24,6 +25,7 @@ describe('floor_adhesion on ucp-mobile', () => {
 	);
 	const nativoDefinitionRepositoryMock = new NativoSlotsDefinitionRepository(new DomListener());
 	const quizDefinitionRepositoryMock = new QuizSlotsDefinitionRepository();
+	const anyclipMock = new Anyclip();
 	const galleryLightboxAdsMock = {
 		handler: new GalleryLightboxAdsHandler(
 			new UcpMobileSlotsDefinitionRepository(instantConfig, openWebService),
@@ -74,6 +76,7 @@ describe('floor_adhesion on ucp-mobile', () => {
 			slotDefinitionRepositoryMock,
 			nativoDefinitionRepositoryMock,
 			quizDefinitionRepositoryMock,
+			anyclipMock,
 			galleryLightboxAdsMock,
 			instantConfigStub,
 		);
