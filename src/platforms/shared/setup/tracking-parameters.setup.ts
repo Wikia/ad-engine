@@ -55,12 +55,17 @@ export class TrackingParametersSetup implements DiProcess {
 			: await this.getNewTrackingParameters();
 	}
 
-	async execute() {
+	async setTrackingParameters() {
+		console.log('DJ: setTrackingParameters');
 		const legacyEnabled = !this.instantConfig.get('icDisableLegacyTrackingParameters', false);
 		const trackingParameters = await this.getTrackingParameters(legacyEnabled);
 
 		context.set('wiki', { ...context.get('wiki'), ...trackingParameters });
+	}
 
+	async execute() {
+		console.log('DJ: execute');
+		await this.setTrackingParameters();
 		context.set(
 			'services.dw-tracker.compression',
 			this.instantConfig.get('dwTrafficCompression', false),
