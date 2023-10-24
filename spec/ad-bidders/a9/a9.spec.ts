@@ -130,7 +130,7 @@ describe('A9Provider', () => {
 			targetingService.set('openrtb2', {}, 'openrtb2');
 		});
 
-		it('should initialize Apstag with config and fetch bids', () => {
+		it('should initialize Apstag with config and fetch bids', (done) => {
 			const a9 = new A9Provider(bidderConfig);
 
 			a9.call();
@@ -139,15 +139,19 @@ describe('A9Provider', () => {
 				true,
 				'init called with wrong arguments',
 			);
-			expect(
-				apstagFetchBids.calledOnceWithExactly({
-					slots: a9.getA9SlotsDefinitions(Object.keys(bidderConfig.slots)),
-					timeout: DEFAULT_MAX_DELAY,
-				}),
-			).to.equal(true, 'fetchBids called with wrong arguments');
+			// use setTimeout so underlying promise can be resolved
+			setTimeout(() => {
+				expect(
+					apstagFetchBids.calledOnceWithExactly({
+						slots: a9.getA9SlotsDefinitions(Object.keys(bidderConfig.slots)),
+						timeout: DEFAULT_MAX_DELAY,
+					}),
+				).to.equal(true, 'fetchBids called with wrong arguments');
+				done();
+			});
 		});
 
-		it('should initialize Apstag with CCPA config and fetch bids', () => {
+		it('should initialize Apstag with CCPA config and fetch bids', (done) => {
 			const a9 = new A9Provider(bidderConfig);
 
 			a9.call();
@@ -156,12 +160,16 @@ describe('A9Provider', () => {
 				true,
 				'init called with wrong arguments',
 			);
-			expect(
-				apstagFetchBids.calledOnceWithExactly({
-					slots: a9.getA9SlotsDefinitions(Object.keys(bidderConfig.slots)),
-					timeout: DEFAULT_MAX_DELAY,
-				}),
-			).to.equal(true, 'fetchBids called with wrong arguments');
+			// use setTimeout so underlying promise can be resolved
+			setTimeout(() => {
+				expect(
+					apstagFetchBids.calledOnceWithExactly({
+						slots: a9.getA9SlotsDefinitions(Object.keys(bidderConfig.slots)),
+						timeout: DEFAULT_MAX_DELAY,
+					}),
+				).to.equal(true, 'fetchBids called with wrong arguments');
+				done();
+			});
 		});
 	});
 });

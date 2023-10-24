@@ -68,7 +68,6 @@ export class A9Provider extends BidderProvider {
 		this.slots = this.bidderConfig.slots;
 		this.slotsNames = Object.keys(this.slots);
 		this.bidsRefreshing = context.get('bidders.a9.bidsRefreshing') || {};
-		this.apstag.init();
 	}
 
 	getTargetingKeys(): string[] {
