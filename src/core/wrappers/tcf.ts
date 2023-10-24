@@ -1,5 +1,5 @@
 export class Tcf {
-	defaultVersion = 2;
+	defaultVersion = 0;
 
 	get exists(): boolean {
 		return !!window.__tcfapi;
@@ -7,7 +7,9 @@ export class Tcf {
 
 	getTCData(version?: number): Promise<TCData> {
 		return new Promise((resolve) => {
-			window.__tcfapi('getTCData', version || this.defaultVersion, (tcData) => resolve(tcData));
+			window.__tcfapi('addEventListener', version || this.defaultVersion, (tcData) =>
+				resolve(tcData),
+			);
 		});
 	}
 
