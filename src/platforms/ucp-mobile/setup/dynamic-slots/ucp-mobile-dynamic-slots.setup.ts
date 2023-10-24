@@ -279,11 +279,13 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				communicationService.onSlotEvent(
 					AdSlotEvent.CUSTOM_EVENT,
 					({ payload }) => {
-						if (payload.status === AdSlotEvent.HIDDEN_EVENT) {
-							codePriorityActive = false;
-							slotImpactWatcher.disable([slotName, 'interstitial']);
-							toggleAnyclipFloatingPlayer();
+						if (payload.status !== AdSlotEvent.HIDDEN_EVENT) {
+							return;
 						}
+
+						codePriorityActive = false;
+						slotImpactWatcher.disable([slotName, 'interstitial']);
+						toggleAnyclipFloatingPlayer();
 					},
 					slotName,
 				);
