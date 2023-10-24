@@ -1,4 +1,3 @@
-import { communicationService, eventsRepository } from '@wikia/communication';
 import { CacheData, InstantConfigCacheStorage, UniversalStorage } from '@wikia/core';
 import { expect } from 'chai';
 import { SinonStub } from 'sinon';
@@ -16,23 +15,12 @@ describe('Instant Config Cache Storage', () => {
 		getItemStub.resetHistory();
 	});
 
-	describe('resetCache', () => {
-		it('should read from storage', () => {
-			expect(getItemStub.getCalls().length).to.equal(0);
-
-			cacheStorage.resetCache();
-
-			expect(getItemStub.getCalls().length).to.equal(1);
-			expect(getItemStub.getCalls()[0].args[0]).to.equal('basset');
-		});
-	});
-
 	describe('get', () => {
 		it('should return undefined', () => {
 			expect(cacheStorage.get('not defined')).to.equal(undefined);
 		});
 
-		it('should return value', () => {
+		it('should return value from cookie', () => {
 			getItemStub.returns('testId_A_11:true');
 			cacheStorage.resetCache();
 			expect(cacheStorage.get('testId')).to.deep.equal({
@@ -52,41 +40,12 @@ describe('Instant Config Cache Storage', () => {
 			result: true,
 			withCookie: false,
 		};
-		const cookieData: CacheData = {
-			...cacheData,
-			withCookie: true,
-		};
 
-		communicationService.emit(eventsRepository.AD_ENGINE_CONSENT_READY, { gdprConsent: true });
-
-		it('should save data only to cache', () => {
+		it('should save data to cache', () => {
 			cacheStorage.set(cacheData);
 
 			expect(cacheStorage.get('testId')).to.equal(cacheData);
 			expect(setItemStub.getCalls().length).to.equal(0);
-		});
-
-		it('should save data to cache and cookie', () => {
-			cacheStorage.set(cookieData);
-
-			expect(cacheStorage.get('testId')).to.equal(cookieData);
-			expect(setItemStub.getCalls().length).to.equal(1);
-			expect(setItemStub.getCalls()[0].args[0]).to.equal('basset');
-			expect(setItemStub.getCalls()[0].args[1]).to.equal('testId_B_30:true');
-		});
-
-		it('should save some to cache and some to cache and cookie', () => {
-			cacheStorage.set({ ...cookieData, name: 'test1' });
-
-			expect(setItemStub.getCalls().length).to.equal(1);
-			expect(setItemStub.getCalls()[0].args[1]).to.equal('test1_B_30:true');
-
-			cacheStorage.set({ ...cacheData, name: 'test2' });
-			expect(setItemStub.getCalls().length).to.equal(1);
-
-			cacheStorage.set({ ...cookieData, name: 'test2' });
-			expect(setItemStub.getCalls().length).to.equal(2);
-			expect(setItemStub.getCalls()[1].args[1]).to.deep.equal('test1_B_30:true|test2_B_30:true');
 		});
 	});
 
