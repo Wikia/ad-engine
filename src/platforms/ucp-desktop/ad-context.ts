@@ -20,7 +20,12 @@ export const basicContext = {
 		prebid: {
 			enabled: false,
 			bidsRefreshing: {
-				slots: ['gallery_leaderboard', 'incontent_boxad_1', 'incontent_leaderboard'],
+				slots: [
+					'gallery_leaderboard',
+					'incontent_boxad_1',
+					'incontent_leaderboard',
+					'incontent_player',
+				],
 			},
 		},
 	},
