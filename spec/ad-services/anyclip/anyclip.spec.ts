@@ -14,6 +14,7 @@ describe('Anyclip', () => {
 	let mockedIsApplicable;
 	const mockIsApplicable = () => true;
 	const mockIsNotApplicable = () => false;
+	const originalWindowMw: MediaWiki = window?.mw;
 
 	let loadScriptStub, instantConfigStub;
 	let communicationServiceStub: SinonStubbedInstance<CommunicationService>;
@@ -42,6 +43,7 @@ describe('Anyclip', () => {
 		loadScriptStub.resetHistory();
 		global.sandbox.restore();
 
+		window.mw = originalWindowMw;
 		context.remove('custom.hasFeaturedVideo');
 		context.remove('services.anyclip.loadWithoutAnchor');
 		context.remove('services.anyclip.isApplicable');
@@ -94,6 +96,39 @@ describe('Anyclip', () => {
 		expect(anyclip.params).to.deep.equal({
 			pubname: 'test-pubname',
 			widgetname: 'test-widget',
+		});
+	});
+
+	it("sets up widgetname under the key named after the current Wiki's vertical", () => {
+		window.mw = { config: new Map([['wikiVertical', 'anime']]) } as MediaWiki;
+		context.set('services.anyclip.widgetname', { anime: 'anime-widget' });
+
+		anyclip = new Anyclip(instantConfigStub);
+
+		expect(anyclip.params).to.deep.include({
+			widgetname: 'anime-widget',
+		});
+	});
+
+	it("sets up widgetname under the 'default' key when the current Wiki's vertical isn't mapped to any specific widgetname", () => {
+		window.mw = { config: new Map([['wikiVertical', 'gaming']]) } as MediaWiki;
+		context.set('services.anyclip.widgetname', { default: 'test-widget' });
+
+		anyclip = new Anyclip(instantConfigStub);
+
+		expect(anyclip.params).to.deep.include({
+			widgetname: 'test-widget',
+		});
+	});
+
+	it("sets up the default Anyclip widgetname if there's no default key provided", () => {
+		window.mw = { config: new Map([['wikiVertical', 'gaming']]) } as MediaWiki;
+		context.set('services.anyclip.widgetname', { anime: 'anime-widget' });
+
+		anyclip = new Anyclip(instantConfigStub);
+
+		expect(anyclip.params).to.deep.include({
+			widgetname: '001w000001Y8ud2_19593',
 		});
 	});
 

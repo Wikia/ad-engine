@@ -7,10 +7,12 @@ import {
 	slotService,
 	utils,
 } from '@ad-engine/core';
+import { getMediaWikiVariable } from '../../platforms/shared';
 import { AnyclipBidsRefresher } from './anyclip-bids-refresher';
 import { AnyclipTracker } from './anyclip-tracker';
 
 const logGroup = 'Anyclip';
+const DEFAULT_WIDGET_NAME = '001w000001Y8ud2_19593';
 const SUBSCRIBE_FUNC_NAME = 'lreSubscribe';
 const isSubscribeReady = () => typeof window[SUBSCRIBE_FUNC_NAME] !== 'undefined';
 const isPlayerAdSlotReady = (slotName = 'incontent_player') => {
@@ -28,7 +30,14 @@ export class Anyclip extends BaseServiceSetup {
 	}
 
 	private get widgetname(): string {
-		return context.get('services.anyclip.widgetname') || '001w000001Y8ud2_19593';
+		const widgetNameParam = context.get('services.anyclip.widgetname');
+
+		if (typeof widgetNameParam !== 'object') {
+			return widgetNameParam || DEFAULT_WIDGET_NAME;
+		}
+
+		const wikiVertical = getMediaWikiVariable('wikiVertical');
+		return widgetNameParam[wikiVertical] || widgetNameParam['default'] || DEFAULT_WIDGET_NAME;
 	}
 
 	private get libraryUrl(): string {
