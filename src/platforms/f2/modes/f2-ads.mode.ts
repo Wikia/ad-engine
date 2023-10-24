@@ -52,7 +52,9 @@ export class F2AdsMode implements DiProcess {
 					dependencies: [this.wadRunner.initialized],
 				}),
 				this.gptSetup,
-				this.doubleVerify,
+				this.doubleVerify.setOptions({
+					dependencies: [this.gptSetup.initialized],
+				}),
 				this.adEngineStackSetup.setOptions({
 					dependencies: [
 						this.wadRunner.initialized,
