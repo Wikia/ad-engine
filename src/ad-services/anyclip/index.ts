@@ -32,12 +32,16 @@ export class Anyclip extends BaseServiceSetup {
 	private get widgetname(): string {
 		const widgetNameParam = context.get('services.anyclip.widgetname');
 
-		if (typeof widgetNameParam !== 'object') {
+		if (['string', 'undefined'].includes(typeof widgetNameParam)) {
 			return widgetNameParam || DEFAULT_WIDGET_NAME;
 		}
 
-		const wikiVertical = getMediaWikiVariable('wikiVertical');
-		return widgetNameParam[wikiVertical] || widgetNameParam['default'] || DEFAULT_WIDGET_NAME;
+		if (typeof widgetNameParam === 'object') {
+			const wikiVertical = getMediaWikiVariable('wikiVertical');
+			return widgetNameParam[wikiVertical] || widgetNameParam['default'] || DEFAULT_WIDGET_NAME;
+		}
+
+		return DEFAULT_WIDGET_NAME;
 	}
 
 	private get libraryUrl(): string {
