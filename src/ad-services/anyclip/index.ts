@@ -87,9 +87,9 @@ export class Anyclip extends BaseServiceSetup {
 	}
 
 	toggleFloating() {
-		utils.logger(logGroup, 'toggling Anyclip floating to: ', !this.floatingState);
-		window?.anyclip?.getWidget()?.floatingModeToggle(!this.floatingState);
 		this.floatingState = !this.floatingState;
+		utils.logger(logGroup, 'toggling Anyclip floating to: ', this.floatingState);
+		window?.anyclip?.getWidget()?.floatingModeToggle(this.floatingState);
 	}
 
 	get params(): Record<string, string> {
