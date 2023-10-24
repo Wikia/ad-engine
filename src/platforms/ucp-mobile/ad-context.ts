@@ -59,7 +59,11 @@ export const basicContext = {
 	services: {
 		anyclip: {
 			pubname: 'fandomcom',
-			widgetname: '001w000001Y8ud2AAB_M6237',
+			widgetname: {
+				anime: '001w000001Y8ud2AAB_M8449',
+				gaming: '001w000001Y8ud2AAB_M8448',
+				default: '001w000001Y8ud2AAB_M6237',
+			},
 			libraryUrl: 'https://player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/lre.js',
 			latePageInject: true,
 		},
