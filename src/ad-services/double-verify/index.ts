@@ -6,9 +6,15 @@ const ctx = '28150781';
 const cmp = 'DV1001654';
 const referer = window.location.href;
 
+interface AdUnit {
+	slotName: string;
+	path: string;
+}
+
 export class DoubleVerify extends BaseServiceSetup {
 	private isLoaded = false;
 	private slots: string[] = [];
+	private adUnits: AdUnit[] = [];
 
 	async call() {
 		if (this.isLoaded) {
@@ -71,7 +77,12 @@ export class DoubleVerify extends BaseServiceSetup {
 
 	private addToSlotsTargeting(data: any, targetingKey: string): void {
 		if (typeof data === 'object') {
-			Object.entries(data).forEach(([slotName, value]) => {
+			Object.entries(data).forEach(([adUnitPath, value]) => {
+				const adUnit: AdUnit | undefined = this.adUnits.find(
+					(adUnit) => adUnit.path === adUnitPath,
+				);
+				const slotName = adUnit?.slotName ?? '';
+
 				targetingService.set(targetingKey, value[''], slotName);
 			});
 		}
@@ -91,9 +102,9 @@ export class DoubleVerify extends BaseServiceSetup {
 			url: encodeURIComponent(referer),
 		});
 
-		const adUnitPaths = this.getAdUnitPathsForRequest();
+		this.adUnits = this.getAdUnitsForRequest();
 
-		Object.values(adUnitPaths).forEach((path) => {
+		Object.values(this.adUnits).forEach(({ path }) => {
 			params.append(`adunits[${path}][]`, '');
 		});
 
@@ -103,7 +114,7 @@ export class DoubleVerify extends BaseServiceSetup {
 		return url;
 	}
 
-	private getAdUnitPathsForRequest(): string[] {
+	private getAdUnitsForRequest(): AdUnit[] {
 		return this.slots.map((slotName) => {
 			const slotConfig: SlotConfig = { ...context.get(`slots.${slotName}`) };
 			slotConfig.slotNameSuffix = slotConfig.slotNameSuffix || '';
@@ -112,7 +123,10 @@ export class DoubleVerify extends BaseServiceSetup {
 				slotConfig,
 			});
 
-			return adUnitPath;
+			return {
+				slotName,
+				path: adUnitPath,
+			};
 		});
 	}
 }

@@ -96,8 +96,8 @@ describe('DoubleVerify', () => {
 				IDS: '12345',
 				BSC: 'bsc-data',
 				ABS: 'abs-data',
-				TVP: { slot1: { '': 'tvp-value1' }, slot3: { '': 'tvp-value3' } },
-				VLP: { slot2: { '': 'vlp-value2' } },
+				TVP: { '/top_boxad': { '': 'tvp-value1' }, '/bottom_leaderboard': { '': 'tvp-value3' } },
+				VLP: { '/incontent_leaderboard': { '': 'vlp-value2' } },
 			}),
 		};
 
