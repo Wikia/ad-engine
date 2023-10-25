@@ -1,4 +1,5 @@
 import { Anyclip } from '@wikia/ad-services';
+import { communicationService, eventsRepository } from '@wikia/communication';
 import { AdSlot, AdSlotStatus, context, DomListener, InstantConfigService } from '@wikia/core';
 import { WaitFor } from '@wikia/core/utils';
 import {
@@ -44,6 +45,7 @@ describe('floor_adhesion on ucp-mobile', () => {
 		context.remove('custom.hasFeaturedVideo');
 		context.remove('slots.incontent_boxad_1');
 		context.remove('slots.mobile_prefooter');
+		global.sandbox.resetHistory();
 		global.sandbox.restore();
 	});
 
@@ -71,13 +73,33 @@ describe('floor_adhesion on ucp-mobile', () => {
 		assert.notCalled(getFloorAdhesionConfigSpy);
 	});
 
-	it("is toggling Anyclip's floating state when floor_adhesion loads", () => {
+	it("is not toggling Anyclip's floating state when Anyclip does not load", () => {
+		context.set('custom.hasFeaturedVideo', false);
+
+		const anyclipToggleFloatingSpy = global.sandbox.spy(anyclipMock, 'toggleFloating');
+		prepareAndExecuteDynamicSlotSetup();
+
+		assert.notCalled(anyclipToggleFloatingSpy);
+	});
+
+	it("is toggling Anyclip's floating state when floor_adhesion gets collapsed", () => {
 		context.set('custom.hasFeaturedVideo', false);
 
 		const floorAdhesionAdSlotMock = new AdSlot({ id: 'floor_adhesion' });
 		const anyclipToggleFloatingSpy = global.sandbox.spy(anyclipMock, 'toggleFloating');
 		prepareAndExecuteDynamicSlotSetup();
-		floorAdhesionAdSlotMock.emit(AdSlotStatus.STATUS_SUCCESS);
+		communicationService.emit(eventsRepository.ANYCLIP_READY);
+		floorAdhesionAdSlotMock.emit(AdSlotStatus.STATUS_COLLAPSE);
+
+		assert.called(anyclipToggleFloatingSpy);
+	});
+
+	it("is toggling Anyclip's floating state when floor_adhesion gets registered and Anyclip loads", () => {
+		context.set('custom.hasFeaturedVideo', false);
+
+		const anyclipToggleFloatingSpy = global.sandbox.spy(anyclipMock, 'toggleFloating');
+		prepareAndExecuteDynamicSlotSetup();
+		communicationService.emit(eventsRepository.ANYCLIP_READY);
 
 		assert.called(anyclipToggleFloatingSpy);
 	});

@@ -114,6 +114,7 @@ export class Anyclip extends BaseServiceSetup {
 				utils.logger(logGroup, 'ready');
 
 				this.waitForSubscribeReady().then((isSubscribeReady) => {
+					communicationService.emit(eventsRepository.ANYCLIP_READY);
 					utils.logger(
 						logGroup,
 						'Anyclip global subscribe function set',

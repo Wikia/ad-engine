@@ -233,11 +233,16 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			breakCallback: disableFloorAdhesion,
 		});
 
+		communicationService.on(eventsRepository.ANYCLIP_READY, () => {
+			toggleAnyclipFloatingPlayer();
+		});
+
 		communicationService.onSlotEvent(
 			AdSlotStatus.STATUS_COLLAPSE,
 			() => {
 				slotImpactWatcher.disable([slotName]);
 				hideFloorAdhesionAnchor();
+				toggleAnyclipFloatingPlayer();
 			},
 			slotName,
 		);
@@ -246,6 +251,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			() => {
 				slotImpactWatcher.disable([slotName]);
 				hideFloorAdhesionAnchor();
+				toggleAnyclipFloatingPlayer();
 			},
 			slotName,
 		);
@@ -253,7 +259,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			AdSlotStatus.STATUS_SUCCESS,
 			() => {
 				codePriorityActive = true;
-				toggleAnyclipFloatingPlayer();
 
 				communicationService.on(
 					eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED,
