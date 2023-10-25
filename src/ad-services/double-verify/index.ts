@@ -8,7 +8,7 @@ const referer = window.location.href;
 
 interface AdUnit {
 	slotName: string;
-	adUnitPath: string;
+	path: string;
 }
 
 export class DoubleVerify extends BaseServiceSetup {
@@ -79,7 +79,7 @@ export class DoubleVerify extends BaseServiceSetup {
 		if (typeof data === 'object') {
 			Object.entries(data).forEach(([adUnitPath, value]) => {
 				const adUnit: AdUnit | undefined = this.adUnits.find(
-					({ adUnitPath: path }) => adUnitPath === path,
+					(adUnit) => adUnit.path === adUnitPath,
 				);
 				const slotName = adUnit?.slotName ?? '';
 
@@ -104,8 +104,8 @@ export class DoubleVerify extends BaseServiceSetup {
 
 		this.adUnits = this.getAdUnitsForRequest();
 
-		Object.values(this.adUnits).forEach(({ adUnitPath }) => {
-			params.append(`adunits[${adUnitPath}][]`, '');
+		Object.values(this.adUnits).forEach(({ path }) => {
+			params.append(`adunits[${path}][]`, '');
 		});
 
 		const url = new URL(scriptUrl);
@@ -125,7 +125,7 @@ export class DoubleVerify extends BaseServiceSetup {
 
 			return {
 				slotName,
-				adUnitPath,
+				path: adUnitPath,
 			};
 		});
 	}
