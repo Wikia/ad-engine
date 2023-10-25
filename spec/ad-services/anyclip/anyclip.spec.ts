@@ -20,7 +20,6 @@ describe('Anyclip', () => {
 	let mockedIsApplicable;
 	const mockIsApplicable = () => true;
 	const mockIsNotApplicable = () => false;
-	const originalWindowMw: MediaWiki = window?.mw;
 
 	let loadScriptStub, instantConfigStub;
 	let communicationServiceStub: SinonStubbedInstance<CommunicationService>;
@@ -51,7 +50,6 @@ describe('Anyclip', () => {
 		loadScriptStub.resetHistory();
 		global.sandbox.restore();
 
-		window.mw = originalWindowMw;
 		context.remove('custom.hasFeaturedVideo');
 		context.remove('services.anyclip.loadWithoutAnchor');
 		context.remove('services.anyclip.isApplicable');
