@@ -22,27 +22,8 @@ describe('DoubleVerify', () => {
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		targetingServiceStub = global.sandbox.stub(targetingService);
 
-		context.extend({
-			adUnitId: '/{slotConfig.adProduct}',
-			options: {
-				trackingOptIn: true,
-				optOutSale: false,
-			},
-			slots: {
-				top_leaderboard: {
-					adProduct: 'top_leaderboard',
-				},
-				slot1: {
-					adProduct: 'top_boxad',
-				},
-				slot2: {
-					adProduct: 'incontent_leaderboard',
-				},
-				slot3: {
-					adProduct: 'bottom_leaderboard',
-				},
-			},
-		});
+		context.set('options.trackingOptIn', true);
+		context.set('options.optOutSale', false);
 		window.fandomContext = {
 			partners: { directedAtChildren: false },
 		} as any;
@@ -158,7 +139,7 @@ describe('DoubleVerify', () => {
 		await doubleVerify.call();
 
 		expect(fetchStub.getCall(0).args[0]).to.be.eq(
-			'https://pub.doubleverify.com/signals/pub.json?ctx=28150781&cmp=DV1001654&url=about%253Ablank&adunits%5B%2Ftop_leaderboard%5D%5B%5D=',
+			'https://pub.doubleverify.com/signals/pub.json?ctx=28150781&cmp=DV1001654&url=about%253Ablank&adunits%5Btop_leaderboard%5D%5B%5D=',
 		);
 	});
 });
