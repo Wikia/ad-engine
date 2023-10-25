@@ -63,7 +63,6 @@ export class TrackingParametersSetup implements DiProcess {
 	}
 
 	async execute() {
-		console.log('DJ: execute');
 		await this.setTrackingParameters();
 		context.set(
 			'services.dw-tracker.compression',
