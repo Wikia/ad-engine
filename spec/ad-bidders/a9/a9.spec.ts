@@ -114,7 +114,7 @@ describe('A9Provider', () => {
 		});
 	});
 
-	describe('call', () => {
+	describe('init', () => {
 		let apstagInitStub: SinonStub;
 		let apstagFetchBids: SinonStub;
 
@@ -133,12 +133,16 @@ describe('A9Provider', () => {
 		it('should initialize Apstag with config and fetch bids', () => {
 			const a9 = new A9Provider(bidderConfig);
 
-			a9.call();
+			a9.init();
 
-			expect(apstagInitStub.calledOnceWithExactly()).to.equal(
-				true,
-				'init called with wrong arguments',
-			);
+			expect(
+				apstagInitStub.calledOnceWithExactly({
+					pubID: bidderConfig.amazonId,
+					videoAdServer: 'DFP',
+					deals: true,
+					signals: { ortb2: {} },
+				}),
+			).to.equal(true, 'init called with wrong arguments');
 			expect(
 				apstagFetchBids.calledOnceWithExactly({
 					slots: a9.getA9SlotsDefinitions(Object.keys(bidderConfig.slots)),
@@ -150,12 +154,17 @@ describe('A9Provider', () => {
 		it('should initialize Apstag with CCPA config and fetch bids', () => {
 			const a9 = new A9Provider(bidderConfig);
 
-			a9.call();
+			a9.init({ uspString: '1---' });
 
-			expect(apstagInitStub.calledOnceWithExactly()).to.equal(
-				true,
-				'init called with wrong arguments',
-			);
+			expect(
+				apstagInitStub.calledOnceWithExactly({
+					pubID: bidderConfig.amazonId,
+					videoAdServer: 'DFP',
+					deals: true,
+					params: { us_privacy: '1---' },
+					signals: { ortb2: {} },
+				}),
+			).to.equal(true, 'init called with wrong arguments');
 			expect(
 				apstagFetchBids.calledOnceWithExactly({
 					slots: a9.getA9SlotsDefinitions(Object.keys(bidderConfig.slots)),

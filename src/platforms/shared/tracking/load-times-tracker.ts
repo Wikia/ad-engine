@@ -18,7 +18,6 @@ const eventsToTrack = {
 	eyeota_started: eventsRepository.EYEOTA_STARTED,
 	eyeota_failed: eventsRepository.EYEOTA_FAILED,
 	a9_without_consents: eventsRepository.A9_WITHOUT_CONSENTS,
-	a9_apstag_hem_sent: eventsRepository.A9_APSTAG_HEM_SENT,
 	intentiq_ppid_not_set_on_time: eventsRepository.INTENTIQ_PPID_NOT_SET_ON_TIME,
 	intentiq_start: eventsRepository.INTENTIQ_START,
 	intentiq_done: eventsRepository.INTENTIQ_DONE,
