@@ -69,7 +69,7 @@ export const basicContext = {
 			pubname: 'fandomcom',
 			widgetname: {
 				anime: '001w000001Y8ud2AAB_M8447',
-				gaming: '001w000001Y8ud2AAB_M8446',
+				games: '001w000001Y8ud2AAB_M8446',
 			},
 			libraryUrl: 'https://player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/lre.js',
 			latePageInject: true,
