@@ -1,14 +1,10 @@
-import { BaseServiceSetup, context, targetingService, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, SlotConfig, targetingService, utils } from '@ad-engine/core';
 
 const logGroup = 'double-verify';
 const scriptUrl = 'https://pub.doubleverify.com/signals/pub.json';
 const ctx = '28150781';
 const cmp = 'DV1001654';
 const referer = window.location.href;
-
-interface AdUnit {
-	path: string;
-}
 
 export class DoubleVerify extends BaseServiceSetup {
 	private isLoaded = false;
@@ -95,10 +91,10 @@ export class DoubleVerify extends BaseServiceSetup {
 			url: encodeURIComponent(referer),
 		});
 
-		const adUnits = this.getAdUnitsForRequest();
+		const adUnitPaths = this.getAdUnitPathsForRequest();
 
-		Object.values(adUnits).forEach((slot) => {
-			params.append(`adunits[${slot.path}][]`, '');
+		Object.values(adUnitPaths).forEach((path) => {
+			params.append(`adunits[${path}][]`, '');
 		});
 
 		const url = new URL(scriptUrl);
@@ -107,11 +103,16 @@ export class DoubleVerify extends BaseServiceSetup {
 		return url;
 	}
 
-	private getAdUnitsForRequest(): AdUnit[] {
+	private getAdUnitPathsForRequest(): string[] {
 		return this.slots.map((slotName) => {
-			return {
-				path: slotName,
-			};
+			const slotConfig: SlotConfig = { ...context.get(`slots.${slotName}`) };
+			slotConfig.slotNameSuffix = slotConfig.slotNameSuffix || '';
+
+			const adUnitPath = utils.stringBuilder.build(slotConfig.adUnit || context.get('adUnitId'), {
+				slotConfig,
+			});
+
+			return adUnitPath;
 		});
 	}
 }
