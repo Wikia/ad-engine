@@ -56,7 +56,6 @@ export class TrackingParametersSetup implements DiProcess {
 	}
 
 	async setTrackingParameters() {
-		console.log('DJ: setTrackingParameters');
 		const legacyEnabled = !this.instantConfig.get('icDisableLegacyTrackingParameters', false);
 		const trackingParameters = await this.getTrackingParameters(legacyEnabled);
 
