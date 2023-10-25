@@ -4,7 +4,13 @@ import {
 	communicationService,
 	CommunicationService,
 } from '@wikia/communication/communication-service';
-import { context, InstantConfigService, utils } from '@wikia/core';
+import {
+	context,
+	InstantConfigService,
+	targetingService,
+	TargetingService,
+	utils,
+} from '@wikia/core';
 import { WaitFor } from '@wikia/core/utils';
 import { expect } from 'chai';
 import { SinonStubbedInstance } from 'sinon';
@@ -18,6 +24,7 @@ describe('Anyclip', () => {
 
 	let loadScriptStub, instantConfigStub;
 	let communicationServiceStub: SinonStubbedInstance<CommunicationService>;
+	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 
 	beforeEach(() => {
 		global.sandbox.stub(WaitFor.prototype, 'until').returns(Promise.resolve());
@@ -37,6 +44,7 @@ describe('Anyclip', () => {
 				callback(payload);
 			},
 		);
+		targetingServiceStub = global.sandbox.stub(targetingService);
 	});
 
 	afterEach(() => {
@@ -99,8 +107,8 @@ describe('Anyclip', () => {
 		});
 	});
 
-	it("sets up widgetname under the key named after the current Wiki's vertical", () => {
-		window.mw = { config: new Map([['wikiVertical', 'anime']]) } as MediaWiki;
+	it('sets up widgetname under the key named after the current vertical', () => {
+		targetingServiceStub.get.withArgs('s0v').returns('anime');
 		context.set('services.anyclip.widgetname', { anime: 'anime-widget' });
 
 		anyclip = new Anyclip(instantConfigStub);
@@ -110,8 +118,8 @@ describe('Anyclip', () => {
 		});
 	});
 
-	it("sets up widgetname under the 'default' key when the current Wiki's vertical isn't mapped to any specific widgetname", () => {
-		window.mw = { config: new Map([['wikiVertical', 'gaming']]) } as MediaWiki;
+	it("sets up widgetname under the 'default' key when the current vertical isn't mapped to any specific widgetname", () => {
+		targetingServiceStub.get.withArgs('s0v').returns('games');
 		context.set('services.anyclip.widgetname', { default: 'test-widget' });
 
 		anyclip = new Anyclip(instantConfigStub);
@@ -122,7 +130,7 @@ describe('Anyclip', () => {
 	});
 
 	it("sets up the default Anyclip widgetname if there's no default key provided", () => {
-		window.mw = { config: new Map([['wikiVertical', 'gaming']]) } as MediaWiki;
+		targetingServiceStub.get.withArgs('s0v').returns('games');
 		context.set('services.anyclip.widgetname', { anime: 'anime-widget' });
 
 		anyclip = new Anyclip(instantConfigStub);

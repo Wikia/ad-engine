@@ -5,9 +5,9 @@ import {
 	context,
 	slotDataParamsUpdater,
 	slotService,
+	targetingService,
 	utils,
 } from '@ad-engine/core';
-import { getMediaWikiVariable } from '../../platforms/shared';
 import { AnyclipBidsRefresher } from './anyclip-bids-refresher';
 import { AnyclipTracker } from './anyclip-tracker';
 
@@ -37,7 +37,7 @@ export class Anyclip extends BaseServiceSetup {
 		}
 
 		if (typeof widgetNameParam === 'object') {
-			const wikiVertical = getMediaWikiVariable('wikiVertical');
+			const wikiVertical = targetingService.get('s0v');
 			return widgetNameParam[wikiVertical] || widgetNameParam['default'] || DEFAULT_WIDGET_NAME;
 		}
 
