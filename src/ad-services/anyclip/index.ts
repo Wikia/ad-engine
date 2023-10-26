@@ -25,8 +25,6 @@ const isPlayerAdSlotReady = (slotName = 'incontent_player') => {
 };
 
 export class Anyclip extends BaseServiceSetup {
-	private floatingState = true;
-
 	private get pubname(): string {
 		return context.get('services.anyclip.pubname') || 'fandomcom';
 	}
@@ -99,10 +97,14 @@ export class Anyclip extends BaseServiceSetup {
 		window?.anyclip?.widgets?.forEach((w) => w?.destroy());
 	}
 
-	toggleFloating() {
-		this.floatingState = !this.floatingState;
-		utils.logger(logGroup, 'toggling Anyclip floating to: ', this.floatingState);
-		window?.anyclip?.getWidget()?.floatingModeToggle(this.floatingState);
+	enableFloating() {
+		utils.logger(logGroup, 'enabling Anyclip floating feature ');
+		window?.anyclip?.getWidget()?.floatingModeToggle(true);
+	}
+
+	disableFloating() {
+		utils.logger(logGroup, 'disabling Anyclip floating feature ');
+		window?.anyclip?.getWidget()?.floatingModeToggle(false);
 	}
 
 	get params(): Record<string, string> {

@@ -73,35 +73,27 @@ describe('floor_adhesion on ucp-mobile', () => {
 		assert.notCalled(getFloorAdhesionConfigSpy);
 	});
 
-	it("is not toggling Anyclip's floating state when Anyclip does not load", () => {
+	it("is not disabling Anyclip's floating feature when Anyclip does not load", () => {
 		context.set('custom.hasFeaturedVideo', false);
 
-		const anyclipToggleFloatingSpy = global.sandbox.spy(anyclipMock, 'toggleFloating');
+		const anyclipDisableFloatingSpy = global.sandbox.spy(anyclipMock, 'disableFloating');
 		prepareAndExecuteDynamicSlotSetup();
 
-		assert.notCalled(anyclipToggleFloatingSpy);
+		assert.notCalled(anyclipDisableFloatingSpy);
 	});
 
 	it("is toggling Anyclip's floating state when floor_adhesion gets collapsed", () => {
 		context.set('custom.hasFeaturedVideo', false);
 
 		const floorAdhesionAdSlotMock = new AdSlot({ id: 'floor_adhesion' });
-		const anyclipToggleFloatingSpy = global.sandbox.spy(anyclipMock, 'toggleFloating');
+		const anyclipDisableFloatingSpy = global.sandbox.spy(anyclipMock, 'disableFloating');
+		const anyclipEnableFloatingSpy = global.sandbox.spy(anyclipMock, 'enableFloating');
 		prepareAndExecuteDynamicSlotSetup();
 		communicationService.emit(eventsRepository.ANYCLIP_READY);
 		floorAdhesionAdSlotMock.emit(AdSlotStatus.STATUS_COLLAPSE);
 
-		assert.called(anyclipToggleFloatingSpy);
-	});
-
-	it("is toggling Anyclip's floating state when floor_adhesion gets registered and Anyclip loads", () => {
-		context.set('custom.hasFeaturedVideo', false);
-
-		const anyclipToggleFloatingSpy = global.sandbox.spy(anyclipMock, 'toggleFloating');
-		prepareAndExecuteDynamicSlotSetup();
-		communicationService.emit(eventsRepository.ANYCLIP_READY);
-
-		assert.called(anyclipToggleFloatingSpy);
+		assert.called(anyclipDisableFloatingSpy);
+		assert.called(anyclipEnableFloatingSpy);
 	});
 
 	function prepareAndExecuteDynamicSlotSetup() {

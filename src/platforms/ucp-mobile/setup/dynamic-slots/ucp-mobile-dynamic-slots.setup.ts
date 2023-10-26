@@ -207,8 +207,12 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		let ntcOverride = false;
 		let codePriorityActive = false;
 
-		const toggleAnyclipFloatingPlayer = () => {
-			this.anyclip.toggleFloating();
+		const enableAnyclipFloating = () => {
+			this.anyclip.enableFloating();
+		};
+
+		const disableAnyclipFloating = () => {
+			this.anyclip.disableFloating();
 		};
 
 		const hideFloorAdhesionAnchor = () => {
@@ -221,6 +225,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			slotService.disable(slotName);
 			slotImpactWatcher.disable([slotName]);
 			hideFloorAdhesionAnchor();
+			enableAnyclipFloating();
 		};
 
 		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {
@@ -234,7 +239,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		});
 
 		communicationService.on(eventsRepository.ANYCLIP_READY, () => {
-			toggleAnyclipFloatingPlayer();
+			disableAnyclipFloating();
 		});
 
 		communicationService.onSlotEvent(
@@ -242,7 +247,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			() => {
 				slotImpactWatcher.disable([slotName]);
 				hideFloorAdhesionAnchor();
-				toggleAnyclipFloatingPlayer();
+				enableAnyclipFloating();
 			},
 			slotName,
 		);
@@ -251,7 +256,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			() => {
 				slotImpactWatcher.disable([slotName]);
 				hideFloorAdhesionAnchor();
-				toggleAnyclipFloatingPlayer();
+				enableAnyclipFloating();
 			},
 			slotName,
 		);
@@ -290,7 +295,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 						codePriorityActive = false;
 						slotImpactWatcher.disable([slotName, 'interstitial']);
-						toggleAnyclipFloatingPlayer();
+						enableAnyclipFloating();
 					},
 					slotName,
 				);
