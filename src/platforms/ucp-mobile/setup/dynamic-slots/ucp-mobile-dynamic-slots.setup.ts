@@ -238,7 +238,10 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 		communicationService.on(eventsRepository.ANYCLIP_READY, () => {
 			anyclipLoaded = true;
-			disableAnyclipFloating();
+
+			if (codePriorityActive) {
+				disableAnyclipFloating();
+			}
 		});
 
 		communicationService.onSlotEvent(

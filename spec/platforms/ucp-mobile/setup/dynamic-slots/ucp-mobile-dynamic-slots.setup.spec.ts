@@ -82,7 +82,7 @@ describe('floor_adhesion on ucp-mobile', () => {
 		assert.notCalled(anyclipDisableFloatingSpy);
 	});
 
-	it("is toggling Anyclip's floating state when floor_adhesion gets collapsed", () => {
+	it("is enabling Anyclip's floating state when floor_adhesion gets collapsed", () => {
 		context.set('custom.hasFeaturedVideo', false);
 
 		const floorAdhesionAdSlotMock = new AdSlot({ id: 'floor_adhesion' });
@@ -92,7 +92,7 @@ describe('floor_adhesion on ucp-mobile', () => {
 		communicationService.emit(eventsRepository.ANYCLIP_READY);
 		floorAdhesionAdSlotMock.emit(AdSlotStatus.STATUS_COLLAPSE);
 
-		assert.called(anyclipDisableFloatingSpy);
+		assert.notCalled(anyclipDisableFloatingSpy);
 		assert.called(anyclipEnableFloatingSpy);
 	});
 
