@@ -204,7 +204,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 	private registerFloorAdhesionCodePriority(): void {
 		const slotName = 'floor_adhesion';
-		let ntcOverride = false;
 		let codePriorityActive = false;
 		let anyclipLoaded = false;
 
@@ -230,10 +229,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			hideFloorAdhesionAnchor();
 			enableAnyclipFloating();
 		};
-
-		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {
-			ntcOverride = true;
-		});
 
 		slotImpactWatcher.request({
 			id: slotName,
@@ -283,12 +278,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 					},
 					false,
 				);
-
-				communicationService.onSlotEvent(AdSlotEvent.VIDEO_AD_IMPRESSION, () => {
-					if (codePriorityActive && !ntcOverride) {
-						disableFloorAdhesion();
-					}
-				});
 
 				communicationService.onSlotEvent(
 					AdSlotEvent.CUSTOM_EVENT,
