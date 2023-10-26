@@ -206,12 +206,15 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		const slotName = 'floor_adhesion';
 		let ntcOverride = false;
 		let codePriorityActive = false;
+		let anyclipLoaded = false;
 
 		const enableAnyclipFloating = () => {
+			if (!anyclipLoaded) return;
 			this.anyclip.enableFloating();
 		};
 
 		const disableAnyclipFloating = () => {
+			if (!anyclipLoaded) return;
 			this.anyclip.disableFloating();
 		};
 
@@ -239,6 +242,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		});
 
 		communicationService.on(eventsRepository.ANYCLIP_READY, () => {
+			anyclipLoaded = true;
 			disableAnyclipFloating();
 		});
 

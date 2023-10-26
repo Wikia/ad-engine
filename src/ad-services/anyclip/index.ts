@@ -152,11 +152,13 @@ export class Anyclip extends BaseServiceSetup {
 	private loadOnUapStatus({ isLoaded, adProduct }: UapLoadStatus) {
 		if (!isLoaded && adProduct !== 'ruap') {
 			if (!context.get('services.anyclip.latePageInject')) {
+				utils.logger(logGroup, 'No need to wait for ANYCLIP_LATE_INJECT');
 				this.initIncontentPlayer();
 				return;
 			}
 
 			communicationService.on(eventsRepository.ANYCLIP_LATE_INJECT, () => {
+				utils.logger(logGroup, 'ANYCLIP_LATE_INJECT emitted');
 				this.initIncontentPlayer();
 			});
 		}
