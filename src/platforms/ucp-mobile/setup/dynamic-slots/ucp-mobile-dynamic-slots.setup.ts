@@ -266,6 +266,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			AdSlotStatus.STATUS_SUCCESS,
 			() => {
 				codePriorityActive = true;
+				disableAnyclipFloating();
 
 				communicationService.on(
 					eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED,

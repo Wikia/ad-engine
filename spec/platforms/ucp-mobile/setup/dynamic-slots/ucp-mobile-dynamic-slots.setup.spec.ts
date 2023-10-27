@@ -34,19 +34,27 @@ describe('floor_adhesion on ucp-mobile', () => {
 		initialized: true,
 	};
 	const instantConfigStub = createStubInstance(InstantConfigService);
+	let anyclipDisableFloatingSpy, anyclipEnableFloatingSpy;
 
 	before(() => {
 		context.set('slots.incontent_boxad_1', {});
 		context.set('slots.mobile_prefooter', {});
+
 		global.sandbox.stub(WaitFor.prototype, 'until').returns(Promise.resolve());
+
+		anyclipDisableFloatingSpy = global.sandbox.spy(anyclipMock, 'disableFloating');
+		anyclipEnableFloatingSpy = global.sandbox.spy(anyclipMock, 'enableFloating');
 	});
 
 	after(() => {
 		context.remove('custom.hasFeaturedVideo');
 		context.remove('slots.incontent_boxad_1');
 		context.remove('slots.mobile_prefooter');
-		global.sandbox.resetHistory();
+
 		global.sandbox.restore();
+
+		anyclipDisableFloatingSpy.resetHistory();
+		anyclipEnableFloatingSpy.resetHistory();
 	});
 
 	it('is inserted right away on page load when there is no featured video on page', () => {
@@ -76,23 +84,32 @@ describe('floor_adhesion on ucp-mobile', () => {
 	it("is not disabling Anyclip's floating feature when Anyclip does not load", () => {
 		context.set('custom.hasFeaturedVideo', false);
 
-		const anyclipDisableFloatingSpy = global.sandbox.spy(anyclipMock, 'disableFloating');
 		prepareAndExecuteDynamicSlotSetup();
 
 		assert.notCalled(anyclipDisableFloatingSpy);
 	});
 
-	it("is enabling Anyclip's floating state when floor_adhesion gets collapsed", () => {
+	it("is not disabling Anyclip's floating state when floor_adhesion gets collapsed", () => {
+		const floorAdhesionAdSlotMock = new AdSlot({ id: 'floor_adhesion' });
 		context.set('custom.hasFeaturedVideo', false);
 
-		const floorAdhesionAdSlotMock = new AdSlot({ id: 'floor_adhesion' });
-		const anyclipDisableFloatingSpy = global.sandbox.spy(anyclipMock, 'disableFloating');
-		const anyclipEnableFloatingSpy = global.sandbox.spy(anyclipMock, 'enableFloating');
 		prepareAndExecuteDynamicSlotSetup();
 		communicationService.emit(eventsRepository.ANYCLIP_READY);
 		floorAdhesionAdSlotMock.emit(AdSlotStatus.STATUS_COLLAPSE);
 
 		assert.notCalled(anyclipDisableFloatingSpy);
+		assert.called(anyclipEnableFloatingSpy);
+	});
+
+	it("is enabling Anyclip's floating state when floor_adhesion gets collapsed", () => {
+		const floorAdhesionAdSlotMock = new AdSlot({ id: 'floor_adhesion' });
+		context.set('custom.hasFeaturedVideo', false);
+
+		prepareAndExecuteDynamicSlotSetup();
+		communicationService.emit(eventsRepository.ANYCLIP_READY);
+		floorAdhesionAdSlotMock.emit(AdSlotStatus.STATUS_SUCCESS);
+
+		assert.called(anyclipDisableFloatingSpy);
 		assert.called(anyclipEnableFloatingSpy);
 	});
 
