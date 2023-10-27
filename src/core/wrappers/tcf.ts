@@ -1,5 +1,5 @@
 export class Tcf {
-	defaultVersion = 0;
+	defaultVersion = 2;
 
 	get exists(): boolean {
 		return !!window.__tcfapi;
