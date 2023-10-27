@@ -292,7 +292,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 						codePriorityActive = false;
 						slotImpactWatcher.disable([slotName, 'interstitial']);
-						enableAnyclipFloating();
 					},
 					slotName,
 				);
