@@ -161,6 +161,8 @@ export class Anyclip extends BaseServiceSetup {
 				utils.logger(logGroup, 'ANYCLIP_LATE_INJECT emitted');
 				this.initIncontentPlayer();
 			});
+		} else {
+			utils.logger(logGroup, 'Anyclip blocked because of Fan Takeover');
 		}
 	}
 
