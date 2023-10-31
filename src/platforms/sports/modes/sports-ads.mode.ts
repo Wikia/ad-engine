@@ -53,9 +53,7 @@ export class SportsAdsMode implements DiProcess {
 				this.confiant,
 				this.durationMedia,
 				this.gptSetup,
-				this.doubleVerify.setOptions({
-					dependencies: [this.gptSetup.initialized],
-				}),
+				this.doubleVerify,
 				this.adEngineStackSetup.setOptions({
 					dependencies: [
 						this.bidders.initialized,
