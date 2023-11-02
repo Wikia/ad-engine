@@ -65,6 +65,14 @@ export const basicContext = {
 			'.mw-parser-output > h2,.mw-parser-output > h3,.mw-parser-output > h4,.mw-parser-output > h5',
 	},
 	services: {
+		anyclip: {
+			pubname: 'fandomcom',
+			widgetname: {
+				anime: '001w000001Y8ud2AAB_M8447',
+				games: '001w000001Y8ud2AAB_M8446',
+			},
+			libraryUrl: 'https://player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/lre.js',
+		},
 		doubleVerify: {
 			slots: [
 				'top_leaderboard',
