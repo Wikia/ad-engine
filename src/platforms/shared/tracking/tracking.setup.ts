@@ -1,5 +1,6 @@
 import {
 	adClickTracker,
+	Apstag,
 	Bidders,
 	bidderTracker,
 	communicationService,
@@ -59,13 +60,19 @@ export class TrackingSetup {
 			communicationService.on(
 				eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED,
 				(eventInfo) => {
+					const { partnerName, partnerIdentityId } = eventInfo.payload;
 					this.dwTracker.track(
 						{
-							partner_name: eventInfo.payload.partnerName,
-							partner_identity_id: eventInfo.payload.partnerIdentityId,
+							partner_name: partnerName,
+							partner_identity_id: partnerIdentityId,
 						},
 						trackingUrls.IDENTITY_INFO,
 					);
+
+					if (['liveConnect', 'MediaWiki-sha256'].includes(partnerName)) {
+						const apstag = Apstag.make();
+						apstag.init().then(() => apstag.sendHEM(partnerIdentityId));
+					}
 				},
 				false,
 			);
