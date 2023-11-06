@@ -13,7 +13,12 @@ export class Connatix extends BaseServiceSetup {
 		return context.get('services.connatix.enabled');
 	}
 
-	constructor(private scriptLoader, private playerInjector: PlayerInjectorInterface) {
+	constructor(
+		protected instantConfig,
+		protected globalTimeout,
+		private scriptLoader,
+		private playerInjector: PlayerInjectorInterface,
+	) {
 		super();
 
 		const cnxPlayer = new ConnatixPlayer();
@@ -37,8 +42,10 @@ export class Connatix extends BaseServiceSetup {
 
 		utils.logger(logGroup, 'loading Connatix asset', libraryUrl);
 
-		return this.scriptLoader.loadScript(libraryUrl).then(() => {
-			utils.logger(logGroup, 'Connatix player is ready');
-		});
+		return this.scriptLoader
+			.loadScript(libraryUrl, true, document.getElementsByTagName('head')[0])
+			.then(() => {
+				utils.logger(logGroup, 'Connatix player is ready');
+			});
 	}
 }

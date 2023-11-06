@@ -123,8 +123,9 @@ export class BaseContextSetup implements DiProcess {
 
 		context.set('services.anyclip.enabled', this.instantConfig.get('icAnyclipPlayer'));
 		context.set('services.anyclip.isApplicable', () => {
-			return context.get('custom.hasFeaturedVideo') || this.instantConfig.get('icConnatixPlayer');
+			return !context.get('custom.hasFeaturedVideo') && !this.instantConfig.get('icConnatixPlayer');
 		});
+		context.set('services.connatix.enabled', this.instantConfig.get('icConnatixPlayer'));
 	}
 
 	private setInContentExperiment(): void {

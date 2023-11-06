@@ -10,7 +10,7 @@ describe('Connatix', () => {
 		const playerInjectorSpy = makePlayerInjectorSpy();
 		const sLoader = makeScriptLoaderSpy();
 
-		const connatix = new Connatix(sLoader, playerInjectorSpy);
+		const connatix = new Connatix(null, null, sLoader, playerInjectorSpy);
 		await connatix.call();
 
 		sinon.assert.calledOnce(sLoader.loadScript);
@@ -22,7 +22,7 @@ describe('Connatix', () => {
 		const sLoader = makeScriptLoaderSpy();
 		const playerInjectorSpy = makePlayerInjectorSpy();
 
-		const connatix = new Connatix(sLoader, playerInjectorSpy);
+		const connatix = new Connatix(null, null, sLoader, playerInjectorSpy);
 		await connatix.call();
 
 		sinon.assert.notCalled(sLoader.loadScript);
