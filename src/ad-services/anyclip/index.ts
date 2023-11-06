@@ -5,12 +5,14 @@ import {
 	context,
 	slotDataParamsUpdater,
 	slotService,
+	targetingService,
 	utils,
 } from '@ad-engine/core';
 import { AnyclipBidsRefresher } from './anyclip-bids-refresher';
 import { AnyclipTracker } from './anyclip-tracker';
 
 const logGroup = 'Anyclip';
+const DEFAULT_WIDGET_NAME = '001w000001Y8ud2_19593';
 const SUBSCRIBE_FUNC_NAME = 'lreSubscribe';
 const isSubscribeReady = () => typeof window[SUBSCRIBE_FUNC_NAME] !== 'undefined';
 const isPlayerAdSlotReady = (slotName = 'incontent_player') => {
@@ -28,7 +30,18 @@ export class Anyclip extends BaseServiceSetup {
 	}
 
 	private get widgetname(): string {
-		return context.get('services.anyclip.widgetname') || '001w000001Y8ud2_19593';
+		const widgetNameParam = context.get('services.anyclip.widgetname');
+
+		if (['string', 'undefined'].includes(typeof widgetNameParam)) {
+			return widgetNameParam || DEFAULT_WIDGET_NAME;
+		}
+
+		if (typeof widgetNameParam === 'object') {
+			const wikiVertical = targetingService.get('s0v');
+			return widgetNameParam[wikiVertical] || widgetNameParam['default'] || DEFAULT_WIDGET_NAME;
+		}
+
+		return DEFAULT_WIDGET_NAME;
 	}
 
 	private get libraryUrl(): string {
