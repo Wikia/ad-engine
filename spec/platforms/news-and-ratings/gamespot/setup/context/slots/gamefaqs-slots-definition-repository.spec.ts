@@ -8,7 +8,7 @@ describe('GameFAQsSlotsDefinitionRepository', () => {
 
 		expect(repository.getIncontentPlayerConfig().slotCreatorConfig).to.deep.eq({
 			slotName: 'incontent_player',
-			anchorSelector: '.msg_body',
+			anchorSelector: '.msg_list .msg_body',
 			insertMethod: 'prepend',
 		});
 	});

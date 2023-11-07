@@ -8,11 +8,14 @@ export class GameFAQsAnyclipSetup implements DiProcess {
 	constructor(private slotsDefinitionRepository: GameFAQsSlotsDefinitionRepository) {}
 
 	execute(): void {
-		context.set('custom.hasIncontentPlayer', !!document.querySelector('.msg_body'));
+		const incontentPlayerConfig = this.slotsDefinitionRepository.getIncontentPlayerConfig();
 
+		context.set(
+			'custom.hasIncontentPlayer',
+			!!document.querySelector(incontentPlayerConfig.slotCreatorConfig.anchorSelector),
+		);
 		// TODO: this line can be removed after releasing gamefaqs change that removes the element from the page
 		document.querySelector('.message_mpu')?.remove();
-
-		insertSlots([this.slotsDefinitionRepository.getIncontentPlayerConfig()]);
+		insertSlots([incontentPlayerConfig]);
 	}
 }

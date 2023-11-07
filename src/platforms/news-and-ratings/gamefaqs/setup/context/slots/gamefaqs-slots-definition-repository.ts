@@ -10,7 +10,7 @@ export class GameFAQsSlotsDefinitionRepository {
 		return {
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: '.msg_body',
+				anchorSelector: '.msg_list .msg_body',
 				insertMethod: 'prepend',
 			},
 			activator: () => {
