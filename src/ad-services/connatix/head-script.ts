@@ -1,6 +1,6 @@
 /* eslint-disable */
 // CONNATIX CODE START
-// @ts-ignore This is external code from a partner (Connatix)
+// @ts-ignore This is external code from a partner (Connatix) except cid variable
 export function initConnatixHeadScript(cid) {
 	!(function (n) {
 		if (!window.cnx) {
