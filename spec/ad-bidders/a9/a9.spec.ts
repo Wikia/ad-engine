@@ -114,7 +114,7 @@ describe('A9Provider', () => {
 		});
 	});
 
-	describe('init', () => {
+	describe('call', () => {
 		let apstagInitStub: SinonStub;
 		let apstagFetchBids: SinonStub;
 
@@ -130,47 +130,46 @@ describe('A9Provider', () => {
 			targetingService.set('openrtb2', {}, 'openrtb2');
 		});
 
-		it('should initialize Apstag with config and fetch bids', () => {
+		it('should initialize Apstag with config and fetch bids', (done) => {
 			const a9 = new A9Provider(bidderConfig);
 
-			a9.init();
+			a9.call();
 
-			expect(
-				apstagInitStub.calledOnceWithExactly({
-					pubID: bidderConfig.amazonId,
-					videoAdServer: 'DFP',
-					deals: true,
-					signals: { ortb2: {} },
-				}),
-			).to.equal(true, 'init called with wrong arguments');
-			expect(
-				apstagFetchBids.calledOnceWithExactly({
-					slots: a9.getA9SlotsDefinitions(Object.keys(bidderConfig.slots)),
-					timeout: DEFAULT_MAX_DELAY,
-				}),
-			).to.equal(true, 'fetchBids called with wrong arguments');
+			expect(apstagInitStub.calledOnceWithExactly()).to.equal(
+				true,
+				'init called with wrong arguments',
+			);
+			// use setTimeout so underlying promise can be resolved
+			setTimeout(() => {
+				expect(
+					apstagFetchBids.calledOnceWithExactly({
+						slots: a9.getA9SlotsDefinitions(Object.keys(bidderConfig.slots)),
+						timeout: DEFAULT_MAX_DELAY,
+					}),
+				).to.equal(true, 'fetchBids called with wrong arguments');
+				done();
+			});
 		});
 
-		it('should initialize Apstag with CCPA config and fetch bids', () => {
+		it('should initialize Apstag with CCPA config and fetch bids', (done) => {
 			const a9 = new A9Provider(bidderConfig);
 
-			a9.init({ uspString: '1---' });
+			a9.call();
 
-			expect(
-				apstagInitStub.calledOnceWithExactly({
-					pubID: bidderConfig.amazonId,
-					videoAdServer: 'DFP',
-					deals: true,
-					params: { us_privacy: '1---' },
-					signals: { ortb2: {} },
-				}),
-			).to.equal(true, 'init called with wrong arguments');
-			expect(
-				apstagFetchBids.calledOnceWithExactly({
-					slots: a9.getA9SlotsDefinitions(Object.keys(bidderConfig.slots)),
-					timeout: DEFAULT_MAX_DELAY,
-				}),
-			).to.equal(true, 'fetchBids called with wrong arguments');
+			expect(apstagInitStub.calledOnceWithExactly()).to.equal(
+				true,
+				'init called with wrong arguments',
+			);
+			// use setTimeout so underlying promise can be resolved
+			setTimeout(() => {
+				expect(
+					apstagFetchBids.calledOnceWithExactly({
+						slots: a9.getA9SlotsDefinitions(Object.keys(bidderConfig.slots)),
+						timeout: DEFAULT_MAX_DELAY,
+					}),
+				).to.equal(true, 'fetchBids called with wrong arguments');
+				done();
+			});
 		});
 	});
 });
