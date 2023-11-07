@@ -1,5 +1,6 @@
 import { BaseServiceSetup, context, utils } from '@ad-engine/core';
 import { ConnatixPlayer } from './connatix-player';
+import { initConnatixHeadScript } from './head-script';
 import { PlayerInjector, PlayerInjectorInterface } from './player-injector';
 
 export const logGroup = 'connatix';
@@ -16,14 +17,12 @@ export class Connatix extends BaseServiceSetup {
 	constructor(
 		protected instantConfig,
 		protected globalTimeout,
-		private scriptLoader,
 		private playerInjector: PlayerInjectorInterface,
 	) {
 		super();
 
 		const cnxPlayer = new ConnatixPlayer();
 		this.playerInjector = playerInjector ? playerInjector : new PlayerInjector(cnxPlayer);
-		this.scriptLoader = scriptLoader ? scriptLoader : utils.scriptLoader;
 	}
 
 	async call(): Promise<void> {
@@ -33,19 +32,8 @@ export class Connatix extends BaseServiceSetup {
 			return Promise.resolve();
 		}
 
-		await this.loadPlayerAsset();
+		initConnatixHeadScript(this.cid);
+		utils.logger(logGroup, 'Connatix head script is ready');
 		this.playerInjector.insertPlayerContainer(this.cid);
-	}
-
-	private async loadPlayerAsset(): Promise<void> {
-		const libraryUrl = `//cd.connatix.com/connatix.player.js?cid=${this.cid}`;
-
-		utils.logger(logGroup, 'loading Connatix asset', libraryUrl);
-
-		return this.scriptLoader
-			.loadScript(libraryUrl, true, document.getElementsByTagName('head')[0])
-			.then(() => {
-				utils.logger(logGroup, 'Connatix player is ready');
-			});
 	}
 }
