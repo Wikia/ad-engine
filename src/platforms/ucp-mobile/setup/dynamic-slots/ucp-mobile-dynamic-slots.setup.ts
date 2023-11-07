@@ -12,6 +12,7 @@ import {
 	AdSlot,
 	AdSlotEvent,
 	AdSlotStatus,
+	Anyclip,
 	btfBlockerService,
 	communicationService,
 	context,
@@ -36,6 +37,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		private slotsDefinitionRepository: UcpMobileSlotsDefinitionRepository,
 		private nativoSlotDefinitionRepository: NativoSlotsDefinitionRepository,
 		private quizSlotsDefinitionRepository: QuizSlotsDefinitionRepository,
+		private anyclip: Anyclip,
 		private galleryLightbox: GalleryLightboxAds,
 		protected instantConfig: InstantConfigService,
 	) {}
@@ -139,21 +141,8 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
 			({ slot }) => {
 				if (slot.getSlotName() === icpSlotName) {
+					communicationService.emit(eventsRepository.ANYCLIP_LATE_INJECT);
 					slot.getPlaceholder()?.classList.remove('is-loading');
-
-					const noTries = 2500;
-					const retryTimeout = 500;
-
-					new utils.WaitFor(() => slotImpactWatcher.isAvailable(6), noTries, 0, retryTimeout)
-						.until()
-						.then(() => {
-							slotImpactWatcher.request({
-								id: icpSlotName,
-								priority: 6,
-								breakCallback: () => slot.getPlaceholder()?.classList.add(AdSlot.HIDDEN_AD_CLASS),
-							});
-							communicationService.emit(eventsRepository.ANYCLIP_LATE_INJECT);
-						});
 				}
 			},
 			false,
@@ -215,8 +204,18 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 	private registerFloorAdhesionCodePriority(): void {
 		const slotName = 'floor_adhesion';
-		let ntcOverride = false;
 		let codePriorityActive = false;
+		let anyclipLoaded = false;
+
+		const enableAnyclipFloating = () => {
+			if (!anyclipLoaded) return;
+			this.anyclip.enableFloating();
+		};
+
+		const disableAnyclipFloating = () => {
+			if (!anyclipLoaded) return;
+			this.anyclip.disableFloating();
+		};
 
 		const hideFloorAdhesionAnchor = () => {
 			document
@@ -228,11 +227,8 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			slotService.disable(slotName);
 			slotImpactWatcher.disable([slotName]);
 			hideFloorAdhesionAnchor();
+			enableAnyclipFloating();
 		};
-
-		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {
-			ntcOverride = true;
-		});
 
 		slotImpactWatcher.request({
 			id: slotName,
@@ -240,11 +236,20 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			breakCallback: disableFloorAdhesion,
 		});
 
+		communicationService.on(eventsRepository.ANYCLIP_READY, () => {
+			anyclipLoaded = true;
+
+			if (codePriorityActive) {
+				disableAnyclipFloating();
+			}
+		});
+
 		communicationService.onSlotEvent(
 			AdSlotStatus.STATUS_COLLAPSE,
 			() => {
 				slotImpactWatcher.disable([slotName]);
 				hideFloorAdhesionAnchor();
+				enableAnyclipFloating();
 			},
 			slotName,
 		);
@@ -253,6 +258,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			() => {
 				slotImpactWatcher.disable([slotName]);
 				hideFloorAdhesionAnchor();
+				enableAnyclipFloating();
 			},
 			slotName,
 		);
@@ -260,6 +266,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			AdSlotStatus.STATUS_SUCCESS,
 			() => {
 				codePriorityActive = true;
+				disableAnyclipFloating();
 
 				communicationService.on(
 					eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED,
@@ -276,19 +283,15 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 					false,
 				);
 
-				communicationService.onSlotEvent(AdSlotEvent.VIDEO_AD_IMPRESSION, () => {
-					if (codePriorityActive && !ntcOverride) {
-						disableFloorAdhesion();
-					}
-				});
-
 				communicationService.onSlotEvent(
 					AdSlotEvent.CUSTOM_EVENT,
 					({ payload }) => {
-						if (payload.status === AdSlotEvent.HIDDEN_EVENT) {
-							codePriorityActive = false;
-							slotImpactWatcher.disable([slotName, 'interstitial']);
+						if (payload.status !== AdSlotEvent.HIDDEN_EVENT) {
+							return;
 						}
+
+						codePriorityActive = false;
+						slotImpactWatcher.disable([slotName, 'interstitial']);
 					},
 					slotName,
 				);
