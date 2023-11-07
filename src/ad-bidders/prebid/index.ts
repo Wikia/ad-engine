@@ -329,9 +329,6 @@ export class PrebidProvider extends BidderProvider {
 					userSyncLimit: 8,
 					allowUnknownBidderCodes: true,
 					extPrebid: {
-						aliases: {
-							mgnipbs: 'rubicon',
-						},
 						cache: {
 							vastxml: { returnCreative: false },
 						},
@@ -347,7 +344,7 @@ export class PrebidProvider extends BidderProvider {
 
 		s2sBidders.forEach((name) => {
 			extPrebidBidders[name] = {
-				wrappername: `${s2sRubiconAccountId}_Web_Server`,
+				wrappername: 'Web_Server',
 			};
 		});
 
