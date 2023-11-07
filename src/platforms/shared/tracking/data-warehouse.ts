@@ -143,8 +143,10 @@ export class DataWarehouseTracker {
 		const { batchSize, delay } = context.get('options.delayEvents');
 		const batchProcessor = new BatchProcessor(this.eventsArray, batchSize, delay);
 
-		batchProcessor.dispatchEventsWithTimeout(this.sendRequest);
-		this.eventsArray = [];
+		setTimeout(() => {
+			batchProcessor.dispatchEventsWithTimeout(this.sendRequest);
+			this.eventsArray = [];
+		}, 0);
 	}
 
 	private getTimeBasedParams(): TimeBasedParams {
