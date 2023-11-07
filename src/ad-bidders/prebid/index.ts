@@ -332,7 +332,7 @@ export class PrebidProvider extends BidderProvider {
 						cache: {
 							vastxml: { returnCreative: false },
 						},
-						extPrebidBidders,
+						bidders: extPrebidBidders,
 					},
 				},
 			],
