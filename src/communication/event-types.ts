@@ -167,6 +167,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		payload: props<Dictionary>(),
 	},
 	// Integrated partners events //
+	ANYCLIP_READY: {
+		name: 'Anyclip ready',
+	},
 	ANYCLIP_LATE_INJECT: {
 		name: 'Anyclip late inject',
 	},

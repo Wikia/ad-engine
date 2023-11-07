@@ -295,7 +295,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				avoidConflictWith: [],
 			},
 			activator: () => {
-				context.push('state.adStack', { id: slotName });
+				context.push('events.pushOnScroll.ids', slotName);
 			},
 		};
 	}
