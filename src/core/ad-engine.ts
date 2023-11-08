@@ -134,9 +134,10 @@ export class AdEngine {
 		communicationService.on(eventsRepository.AD_ENGINE_PARTNERS_READY, () => {
 			if (!this.started) {
 				communicationService.emit(eventsRepository.AD_ENGINE_STACK_START);
-
 				this.started = true;
 				this.adStack.start();
+
+				communicationService.emit(eventsRepository.AD_ENGINE_STACK_COMPLETED);
 			}
 		});
 	}

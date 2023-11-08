@@ -29,11 +29,8 @@ export class NewsAndRatingsAnyclipSetup implements DiProcess {
 			const doesAnyclipTagExist = context.get('services.anyclip.anyclipTagExists');
 			const pathname = window.location.pathname.toLowerCase();
 
-			const isApplicable = doesAnyclipTagExist
-				? doesAnyclipTagExist
-				: this.isApplicable(pname)
-				? this.isApplicable(pname)
-				: this.isApplicable(pathname);
+			const isApplicable =
+				doesAnyclipTagExist || this.isApplicable(pname) || this.isApplicable(pathname);
 
 			utils.logger(this.logGroup, 'isApplicable: ', isApplicable, pname, pathname);
 
