@@ -62,7 +62,7 @@ export class NewsAndRatingsDynamicSlotsSetup implements DiProcess {
 		context.set('state.topLeaderboardExists', tlbExists);
 
 		if (!tlbExists) {
-			communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+			communicationService.on(eventsRepository.AD_ENGINE_STACK_COMPLETED, () => {
 				btfBlockerService.finishFirstCall();
 				communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
 					isLoaded: universalAdPackage.isFanTakeoverLoaded(),
