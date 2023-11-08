@@ -344,7 +344,7 @@ export class PrebidProvider extends BidderProvider {
 
 		s2sBidders.forEach((name) => {
 			extPrebidBidders[name] = {
-				wrappername: 'Web_Server',
+				wrappername: `${s2sRubiconAccountId}_Web_Server`,
 			};
 		});
 
