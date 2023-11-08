@@ -59,4 +59,14 @@ describe('Connatix', () => {
 
 		sinon.assert.notCalled(playerInjectorSpy.insertPlayerContainer);
 	});
+
+	it('is called when not really enabled or disabled', async () => {
+		context.set('services.connatix.enabled', null);
+		const playerInjectorSpy = makePlayerInjectorSpy();
+
+		const connatix = new Connatix(null, null, playerInjectorSpy);
+		await connatix.call();
+
+		sinon.assert.notCalled(playerInjectorSpy.insertPlayerContainer);
+	});
 });

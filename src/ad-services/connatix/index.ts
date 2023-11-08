@@ -12,7 +12,7 @@ export class Connatix extends BaseServiceSetup {
 	}
 
 	isEnabled(): boolean {
-		return context.get('services.connatix.enabled');
+		return !!context.get('services.connatix.enabled');
 	}
 
 	constructor(
