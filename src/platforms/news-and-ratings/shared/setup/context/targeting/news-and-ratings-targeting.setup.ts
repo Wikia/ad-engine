@@ -87,6 +87,17 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 				mappedAdTags['tv'] = value;
 				continue;
 			}
+
+			if (key === 'franchise') {
+				mappedAdTags['franchise_nr'] = value;
+				continue;
+			}
+
+			if (key === 'franchiseRoot') {
+				mappedAdTags['franchise'] = value;
+				continue;
+			}
+
 			mappedAdTags[key] = value;
 		}
 
