@@ -22,10 +22,12 @@ describe('Connatix', () => {
 		global.sandbox.restore();
 
 		context.remove('services.connatix.enabled');
+		context.remove('services.connatix.cid');
 	});
 
 	it('is called when there is no Fan Takeover', async () => {
 		context.set('services.connatix.enabled', true);
+		context.set('services.connatix.cid', 'abcdefghi123');
 		const playerInjectorSpy = makePlayerInjectorSpy();
 
 		const connatix = new Connatix(null, null, playerInjectorSpy);
@@ -36,6 +38,7 @@ describe('Connatix', () => {
 
 	it('is called when there is a Fan Takeover', async () => {
 		context.set('services.connatix.enabled', false);
+		context.set('services.connatix.cid', 'abcdefghi123');
 		const playerInjectorSpy = makePlayerInjectorSpy();
 
 		const connatix = new Connatix(null, null, playerInjectorSpy);
@@ -52,6 +55,7 @@ describe('Connatix', () => {
 
 	it('is called when disabled', async () => {
 		context.set('services.connatix.enabled', false);
+		context.set('services.connatix.cid', 'abcdefghi123');
 		const playerInjectorSpy = makePlayerInjectorSpy();
 
 		const connatix = new Connatix(null, null, playerInjectorSpy);
@@ -62,6 +66,18 @@ describe('Connatix', () => {
 
 	it('is called when not really enabled or disabled', async () => {
 		context.set('services.connatix.enabled', null);
+		context.set('services.connatix.cid', 'abcdefghi123');
+		const playerInjectorSpy = makePlayerInjectorSpy();
+
+		const connatix = new Connatix(null, null, playerInjectorSpy);
+		await connatix.call();
+
+		sinon.assert.notCalled(playerInjectorSpy.insertPlayerContainer);
+	});
+
+	it('is called when enabled but does not insert player without cid defined', async () => {
+		context.set('services.connatix.enabled', true);
+		context.set('services.connatix.cid', null);
 		const playerInjectorSpy = makePlayerInjectorSpy();
 
 		const connatix = new Connatix(null, null, playerInjectorSpy);
