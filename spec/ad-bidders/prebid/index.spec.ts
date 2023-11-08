@@ -94,8 +94,8 @@ describe('PrebidProvider bidder', () => {
 							vastxml: { returnCreative: false },
 						},
 						bidders: {
-							test: { wrappername: 'Web_Server' },
-							test1: { wrappername: 'Web_Server' },
+							test: { wrappername: '7450_Web_Server' },
+							test1: { wrappername: '7450_Web_Server' },
 						},
 					},
 				},
