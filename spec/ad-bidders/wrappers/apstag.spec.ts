@@ -135,7 +135,7 @@ describe('Apstag', () => {
 				.stub(context, 'get')
 				.withArgs('wiki.opts.userEmailHashes')
 				.returns(['hash1', 'hash2', 'hash3'])
-				.withArgs('bidders.a9.rpa')
+				.withArgs('bidders.a9.hem.enabled')
 				.returns(true);
 
 			// when
@@ -152,7 +152,7 @@ describe('Apstag', () => {
 		it('should send provided HEM once', async () => {
 			// given
 			const apstag = Apstag.reset();
-			global.sandbox.stub(context, 'get').withArgs('bidders.a9.rpa').returns(true);
+			global.sandbox.stub(context, 'get').withArgs('bidders.a9.hem.enabled').returns(true);
 			global.sandbox
 				.stub(apstag.storage, 'getItem')
 				.onFirstCall()
@@ -174,7 +174,7 @@ describe('Apstag', () => {
 		it('should not send HEM when feature flag is disabled', async () => {
 			// given
 			const apstag = Apstag.reset();
-			global.sandbox.stub(context, 'get').withArgs('bidders.a9.rpa').returns(false);
+			global.sandbox.stub(context, 'get').withArgs('bidders.a9.hem.enabled').returns(false);
 
 			// when
 			await apstag.sendHEM('hash');

@@ -1,14 +1,20 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
+import {
+	CcpaSignalPayload,
+	communicationService,
+	eventsRepository,
+	GdprConsentPayload,
+} from '@ad-engine/communication';
 import {
 	context,
 	externalLogger,
 	targetingService,
+	trackingOptIn,
 	UniversalStorage,
 	Usp,
 	usp,
 	utils,
 } from '@ad-engine/core';
-import { A9Bid, A9BidConfig, A9CCPA, ApstagConfig } from '../a9/types';
+import { A9Bid, A9BidConfig, A9CCPA, ApstagConfig, ApstagTokenConfig } from '../a9/types';
 
 const logGroup = 'a9-apstag';
 
@@ -54,6 +60,14 @@ export class Apstag {
 		);
 	}
 
+	public hasRecord(): boolean {
+		return !!this.storage.getItem('apstagRecord');
+	}
+
+	public getRecord(): string {
+		return this.storage.getItem('apstagRecord');
+	}
+
 	public sendMediaWikiHEM(): void {
 		const userEmailHashes: [string, string, string] = context.get('wiki.opts.userEmailHashes');
 		if (!Array.isArray(userEmailHashes) || userEmailHashes?.length !== 3) {
@@ -63,17 +77,52 @@ export class Apstag {
 		this.sendHEM(record);
 	}
 
-	public async sendHEM(record: string): Promise<void> {
-		if (this.storage.getItem('apstagHEMsent') === '1' || !context.get('bidders.a9.rpa')) {
+	public async sendHEM(
+		record: string,
+		consents?: GdprConsentPayload & CcpaSignalPayload,
+	): Promise<void> {
+		if (!record) {
+			utils.warner(logGroup, 'Trying to send HEM without source record');
 			return;
 		}
 
-		const tokenConfig = { hashedRecords: [{ type: 'email', record }] };
+		// TACO-177
+		// If delete/cleanup flag is being set, do not create new Amazon Tokens.
+		if (context.get('bidders.a9.hem.cleanup')) {
+			return;
+		}
+
+		// Amazon Tokens feature disabled.
+		if (!context.get('bidders.a9.hem.enabled')) {
+			return;
+		}
+
 		try {
+			const tokenConfig: ApstagTokenConfig = { hashedRecords: [{ type: 'email', record }] };
 			await this.script;
-			utils.logger(logGroup, 'Sending HEM to apstag', tokenConfig);
-			window.apstag.rpa(tokenConfig);
+			const optOut =
+				consents !== undefined
+					? !trackingOptIn.isOptedIn(consents.gdprConsent) ||
+					  trackingOptIn.isOptOutSale(consents.ccpaSignal)
+					: !trackingOptIn.isOptedIn() || trackingOptIn.isOptOutSale();
+			const optOutString = optOut ? '1' : '0';
+			if (
+				this.storage.getItem('apstagHEMoptOut', true) &&
+				optOutString !== this.storage.getItem('apstagHEMoptOut', true)
+			) {
+				utils.logger(logGroup, 'Updating user consents', tokenConfig, 'optOut', optOut);
+				window.apstag.upa({
+					...tokenConfig,
+					optOut,
+				});
+			} else if (this.storage.getItem('apstagHEMsent', true) !== '1') {
+				utils.logger(logGroup, 'Sending HEM to apstag', tokenConfig);
+				window.apstag.rpa(tokenConfig);
+			}
+			// Necessary for updating optOut status.
+			this.storage.setItem('apstagRecord', record);
 			this.storage.setItem('apstagHEMsent', '1');
+			this.storage.setItem('apstagHEMoptOut', optOutString);
 			communicationService.emit(eventsRepository.A9_APSTAG_HEM_SENT);
 		} catch (e) {
 			utils.logger(logGroup, 'Error sending HEM to apstag', e);
@@ -122,6 +171,18 @@ export class Apstag {
 		const apsConfig = this.getApstagConfig(signalData);
 		await this.script;
 		window.apstag.init(apsConfig);
+
+		// TACO-177
+		if (context.get('bidders.a9.hem.cleanup')) {
+			window.apstag.dpa();
+			return;
+		}
+
+		// Check if consent has not been changed between page views.
+		if (this.hasRecord()) {
+			this.sendHEM(this.getRecord());
+		}
+
 		this.sendMediaWikiHEM();
 	}
 
