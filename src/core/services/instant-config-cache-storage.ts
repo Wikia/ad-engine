@@ -34,6 +34,8 @@ export class InstantConfigCacheStorage implements InstantConfigCacheStorageServi
 	private cacheStorage: CacheDictionary;
 	private readonly cacheKey = 'basset';
 
+	private recursionGuard = false;
+
 	private constructor() {
 		this.resetCache();
 	}
@@ -52,12 +54,20 @@ export class InstantConfigCacheStorage implements InstantConfigCacheStorageServi
 	set(data: CacheData): void {
 		this.cacheStorage[data.name] = data;
 
-		if (data.withCookie) {
-			communicationService.on(eventsRepository.AD_ENGINE_CONSENT_READY, ({ gdprConsent }) => {
-				if (gdprConsent) {
-					this.resetCache();
+		// Temporary fix for MAIN-29031
+		if (!this.recursionGuard) {
+			try {
+				this.recursionGuard = true;
+				if (data.withCookie) {
+					communicationService.on(eventsRepository.AD_ENGINE_CONSENT_READY, ({ gdprConsent }) => {
+						if (gdprConsent) {
+							this.resetCache();
+						}
+					});
 				}
-			});
+			} finally {
+				this.recursionGuard = false;
+			}
 		}
 	}
 
