@@ -119,6 +119,9 @@ export const eventsRepository = {
 	AD_ENGINE_STACK_START: {
 		name: 'Ad Stack started',
 	},
+	AD_ENGINE_STACK_COMPLETED: {
+		name: 'Ad Stack completed',
+	},
 	AD_ENGINE_TEMPLATE_LOADED: {
 		name: 'Template loaded',
 		payload: props<GeneralPayload>(),
@@ -172,6 +175,9 @@ export const eventsRepository = {
 		payload: props<Dictionary>(),
 	},
 	// Integrated partners events //
+	ANYCLIP_READY: {
+		name: 'Anyclip ready',
+	},
 	ANYCLIP_LATE_INJECT: {
 		name: 'Anyclip late inject',
 	},
@@ -386,4 +392,4 @@ export const eventsRepository = {
 		name: 'Load template',
 		payload: payload<LoadTemplatePayload>(),
 	},
-};
+} as const satisfies Dictionary<EventOptions>;

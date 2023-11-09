@@ -25,3 +25,10 @@ body {
 }
 
 @include out-of-page-styles();
+
+#incontent_player {
+	display: block;
+	float: right;
+	margin: 0 0 15px 8px;
+	width: 300px;
+}

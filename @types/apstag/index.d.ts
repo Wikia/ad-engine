@@ -1,4 +1,4 @@
-import { ApstagConfig, ApstagTokenConfig } from '@wikia/ad-bidders/a9/types';
+import type { ApstagConfig, ApstagTokenConfig } from '@wikia/ad-bidders/a9/types';
 
 interface Apstag {
 	_Q: any[];

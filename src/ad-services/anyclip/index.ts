@@ -5,12 +5,14 @@ import {
 	context,
 	slotDataParamsUpdater,
 	slotService,
+	targetingService,
 	utils,
 } from '@ad-engine/core';
 import { AnyclipBidsRefresher } from './anyclip-bids-refresher';
 import { AnyclipTracker } from './anyclip-tracker';
 
 const logGroup = 'Anyclip';
+const DEFAULT_WIDGET_NAME = '001w000001Y8ud2_19593';
 const SUBSCRIBE_FUNC_NAME = 'lreSubscribe';
 const isSubscribeReady = () => typeof window[SUBSCRIBE_FUNC_NAME] !== 'undefined';
 const isPlayerAdSlotReady = (slotName = 'incontent_player') => {
@@ -28,7 +30,18 @@ export class Anyclip extends BaseServiceSetup {
 	}
 
 	private get widgetname(): string {
-		return context.get('services.anyclip.widgetname') || '001w000001Y8ud2_19593';
+		const widgetNameParam = context.get('services.anyclip.widgetname');
+
+		if (['string', 'undefined'].includes(typeof widgetNameParam)) {
+			return widgetNameParam || DEFAULT_WIDGET_NAME;
+		}
+
+		if (typeof widgetNameParam === 'object') {
+			const wikiVertical = targetingService.get('s0v');
+			return widgetNameParam[wikiVertical] || widgetNameParam['default'] || DEFAULT_WIDGET_NAME;
+		}
+
+		return DEFAULT_WIDGET_NAME;
 	}
 
 	private get libraryUrl(): string {
@@ -84,6 +97,16 @@ export class Anyclip extends BaseServiceSetup {
 		window?.anyclip?.widgets?.forEach((w) => w?.destroy());
 	}
 
+	enableFloating() {
+		utils.logger(logGroup, 'enabling Anyclip floating feature ');
+		window?.anyclip?.getWidget()?.floatingModeToggle(true);
+	}
+
+	disableFloating() {
+		utils.logger(logGroup, 'disabling Anyclip floating feature ');
+		window?.anyclip?.getWidget()?.floatingModeToggle(false);
+	}
+
 	get params(): Record<string, string> {
 		return {
 			pubname: this.pubname,
@@ -106,6 +129,7 @@ export class Anyclip extends BaseServiceSetup {
 				utils.logger(logGroup, 'ready');
 
 				this.waitForSubscribeReady().then((isSubscribeReady) => {
+					communicationService.emit(eventsRepository.ANYCLIP_READY);
 					utils.logger(
 						logGroup,
 						'Anyclip global subscribe function set',
@@ -128,13 +152,17 @@ export class Anyclip extends BaseServiceSetup {
 	private loadOnUapStatus({ isLoaded, adProduct }: UapLoadStatus) {
 		if (!isLoaded && adProduct !== 'ruap') {
 			if (!context.get('services.anyclip.latePageInject')) {
+				utils.logger(logGroup, 'No need to wait for ANYCLIP_LATE_INJECT');
 				this.initIncontentPlayer();
 				return;
 			}
 
 			communicationService.on(eventsRepository.ANYCLIP_LATE_INJECT, () => {
+				utils.logger(logGroup, 'ANYCLIP_LATE_INJECT emitted');
 				this.initIncontentPlayer();
 			});
+		} else {
+			utils.logger(logGroup, 'Anyclip blocked because of Fan Takeover');
 		}
 	}
 

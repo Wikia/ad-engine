@@ -206,7 +206,9 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 				},
 			},
 			activator: () => {
-				const rotator = new FmrRotator(slotName, slotNamePrefix, btRec);
+				const rotator = new FmrRotator(slotName, slotNamePrefix, btRec, {
+					topPositionToRun: 65,
+				});
 
 				communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
 					rotator.rotateSlot();
