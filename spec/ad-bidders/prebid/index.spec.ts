@@ -90,13 +90,10 @@ describe('PrebidProvider bidder', () => {
 					userSyncLimit: 8,
 					allowUnknownBidderCodes: true,
 					extPrebid: {
-						aliases: {
-							mgnipbs: 'rubicon',
-						},
 						cache: {
 							vastxml: { returnCreative: false },
 						},
-						extPrebidBidders: {
+						bidders: {
 							test: { wrappername: '7450_Web_Server' },
 							test1: { wrappername: '7450_Web_Server' },
 						},
