@@ -61,7 +61,7 @@ export class Anyclip extends BaseServiceSetup {
 	private bidRefresher: AnyclipBidsRefresher;
 
 	call() {
-		if (context.get('custom.hasFeaturedVideo') || !this.isEnabled('icAnyclipPlayer', false)) {
+		if (!this.isEnabled('services.anyclip.enabled', false)) {
 			utils.logger(logGroup, 'disabled');
 			return;
 		}
