@@ -76,6 +76,19 @@ export class BaseContextSetup implements DiProcess {
 		);
 
 		context.set(
+			'options.floorAdhesionNumberOfViewportsFromTopToPush',
+			this.instantConfig.get('icFloorAdhesionViewportsToStart'),
+		);
+		context.set('options.rotatorDelay', this.instantConfig.get('icRotatorDelay', {}));
+		context.set('options.maxDelayTimeout', this.instantConfig.get('icAdEngineDelay', 2000));
+		context.set('options.delayEvents', this.instantConfig.get('icDelayEvents'));
+
+		this.setupVideo();
+		this.setWadContext();
+	}
+
+	private setupVideo(): void {
+		context.set(
 			'options.video.playAdsOnNextVideo',
 			!!this.instantConfig.get('icFeaturedVideoAdsFrequency'),
 		);
@@ -96,13 +109,6 @@ export class BaseContextSetup implements DiProcess {
 			'options.video.forceVideoAdsOnAllVideosExceptSponsored',
 			this.instantConfig.get('icFeaturedVideoForceVideoAdsEverywhereExceptSponsoredVideo'),
 		);
-
-		context.set(
-			'options.floorAdhesionNumberOfViewportsFromTopToPush',
-			this.instantConfig.get('icFloorAdhesionViewportsToStart'),
-		);
-		context.set('options.rotatorDelay', this.instantConfig.get('icRotatorDelay', {}));
-		context.set('options.maxDelayTimeout', this.instantConfig.get('icAdEngineDelay', 2000));
 		context.set('options.jwpMaxDelayTimeout', this.instantConfig.get('icUAPJWPlayerDelay', 0));
 		context.set('options.video.iasTracking.enabled', this.instantConfig.get('icIASVideoTracking'));
 		context.set('options.video.isUAPJWPEnabled', this.instantConfig.get('icUAPJWPlayer'));
@@ -114,9 +120,12 @@ export class BaseContextSetup implements DiProcess {
 			'options.video.comscoreJwpTracking',
 			this.instantConfig.get('icComscoreJwpTracking'),
 		);
-		context.set('options.delayEvents', this.instantConfig.get('icDelayEvents'));
 
-		this.setWadContext();
+		context.set('services.anyclip.enabled', this.instantConfig.get('icAnyclipPlayer'));
+		context.set('services.anyclip.isApplicable', () => {
+			return !context.get('custom.hasFeaturedVideo') && !this.instantConfig.get('icConnatixPlayer');
+		});
+		context.set('services.connatix.enabled', this.instantConfig.get('icConnatixPlayer'));
 	}
 
 	private setInContentExperiment(): void {

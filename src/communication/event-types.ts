@@ -103,6 +103,9 @@ export const eventsRepository = {
 	AD_ENGINE_INSTANT_CONFIG_CACHE_RESET: {
 		name: 'Instant Config cache reset',
 	},
+	AD_ENGINE_INSTANT_CONFIG_CACHE_READY: {
+		name: 'Instant Config cache ready',
+	},
 	AD_ENGINE_INTERSTITIAL_DISPLAYED: {
 		name: 'Interstitial displayed',
 	},
