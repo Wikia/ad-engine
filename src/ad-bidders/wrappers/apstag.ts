@@ -86,7 +86,6 @@ export class Apstag {
 			return;
 		}
 
-		// TACO-177
 		// If delete/cleanup flag is being set, do not create new Amazon Tokens.
 		if (context.get('bidders.a9.hem.cleanup')) {
 			return;
@@ -172,7 +171,6 @@ export class Apstag {
 		await this.script;
 		window.apstag.init(apsConfig);
 
-		// TACO-177
 		if (context.get('bidders.a9.hem.cleanup')) {
 			window.apstag.dpa();
 			return;
