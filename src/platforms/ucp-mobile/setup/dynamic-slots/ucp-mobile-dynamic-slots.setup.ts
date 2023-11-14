@@ -15,6 +15,7 @@ import {
 	Anyclip,
 	btfBlockerService,
 	communicationService,
+	Connatix,
 	context,
 	CookieStorageAdapter,
 	DiProcess,
@@ -38,6 +39,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		private nativoSlotDefinitionRepository: NativoSlotsDefinitionRepository,
 		private quizSlotsDefinitionRepository: QuizSlotsDefinitionRepository,
 		private anyclip: Anyclip,
+		private connatix: Connatix,
 		private galleryLightbox: GalleryLightboxAds,
 		protected instantConfig: InstantConfigService,
 	) {}
@@ -207,6 +209,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		const slotName = 'floor_adhesion';
 		let codePriorityActive = false;
 		let anyclipLoaded = false;
+		let connatixLoaded = false;
 
 		const enableAnyclipFloating = () => {
 			if (!anyclipLoaded) return;
@@ -216,6 +219,16 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		const disableAnyclipFloating = () => {
 			if (!anyclipLoaded) return;
 			this.anyclip.disableFloating();
+		};
+
+		const enableConnatixFloating = () => {
+			if (!connatixLoaded) return;
+			this.connatix.enableFloating();
+		};
+
+		const disableConnatixFloating = () => {
+			if (!connatixLoaded) return;
+			this.connatix.disableFloating();
 		};
 
 		const hideFloorAdhesionAnchor = () => {
@@ -245,12 +258,21 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			}
 		});
 
+		communicationService.on(eventsRepository.CONNATIX_READY, () => {
+			connatixLoaded = true;
+
+			if (codePriorityActive) {
+				disableConnatixFloating();
+			}
+		});
+
 		communicationService.onSlotEvent(
 			AdSlotStatus.STATUS_COLLAPSE,
 			() => {
 				slotImpactWatcher.disable([slotName]);
 				hideFloorAdhesionAnchor();
 				enableAnyclipFloating();
+				enableConnatixFloating();
 			},
 			slotName,
 		);
@@ -260,6 +282,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				slotImpactWatcher.disable([slotName]);
 				hideFloorAdhesionAnchor();
 				enableAnyclipFloating();
+				enableConnatixFloating();
 			},
 			slotName,
 		);
@@ -268,6 +291,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			() => {
 				codePriorityActive = true;
 				disableAnyclipFloating();
+				disableConnatixFloating();
 
 				communicationService.on(
 					eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED,

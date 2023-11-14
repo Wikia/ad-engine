@@ -7,12 +7,26 @@ import { PlayerInjector, PlayerInjectorInterface } from './player-injector';
 export const logGroup = 'connatix';
 
 export class Connatix extends BaseServiceSetup {
+	get playerInstance() {
+		return context.get('services.connatix.playerInstance');
+	}
+
 	get cid(): string {
 		return context.get('services.connatix.cid');
 	}
 
 	isEnabled(): boolean {
 		return !!context.get('services.connatix.enabled') && !!this.cid;
+	}
+
+	enableFloating() {
+		utils.logger(logGroup, 'enabling Connatix floating feature');
+		this.playerInstance.enableFloatingMode();
+	}
+
+	disableFloating() {
+		utils.logger(logGroup, 'disabling Connatix floating feature');
+		this.playerInstance.disableFloatingMode();
 	}
 
 	constructor(
@@ -49,7 +63,7 @@ export class Connatix extends BaseServiceSetup {
 				utils.logger(logGroup, 'No need to wait for CONNATIX_LATE_INJECT');
 				initConnatixHeadScript(this.cid);
 				utils.logger(logGroup, 'Connatix head script is ready');
-				this.playerInjector.insertPlayerContainer(this.cid);
+				this.playerInjector.insertPlayerContainer(this.cid, this.renderCallback);
 				return;
 			}
 
@@ -57,10 +71,21 @@ export class Connatix extends BaseServiceSetup {
 				utils.logger(logGroup, 'CONNATIX_LATE_INJECT emitted');
 				initConnatixHeadScript(this.cid);
 				utils.logger(logGroup, 'Connatix head script is ready');
-				this.playerInjector.insertPlayerContainer(this.cid);
+				this.playerInjector.insertPlayerContainer(this.cid, this.renderCallback);
 			});
 		} else {
 			utils.logger(logGroup, 'Connatix blocked because of Fan Takeover');
 		}
+	}
+
+	private renderCallback(error, player) {
+		if (error) {
+			utils.logger(logGroup, 'Connatix encountered an error while loading', error);
+			return;
+		}
+
+		context.set('services.connatix.playerInstance', player);
+		utils.logger(logGroup, 'ready');
+		communicationService.emit(eventsRepository.CONNATIX_READY);
 	}
 }

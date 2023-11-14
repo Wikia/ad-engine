@@ -194,6 +194,9 @@ export const eventsRepository = {
 	CONNATIX_LATE_INJECT: {
 		name: 'Connatix late inject',
 	},
+	CONNATIX_READY: {
+		name: 'Connatix ready',
+	},
 	EXPERIAN_STARTED: {
 		name: 'Experian started',
 	},
