@@ -6,6 +6,7 @@ export class TvGuideTargetingSetup implements DiProcess {
 			s0: 'ent',
 			s1: 'tvguide',
 			skin: `tvguide_${context.get('state.isMobile') ? 'mobile' : 'desktop'}`,
+			MTC: 'No',
 		};
 
 		targetingService.extend(targeting);
