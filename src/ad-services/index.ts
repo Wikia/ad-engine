@@ -5,6 +5,7 @@ export * from './bt-force';
 export * from './bt-rec';
 export * from './captify';
 export * from './confiant';
+export * from './connatix';
 export * from './double-verify';
 export * from './duration-media';
 export * from './experian';
