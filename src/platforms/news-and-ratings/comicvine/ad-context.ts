@@ -27,7 +27,7 @@ export const basicContext = {
 	},
 	services: {
 		anyclip: {
-			enabled: false,
+			enabled: true,
 			pubname: '2033',
 			miniPlayerWidgetname: '001w000001Y8ud2AAB_M7540',
 			libraryUrl: '//player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/acins.js',
