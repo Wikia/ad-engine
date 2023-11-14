@@ -33,6 +33,7 @@ export const basicContext = {
 	},
 	services: {
 		anyclip: {
+			enabled: true,
 			pubname: '1999',
 			widgetname: '001w000001Y8ud2AAB_M7731',
 			libraryUrl: '//player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/lre.js',
