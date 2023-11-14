@@ -4,13 +4,7 @@ import {
 	communicationService,
 	CommunicationService,
 } from '@wikia/communication/communication-service';
-import {
-	context,
-	InstantConfigService,
-	targetingService,
-	TargetingService,
-	utils,
-} from '@wikia/core';
+import { context, targetingService, TargetingService, utils } from '@wikia/core';
 import { WaitFor } from '@wikia/core/utils';
 import { expect } from 'chai';
 import { SinonStubbedInstance } from 'sinon';
@@ -21,19 +15,18 @@ describe('Anyclip', () => {
 	const mockIsApplicable = () => true;
 	const mockIsNotApplicable = () => false;
 
-	let loadScriptStub, instantConfigStub;
+	let loadScriptStub;
 	let communicationServiceStub: SinonStubbedInstance<CommunicationService>;
 	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 
 	beforeEach(() => {
 		global.sandbox.stub(WaitFor.prototype, 'until').returns(Promise.resolve());
 		loadScriptStub = global.sandbox.spy(utils.scriptLoader, 'loadScript');
-		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
-		instantConfigStub.get.withArgs('icAnyclipPlayer').returns(true);
 		mockedIsApplicable = global.sandbox.spy();
-		anyclip = new Anyclip(instantConfigStub);
+		anyclip = new Anyclip();
 
 		context.set('custom.hasFeaturedVideo', false);
+		context.set('services.anyclip.enabled', true);
 		context.set('services.anyclip.loadWithoutAnchor', true);
 
 		communicationServiceStub = global.sandbox.stub(communicationService);
@@ -51,21 +44,22 @@ describe('Anyclip', () => {
 		global.sandbox.restore();
 
 		context.remove('custom.hasFeaturedVideo');
+		context.remove('services.anyclip.enabled');
 		context.remove('services.anyclip.loadWithoutAnchor');
 		context.remove('services.anyclip.isApplicable');
 		context.remove('services.anyclip.pubname');
 		context.remove('services.anyclip.widgetname');
 	});
 
-	it('does not load the player when disabled in the instant-config', () => {
-		instantConfigStub.get.withArgs('icAnyclipPlayer').returns(false);
+	it('does not load the player when disabled', () => {
+		context.set('services.anyclip.enabled', false);
 		context.set('services.anyclip.isApplicable', mockedIsApplicable);
 
 		anyclip.call();
 		expect(mockedIsApplicable.called).to.equal(false);
 	});
 
-	it('loads the script when isApplicable is not a function (FCP)', () => {
+	it('loads the script when isApplicable is not a function', () => {
 		anyclip.call();
 
 		expect(loadScriptStub.called).to.equal(true);
@@ -97,7 +91,7 @@ describe('Anyclip', () => {
 		context.set('services.anyclip.pubname', 'test-pubname');
 		context.set('services.anyclip.widgetname', 'test-widget');
 
-		anyclip = new Anyclip(instantConfigStub);
+		anyclip = new Anyclip();
 
 		expect(anyclip.params).to.deep.equal({
 			pubname: 'test-pubname',
@@ -109,7 +103,7 @@ describe('Anyclip', () => {
 		targetingServiceStub.get.withArgs('s0v').returns('anime');
 		context.set('services.anyclip.widgetname', { anime: 'anime-widget' });
 
-		anyclip = new Anyclip(instantConfigStub);
+		anyclip = new Anyclip();
 
 		expect(anyclip.params).to.deep.include({
 			widgetname: 'anime-widget',
@@ -120,7 +114,7 @@ describe('Anyclip', () => {
 		targetingServiceStub.get.withArgs('s0v').returns('games');
 		context.set('services.anyclip.widgetname', { default: 'test-widget' });
 
-		anyclip = new Anyclip(instantConfigStub);
+		anyclip = new Anyclip();
 
 		expect(anyclip.params).to.deep.include({
 			widgetname: 'test-widget',
@@ -131,7 +125,7 @@ describe('Anyclip', () => {
 		targetingServiceStub.get.withArgs('s0v').returns('games');
 		context.set('services.anyclip.widgetname', { anime: 'anime-widget' });
 
-		anyclip = new Anyclip(instantConfigStub);
+		anyclip = new Anyclip();
 
 		expect(anyclip.params).to.deep.include({
 			widgetname: '001w000001Y8ud2_19593',
@@ -139,7 +133,7 @@ describe('Anyclip', () => {
 	});
 
 	it('sets up the default Anyclip params when none is provided via the context', () => {
-		anyclip = new Anyclip(instantConfigStub);
+		anyclip = new Anyclip();
 
 		expect(anyclip.params).to.deep.equal({
 			pubname: 'fandomcom',
