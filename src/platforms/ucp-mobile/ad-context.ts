@@ -71,6 +71,7 @@ export const basicContext = {
 			cid: '016551d5-7095-47c0-a46b-fd0cb9bf4c72',
 			playerId: '89a95c87-3d36-4d64-928b-34d8e77502cc',
 			renderId: '6904d585951f416c9bab403a6c60c5af',
+			latePageInject: true,
 		},
 		doubleVerify: {
 			slots: [

@@ -142,6 +142,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			({ slot }) => {
 				if (slot.getSlotName() === icpSlotName) {
 					communicationService.emit(eventsRepository.ANYCLIP_LATE_INJECT);
+					communicationService.emit(eventsRepository.CONNATIX_LATE_INJECT);
 					slot.getPlaceholder()?.classList.remove('is-loading');
 				}
 			},

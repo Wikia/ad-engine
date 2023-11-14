@@ -191,6 +191,9 @@ export const eventsRepository = {
 	CAPTIFY_LOADED: {
 		name: 'Captify loaded',
 	},
+	CONNATIX_LATE_INJECT: {
+		name: 'Connatix late inject',
+	},
 	EXPERIAN_STARTED: {
 		name: 'Experian started',
 	},
