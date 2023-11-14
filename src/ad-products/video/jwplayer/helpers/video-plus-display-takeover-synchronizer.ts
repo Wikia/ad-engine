@@ -74,12 +74,12 @@ export class VideoPlusDisplayTakeoverSynchronizer {
 	}
 
 	private checkIfUAPJWPEnabled() {
-		const flag = context.get('options.video.isUAPJWPEnabled');
+		const flag = context.get('options.video.syncWithDisplay');
 
 		if (typeof flag === 'string') {
 			return globalContextService.hasBundle(flag);
 		} else if (Array.isArray(flag)) {
-			return flag.map((v) => globalContextService.hasBundle(v)).reduce((p, c) => p || c, false);
+			return flag.some((v) => globalContextService.hasBundle(v));
 		}
 		return !!flag;
 	}
