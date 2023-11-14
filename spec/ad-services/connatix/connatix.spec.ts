@@ -12,7 +12,7 @@ describe('Connatix', () => {
 		communicationServiceStub = global.sandbox.stub(communicationService);
 		communicationServiceStub.on.callsFake(
 			(event: EventOptions, callback: (payload?: any) => void) => {
-				const payload = { isLoaded: false };
+				const payload = { isLoaded: false, adProduct: 'nothing' };
 				callback(payload);
 			},
 		);
@@ -45,7 +45,24 @@ describe('Connatix', () => {
 		await connatix.call();
 		communicationServiceStub.on.callsFake(
 			(event: EventOptions, callback: (payload?: any) => void) => {
-				const payload = { isLoaded: true };
+				const payload = { isLoaded: true, adProduct: 'vuap' };
+				callback(payload);
+			},
+		);
+
+		sinon.assert.notCalled(playerInjectorSpy.insertPlayerContainer);
+	});
+
+	it('is called when there is a roadblock on the page', async () => {
+		context.set('services.connatix.enabled', false);
+		context.set('services.connatix.cid', 'abcdefghi123');
+		const playerInjectorSpy = makePlayerInjectorSpy();
+
+		const connatix = new Connatix(null, null, playerInjectorSpy);
+		await connatix.call();
+		communicationServiceStub.on.callsFake(
+			(event: EventOptions, callback: (payload?: any) => void) => {
+				const payload = { isLoaded: false, adProduct: 'ruap' };
 				callback(payload);
 			},
 		);

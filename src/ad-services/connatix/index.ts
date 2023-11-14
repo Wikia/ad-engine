@@ -32,13 +32,20 @@ export class Connatix extends BaseServiceSetup {
 			return Promise.resolve();
 		}
 
-		communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
-			if (!action.isLoaded) {
-				utils.logger(logGroup, 'No Fan Takeover loaded - injecting Connatix player');
-				initConnatixHeadScript(this.cid);
-				utils.logger(logGroup, 'Connatix head script is ready');
-				this.playerInjector.insertPlayerContainer(this.cid);
-			}
-		});
+		utils.logger(logGroup, 'initialized', this.cid);
+
+		communicationService.on(
+			eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+			({ isLoaded, adProduct }: UapLoadStatus) => {
+				if (!isLoaded && adProduct !== 'ruap') {
+					utils.logger(logGroup, 'No Fan Takeover loaded - injecting Connatix player');
+					initConnatixHeadScript(this.cid);
+					utils.logger(logGroup, 'Connatix head script is ready');
+					this.playerInjector.insertPlayerContainer(this.cid);
+				} else {
+					utils.logger(logGroup, 'Connatix blocked because of Fan Takeover');
+				}
+			},
+		);
 	}
 }
