@@ -13,7 +13,7 @@ import {
 	Lotame,
 	Nielsen,
 	PartnerPipeline,
-	videoPlusDisplayTakeoverSynchronizer,
+	videoDisplayTakeoverSynchronizer,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -57,12 +57,12 @@ export class F2AdsMode implements DiProcess {
 					dependencies: [
 						this.wadRunner.initialized,
 						this.gptSetup.initialized,
-						videoPlusDisplayTakeoverSynchronizer.isRequiredToRun()
-							? videoPlusDisplayTakeoverSynchronizer.initialized
+						videoDisplayTakeoverSynchronizer.isRequiredToRun()
+							? videoDisplayTakeoverSynchronizer.initialized
 							: Promise.resolve(),
 					],
-					timeout: videoPlusDisplayTakeoverSynchronizer.isRequiredToRun()
-						? videoPlusDisplayTakeoverSynchronizer.getDelayTimeoutInMs()
+					timeout: videoDisplayTakeoverSynchronizer.isRequiredToRun()
+						? videoDisplayTakeoverSynchronizer.getDelayTimeoutInMs()
 						: null,
 				}),
 			)

@@ -16,7 +16,7 @@ import {
 	PrebidNativeProvider,
 	Stroer,
 	System1,
-	videoPlusDisplayTakeoverSynchronizer,
+	videoDisplayTakeoverSynchronizer,
 	Wunderkind,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -70,12 +70,12 @@ export class UcpDesktopAdsMode implements DiProcess {
 						this.bidders.initialized,
 						this.wadRunner.initialized,
 						this.gptSetup.initialized,
-						videoPlusDisplayTakeoverSynchronizer.isRequiredToRun()
-							? videoPlusDisplayTakeoverSynchronizer.initialized
+						videoDisplayTakeoverSynchronizer.isRequiredToRun()
+							? videoDisplayTakeoverSynchronizer.initialized
 							: Promise.resolve(),
 					],
-					timeout: videoPlusDisplayTakeoverSynchronizer.isRequiredToRun()
-						? videoPlusDisplayTakeoverSynchronizer.getDelayTimeoutInMs()
+					timeout: videoDisplayTakeoverSynchronizer.isRequiredToRun()
+						? videoDisplayTakeoverSynchronizer.getDelayTimeoutInMs()
 						: null,
 				}),
 			)

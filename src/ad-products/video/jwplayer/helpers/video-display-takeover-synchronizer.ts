@@ -9,8 +9,8 @@ import { universalAdPackage } from '../../../templates';
  * It only applies on Video pages and selected wikis, e.g. those that will have a bundles=X tag,
  * where X value or list of values is configured in the icUAPJWPlayer ICBM variable.
  */
-export class VideoPlusDisplayTakeoverSynchronizer {
-	private logGroup = 'jwp-player-inhibitor';
+export class VideoDisplayTakeoverSynchronizer {
+	private logGroup = 'video-display-takeover-sync';
 	private videoLines: Array<string>;
 	private maxDelayTimeoutInMs = 0;
 	private isUAPJWPEnabled: boolean = undefined;
@@ -85,4 +85,4 @@ export class VideoPlusDisplayTakeoverSynchronizer {
 	}
 }
 
-export const videoPlusDisplayTakeoverSynchronizer = new VideoPlusDisplayTakeoverSynchronizer();
+export const videoDisplayTakeoverSynchronizer = new VideoDisplayTakeoverSynchronizer();
