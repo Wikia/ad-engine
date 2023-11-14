@@ -7,8 +7,8 @@ import {
 	JWPlayerHelperSkippingSecondVideo,
 	JwplayerHelperSkippingSponsoredVideo,
 } from '../helpers';
-import { jwPlayerInhibitor } from '../helpers/jwplayer-inhibitor';
 import { PlayerReadyResult } from '../helpers/player-ready-result';
+import { videoPlusDisplayTakeoverSynchronizer } from '../helpers/video-plus-display-takeover-synchronizer';
 import { JwpStream, ofJwpEvent } from '../streams/jwplayer-stream';
 
 const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
@@ -73,7 +73,10 @@ export class JWPlayerHandler {
 				this.helper.setSlotParams(state.vastParams);
 				this.helper.setSlotElementAttributes('success', state.vastParams);
 				this.helper.emitVideoAdImpression();
-				jwPlayerInhibitor.resolve(state.vastParams.lineItemId, state.vastParams.creativeId);
+				videoPlusDisplayTakeoverSynchronizer.resolve(
+					state.vastParams.lineItemId,
+					state.vastParams.creativeId,
+				);
 			}),
 		);
 	}
@@ -86,7 +89,7 @@ export class JWPlayerHandler {
 				this.helper.setSlotParams(state.vastParams);
 				this.helper.setSlotElementAttributes('error', state.vastParams);
 				this.helper.emitVideoAdError(payload.adErrorCode);
-				jwPlayerInhibitor.resolve();
+				videoPlusDisplayTakeoverSynchronizer.resolve();
 			}),
 		);
 	}

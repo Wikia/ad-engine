@@ -8,12 +8,12 @@ import {
 	eventsRepository,
 	Experian,
 	IasPublisherOptimization,
-	jwPlayerInhibitor,
 	LiveConnect,
 	LiveRampPixel,
 	Lotame,
 	Nielsen,
 	PartnerPipeline,
+	videoPlusDisplayTakeoverSynchronizer,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -57,10 +57,12 @@ export class F2AdsMode implements DiProcess {
 					dependencies: [
 						this.wadRunner.initialized,
 						this.gptSetup.initialized,
-						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
+						videoPlusDisplayTakeoverSynchronizer.isRequiredToRun()
+							? videoPlusDisplayTakeoverSynchronizer.initialized
+							: Promise.resolve(),
 					],
-					timeout: jwPlayerInhibitor.isRequiredToRun()
-						? jwPlayerInhibitor.getDelayTimeoutInMs()
+					timeout: videoPlusDisplayTakeoverSynchronizer.isRequiredToRun()
+						? videoPlusDisplayTakeoverSynchronizer.getDelayTimeoutInMs()
 						: null,
 				}),
 			)

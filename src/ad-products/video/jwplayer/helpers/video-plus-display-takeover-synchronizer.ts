@@ -1,10 +1,19 @@
-import { context, utils } from '@ad-engine/core';
+import { context, globalContextService, utils } from '@ad-engine/core';
 import { universalAdPackage } from '../../../templates';
 
-export class JWPlayerInhibitor {
+/*
+ * Supports Video and Display Takeover synchronisation by resolving a promise when either
+ * a) Video Ad impression sets UAP line or not
+ * b) timeout for delaying the waiting for Video ad impression expires
+ *
+ * It only applies on Video pages and selected wikis, e.g. those that will have a bundles=X tag,
+ * where X value or list of values is configured in the icUAPJWPlayer ICBM variable.
+ */
+export class VideoPlusDisplayTakeoverSynchronizer {
 	private logGroup = 'jwp-player-inhibitor';
 	private videoLines: Array<string>;
 	private maxDelayTimeoutInMs = 0;
+	private isUAPJWPEnabled: boolean = undefined;
 	initialized: utils.ExtendedPromise<void> = utils.createExtendedPromise();
 
 	private isEnabled(): boolean {
@@ -16,9 +25,13 @@ export class JWPlayerInhibitor {
 			this.maxDelayTimeoutInMs = context.get('options.jwpMaxDelayTimeout') || 0;
 		}
 
+		if (this.isUAPJWPEnabled === undefined) {
+			this.isUAPJWPEnabled = this.checkIfUAPJWPEnabled();
+		}
+
 		return (
 			context.get('custom.hasFeaturedVideo') &&
-			context.get('options.video.isUAPJWPEnabled') &&
+			this.isUAPJWPEnabled &&
 			this.maxDelayTimeoutInMs > 0 &&
 			this.videoLines.length > 0
 		);
@@ -59,6 +72,17 @@ export class JWPlayerInhibitor {
 
 		this.initialized.resolve(null);
 	}
+
+	private checkIfUAPJWPEnabled() {
+		const flag = context.get('options.video.isUAPJWPEnabled');
+
+		if (typeof flag === 'string') {
+			return globalContextService.hasBundle(flag);
+		} else if (Array.isArray(flag)) {
+			return flag.map((v) => globalContextService.hasBundle(v)).reduce((p, c) => p || c, false);
+		}
+		return !!flag;
+	}
 }
 
-export const jwPlayerInhibitor = new JWPlayerInhibitor();
+export const videoPlusDisplayTakeoverSynchronizer = new VideoPlusDisplayTakeoverSynchronizer();
