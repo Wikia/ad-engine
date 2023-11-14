@@ -4,12 +4,26 @@ import { context } from '@wikia/core';
 import { expect } from 'chai';
 
 describe('Pubmatic bidder adapter', () => {
+	before(() => {
+		context.extend({
+			adUnitId: '/5441/something/_{custom.pageType}/{slotConfig.adProduct}',
+			custom: {
+				pageType: 'PB',
+			},
+		});
+	});
+
 	const EXPECTED_VIDEO_AD_UNIT_CONFIG_DEFAULT = {
 		code: 'featured',
 		mediaTypes: {
 			video: {
 				playerSize: [640, 480],
 				context: 'instream',
+			},
+		},
+		ortb2Imp: {
+			ext: {
+				gpid: '/5441/something/_PB/featured',
 			},
 		},
 		bids: [
@@ -43,6 +57,11 @@ describe('Pubmatic bidder adapter', () => {
 				playerSize: [640, 480],
 				context: 'instream',
 				placement: PrebidVideoPlacements.IN_ARTICLE,
+			},
+		},
+		ortb2Imp: {
+			ext: {
+				gpid: '/5441/something/_PB/featured',
 			},
 		},
 		bids: [
@@ -108,6 +127,11 @@ describe('Pubmatic bidder adapter', () => {
 							[300, 250],
 							[320, 480],
 						],
+					},
+				},
+				ortb2Imp: {
+					ext: {
+						gpid: '/5441/something/_PB/mobile_in_content',
 					},
 				},
 				bids: [

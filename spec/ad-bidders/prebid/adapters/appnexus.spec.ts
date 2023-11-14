@@ -7,6 +7,15 @@ import { SinonStubbedInstance } from 'sinon';
 describe('Appnexus bidder adapter', () => {
 	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 
+	before(() => {
+		context.extend({
+			adUnitId: '/5441/something/_{custom.pageType}/{slotConfig.adProduct}',
+			custom: {
+				pageType: 'PB',
+			},
+		});
+	});
+
 	beforeEach(() => {
 		targetingServiceStub = global.sandbox.stub(targetingService);
 	});
@@ -49,6 +58,11 @@ describe('Appnexus bidder adapter', () => {
 						],
 					},
 				},
+				ortb2Imp: {
+					ext: {
+						gpid: '/5441/something/_PB/bottom_leaderboard',
+					},
+				},
 				bids: [
 					{
 						bidder: 'appnexus',
@@ -73,7 +87,12 @@ describe('Appnexus bidder adapter', () => {
 			.withArgs('bidders.prebid.native.enabled')
 			.returns(true)
 			.withArgs('bidders.prebid.appnexusNative.enabled')
-			.returns(true);
+			.returns(true)
+			.withArgs('adUnitId')
+			.returns('/5441/something/_{custom.pageType}/{slotConfig.adProduct}')
+			.withArgs('custom.pageType')
+			.returns('PB');
+
 		const appnexus = new Appnexus({
 			enabled: true,
 			slots: {
@@ -97,6 +116,11 @@ describe('Appnexus bidder adapter', () => {
 				code: 'bottom_leaderboard',
 				mediaTypes: {
 					native: PrebidNativeConfig.getPrebidNativeMediaTypes('mobile'),
+				},
+				ortb2Imp: {
+					ext: {
+						gpid: '/5441/something/_PB/bottom_leaderboard',
+					},
 				},
 				bids: [
 					{
@@ -142,6 +166,11 @@ describe('Appnexus bidder adapter', () => {
 						],
 					},
 				},
+				ortb2Imp: {
+					ext: {
+						gpid: '/5441/something/_PB/02_MR',
+					},
+				},
 				bids: [
 					{
 						bidder: 'appnexus',
@@ -184,6 +213,11 @@ describe('Appnexus bidder adapter', () => {
 							[300, 250],
 							[300, 600],
 						],
+					},
+				},
+				ortb2Imp: {
+					ext: {
+						gpid: '/5441/something/_PB/02_MR',
 					},
 				},
 				bids: [

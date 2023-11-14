@@ -7,6 +7,15 @@ describe('AppnexusAst bidder adapter', () => {
 		context.remove('slots.mobile_in_content');
 	});
 
+	before(() => {
+		context.extend({
+			adUnitId: '/5441/something/_{custom.pageType}/{slotConfig.adProduct}',
+			custom: {
+				pageType: 'PB',
+			},
+		});
+	});
+
 	it('can be enabled', () => {
 		const appnexusAst = new AppnexusAst({
 			enabled: true,
@@ -32,6 +41,11 @@ describe('AppnexusAst bidder adapter', () => {
 					video: {
 						context: 'instream',
 						playerSize: [640, 480],
+					},
+				},
+				ortb2Imp: {
+					ext: {
+						gpid: '/5441/something/_PB/mobile_in_content',
 					},
 				},
 				bids: [

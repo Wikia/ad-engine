@@ -95,6 +95,7 @@ export class Wikia extends PrebidAdapter {
 					},
 				},
 			},
+			ortb2Imp: this.getOrtb2Imp(code),
 			bids: [
 				{
 					bidder: this.bidderName,
@@ -112,6 +113,7 @@ export class Wikia extends PrebidAdapter {
 					sizes,
 				},
 			},
+			ortb2Imp: this.getOrtb2Imp(code),
 			bids: [
 				{
 					bidder: this.bidderName,

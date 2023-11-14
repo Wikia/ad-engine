@@ -3,6 +3,15 @@ import { context } from '@wikia/core';
 import { expect } from 'chai';
 
 describe('TestBidder bidder adapter', () => {
+	before(() => {
+		context.extend({
+			adUnitId: '/5441/something/_{custom.pageType}/{slotConfig.adProduct}',
+			custom: {
+				pageType: 'PB',
+			},
+		});
+	});
+
 	it('can be enabled', () => {
 		const testBidder = new TestBidder({
 			enabled: true,
@@ -50,7 +59,15 @@ describe('TestBidder bidder adapter', () => {
 	});
 
 	it('prepareAdUnits returns data in correct shape for video', () => {
-		global.sandbox.stub(context, 'get').withArgs('slots.bottom_leaderboard.isVideo').returns(true);
+		global.sandbox
+			.stub(context, 'get')
+			.withArgs('slots.bottom_leaderboard.isVideo')
+			.returns(true)
+			.withArgs('adUnitId')
+			.returns('/5441/something/_{custom.pageType}/{slotConfig.adProduct}')
+			.withArgs('custom.pageType')
+			.returns('PB');
+
 		const testBidder = new TestBidder({
 			enabled: true,
 			slots: {
@@ -73,6 +90,11 @@ describe('TestBidder bidder adapter', () => {
 					video: {
 						context: 'instream',
 						playerSize: [640, 480],
+					},
+				},
+				ortb2Imp: {
+					ext: {
+						gpid: '/5441/something/_PB/bottom_leaderboard',
 					},
 				},
 				bids: [

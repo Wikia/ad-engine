@@ -1,7 +1,17 @@
 import { Kargo } from '@wikia/ad-bidders/prebid/adapters/kargo';
+import { context } from '@wikia/core';
 import { expect } from 'chai';
 
 describe('Kargo bidder adapter', () => {
+	before(() => {
+		context.extend({
+			adUnitId: '/5441/something/_{custom.pageType}/{slotConfig.adProduct}',
+			custom: {
+				pageType: 'PB',
+			},
+		});
+	});
+
 	it('can be enabled', () => {
 		const kargo = new Kargo({
 			enabled: true,
@@ -28,6 +38,11 @@ describe('Kargo bidder adapter', () => {
 				mediaTypes: {
 					banner: {
 						sizes: [[300, 250]],
+					},
+				},
+				ortb2Imp: {
+					ext: {
+						gpid: '/5441/something/_PB/mobile_in_content',
 					},
 				},
 				bids: [

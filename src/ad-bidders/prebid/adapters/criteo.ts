@@ -27,6 +27,7 @@ export class Criteo extends PrebidAdapter {
 					sizes,
 				},
 			},
+			ortb2Imp: this.getOrtb2Imp(code),
 			bids: [
 				{
 					bidder: this.bidderName,

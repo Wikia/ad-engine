@@ -3,6 +3,15 @@ import { context } from '@wikia/core';
 import { expect } from 'chai';
 
 describe('Freewheel bidder adapter', () => {
+	before(() => {
+		context.extend({
+			adUnitId: '/5441/something/_{custom.pageType}/{slotConfig.adProduct}',
+			custom: {
+				pageType: 'PB',
+			},
+		});
+	});
+
 	it('can be enabled', () => {
 		const freewheel = new Freewheel({
 			enabled: true,
@@ -28,6 +37,11 @@ describe('Freewheel bidder adapter', () => {
 				mediaTypes: {
 					video: {
 						playerSize: [640, 480],
+					},
+				},
+				ortb2Imp: {
+					ext: {
+						gpid: '/5441/something/_PB/featured',
 					},
 				},
 				bids: [
@@ -63,6 +77,11 @@ describe('Freewheel bidder adapter', () => {
 				mediaTypes: {
 					video: {
 						playerSize: [640, 480],
+					},
+				},
+				ortb2Imp: {
+					ext: {
+						gpid: '/5441/something/_PB/featured',
 					},
 				},
 				bids: [

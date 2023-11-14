@@ -49,6 +49,7 @@ export class Pubmatic extends PrebidAdapter {
 					context: 'instream',
 				},
 			},
+			ortb2Imp: this.getOrtb2Imp(code),
 			bids: this.getBids(ids, videoParams),
 		};
 	}
@@ -61,6 +62,7 @@ export class Pubmatic extends PrebidAdapter {
 					sizes,
 				},
 			},
+			ortb2Imp: this.getOrtb2Imp(code),
 			bids: this.getBids(ids),
 		};
 	}

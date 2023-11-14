@@ -23,6 +23,7 @@ export class Freewheel extends PrebidAdapter {
 					playerSize: [640, 480],
 				},
 			},
+			ortb2Imp: this.getOrtb2Imp(code),
 			bids: [
 				{
 					bidder: this.bidderName,
