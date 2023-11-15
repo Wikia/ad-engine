@@ -4,6 +4,7 @@ export enum GlobalContextCategories {
 	site = 'site',
 	page = 'page',
 	tracking = 'tracking',
+	targeting = 'targeting',
 	partners = 'partners',
 }
 
