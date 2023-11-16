@@ -22,6 +22,7 @@ import { id5 } from './id5';
 import { intentIQ } from './intent-iq';
 import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice, roundBucketCpm } from './price-helper';
+import { yahooConnectId } from './yahoo-connect-id';
 
 const logGroup = 'prebid';
 
@@ -208,6 +209,7 @@ export class PrebidProvider extends BidderProvider {
 	private configureUserSync(): void {
 		this.configureOzone();
 		this.configureId5();
+		this.configureYahooConnectId();
 	}
 
 	private configureOzone(): void {
@@ -239,6 +241,16 @@ export class PrebidProvider extends BidderProvider {
 
 		this.enableId5Analytics();
 		communicationService.emit(eventsRepository.ID5_DONE);
+	}
+
+	private configureYahooConnectId(): void {
+		const yahooConnectIdConfig = yahooConnectId.getConfig();
+
+		if (!yahooConnectIdConfig) {
+			return;
+		}
+
+		this.prebidConfig.userSync.userIds.push(yahooConnectIdConfig);
 	}
 
 	private configureSChain(): void {
