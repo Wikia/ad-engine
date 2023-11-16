@@ -1,3 +1,4 @@
+@import '../../shared/styles/breakpoints';
 @import '../shared/styles/uap-styles.scss';
 @import '../shared/styles/out-of-page-styles';
 
@@ -28,7 +29,11 @@ body {
 
 #incontent_player {
 	display: block;
-	float: right;
-	margin: 0 0 15px 8px;
 	width: 300px;
+	margin: 8px auto;
+
+	@media #{$breakpoint-m-up} {
+		float: right;
+		margin: 0 0 15px 8px;
+	}
 }
