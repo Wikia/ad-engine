@@ -12,6 +12,8 @@ interface MediaWikiAds {
 interface MediaWikiAdsContext {
 	opts: MediaWikiAdsOpts;
 	targeting: MediaWikiAdsTargeting;
+	domWait?: boolean;
+	docWait?: boolean;
 }
 
 interface MediaWikiAdsOpts {
@@ -21,6 +23,8 @@ interface MediaWikiAdsOpts {
 	isSubjectToCcpa?: boolean;
 	platformName?: string;
 	showAds: boolean;
+	waitForDOM?: boolean;
+	waitForDCL?: boolean;
 }
 
 interface MediaWikiAdsTargeting {

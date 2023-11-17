@@ -47,4 +47,11 @@ export const basicContext = {
 	},
 	slots: {},
 	src: ['comicvine'],
+	preload: {
+		gpt: true,
+		audigent: false,
+		prebid: true,
+		apstag: true,
+		intentIq: false,
+	},
 };

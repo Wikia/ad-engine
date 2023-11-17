@@ -25,7 +25,7 @@ export interface PreloadOptions {
 
 @Injectable()
 export class PreloadedLibrariesSetup implements DiProcess {
-	private readonly options: PreloadOptions;
+	private readonly options: PreloadOptions | undefined;
 
 	constructor(private instantConfig: InstantConfigService, private gptSetup: GptSetup) {
 		this.options = context.get('options.preload');
@@ -33,25 +33,25 @@ export class PreloadedLibrariesSetup implements DiProcess {
 
 	async execute(): Promise<void> {
 		this.preloadLibraries();
-		return this.options.gpt ? this.gptSetup.call() : Promise.resolve();
+		return this.options?.gpt ? this.gptSetup.call() : Promise.resolve();
 	}
 
 	private preloadLibraries() {
-		if (this.options.prebid && this.instantConfig.get('icPrebid')) {
+		if (this.options?.prebid && this.instantConfig.get('icPrebid')) {
 			context.set('bidders.prebid.libraryUrl', this.getPrebidLibraryUrl());
 
 			pbjsFactory.init().then(() => {
-				if (this.options.intentIq && this.instantConfig.get('icPrebidIntentIQ')) {
+				if (this.options?.intentIq && this.instantConfig.get('icPrebidIntentIQ')) {
 					return intentIQ.preloadScript();
 				}
 			});
 		}
 
-		if (this.options.apstag && this.instantConfig.get('icA9Bidder')) {
+		if (this.options?.apstag && this.instantConfig.get('icA9Bidder')) {
 			A9Provider.initApstag();
 		}
 
-		if (this.options.audigent && this.instantConfig.get('icAudigent')) {
+		if (this.options?.audigent && this.instantConfig.get('icAudigent')) {
 			Audigent.loadSegmentLibrary();
 		}
 	}

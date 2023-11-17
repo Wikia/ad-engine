@@ -8,9 +8,9 @@ export interface AdEnginePhases {
 
 // Needs to be setup by Pipeline to get configuration variables
 export const adEnginePhases: AdEnginePhases = {
-	initial: undefined,
-	configuration: undefined,
-	partners: undefined,
-	stackStart: undefined,
-	firstAdCall: undefined,
+	initial: Promise.resolve(),
+	configuration: Promise.resolve(),
+	partners: Promise.resolve(),
+	stackStart: Promise.resolve(),
+	firstAdCall: Promise.resolve(),
 };
