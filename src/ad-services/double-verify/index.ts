@@ -1,4 +1,4 @@
-import { BaseServiceSetup, context, targetingService, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, SlotConfig, targetingService, utils } from '@ad-engine/core';
 
 const logGroup = 'double-verify';
 const scriptUrl = 'https://pub.doubleverify.com/signals/pub.json';
@@ -7,12 +7,14 @@ const cmp = 'DV1001654';
 const referer = window.location.href;
 
 interface AdUnit {
+	slotName: string;
 	path: string;
 }
 
 export class DoubleVerify extends BaseServiceSetup {
 	private isLoaded = false;
 	private slots: string[] = [];
+	private adUnits: AdUnit[] = [];
 
 	async call() {
 		if (this.isLoaded) {
@@ -75,7 +77,12 @@ export class DoubleVerify extends BaseServiceSetup {
 
 	private addToSlotsTargeting(data: any, targetingKey: string): void {
 		if (typeof data === 'object') {
-			Object.entries(data).forEach(([slotName, value]) => {
+			Object.entries(data).forEach(([adUnitPath, value]) => {
+				const adUnit: AdUnit | undefined = this.adUnits.find(
+					(adUnit) => adUnit.path === adUnitPath,
+				);
+				const slotName = adUnit?.slotName ?? '';
+
 				targetingService.set(targetingKey, value[''], slotName);
 			});
 		}
@@ -95,10 +102,10 @@ export class DoubleVerify extends BaseServiceSetup {
 			url: encodeURIComponent(referer),
 		});
 
-		const adUnits = this.getAdUnitsForRequest();
+		this.adUnits = this.getAdUnitsForRequest();
 
-		Object.values(adUnits).forEach((slot) => {
-			params.append(`adunits[${slot.path}][]`, '');
+		Object.values(this.adUnits).forEach(({ path }) => {
+			params.append(`adunits[${path}][]`, '');
 		});
 
 		const url = new URL(scriptUrl);
@@ -109,8 +116,16 @@ export class DoubleVerify extends BaseServiceSetup {
 
 	private getAdUnitsForRequest(): AdUnit[] {
 		return this.slots.map((slotName) => {
+			const slotConfig: SlotConfig = { ...context.get(`slots.${slotName}`) };
+			slotConfig.slotNameSuffix = slotConfig.slotNameSuffix || '';
+
+			const adUnitPath = utils.stringBuilder.build(slotConfig.adUnit || context.get('adUnitId'), {
+				slotConfig,
+			});
+
 			return {
-				path: slotName,
+				slotName,
+				path: adUnitPath,
 			};
 		});
 	}

@@ -1,4 +1,5 @@
 export * from './bidders/bidders-state.setup';
+export * from './bidders/filter-video-bids';
 export * from './bidders/wikia-adapter';
 export * from './bootstrap';
 export * from './consent/consent-management-platform.setup';

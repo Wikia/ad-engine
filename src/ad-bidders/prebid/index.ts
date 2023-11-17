@@ -89,6 +89,7 @@ async function markWinningVideoBidAsUsed(adSlot: AdSlot): Promise<void> {
 	if (adId) {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
+		utils.logger(logGroup, 'marking video bid as used', adSlot.getSlotName(), adId);
 		pbjs.markWinningBidAsUsed({ adId });
 		adSlot.emit(AdSlotEvent.VIDEO_AD_USED);
 	}
@@ -153,6 +154,7 @@ export class PrebidProvider extends BidderProvider {
 		};
 
 		this.configureUserSync();
+		this.configureSChain();
 
 		this.applyConfig(this.prebidConfig);
 		this.configureAdUnits();
@@ -168,7 +170,15 @@ export class PrebidProvider extends BidderProvider {
 				enableSendAllBids: false,
 				targetingControls: {
 					alwaysIncludeDeals: true,
-					allowTargetingKeys: ['AD_ID', 'BIDDER', 'DEAL', 'PRICE_BUCKET', 'SIZE', 'UUID'],
+					allowTargetingKeys: [
+						'AD_ID',
+						'BIDDER',
+						'DEAL',
+						'PRICE_BUCKET',
+						'SIZE',
+						'UUID',
+						'CACHE_HOST',
+					],
 				},
 			};
 		}
@@ -181,7 +191,15 @@ export class PrebidProvider extends BidderProvider {
 			},
 			targetingControls: {
 				alwaysIncludeDeals: true,
-				allowTargetingKeys: ['AD_ID', 'BIDDER', 'PRICE_BUCKET', 'UUID', 'SIZE', 'DEAL'],
+				allowTargetingKeys: [
+					'AD_ID',
+					'BIDDER',
+					'PRICE_BUCKET',
+					'UUID',
+					'SIZE',
+					'DEAL',
+					'CACHE_HOST',
+				],
 				allowSendAllBidsTargetingKeys: ['AD_ID', 'PRICE_BUCKET', 'UUID', 'SIZE', 'DEAL'],
 			},
 		};
@@ -221,6 +239,34 @@ export class PrebidProvider extends BidderProvider {
 
 		this.enableId5Analytics();
 		communicationService.emit(eventsRepository.ID5_DONE);
+	}
+
+	private configureSChain(): void {
+		this.configureWebAdsSChain();
+	}
+
+	private async configureWebAdsSChain(): Promise<void> {
+		const pbjs: Pbjs = await pbjsFactory.init();
+
+		pbjs.setBidderConfig({
+			bidders: ['relevantdigital'],
+			config: {
+				schain: {
+					validation: 'strict',
+					config: {
+						ver: '1.0',
+						complete: 1,
+						nodes: [
+							{
+								asi: 'http://webads.eu',
+								sid: '310035',
+								hp: 1,
+							},
+						],
+					},
+				},
+			},
+		});
 	}
 
 	private enableId5Analytics(): void {
@@ -283,13 +329,10 @@ export class PrebidProvider extends BidderProvider {
 					userSyncLimit: 8,
 					allowUnknownBidderCodes: true,
 					extPrebid: {
-						aliases: {
-							mgnipbs: 'rubicon',
-						},
 						cache: {
 							vastxml: { returnCreative: false },
 						},
-						extPrebidBidders,
+						bidders: extPrebidBidders,
 					},
 				},
 			],

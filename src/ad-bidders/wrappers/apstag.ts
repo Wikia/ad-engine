@@ -10,7 +10,7 @@ import {
 } from '@ad-engine/core';
 import { A9Bid, A9BidConfig, A9CCPA, ApstagConfig } from '../a9/types';
 
-const logGroup = 'Apstag';
+const logGroup = 'a9-apstag';
 
 export class Apstag {
 	private static instance: Apstag;

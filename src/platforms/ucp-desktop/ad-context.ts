@@ -20,7 +20,12 @@ export const basicContext = {
 		prebid: {
 			enabled: false,
 			bidsRefreshing: {
-				slots: ['gallery_leaderboard', 'incontent_boxad_1', 'incontent_leaderboard'],
+				slots: [
+					'gallery_leaderboard',
+					'incontent_boxad_1',
+					'incontent_leaderboard',
+					'incontent_player',
+				],
 			},
 		},
 	},
@@ -60,6 +65,14 @@ export const basicContext = {
 			'.mw-parser-output > h2,.mw-parser-output > h3,.mw-parser-output > h4,.mw-parser-output > h5',
 	},
 	services: {
+		anyclip: {
+			pubname: 'fandomcom',
+			widgetname: {
+				anime: '001w000001Y8ud2AAB_M8447',
+				games: '001w000001Y8ud2AAB_M8446',
+			},
+			libraryUrl: 'https://player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/lre.js',
+		},
 		doubleVerify: {
 			slots: [
 				'top_leaderboard',
@@ -74,6 +87,12 @@ export const basicContext = {
 		},
 		durationMedia: {
 			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',
+		},
+		connatix: {
+			enabled: false,
+			cid: '016551d5-7095-47c0-a46b-fd0cb9bf4c72',
+			playerId: '039a9ead-fb3b-4afc-bcfb-ed241bbaa8d1',
+			renderId: '858c22ce64e241d5acc77c4f6ed56d2d',
 		},
 		iasPublisherOptimization: {
 			slots: [
@@ -126,9 +145,9 @@ export const basicContext = {
 		},
 		preload: {
 			gpt: false,
-			audigent: false,
+			audigent: true,
 			prebid: true,
-			apstag: true,
+			apstag: false,
 			intentIq: true,
 		},
 		phases: {

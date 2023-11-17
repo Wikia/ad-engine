@@ -11,6 +11,7 @@ export interface TargetingParams extends CookieBasedTargetingParams {
 	contentid_nr?: string;
 	collection?: string;
 	franchise?: string;
+	franchiseRoot?: string;
 	game?: string;
 	gnre?: string;
 	env?: string;

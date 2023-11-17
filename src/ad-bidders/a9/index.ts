@@ -78,7 +78,7 @@ export class A9Provider extends BidderProvider {
 		return this.targetingKeys;
 	}
 
-	private initIfNotLoaded(): void {
+	private async initIfNotLoaded(): Promise<void> {
 		if (!this.loaded) {
 			if (context.get('custom.hasFeaturedVideo')) {
 				communicationService.onSlotEvent(AdSlotEvent.VIDEO_AD_IMPRESSION, ({ slot }) =>
@@ -94,7 +94,7 @@ export class A9Provider extends BidderProvider {
 				);
 			}
 
-			this.apstag.init();
+			await this.apstag.init();
 
 			if (!trackingOptIn.isOptedIn() || trackingOptIn.isOptOutSale()) {
 				utils.logger(logGroup, 'A9 was initialized without consents');
@@ -330,14 +330,12 @@ export class A9Provider extends BidderProvider {
 		}
 	}
 
-	protected async callBids(): Promise<void> {
-		this.initIfNotLoaded();
-
+	protected callBids(): void {
 		this.bids = {};
 		this.priceMap = {};
 		const a9Slots = this.getA9SlotsDefinitions(this.slotsNames);
 
-		this.fetchBids(a9Slots);
+		this.initIfNotLoaded().then(() => this.fetchBids(a9Slots));
 	}
 
 	calculatePrices(): void {

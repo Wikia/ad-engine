@@ -1,3 +1,4 @@
+import { TrackingParametersSetup } from '@platforms/shared';
 import {
 	communicationService,
 	eventsRepository,
@@ -31,8 +32,11 @@ export class NewsAndRatingsNeutronHelper {
 	setupPageChangedWatcher(container: Container, ...steps: any[]) {
 		communicationService.on(
 			eventsRepository.PLATFORM_PAGE_CHANGED,
-			() => {
+			async () => {
 				utils.logger(logGroup, 'url changed', location.href);
+
+				const trackingParametersSetup = container.get(TrackingParametersSetup);
+				await trackingParametersSetup.setTrackingParameters();
 
 				targetingService.clear();
 

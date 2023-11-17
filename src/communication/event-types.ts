@@ -77,7 +77,7 @@ export interface IdentityDataPayload {
 	partnerIdentityId: string | null;
 }
 
-export const eventsRepository: Dictionary<EventOptions> = {
+export const eventsRepository = {
 	// AdEngine life cycle events //
 	AD_ENGINE_BAB_DETECTION: {
 		category: '[Ad Engine]',
@@ -98,6 +98,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	AD_ENGINE_INSTANT_CONFIG_CACHE_RESET: {
 		name: 'Instant Config cache reset',
 	},
+	AD_ENGINE_INSTANT_CONFIG_CACHE_READY: {
+		name: 'Instant Config cache ready',
+	},
 	AD_ENGINE_INTERSTITIAL_DISPLAYED: {
 		name: 'Interstitial displayed',
 	},
@@ -113,6 +116,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	},
 	AD_ENGINE_STACK_START: {
 		name: 'Ad Stack started',
+	},
+	AD_ENGINE_STACK_COMPLETED: {
+		name: 'Ad Stack completed',
 	},
 	AD_ENGINE_TEMPLATE_LOADED: {
 		name: 'Template loaded',
@@ -167,6 +173,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		payload: props<Dictionary>(),
 	},
 	// Integrated partners events //
+	ANYCLIP_READY: {
+		name: 'Anyclip ready',
+	},
 	ANYCLIP_LATE_INJECT: {
 		name: 'Anyclip late inject',
 	},
@@ -381,4 +390,4 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Load template',
 		payload: payload<LoadTemplatePayload>(),
 	},
-};
+} as const satisfies Dictionary<EventOptions>;
