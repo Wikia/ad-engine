@@ -12,4 +12,5 @@ interface AnyclipWidget {
 	play: () => void;
 	destroy: () => void;
 	isDestroyed: () => boolean;
+	floatingModeToggle: (floatingState: boolean) => void;
 }

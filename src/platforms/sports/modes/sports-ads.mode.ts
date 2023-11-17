@@ -9,6 +9,7 @@ import {
 	DoubleVerify,
 	DurationMedia,
 	eventsRepository,
+	Experian,
 	IasPublisherOptimization,
 	LiveConnect,
 	LiveRampPixel,
@@ -28,6 +29,7 @@ export class SportsAdsMode implements DiProcess {
 		private confiant: Confiant,
 		private doubleVerify: DoubleVerify,
 		private durationMedia: DurationMedia,
+		private experian: Experian,
 		private gptSetup: GptSetup,
 		private iasPublisherOptimization: IasPublisherOptimization,
 		private liveConnect: LiveConnect,
@@ -42,6 +44,7 @@ export class SportsAdsMode implements DiProcess {
 				this.lotame,
 				this.liveRampPixel,
 				this.liveConnect,
+				this.experian,
 				this.bidders,
 				this.captify,
 				this.wadRunner,
@@ -50,9 +53,7 @@ export class SportsAdsMode implements DiProcess {
 				this.confiant,
 				this.durationMedia,
 				this.gptSetup,
-				this.doubleVerify.setOptions({
-					dependencies: [this.gptSetup.initialized],
-				}),
+				this.doubleVerify,
 				this.adEngineStackSetup.setOptions({
 					dependencies: [
 						this.bidders.initialized,

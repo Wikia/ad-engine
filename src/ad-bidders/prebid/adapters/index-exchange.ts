@@ -7,6 +7,9 @@ export class IndexExchange extends PrebidAdapter {
 	aliases = {
 		ix: [IndexExchange.bidderName],
 	};
+	bidderSettings = {
+		storageAllowed: true,
+	};
 
 	constructor(options) {
 		super(options);

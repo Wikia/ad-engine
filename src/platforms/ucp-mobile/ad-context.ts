@@ -54,12 +54,16 @@ export const basicContext = {
 	},
 	templates: {
 		incontentAnchorSelector:
-			'.mw-parser-output > h2,.mw-parser-output > section > h3,.mw-parser-output > section > h4,.mw-parser-output > section > h5',
+			'.mw-parser-output > h2,.mw-parser-output > section > h3,.mw-parser-output > section > h4,.mw-parser-output > section > h5,.mw-parser-output > h3,.mw-parser-output > h4,.mw-parser-output > h5',
 	},
 	services: {
 		anyclip: {
 			pubname: 'fandomcom',
-			widgetname: '001w000001Y8ud2AAB_M6237',
+			widgetname: {
+				anime: '001w000001Y8ud2AAB_M8449',
+				games: '001w000001Y8ud2AAB_M8448',
+				default: '001w000001Y8ud2AAB_M6237',
+			},
 			libraryUrl: 'https://player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/lre.js',
 			latePageInject: true,
 		},

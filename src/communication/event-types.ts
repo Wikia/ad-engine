@@ -77,7 +77,7 @@ export interface IdentityDataPayload {
 	partnerIdentityId: string | null;
 }
 
-export const eventsRepository: Dictionary<EventOptions> = {
+export const eventsRepository = {
 	// AdEngine life cycle events //
 	AD_ENGINE_BAB_DETECTION: {
 		category: '[Ad Engine]',
@@ -98,6 +98,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	AD_ENGINE_INSTANT_CONFIG_CACHE_RESET: {
 		name: 'Instant Config cache reset',
 	},
+	AD_ENGINE_INSTANT_CONFIG_CACHE_READY: {
+		name: 'Instant Config cache ready',
+	},
 	AD_ENGINE_INTERSTITIAL_DISPLAYED: {
 		name: 'Interstitial displayed',
 	},
@@ -113,6 +116,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	},
 	AD_ENGINE_STACK_START: {
 		name: 'Ad Stack started',
+	},
+	AD_ENGINE_STACK_COMPLETED: {
+		name: 'Ad Stack completed',
 	},
 	AD_ENGINE_TEMPLATE_LOADED: {
 		name: 'Template loaded',
@@ -167,6 +173,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		payload: props<Dictionary>(),
 	},
 	// Integrated partners events //
+	ANYCLIP_READY: {
+		name: 'Anyclip ready',
+	},
 	ANYCLIP_LATE_INJECT: {
 		name: 'Anyclip late inject',
 	},
@@ -181,6 +190,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	},
 	CAPTIFY_LOADED: {
 		name: 'Captify loaded',
+	},
+	EXPERIAN_STARTED: {
+		name: 'Experian started',
 	},
 	EYEOTA_STARTED: {
 		name: 'Eyeota started',
@@ -198,6 +210,12 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	},
 	INTENTIQ_PPID_NOT_SET_ON_TIME: {
 		name: 'IntentIQ PPID not set on time',
+	},
+	INTENTIQ_START: {
+		name: 'IntentIQ start',
+	},
+	INTENTIQ_DONE: {
+		name: 'IntentIQ done',
 	},
 	LIVE_CONNECT_STARTED: {
 		name: 'LiveConnect started',
@@ -235,6 +253,12 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	},
 	LOTAME_READY: {
 		name: 'Lotame ready',
+	},
+	ID5_START: {
+		name: 'Id5 start',
+	},
+	ID5_DONE: {
+		name: 'Id5 done',
 	},
 	// Platforms events //
 	BINGEBOT_AD_SLOT_INJECTED: {
@@ -309,6 +333,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	A9_WITHOUT_CONSENTS: {
 		name: 'A9 without consents',
 	},
+	A9_APSTAG_HEM_SENT: {
+		name: 'A9 Apstag HEM sent',
+	},
 	BIDDERS_BIDDING_DONE: {
 		category: '[Prebid]',
 		name: 'Bidding done',
@@ -363,4 +390,4 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Load template',
 		payload: payload<LoadTemplatePayload>(),
 	},
-};
+} as const satisfies Dictionary<EventOptions>;

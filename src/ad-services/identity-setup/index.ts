@@ -1,5 +1,12 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { context, DiProcess, globalContextService, targetingService, utils } from '@ad-engine/core';
+import {
+	context,
+	DiProcess,
+	GlobalContextCategories,
+	globalContextService,
+	targetingService,
+	utils,
+} from '@ad-engine/core';
 
 export class IdentitySetup implements DiProcess {
 	private logGroup = 'identity-setup';
@@ -21,8 +28,19 @@ export class IdentitySetup implements DiProcess {
 				}
 
 				if (context.get('services.identityPartners')) {
-					const segments = globalContextService.getValue('targeting', 'AU_SEG');
+					const segments = globalContextService.getValue(
+						GlobalContextCategories.targeting,
+						'AU_SEG',
+					);
 					targetingService.set('AU_SEG', segments);
+				}
+
+				const isDirectedAtChildren = globalContextService.getValue(
+					GlobalContextCategories.site,
+					'directedAtChildren',
+				);
+				if (isDirectedAtChildren) {
+					targetingService.set('monetization', utils.isCoppaSubject() ? 'restricted' : 'regular');
 				}
 
 				utils.logger(this.logGroup, 'ready');

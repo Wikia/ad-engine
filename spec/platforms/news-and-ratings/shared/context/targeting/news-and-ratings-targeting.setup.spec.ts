@@ -116,5 +116,21 @@ describe('News and Ratings Targeting Setup', () => {
 
 			expect(mappedAdTags).to.be.deep.eq(expectedMappedAdTags);
 		});
+
+		it("getMappedAdTags correctly maps franchise key to 'franchise_nr' and franchiseRoot to 'franchise'", () => {
+			const parsedAdTags = {
+				franchise: 'test-franchise',
+				franchiseRoot: 'test-franchise-root',
+			};
+
+			const expectedMappedAdTags = {
+				franchise_nr: 'test-franchise',
+				franchise: 'test-franchise-root',
+			};
+
+			const mappedAdTags = newsAndRatingsTargetingSetup.getMappedAdTags(parsedAdTags);
+
+			expect(mappedAdTags).to.be.deep.eq(expectedMappedAdTags);
+		});
 	});
 });

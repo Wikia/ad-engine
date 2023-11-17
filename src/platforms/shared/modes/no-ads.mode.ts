@@ -1,8 +1,11 @@
 import {
+	Apstag,
 	Audigent,
 	communicationService,
+	context,
 	DiProcess,
 	eventsRepository,
+	Experian,
 	Eyeota,
 	jwpSetup,
 	LiveConnect,
@@ -20,6 +23,7 @@ export class NoAdsMode implements DiProcess {
 		private audigent: Audigent,
 		private eyeota: Eyeota,
 		private liveConnect: LiveConnect,
+		private experian: Experian,
 		private liveRampPixel: LiveRampPixel,
 	) {}
 
@@ -27,9 +31,12 @@ export class NoAdsMode implements DiProcess {
 		this.removeAdSlotsPlaceholders();
 		this.noAdsDetector.addReasons(window.ads.context.opts.noAdsReasons);
 		this.dispatchJWPlayerSetupAction();
+		if (context.get('state.isLogged')) {
+			Apstag.make().init();
+		}
 
 		this.pipeline
-			.add(this.liveRampPixel, this.audigent, this.eyeota, this.liveConnect)
+			.add(this.liveRampPixel, this.audigent, this.eyeota, this.liveConnect, this.experian)
 			.execute()
 			.then(() => {
 				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);

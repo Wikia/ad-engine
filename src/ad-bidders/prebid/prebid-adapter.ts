@@ -1,6 +1,10 @@
 import { Aliases, context, Dictionary, targetingService } from '@ad-engine/core';
 import { PrebidAdapterConfig, PrebidAdSlotConfig, PrebidVideoPlacements } from './prebid-models';
 
+interface BidderSettings {
+	storageAllowed?: boolean | string[];
+}
+
 export abstract class PrebidAdapter {
 	static bidderName: string;
 	aliases?: Aliases;
@@ -9,6 +13,7 @@ export abstract class PrebidAdapter {
 	enabled: boolean;
 	slots: any;
 	pageTargeting: Dictionary;
+	bidderSettings?: BidderSettings;
 
 	constructor({ enabled, slots }: PrebidAdapterConfig) {
 		this.enabled = enabled;
@@ -35,7 +40,11 @@ export abstract class PrebidAdapter {
 	private adUnitConfigWithForcedPlacementForVideoFactory(slotName: string) {
 		const adUnitConfig = this.prepareConfigForAdUnit(slotName, this.slots[slotName]);
 
-		if (adUnitConfig.mediaTypes?.video) {
+		if (!adUnitConfig) {
+			console.warn('Wrong ad unit config for slot: ', slotName, this.bidderName);
+		}
+
+		if (adUnitConfig?.mediaTypes?.video) {
 			adUnitConfig.mediaTypes.video.placement = PrebidVideoPlacements.IN_ARTICLE;
 
 			adUnitConfig.bids.map(({ params }) => {
