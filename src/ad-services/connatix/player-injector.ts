@@ -1,5 +1,5 @@
 import { AdSlot, context, utils } from '@ad-engine/core';
-import { ConnatixPlayerInterface } from './connatix-player';
+import { ConnatixPlayerApi, ConnatixPlayerInterface } from './connatix-player';
 import { logGroup } from './index';
 
 export interface PlayerInjectorInterface {
@@ -27,7 +27,10 @@ export class PlayerInjector implements PlayerInjectorInterface {
 		incontentPlayerContainer.classList.remove(AdSlot.HIDDEN_AD_CLASS);
 	}
 
-	private createPlayerTags(cid: string, renderCallback: (error, player) => void): HTMLElement {
+	private createPlayerTags(
+		cid: string,
+		renderCallback: (error, player: ConnatixPlayerApi) => void,
+	): HTMLElement {
 		const connatixPlayerTag = document.createElement('script');
 		connatixPlayerTag.setAttribute('id', this.renderId);
 
