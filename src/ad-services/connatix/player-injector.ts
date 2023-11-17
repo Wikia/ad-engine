@@ -17,7 +17,7 @@ export class PlayerInjector implements PlayerInjectorInterface {
 
 	constructor(private connatixPlayer: ConnatixPlayerInterface) {}
 
-	insertPlayerContainer(cid: string, renderCallback: (error, player) => void) {
+	insertPlayerContainer(cid: string, renderCallback: (error, player: ConnatixPlayerApi) => void) {
 		utils.logger(logGroup, 'inserting Connatix player to the page');
 
 		const connatixPlayer = this.createPlayerTags(cid, renderCallback);

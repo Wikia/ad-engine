@@ -5,6 +5,7 @@ import { CommunicationService } from '@wikia/communication/communication-service
 import { context } from '@wikia/core';
 import sinon, { SinonStubbedInstance } from 'sinon';
 import { makePlayerTrackerSpy } from './test-doubles/connatix-tracker-spy';
+import { makePlayerApiSpy } from './test-doubles/player-api-spy';
 import { makePlayerInjectorSpy } from './test-doubles/player-injector-spy';
 
 describe('Connatix', () => {
@@ -143,5 +144,49 @@ describe('Connatix', () => {
 		await connatix.call();
 
 		sinon.assert.notCalled(playerInjectorSpy.insertPlayerContainer);
+	});
+
+	it('is inserted when there is no Fan Takeover and sends tracking of ready event', async () => {
+		context.set('services.connatix.enabled', true);
+		context.set('services.connatix.cid', 'abcdefghi123');
+		const playerInjectorSpy = makePlayerInjectorSpy();
+		// @ts-ignore unit tests purposes only
+		playerInjectorSpy.insertPlayerContainer = (cid, renderCallback) => {
+			renderCallback(null, makePlayerApiSpy());
+		};
+		const playerTrackerSpy = makePlayerTrackerSpy();
+
+		const connatix = new Connatix(
+			null,
+			null,
+			playerInjectorSpy,
+			playerTrackerSpy as unknown as ConnatixTracker,
+		);
+		await connatix.call();
+
+		sinon.assert.called(playerTrackerSpy.trackInit);
+		sinon.assert.called(playerTrackerSpy.trackReady);
+	});
+
+	it('is inserted when there is no Fan Takeover but stops when there is an error', async () => {
+		context.set('services.connatix.enabled', true);
+		context.set('services.connatix.cid', 'abcdefghi123');
+		const playerInjectorSpy = makePlayerInjectorSpy();
+		// @ts-ignore unit tests purposes only
+		playerInjectorSpy.insertPlayerContainer = (cid, renderCallback) => {
+			renderCallback('Error!', makePlayerApiSpy());
+		};
+		const playerTrackerSpy = makePlayerTrackerSpy();
+
+		const connatix = new Connatix(
+			null,
+			null,
+			playerInjectorSpy,
+			playerTrackerSpy as unknown as ConnatixTracker,
+		);
+		await connatix.call();
+
+		sinon.assert.called(playerTrackerSpy.trackInit);
+		sinon.assert.notCalled(playerTrackerSpy.trackReady);
 	});
 });
