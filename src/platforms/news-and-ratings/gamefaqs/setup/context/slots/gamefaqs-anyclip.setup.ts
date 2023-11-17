@@ -12,8 +12,7 @@ export class GameFAQsAnyclipSetup implements DiProcess {
 
 		context.set(
 			'custom.hasIncontentPlayer',
-			!!document.querySelector(incontentPlayerConfig.slotCreatorConfig.anchorSelector) &&
-				!context.get('state.isMobile'),
+			!!document.querySelector(incontentPlayerConfig.slotCreatorConfig.anchorSelector),
 		);
 		// TODO: this line can be removed after releasing gamefaqs change that removes the element from the page
 		document.querySelector('.message_mpu')?.remove();
