@@ -1,5 +1,6 @@
 import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
 import { BaseServiceSetup, context, utils } from '@ad-engine/core';
+import { ConnatixBidsRefresher } from './connatix-bids-refresher';
 import { ConnatixPlayer, ConnatixPlayerApi } from './connatix-player';
 import { ConnatixTracker } from './connatix-tracker';
 import { initConnatixHeadScript } from './head-script';
@@ -98,5 +99,8 @@ export class Connatix extends BaseServiceSetup {
 		this.tracker.setPlayerApi(playerApi);
 		this.tracker.trackReady();
 		this.tracker.register();
+
+		const bidsRefresher = new ConnatixBidsRefresher(playerApi);
+		bidsRefresher.registerBidRefreshing();
 	}
 }
