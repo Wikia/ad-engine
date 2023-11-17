@@ -1,8 +1,7 @@
 import {
-	BaseContextSetup,
-	bootstrapAndGetConsent,
+	BaseContextSetup, bootstrap,
+	ConsentManagementPlatformSetup,
 	InstantConfigSetup,
-	MetricReporter,
 	MetricReporterSetup,
 	NoAdsMode,
 	PlatformContextSetup,
@@ -23,10 +22,10 @@ export class TvGuideMTCPlatform {
 		this.pipeline.add(
 			TvGuideMTCContextSetup,
 			PlatformContextSetup,
-			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
+			() => bootstrap(),
+			parallel(InstantConfigSetup, ConsentManagementPlatformSetup),
 			TrackingParametersSetup,
 			MetricReporterSetup,
-			MetricReporter,
 			BaseContextSetup,
 			IdentitySetup,
 			TrackingSetup,
