@@ -1,8 +1,10 @@
 import { Connatix } from '@wikia/ad-services';
+import { ConnatixTracker } from '@wikia/ad-services/connatix/connatix-tracker';
 import { communicationService, EventOptions } from '@wikia/communication';
 import { CommunicationService } from '@wikia/communication/communication-service';
 import { context } from '@wikia/core';
 import sinon, { SinonStubbedInstance } from 'sinon';
+import { makePlayerTrackerSpy } from './test-doubles/connatix-tracker-spy';
 import { makePlayerInjectorSpy } from './test-doubles/player-injector-spy';
 
 describe('Connatix', () => {
@@ -29,8 +31,14 @@ describe('Connatix', () => {
 		context.set('services.connatix.enabled', true);
 		context.set('services.connatix.cid', 'abcdefghi123');
 		const playerInjectorSpy = makePlayerInjectorSpy();
+		const playerTrackerSpy = makePlayerTrackerSpy();
 
-		const connatix = new Connatix(null, null, playerInjectorSpy);
+		const connatix = new Connatix(
+			null,
+			null,
+			playerInjectorSpy,
+			playerTrackerSpy as unknown as ConnatixTracker,
+		);
 		await connatix.call();
 
 		sinon.assert.calledWith(playerInjectorSpy.insertPlayerContainer, connatix.cid);
@@ -40,8 +48,14 @@ describe('Connatix', () => {
 		context.set('services.connatix.enabled', false);
 		context.set('services.connatix.cid', 'abcdefghi123');
 		const playerInjectorSpy = makePlayerInjectorSpy();
+		const playerTrackerSpy = makePlayerTrackerSpy();
 
-		const connatix = new Connatix(null, null, playerInjectorSpy);
+		const connatix = new Connatix(
+			null,
+			null,
+			playerInjectorSpy,
+			playerTrackerSpy as unknown as ConnatixTracker,
+		);
 		await connatix.call();
 		communicationServiceStub.on.callsFake(
 			(event: EventOptions, callback: (payload?: any) => void) => {
@@ -57,8 +71,14 @@ describe('Connatix', () => {
 		context.set('services.connatix.enabled', false);
 		context.set('services.connatix.cid', 'abcdefghi123');
 		const playerInjectorSpy = makePlayerInjectorSpy();
+		const playerTrackerSpy = makePlayerTrackerSpy();
 
-		const connatix = new Connatix(null, null, playerInjectorSpy);
+		const connatix = new Connatix(
+			null,
+			null,
+			playerInjectorSpy,
+			playerTrackerSpy as unknown as ConnatixTracker,
+		);
 		await connatix.call();
 		communicationServiceStub.on.callsFake(
 			(event: EventOptions, callback: (payload?: any) => void) => {
@@ -74,8 +94,14 @@ describe('Connatix', () => {
 		context.set('services.connatix.enabled', false);
 		context.set('services.connatix.cid', 'abcdefghi123');
 		const playerInjectorSpy = makePlayerInjectorSpy();
+		const playerTrackerSpy = makePlayerTrackerSpy();
 
-		const connatix = new Connatix(null, null, playerInjectorSpy);
+		const connatix = new Connatix(
+			null,
+			null,
+			playerInjectorSpy,
+			playerTrackerSpy as unknown as ConnatixTracker,
+		);
 		await connatix.call();
 
 		sinon.assert.notCalled(playerInjectorSpy.insertPlayerContainer);
@@ -85,8 +111,14 @@ describe('Connatix', () => {
 		context.set('services.connatix.enabled', null);
 		context.set('services.connatix.cid', 'abcdefghi123');
 		const playerInjectorSpy = makePlayerInjectorSpy();
+		const playerTrackerSpy = makePlayerTrackerSpy();
 
-		const connatix = new Connatix(null, null, playerInjectorSpy);
+		const connatix = new Connatix(
+			null,
+			null,
+			playerInjectorSpy,
+			playerTrackerSpy as unknown as ConnatixTracker,
+		);
 		await connatix.call();
 
 		sinon.assert.notCalled(playerInjectorSpy.insertPlayerContainer);
@@ -96,8 +128,14 @@ describe('Connatix', () => {
 		context.set('services.connatix.enabled', true);
 		context.set('services.connatix.cid', null);
 		const playerInjectorSpy = makePlayerInjectorSpy();
+		const playerTrackerSpy = makePlayerTrackerSpy();
 
-		const connatix = new Connatix(null, null, playerInjectorSpy);
+		const connatix = new Connatix(
+			null,
+			null,
+			playerInjectorSpy,
+			playerTrackerSpy as unknown as ConnatixTracker,
+		);
 		await connatix.call();
 
 		sinon.assert.notCalled(playerInjectorSpy.insertPlayerContainer);
