@@ -2,6 +2,7 @@ import {
 	BrandMetrics,
 	Captify,
 	DiProcess,
+	Experian,
 	Eyeota,
 	LiveConnect,
 	LiveRampPixel,
@@ -19,6 +20,7 @@ export class PostAdStackPartnersSetup implements DiProcess {
 		private brandMetrics: BrandMetrics,
 		private captify: Captify,
 		private eyeota: Eyeota,
+		private experian: Experian,
 		private liveRampPixel: LiveRampPixel,
 		private nielsen: Nielsen,
 		private lotame: Lotame,
@@ -34,6 +36,7 @@ export class PostAdStackPartnersSetup implements DiProcess {
 				this.liveRampPixel,
 				this.brandMetrics,
 				this.eyeota,
+				this.experian,
 				this.captify,
 				this.nielsen,
 			)
