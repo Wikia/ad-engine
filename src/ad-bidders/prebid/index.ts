@@ -101,11 +101,15 @@ export class PrebidProvider extends BidderProvider {
 	prebidConfig: Dictionary;
 	tcf: Tcf = tcf;
 
-	constructor(public bidderConfig: PrebidConfig, public timeout = DEFAULT_MAX_DELAY) {
+	constructor(
+		public bidderConfig: PrebidConfig,
+		public timeout = DEFAULT_MAX_DELAY,
+		private filterGroup: string | undefined = undefined,
+	) {
 		super('prebid', bidderConfig, timeout);
 		adaptersRegistry.configureAdapters();
 
-		this.adUnits = adaptersRegistry.setupAdUnits();
+		this.adUnits = adaptersRegistry.setupAdUnits(this.filterGroup);
 		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
 
 		this.prebidConfig = {
@@ -357,7 +361,7 @@ export class PrebidProvider extends BidderProvider {
 		if (adUnits.length) {
 			this.adUnits = adUnits;
 		} else if (!this.adUnits) {
-			this.adUnits = adaptersRegistry.setupAdUnits();
+			this.adUnits = adaptersRegistry.setupAdUnits(this.filterGroup);
 		}
 	}
 
@@ -375,7 +379,7 @@ export class PrebidProvider extends BidderProvider {
 
 	protected callBids(bidsBackHandler: (...args: any[]) => void): void {
 		if (!this.adUnits) {
-			this.adUnits = adaptersRegistry.setupAdUnits();
+			this.adUnits = adaptersRegistry.setupAdUnits(this.filterGroup);
 		}
 
 		if (this.adUnits.length === 0) {

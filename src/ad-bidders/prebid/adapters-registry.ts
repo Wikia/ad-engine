@@ -27,7 +27,7 @@ import {
 	YahooSsp,
 } from './adapters';
 import { PrebidAdapter } from './prebid-adapter';
-import { isPrebidAdapterConfig, isSlotApplicable } from './prebid-helper';
+import { hasCorrectFilterGroup, isPrebidAdapterConfig, isSlotApplicable } from './prebid-helper';
 import { PrebidConfig } from './prebid-models';
 
 class AdaptersRegistry {
@@ -94,7 +94,7 @@ class AdaptersRegistry {
 		});
 	}
 
-	setupAdUnits(): PrebidAdUnit[] {
+	setupAdUnits(filterGroup: string | undefined): PrebidAdUnit[] {
 		const adUnits: PrebidAdUnit[] = [];
 
 		adaptersRegistry.getAdapters().forEach((adapter) => {
@@ -102,7 +102,11 @@ class AdaptersRegistry {
 				const adapterAdUnits = adapter.prepareAdUnits();
 
 				adapterAdUnits.forEach((adUnit) => {
-					if (adUnit && isSlotApplicable(adUnit.code)) {
+					if (
+						adUnit &&
+						isSlotApplicable(adUnit.code) &&
+						hasCorrectFilterGroup(adapter.bidderName, adUnit.code, filterGroup)
+					) {
 						adUnits.push(adUnit);
 					}
 				});

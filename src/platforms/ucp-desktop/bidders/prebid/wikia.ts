@@ -23,6 +23,7 @@ export function getWikiaContext(): object {
 			},
 			fandom_dt_galleries: {
 				sizes: [[728, 90]],
+				filterGroups: ['gallery'],
 			},
 		},
 	};

@@ -27,6 +27,16 @@ export function isSlotApplicable(code): boolean {
 	return document.querySelector(`div[id="${code}"]`) !== null ? isApplicable : false;
 }
 
+export function hasCorrectFilterGroup(bidderName: string, code: string, group: string | undefined) {
+	const slotFilterGroups = context.get(`bidders.prebid.${bidderName}.slots.${code}.filterGroups`);
+
+	if (group) {
+		return slotFilterGroups && Array.isArray(slotFilterGroups) && slotFilterGroups.includes(group);
+	}
+
+	return !slotFilterGroups || (Array.isArray(slotFilterGroups) && slotFilterGroups.length === 0);
+}
+
 function isValidPrice(bid: PrebidBidResponse): boolean {
 	return bid.getStatusCode && bid.getStatusCode() === validResponseStatusCode;
 }

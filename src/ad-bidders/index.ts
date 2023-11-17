@@ -21,6 +21,7 @@ const logGroup = 'bidders';
 
 export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 	private biddersProviders: BiddersProviders = {};
+	private biddersProvidersPerGroup: { [key: string]: BiddersProviders } = {};
 	private realSlotPrices = {};
 
 	constructor(
@@ -39,6 +40,14 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 			eventsRepository.BIDDERS_BIDS_REFRESH,
 			({ refreshedSlotNames }) => {
 				refreshedSlotNames.forEach((slotName) => this.updateSlotTargeting(slotName));
+			},
+			false,
+		);
+
+		communicationService.on(
+			eventsRepository.BIDDERS_CALL_PER_GROUP,
+			({ group, callback }) => {
+				this.callByGroup(group, callback);
 			},
 			false,
 		);
@@ -139,6 +148,52 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 		});
 
 		utils.logger(logGroup, 'returning call() promise');
+		return promise;
+	}
+
+	callByGroup(group: string | undefined, callback: () => void): Promise<void> {
+		const config = context.get('bidders') || {};
+		const promise = utils.createExtendedPromise();
+
+		this.biddersProvidersPerGroup[group] = this.biddersProvidersPerGroup[group] || {};
+
+		if (config.prebid && config.prebid.enabled && !this.biddersProvidersPerGroup[group].prebid) {
+			this.biddersProvidersPerGroup[group].prebid = new PrebidProvider(
+				config.prebid,
+				config.timeout,
+				group,
+			);
+		}
+
+		// if (A9Provider.isEnabled()) {
+		// 	this.biddersProviders.a9 = new A9Provider(config.a9, config.timeout);
+		// } else {
+		// 	utils.logger(logGroup, 'A9 has been disabled');
+		// }
+
+		const providers = Object.values(this.biddersProvidersPerGroup[group]);
+
+		if (!providers.length) {
+			utils.logger(logGroup, `${group} - resolving call() promise because of no bidder providers`);
+			return Promise.resolve();
+		}
+
+		providers.forEach((provider) => {
+			provider.addResponseListener(() => {
+				if (this.hasAllResponses()) {
+					utils.logger(
+						logGroup,
+						`${group} - resolving call() promise because of having all responses`,
+					);
+					callback();
+					promise.resolve(null);
+				}
+			});
+
+			provider.call();
+		});
+
+		utils.logger(logGroup, `${group} - returning call() promise`);
 		return promise;
 	}
 
