@@ -49,8 +49,8 @@ export class UcpDesktopAdsMode implements DiProcess {
 		utils.logger('partners-pipeline', 'starting');
 		this.pipeline
 			.add(
-				this.audigent,
 				this.anyclip,
+				this.audigent,
 				this.bidders,
 				this.connatix,
 				this.wadRunner,
