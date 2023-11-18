@@ -1,7 +1,7 @@
 import {
 	BiddersStateSetup,
-	bootstrap,
 	ConsentManagementPlatformSetup,
+	ensureGeoCookie,
 	InstantConfigSetup,
 	LoadTimesSetup,
 	MetricReporterSetup,
@@ -13,6 +13,7 @@ import {
 import {
 	context,
 	IdentitySetup,
+	logVersion,
 	parallel,
 	ProcessPipeline,
 	sequential,
@@ -45,10 +46,12 @@ export class TvGuidePlatform {
 	) {}
 
 	execute(container: Container): void {
+		logVersion();
+		context.extend(basicContext);
+		context.set('state.isMobile', !utils.client.isDesktop());
+
 		this.pipeline.add(
-			() => context.extend(basicContext),
-			() => context.set('state.isMobile', !utils.client.isDesktop()),
-			() => bootstrap(),
+			async () => await ensureGeoCookie(),
 			parallel(
 				sequential(InstantConfigSetup, PreloadedLibrariesSetup),
 				ConsentManagementPlatformSetup,

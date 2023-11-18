@@ -1,7 +1,7 @@
 import {
 	BiddersTargetingUpdater,
-	bootstrap,
 	ConsentManagementPlatformSetup,
+	ensureGeoCookie,
 	InstantConfigSetup,
 	LabradorSetup,
 	LoadTimesSetup,
@@ -19,6 +19,7 @@ import {
 	context,
 	eventsRepository,
 	IdentitySetup,
+	logVersion,
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
@@ -39,12 +40,14 @@ export class F2Platform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
 	execute(f2env: F2Environment): void {
+		logVersion();
+		context.extend(basicContext);
+		context.set('state.isMobile', f2env.isPageMobile);
+
 		// Config
 		this.pipeline.add(
-			() => context.extend(basicContext),
-			() => context.set('state.isMobile', f2env.isPageMobile),
 			PlatformContextSetup,
-			() => bootstrap(),
+			async () => await ensureGeoCookie(),
 			parallel(InstantConfigSetup, ConsentManagementPlatformSetup),
 			F2IocSetup,
 			TrackingParametersSetup,

@@ -2,8 +2,8 @@ import {
 	AdEnginePhasesSetup,
 	BiddersStateSetup,
 	BiddersTargetingUpdater,
-	bootstrap,
 	ConsentManagementPlatformSetup,
+	ensureGeoCookie,
 	InstantConfigSetup,
 	LabradorSetup,
 	LoadTimesSetup,
@@ -25,6 +25,7 @@ import {
 	context,
 	eventsRepository,
 	IdentitySetup,
+	logVersion,
 	parallel,
 	ProcessPipeline,
 	sequential,
@@ -45,14 +46,16 @@ export class UcpMobilePlatform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
 	execute(): void {
+		logVersion();
+		context.extend(basicContext);
+		context.set('state.isMobile', true);
+
 		// Config
 		this.pipeline.add(
-			() => context.extend(basicContext),
-			() => context.set('state.isMobile', true),
 			AdEnginePhasesSetup,
 			async () => await adEnginePhases.initial,
 			PlatformContextSetup,
-			() => bootstrap(),
+			async () => await ensureGeoCookie(),
 			async () => await adEnginePhases.configuration,
 			parallel(
 				sequential(InstantConfigSetup, PreloadedLibrariesSetup),
