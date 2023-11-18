@@ -23,8 +23,6 @@ interface MediaWikiAdsOpts {
 	isSubjectToCcpa?: boolean;
 	platformName?: string;
 	showAds: boolean;
-	waitForDOM?: boolean;
-	waitForDCL?: boolean;
 }
 
 interface MediaWikiAdsTargeting {
