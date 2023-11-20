@@ -1,21 +1,20 @@
 import {
-	AdEngineRunnerSetup,
 	BiddersStateSetup,
-	bootstrap,
+	BiddersTargetingUpdater,
 	ConsentManagementPlatformSetup,
+	ensureGeoCookie,
 	InstantConfigSetup,
 	LabradorSetup,
 	LoadTimesSetup,
 	MetricReporterSetup,
 	NoAdsDetector,
-	NoAdsExperimentSetup,
 	NoAdsMode,
 	PlatformContextSetup,
+	PostAdStackPartnersSetup,
 	PreloadedLibrariesSetup,
 	SequentialMessagingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
-	UcpPartnersSetup,
 	UcpTargetingSetup,
 } from '@platforms/shared';
 import {
@@ -24,6 +23,7 @@ import {
 	context,
 	eventsRepository,
 	IdentitySetup,
+	logVersion,
 	parallel,
 	ProcessPipeline,
 	sequential,
@@ -44,12 +44,14 @@ export class UcpMobilePlatform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
 	execute(): void {
+		logVersion();
+		context.extend(basicContext);
+		context.set('state.isMobile', true);
+
 		// Config
 		this.pipeline.add(
-			() => context.extend(basicContext),
-			() => context.set('state.isMobile', true),
 			PlatformContextSetup,
-			() => bootstrap(),
+			async () => await ensureGeoCookie(),
 			parallel(
 				sequential(InstantConfigSetup, PreloadedLibrariesSetup),
 				ConsentManagementPlatformSetup,
@@ -65,19 +67,18 @@ export class UcpMobilePlatform {
 			UcpMobileA9ConfigSetup,
 			UcpMobileDynamicSlotsSetup,
 			UcpMobileTemplatesSetup,
+			UcpMobileExperimentsSetup,
 			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM will break
 			BiddersStateSetup,
+			BiddersTargetingUpdater,
+			LabradorSetup,
 			conditional(() => this.noAdsDetector.isAdsMode(), {
 				yes: UcpMobileAdsMode,
 				no: NoAdsMode,
 			}),
-			NoAdsExperimentSetup,
-			LabradorSetup,
-			UcpMobileExperimentsSetup,
 			TrackingSetup,
-			AdEngineRunnerSetup,
-			UcpPartnersSetup,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
+			PostAdStackPartnersSetup,
 		);
 
 		this.pipeline.execute();

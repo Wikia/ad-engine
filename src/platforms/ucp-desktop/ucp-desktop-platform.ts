@@ -1,21 +1,20 @@
 import {
-	AdEngineRunnerSetup,
 	BiddersStateSetup,
-	bootstrap,
+	BiddersTargetingUpdater,
 	ConsentManagementPlatformSetup,
+	ensureGeoCookie,
 	InstantConfigSetup,
 	LabradorSetup,
 	LoadTimesSetup,
 	MetricReporterSetup,
 	NoAdsDetector,
-	NoAdsExperimentSetup,
 	NoAdsMode,
 	PlatformContextSetup,
+	PostAdStackPartnersSetup,
 	PreloadedLibrariesSetup,
 	SequentialMessagingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
-	UcpPartnersSetup,
 	UcpTargetingSetup,
 } from '@platforms/shared';
 import {
@@ -24,6 +23,7 @@ import {
 	context,
 	eventsRepository,
 	IdentitySetup,
+	logVersion,
 	parallel,
 	ProcessPipeline,
 	sequential,
@@ -44,11 +44,13 @@ export class UcpDesktopPlatform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
 	execute(): void {
+		logVersion();
+		context.extend(basicContext);
+
 		// Config
 		this.pipeline.add(
-			() => context.extend(basicContext),
 			PlatformContextSetup,
-			() => bootstrap(),
+			async () => await ensureGeoCookie(),
 			parallel(
 				sequential(InstantConfigSetup, PreloadedLibrariesSetup),
 				ConsentManagementPlatformSetup,
@@ -67,16 +69,15 @@ export class UcpDesktopPlatform {
 			UcpDesktopTemplatesSetup,
 			SequentialMessagingSetup,
 			BiddersStateSetup,
+			BiddersTargetingUpdater,
+			LabradorSetup,
 			conditional(() => this.noAdsDetector.isAdsMode(), {
 				yes: UcpDesktopAdsMode,
 				no: NoAdsMode,
 			}),
-			NoAdsExperimentSetup,
-			LabradorSetup,
 			TrackingSetup,
-			AdEngineRunnerSetup,
-			UcpPartnersSetup,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
+			PostAdStackPartnersSetup,
 		);
 
 		this.pipeline.execute();

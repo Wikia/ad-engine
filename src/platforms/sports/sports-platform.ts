@@ -1,8 +1,7 @@
 import {
-	AdEngineRunnerSetup,
 	BaseContextSetup,
 	BiddersStateSetup,
-	bootstrap,
+	BiddersTargetingUpdater,
 	ConsentManagementPlatformSetup,
 	ensureGeoCookie,
 	InstantConfigSetup,
@@ -22,6 +21,7 @@ import {
 	context,
 	eventsRepository,
 	IdentitySetup,
+	logVersion,
 	parallel,
 	ProcessPipeline,
 	sequential,
@@ -43,14 +43,15 @@ export class SportsPlatform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
 	execute(): void {
+		logVersion();
+		context.extend(getBasicContext());
+		context.set('state.isMobile', utils.client.getDeviceMode() === 'mobile');
+		document.body.classList.add(`ae-${selectApplication('futhead', 'muthead')}`);
+
 		// Config
 		this.pipeline.add(
-			() => context.extend(getBasicContext()),
-			() => context.set('state.isMobile', utils.client.getDeviceMode() === 'mobile'),
-			() => document.body.classList.add(`ae-${selectApplication('futhead', 'muthead')}`),
-			() => ensureGeoCookie(),
 			PlatformContextSetup,
-			() => bootstrap(),
+			async () => await ensureGeoCookie(),
 			parallel(
 				sequential(InstantConfigSetup, PreloadedLibrariesSetup),
 				ConsentManagementPlatformSetup,
@@ -69,7 +70,7 @@ export class SportsPlatform {
 			SportsTemplatesSetup,
 			LabradorSetup,
 			TrackingSetup,
-			AdEngineRunnerSetup,
+			BiddersTargetingUpdater,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 		);
 
