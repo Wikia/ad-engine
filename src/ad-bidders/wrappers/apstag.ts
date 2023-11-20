@@ -100,10 +100,8 @@ export class Apstag {
 			const tokenConfig: ApstagTokenConfig = { hashedRecords: [{ type: 'email', record }] };
 			await this.script;
 			const optOut =
-				consents !== undefined
-					? !trackingOptIn.isOptedIn(consents.gdprConsent) ||
-					  trackingOptIn.isOptOutSale(consents.ccpaSignal)
-					: !trackingOptIn.isOptedIn() || trackingOptIn.isOptOutSale();
+				!trackingOptIn.isOptedIn(consents?.gdprConsent) ||
+				trackingOptIn.isOptOutSale(consents?.ccpaSignal);
 			const optOutString = optOut ? '1' : '0';
 			if (
 				this.storage.getItem('apstagHEMoptOut', true) &&
@@ -115,7 +113,7 @@ export class Apstag {
 					optOut,
 				});
 			} else if (this.storage.getItem('apstagHEMsent', true) !== '1') {
-				utils.logger(logGroup, 'Sending HEM to apstag', tokenConfig);
+				utils.logger(logGroup, 'Sending HEM to apstag', tokenConfig, 'optOut', optOut);
 				window.apstag.rpa(tokenConfig);
 			}
 			// Necessary for updating optOut status.
