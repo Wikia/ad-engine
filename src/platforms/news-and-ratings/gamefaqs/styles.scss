@@ -36,11 +36,4 @@ body {
 		float: right;
 		margin: 0 0 15px 8px;
 	}
-
-	@media #{$breakpoint-m-down} {
-		.ac-player-wrapper.ac-floated-player:not(.ac-floated-page-width-theme) {
-			width: 300px !important;
-			height: 168px !important;
-		}
-	}
 }
