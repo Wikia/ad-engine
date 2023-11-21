@@ -1,4 +1,10 @@
-import { AdEngineStackSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
+import {
+	AdEngineStackSetup,
+	GptSetup,
+	PlayerSetup,
+	TaglessRequest,
+	WadRunner,
+} from '@platforms/shared';
 import {
 	Anyclip,
 	Audigent,
@@ -38,6 +44,7 @@ export class UcpMobileAdsMode implements DiProcess {
 		private prebidNativeProvider: PrebidNativeProvider,
 		private stroer: Stroer,
 		private system1: System1,
+		private taglessRequest: TaglessRequest,
 		private wadRunner: WadRunner,
 		private wunderkind: Wunderkind,
 	) {}
@@ -45,6 +52,7 @@ export class UcpMobileAdsMode implements DiProcess {
 	execute(): void {
 		this.pipeline
 			.add(
+				this.taglessRequest,
 				this.anyclip,
 				this.audigent,
 				this.bidders,

@@ -15,6 +15,7 @@ export * from './handlers/gallery-lightbox-handler';
 export * from './modes/no-ads.mode';
 export * from './sequential-messaging/sequential-messaging.setup';
 export * from './services/no-ads-detector';
+export * from './services/tagless-request';
 export * from './services/wad-runner';
 export * from './setup/ad-engine-runner.setup';
 export * from './setup/ad-engine-stack.setup';
