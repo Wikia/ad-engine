@@ -11,6 +11,7 @@ import {
 } from '@ad-engine/core';
 import { A9Provider } from './a9';
 import { PrebidProvider } from './prebid';
+import { getSlotBidGroup } from './prebid/prebid-helper';
 
 interface BiddersProviders {
 	a9?: A9Provider;
@@ -65,15 +66,20 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 		Object.keys(targeting).forEach((key) => targetingService.set(key, targeting[key], slotName));
 	}
 
-	getBiddersProviders(): (A9Provider | PrebidProvider)[] {
+	getBiddersProviders(group: string | undefined = undefined): (A9Provider | PrebidProvider)[] {
+		if (group) {
+			return Object.values(this.biddersProvidersPerGroup[group] || {});
+		}
+
 		return Object.values(this.biddersProviders);
 	}
 
 	async getBidParameters(slotName): Promise<Dictionary> {
 		const slotParams = {};
+		const slotBidGroup = getSlotBidGroup(slotName);
 
 		await Promise.all(
-			this.getBiddersProviders().map(async (provider) => {
+			this.getBiddersProviders(slotBidGroup).map(async (provider) => {
 				if (provider && provider.wasCalled()) {
 					const params = await provider.getSlotTargetingParams(slotName);
 
@@ -87,9 +93,10 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 
 	async getCurrentSlotPrices(slotName): Promise<Dictionary<string>> {
 		const slotPrices = {};
+		const slotBidGroup = getSlotBidGroup(slotName);
 
 		await Promise.all(
-			this.getBiddersProviders().map(async (provider) => {
+			this.getBiddersProviders(slotBidGroup).map(async (provider) => {
 				if (provider && provider.isSlotSupported(slotName)) {
 					const priceFromBidder = await provider.getSlotBestPrice(slotName);
 
@@ -108,7 +115,9 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 	}
 
 	resetTargetingKeys(slotName): void {
-		this.getBiddersProviders().forEach((provider) => {
+		const slotBidGroup = getSlotBidGroup(slotName);
+
+		this.getBiddersProviders(slotBidGroup).forEach((provider) => {
 			provider.getTargetingKeys(slotName).forEach((key) => {
 				targetingService.remove(key, slotName);
 			});
@@ -171,14 +180,12 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 		// 	utils.logger(logGroup, 'A9 has been disabled');
 		// }
 
-		const providers = Object.values(this.biddersProvidersPerGroup[group]);
-
-		if (!providers.length) {
+		if (!this.getBiddersProviders(group).length) {
 			utils.logger(logGroup, `${group} - resolving call() promise because of no bidder providers`);
 			return Promise.resolve();
 		}
 
-		providers.forEach((provider) => {
+		this.getBiddersProviders(group).forEach((provider) => {
 			provider.addResponseListener(() => {
 				if (this.hasAllResponses()) {
 					utils.logger(
