@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import { VideoDisplayTakeoverSynchronizer } from '@wikia/ad-products';
-import { context } from '@wikia/core';
+import { context, targetingService } from '@wikia/core';
 
 function setBundles(bundles) {
 	window.fandomContext.site = window.fandomContext.site || {};
@@ -51,6 +51,28 @@ describe('VideoDisplayTakeoverSynchronizer', () => {
 	it('disables sync on tentpoles bundle if non matches', () => {
 		context.set('options.video.syncWithDisplay', ['tentpole1', 'tentpole2', 'tentpole3']);
 		setBundles(['tentpole4', 'tentpole5', 'tentpole6']);
+
+		expect(new VideoDisplayTakeoverSynchronizer().isRequiredToRun()).to.be.false;
+	});
+
+	it('enabled sync using gnre key val', () => {
+		context.set('options.video.syncWithDisplay', ['gnre=anime', 'bundles=my_bundle']);
+		setBundles(['not_my_bundle']);
+		targetingService.set('gnre', ['anime', 'movie']);
+
+		expect(new VideoDisplayTakeoverSynchronizer().isRequiredToRun()).to.be.true;
+	});
+
+	it('enabled sync using bundle key val', () => {
+		context.set('options.video.syncWithDisplay', ['gnre=poetry', 'bundles=my_bundle']);
+		targetingService.set('bundles', ['my_bundle']);
+		targetingService.set('gnre', ['anime', 'movie']);
+
+		expect(new VideoDisplayTakeoverSynchronizer().isRequiredToRun()).to.be.true;
+	});
+
+	it('should not brake on invalid key-val', () => {
+		context.set('options.video.syncWithDisplay', ['=my_bundle', '', '=']);
 
 		expect(new VideoDisplayTakeoverSynchronizer().isRequiredToRun()).to.be.false;
 	});

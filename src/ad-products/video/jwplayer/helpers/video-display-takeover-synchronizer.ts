@@ -1,4 +1,4 @@
-import { context, globalContextService, utils } from '@ad-engine/core';
+import { context, globalContextService, targetingService, utils } from '@ad-engine/core';
 import { universalAdPackage } from '../../../templates';
 
 /*
@@ -77,11 +77,22 @@ export class VideoDisplayTakeoverSynchronizer {
 		const flag = context.get('options.video.syncWithDisplay');
 
 		if (typeof flag === 'string') {
-			return globalContextService.hasBundle(flag);
+			return VideoDisplayTakeoverSynchronizer.hasBundleOrTag(flag);
 		} else if (Array.isArray(flag)) {
-			return flag.some((v) => globalContextService.hasBundle(v));
+			return flag.some((v) => VideoDisplayTakeoverSynchronizer.hasBundleOrTag(v));
 		}
 		return !!flag;
+	}
+
+	private static hasBundleOrTag(tagOrBundle: string): boolean {
+		const tag = tagOrBundle.split('=');
+
+		if (tag.length == 2) {
+			const value = targetingService.get(tag[0]);
+
+			return Array.isArray(value) ? value.includes(tag[1]) : value === tag[1];
+		}
+		return globalContextService.hasBundle(tagOrBundle);
 	}
 }
 
