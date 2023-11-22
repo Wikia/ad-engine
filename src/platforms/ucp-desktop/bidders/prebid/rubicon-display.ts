@@ -52,7 +52,6 @@ export function getRubiconDisplayContext(): object {
 			},
 			fandom_dt_galleries: {
 				sizes: [[728, 90]],
-				filterGroups: ['gallery'],
 				siteId: '494482',
 				zoneId: '2942280',
 				targeting: {

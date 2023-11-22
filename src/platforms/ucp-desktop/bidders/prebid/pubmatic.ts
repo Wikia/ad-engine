@@ -51,7 +51,6 @@ export function getPubmaticContext(): object {
 			fandom_dt_galleries: {
 				sizes: [[728, 90]],
 				ids: ['/5441/FANDOM_DT_GALLERIES_728x90@728x90', '5244133'],
-				filterGroups: ['gallery'],
 			},
 		},
 	};

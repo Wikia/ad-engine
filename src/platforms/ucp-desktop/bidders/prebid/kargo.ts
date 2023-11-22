@@ -5,7 +5,6 @@ export function getKargoContext(): object {
 			fandom_dt_galleries: {
 				sizes: [[728, 90]],
 				placementId: '_iZy3mUblxi',
-				filterGroups: ['gallery'],
 			},
 		},
 	};

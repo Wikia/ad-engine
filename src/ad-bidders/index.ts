@@ -74,6 +74,14 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 		return Object.values(this.biddersProviders);
 	}
 
+	getBiddersProvidersNames(group: string | undefined = undefined) {
+		if (group) {
+			return Object.keys(this.biddersProviders[group]);
+		}
+
+		return Object.keys(this.biddersProviders);
+	}
+
 	async getBidParameters(slotName): Promise<Dictionary> {
 		const slotParams = {};
 		const slotBidGroup = getSlotBidGroup(slotName);
@@ -187,7 +195,7 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 
 		this.getBiddersProviders(group).forEach((provider) => {
 			provider.addResponseListener(() => {
-				if (this.hasAllResponses()) {
+				if (this.hasAllResponses(group)) {
 					utils.logger(
 						logGroup,
 						`${group} - resolving call() promise because of having all responses`,
@@ -225,9 +233,10 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 		return bidderTargeting;
 	}
 
-	private hasAllResponses(): boolean {
-		const missingProviders = Object.keys(this.biddersProviders).filter((providerName) => {
-			const provider = this.biddersProviders[providerName];
+	private hasAllResponses(group: string | undefined = undefined): boolean {
+		const missingProviders = this.getBiddersProvidersNames(group).filter((providerName) => {
+			const names = this.getBiddersProvidersNames(group);
+			const provider = names[providerName];
 
 			return !provider.hasResponse();
 		});

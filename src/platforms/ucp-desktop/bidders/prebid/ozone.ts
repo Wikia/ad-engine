@@ -27,7 +27,6 @@ export function getOzoneContext(): object {
 				sizes: [[728, 90]],
 				pos: 'OZ_fandom_dt_galleries',
 				placementId: '3500013051',
-				filterGroups: ['gallery'],
 			},
 			incontent_boxad_1: {
 				sizes: [[300, 250]],
