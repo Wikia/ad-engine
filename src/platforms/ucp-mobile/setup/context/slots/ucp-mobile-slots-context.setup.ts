@@ -196,6 +196,9 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			gallery_leaderboard: {
 				adProduct: 'gallery_leaderboard',
 				bidderAlias: 'fandom_mw_galleries',
+				aliases: {
+					a9: 'gallery_leaderboard', // overwrite alias for A9, it's configured with the slot name not alias
+				},
 				group: 'IG',
 				defaultSizes: [
 					[320, 100],
