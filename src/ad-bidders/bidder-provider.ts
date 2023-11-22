@@ -57,8 +57,12 @@ export abstract class BidderProvider {
 	/**
 	 * Returns bidder slot alias if available, otherwise slot name
 	 */
-	protected getSlotAlias(slotName: string): string {
-		return context.get(`slots.${slotName}.bidderAlias`) || slotName;
+	protected getSlotAlias(slotName: string, bidder?: string): string {
+		return (
+			(bidder && context.get(`slots.${slotName}.aliases.${bidder}`)) ||
+			context.get(`slots.${slotName}.bidderAlias`) ||
+			slotName
+		);
 	}
 
 	getSlotBestPrice(slotName: string): Promise<Dictionary<number | string>> {
