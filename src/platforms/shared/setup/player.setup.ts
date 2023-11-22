@@ -40,11 +40,18 @@ export class PlayerSetup extends BaseServiceSetup {
 
 		const showAds = !context.get('options.wad.blocking');
 		const strategyRulesEnabled = context.get('options.video.enableStrategyRules');
+		const vastXml = context.get('options.video.vastXml');
 
 		if (showAds && !strategyRulesEnabled) {
 			utils.logger(logGroup, 'JWP with ads controlled by AdEngine enabled');
 			new JWPlayerManager().manage();
-			communicationService.dispatch(jwpSetup({ showAds, autoplayDisabled: false }));
+			communicationService.dispatch(
+				jwpSetup({
+					showAds,
+					autoplayDisabled: false,
+					vastXml: vastXml,
+				}),
+			);
 		} else if (strategyRulesEnabled) {
 			utils.logger(
 				logGroup,

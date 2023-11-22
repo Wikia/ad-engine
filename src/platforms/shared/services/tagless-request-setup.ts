@@ -15,6 +15,10 @@ interface ParsedCampaignData {
 export class TaglessRequestSetup extends BaseServiceSetup {
 	private logGroup = 'tagless-request';
 	private syncedVideoLines;
+
+	private rawAdServerResponse = '';
+	private vastUrl = '';
+
 	initialized: utils.ExtendedPromise<void> = utils.createExtendedPromise();
 
 	isRequiredToRun(): boolean {
@@ -33,19 +37,24 @@ export class TaglessRequestSetup extends BaseServiceSetup {
 			return this.initialized.resolve(null);
 		}
 
-		const videoTaglessRequestUrl = this.buildTaglessVideoRequest();
-		utils.logger(this.logGroup, 'Sending a tagless request: ', videoTaglessRequestUrl);
+		this.vastUrl = this.buildTaglessVideoRequest();
+		utils.logger(this.logGroup, 'Sending a tagless request: ', this.vastUrl);
 
-		await fetch(videoTaglessRequestUrl)
+		await fetch(this.vastUrl)
 			.then((res) => res.blob())
 			.then((resBlob) => resBlob.text())
 			.then((text) => this.handleTaglessResponse(text))
 			.then((ad: ParsedCampaignData) => this.updateDisplayAdsTargetingIfSyncedCampaign(ad));
 	}
 
+	getVastUrl() {
+		return this.vastUrl;
+	}
+
 	private handleTaglessResponse(text: string) {
 		try {
-			const firstReturnedAdId = this.getFirstAdFromTaglessResponse(text);
+			this.rawAdServerResponse = text;
+			const firstReturnedAdId = this.getFirstAdFromTaglessResponse();
 			utils.logger(this.logGroup, 'Ad received: ', firstReturnedAdId);
 
 			return Promise.resolve(firstReturnedAdId);
@@ -86,11 +95,13 @@ export class TaglessRequestSetup extends BaseServiceSetup {
 		});
 	}
 
-	private getFirstAdFromTaglessResponse(response: string) {
+	private getFirstAdFromTaglessResponse() {
 		const parser = new DOMParser();
-		const xml = parser.parseFromString(response, 'text/xml');
-		const lineItemId = xml.getElementsByTagName('Ad');
-		const creativeId = xml.getElementsByTagName('Creative');
+		const xmlDocument = parser.parseFromString(this.rawAdServerResponse, 'text/xml');
+		const lineItemId = xmlDocument.getElementsByTagName('Ad');
+		const creativeId = xmlDocument.getElementsByTagName('Creative');
+
+		context.set('options.video.vastXml', this.rawAdServerResponse);
 
 		return {
 			lineItemId: lineItemId[0]?.id,
