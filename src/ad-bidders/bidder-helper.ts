@@ -1,5 +1,7 @@
 import { context, slotService } from '@ad-engine/core';
 
+export const defaultSlotBidGroup = 'not-defined';
+
 export function getSlotNameByBidderAlias(id: string): string {
 	let slotName = id;
 
@@ -14,14 +16,14 @@ export function getSlotNameByBidderAlias(id: string): string {
 	return slotName;
 }
 
-export function hasCorrectBidGroup(code: string, group: string | undefined) {
+export function hasCorrectBidGroup(code: string, group: string): boolean {
 	const slotBidGroups = getSlotBidGroup(code);
 
-	if (group) {
-		return slotBidGroups && Array.isArray(slotBidGroups) && slotBidGroups.includes(group);
+	if (group === defaultSlotBidGroup) {
+		return !slotBidGroups || (Array.isArray(slotBidGroups) && slotBidGroups.length === 0);
 	}
 
-	return !slotBidGroups || (Array.isArray(slotBidGroups) && slotBidGroups.length === 0);
+	return slotBidGroups && Array.isArray(slotBidGroups) && slotBidGroups.includes(group);
 }
 
 export function getSlotBidGroup(code: string) {
@@ -33,6 +35,7 @@ export function getSlotBidGroup(code: string) {
 
 			return bidderAlias === code && slotService.getState(slotName);
 		});
+
 		slotBidGroups = context.get(`slots.${bidderAlias}.bidGroup`);
 	}
 

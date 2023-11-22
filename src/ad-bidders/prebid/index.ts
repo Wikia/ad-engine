@@ -15,7 +15,7 @@ import {
 	tcf,
 	utils,
 } from '@ad-engine/core';
-import { getSlotNameByBidderAlias } from '../bidder-helper';
+import { defaultSlotBidGroup, getSlotNameByBidderAlias } from '../bidder-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
 import { Ats } from './ats';
@@ -105,7 +105,7 @@ export class PrebidProvider extends BidderProvider {
 	constructor(
 		public bidderConfig: PrebidConfig,
 		public timeout = DEFAULT_MAX_DELAY,
-		private bidGroup: string | undefined = undefined,
+		private bidGroup: string = defaultSlotBidGroup,
 	) {
 		super('prebid', bidderConfig, timeout);
 		adaptersRegistry.configureAdapters();

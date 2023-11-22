@@ -10,7 +10,7 @@ import {
 	utils,
 } from '@ad-engine/core';
 import { A9Provider } from './a9';
-import { getSlotBidGroup } from './bidder-helper';
+import { defaultSlotBidGroup, getSlotBidGroup } from './bidder-helper';
 import { PrebidProvider } from './prebid';
 
 interface BiddersProviders {
@@ -68,12 +68,12 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 		Object.keys(targeting).forEach((key) => targetingService.set(key, targeting[key], slotName));
 	}
 
-	getBiddersProviders(group: string | undefined = undefined): (A9Provider | PrebidProvider)[] {
-		return Object.values(this.biddersProviders[group] || {});
+	getBiddersProviders(bidGroup: string): (A9Provider | PrebidProvider)[] {
+		return Object.values(this.biddersProviders[bidGroup] || {});
 	}
 
-	getBidderProviders(group: string | undefined = undefined): BiddersProviders {
-		return this.biddersProviders[group] || {};
+	getBidderProviders(bidGroup: string): BiddersProviders {
+		return this.biddersProviders[bidGroup] || {};
 	}
 
 	async getBidParameters(slotName): Promise<Dictionary> {
@@ -129,10 +129,10 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 	}
 
 	call(): Promise<void> {
-		return this.callByBidGroup(undefined);
+		return this.callByBidGroup(defaultSlotBidGroup);
 	}
 
-	callByBidGroup(group: string | undefined): Promise<void> {
+	callByBidGroup(group: string): Promise<void> {
 		const config = context.get('bidders') || {};
 		const promise = utils.createExtendedPromise();
 
@@ -196,9 +196,9 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 		return bidderTargeting;
 	}
 
-	private hasAllResponses(group: string | undefined = undefined): boolean {
+	private hasAllResponses(bidGroup: string): boolean {
 		const missingProviders = Object.keys(this.biddersProviders).filter((providerName) => {
-			const provider = this.getBidderProviders(group)[providerName];
+			const provider = this.getBidderProviders(bidGroup)[providerName];
 
 			if (!provider) {
 				return false;

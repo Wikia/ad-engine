@@ -95,7 +95,7 @@ class AdaptersRegistry {
 		});
 	}
 
-	setupAdUnits(bidGroup: string | undefined): PrebidAdUnit[] {
+	setupAdUnits(bidGroup: string): PrebidAdUnit[] {
 		const adUnits: PrebidAdUnit[] = [];
 
 		adaptersRegistry.getAdapters().forEach((adapter) => {

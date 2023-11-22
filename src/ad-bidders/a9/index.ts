@@ -15,7 +15,11 @@ import {
 	trackingOptIn,
 	utils,
 } from '@ad-engine/core';
-import { getSlotNameByBidderAlias, hasCorrectBidGroup } from '../bidder-helper';
+import {
+	defaultSlotBidGroup,
+	getSlotNameByBidderAlias,
+	hasCorrectBidGroup,
+} from '../bidder-helper';
 import { BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { Apstag } from '../wrappers';
 import { A9Bid, A9Bids, A9Config, A9SlotConfig, A9SlotDefinition, PriceMap } from './types';
@@ -65,7 +69,7 @@ export class A9Provider extends BidderProvider {
 	constructor(
 		public bidderConfig: A9Config,
 		public timeout: number = DEFAULT_MAX_DELAY,
-		private bidGroup: string | undefined = undefined,
+		private bidGroup: string = defaultSlotBidGroup,
 	) {
 		super('a9', bidderConfig, timeout);
 
