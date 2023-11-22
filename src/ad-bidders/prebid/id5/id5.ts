@@ -77,15 +77,18 @@ class Id5 {
 	}
 
 	public async getControlGroup(pbjs: Pbjs): Promise<id5GroupValue> {
-		await new utils.WaitFor(() => pbjs.getUserIds()?.id5id?.uid !== undefined, 10, 20).until();
-		const uid = pbjs.getUserIds()?.id5id?.uid;
+		await new utils.WaitFor(
+			() => pbjs.getUserIds()?.id5id?.ext?.abTestingControlGroup !== undefined,
+			10,
+			20,
+		).until();
+		const isUserInControlGroup = pbjs.getUserIds()?.id5id?.ext?.abTestingControlGroup;
 
-		if (uid === undefined) {
+		if (isUserInControlGroup === undefined) {
 			return 'U';
 		}
 
-		// if user is in the control group then uid is 0
-		return uid === '0' ? 'B' : 'A';
+		return isUserInControlGroup === true ? 'B' : 'A';
 	}
 
 	private setTargeting(key: string, value: string): void {

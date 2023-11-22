@@ -75,7 +75,7 @@ describe('Id5', () => {
 	describe('getControlGroup', () => {
 		it('returns B when user is in the control group', async () => {
 			pbjsStub.getUserIds.returns({
-				id5id: { uid: '0' },
+				id5id: { ext: { abTestingControlGroup: true } },
 			});
 
 			const controlGroup = await id5.getControlGroup(pbjsStub);
@@ -85,7 +85,7 @@ describe('Id5', () => {
 
 		it('returns A when user is not in the control group', async () => {
 			pbjsStub.getUserIds.returns({
-				id5id: { uid: 'uid123456abcdef' },
+				id5id: { ext: { abTestingControlGroup: false } },
 			});
 
 			const controlGroup = await id5.getControlGroup(pbjsStub);
