@@ -22,6 +22,12 @@ export class TaglessRequestSetup extends BaseServiceSetup {
 			return Promise.resolve(null);
 		}
 
+		const hasFeaturedVideo = context.get('custom.hasFeaturedVideo');
+		if (!hasFeaturedVideo) {
+			utils.logger(this.logGroup, 'no featured video on the page');
+			return Promise.resolve(null);
+		}
+
 		const videoTaglessRequestUrl = this.buildTaglessVideoRequest();
 		utils.logger(this.logGroup, 'Sending a tagless request: ', videoTaglessRequestUrl);
 
