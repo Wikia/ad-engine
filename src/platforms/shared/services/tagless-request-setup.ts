@@ -15,17 +15,22 @@ interface ParsedCampaignData {
 export class TaglessRequestSetup extends BaseServiceSetup {
 	private logGroup = 'tagless-request';
 	private syncedVideoLines;
+	initialized: utils.ExtendedPromise<void> = utils.createExtendedPromise();
+
+	isRequiredToRun(): boolean {
+		return this.isEnabled('icTaglessRequestEnabled');
+	}
 
 	async call(): Promise<void> {
 		if (!this.isEnabled('icTaglessRequestEnabled')) {
 			utils.logger(this.logGroup, 'disabled');
-			return Promise.resolve(null);
+			return this.initialized.resolve(null);
 		}
 
 		const hasFeaturedVideo = context.get('custom.hasFeaturedVideo');
 		if (!hasFeaturedVideo) {
 			utils.logger(this.logGroup, 'no featured video on the page');
-			return Promise.resolve(null);
+			return this.initialized.resolve(null);
 		}
 
 		const videoTaglessRequestUrl = this.buildTaglessVideoRequest();
@@ -41,12 +46,13 @@ export class TaglessRequestSetup extends BaseServiceSetup {
 	private handleTaglessResponse(text: string) {
 		try {
 			const firstReturnedAdId = this.getFirstAdFromTaglessResponse(text);
-			utils.logger(this.logGroup, firstReturnedAdId);
+			utils.logger(this.logGroup, 'Ad received: ', firstReturnedAdId);
 
 			return Promise.resolve(firstReturnedAdId);
 		} catch (e) {
 			utils.logger(this.logGroup, 'No XML available - not a VAST response from the ad server?');
 
+			this.initialized.resolve(null);
 			return Promise.resolve(null);
 		}
 	}
@@ -61,8 +67,10 @@ export class TaglessRequestSetup extends BaseServiceSetup {
 		if (lineItemId && creativeId && this.syncedVideoLines.includes(lineItemId)) {
 			universalAdPackage.updateSlotsTargeting(lineItemId, creativeId);
 			utils.logger(this.logGroup, 'video ad is from UAP:JWP campaign - updating key-vals');
+			this.initialized.resolve(lineItemId);
 		} else {
 			utils.logger(this.logGroup, 'video ad is not from UAP:JWP campaign');
+			this.initialized.resolve(null);
 		}
 	}
 
