@@ -52,7 +52,10 @@ export class GalleryLightboxAdsHandler {
 				}
 
 				this.callPrebidBidders(() =>
-					insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]),
+					setTimeout(() => {
+						utils.logger(this.logGroup, 'Inserting slot');
+						insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]);
+					}, 100),
 				);
 				this.lockForFewSeconds();
 				this.isActive = true;
@@ -93,7 +96,10 @@ export class GalleryLightboxAdsHandler {
 				}
 
 				this.callPrebidBidders(() =>
-					insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]),
+					setTimeout(() => {
+						utils.logger(this.logGroup, 'Inserting slot');
+						insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]);
+					}, 100),
 				);
 
 				this.lockForFewSeconds();

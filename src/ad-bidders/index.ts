@@ -21,8 +21,7 @@ interface BiddersProviders {
 const logGroup = 'bidders';
 
 export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
-	private biddersProviders: BiddersProviders = {};
-	private biddersProvidersPerGroup: { [key: string]: BiddersProviders } = {};
+	private biddersProviders: { [key: string]: BiddersProviders } = {};
 	private realSlotPrices = {};
 
 	constructor(
@@ -48,7 +47,10 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 		communicationService.on(
 			eventsRepository.BIDDERS_CALL_PER_GROUP,
 			({ group, callback }) => {
-				this.callByGroup(group, callback);
+				this.callByBidGroup(group).then(() => {
+					utils.logger(logGroup, `${group} - callback`);
+					callback();
+				});
 			},
 			false,
 		);
@@ -67,27 +69,11 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 	}
 
 	getBiddersProviders(group: string | undefined = undefined): (A9Provider | PrebidProvider)[] {
-		if (group) {
-			return Object.values(this.biddersProvidersPerGroup[group] || {});
-		}
-
-		return Object.values(this.biddersProviders);
+		return Object.values(this.biddersProviders[group] || {});
 	}
 
 	getBidderProviders(group: string | undefined = undefined): BiddersProviders {
-		if (group) {
-			return this.biddersProvidersPerGroup[group];
-		}
-
-		return this.biddersProviders;
-	}
-
-	getBiddersProvidersNames(group: string | undefined = undefined) {
-		if (group) {
-			return Object.keys(this.biddersProviders[group]);
-		}
-
-		return Object.keys(this.biddersProviders);
+		return this.biddersProviders[group] || {};
 	}
 
 	async getBidParameters(slotName): Promise<Dictionary> {
@@ -143,47 +129,17 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 	}
 
 	call(): Promise<void> {
-		const config = context.get('bidders') || {};
-		const promise = utils.createExtendedPromise();
-
-		if (config.prebid && config.prebid.enabled) {
-			this.biddersProviders.prebid = new PrebidProvider(config.prebid, config.timeout);
-		}
-
-		if (A9Provider.isEnabled()) {
-			this.biddersProviders.a9 = new A9Provider(config.a9, config.timeout);
-		} else {
-			utils.logger(logGroup, 'A9 has been disabled');
-		}
-
-		if (!this.getBiddersProviders().length) {
-			utils.logger(logGroup, 'resolving call() promise because of no bidder providers');
-			return Promise.resolve();
-		}
-
-		this.getBiddersProviders().forEach((provider) => {
-			provider.addResponseListener(() => {
-				if (this.hasAllResponses()) {
-					utils.logger(logGroup, 'resolving call() promise because of having all responses');
-					promise.resolve(null);
-				}
-			});
-
-			provider.call();
-		});
-
-		utils.logger(logGroup, 'returning call() promise');
-		return promise;
+		return this.callByBidGroup(undefined);
 	}
 
-	callByGroup(group: string | undefined, callback: () => void): Promise<void> {
+	callByBidGroup(group: string | undefined): Promise<void> {
 		const config = context.get('bidders') || {};
 		const promise = utils.createExtendedPromise();
 
-		this.biddersProvidersPerGroup[group] = this.biddersProvidersPerGroup[group] || {};
+		this.biddersProviders[group] = this.biddersProviders[group] || {};
 
 		if (config.prebid && config.prebid.enabled) {
-			this.biddersProvidersPerGroup[group].prebid = new PrebidProvider(
+			this.biddersProviders[group].prebid = new PrebidProvider(
 				config.prebid,
 				config.timeout,
 				group,
@@ -191,7 +147,7 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 		}
 
 		if (A9Provider.isEnabled()) {
-			this.biddersProviders.a9 = new A9Provider(config.a9, config.timeout, group);
+			this.biddersProviders[group].a9 = new A9Provider(config.a9, config.timeout, group);
 		} else {
 			utils.logger(logGroup, `${group} - A9 has been disabled`);
 		}
@@ -206,9 +162,8 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 				if (this.hasAllResponses(group)) {
 					utils.logger(
 						logGroup,
-						`${group} - resolving call() promise because of having all responses`,
+						`${group} - ${provider.name} - resolving call() promise because of having all responses`,
 					);
-					callback();
 					promise.resolve(null);
 				}
 			});
@@ -242,9 +197,12 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 	}
 
 	private hasAllResponses(group: string | undefined = undefined): boolean {
-		const missingProviders = this.getBiddersProvidersNames(group).filter((providerName) => {
-			const names = this.getBiddersProvidersNames(group);
-			const provider = names[providerName];
+		const missingProviders = Object.keys(this.biddersProviders).filter((providerName) => {
+			const provider = this.getBidderProviders(group)[providerName];
+
+			if (!provider) {
+				return false;
+			}
 
 			return !provider.hasResponse();
 		});
