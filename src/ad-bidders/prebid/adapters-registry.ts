@@ -1,4 +1,5 @@
 import { Aliases, context, pbjsFactory } from '@ad-engine/core';
+import { hasCorrectBidGroup } from '../bidder-helper';
 import {
 	Appnexus,
 	AppnexusAst,
@@ -27,7 +28,7 @@ import {
 	YahooSsp,
 } from './adapters';
 import { PrebidAdapter } from './prebid-adapter';
-import { hasCorrectFilterGroup, isPrebidAdapterConfig, isSlotApplicable } from './prebid-helper';
+import { isPrebidAdapterConfig, isSlotApplicable } from './prebid-helper';
 import { PrebidConfig } from './prebid-models';
 
 class AdaptersRegistry {
@@ -94,7 +95,7 @@ class AdaptersRegistry {
 		});
 	}
 
-	setupAdUnits(filterGroup: string | undefined): PrebidAdUnit[] {
+	setupAdUnits(bidGroup: string | undefined): PrebidAdUnit[] {
 		const adUnits: PrebidAdUnit[] = [];
 
 		adaptersRegistry.getAdapters().forEach((adapter) => {
@@ -105,7 +106,7 @@ class AdaptersRegistry {
 					if (
 						adUnit &&
 						isSlotApplicable(adUnit.code) &&
-						hasCorrectFilterGroup(adapter.bidderName, adUnit.code, filterGroup)
+						hasCorrectBidGroup(adUnit.code, bidGroup)
 					) {
 						adUnits.push(adUnit);
 					}

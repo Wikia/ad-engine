@@ -1,4 +1,4 @@
-import { getSlotNameByBidderAlias } from '@wikia/ad-bidders/alias-helper';
+import { getSlotNameByBidderAlias } from '@wikia/ad-bidders/bidder-helper';
 import { context } from '@wikia/core';
 import { expect } from 'chai';
 

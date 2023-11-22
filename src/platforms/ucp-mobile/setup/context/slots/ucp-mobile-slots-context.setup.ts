@@ -195,12 +195,12 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			},
 			gallery_leaderboard: {
 				adProduct: 'gallery_leaderboard',
-				bidderAlias: 'fandom_mw_galleries',
 				group: 'IG',
 				defaultSizes: [
 					[320, 100],
 					[320, 50],
 				],
+				bidGroup: ['gallery'],
 				targeting: {
 					loc: 'gallery',
 				},

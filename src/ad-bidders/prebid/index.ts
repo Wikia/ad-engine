@@ -15,7 +15,7 @@ import {
 	tcf,
 	utils,
 } from '@ad-engine/core';
-import { getSlotNameByBidderAlias } from '../alias-helper';
+import { getSlotNameByBidderAlias } from '../bidder-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
 import { id5 } from './id5';
@@ -104,12 +104,12 @@ export class PrebidProvider extends BidderProvider {
 	constructor(
 		public bidderConfig: PrebidConfig,
 		public timeout = DEFAULT_MAX_DELAY,
-		private filterGroup: string | undefined = undefined,
+		private bidGroup: string | undefined = undefined,
 	) {
 		super('prebid', bidderConfig, timeout);
 		adaptersRegistry.configureAdapters();
 
-		this.adUnits = adaptersRegistry.setupAdUnits(this.filterGroup);
+		this.adUnits = adaptersRegistry.setupAdUnits(this.bidGroup);
 		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
 
 		this.prebidConfig = {
@@ -361,7 +361,7 @@ export class PrebidProvider extends BidderProvider {
 		if (adUnits.length) {
 			this.adUnits = adUnits;
 		} else if (!this.adUnits) {
-			this.adUnits = adaptersRegistry.setupAdUnits(this.filterGroup);
+			this.adUnits = adaptersRegistry.setupAdUnits(this.bidGroup);
 		}
 	}
 
@@ -379,7 +379,7 @@ export class PrebidProvider extends BidderProvider {
 
 	protected callBids(bidsBackHandler: (...args: any[]) => void): void {
 		if (!this.adUnits) {
-			this.adUnits = adaptersRegistry.setupAdUnits(this.filterGroup);
+			this.adUnits = adaptersRegistry.setupAdUnits(this.bidGroup);
 		}
 
 		if (this.adUnits.length === 0) {

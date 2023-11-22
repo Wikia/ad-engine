@@ -10,8 +10,8 @@ import {
 	utils,
 } from '@ad-engine/core';
 import { A9Provider } from './a9';
+import { getSlotBidGroup } from './bidder-helper';
 import { PrebidProvider } from './prebid';
-import { getSlotBidGroup } from './prebid/prebid-helper';
 
 interface BiddersProviders {
 	a9?: A9Provider;
@@ -72,6 +72,14 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 		}
 
 		return Object.values(this.biddersProviders);
+	}
+
+	getBidderProviders(group: string | undefined = undefined): BiddersProviders {
+		if (group) {
+			return this.biddersProvidersPerGroup[group];
+		}
+
+		return this.biddersProviders;
 	}
 
 	getBiddersProvidersNames(group: string | undefined = undefined) {
@@ -174,7 +182,7 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 
 		this.biddersProvidersPerGroup[group] = this.biddersProvidersPerGroup[group] || {};
 
-		if (config.prebid && config.prebid.enabled && !this.biddersProvidersPerGroup[group].prebid) {
+		if (config.prebid && config.prebid.enabled) {
 			this.biddersProvidersPerGroup[group].prebid = new PrebidProvider(
 				config.prebid,
 				config.timeout,
@@ -182,11 +190,11 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 			);
 		}
 
-		// if (A9Provider.isEnabled()) {
-		// 	this.biddersProviders.a9 = new A9Provider(config.a9, config.timeout);
-		// } else {
-		// 	utils.logger(logGroup, 'A9 has been disabled');
-		// }
+		if (A9Provider.isEnabled()) {
+			this.biddersProviders.a9 = new A9Provider(config.a9, config.timeout, group);
+		} else {
+			utils.logger(logGroup, `${group} - A9 has been disabled`);
+		}
 
 		if (!this.getBiddersProviders(group).length) {
 			utils.logger(logGroup, `${group} - resolving call() promise because of no bidder providers`);

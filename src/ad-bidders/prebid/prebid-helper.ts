@@ -1,18 +1,11 @@
 import { context, Dictionary, pbjsFactory, slotService } from '@ad-engine/core';
+import { isUsedAsAlias } from '../bidder-helper';
 import { PrebidAdapterConfig } from './prebid-models';
 
 const uuidKey = 'hb_uuid';
 const videoType = 'video';
 
 export const validResponseStatusCode = 1;
-
-function isUsedAsAlias(code): boolean {
-	return Object.keys(context.get('slots')).some((slotName) => {
-		const bidderAlias = context.get(`slots.${slotName}.bidderAlias`);
-
-		return bidderAlias === code && slotService.getState(slotName);
-	});
-}
 
 export function isSlotApplicable(code): boolean {
 	// This can be simplified once we get rid of uppercase slot names
@@ -25,31 +18,6 @@ export function isSlotApplicable(code): boolean {
 	}
 
 	return document.querySelector(`div[id="${code}"]`) !== null ? isApplicable : false;
-}
-
-export function hasCorrectFilterGroup(bidderName: string, code: string, group: string | undefined) {
-	const slotFilterGroups = getSlotBidGroup(code);
-
-	if (group) {
-		return slotFilterGroups && Array.isArray(slotFilterGroups) && slotFilterGroups.includes(group);
-	}
-
-	return !slotFilterGroups || (Array.isArray(slotFilterGroups) && slotFilterGroups.length === 0);
-}
-
-export function getSlotBidGroup(code: string) {
-	let slotFilterGroups = context.get(`slots.${code}.bidGroup`);
-
-	if (!slotFilterGroups && isUsedAsAlias(code)) {
-		const bidderAlias = Object.keys(context.get('slots')).find((slotName) => {
-			const bidderAlias = context.get(`slots.${slotName}.bidderAlias`);
-
-			return bidderAlias === code && slotService.getState(slotName);
-		});
-		slotFilterGroups = context.get(`slots.${bidderAlias}.bidGroup`);
-	}
-
-	return slotFilterGroups;
 }
 
 function isValidPrice(bid: PrebidBidResponse): boolean {
