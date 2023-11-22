@@ -10,6 +10,11 @@ export class TaglessRequestSetup extends BaseServiceSetup {
 	private logGroup = 'tagless-request';
 
 	async call(): Promise<void> {
+		if (!this.isEnabled('icTaglessRequestEnabled')) {
+			utils.logger(this.logGroup, 'disabled');
+			return Promise.resolve(null);
+		}
+
 		const pageTargeting = targetingService.dump();
 
 		const videoTaglessRequestUrl = utils.buildVastUrl(16 / 9, 'video', {
