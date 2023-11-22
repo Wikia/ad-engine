@@ -21,6 +21,7 @@ import { Apstag } from '../wrappers';
 import { A9Bid, A9Bids, A9Config, A9SlotConfig, A9SlotDefinition, PriceMap } from './types';
 
 const logGroup = 'A9Provider';
+const bidder = 'a9';
 
 export class A9Provider extends BidderProvider {
 	static A9_CLASS = 'a9-ad';
@@ -106,7 +107,7 @@ export class A9Provider extends BidderProvider {
 	}
 
 	private removeBids(adSlot: AdSlot): void {
-		const slotAlias = this.getSlotAlias(adSlot.getSlotName());
+		const slotAlias = this.getSlotAlias(adSlot.getSlotName(), bidder);
 
 		delete this.bids[slotAlias];
 
@@ -122,7 +123,7 @@ export class A9Provider extends BidderProvider {
 		const currentDate = new Date().getTime();
 
 		if (expirationDate < currentDate) {
-			const slotAlias = this.getSlotAlias(adSlot.getSlotName());
+			const slotAlias = this.getSlotAlias(adSlot.getSlotName(), bidder);
 			delete this.bids[slotAlias];
 			this.targetingKeys.forEach((key: string) => {
 				targetingService.remove(key, adSlot.getSlotName());
@@ -136,7 +137,7 @@ export class A9Provider extends BidderProvider {
 	getA9SlotsDefinitions(slotsNames: string[]): A9SlotDefinition[] {
 		return slotsNames
 			.filter((slotName: string) => hasCorrectBidGroup(slotName, this.bidGroup))
-			.map((slotName: string) => this.getSlotAlias(slotName))
+			.map((slotName: string) => this.getSlotAlias(slotName, bidder))
 			.filter((slotAlias: string) => this.isSlotEnabled(slotAlias))
 			.map((slotAlias: string) => this.createSlotDefinition(slotAlias))
 			.filter((slot) => slot !== null);
@@ -218,7 +219,7 @@ export class A9Provider extends BidderProvider {
 
 			slot.addClass(A9Provider.A9_CLASS);
 			utils.logger(logGroup, `bid used for slot ${slotName}`);
-			delete this.bids[this.getSlotAlias(slotName)];
+			delete this.bids[this.getSlotAlias(slotName, bidder)];
 
 			this.refreshBid(slot);
 
@@ -244,7 +245,7 @@ export class A9Provider extends BidderProvider {
 		}
 
 		const slotDef: A9SlotDefinition = this.createSlotDefinition(
-			this.getSlotAlias(slot.getSlotName()),
+			this.getSlotAlias(slot.getSlotName(), bidder),
 		);
 
 		if (slotDef) {
@@ -257,7 +258,7 @@ export class A9Provider extends BidderProvider {
 	 * Checks if slot should be refreshed.
 	 */
 	private shouldRefreshSlot(slot: AdSlot): boolean {
-		return this.bidsRefreshing.slots.includes(this.getSlotAlias(slot.getSlotName()));
+		return this.bidsRefreshing.slots.includes(this.getSlotAlias(slot.getSlotName(), bidder));
 	}
 
 	/**
@@ -346,17 +347,17 @@ export class A9Provider extends BidderProvider {
 	}
 
 	async getBestPrice(slotName: string): Promise<{ a9?: string }> {
-		const slotAlias: string = this.getSlotAlias(slotName);
+		const slotAlias: string = this.getSlotAlias(slotName, bidder);
 
 		return this.priceMap[slotAlias] ? { a9: this.priceMap[slotAlias] } : {};
 	}
 
 	async getTargetingParams(slotName: string): Promise<Dictionary> {
-		return this.bids[this.getSlotAlias(slotName)] || {};
+		return this.bids[this.getSlotAlias(slotName, bidder)] || {};
 	}
 
 	isSupported(slotName: string): boolean {
-		return !!this.slots[this.getSlotAlias(slotName)];
+		return !!this.slots[this.getSlotAlias(slotName, bidder)];
 	}
 
 	/**

@@ -18,6 +18,7 @@ import {
 import { getSlotNameByBidderAlias } from '../bidder-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
+import { Ats } from './ats';
 import { id5 } from './id5';
 import { intentIQ } from './intent-iq';
 import { getSettings } from './prebid-settings';
@@ -164,6 +165,7 @@ export class PrebidProvider extends BidderProvider {
 		this.configureAdUnits();
 		this.registerBidsRefreshing();
 		this.registerBidsTracking();
+		this.enableATSAnalytics();
 
 		utils.logger(logGroup, 'prebid created', this.prebidConfig);
 	}
@@ -284,6 +286,23 @@ export class PrebidProvider extends BidderProvider {
 						partnerId: id5.getPartnerId(),
 					},
 				});
+			});
+		}
+	}
+
+	private enableATSAnalytics(): void {
+		if (context.get('bidders.liveRampATSAnalytics.enabled')) {
+			utils.logger(logGroup, 'prebid enabling ATS Analytics');
+
+			(window as any).pbjs.que.push(() => {
+				(window as any).pbjs.enableAnalytics([
+					{
+						provider: 'atsAnalytics',
+						options: {
+							pid: Ats.PLACEMENT_ID,
+						},
+					},
+				]);
 			});
 		}
 	}
