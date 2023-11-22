@@ -19,6 +19,7 @@ export class JWPlayerInhibitor {
 		return (
 			context.get('custom.hasFeaturedVideo') &&
 			context.get('options.video.isUAPJWPEnabled') &&
+			!context.get('options.video.isTaglessRequestEnabled') &&
 			this.maxDelayTimeoutInMs > 0 &&
 			this.videoLines.length > 0
 		);
