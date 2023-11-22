@@ -39,7 +39,6 @@ export class Ozone extends PrebidAdapter {
 					sizes,
 				},
 			},
-			ortb2Imp: this.getOrtb2Imp(code),
 			bids: [
 				{
 					bidder: 'ozone',

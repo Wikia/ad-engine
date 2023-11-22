@@ -45,7 +45,6 @@ export class Appnexus extends PrebidAdapter {
 					sizes,
 				},
 			},
-			ortb2Imp: this.getOrtb2Imp(code),
 			bids: this.getBids(code, { sizes, placementId, position }),
 		};
 	}
@@ -56,7 +55,6 @@ export class Appnexus extends PrebidAdapter {
 			mediaTypes: {
 				native: PrebidNativeConfig.getPrebidNativeMediaTypes(position),
 			},
-			ortb2Imp: this.getOrtb2Imp(code),
 			bids: this.getBids(code, { sizes, placementId, position }),
 		};
 	}

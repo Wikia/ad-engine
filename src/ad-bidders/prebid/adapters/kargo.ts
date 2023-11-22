@@ -23,7 +23,6 @@ export class Kargo extends PrebidAdapter {
 					sizes,
 				},
 			},
-			ortb2Imp: this.getOrtb2Imp(code),
 			bids: this.getBids(placementId),
 		};
 	}
