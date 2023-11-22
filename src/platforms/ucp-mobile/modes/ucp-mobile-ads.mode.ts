@@ -1,6 +1,7 @@
 import { AdEngineStackSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
 	Anyclip,
+	Ats,
 	Audigent,
 	Bidders,
 	communicationService,
@@ -26,6 +27,7 @@ export class UcpMobileAdsMode implements DiProcess {
 		private pipeline: PartnerPipeline,
 		private adEngineStackSetup: AdEngineStackSetup,
 		private anyclip: Anyclip,
+		private ats: Ats,
 		private audigent: Audigent,
 		private bidders: Bidders,
 		private confiant: Confiant,
@@ -46,6 +48,7 @@ export class UcpMobileAdsMode implements DiProcess {
 		this.pipeline
 			.add(
 				this.anyclip,
+				this.ats,
 				this.audigent,
 				this.bidders,
 				this.wadRunner,
