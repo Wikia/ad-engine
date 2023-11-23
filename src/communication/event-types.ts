@@ -362,7 +362,7 @@ export const eventsRepository = {
 	BIDDERS_CALL_PER_GROUP: {
 		category: '[Prebid]',
 		name: 'Call per group',
-		payload: props<{ group: string | undefined; callback: () => void }>(),
+		payload: props<{ group: string; callback: () => void }>(),
 	},
 	// Video events //
 	VIDEO_EVENT: {
