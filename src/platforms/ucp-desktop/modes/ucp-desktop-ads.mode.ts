@@ -1,4 +1,10 @@
-import { AdEngineStackSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
+import {
+	AdEngineStackSetup,
+	GptSetup,
+	PlayerSetup,
+	TaglessRequestSetup,
+	WadRunner,
+} from '@platforms/shared';
 import {
 	Anyclip,
 	Ats,
@@ -42,6 +48,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 		private prebidNativeProvider: PrebidNativeProvider,
 		private stroer: Stroer,
 		private system1: System1,
+		private taglessRequest: TaglessRequestSetup,
 		private wadRunner: WadRunner,
 		private wunderkind: Wunderkind,
 	) {}
@@ -49,6 +56,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 	execute(): void {
 		this.pipeline
 			.add(
+				this.taglessRequest,
 				this.anyclip,
 				this.ats,
 				this.audigent,
