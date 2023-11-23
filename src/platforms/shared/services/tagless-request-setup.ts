@@ -1,11 +1,4 @@
-import {
-	BaseServiceSetup,
-	context,
-	getAdUnitString,
-	targetingService,
-	universalAdPackage,
-	utils,
-} from '@wikia/ad-engine';
+import { AdSlot, BaseServiceSetup, slotService, universalAdPackage, utils } from '@wikia/ad-engine';
 
 interface ParsedCampaignData {
 	lineItemId: string;
@@ -84,15 +77,16 @@ export class TaglessRequestSetup extends BaseServiceSetup {
 	}
 
 	private buildTaglessVideoRequest() {
-		const pageTargeting = targetingService.dump();
+		const aspectRatio = 16 / 9;
+		const slotName = 'featured';
+		const position = 'preroll';
 
-		return utils.buildVastUrl(16 / 9, 'video', {
-			videoAdUnitId: getAdUnitString('featured', {
-				...context.get('slots.featured'),
-				slotNameSuffix: '',
-			}),
-			customParams: `src=${context.get('src')}&pos=featured&cid=${pageTargeting['cid']}`,
-		});
+		const adSlot = slotService.get(slotName) || new AdSlot({ id: slotName });
+		if (!slotService.get(slotName)) {
+			slotService.add(adSlot);
+		}
+
+		return utils.buildVastUrl(aspectRatio, adSlot.getSlotName(), { vpos: position });
 	}
 
 	private getFirstAdFromTaglessResponse() {
