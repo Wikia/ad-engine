@@ -207,6 +207,12 @@ export class BaseContextSetup implements DiProcess {
 		context.set('bidders.s2s.bidders', this.instantConfig.get('icPrebidS2sBidders', []));
 		context.set('bidders.s2s.enabled', this.instantConfig.get('icPrebidS2sBidders', []).length > 0);
 		context.set('bidders.a9.rpa', this.instantConfig.get('icA9HEM'));
+
+		context.set('bidders.liveRampATS.enabled', this.instantConfig.get('icLiveRampATS'));
+		context.set(
+			'bidders.liveRampATSAnalytics.enabled',
+			this.instantConfig.get('icLiveRampATSAnalytics'),
+		);
 	}
 
 	private setupStickySlotContext(): void {
