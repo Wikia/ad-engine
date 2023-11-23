@@ -149,11 +149,14 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 		if (A9Provider.isEnabled()) {
 			this.biddersProviders[group].a9 = new A9Provider(config.a9, config.timeout, group);
 		} else {
-			utils.logger(logGroup, `${group} - A9 has been disabled`);
+			utils.logger(logGroup, `Group: ${group} - A9 has been disabled`);
 		}
 
 		if (!this.getBiddersProviders(group).length) {
-			utils.logger(logGroup, `${group} - resolving call() promise because of no bidder providers`);
+			utils.logger(
+				logGroup,
+				`Group: ${group} - resolving call() promise because of no bidder providers`,
+			);
 			return Promise.resolve();
 		}
 
@@ -162,7 +165,7 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 				if (this.hasAllResponses(group)) {
 					utils.logger(
 						logGroup,
-						`${group} - ${provider.name} - resolving call() promise because of having all responses`,
+						`Group: ${group} - ${provider.name} - resolving call() promise because of having all responses`,
 					);
 					promise.resolve(null);
 				}
@@ -171,7 +174,7 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 			provider.call();
 		});
 
-		utils.logger(logGroup, `${group} - returning call() promise`);
+		utils.logger(logGroup, `Group: ${group} - returning call() promise`);
 		return promise;
 	}
 
@@ -197,15 +200,17 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 	}
 
 	private hasAllResponses(bidGroup: string): boolean {
-		const missingProviders = Object.keys(this.biddersProviders).filter((providerName) => {
-			const provider = this.getBidderProviders(bidGroup)[providerName];
+		const missingProviders = Object.keys(this.getBidderProviders(bidGroup)).filter(
+			(providerName) => {
+				const provider = this.getBidderProviders(bidGroup)[providerName];
 
-			if (!provider) {
-				return false;
-			}
+				if (!provider) {
+					return false;
+				}
 
-			return !provider.hasResponse();
-		});
+				return !provider.hasResponse();
+			},
+		);
 
 		return missingProviders.length === 0;
 	}
