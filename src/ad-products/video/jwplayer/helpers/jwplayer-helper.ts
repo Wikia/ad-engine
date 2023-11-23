@@ -135,11 +135,15 @@ export class JWPlayerHelper {
 	}
 
 	playVideoAd(position: 'midroll' | 'postroll' | 'preroll', state: JwpState): void {
-		this.adSlot.setConfigProperty('audio', !state.mute);
+		if (!utils.taglessRequestContext.getVideoVastXml()) {
+			this.adSlot.setConfigProperty('audio', !state.mute);
 
-		const vastUrl = this.getVastUrl(position, state);
+			const vastUrl = this.getVastUrl(position, state);
 
-		this.jwplayer.playAd(vastUrl);
+			this.jwplayer.playAd(vastUrl);
+		} else {
+			utils.taglessRequestContext.clearVastXmlInAdContext();
+		}
 	}
 
 	private getVastUrl(position: string, state: JwpState): string {

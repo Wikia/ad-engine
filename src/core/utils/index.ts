@@ -22,6 +22,7 @@ export * from './sampler';
 export * from './script-loader';
 export * from './service-base-url';
 export * from './string-builder';
+export * from './tagless-request-context';
 export * from './tagless-request-url-builder';
 export * from './targeting';
 export * from './try-property';

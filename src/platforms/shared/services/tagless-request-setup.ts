@@ -15,9 +15,8 @@ interface ParsedCampaignData {
 export class TaglessRequestSetup extends BaseServiceSetup {
 	private logGroup = 'tagless-request';
 	private syncedVideoLines;
-
-	private rawAdServerResponse = '';
-	private vastUrl = '';
+	private rawAdServerResponse;
+	private vastUrl;
 
 	initialized: utils.ExtendedPromise<void> = utils.createExtendedPromise();
 
@@ -31,8 +30,7 @@ export class TaglessRequestSetup extends BaseServiceSetup {
 			return this.initialized.resolve(null);
 		}
 
-		const hasFeaturedVideo = context.get('custom.hasFeaturedVideo');
-		if (!hasFeaturedVideo) {
+		if (!utils.taglessRequestContext.hasFeaturedVideo()) {
 			utils.logger(this.logGroup, 'no featured video on the page');
 			return this.initialized.resolve(null);
 		}
@@ -55,6 +53,7 @@ export class TaglessRequestSetup extends BaseServiceSetup {
 		try {
 			this.rawAdServerResponse = text;
 			const firstReturnedAdId = this.getFirstAdFromTaglessResponse();
+			utils.taglessRequestContext.updateVastXmlInAdContext(this.rawAdServerResponse);
 			utils.logger(this.logGroup, 'Ad received: ', firstReturnedAdId);
 
 			return Promise.resolve(firstReturnedAdId);
@@ -68,7 +67,7 @@ export class TaglessRequestSetup extends BaseServiceSetup {
 
 	private updateDisplayAdsTargetingIfSyncedCampaign(ad: ParsedCampaignData) {
 		if (!this.syncedVideoLines) {
-			this.syncedVideoLines = context.get('options.video.uapJWPLineItemIds') || [];
+			this.syncedVideoLines = utils.taglessRequestContext.getVideoSyncedWithDisplayLines();
 		}
 
 		const { lineItemId, creativeId } = ad;
@@ -78,6 +77,7 @@ export class TaglessRequestSetup extends BaseServiceSetup {
 			utils.logger(this.logGroup, 'video ad is from UAP:JWP campaign - updating key-vals');
 			this.initialized.resolve(lineItemId);
 		} else {
+			utils.taglessRequestContext.clearVastXmlInAdContext();
 			utils.logger(this.logGroup, 'video ad is not from UAP:JWP campaign');
 			this.initialized.resolve(null);
 		}
@@ -100,8 +100,6 @@ export class TaglessRequestSetup extends BaseServiceSetup {
 		const xmlDocument = parser.parseFromString(this.rawAdServerResponse, 'text/xml');
 		const lineItemId = xmlDocument.getElementsByTagName('Ad');
 		const creativeId = xmlDocument.getElementsByTagName('Creative');
-
-		context.set('options.video.vastXml', this.rawAdServerResponse);
 
 		return {
 			lineItemId: lineItemId[0]?.id,
