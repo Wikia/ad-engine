@@ -101,14 +101,6 @@ export class BaseContextSetup implements DiProcess {
 			'options.video.isPostrollEnabled',
 			this.instantConfig.get('icFeaturedVideoPostroll'),
 		);
-		context.set(
-			'options.video.forceVideoAdsOnAllVideosExceptSecond',
-			this.instantConfig.get('icFeaturedVideoForceVideoAdsEverywhereExcept2ndVideo'),
-		);
-		context.set(
-			'options.video.forceVideoAdsOnAllVideosExceptSponsored',
-			this.instantConfig.get('icFeaturedVideoForceVideoAdsEverywhereExceptSponsoredVideo'),
-		);
 		context.set('options.jwpMaxDelayTimeout', this.instantConfig.get('icUAPJWPlayerDelay', 0));
 		context.set('options.video.iasTracking.enabled', this.instantConfig.get('icIASVideoTracking'));
 		context.set('options.video.isUAPJWPEnabled', this.instantConfig.get('icUAPJWPlayer'));
