@@ -17,6 +17,12 @@ export function getWikiaContext(): object {
 			interstitial: {
 				sizes: [[320, 480]],
 			},
+			gallery_leaderboard: {
+				sizes: [
+					[320, 50],
+					[320, 100],
+				],
+			},
 		},
 	};
 }
