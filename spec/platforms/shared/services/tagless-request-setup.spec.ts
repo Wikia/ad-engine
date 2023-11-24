@@ -4,11 +4,12 @@ import { context, InstantConfigService } from '@wikia/core';
 import { TaglessRequestSetup } from '@wikia/platforms/shared';
 
 describe('Tagless request setup', () => {
-	let orgFetch, fetchStub, instantConfigStub;
+	let orgFetch, fetchStub, blobStub, instantConfigStub;
 
 	beforeEach(() => {
 		orgFetch = globalThis.fetch;
 		fetchStub = global.sandbox.stub();
+		blobStub = global.sandbox.stub();
 		globalThis.fetch = fetchStub;
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 
@@ -18,6 +19,7 @@ describe('Tagless request setup', () => {
 	afterEach(() => {
 		context.remove('custom.hasFeaturedVideo');
 		context.remove('vast.adUnitId');
+		context.remove('options.video.uapJWPLineItemIds');
 
 		global.sandbox.restore();
 		globalThis.fetch = orgFetch;
@@ -67,6 +69,26 @@ describe('Tagless request setup', () => {
 		context.set('custom.hasFeaturedVideo', true);
 		fetchStub.resolves({
 			status: 400,
+		});
+
+		const taglessRequestSetup = new TaglessRequestSetup(instantConfigStub, null);
+		await taglessRequestSetup.call();
+
+		taglessRequestSetup.initialized.then((res) => {
+			expect(res).to.be.eq(null);
+		});
+	});
+
+	it('call resolves with null when fetch() succeed but with no XML', async () => {
+		instantConfigStub.get.withArgs('icTaglessRequestEnabled').returns(true);
+		context.set('custom.hasFeaturedVideo', true);
+		context.set('options.video.uapJWPLineItemIds', []);
+		blobStub.resolves({
+			text: () => 'not-really-xml',
+		});
+		fetchStub.resolves({
+			status: 200,
+			blob: blobStub,
 		});
 
 		const taglessRequestSetup = new TaglessRequestSetup(instantConfigStub, null);
