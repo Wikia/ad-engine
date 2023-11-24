@@ -4,6 +4,9 @@ import { context, InstantConfigService } from '@wikia/core';
 import { TaglessRequestSetup } from '@wikia/platforms/shared';
 
 describe('Tagless request setup', () => {
+	const MOCKED_UAP_JWP_LINE_ITEM_ID = 666;
+	const VAST_XML_MOCK = `<vast><Ad id="${MOCKED_UAP_JWP_LINE_ITEM_ID}"></Ad><Creative id="777"></Creative></vast>`;
+
 	let orgFetch, fetchStub, blobStub, instantConfigStub;
 
 	beforeEach(() => {
@@ -96,6 +99,46 @@ describe('Tagless request setup', () => {
 
 		taglessRequestSetup.initialized.then((res) => {
 			expect(res).to.be.eq(null);
+		});
+	});
+
+	it('call resolves with null when there are no UAP:JWP campaigns defined', async () => {
+		instantConfigStub.get.withArgs('icTaglessRequestEnabled').returns(true);
+		context.set('custom.hasFeaturedVideo', true);
+		context.set('options.video.uapJWPLineItemIds', []);
+		blobStub.resolves({
+			text: () => '<vast><Ad id="666"></Ad><Creative id="777"></Creative></vast>',
+		});
+		fetchStub.resolves({
+			status: 200,
+			blob: blobStub,
+		});
+
+		const taglessRequestSetup = new TaglessRequestSetup(instantConfigStub, null);
+		await taglessRequestSetup.call();
+
+		taglessRequestSetup.initialized.then((res) => {
+			expect(res).to.be.eq(null);
+		});
+	});
+
+	it('call resolves with line-item ID when UAP:JWP campaign is served', async () => {
+		instantConfigStub.get.withArgs('icTaglessRequestEnabled').returns(true);
+		context.set('custom.hasFeaturedVideo', true);
+		context.set('options.video.uapJWPLineItemIds', [MOCKED_UAP_JWP_LINE_ITEM_ID]);
+		blobStub.resolves({
+			text: () => VAST_XML_MOCK,
+		});
+		fetchStub.resolves({
+			status: 200,
+			blob: blobStub,
+		});
+
+		const taglessRequestSetup = new TaglessRequestSetup(instantConfigStub, null);
+		await taglessRequestSetup.call();
+
+		taglessRequestSetup.initialized.then((res) => {
+			expect(res).to.be.eq(MOCKED_UAP_JWP_LINE_ITEM_ID);
 		});
 	});
 });
