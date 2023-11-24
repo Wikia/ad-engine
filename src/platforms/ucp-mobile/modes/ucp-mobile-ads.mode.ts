@@ -77,16 +77,13 @@ export class UcpMobileAdsMode implements DiProcess {
 					dependencies: [
 						this.bidders.initialized,
 						this.gptSetup.initialized,
+						this.taglessRequest.initialized,
 						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
-						this.taglessRequest.isRequiredToRun()
-							? this.taglessRequest.initialized
-							: Promise.resolve(),
 					],
-					timeout: jwPlayerInhibitor.isRequiredToRun()
-						? jwPlayerInhibitor.getDelayTimeoutInMs()
-						: this.taglessRequest.isRequiredToRun()
-						? jwPlayerInhibitor.getDelayTimeoutInMs()
-						: null,
+					timeout:
+						jwPlayerInhibitor.isRequiredToRun() || this.taglessRequest.isRequiredToRun()
+							? jwPlayerInhibitor.getDelayTimeoutInMs()
+							: null,
 				}),
 			)
 			.execute()

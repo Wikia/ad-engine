@@ -18,7 +18,7 @@ export class TaglessRequestSetup extends BaseServiceSetup {
 	}
 
 	async call(): Promise<void> {
-		if (!this.isEnabled('icTaglessRequestEnabled')) {
+		if (!this.isRequiredToRun()) {
 			utils.logger(this.logGroup, 'disabled');
 			return this.initialized.resolve(null);
 		}
