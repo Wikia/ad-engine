@@ -33,7 +33,11 @@ export class TaglessRequestSetup extends BaseServiceSetup {
 		await fetch(this.vastUrl)
 			.then((res) => res.blob())
 			.then((resBlob) => resBlob.text())
-			.then((text) => this.handleTaglessResponse(text));
+			.then((text) => this.handleTaglessResponse(text))
+			.catch(() => {
+				utils.logger(this.logGroup, 'Fetching error occured');
+				this.initialized.resolve(null);
+			});
 	}
 
 	getVastUrl() {
