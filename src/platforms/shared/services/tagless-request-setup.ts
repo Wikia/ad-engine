@@ -8,7 +8,6 @@ interface ParsedCampaignData {
 export class TaglessRequestSetup extends BaseServiceSetup {
 	private logGroup = 'tagless-request';
 	private syncedVideoLines;
-	private rawAdServerResponse;
 	private vastUrl;
 
 	initialized: utils.ExtendedPromise<void> = utils.createExtendedPromise();
@@ -34,8 +33,7 @@ export class TaglessRequestSetup extends BaseServiceSetup {
 		await fetch(this.vastUrl)
 			.then((res) => res.blob())
 			.then((resBlob) => resBlob.text())
-			.then((text) => this.handleTaglessResponse(text))
-			.then((ad: ParsedCampaignData) => this.updateDisplayAdsTargetingIfSyncedCampaign(ad));
+			.then((text) => this.handleTaglessResponse(text));
 	}
 
 	getVastUrl() {
@@ -44,35 +42,31 @@ export class TaglessRequestSetup extends BaseServiceSetup {
 
 	private handleTaglessResponse(text: string) {
 		try {
-			this.rawAdServerResponse = text;
-			const firstReturnedAdId = this.getFirstAdFromTaglessResponse();
-			utils.taglessRequestContext.updateVastXmlInAdContext(this.rawAdServerResponse);
-			utils.logger(this.logGroup, 'Ad received: ', firstReturnedAdId);
+			const { lineItemId, creativeId }: ParsedCampaignData =
+				this.getFirstAdFromTaglessResponse(text);
+			utils.logger(this.logGroup, 'Ad received: ', lineItemId);
+			utils.taglessRequestContext.updateVastXmlInAdContext(text);
 
-			return Promise.resolve(firstReturnedAdId);
+			if (!this.syncedVideoLines) {
+				this.syncedVideoLines = utils.taglessRequestContext.getVideoSyncedWithDisplayLines();
+			}
+
+			if (lineItemId && creativeId && this.syncedVideoLines.includes(lineItemId)) {
+				universalAdPackage.updateSlotsTargeting(lineItemId, creativeId);
+				utils.logger(this.logGroup, 'video ad is from UAP:JWP campaign - updating key-vals');
+				this.initialized.resolve(lineItemId);
+			} else {
+				utils.taglessRequestContext.clearVastXmlInAdContext();
+				utils.logger(this.logGroup, 'video ad is not from UAP:JWP campaign');
+				this.initialized.resolve(null);
+			}
+
+			return Promise.resolve(lineItemId);
 		} catch (e) {
 			utils.logger(this.logGroup, 'No XML available - not a VAST response from the ad server?');
 
 			this.initialized.resolve(null);
 			return Promise.resolve(null);
-		}
-	}
-
-	private updateDisplayAdsTargetingIfSyncedCampaign(ad: ParsedCampaignData) {
-		if (!this.syncedVideoLines) {
-			this.syncedVideoLines = utils.taglessRequestContext.getVideoSyncedWithDisplayLines();
-		}
-
-		const { lineItemId, creativeId } = ad;
-
-		if (lineItemId && creativeId && this.syncedVideoLines.includes(lineItemId)) {
-			universalAdPackage.updateSlotsTargeting(lineItemId, creativeId);
-			utils.logger(this.logGroup, 'video ad is from UAP:JWP campaign - updating key-vals');
-			this.initialized.resolve(lineItemId);
-		} else {
-			utils.taglessRequestContext.clearVastXmlInAdContext();
-			utils.logger(this.logGroup, 'video ad is not from UAP:JWP campaign');
-			this.initialized.resolve(null);
 		}
 	}
 
@@ -89,9 +83,9 @@ export class TaglessRequestSetup extends BaseServiceSetup {
 		return utils.buildVastUrl(aspectRatio, adSlot.getSlotName(), { vpos: position });
 	}
 
-	private getFirstAdFromTaglessResponse() {
+	private getFirstAdFromTaglessResponse(textXml: string): ParsedCampaignData {
 		const parser = new DOMParser();
-		const xmlDocument = parser.parseFromString(this.rawAdServerResponse, 'text/xml');
+		const xmlDocument = parser.parseFromString(textXml, 'text/xml');
 		const lineItemId = xmlDocument.getElementsByTagName('Ad');
 		const creativeId = xmlDocument.getElementsByTagName('Creative');
 
