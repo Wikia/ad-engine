@@ -1,8 +1,8 @@
 import {
 	AdEngineStackSetup,
+	DisplayAndVideoAdsSyncSetup,
 	GptSetup,
 	PlayerSetup,
-	TaglessRequestSetup,
 	WadRunner,
 } from '@platforms/shared';
 import {
@@ -46,7 +46,7 @@ export class UcpMobileAdsMode implements DiProcess {
 		private prebidNativeProvider: PrebidNativeProvider,
 		private stroer: Stroer,
 		private system1: System1,
-		private taglessRequest: TaglessRequestSetup,
+		private taglessRequest: DisplayAndVideoAdsSyncSetup,
 		private wadRunner: WadRunner,
 		private wunderkind: Wunderkind,
 	) {}

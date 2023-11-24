@@ -1,6 +1,6 @@
 import { context } from '../services';
 
-class TaglessRequestContext {
+class DisplayAndVideoAdsSyncContext {
 	hasFeaturedVideo(): boolean {
 		return !!context.get('custom.hasFeaturedVideo');
 	}
@@ -22,4 +22,4 @@ class TaglessRequestContext {
 	}
 }
 
-export const taglessRequestContext = new TaglessRequestContext();
+export const displayAndVideoAdsSyncContext = new DisplayAndVideoAdsSyncContext();

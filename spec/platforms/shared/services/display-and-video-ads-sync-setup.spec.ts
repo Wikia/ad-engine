@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 
 import { context, InstantConfigService } from '@wikia/core';
-import { TaglessRequestSetup } from '@wikia/platforms/shared';
+import { DisplayAndVideoAdsSyncSetup } from '@wikia/platforms/shared';
 
-describe('Tagless request setup', () => {
+describe('Display and video ads sync request setup', () => {
 	const MOCKED_UAP_JWP_LINE_ITEM_ID = 666;
 	const VAST_XML_MOCK = `<vast><Ad id="${MOCKED_UAP_JWP_LINE_ITEM_ID}"></Ad><Creative id="777"></Creative></vast>`;
 
@@ -29,25 +29,25 @@ describe('Tagless request setup', () => {
 	});
 
 	it('isRequiredToRun returns false when disabled in the instant-config', () => {
-		instantConfigStub.get.withArgs('icTaglessRequestEnabled').returns(false);
+		instantConfigStub.get.withArgs('icDisplayAndVideoAdsSyncEnabled').returns(false);
 
-		const taglessRequestSetup = new TaglessRequestSetup(instantConfigStub, null);
+		const taglessRequestSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
 
 		expect(taglessRequestSetup.isRequiredToRun()).to.be.equal(false);
 	});
 
 	it('isRequiredToRun returns true when enabled in the instant-config', () => {
-		instantConfigStub.get.withArgs('icTaglessRequestEnabled').returns(true);
+		instantConfigStub.get.withArgs('icDisplayAndVideoAdsSyncEnabled').returns(true);
 
-		const taglessRequestSetup = new TaglessRequestSetup(instantConfigStub, null);
+		const taglessRequestSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
 
 		expect(taglessRequestSetup.isRequiredToRun()).to.be.equal(true);
 	});
 
 	it('call resolves with null when disabled', async () => {
-		instantConfigStub.get.withArgs('icTaglessRequestEnabled').returns(false);
+		instantConfigStub.get.withArgs('icDisplayAndVideoAdsSyncEnabled').returns(false);
 
-		const taglessRequestSetup = new TaglessRequestSetup(instantConfigStub, null);
+		const taglessRequestSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
 		await taglessRequestSetup.call();
 
 		taglessRequestSetup.initialized.then((res) => {
@@ -56,10 +56,10 @@ describe('Tagless request setup', () => {
 	});
 
 	it('call resolves with null when not a page with a featured video', async () => {
-		instantConfigStub.get.withArgs('icTaglessRequestEnabled').returns(true);
+		instantConfigStub.get.withArgs('icDisplayAndVideoAdsSyncEnabled').returns(true);
 		context.set('custom.hasFeaturedVideo', false);
 
-		const taglessRequestSetup = new TaglessRequestSetup(instantConfigStub, null);
+		const taglessRequestSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
 		await taglessRequestSetup.call();
 
 		taglessRequestSetup.initialized.then((res) => {
@@ -68,13 +68,13 @@ describe('Tagless request setup', () => {
 	});
 
 	it('call resolves with null when fetch fails', async () => {
-		instantConfigStub.get.withArgs('icTaglessRequestEnabled').returns(true);
+		instantConfigStub.get.withArgs('icDisplayAndVideoAdsSyncEnabled').returns(true);
 		context.set('custom.hasFeaturedVideo', true);
 		fetchStub.resolves({
 			status: 400,
 		});
 
-		const taglessRequestSetup = new TaglessRequestSetup(instantConfigStub, null);
+		const taglessRequestSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
 		await taglessRequestSetup.call();
 
 		taglessRequestSetup.initialized.then((res) => {
@@ -83,7 +83,7 @@ describe('Tagless request setup', () => {
 	});
 
 	it('call resolves with null when fetch() succeed but with no XML', async () => {
-		instantConfigStub.get.withArgs('icTaglessRequestEnabled').returns(true);
+		instantConfigStub.get.withArgs('icDisplayAndVideoAdsSyncEnabled').returns(true);
 		context.set('custom.hasFeaturedVideo', true);
 		context.set('options.video.uapJWPLineItemIds', []);
 		blobStub.resolves({
@@ -94,7 +94,7 @@ describe('Tagless request setup', () => {
 			blob: blobStub,
 		});
 
-		const taglessRequestSetup = new TaglessRequestSetup(instantConfigStub, null);
+		const taglessRequestSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
 		await taglessRequestSetup.call();
 
 		taglessRequestSetup.initialized.then((res) => {
@@ -103,7 +103,7 @@ describe('Tagless request setup', () => {
 	});
 
 	it('call resolves with null when there are no UAP:JWP campaigns defined', async () => {
-		instantConfigStub.get.withArgs('icTaglessRequestEnabled').returns(true);
+		instantConfigStub.get.withArgs('icDisplayAndVideoAdsSyncEnabled').returns(true);
 		context.set('custom.hasFeaturedVideo', true);
 		context.set('options.video.uapJWPLineItemIds', []);
 		blobStub.resolves({
@@ -114,7 +114,7 @@ describe('Tagless request setup', () => {
 			blob: blobStub,
 		});
 
-		const taglessRequestSetup = new TaglessRequestSetup(instantConfigStub, null);
+		const taglessRequestSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
 		await taglessRequestSetup.call();
 
 		taglessRequestSetup.initialized.then((res) => {
@@ -123,7 +123,7 @@ describe('Tagless request setup', () => {
 	});
 
 	it('call resolves with line-item ID when UAP:JWP campaign is served', async () => {
-		instantConfigStub.get.withArgs('icTaglessRequestEnabled').returns(true);
+		instantConfigStub.get.withArgs('icDisplayAndVideoAdsSyncEnabled').returns(true);
 		context.set('custom.hasFeaturedVideo', true);
 		context.set('options.video.uapJWPLineItemIds', [MOCKED_UAP_JWP_LINE_ITEM_ID]);
 		blobStub.resolves({
@@ -134,7 +134,7 @@ describe('Tagless request setup', () => {
 			blob: blobStub,
 		});
 
-		const taglessRequestSetup = new TaglessRequestSetup(instantConfigStub, null);
+		const taglessRequestSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
 		await taglessRequestSetup.call();
 
 		taglessRequestSetup.initialized.then((res) => {

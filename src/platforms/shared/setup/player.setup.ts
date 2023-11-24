@@ -26,7 +26,7 @@ export class PlayerSetup extends BaseServiceSetup {
 
 	call() {
 		const showAds = !context.get('options.wad.blocking');
-		const vastXml = utils.taglessRequestContext.getVideoVastXml();
+		const vastXml = utils.displayAndVideoAdsSyncContext.getVideoVastXml();
 
 		if (showAds) {
 			utils.logger(logGroup, 'JWP with ads controlled by AdEngine enabled');

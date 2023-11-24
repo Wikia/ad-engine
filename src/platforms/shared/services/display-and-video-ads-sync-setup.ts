@@ -12,7 +12,7 @@ interface ParsedCampaignData {
 	creativeId: string;
 }
 
-export class TaglessRequestSetup extends BaseServiceSetup {
+export class DisplayAndVideoAdsSyncSetup extends BaseServiceSetup {
 	private logGroup = 'tagless-request';
 	private syncedVideoLines;
 	private vastUrl;
@@ -27,7 +27,7 @@ export class TaglessRequestSetup extends BaseServiceSetup {
 	initialized: utils.ExtendedPromise<void> = utils.createExtendedPromise();
 
 	isRequiredToRun(): boolean {
-		return this.isEnabled('icTaglessRequestEnabled', false);
+		return this.isEnabled('icDisplayAndVideoAdsSyncEnabled', false);
 	}
 
 	async call(): Promise<void> {
@@ -36,7 +36,7 @@ export class TaglessRequestSetup extends BaseServiceSetup {
 			return this.initialized.resolve(null);
 		}
 
-		if (!utils.taglessRequestContext.hasFeaturedVideo()) {
+		if (!utils.displayAndVideoAdsSyncContext.hasFeaturedVideo()) {
 			utils.logger(this.logGroup, 'no featured video on the page');
 			return this.initialized.resolve(null);
 		}
@@ -63,10 +63,11 @@ export class TaglessRequestSetup extends BaseServiceSetup {
 			const { lineItemId, creativeId }: ParsedCampaignData =
 				this.getFirstAdFromTaglessResponse(text);
 			utils.logger(this.logGroup, 'Ad received: ', lineItemId);
-			utils.taglessRequestContext.updateVastXmlInAdContext(text);
+			utils.displayAndVideoAdsSyncContext.updateVastXmlInAdContext(text);
 
 			if (!this.syncedVideoLines) {
-				this.syncedVideoLines = utils.taglessRequestContext.getVideoSyncedWithDisplayLines();
+				this.syncedVideoLines =
+					utils.displayAndVideoAdsSyncContext.getVideoSyncedWithDisplayLines();
 			}
 
 			if (lineItemId && creativeId && this.syncedVideoLines.includes(lineItemId)) {
@@ -74,7 +75,7 @@ export class TaglessRequestSetup extends BaseServiceSetup {
 				utils.logger(this.logGroup, 'video ad is from UAP:JWP campaign - updating key-vals');
 				this.initialized.resolve(lineItemId);
 			} else {
-				utils.taglessRequestContext.clearVastXmlInAdContext();
+				utils.displayAndVideoAdsSyncContext.clearVastXmlInAdContext();
 				utils.logger(this.logGroup, 'video ad is not from UAP:JWP campaign');
 				this.initialized.resolve(null);
 			}
