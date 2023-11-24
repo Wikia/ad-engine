@@ -32,10 +32,10 @@ describe('bidder-helper', () => {
 	});
 
 	describe('getSlotBidGroup', () => {
-		it('should return undefined bid group if no group', () => {
+		it('should return default bid group if no group', () => {
 			const result = getSlotBidGroup('slot1');
 
-			expect(result).to.deep.be.undefined;
+			expect(result).to.deep.be.equals(defaultSlotBidGroup);
 		});
 
 		it('should return bid group if defined group', () => {
@@ -82,16 +82,8 @@ describe('bidder-helper', () => {
 			expect(result).to.deep.be.false;
 		});
 
-		it('should return true if default bid group and empty slot bid group', () => {
-			global.sandbox.stub(context, 'get').withArgs('slots.slot1.bidGroup').returns([]);
-
-			const result = hasCorrectBidGroup('slot1', defaultSlotBidGroup);
-
-			expect(result).to.deep.be.true;
-		});
-
 		it('should return true if not default bid group and correct group', () => {
-			global.sandbox.stub(context, 'get').withArgs('slots.slot1.bidGroup').returns(['group#1']);
+			global.sandbox.stub(context, 'get').withArgs('slots.slot1.bidGroup').returns('group#1');
 
 			const result = hasCorrectBidGroup('slot1', 'group#1');
 
@@ -99,7 +91,7 @@ describe('bidder-helper', () => {
 		});
 
 		it('should return false if default bid group and different slot bid group', () => {
-			global.sandbox.stub(context, 'get').withArgs('slots.slot1.bidGroup').returns(['secondGroup']);
+			global.sandbox.stub(context, 'get').withArgs('slots.slot1.bidGroup').returns('secondGroup');
 
 			const result = hasCorrectBidGroup('slot1', 'group#1');
 
@@ -107,7 +99,7 @@ describe('bidder-helper', () => {
 		});
 
 		it('should return false if default bid group and incorrect slot bid group', () => {
-			global.sandbox.stub(context, 'get').withArgs('slots.slot1.bidGroup').returns('group#1');
+			global.sandbox.stub(context, 'get').withArgs('slots.slot1.bidGroup').returns(['group#1']);
 
 			const result = hasCorrectBidGroup('slot1', 'group#1');
 

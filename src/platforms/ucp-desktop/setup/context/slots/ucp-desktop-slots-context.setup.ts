@@ -184,7 +184,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 					createLabel: true,
 					adLabelParent: '.ad-slot-placeholder.gallery-leaderboard',
 				},
-				bidGroup: ['gallery'],
+				bidGroup: 'gallery',
 			},
 		};
 

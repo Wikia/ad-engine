@@ -68,14 +68,6 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 		Object.keys(targeting).forEach((key) => targetingService.set(key, targeting[key], slotName));
 	}
 
-	getBiddersProviders(bidGroup: string): (A9Provider | PrebidProvider)[] {
-		return Object.values(this.biddersProviders[bidGroup] || {});
-	}
-
-	getBidderProviders(bidGroup: string): BiddersProviders {
-		return this.biddersProviders[bidGroup] || {};
-	}
-
 	async getBidParameters(slotName): Promise<Dictionary> {
 		const slotParams = {};
 		const slotBidGroup = getSlotBidGroup(slotName);
@@ -213,6 +205,14 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 		);
 
 		return missingProviders.length === 0;
+	}
+
+	private getBiddersProviders(bidGroup: string): (A9Provider | PrebidProvider)[] {
+		return Object.values(this.biddersProviders[bidGroup] || {});
+	}
+
+	private getBidderProviders(bidGroup: string): BiddersProviders {
+		return this.biddersProviders[bidGroup] || {};
 	}
 }
 
