@@ -84,6 +84,6 @@ describe('PlayerSetup', () => {
 
 		expect(dispatch.withArgs(expectedDispatchArg).calledOnce);
 		expect(dispatch.lastCall.args[0].showAds).to.be.false;
-		expect(dispatch.lastCall.args[0].vastXml).to.be.not.exist;
+		expect(dispatch.lastCall.args[0].vastXml).to.be.undefined;
 	});
 });

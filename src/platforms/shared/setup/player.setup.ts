@@ -45,7 +45,6 @@ export class PlayerSetup extends BaseServiceSetup {
 				jwpSetup({
 					showAds: false,
 					autoplayDisabled: false,
-					vastXml,
 				}),
 			);
 		}
