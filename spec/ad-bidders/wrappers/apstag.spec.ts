@@ -256,7 +256,12 @@ describe('Apstag', () => {
 		it('should send provided HEM once', async () => {
 			// given
 			const apstag = Apstag.reset();
-			global.sandbox.stub(context, 'get').withArgs('bidders.a9.hem.enabled').returns(true);
+			global.sandbox
+				.stub(context, 'get')
+				.withArgs('bidders.a9.hem.enabled')
+				.returns(true)
+				.withArgs('bidders.a9.hem.cleanup')
+				.returns(false);
 			global.sandbox
 				.stub(apstag.storage, 'getItem')
 				.onFirstCall()
@@ -279,7 +284,12 @@ describe('Apstag', () => {
 		it('should renew Amazon Token when it expired', async () => {
 			// given
 			const apstag = Apstag.reset();
-			global.sandbox.stub(context, 'get').withArgs('bidders.a9.hem.enabled').returns(true);
+			global.sandbox
+				.stub(context, 'get')
+				.withArgs('bidders.a9.hem.enabled')
+				.returns(true)
+				.withArgs('bidders.a9.hem.cleanup')
+				.returns(false);
 			global.sandbox
 				.stub(apstag.storage, 'getItem')
 				.withArgs('apstagHEMsent', true)
@@ -300,7 +310,12 @@ describe('Apstag', () => {
 			it(`should update Amazon Token when user consent changes - ${testCase}`, async () => {
 				// given
 				const apstag = Apstag.reset();
-				global.sandbox.stub(context, 'get').withArgs('bidders.a9.hem.enabled').returns(true);
+				global.sandbox
+					.stub(context, 'get')
+					.withArgs('bidders.a9.hem.enabled')
+					.returns(true)
+					.withArgs('bidders.a9.hem.cleanup')
+					.returns(false);
 				global.sandbox
 					.stub(apstag.storage, 'getItem')
 					.withArgs('apstagHEMsent', true)
@@ -326,7 +341,12 @@ describe('Apstag', () => {
 		it('should not send HEM when feature flag is disabled', async () => {
 			// given
 			const apstag = Apstag.reset();
-			global.sandbox.stub(context, 'get').withArgs('bidders.a9.hem.enabled').returns(false);
+			global.sandbox
+				.stub(context, 'get')
+				.withArgs('bidders.a9.hem.enabled')
+				.returns(false)
+				.withArgs('bidders.a9.hem.cleanup')
+				.returns(false);
 
 			// when
 			await apstag.sendHEM('hash');
@@ -338,11 +358,16 @@ describe('Apstag', () => {
 		it('should not send HEM when it was already sent to Amazon and not expired', async () => {
 			// given
 			const apstag = Apstag.reset();
-			global.sandbox.stub(context, 'get').withArgs('bidders.a9.hem.enabled').returns(true);
+			global.sandbox
+				.stub(context, 'get')
+				.withArgs('bidders.a9.hem.enabled')
+				.returns(true)
+				.withArgs('bidders.a9.hem.cleanup')
+				.returns(false);
 			global.sandbox
 				.stub(apstag.storage, 'getItem')
 				.withArgs('apstagHEMsent', true)
-				.returns(Date.now().toString());
+				.returns((Date.now() + Apstag.AMAZON_TOKEN_TTL).toString());
 
 			// when
 			await apstag.sendHEM('hash');
@@ -365,7 +390,6 @@ describe('Apstag', () => {
 			await apstag.sendHEM('hash');
 
 			// then
-			expect(apstagRpaStub.notCalled, 'apstag.rpa call not expected').to.be.true;
 			expect(apstagRpaStub.notCalled, 'apstag.rpa call not expected').to.be.true;
 		});
 	});
