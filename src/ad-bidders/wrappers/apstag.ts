@@ -19,6 +19,7 @@ import { A9Bid, A9BidConfig, A9CCPA, ApstagConfig, ApstagTokenConfig } from '../
 const logGroup = 'a9-apstag';
 
 export class Apstag {
+	public static AMAZON_TOKEN_TTL = 14 * 24 * 60 * 60 * 1000; // 14 days
 	private static instance: Apstag;
 
 	static make(): Apstag {
@@ -103,22 +104,25 @@ export class Apstag {
 				!trackingOptIn.isOptedIn(consents?.gdprConsent) ||
 				trackingOptIn.isOptOutSale(consents?.ccpaSignal);
 			const optOutString = optOut ? '1' : '0';
-			if (
+			const amazonTokenCreated = !!this.storage.getItem('apstagHEMsent', true);
+			const amazonTokenExpired =
+				amazonTokenCreated && this.storage.getItem('apstagHEMsent', true) < Date.now().toString();
+			const userConsentHasChanged =
 				this.storage.getItem('apstagHEMoptOut', true) &&
-				optOutString !== this.storage.getItem('apstagHEMoptOut', true)
-			) {
+				optOutString !== this.storage.getItem('apstagHEMoptOut', true);
+			if (userConsentHasChanged) {
 				utils.logger(logGroup, 'Updating user consents', tokenConfig, 'optOut', optOut);
 				window.apstag.upa({
 					...tokenConfig,
 					optOut,
 				});
-			} else if (this.storage.getItem('apstagHEMsent', true) !== '1') {
+			} else if (!amazonTokenCreated || amazonTokenExpired) {
 				utils.logger(logGroup, 'Sending HEM to apstag', tokenConfig, 'optOut', optOut);
 				window.apstag.rpa(tokenConfig);
 			}
 			// Necessary for updating optOut status.
 			this.storage.setItem('apstagRecord', record);
-			this.storage.setItem('apstagHEMsent', '1');
+			this.storage.setItem('apstagHEMsent', (Date.now() + Apstag.AMAZON_TOKEN_TTL).toString());
 			this.storage.setItem('apstagHEMoptOut', optOutString);
 			communicationService.emit(eventsRepository.A9_APSTAG_HEM_SENT);
 		} catch (e) {
@@ -170,6 +174,7 @@ export class Apstag {
 		window.apstag.init(apsConfig);
 
 		if (context.get('bidders.a9.hem.cleanup')) {
+			utils.logger(logGroup, 'Cleaning Amazon Token...');
 			window.apstag.dpa();
 			return;
 		}
@@ -218,7 +223,7 @@ export class Apstag {
 
 	private getApstagConfig(signalData: SignalData): ApstagConfig {
 		const amazonId = context.get('bidders.a9.amazonId');
-		const ortb2 = targetingService.get('openrtb2', 'openrtb2');
+		const ortb2 = targetingService.get('openrtb2', 'openrtb2') ?? {};
 		externalLogger.log('openrtb2 signals', { signals: JSON.stringify(ortb2) });
 
 		return {
