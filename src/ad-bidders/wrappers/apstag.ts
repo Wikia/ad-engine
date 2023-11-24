@@ -176,6 +176,9 @@ export class Apstag {
 		if (context.get('bidders.a9.hem.cleanup')) {
 			utils.logger(logGroup, 'Cleaning Amazon Token...');
 			window.apstag.dpa();
+			this.storage.removeItem('apstagRecord');
+			this.storage.removeItem('apstagHEMsent');
+			this.storage.removeItem('apstagHEMoptOut');
 			return;
 		}
 
