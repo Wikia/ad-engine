@@ -1,14 +1,26 @@
 import { expect } from 'chai';
-import sinon from 'sinon';
 
 import { context, InstantConfigService } from '@wikia/core';
 import { TaglessRequestSetup } from '@wikia/platforms/shared';
 
 describe('Tagless request setup', () => {
-	const instantConfigStub = sinon.createStubInstance(InstantConfigService);
+	let orgFetch, fetchStub, instantConfigStub;
+
+	beforeEach(() => {
+		orgFetch = globalThis.fetch;
+		fetchStub = global.sandbox.stub();
+		globalThis.fetch = fetchStub;
+		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
+
+		context.set('vast.adUnitId', '/5441/fake-vast-ad-unit');
+	});
 
 	afterEach(() => {
 		context.remove('custom.hasFeaturedVideo');
+		context.remove('vast.adUnitId');
+
+		global.sandbox.restore();
+		globalThis.fetch = orgFetch;
 	});
 
 	it('isRequiredToRun returns false when disabled in the instant-config', () => {
@@ -41,6 +53,21 @@ describe('Tagless request setup', () => {
 	it('call resolves with null when not a page with a featured video', async () => {
 		instantConfigStub.get.withArgs('icTaglessRequestEnabled').returns(true);
 		context.set('custom.hasFeaturedVideo', false);
+
+		const taglessRequestSetup = new TaglessRequestSetup(instantConfigStub, null);
+		await taglessRequestSetup.call();
+
+		taglessRequestSetup.initialized.then((res) => {
+			expect(res).to.be.eq(null);
+		});
+	});
+
+	it('call resolves with null when fetch fails', async () => {
+		instantConfigStub.get.withArgs('icTaglessRequestEnabled').returns(true);
+		context.set('custom.hasFeaturedVideo', true);
+		fetchStub.resolves({
+			status: 400,
+		});
 
 		const taglessRequestSetup = new TaglessRequestSetup(instantConfigStub, null);
 		await taglessRequestSetup.call();
