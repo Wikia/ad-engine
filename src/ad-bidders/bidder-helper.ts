@@ -35,11 +35,7 @@ export function getSlotBidGroup(code: string): string {
 		slotBidGroup = context.get(`slots.${bidderAlias}.bidGroup`);
 	}
 
-	if (!slotBidGroup) {
-		return defaultSlotBidGroup;
-	}
-
-	return slotBidGroup;
+	return slotBidGroup || defaultSlotBidGroup;
 }
 
 export function isUsedAsAlias(code): boolean {

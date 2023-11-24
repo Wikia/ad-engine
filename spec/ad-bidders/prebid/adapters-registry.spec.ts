@@ -17,6 +17,9 @@ describe('AdaptersRegistry', () => {
 					fandom_dt_galleries: {
 						sizes: [[0, 0]],
 					},
+					top_leaderboard: {
+						sizes: [[0, 0]],
+					},
 				},
 			},
 		});
@@ -29,7 +32,7 @@ describe('AdaptersRegistry', () => {
 		context.set('slots', prebidContext);
 	});
 
-	it('setup ad units', () => {
+	it('result if gallery group', () => {
 		const expected = [
 			{
 				bids: [
@@ -59,8 +62,33 @@ describe('AdaptersRegistry', () => {
 		expect(expected).to.deep.equal(result);
 	});
 
-	it('empty result because invalid group', () => {
+	it('result if default group', () => {
+		const expected = [
+			{
+				bids: [
+					{
+						bidder: 'indexExchange',
+						params: {
+							siteId: undefined,
+							size: [0, 0],
+						},
+					},
+				],
+				code: 'top_leaderboard',
+				mediaTypes: {
+					banner: {
+						sizes: [[0, 0]],
+					},
+				},
+				ortb2Imp: {
+					ext: {
+						gpid: '',
+					},
+				},
+			},
+		];
+
 		const result = adaptersRegistry.setupAdUnits(defaultSlotBidGroup);
-		expect([]).to.deep.equal(result);
+		expect(expected).to.deep.equal(result);
 	});
 });
