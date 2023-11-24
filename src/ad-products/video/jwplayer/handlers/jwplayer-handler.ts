@@ -79,9 +79,18 @@ export class JWPlayerHandler {
 		return this.stream$.pipe(
 			ofJwpEvent('beforePlay'),
 			tap(({ state }) => this.helper.updateVideoProperties(state)),
-			filter(({ state }) =>
-				this.helper.shouldPlayPreroll(state.depth, state?.playlistItem?.mediaid),
-			),
+			filter(({ state }) => {
+				const shouldPlayAd = this.helper.shouldPlayPreroll(
+					state.depth,
+					state?.playlistItem?.mediaid,
+				);
+
+				if (!shouldPlayAd) {
+					jwPlayerInhibitor.resolve();
+				}
+
+				return shouldPlayAd;
+			}),
 			mergeMap((payload) => this.helper.awaitIasTracking(payload)),
 			tap(({ state }) => this.helper.playVideoAd('preroll', state)),
 		);
