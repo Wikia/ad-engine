@@ -1,4 +1,11 @@
-import { AdSlot, BaseServiceSetup, slotService, universalAdPackage, utils } from '@wikia/ad-engine';
+import {
+	AdSlot,
+	BaseServiceSetup,
+	InstantConfigService,
+	slotService,
+	universalAdPackage,
+	utils,
+} from '@wikia/ad-engine';
 
 interface ParsedCampaignData {
 	lineItemId: string;
@@ -10,10 +17,17 @@ export class TaglessRequestSetup extends BaseServiceSetup {
 	private syncedVideoLines;
 	private vastUrl;
 
+	constructor(
+		protected readonly instantConfig: InstantConfigService = null,
+		protected readonly globalTimeout: utils.GlobalTimeout = null,
+	) {
+		super();
+	}
+
 	initialized: utils.ExtendedPromise<void> = utils.createExtendedPromise();
 
 	isRequiredToRun(): boolean {
-		return this.isEnabled('icTaglessRequestEnabled');
+		return this.isEnabled('icTaglessRequestEnabled', false);
 	}
 
 	async call(): Promise<void> {
