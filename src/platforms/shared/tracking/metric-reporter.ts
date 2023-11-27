@@ -31,6 +31,7 @@ const REPORTABLE_SLOTS = {
 
 export class MetricReporter {
 	private readonly isActive: boolean;
+	private slotTimeDiffRequestToRender = new Map<string, number>();
 
 	constructor() {
 		this.isActive = utils.outboundTrafficRestrict.isOutboundTrafficAllowed('monitoring-default');
@@ -104,41 +105,17 @@ export class MetricReporter {
 		});
 	}
 
-	public setTrackingVariant(variant: string): this {
-		context.set('metering.system.additional.variant.plw', variant);
-		return this;
-	}
-
-	public trackLoadTimeVarianted(): void {
-		const variant = context.get('metering.system.additional.variant.plw');
-		this.sendToMeteringSystem({
-			action: `load-variant-${variant}`,
-			duration: Math.round(utils.getTimeDelta()),
-		});
-	}
-
 	private trackGamSlotRequest(): void {
 		communicationService.onSlotEvent(AdSlotEvent.SLOT_REQUESTED_EVENT, ({ slot }) => {
 			this.sendSlotInfoToMeteringSystem(slot, 'request');
-			this.trackGamSlotTimedInfo(slot, 'request');
-		});
-	}
-
-	private trackGamSlotTimedInfo(slot: AdSlot, state: string): void {
-		const variant = context.get('metering.system.additional.variant.plw');
-		if (!variant || !REPORTABLE_SLOTS.stateMetric.includes(slot.getSlotName())) {
-			return;
-		}
-
-		this.sendToMeteringSystem({
-			action: `${slot.getSlotName()}-${state}-variant-${variant}`,
-			duration: Math.round(utils.getTimeDelta()),
+			this.slotTimeDiffRequestToRender.set(slot.getSlotName(), Math.round(utils.getTimeDelta()));
 		});
 	}
 
 	private trackGamSlotRendered(): void {
 		communicationService.onSlotEvent(AdSlotEvent.SLOT_RENDERED_EVENT, ({ slot }) => {
 			this.sendSlotInfoToMeteringSystem(slot, 'render');
+			this.sendSlotLoadTimeDiffToMeteringSystem(slot);
 		});
 	}
 
@@ -150,6 +127,23 @@ export class MetricReporter {
 		this.sendToMeteringSystem({
 			slot: slot.getSlotName(),
 			state,
+		});
+	}
+
+	private sendSlotLoadTimeDiffToMeteringSystem(slot: AdSlot): void {
+		if (
+			!REPORTABLE_SLOTS.timingMetric.includes(slot.getSlotName()) ||
+			!this.slotTimeDiffRequestToRender.has(slot.getSlotName())
+		) {
+			return;
+		}
+
+		const requestTime = this.slotTimeDiffRequestToRender.get(slot.getSlotName());
+		const duration = Math.round(utils.getTimeDelta()) - requestTime;
+
+		this.sendToMeteringSystem({
+			action: `${slot.getSlotName()}_ratio`,
+			duration,
 		});
 	}
 
