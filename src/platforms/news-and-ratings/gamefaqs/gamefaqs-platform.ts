@@ -1,16 +1,25 @@
 import {
 	BiddersStateSetup,
-	bootstrapAndGetConsent,
+	ConsentManagementPlatformSetup,
+	ensureGeoCookie,
 	InstantConfigSetup,
 	LoadTimesSetup,
-	MetricReporter,
 	MetricReporterSetup,
+	PreloadedLibrariesSetup,
+	SlotsConfigurationExtender,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
-import { context, IdentitySetup, ProcessPipeline, utils } from '@wikia/ad-engine';
+import {
+	context,
+	IdentitySetup,
+	logVersion,
+	parallel,
+	ProcessPipeline,
+	sequential,
+	utils,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
 import {
 	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
@@ -32,15 +41,18 @@ export class GamefaqsPlatform {
 	constructor(private pipeline: ProcessPipeline) {}
 
 	execute(): void {
+		logVersion();
+		context.extend(basicContext);
+		context.set('state.isMobile', !utils.client.isDesktop());
+
 		this.pipeline.add(
-			() => context.extend(basicContext),
-			() => context.set('state.isMobile', !utils.client.isDesktop()),
-			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
-			() => bootstrapAndGetConsent(),
-			InstantConfigSetup,
+			async () => await ensureGeoCookie(),
+			parallel(
+				sequential(InstantConfigSetup, PreloadedLibrariesSetup),
+				ConsentManagementPlatformSetup,
+			),
 			TrackingParametersSetup,
 			MetricReporterSetup,
-			MetricReporter,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			IdentitySetup,

@@ -12,10 +12,11 @@ describe('MetricReporterSetup', () => {
 		const contextSetSpy = global.sandbox.spy(context, 'set');
 		await metricSetup.execute();
 
-		expect(contextSetSpy.callCount).to.be.eq(3);
+		expect(contextSetSpy.callCount).to.be.eq(4);
 		expect(context.get('services.monitoring.endpoint')).to.not.be.empty;
 		expect(context.get('services.monitoring.service')).to.not.be.empty;
 		expect(context.get('services.monitoring-default.threshold')).to.be.eq(1);
+		expect(context.get('services.monitoring-default.allowed')).to.be.false;
 	});
 
 	it('should set values to the context (object threshold)', async () => {
