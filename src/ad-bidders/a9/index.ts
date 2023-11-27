@@ -50,6 +50,10 @@ export class A9Provider extends BidderProvider {
 		return enabled && !utils.isCoppaSubject();
 	}
 
+	public static initApstag() {
+		Apstag.make();
+	}
+
 	private loaded = false;
 
 	apstag: Apstag = Apstag.make();
