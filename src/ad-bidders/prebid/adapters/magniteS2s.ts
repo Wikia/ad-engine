@@ -21,10 +21,10 @@ export class MagniteS2s extends PrebidAdapter {
 				sizes,
 			},
 		};
-		if (code.includes('video'))
+		if (code === 'featured')
 			mediaTypes = {
 				video: {
-					playerSize: [640, 480],
+					playerSize: sizes[0],
 					context: 'outstream',
 					api: [2],
 					linearity: 1,

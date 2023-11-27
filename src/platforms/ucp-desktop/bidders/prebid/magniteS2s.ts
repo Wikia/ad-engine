@@ -31,7 +31,7 @@ export function getMagniteS2sContext(): object {
 					[970, 250],
 				],
 			},
-			fandom_dt_video: {
+			featured: {
 				sizes: [[640, 480]],
 			},
 		},

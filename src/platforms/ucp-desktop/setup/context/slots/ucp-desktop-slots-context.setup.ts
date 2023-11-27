@@ -129,7 +129,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 			featured: {
 				adProduct: 'featured',
-				bidderAlias: 'fandom_dt_video',
 				isVideo: true,
 				group: 'VIDEO',
 				videoSizes: [[640, 480]],

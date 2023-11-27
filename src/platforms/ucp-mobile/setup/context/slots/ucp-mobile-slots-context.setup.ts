@@ -157,7 +157,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			},
 			featured: {
 				adProduct: 'featured',
-				bidderAlias: 'fandom_mw_video',
 				group: 'VIDEO',
 				videoSizes: [[640, 480]],
 				trackEachStatus: true,
