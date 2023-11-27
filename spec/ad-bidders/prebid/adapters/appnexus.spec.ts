@@ -58,11 +58,6 @@ describe('Appnexus bidder adapter', () => {
 						],
 					},
 				},
-				ortb2Imp: {
-					ext: {
-						gpid: '/5441/something/_PB/bottom_leaderboard',
-					},
-				},
 				bids: [
 					{
 						bidder: 'appnexus',
@@ -117,11 +112,6 @@ describe('Appnexus bidder adapter', () => {
 				mediaTypes: {
 					native: PrebidNativeConfig.getPrebidNativeMediaTypes('mobile'),
 				},
-				ortb2Imp: {
-					ext: {
-						gpid: '/5441/something/_PB/bottom_leaderboard',
-					},
-				},
 				bids: [
 					{
 						bidder: 'appnexus',
@@ -166,11 +156,6 @@ describe('Appnexus bidder adapter', () => {
 						],
 					},
 				},
-				ortb2Imp: {
-					ext: {
-						gpid: '/5441/something/_PB/02_MR',
-					},
-				},
 				bids: [
 					{
 						bidder: 'appnexus',
@@ -213,11 +198,6 @@ describe('Appnexus bidder adapter', () => {
 							[300, 250],
 							[300, 600],
 						],
-					},
-				},
-				ortb2Imp: {
-					ext: {
-						gpid: '/5441/something/_PB/02_MR',
 					},
 				},
 				bids: [

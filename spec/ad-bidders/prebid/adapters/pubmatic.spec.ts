@@ -21,11 +21,6 @@ describe('Pubmatic bidder adapter', () => {
 				context: 'instream',
 			},
 		},
-		ortb2Imp: {
-			ext: {
-				gpid: '/5441/something/_PB/featured',
-			},
-		},
 		bids: [
 			{
 				bidder: 'pubmatic',
@@ -57,11 +52,6 @@ describe('Pubmatic bidder adapter', () => {
 				playerSize: [640, 480],
 				context: 'instream',
 				placement: PrebidVideoPlacements.IN_ARTICLE,
-			},
-		},
-		ortb2Imp: {
-			ext: {
-				gpid: '/5441/something/_PB/featured',
 			},
 		},
 		bids: [
@@ -127,11 +117,6 @@ describe('Pubmatic bidder adapter', () => {
 							[300, 250],
 							[320, 480],
 						],
-					},
-				},
-				ortb2Imp: {
-					ext: {
-						gpid: '/5441/something/_PB/mobile_in_content',
 					},
 				},
 				bids: [

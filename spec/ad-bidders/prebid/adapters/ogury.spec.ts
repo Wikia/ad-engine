@@ -46,11 +46,6 @@ describe('Ogury bidder adapter', () => {
 						],
 					},
 				},
-				ortb2Imp: {
-					ext: {
-						gpid: '/5441/something/_PB/mobile_in_content',
-					},
-				},
 				bids: [
 					{
 						bidder: 'ogury',

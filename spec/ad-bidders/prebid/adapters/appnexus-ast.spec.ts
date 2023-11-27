@@ -43,11 +43,6 @@ describe('AppnexusAst bidder adapter', () => {
 						playerSize: [640, 480],
 					},
 				},
-				ortb2Imp: {
-					ext: {
-						gpid: '/5441/something/_PB/mobile_in_content',
-					},
-				},
 				bids: [
 					{
 						bidder: 'appnexusAst',
