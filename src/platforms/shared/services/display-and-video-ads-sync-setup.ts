@@ -31,7 +31,7 @@ export class DisplayAndVideoAdsSyncSetup extends BaseServiceSetup {
 			.then((resBlob) => resBlob.text())
 			.then((text) => this.handleTaglessResponse(text))
 			.catch(() => {
-				utils.logger(this.logGroup, 'Fetching error occured');
+				utils.logger(this.logGroup, 'Fetching error occurred');
 				this.initialized.resolve(null);
 			});
 	}
@@ -65,7 +65,6 @@ export class DisplayAndVideoAdsSyncSetup extends BaseServiceSetup {
 			}
 		} catch {
 			utils.logger(this.logGroup, 'No XML available - not a VAST response from the ad server?');
-
 			this.initialized.resolve(null);
 		}
 	}
