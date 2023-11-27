@@ -18,18 +18,12 @@ export function getSlotAliasOrName(slotName: string, a9?: boolean): string {
 	return getSlotAlias(slotName, a9) || slotName;
 }
 
-export function getSlotNameByBidderAlias(id: string, a9?: boolean): string {
-	let slotName = id;
-
-	if (Object.entries(context.get(`slots.${slotName}`) || {}).length === 0) {
-		slotName = findSlotNamesForBidderAlias(id, a9).shift();
-
-		if (!slotName) {
-			return '';
-		}
+export function getSlotNameByBidderAlias(slotName: string, a9?: boolean): string {
+	if (Object.entries(context.get(`slots.${slotName}`) || {}).length !== 0) {
+		return slotName;
 	}
 
-	return slotName;
+	return findSlotNamesForBidderAlias(slotName, a9).shift() || '';
 }
 
 export function hasCorrectBidGroup(code: string, group: string, a9?: boolean): boolean {
