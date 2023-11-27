@@ -63,7 +63,6 @@ export class DisplayAndVideoAdsSyncSetup extends BaseServiceSetup {
 			const { lineItemId, creativeId }: ParsedCampaignData =
 				this.getFirstAdFromTaglessResponse(text);
 			utils.logger(this.logGroup, 'Ad received: ', lineItemId);
-			utils.displayAndVideoAdsSyncContext.updateVastXmlInAdContext(text);
 
 			if (!this.syncedVideoLines) {
 				this.syncedVideoLines =
@@ -71,11 +70,14 @@ export class DisplayAndVideoAdsSyncSetup extends BaseServiceSetup {
 			}
 
 			if (lineItemId && creativeId && this.syncedVideoLines.includes(lineItemId)) {
+				utils.logger(
+					this.logGroup,
+					'video ad is from UAP:JWP campaign - updating key-vals and ad context',
+				);
 				universalAdPackage.updateSlotsTargeting(lineItemId, creativeId);
-				utils.logger(this.logGroup, 'video ad is from UAP:JWP campaign - updating key-vals');
+				utils.displayAndVideoAdsSyncContext.updateVastXmlInAdContext(text);
 				this.initialized.resolve(lineItemId);
 			} else {
-				utils.displayAndVideoAdsSyncContext.clearVastXmlInAdContext();
 				utils.logger(this.logGroup, 'video ad is not from UAP:JWP campaign');
 				this.initialized.resolve(null);
 			}

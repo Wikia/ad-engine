@@ -31,26 +31,26 @@ describe('Display and video ads sync request setup', () => {
 	it('isRequiredToRun returns false when disabled in the instant-config', () => {
 		instantConfigStub.get.withArgs('icDisplayAndVideoAdsSyncEnabled').returns(false);
 
-		const taglessRequestSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
+		const displayAndVideoAdsSyncSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
 
-		expect(taglessRequestSetup.isRequiredToRun()).to.be.equal(false);
+		expect(displayAndVideoAdsSyncSetup.isRequiredToRun()).to.be.equal(false);
 	});
 
 	it('isRequiredToRun returns true when enabled in the instant-config', () => {
 		instantConfigStub.get.withArgs('icDisplayAndVideoAdsSyncEnabled').returns(true);
 
-		const taglessRequestSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
+		const displayAndVideoAdsSyncSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
 
-		expect(taglessRequestSetup.isRequiredToRun()).to.be.equal(true);
+		expect(displayAndVideoAdsSyncSetup.isRequiredToRun()).to.be.equal(true);
 	});
 
 	it('call resolves with null when disabled', async () => {
 		instantConfigStub.get.withArgs('icDisplayAndVideoAdsSyncEnabled').returns(false);
 
-		const taglessRequestSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
-		await taglessRequestSetup.call();
+		const displayAndVideoAdsSyncSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
+		await displayAndVideoAdsSyncSetup.call();
 
-		taglessRequestSetup.initialized.then((res) => {
+		displayAndVideoAdsSyncSetup.initialized.then((res) => {
 			expect(res).to.be.eq(null);
 		});
 	});
@@ -59,10 +59,10 @@ describe('Display and video ads sync request setup', () => {
 		instantConfigStub.get.withArgs('icDisplayAndVideoAdsSyncEnabled').returns(true);
 		context.set('custom.hasFeaturedVideo', false);
 
-		const taglessRequestSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
-		await taglessRequestSetup.call();
+		const displayAndVideoAdsSyncSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
+		await displayAndVideoAdsSyncSetup.call();
 
-		taglessRequestSetup.initialized.then((res) => {
+		displayAndVideoAdsSyncSetup.initialized.then((res) => {
 			expect(res).to.be.eq(null);
 		});
 	});
@@ -74,10 +74,10 @@ describe('Display and video ads sync request setup', () => {
 			status: 400,
 		});
 
-		const taglessRequestSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
-		await taglessRequestSetup.call();
+		const displayAndVideoAdsSyncSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
+		await displayAndVideoAdsSyncSetup.call();
 
-		taglessRequestSetup.initialized.then((res) => {
+		displayAndVideoAdsSyncSetup.initialized.then((res) => {
 			expect(res).to.be.eq(null);
 		});
 	});
@@ -94,10 +94,10 @@ describe('Display and video ads sync request setup', () => {
 			blob: blobStub,
 		});
 
-		const taglessRequestSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
-		await taglessRequestSetup.call();
+		const displayAndVideoAdsSyncSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
+		await displayAndVideoAdsSyncSetup.call();
 
-		taglessRequestSetup.initialized.then((res) => {
+		displayAndVideoAdsSyncSetup.initialized.then((res) => {
 			expect(res).to.be.eq(null);
 		});
 	});
@@ -114,10 +114,10 @@ describe('Display and video ads sync request setup', () => {
 			blob: blobStub,
 		});
 
-		const taglessRequestSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
-		await taglessRequestSetup.call();
+		const displayAndVideoAdsSyncSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
+		await displayAndVideoAdsSyncSetup.call();
 
-		taglessRequestSetup.initialized.then((res) => {
+		displayAndVideoAdsSyncSetup.initialized.then((res) => {
 			expect(res).to.be.eq(null);
 		});
 	});
@@ -134,10 +134,10 @@ describe('Display and video ads sync request setup', () => {
 			blob: blobStub,
 		});
 
-		const taglessRequestSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
-		await taglessRequestSetup.call();
+		const displayAndVideoAdsSyncSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
+		await displayAndVideoAdsSyncSetup.call();
 
-		taglessRequestSetup.initialized.then((res) => {
+		displayAndVideoAdsSyncSetup.initialized.then((res) => {
 			expect(res).to.be.eq(MOCKED_UAP_JWP_LINE_ITEM_ID);
 		});
 	});

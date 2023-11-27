@@ -47,7 +47,7 @@ describe('PlayerSetup', () => {
 		expect(dispatch.lastCall.args[0].vastXml).to.be.undefined;
 	});
 
-	it('should dispatch jwpSetup action without VAST XML when not set', () => {
+	it('should dispatch jwpSetup action with VAST XML when set', () => {
 		const mockedVastXML =
 			'<?xml version="1.0" encoding="UTF-8"?><VAST xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="vast.xsd" version="4.0"></VAST>';
 		context.set('options.video.vastXml', mockedVastXML);
