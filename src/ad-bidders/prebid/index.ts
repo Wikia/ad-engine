@@ -15,7 +15,7 @@ import {
 	tcf,
 	utils,
 } from '@ad-engine/core';
-import { getSlotNameByBidderAlias } from '../alias-helper';
+import { getSlotAliasOrName, getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
 import { Ats } from './ats';
@@ -403,9 +403,7 @@ export class PrebidProvider extends BidderProvider {
 	}
 
 	getBestPrice(slotName: string): Promise<Dictionary<string>> {
-		const slotAlias: string = this.getSlotAlias(slotName);
-
-		return getPrebidBestPrice(slotAlias);
+		return getPrebidBestPrice(getSlotAliasOrName(slotName));
 	}
 
 	getTargetingKeys(slotName: string): string[] {
@@ -416,14 +414,13 @@ export class PrebidProvider extends BidderProvider {
 
 	async getTargetingParams(slotName: string): Promise<PrebidTargeting> {
 		const pbjs: Pbjs = await pbjsFactory.init();
-		const slotAlias: string = this.getSlotAlias(slotName);
 		const targeting = pbjs.getAdserverTargeting();
 
-		return targeting[slotAlias];
+		return targeting[getSlotAliasOrName(slotName)];
 	}
 
 	isSupported(slotName: string): boolean {
-		const slotAlias: string = this.getSlotAlias(slotName);
+		const slotAlias: string = getSlotAliasOrName(slotName);
 
 		return this.adUnits && this.adUnits.some((adUnit) => adUnit.code === slotAlias);
 	}

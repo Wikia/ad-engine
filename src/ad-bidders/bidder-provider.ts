@@ -1,4 +1,4 @@
-import { context, DEFAULT_MAX_DELAY, Dictionary, utils } from '@ad-engine/core';
+import { DEFAULT_MAX_DELAY, Dictionary, utils } from '@ad-engine/core';
 
 export interface BidderConfig {
 	enabled: boolean;
@@ -52,13 +52,6 @@ export abstract class BidderProvider {
 		this.onResponseCallbacks.flush();
 
 		utils.logger(this.logGroup, 'respond');
-	}
-
-	/**
-	 * Returns bidder slot alias if available, otherwise slot name
-	 */
-	protected getSlotAlias(slotName: string): string {
-		return context.get(`slots.${slotName}.bidderAlias`) || slotName;
 	}
 
 	getSlotBestPrice(slotName: string): Promise<Dictionary<number | string>> {
