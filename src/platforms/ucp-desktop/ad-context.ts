@@ -142,5 +142,12 @@ export const basicContext = {
 				enabled: false,
 			},
 		},
+		preload: {
+			gpt: false,
+			audigent: true,
+			prebid: true,
+			apstag: false,
+			intentIq: true,
+		},
 	},
 };

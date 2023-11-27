@@ -47,7 +47,7 @@ export class Apstag {
 	}
 
 	private insertScript(): void {
-		this.script = this.utils.scriptLoader.loadScript(
+		this.script = utils.scriptLoader.loadScript(
 			'//c.amazon-adsystem.com/aax2/apstag.js',
 			true,
 			'first',
