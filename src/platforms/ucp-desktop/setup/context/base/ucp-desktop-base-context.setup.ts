@@ -7,6 +7,13 @@ export class UcpDesktopBaseContextSetup extends BaseContextSetup {
 	execute(): void {
 		super.execute();
 
+		const isGamepedia = window.ads.context.opts.isGamepedia;
+		const isLoggedIn = window.mw.config.get('wgUserId');
+
+		if (isGamepedia && isLoggedIn) {
+			this.noAdsDetector.addReason('gamepedia_loggedin_desktop_no_ads');
+		}
+
 		context.set(
 			'options.floatingMedrecDestroyable',
 			this.instantConfig.get('icFloatingMedrecDestroyable'),
