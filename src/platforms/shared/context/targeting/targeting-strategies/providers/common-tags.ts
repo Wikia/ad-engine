@@ -82,12 +82,10 @@ export class CommonTags implements TargetingProvider<Partial<SlotTargeting>> {
 		if (featuredVideoData) {
 			// Comparing with false in order to make sure that API already responds with "isDedicatedForArticle" flag
 			const isDedicatedForArticle = featuredVideoData.isDedicatedForArticle !== false;
-			const bridgeVideoPlayed =
-				!isDedicatedForArticle && window.canPlayVideo && window.canPlayVideo();
 
 			return {
 				isDedicatedForArticle,
-				hasVideoOnPage: isDedicatedForArticle || bridgeVideoPlayed,
+				hasVideoOnPage: window?.canPlayVideo(),
 			};
 		}
 

@@ -1,20 +1,28 @@
 import {
 	BiddersStateSetup,
-	bootstrapAndGetConsent,
+	ConsentManagementPlatformSetup,
+	ensureGeoCookie,
 	InstantConfigSetup,
 	LoadTimesSetup,
-	MetricReporter,
 	MetricReporterSetup,
+	PreloadedLibrariesSetup,
+	SlotsConfigurationExtender,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
-import { context, IdentitySetup, ProcessPipeline, utils } from '@wikia/ad-engine';
+import {
+	context,
+	IdentitySetup,
+	logVersion,
+	parallel,
+	ProcessPipeline,
+	sequential,
+	utils,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { SlotsConfigurationExtender } from '../../shared/setup/slots-config-extender';
 import {
 	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
-	NewsAndRatingsAnyclipSetup,
 	NewsAndRatingsBaseContextSetup,
 	NewsAndRatingsDynamicSlotsSetup,
 	NewsAndRatingsTargetingSetup,
@@ -23,6 +31,7 @@ import {
 import { basicContext } from './ad-context';
 import { GamefaqsA9ConfigSetup } from './setup/context/a9/gamefaqs-a9-config.setup';
 import { GamefaqsPrebidConfigSetup } from './setup/context/prebid/gamefaqs-prebid-config.setup';
+import { GameFAQsAnyclipSetup } from './setup/context/slots/gamefaqs-anyclip.setup';
 import { GamefaqsSlotsContextSetup } from './setup/context/slots/gamefaqs-slots-context.setup';
 import { GamefaqsTargetingSetup } from './setup/context/targeting/gamefaqs-targeting.setup';
 import { GamefaqsTemplatesSetup } from './templates/gamefaqs-templates.setup';
@@ -32,15 +41,18 @@ export class GamefaqsPlatform {
 	constructor(private pipeline: ProcessPipeline) {}
 
 	execute(): void {
+		logVersion();
+		context.extend(basicContext);
+		context.set('state.isMobile', !utils.client.isDesktop());
+
 		this.pipeline.add(
-			() => context.extend(basicContext),
-			() => context.set('state.isMobile', !utils.client.isDesktop()),
-			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
-			() => bootstrapAndGetConsent(),
-			InstantConfigSetup,
+			async () => await ensureGeoCookie(),
+			parallel(
+				sequential(InstantConfigSetup, PreloadedLibrariesSetup),
+				ConsentManagementPlatformSetup,
+			),
 			TrackingParametersSetup,
 			MetricReporterSetup,
-			MetricReporter,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			IdentitySetup,
@@ -49,7 +61,7 @@ export class GamefaqsPlatform {
 			LoadTimesSetup,
 			GamefaqsSlotsContextSetup,
 			SlotsConfigurationExtender,
-			NewsAndRatingsAnyclipSetup,
+			GameFAQsAnyclipSetup,
 			NewsAndRatingsDynamicSlotsSetup,
 			GamefaqsPrebidConfigSetup,
 			GamefaqsA9ConfigSetup,

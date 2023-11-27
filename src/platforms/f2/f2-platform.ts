@@ -1,10 +1,10 @@
 import {
-	AdEngineRunnerSetup,
-	bootstrapAndGetConsent,
+	BiddersTargetingUpdater,
+	ConsentManagementPlatformSetup,
+	ensureGeoCookie,
 	InstantConfigSetup,
 	LabradorSetup,
 	LoadTimesSetup,
-	MetricReporter,
 	MetricReporterSetup,
 	NoAdsDetector,
 	NoAdsMode,
@@ -19,6 +19,7 @@ import {
 	context,
 	eventsRepository,
 	IdentitySetup,
+	logVersion,
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
@@ -39,16 +40,18 @@ export class F2Platform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
 	execute(f2env: F2Environment): void {
+		logVersion();
+		context.extend(basicContext);
+		context.set('state.isMobile', f2env.isPageMobile);
+
 		// Config
 		this.pipeline.add(
-			() => context.extend(basicContext),
-			() => context.set('state.isMobile', f2env.isPageMobile),
 			PlatformContextSetup,
-			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
+			async () => await ensureGeoCookie(),
+			parallel(InstantConfigSetup, ConsentManagementPlatformSetup),
 			F2IocSetup,
 			TrackingParametersSetup,
 			MetricReporterSetup,
-			MetricReporter,
 			IdentitySetup,
 			F2TargetingSetup,
 			LoadTimesSetup,
@@ -60,7 +63,7 @@ export class F2Platform {
 			LabradorSetup,
 			F2ExperimentsSetup,
 			TrackingSetup,
-			AdEngineRunnerSetup,
+			BiddersTargetingUpdater,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 		);
 

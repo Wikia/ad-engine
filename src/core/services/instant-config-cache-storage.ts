@@ -31,11 +31,13 @@ export class InstantConfigCacheStorage implements InstantConfigCacheStorageServi
 	}
 
 	private readonly cookieStorage = new UniversalStorage(() => new CookieStorageAdapter());
-	private cacheStorage: CacheDictionary;
+	private cacheStorage: CacheDictionary = {};
 	private readonly cacheKey = 'basset';
 
 	private constructor() {
-		this.resetCache();
+		communicationService.on(eventsRepository.AD_ENGINE_INSTANT_CONFIG_CACHE_READY, () => {
+			this.resetCache();
+		});
 	}
 
 	resetCache(): void {
@@ -51,14 +53,6 @@ export class InstantConfigCacheStorage implements InstantConfigCacheStorageServi
 
 	set(data: CacheData): void {
 		this.cacheStorage[data.name] = data;
-
-		if (data.withCookie) {
-			communicationService.on(eventsRepository.AD_ENGINE_CONSENT_READY, ({ gdprConsent }) => {
-				if (gdprConsent) {
-					this.resetCache();
-				}
-			});
-		}
 	}
 
 	/**

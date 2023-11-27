@@ -1,6 +1,7 @@
 import {
 	BaseContextSetup,
-	bootstrapAndGetConsent,
+	ConsentManagementPlatformSetup,
+	ensureGeoCookie,
 	InstantConfigSetup,
 	NoAdsDetector,
 	NoAdsMode,
@@ -10,6 +11,7 @@ import {
 	conditional,
 	context,
 	eventsRepository,
+	logVersion,
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
@@ -28,9 +30,12 @@ export class BingeBotPlatform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
 	execute(): void {
+		logVersion();
+		context.extend(basicContext);
+
 		this.pipeline.add(
-			() => context.extend(basicContext),
-			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
+			async () => await ensureGeoCookie(),
+			parallel(InstantConfigSetup, ConsentManagementPlatformSetup),
 			BaseContextSetup,
 			BingeBotSlotsContextSetup,
 			BingeBotTargetingSetup,

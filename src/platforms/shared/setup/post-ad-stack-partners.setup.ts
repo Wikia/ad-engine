@@ -16,7 +16,7 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class UcpPartnersSetup implements DiProcess {
+export class PostAdStackPartnersSetup implements DiProcess {
 	private firstCallSlotName = 'top_leaderboard';
 	private safeTimeout = 5000;
 	private fired = false;

@@ -4,8 +4,8 @@ export function getOzoneContext(): object {
 		slots: {
 			mobile_top_leaderboard: {
 				sizes: [
-					[728, 90],
-					[970, 250],
+					[320, 100],
+					[320, 50],
 				],
 				pos: 'OZ_mobile_top_leaderboard',
 				placementId: '3500013046',

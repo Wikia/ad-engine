@@ -33,11 +33,9 @@ export const basicContext = {
 	},
 	services: {
 		anyclip: {
-			enabled: false,
 			pubname: '1999',
-			miniPlayerWidgetname: '001w000001Y8ud2AAB_M7309',
-			libraryUrl: '//player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/acins.js',
-			loadWithoutAnchor: true,
+			widgetname: '001w000001Y8ud2AAB_M7731',
+			libraryUrl: '//player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/lre.js',
 		},
 		doubleVerify: {
 			slots: ['mpu_top', 'top_leaderboard'],
@@ -54,4 +52,11 @@ export const basicContext = {
 	},
 	slots: {},
 	src: ['gamefaqs'],
+	preload: {
+		gpt: true,
+		audigent: false,
+		prebid: true,
+		apstag: true,
+		intentIq: false,
+	},
 };

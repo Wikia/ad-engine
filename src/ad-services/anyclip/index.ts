@@ -61,7 +61,7 @@ export class Anyclip extends BaseServiceSetup {
 	private bidRefresher: AnyclipBidsRefresher;
 
 	call() {
-		if (context.get('custom.hasFeaturedVideo') || !this.isEnabled('icAnyclipPlayer', false)) {
+		if (!this.isEnabled('services.anyclip.enabled', false)) {
 			utils.logger(logGroup, 'disabled');
 			return;
 		}
@@ -97,6 +97,16 @@ export class Anyclip extends BaseServiceSetup {
 		window?.anyclip?.widgets?.forEach((w) => w?.destroy());
 	}
 
+	enableFloating() {
+		utils.logger(logGroup, 'enabling Anyclip floating feature ');
+		window?.anyclip?.getWidget()?.floatingModeToggle(true);
+	}
+
+	disableFloating() {
+		utils.logger(logGroup, 'disabling Anyclip floating feature ');
+		window?.anyclip?.getWidget()?.floatingModeToggle(false);
+	}
+
 	get params(): Record<string, string> {
 		return {
 			pubname: this.pubname,
@@ -119,6 +129,7 @@ export class Anyclip extends BaseServiceSetup {
 				utils.logger(logGroup, 'ready');
 
 				this.waitForSubscribeReady().then((isSubscribeReady) => {
+					communicationService.emit(eventsRepository.ANYCLIP_READY);
 					utils.logger(
 						logGroup,
 						'Anyclip global subscribe function set',
@@ -141,13 +152,17 @@ export class Anyclip extends BaseServiceSetup {
 	private loadOnUapStatus({ isLoaded, adProduct }: UapLoadStatus) {
 		if (!isLoaded && adProduct !== 'ruap') {
 			if (!context.get('services.anyclip.latePageInject')) {
+				utils.logger(logGroup, 'No need to wait for ANYCLIP_LATE_INJECT');
 				this.initIncontentPlayer();
 				return;
 			}
 
 			communicationService.on(eventsRepository.ANYCLIP_LATE_INJECT, () => {
+				utils.logger(logGroup, 'ANYCLIP_LATE_INJECT emitted');
 				this.initIncontentPlayer();
 			});
+		} else {
+			utils.logger(logGroup, 'Anyclip blocked because of Fan Takeover');
 		}
 	}
 
