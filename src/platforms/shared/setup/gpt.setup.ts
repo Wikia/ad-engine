@@ -4,8 +4,9 @@ const GPT_TIMEOUT_MS = 10 * 1000;
 const GPT_LIBRARY_URL = 'https://securepubads.g.doubleclick.net/tag/js/gpt.js';
 
 export class GptSetup extends BaseServiceSetup {
-	options = { timeout: GPT_TIMEOUT_MS };
 	private loadPromise: Promise<void>;
+
+	options = { timeout: GPT_TIMEOUT_MS };
 
 	call(): Promise<void> {
 		if (!this.loadPromise) {
