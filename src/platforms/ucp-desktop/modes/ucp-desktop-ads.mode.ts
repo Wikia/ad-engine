@@ -18,6 +18,7 @@ import {
 	Stroer,
 	System1,
 	videoDisplayTakeoverSynchronizer,
+	utils,
 	Wunderkind,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -47,6 +48,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 	) {}
 
 	execute(): void {
+		utils.logger('partners-pipeline', 'starting');
 		this.pipeline
 			.add(
 				this.anyclip,
@@ -85,6 +87,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 			.execute()
 			.then(() => {
 				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);
+				utils.logger('partners-pipeline', 'finished');
 			});
 	}
 }
