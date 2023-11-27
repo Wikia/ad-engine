@@ -1,10 +1,12 @@
 import { AdEngineStackSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
 	Anyclip,
+	Ats,
 	Audigent,
 	Bidders,
 	communicationService,
 	Confiant,
+	Connatix,
 	DiProcess,
 	DoubleVerify,
 	DurationMedia,
@@ -26,9 +28,11 @@ export class UcpMobileAdsMode implements DiProcess {
 		private pipeline: PartnerPipeline,
 		private adEngineStackSetup: AdEngineStackSetup,
 		private anyclip: Anyclip,
+		private ats: Ats,
 		private audigent: Audigent,
 		private bidders: Bidders,
 		private confiant: Confiant,
+		private connatix: Connatix,
 		private doubleVerify: DoubleVerify,
 		private durationMedia: DurationMedia,
 		private gptSetup: GptSetup,
@@ -46,11 +50,13 @@ export class UcpMobileAdsMode implements DiProcess {
 		this.pipeline
 			.add(
 				this.anyclip,
+				this.ats,
 				this.audigent,
 				this.bidders,
 				this.wadRunner,
 				this.iasPublisherOptimization,
 				this.confiant,
+				this.connatix,
 				this.durationMedia,
 				this.stroer,
 				this.system1,
