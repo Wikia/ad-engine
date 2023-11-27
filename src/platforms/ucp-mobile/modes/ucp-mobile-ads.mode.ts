@@ -12,6 +12,7 @@ import {
 	DurationMedia,
 	eventsRepository,
 	IasPublisherOptimization,
+	InstantConfigService,
 	jwPlayerInhibitor,
 	OpenWeb,
 	PartnerPipeline,
@@ -25,7 +26,10 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpMobileAdsMode implements DiProcess {
+	private readonly loadGptAfterPrebid;
+
 	constructor(
+		private instantConfig: InstantConfigService,
 		private pipeline: PartnerPipeline,
 		private adEngineStackSetup: AdEngineStackSetup,
 		private anyclip: Anyclip,
@@ -45,7 +49,9 @@ export class UcpMobileAdsMode implements DiProcess {
 		private system1: System1,
 		private wadRunner: WadRunner,
 		private wunderkind: Wunderkind,
-	) {}
+	) {
+		this.loadGptAfterPrebid = this.instantConfig.get('icLoadGptAfterPrebid', false);
+	}
 
 	execute(): void {
 		utils.logger('partners-pipeline', 'starting');
@@ -68,7 +74,11 @@ export class UcpMobileAdsMode implements DiProcess {
 				this.playerSetup.setOptions({
 					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
 				}),
-				this.gptSetup,
+				this.loadGptAfterPrebid
+					? this.gptSetup.setOptions({
+							dependencies: [this.bidders.initialized],
+					  })
+					: this.gptSetup,
 				this.doubleVerify,
 				this.adEngineStackSetup.setOptions({
 					dependencies: [
