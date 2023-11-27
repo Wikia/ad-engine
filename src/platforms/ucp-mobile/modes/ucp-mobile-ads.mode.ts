@@ -1,10 +1,12 @@
 import { AdEngineStackSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
 	Anyclip,
+	Ats,
 	Audigent,
 	Bidders,
 	communicationService,
 	Confiant,
+	Connatix,
 	DiProcess,
 	DoubleVerify,
 	DurationMedia,
@@ -16,6 +18,7 @@ import {
 	PrebidNativeProvider,
 	Stroer,
 	System1,
+	utils,
 	Wunderkind,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -26,9 +29,11 @@ export class UcpMobileAdsMode implements DiProcess {
 		private pipeline: PartnerPipeline,
 		private adEngineStackSetup: AdEngineStackSetup,
 		private anyclip: Anyclip,
+		private ats: Ats,
 		private audigent: Audigent,
 		private bidders: Bidders,
 		private confiant: Confiant,
+		private connatix: Connatix,
 		private doubleVerify: DoubleVerify,
 		private durationMedia: DurationMedia,
 		private gptSetup: GptSetup,
@@ -43,14 +48,17 @@ export class UcpMobileAdsMode implements DiProcess {
 	) {}
 
 	execute(): void {
+		utils.logger('partners-pipeline', 'starting');
 		this.pipeline
 			.add(
 				this.anyclip,
+				this.ats,
 				this.audigent,
 				this.bidders,
 				this.wadRunner,
 				this.iasPublisherOptimization,
 				this.confiant,
+				this.connatix,
 				this.durationMedia,
 				this.stroer,
 				this.system1,
@@ -76,6 +84,7 @@ export class UcpMobileAdsMode implements DiProcess {
 			.execute()
 			.then(() => {
 				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);
+				utils.logger('partners-pipeline', 'finished');
 			});
 	}
 }

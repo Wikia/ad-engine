@@ -47,4 +47,11 @@ export const basicContext = {
 	},
 	slots: {},
 	src: ['gamespot'],
+	preload: {
+		gpt: true,
+		audigent: false,
+		prebid: true,
+		apstag: true,
+		intentIq: false,
+	},
 };

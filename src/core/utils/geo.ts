@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie';
 import { CacheData, context, InstantConfigCacheStorage } from '../services';
 
 const cacheMarker = '-cached';
@@ -8,14 +7,7 @@ const negativePrefix = 'non-';
 const precision = 10 ** 6;
 const samplingSeparator = '/';
 
-export interface GeoData {
-	region?: string;
-	country?: string;
-	continent?: string;
-}
-
 export const geoService = {
-	setUpGeoData,
 	isProperContinent,
 	isProperCountry,
 	isProperRegion,
@@ -24,26 +16,6 @@ export const geoService = {
 	getRegionCode,
 	isProperGeo,
 };
-
-function setUpGeoData(): GeoData {
-	const geoCookie = Cookies.get('Geo');
-
-	if (!geoCookie) {
-		return;
-	}
-	const jsonData = decodeURIComponent(geoCookie);
-
-	try {
-		const geoData: GeoData = JSON.parse(jsonData) || {};
-		context.set('geo.region', geoData.region);
-		context.set('geo.country', geoData.country);
-		context.set('geo.continent', geoData.continent);
-	} catch (e) {
-		throw new Error('Invalid JSON in the cookie');
-	}
-
-	return context.get('geo') || {};
-}
 
 function hasCache(countryList: string[]): boolean {
 	return countryList.some((country) => country.indexOf(cacheMarker) !== -1);
