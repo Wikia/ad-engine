@@ -26,12 +26,8 @@ export class DisplayAndVideoAdsSyncSetup extends BaseServiceSetup {
 
 	initialized: utils.ExtendedPromise<void> = utils.createExtendedPromise();
 
-	isRequiredToRun(): boolean {
-		return this.isEnabled('icDisplayAndVideoAdsSyncEnabled', false);
-	}
-
 	async call(): Promise<void> {
-		if (!this.isRequiredToRun()) {
+		if (!this.isEnabled('icDisplayAndVideoAdsSyncEnabled', false)) {
 			utils.logger(this.logGroup, 'disabled');
 			return this.initialized.resolve(null);
 		}

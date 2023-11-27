@@ -28,22 +28,6 @@ describe('Display and video ads sync request setup', () => {
 		globalThis.fetch = orgFetch;
 	});
 
-	it('isRequiredToRun returns false when disabled in the instant-config', () => {
-		instantConfigStub.get.withArgs('icDisplayAndVideoAdsSyncEnabled').returns(false);
-
-		const displayAndVideoAdsSyncSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
-
-		expect(displayAndVideoAdsSyncSetup.isRequiredToRun()).to.be.equal(false);
-	});
-
-	it('isRequiredToRun returns true when enabled in the instant-config', () => {
-		instantConfigStub.get.withArgs('icDisplayAndVideoAdsSyncEnabled').returns(true);
-
-		const displayAndVideoAdsSyncSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
-
-		expect(displayAndVideoAdsSyncSetup.isRequiredToRun()).to.be.equal(true);
-	});
-
 	it('call resolves with null when disabled', async () => {
 		instantConfigStub.get.withArgs('icDisplayAndVideoAdsSyncEnabled').returns(false);
 

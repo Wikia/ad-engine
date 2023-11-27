@@ -49,7 +49,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 		private prebidNativeProvider: PrebidNativeProvider,
 		private stroer: Stroer,
 		private system1: System1,
-		private taglessRequest: DisplayAndVideoAdsSyncSetup,
+		private displayAndVideoAdsSyncSetup: DisplayAndVideoAdsSyncSetup,
 		private wadRunner: WadRunner,
 		private wunderkind: Wunderkind,
 	) {}
@@ -58,7 +58,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 		utils.logger('partners-pipeline', 'starting');
 		this.pipeline
 			.add(
-				this.taglessRequest,
+				this.displayAndVideoAdsSyncSetup,
 				this.anyclip,
 				this.ats,
 				this.audigent,
@@ -83,13 +83,12 @@ export class UcpDesktopAdsMode implements DiProcess {
 						this.bidders.initialized,
 						this.wadRunner.initialized,
 						this.gptSetup.initialized,
-						this.taglessRequest.initialized,
+						this.displayAndVideoAdsSyncSetup.initialized,
 						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
 					],
-					timeout:
-						jwPlayerInhibitor.isRequiredToRun() || this.taglessRequest.isRequiredToRun()
-							? jwPlayerInhibitor.getDelayTimeoutInMs()
-							: null,
+					timeout: jwPlayerInhibitor.isRequiredToRun()
+						? jwPlayerInhibitor.getDelayTimeoutInMs()
+						: null,
 				}),
 			)
 			.execute()
