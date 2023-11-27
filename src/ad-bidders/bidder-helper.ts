@@ -37,10 +37,7 @@ export function hasCorrectBidGroup(code: string, group: string, a9?: boolean): b
 
 	if (slotBidGroup === defaultSlotBidGroup) {
 		const slotName = findSlotNamesForBidderAlias(code, a9).shift();
-
-		if (slotName) {
-			slotBidGroup = getSlotBidGroupByName(slotName);
-		}
+		slotBidGroup = slotName ? getSlotBidGroupByName(slotName) : slotBidGroup;
 	}
 
 	return slotBidGroup === group;

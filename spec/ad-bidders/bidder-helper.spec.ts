@@ -28,8 +28,6 @@ describe('bidder-helper', () => {
 			const result = getSlotNameByBidderAlias('slotAlias2');
 			expect(result).to.deep.equal('slot2');
 		});
-
-		afterEach(() => global.sandbox.restore());
 	});
 
 	describe('getSlotBidGroup', () => {
@@ -46,8 +44,6 @@ describe('bidder-helper', () => {
 
 			expect(result).to.deep.be.equals(['group#1']);
 		});
-
-		afterEach(() => global.sandbox.restore());
 	});
 
 	describe('hasCorrectBidGroup', () => {
@@ -73,6 +69,38 @@ describe('bidder-helper', () => {
 			expect(result).to.deep.be.true;
 		});
 
+		it('should return true if exist bid group by alias', () => {
+			global.sandbox
+				.stub(context, 'get')
+				.withArgs('slots.slot1.bidGroup')
+				.returns('group#1')
+				.withArgs('slots')
+				.returns({
+					slot1: { bidderAlias: 'alias', a9Alias: 'aliasA9' },
+					slot2: { bidderAlias: 'alias2', a9Alias: 'aliasA9_2' },
+				});
+
+			const result = hasCorrectBidGroup('alias', 'group#1');
+
+			expect(result).to.deep.be.true;
+		});
+
+		it('should return true if exist A9 bid group by alias', () => {
+			global.sandbox
+				.stub(context, 'get')
+				.withArgs('slots.slot1.bidGroup')
+				.returns('group#1')
+				.withArgs('slots')
+				.returns({
+					slot1: { bidderAlias: 'alias_2', a9Alias: 'alias' },
+					slot2: { bidderAlias: 'alias', a9Alias: 'aliasA9' },
+				});
+
+			const result = hasCorrectBidGroup('alias', 'group#1', true);
+
+			expect(result).to.deep.be.true;
+		});
+
 		it('should return false if default bid group and different slot bid group', () => {
 			global.sandbox.stub(context, 'get').withArgs('slots.slot1.bidGroup').returns('secondGroup');
 
@@ -88,7 +116,5 @@ describe('bidder-helper', () => {
 
 			expect(result).to.deep.be.false;
 		});
-
-		afterEach(() => global.sandbox.restore());
 	});
 });
