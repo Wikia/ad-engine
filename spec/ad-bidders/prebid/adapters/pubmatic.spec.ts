@@ -4,15 +4,6 @@ import { context } from '@wikia/core';
 import { expect } from 'chai';
 
 describe('Pubmatic bidder adapter', () => {
-	before(() => {
-		context.extend({
-			adUnitId: '/5441/something/_{custom.pageType}/{slotConfig.adProduct}',
-			custom: {
-				pageType: 'PB',
-			},
-		});
-	});
-
 	const EXPECTED_VIDEO_AD_UNIT_CONFIG_DEFAULT = {
 		code: 'featured',
 		mediaTypes: {

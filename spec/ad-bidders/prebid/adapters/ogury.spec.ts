@@ -1,17 +1,7 @@
 import { Ogury } from '@wikia/ad-bidders/prebid/adapters/ogury';
-import { context } from '@wikia/core';
 import { expect } from 'chai';
 
 describe('Ogury bidder adapter', () => {
-	before(() => {
-		context.extend({
-			adUnitId: '/5441/something/_{custom.pageType}/{slotConfig.adProduct}',
-			custom: {
-				pageType: 'PB',
-			},
-		});
-	});
-
 	it('can be enabled', () => {
 		const ogury = new Ogury({
 			enabled: true,

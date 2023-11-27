@@ -7,15 +7,6 @@ import { SinonStubbedInstance } from 'sinon';
 describe('Appnexus bidder adapter', () => {
 	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 
-	before(() => {
-		context.extend({
-			adUnitId: '/5441/something/_{custom.pageType}/{slotConfig.adProduct}',
-			custom: {
-				pageType: 'PB',
-			},
-		});
-	});
-
 	beforeEach(() => {
 		targetingServiceStub = global.sandbox.stub(targetingService);
 	});

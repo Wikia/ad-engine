@@ -7,15 +7,6 @@ describe('AppnexusAst bidder adapter', () => {
 		context.remove('slots.mobile_in_content');
 	});
 
-	before(() => {
-		context.extend({
-			adUnitId: '/5441/something/_{custom.pageType}/{slotConfig.adProduct}',
-			custom: {
-				pageType: 'PB',
-			},
-		});
-	});
-
 	it('can be enabled', () => {
 		const appnexusAst = new AppnexusAst({
 			enabled: true,

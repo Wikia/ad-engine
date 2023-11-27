@@ -3,15 +3,6 @@ import { context } from '@wikia/core';
 import { expect } from 'chai';
 
 describe('Freewheel bidder adapter', () => {
-	before(() => {
-		context.extend({
-			adUnitId: '/5441/something/_{custom.pageType}/{slotConfig.adProduct}',
-			custom: {
-				pageType: 'PB',
-			},
-		});
-	});
-
 	it('can be enabled', () => {
 		const freewheel = new Freewheel({
 			enabled: true,
