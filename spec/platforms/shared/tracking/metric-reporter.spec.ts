@@ -10,7 +10,7 @@ describe('metric-reporter', () => {
 		const trackLibInitSpy = global.sandbox.spy(MetricReporter.prototype, 'trackLibInitialization');
 
 		const metricReporter = new MetricReporter();
-		await metricReporter.execute();
+		await metricReporter.initialise();
 
 		expect(trackLibInitSpy.callCount).to.be.eq(0);
 	});
@@ -27,13 +27,13 @@ describe('metric-reporter', () => {
 		const sendSpy = global.sandbox.spy(MetricReporter.prototype, 'sendToMeteringSystem');
 
 		const metricReporter = new MetricReporter();
-		await metricReporter.execute();
+		await metricReporter.initialise();
 
 		expect(trackLibInitSpy.callCount, 'trackLibInitialization').to.be.eq(1);
-		expect(isSlotDataSpy.callCount, 'isMetricSlotData').to.be.eq(1);
-		expect(isTimeDataSpy.callCount, 'isMetricTimeData').to.be.eq(1);
-		expect(sendSpy.callCount, 'sendToMeteringSystem').to.be.eq(1);
+		expect(isSlotDataSpy.callCount, 'isMetricSlotData').to.be.eq(2);
+		expect(isTimeDataSpy.callCount, 'isMetricTimeData').to.be.eq(2);
+		expect(sendSpy.callCount, 'sendToMeteringSystem').to.be.eq(2);
 		expect(sendSpy.calledWithMatch(sinon.match({ action: 'init' }))).to.be.true;
-		expect(fetchStub.callCount, 'FetchTimeout').to.be.eq(1);
+		expect(fetchStub.callCount, 'FetchTimeout').to.be.eq(2);
 	});
 });

@@ -2,16 +2,25 @@ import { Container, Injectable } from '@wikia/dependency-injection';
 
 import {
 	BiddersStateSetup,
-	bootstrapAndGetConsent,
+	ConsentManagementPlatformSetup,
+	ensureGeoCookie,
 	InstantConfigSetup,
 	LoadTimesSetup,
-	MetricReporter,
 	MetricReporterSetup,
+	PreloadedLibrariesSetup,
 	SlotsConfigurationExtender,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
-import { context, IdentitySetup, ProcessPipeline, utils } from '@wikia/ad-engine';
+import {
+	context,
+	IdentitySetup,
+	logVersion,
+	parallel,
+	ProcessPipeline,
+	sequential,
+	utils,
+} from '@wikia/ad-engine';
 import {
 	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
@@ -38,16 +47,19 @@ export class MetacriticNeutronPlatform {
 	) {}
 
 	execute(container: Container): void {
+		logVersion();
+		context.extend(basicContext);
+		context.set('state.isMobile', !utils.client.isDesktop());
+
 		this.pipeline.add(
-			() => context.extend(basicContext),
-			() => context.set('state.isMobile', !utils.client.isDesktop()),
-			// once we have Geo cookie set on varnishes we can parallel bootstrapAndGetConsent and InstantConfigSetup
-			() => bootstrapAndGetConsent(),
+			async () => await ensureGeoCookie(),
+			parallel(
+				sequential(InstantConfigSetup, PreloadedLibrariesSetup),
+				ConsentManagementPlatformSetup,
+			),
 			() => context.set('services.anyclip.isApplicable', () => false),
-			InstantConfigSetup,
 			TrackingParametersSetup,
 			MetricReporterSetup,
-			MetricReporter,
 			NewsAndRatingsBaseContextSetup,
 			NewsAndRatingsWadSetup,
 			IdentitySetup,
