@@ -31,7 +31,7 @@ describe('Display and video ads sync request setup', () => {
 	it('call resolves with null when disabled', async () => {
 		instantConfigStub.get.withArgs('icDisplayAndVideoAdsSyncEnabled').returns(false);
 
-		const displayAndVideoAdsSyncSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
+		const displayAndVideoAdsSyncSetup = getDisplayAndVideoAdsSyncSetup();
 		await displayAndVideoAdsSyncSetup.call();
 
 		displayAndVideoAdsSyncSetup.initialized.then((res) => {
@@ -43,7 +43,7 @@ describe('Display and video ads sync request setup', () => {
 		instantConfigStub.get.withArgs('icDisplayAndVideoAdsSyncEnabled').returns(true);
 		context.set('custom.hasFeaturedVideo', false);
 
-		const displayAndVideoAdsSyncSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
+		const displayAndVideoAdsSyncSetup = getDisplayAndVideoAdsSyncSetup();
 		await displayAndVideoAdsSyncSetup.call();
 
 		displayAndVideoAdsSyncSetup.initialized.then((res) => {
@@ -58,7 +58,7 @@ describe('Display and video ads sync request setup', () => {
 			status: 400,
 		});
 
-		const displayAndVideoAdsSyncSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
+		const displayAndVideoAdsSyncSetup = getDisplayAndVideoAdsSyncSetup();
 		await displayAndVideoAdsSyncSetup.call();
 
 		displayAndVideoAdsSyncSetup.initialized.then((res) => {
@@ -78,7 +78,7 @@ describe('Display and video ads sync request setup', () => {
 			blob: blobStub,
 		});
 
-		const displayAndVideoAdsSyncSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
+		const displayAndVideoAdsSyncSetup = getDisplayAndVideoAdsSyncSetup();
 		await displayAndVideoAdsSyncSetup.call();
 
 		displayAndVideoAdsSyncSetup.initialized.then((res) => {
@@ -98,7 +98,7 @@ describe('Display and video ads sync request setup', () => {
 			blob: blobStub,
 		});
 
-		const displayAndVideoAdsSyncSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
+		const displayAndVideoAdsSyncSetup = getDisplayAndVideoAdsSyncSetup();
 		await displayAndVideoAdsSyncSetup.call();
 
 		displayAndVideoAdsSyncSetup.initialized.then((res) => {
@@ -118,11 +118,16 @@ describe('Display and video ads sync request setup', () => {
 			blob: blobStub,
 		});
 
-		const displayAndVideoAdsSyncSetup = new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
+		const displayAndVideoAdsSyncSetup = getDisplayAndVideoAdsSyncSetup();
 		await displayAndVideoAdsSyncSetup.call();
 
 		displayAndVideoAdsSyncSetup.initialized.then((res) => {
 			expect(res).to.be.eq(MOCKED_UAP_JWP_LINE_ITEM_ID);
 		});
 	});
+
+	function getDisplayAndVideoAdsSyncSetup() {
+		// @ts-ignore DisplayAndVideoAdsSyncSetup extends BaseServiceSetup which requires 2 arguments in the constructor
+		return new DisplayAndVideoAdsSyncSetup(instantConfigStub, null);
+	}
 });
