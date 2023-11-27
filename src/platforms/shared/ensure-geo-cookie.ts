@@ -1,4 +1,4 @@
-import { CookieStorageAdapter } from '@wikia/ad-engine';
+import { context, CookieStorageAdapter } from '@wikia/ad-engine';
 
 interface GeoResponse {
 	continent_code: string;
@@ -18,16 +18,29 @@ interface GeoData {
 
 export async function ensureGeoCookie(): Promise<void> {
 	const cookieAdapter = new CookieStorageAdapter();
+	const geoCookie = cookieAdapter.getItem('Geo');
 
-	if (cookieAdapter.getItem('Geo')) {
-		return;
+	if (!geoCookie) {
+		try {
+			return getGeoData().then((geoData) => {
+				cookieAdapter.setItem('Geo', encodeURIComponent(JSON.stringify(geoData)));
+				setUpGeoData(geoData);
+			});
+		} catch (e) {
+			// do nothing
+		}
 	}
-
 	try {
-		cookieAdapter.setItem('Geo', JSON.stringify(await getGeoData()));
+		setUpGeoData(JSON.parse(decodeURIComponent(geoCookie)) || {});
 	} catch (e) {
-		// do nothing
+		throw new Error('Invalid JSON in the cookie');
 	}
+}
+
+function setUpGeoData(geoData: GeoData) {
+	context.set('geo.region', geoData.region);
+	context.set('geo.country', geoData.country);
+	context.set('geo.continent', geoData.continent);
 }
 
 function getGeoData(): Promise<GeoData> {

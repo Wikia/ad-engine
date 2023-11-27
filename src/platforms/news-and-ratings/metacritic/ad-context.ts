@@ -41,4 +41,11 @@ export const basicContext = {
 	},
 	slots: {},
 	src: ['metacritic'],
+	preload: {
+		gpt: true,
+		audigent: true,
+		prebid: true,
+		apstag: true,
+		intentIq: true,
+	},
 };

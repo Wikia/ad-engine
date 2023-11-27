@@ -172,9 +172,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			gallery_leaderboard: {
 				adProduct: 'gallery_leaderboard',
 				bidderAlias: 'fandom_dt_galleries',
-				aliases: {
-					a9: 'gallery_leaderboard', // overwrite alias for A9, it's configured with the slot name not alias
-				},
+				a9Alias: 'gallery_leaderboard', // overwrite alias for A9, it's configured with the slot name not alias
 				group: 'IG',
 				defaultSizes: [[728, 90]],
 				targeting: {
