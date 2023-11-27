@@ -77,7 +77,7 @@ export class DisplayAndVideoAdsSyncSetup extends BaseServiceSetup {
 				utils.logger(this.logGroup, 'video ad is not from UAP:JWP campaign');
 				this.initialized.resolve(null);
 			}
-		} catch (e) {
+		} catch {
 			utils.logger(this.logGroup, 'No XML available - not a VAST response from the ad server?');
 
 			this.initialized.resolve(null);
