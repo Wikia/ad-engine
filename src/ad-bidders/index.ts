@@ -10,7 +10,7 @@ import {
 	utils,
 } from '@ad-engine/core';
 import { A9Provider } from './a9';
-import { defaultSlotBidGroup, getSlotBidGroup } from './bidder-helper';
+import { defaultSlotBidGroup, getSlotBidGroupByName } from './bidder-helper';
 import { PrebidProvider } from './prebid';
 
 interface BiddersProviders {
@@ -70,7 +70,7 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 
 	async getBidParameters(slotName): Promise<Dictionary> {
 		const slotParams = {};
-		const slotBidGroup = getSlotBidGroup(slotName);
+		const slotBidGroup = getSlotBidGroupByName(slotName);
 
 		await Promise.all(
 			this.getBiddersProviders(slotBidGroup).map(async (provider) => {
@@ -87,7 +87,7 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 
 	async getCurrentSlotPrices(slotName): Promise<Dictionary<string>> {
 		const slotPrices = {};
-		const slotBidGroup = getSlotBidGroup(slotName);
+		const slotBidGroup = getSlotBidGroupByName(slotName);
 
 		await Promise.all(
 			this.getBiddersProviders(slotBidGroup).map(async (provider) => {
@@ -109,7 +109,7 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 	}
 
 	resetTargetingKeys(slotName): void {
-		const slotBidGroup = getSlotBidGroup(slotName);
+		const slotBidGroup = getSlotBidGroupByName(slotName);
 
 		this.getBiddersProviders(slotBidGroup).forEach((provider) => {
 			provider.getTargetingKeys(slotName).forEach((key) => {

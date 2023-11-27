@@ -46,7 +46,7 @@ export class A9Provider extends BidderProvider {
 			buyerId: bid.amznp,
 			price: bid.amznbid,
 			size: bid.amznsz,
-			slotName: getSlotNameByBidderAlias(slotName),
+			slotName: getSlotNameByBidderAlias(slotName, true),
 		};
 	}
 

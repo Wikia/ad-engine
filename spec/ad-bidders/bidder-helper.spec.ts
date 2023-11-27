@@ -1,6 +1,6 @@
 import {
 	defaultSlotBidGroup,
-	getSlotBidGroup,
+	getSlotBidGroupByName,
 	getSlotNameByBidderAlias,
 	hasCorrectBidGroup,
 } from '@wikia/ad-bidders/bidder-helper';
@@ -26,14 +26,15 @@ describe('bidder-helper', () => {
 				});
 
 			const result = getSlotNameByBidderAlias('slotAlias2');
-
 			expect(result).to.deep.equal('slot2');
 		});
+
+		afterEach(() => global.sandbox.restore());
 	});
 
 	describe('getSlotBidGroup', () => {
 		it('should return default bid group if no group', () => {
-			const result = getSlotBidGroup('slot1');
+			const result = getSlotBidGroupByName('slot1');
 
 			expect(result).to.deep.be.equals(defaultSlotBidGroup);
 		});
@@ -41,30 +42,12 @@ describe('bidder-helper', () => {
 		it('should return bid group if defined group', () => {
 			global.sandbox.stub(context, 'get').withArgs('slots.testSlot.bidGroup').returns(['group#1']);
 
-			const result = getSlotBidGroup('testSlot');
+			const result = getSlotBidGroupByName('testSlot');
 
 			expect(result).to.deep.be.equals(['group#1']);
 		});
 
-		it('should return bid group if defined group', () => {
-			global.sandbox
-				.stub(context, 'get')
-				.withArgs('slots')
-				.returns({
-					testSlot: { bidderAlias: 'alias1' },
-					testSlot2: { bidderAlias: 'alias2' },
-				})
-				.withArgs('slots.testSlot2.bidGroup')
-				.returns(['group#1'])
-				.withArgs('slots.testSlot.bidderAlias')
-				.returns('alias1')
-				.withArgs('slots.testSlot2.bidderAlias')
-				.returns('alias2');
-
-			const result = getSlotBidGroup('alias2');
-
-			expect(result).to.deep.be.equals(['group#1']);
-		});
+		afterEach(() => global.sandbox.restore());
 	});
 
 	describe('hasCorrectBidGroup', () => {
@@ -105,5 +88,7 @@ describe('bidder-helper', () => {
 
 			expect(result).to.deep.be.false;
 		});
+
+		afterEach(() => global.sandbox.restore());
 	});
 });

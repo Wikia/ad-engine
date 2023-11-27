@@ -33,25 +33,21 @@ export function getSlotNameByBidderAlias(id: string, a9?: boolean): string {
 }
 
 export function hasCorrectBidGroup(code: string, group: string, a9?: boolean): boolean {
-	const slotBidGroup = getSlotBidGroup(code, a9);
+	let slotBidGroup = getSlotBidGroupByName(code);
 
-	return slotBidGroup && slotBidGroup === group;
-}
+	if (slotBidGroup === defaultSlotBidGroup) {
+		const slotName = findSlotNamesForBidderAlias(code, a9).shift();
 
-export function getSlotBidGroup(code: string, a9?: boolean): string {
-	let slotBidGroup = context.get(`slots.${code}.bidGroup`);
-
-	if (!slotBidGroup && isUsedAsAlias(code, a9)) {
-		const bidderAlias = Object.keys(context.get('slots')).find((slotName) => {
-			const bidderAlias = context.get(`slots.${slotName}.bidderAlias`);
-
-			return bidderAlias === code && slotService.getState(slotName);
-		});
-
-		slotBidGroup = context.get(`slots.${bidderAlias}.bidGroup`);
+		if (slotName) {
+			slotBidGroup = getSlotBidGroupByName(slotName);
+		}
 	}
 
-	return slotBidGroup || defaultSlotBidGroup;
+	return slotBidGroup === group;
+}
+
+export function getSlotBidGroupByName(slotName: string): string {
+	return context.get(`slots.${slotName}.bidGroup`) || defaultSlotBidGroup;
 }
 
 function findSlotNamesForBidderAlias(alias: string, a9?: boolean): string[] {
