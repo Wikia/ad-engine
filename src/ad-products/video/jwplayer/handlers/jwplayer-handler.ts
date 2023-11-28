@@ -3,8 +3,8 @@ import { Injectable } from '@wikia/dependency-injection';
 import { merge, Observable } from 'rxjs';
 import { filter, mergeMap, tap } from 'rxjs/operators';
 import { JWPlayerHelper, JwplayerHelperSkippingSponsoredVideo } from '../helpers';
-import { jwPlayerInhibitor } from '../helpers/jwplayer-inhibitor';
 import { PlayerReadyResult } from '../helpers/player-ready-result';
+import { videoDisplayTakeoverSynchronizer } from '../helpers/video-display-takeover-synchronizer';
 import { JwpStream, ofJwpEvent } from '../streams/jwplayer-stream';
 
 const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
@@ -49,7 +49,10 @@ export class JWPlayerHandler {
 				this.helper.setSlotParams(state.vastParams);
 				this.helper.setSlotElementAttributes('success', state.vastParams);
 				this.helper.emitVideoAdImpression();
-				jwPlayerInhibitor.resolve(state.vastParams.lineItemId, state.vastParams.creativeId);
+				videoDisplayTakeoverSynchronizer.resolve(
+					state.vastParams.lineItemId,
+					state.vastParams.creativeId,
+				);
 			}),
 		);
 	}
@@ -62,7 +65,7 @@ export class JWPlayerHandler {
 				this.helper.setSlotParams(state.vastParams);
 				this.helper.setSlotElementAttributes('error', state.vastParams);
 				this.helper.emitVideoAdError(payload.adErrorCode);
-				jwPlayerInhibitor.resolve();
+				videoDisplayTakeoverSynchronizer.resolve();
 			}),
 		);
 	}
@@ -86,7 +89,7 @@ export class JWPlayerHandler {
 				);
 
 				if (!shouldPlayAd) {
-					jwPlayerInhibitor.resolve();
+					videoDisplayTakeoverSynchronizer.resolve();
 				}
 
 				return shouldPlayAd;

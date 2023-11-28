@@ -103,7 +103,7 @@ export class BaseContextSetup implements DiProcess {
 		);
 		context.set('options.jwpMaxDelayTimeout', this.instantConfig.get('icUAPJWPlayerDelay', 0));
 		context.set('options.video.iasTracking.enabled', this.instantConfig.get('icIASVideoTracking'));
-		context.set('options.video.isUAPJWPEnabled', this.instantConfig.get('icUAPJWPlayer'));
+		context.set('options.video.syncWithDisplay', this.instantConfig.get('icUAPJWPlayer'));
 		context.set(
 			'options.video.isTaglessRequestEnabled',
 			this.instantConfig.get('icTaglessRequestEnabled'),
