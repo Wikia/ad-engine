@@ -12,12 +12,12 @@ import {
 	DurationMedia,
 	eventsRepository,
 	IasPublisherOptimization,
-	jwPlayerInhibitor,
 	OpenWeb,
 	PartnerPipeline,
 	PrebidNativeProvider,
 	Stroer,
 	System1,
+	videoDisplayTakeoverSynchronizer,
 	utils,
 	Wunderkind,
 } from '@wikia/ad-engine';
@@ -74,10 +74,12 @@ export class UcpMobileAdsMode implements DiProcess {
 					dependencies: [
 						this.bidders.initialized,
 						this.gptSetup.initialized,
-						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
+						videoDisplayTakeoverSynchronizer.isRequiredToRun()
+							? videoDisplayTakeoverSynchronizer.initialized
+							: Promise.resolve(),
 					],
-					timeout: jwPlayerInhibitor.isRequiredToRun()
-						? jwPlayerInhibitor.getDelayTimeoutInMs()
+					timeout: videoDisplayTakeoverSynchronizer.isRequiredToRun()
+						? videoDisplayTakeoverSynchronizer.getDelayTimeoutInMs()
 						: null,
 				}),
 			)
