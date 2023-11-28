@@ -1,4 +1,11 @@
-import { AdSlot, BaseServiceSetup, slotService, universalAdPackage, utils } from '@wikia/ad-engine';
+import {
+	AdSlot,
+	BaseServiceSetup,
+	slotService,
+	universalAdPackage,
+	utils,
+	videoDisplayTakeoverSynchronizer,
+} from '@wikia/ad-engine';
 
 interface ParsedCampaignData {
 	lineItemId: string;
@@ -19,6 +26,8 @@ export class DisplayAndVideoAdsSyncSetup extends BaseServiceSetup {
 			return this.initialized.resolve(null);
 		} else {
 			utils.logger(this.logGroup, 'enabled');
+			// we need to resolve the legacy sync, so it does not block display ads when this class is enabled
+			videoDisplayTakeoverSynchronizer.resolve();
 			utils.displayAndVideoAdsSyncContext.updateDisplayAndVideoAdsSyncEnablerFlag(true);
 		}
 
