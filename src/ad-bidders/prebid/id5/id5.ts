@@ -100,13 +100,11 @@ class Id5 {
 		if (context.get('bidders.prebid.id5Analytics.enabled')) {
 			utils.logger(logGroup, 'enabling ID5 Analytics');
 
-			pbjs.que.push(() => {
-				(window as any).pbjs.enableAnalytics({
-					provider: 'id5Analytics',
-					options: {
-						partnerId: this.partnerId,
-					},
-				});
+			pbjs.enableAnalytics({
+				provider: 'id5Analytics',
+				options: {
+					partnerId: this.partnerId,
+				},
 			});
 		}
 	}
