@@ -52,7 +52,7 @@ export class UcpDesktopPlatform {
 		// Config
 		this.pipeline.add(
 			AdEnginePhasesSetup,
-			async () => await adEnginePhases.initial,
+			// async () => await adEnginePhases.initial, // needed only when AE will be loaded async, for defer does not make sense
 			PlatformContextSetup,
 			async () => await ensureGeoCookie(),
 			async () => await adEnginePhases.configuration,
