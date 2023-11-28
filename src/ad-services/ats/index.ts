@@ -33,27 +33,21 @@ export class Ats extends BaseServiceSetup {
 		const launchpadScript = utils.scriptLoader.loadScript(this.launchpadScriptUrl);
 		const launchpadBundleScript = utils.scriptLoader.loadScript(this.launchpadBundleScriptUrl);
 
-		return Promise.all([launchpadScript, launchpadBundleScript])
-			.then(() => this.waitForAts())
-			.then(() => {
-				const consentType = context.get('options.geoRequiresConsent') ? 'gdpr' : 'ccpa';
-				const consentString =
-					consentType === 'gdpr' ? Cookies.get('euconsent-v2') : Cookies.get('usprivacy');
+		return Promise.all([launchpadScript, launchpadBundleScript]).then(() => {
+			const consentType = context.get('options.geoRequiresConsent') ? 'gdpr' : 'ccpa';
+			const consentString =
+				consentType === 'gdpr' ? Cookies.get('euconsent-v2') : Cookies.get('usprivacy');
 
-				window.ats.setAdditionalData({
-					consentType,
-					consentString,
-					type: 'emailHashes',
-					id: [sha1, sha256, md5],
-				});
-
-				utils.logger(logGroup, 'additional data set');
-
-				this.isLoaded = true;
+			window.ats.setAdditionalData({
+				consentType,
+				consentString,
+				type: 'emailHashes',
+				id: [sha1, sha256, md5],
 			});
-	}
 
-	private waitForAts(): Promise<boolean> {
-		return new utils.WaitFor(() => window.ats !== undefined, 10, 50).until();
+			utils.logger(logGroup, 'additional data set');
+
+			this.isLoaded = true;
+		});
 	}
 }
