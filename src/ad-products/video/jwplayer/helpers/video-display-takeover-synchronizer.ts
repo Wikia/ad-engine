@@ -31,7 +31,7 @@ export class VideoDisplayTakeoverSynchronizer {
 
 		return (
 			context.get('custom.hasFeaturedVideo') &&
-			!context.get('options.video.isTaglessRequestEnabled') &&
+			!context.get('options.video.icDisplayAndVideoAdsSyncEnabled') &&
 			this.isUAPJWPEnabled &&
 			this.maxDelayTimeoutInMs > 0 &&
 			this.videoLines.length > 0
