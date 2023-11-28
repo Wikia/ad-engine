@@ -13,6 +13,10 @@ class DisplayAndVideoAdsSyncContext {
 		return context.get('options.video.vastXml');
 	}
 
+	updateDisplayAndVideoAdsSyncEnablerFlag(value: boolean): void {
+		context.set('options.video.displayAndVideoAdsSyncSetupEnabled', value);
+	}
+
 	updateVastXmlInAdContext(xml: string): void {
 		context.set('options.video.vastXml', xml);
 	}

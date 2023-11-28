@@ -15,7 +15,7 @@ describe('VideoDisplayTakeoverSynchronizer', () => {
 		context.set('options.video.uapJWPLineItemIds', [1]);
 		context.set('custom.hasFeaturedVideo', true);
 		context.set('options.video.syncWithDisplay', true);
-		context.set('options.video.vastXml', undefined);
+		context.set('options.video.displayAndVideoAdsSyncSetupEnabled', false);
 	});
 
 	afterEach(() => {
@@ -23,7 +23,7 @@ describe('VideoDisplayTakeoverSynchronizer', () => {
 		context.remove('options.video.uapJWPLineItemIds');
 		context.remove('custom.hasFeaturedVideo');
 		context.remove('options.video.syncWithDisplay');
-		context.remove('options.video.vastXml');
+		context.remove('options.video.displayAndVideoAdsSyncSetupEnabled');
 	});
 
 	it('disables sync on non FV page', () => {
@@ -33,7 +33,7 @@ describe('VideoDisplayTakeoverSynchronizer', () => {
 	});
 
 	it('disables sync when the display video and ads feature with additional tagless request is enabled', () => {
-		context.set('options.video.vastXml', '<fake-xml></fake-xml>');
+		context.set('options.video.displayAndVideoAdsSyncSetupEnabled', true);
 
 		expect(new VideoDisplayTakeoverSynchronizer().isRequiredToRun()).to.be.false;
 	});

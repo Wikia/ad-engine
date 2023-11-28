@@ -15,7 +15,11 @@ export class DisplayAndVideoAdsSyncSetup extends BaseServiceSetup {
 	async call(): Promise<void> {
 		if (!this.isEnabled('icDisplayAndVideoAdsSyncEnabled', false)) {
 			utils.logger(this.logGroup, 'disabled');
+			utils.displayAndVideoAdsSyncContext.updateDisplayAndVideoAdsSyncEnablerFlag(false);
 			return this.initialized.resolve(null);
+		} else {
+			utils.logger(this.logGroup, 'enabled');
+			utils.displayAndVideoAdsSyncContext.updateDisplayAndVideoAdsSyncEnablerFlag(true);
 		}
 
 		if (!utils.displayAndVideoAdsSyncContext.hasFeaturedVideo()) {
