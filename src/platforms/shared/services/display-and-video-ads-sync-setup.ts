@@ -6,7 +6,7 @@ interface ParsedCampaignData {
 }
 
 export class DisplayAndVideoAdsSyncSetup extends BaseServiceSetup {
-	private logGroup = 'tagless-request';
+	private logGroup = 'display-and-video-ads-sync';
 	private syncedVideoLines;
 	private vastUrl;
 
