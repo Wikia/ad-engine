@@ -3,12 +3,12 @@ import { UserIdConfig } from '../index';
 
 const logGroup = 'LiveRamp';
 
-export abstract class LiveRampAtsTypes {
+export abstract class LiveRampIdTypes {
 	static PLACEMENT_ID = '2161';
 	static ENVELOPE_STORAGE_NAME = 'idl_env';
 }
 
-class LiveRampAts {
+class LiveRampId {
 	getConfig(): UserIdConfig {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
@@ -19,11 +19,11 @@ class LiveRampAts {
 		return {
 			name: 'identityLink',
 			params: {
-				pid: LiveRampAtsTypes.PLACEMENT_ID,
+				pid: LiveRampIdTypes.PLACEMENT_ID,
 			},
 			storage: {
 				type: 'html5',
-				name: LiveRampAtsTypes.ENVELOPE_STORAGE_NAME,
+				name: LiveRampIdTypes.ENVELOPE_STORAGE_NAME,
 				expires: 1,
 				refreshInSeconds: 1800,
 			},
@@ -39,4 +39,4 @@ class LiveRampAts {
 	}
 }
 
-export const liveRampAts = new LiveRampAts();
+export const liveRampId = new LiveRampId();

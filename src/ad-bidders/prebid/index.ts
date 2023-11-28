@@ -20,7 +20,7 @@ import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider
 import { adaptersRegistry } from './adapters-registry';
 import { id5 } from './id5';
 import { intentIQ } from './intent-iq';
-import { liveRampAts, LiveRampAtsTypes } from './liveramp-ats';
+import { liveRampId, LiveRampIdTypes } from './liveramp-id';
 import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice, roundBucketCpm } from './price-helper';
 
@@ -214,7 +214,7 @@ export class PrebidProvider extends BidderProvider {
 	}
 
 	private configureLiveRamp(): void {
-		const liveRampConfig = liveRampAts.getConfig();
+		const liveRampConfig = liveRampId.getConfig();
 		if (liveRampConfig !== undefined) {
 			this.prebidConfig.userSync.userIds.push(liveRampConfig);
 			this.prebidConfig.userSync.syncDelay = 3000;
@@ -304,7 +304,7 @@ export class PrebidProvider extends BidderProvider {
 					{
 						provider: 'atsAnalytics',
 						options: {
-							pid: LiveRampAtsTypes.PLACEMENT_ID,
+							pid: LiveRampIdTypes.PLACEMENT_ID,
 						},
 					},
 				]);
