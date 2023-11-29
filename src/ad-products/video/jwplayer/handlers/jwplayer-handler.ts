@@ -7,8 +7,8 @@ import {
 	JWPlayerHelperSkippingSecondVideo,
 	JwplayerHelperSkippingSponsoredVideo,
 } from '../helpers';
-import { jwPlayerInhibitor } from '../helpers/jwplayer-inhibitor';
 import { PlayerReadyResult } from '../helpers/player-ready-result';
+import { videoDisplayTakeoverSynchronizer } from '../helpers/video-display-takeover-synchronizer';
 import { JwpStream, ofJwpEvent } from '../streams/jwplayer-stream';
 
 const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
@@ -73,7 +73,10 @@ export class JWPlayerHandler {
 				this.helper.setSlotParams(state.vastParams);
 				this.helper.setSlotElementAttributes('success', state.vastParams);
 				this.helper.emitVideoAdImpression();
-				jwPlayerInhibitor.resolve(state.vastParams.lineItemId, state.vastParams.creativeId);
+				videoDisplayTakeoverSynchronizer.resolve(
+					state.vastParams.lineItemId,
+					state.vastParams.creativeId,
+				);
 			}),
 		);
 	}
@@ -86,7 +89,7 @@ export class JWPlayerHandler {
 				this.helper.setSlotParams(state.vastParams);
 				this.helper.setSlotElementAttributes('error', state.vastParams);
 				this.helper.emitVideoAdError(payload.adErrorCode);
-				jwPlayerInhibitor.resolve();
+				videoDisplayTakeoverSynchronizer.resolve();
 			}),
 		);
 	}
@@ -103,9 +106,18 @@ export class JWPlayerHandler {
 		return this.stream$.pipe(
 			ofJwpEvent('beforePlay'),
 			tap(({ state }) => this.helper.updateVideoProperties(state)),
-			filter(({ state }) =>
-				this.helper.shouldPlayPreroll(state.depth, state?.playlistItem?.mediaid),
-			),
+			filter(({ state }) => {
+				const shouldPlayAd = this.helper.shouldPlayPreroll(
+					state.depth,
+					state?.playlistItem?.mediaid,
+				);
+
+				if (!shouldPlayAd) {
+					videoDisplayTakeoverSynchronizer.resolve();
+				}
+
+				return shouldPlayAd;
+			}),
 			mergeMap((payload) => this.helper.awaitIasTracking(payload)),
 			tap(({ state }) => this.helper.playVideoAd('preroll', state)),
 		);

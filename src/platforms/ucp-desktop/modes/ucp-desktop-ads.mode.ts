@@ -12,12 +12,13 @@ import {
 	DurationMedia,
 	eventsRepository,
 	IasPublisherOptimization,
-	jwPlayerInhibitor,
 	OpenWeb,
 	PartnerPipeline,
 	PrebidNativeProvider,
 	Stroer,
 	System1,
+	videoDisplayTakeoverSynchronizer,
+	utils,
 	Wunderkind,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -47,6 +48,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 	) {}
 
 	execute(): void {
+		utils.logger('partners-pipeline', 'starting');
 		this.pipeline
 			.add(
 				this.anyclip,
@@ -73,16 +75,19 @@ export class UcpDesktopAdsMode implements DiProcess {
 						this.bidders.initialized,
 						this.wadRunner.initialized,
 						this.gptSetup.initialized,
-						jwPlayerInhibitor.isRequiredToRun() ? jwPlayerInhibitor.initialized : Promise.resolve(),
+						videoDisplayTakeoverSynchronizer.isRequiredToRun()
+							? videoDisplayTakeoverSynchronizer.initialized
+							: Promise.resolve(),
 					],
-					timeout: jwPlayerInhibitor.isRequiredToRun()
-						? jwPlayerInhibitor.getDelayTimeoutInMs()
+					timeout: videoDisplayTakeoverSynchronizer.isRequiredToRun()
+						? videoDisplayTakeoverSynchronizer.getDelayTimeoutInMs()
 						: null,
 				}),
 			)
 			.execute()
 			.then(() => {
 				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);
+				utils.logger('partners-pipeline', 'finished');
 			});
 	}
 }
