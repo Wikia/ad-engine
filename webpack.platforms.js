@@ -67,6 +67,7 @@ module.exports = (env, argv) => {
 			platforms({
 				entry: {
 					[env.platform]: path.resolve(__dirname, `src/platforms/${env.platform}/index.ts`),
+					'service-worker': './src/sw.ts',
 				},
 			}),
 		);

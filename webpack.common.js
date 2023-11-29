@@ -1,6 +1,7 @@
 const path = require('path');
 const pkg = require('./package.json');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
@@ -47,7 +48,15 @@ module.exports = () => ({
 		],
 	},
 
-	plugins: [new ForkTsCheckerWebpackPlugin()],
+	plugins: [
+		new ForkTsCheckerWebpackPlugin(),
+		new WorkboxPlugin.GenerateSW({
+			swDest: './sw.js',
+			maximumFileSizeToCacheInBytes: 50000000,
+			clientsClaim: true,
+			skipWaiting: true,
+		}),
+	],
 	watchOptions: {
 		ignored: /node_modules/,
 	},
