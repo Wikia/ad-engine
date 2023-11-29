@@ -42,9 +42,6 @@ export const basicContext = {
 	slots: {},
 	src: ['giantbomb'],
 	options: {
-		customAdLoader: {
-			globalMethodName: 'loadCustomAd',
-		},
 		preload: {
 			gpt: false,
 			audigent: true,
