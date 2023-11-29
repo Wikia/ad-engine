@@ -1,9 +1,9 @@
 import { AdSlot, context, utils } from '@ad-engine/core';
-import { ConnatixPlayerInterface } from './connatix-player';
+import { ConnatixPlayerApi, ConnatixPlayerInterface } from './connatix-player';
 import { logGroup } from './index';
 
 export interface PlayerInjectorInterface {
-	insertPlayerContainer(cid: string): void;
+	insertPlayerContainer(cid: string, renderCallback: (error, player) => void): void;
 }
 
 export class PlayerInjector implements PlayerInjectorInterface {
@@ -17,17 +17,20 @@ export class PlayerInjector implements PlayerInjectorInterface {
 
 	constructor(private connatixPlayer: ConnatixPlayerInterface) {}
 
-	insertPlayerContainer(cid: string) {
+	insertPlayerContainer(cid: string, renderCallback: (error, player: ConnatixPlayerApi) => void) {
 		utils.logger(logGroup, 'inserting Connatix player to the page');
 
-		const connatixPlayer = this.createPlayerTags(cid);
+		const connatixPlayer = this.createPlayerTags(cid, renderCallback);
 
 		const incontentPlayerContainer = document.getElementById('incontent_player');
 		incontentPlayerContainer.appendChild(connatixPlayer);
 		incontentPlayerContainer.classList.remove(AdSlot.HIDDEN_AD_CLASS);
 	}
 
-	private createPlayerTags(cid: string): HTMLElement {
+	private createPlayerTags(
+		cid: string,
+		renderCallback: (error, player: ConnatixPlayerApi) => void,
+	): HTMLElement {
 		const connatixPlayerTag = document.createElement('script');
 		connatixPlayerTag.setAttribute('id', this.renderId);
 
@@ -37,7 +40,11 @@ export class PlayerInjector implements PlayerInjectorInterface {
 			`https://capi.connatix.com/tr/si?token=${this.playerId}&cid=${cid}`,
 		);
 
-		connatixImageTag.innerHTML = this.connatixPlayer.get(this.playerId, this.renderId);
+		connatixImageTag.innerHTML = this.connatixPlayer.get(
+			this.playerId,
+			this.renderId,
+			renderCallback,
+		);
 		connatixPlayerTag.appendChild(connatixImageTag);
 
 		return connatixPlayerTag;

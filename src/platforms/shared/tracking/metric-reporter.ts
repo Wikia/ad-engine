@@ -1,4 +1,11 @@
-import { AdSlot, AdSlotEvent, communicationService, context, utils } from '@wikia/ad-engine';
+import {
+	AdSlot,
+	AdSlotEvent,
+	communicationService,
+	context,
+	eventsRepository,
+	utils,
+} from '@wikia/ad-engine';
 import { clickDetector } from './metric-reporter-trackers/click-detector';
 
 interface EndpointInfo {
@@ -30,12 +37,13 @@ export class MetricReporter {
 		this.isActive = utils.outboundTrafficRestrict.isOutboundTrafficAllowed('monitoring-default');
 	}
 
-	execute() {
+	initialise() {
 		if (!this.isActive) {
 			return;
 		}
 
 		this.trackLibInitialization();
+		this.trackGptLibReady();
 
 		this.trackGamSlotRequest();
 		this.trackGamSlotRendered();
@@ -78,21 +86,22 @@ export class MetricReporter {
 		return item.action && item.duration;
 	}
 
-	public trackLibInitialization(): void {
+	private trackLibInitialization(): void {
 		this.sendToMeteringSystem({
 			action: 'init',
 			duration: Math.round(utils.getTimeDelta()),
 		});
 	}
 
-	public trackGptLibReady(): void {
+	private trackGptLibReady(): void {
 		if (!this.isActive) {
 			return;
 		}
-
-		this.sendToMeteringSystem({
-			action: 'gpt-ready',
-			duration: Math.round(utils.getTimeDelta()),
+		communicationService.on(eventsRepository.AD_ENGINE_GPT_READY, ({ time }) => {
+			this.sendToMeteringSystem({
+				action: 'gpt-ready',
+				duration: Math.round(time),
+			});
 		});
 	}
 

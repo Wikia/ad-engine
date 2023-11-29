@@ -89,7 +89,6 @@ export const basicContext = {
 			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',
 		},
 		connatix: {
-			enabled: false,
 			cid: '016551d5-7095-47c0-a46b-fd0cb9bf4c72',
 			playerId: '039a9ead-fb3b-4afc-bcfb-ed241bbaa8d1',
 			renderId: '858c22ce64e241d5acc77c4f6ed56d2d',
@@ -142,6 +141,13 @@ export const basicContext = {
 			btRec: {
 				enabled: false,
 			},
+		},
+		preload: {
+			gpt: false,
+			audigent: true,
+			prebid: true,
+			apstag: false,
+			intentIq: true,
 		},
 	},
 };

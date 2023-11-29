@@ -60,4 +60,11 @@ export const basicContext = {
 			`/{custom.dfpId}/{custom.serverPrefix}1b.{slotConfig.group}/{slotConfig.slotName}` +
 			'{slotConfig.slotNameSuffix}/{state.deviceType}/ns-{custom.adLayout}/_fandom-all',
 	},
+	preload: {
+		gpt: true,
+		audigent: true,
+		prebid: false,
+		apstag: false,
+		intentIq: false,
+	},
 };
