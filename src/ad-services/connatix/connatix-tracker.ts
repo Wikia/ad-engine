@@ -1,43 +1,40 @@
 import { utils, VideoData, VideoEventProvider, VideoTracker } from '@ad-engine/core';
+import { ConnatixPlayerApi, ConnatixPlayerType } from './connatix-player';
 
-const logGroup = 'Anyclip';
+const logGroup = 'connatix';
 
-export class AnyclipTracker implements VideoTracker {
-	constructor(private subscribeFuncName: string) {}
+export class ConnatixTracker implements VideoTracker {
+	private playerApi: ConnatixPlayerApi;
 
 	private trackingEvents = {
 		init: 'init',
-		eligible: 'eligible',
-		WidgetLoad: 'ready',
+		ready: 'ready',
 		adImpression: 'impression',
 		adSkipped: 'skipped',
-		adFirstQuartile: 'first_quartile',
-		adMidpoint: 'midpoint',
-		adThirdQuartile: 'third_quartile',
-		adComplete: 'completed',
+		adCompleted25: 'first_quartile',
+		adCompleted50: 'midpoint',
+		adCompleted75: 'third_quartile',
+		adCompleted100: 'completed',
 		adClick: 'clicked',
 	};
 
 	register() {
-		this.setupAnyclipListeners();
+		this.setupListeners();
 	}
 
-	private setupAnyclipListeners() {
-		const subscribe = window[this.subscribeFuncName];
+	setPlayerApi(playerApi: ConnatixPlayerApi) {
+		this.playerApi = playerApi;
+	}
 
-		if (typeof subscribe !== 'function') {
-			utils.logger(
-				logGroup,
-				'Given subscribe function is not a function',
-				this.subscribeFuncName,
-				subscribe,
-			);
+	private setupListeners() {
+		if (typeof this.playerApi !== 'object') {
+			utils.logger(logGroup, 'Given playerApi is not an object', this.playerApi);
 			return;
 		}
 
-		utils.logger(logGroup, 'Subscribing to Anyclip events...');
+		utils.logger(logGroup, 'Subscribing to Connatix events...');
 		Object.keys(this.trackingEvents).map((eventName) => {
-			subscribe((data) => this.track(eventName, data), eventName);
+			this.playerApi.on(eventName, (data) => this.track(eventName, data));
 		});
 	}
 
@@ -46,8 +43,8 @@ export class AnyclipTracker implements VideoTracker {
 		this.track(eventName, VideoEventProvider.getEventData(this.getVideoData(eventName)));
 	}
 
-	trackEligible() {
-		const eventName = 'eligible';
+	trackReady() {
+		const eventName = 'ready';
 		this.track(eventName, VideoEventProvider.getEventData(this.getVideoData(eventName)));
 	}
 
@@ -56,7 +53,7 @@ export class AnyclipTracker implements VideoTracker {
 
 		utils.logger(
 			logGroup,
-			`Anyclip ${eventName} event data: `,
+			`Connatix ${eventName} event data: `,
 			eventData,
 			this.getVideoData(eventName),
 			dataForDataWarehouse,
@@ -70,8 +67,9 @@ export class AnyclipTracker implements VideoTracker {
 		return {
 			ad_error_code: 0,
 			event_name: this.trackingEvents[eventName],
-			player: 'anyclip',
-			ad_product: 'outstream',
+			player: 'connatix',
+			ad_product:
+				this?.playerApi?.getPlayerType() === ConnatixPlayerType.InStream ? 'instream' : 'outstream',
 			position: 'incontent_player',
 			line_item_id: 'unknown',
 			creative_id: 'unknown',

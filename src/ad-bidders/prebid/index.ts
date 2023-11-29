@@ -15,12 +15,12 @@ import {
 	tcf,
 	utils,
 } from '@ad-engine/core';
-import { getSlotNameByBidderAlias } from '../alias-helper';
+import { getSlotAliasOrName, getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
-import { Ats } from './ats';
 import { id5 } from './id5';
 import { intentIQ } from './intent-iq';
+import { liveRampId, LiveRampIdTypes } from './liveramp-id';
 import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice, roundBucketCpm } from './price-helper';
 
@@ -210,6 +210,15 @@ export class PrebidProvider extends BidderProvider {
 	private configureUserSync(): void {
 		this.configureOzone();
 		this.configureId5();
+		this.configureLiveRamp();
+	}
+
+	private configureLiveRamp(): void {
+		const liveRampConfig = liveRampId.getConfig();
+		if (liveRampConfig !== undefined) {
+			this.prebidConfig.userSync.userIds.push(liveRampConfig);
+			this.prebidConfig.userSync.syncDelay = 3000;
+		}
 	}
 
 	private configureOzone(): void {
@@ -287,7 +296,10 @@ export class PrebidProvider extends BidderProvider {
 	}
 
 	private enableATSAnalytics(): void {
-		if (context.get('bidders.liveRampATSAnalytics.enabled')) {
+		if (
+			context.get('bidders.liveRampATSAnalytics.enabled') &&
+			context.get('bidders.liveRampId.enabled')
+		) {
 			utils.logger(logGroup, 'prebid enabling ATS Analytics');
 
 			(window as any).pbjs.que.push(() => {
@@ -295,7 +307,7 @@ export class PrebidProvider extends BidderProvider {
 					{
 						provider: 'atsAnalytics',
 						options: {
-							pid: Ats.PLACEMENT_ID,
+							pid: LiveRampIdTypes.PLACEMENT_ID,
 						},
 					},
 				]);
@@ -418,9 +430,7 @@ export class PrebidProvider extends BidderProvider {
 	}
 
 	getBestPrice(slotName: string): Promise<Dictionary<string>> {
-		const slotAlias: string = this.getSlotAlias(slotName);
-
-		return getPrebidBestPrice(slotAlias);
+		return getPrebidBestPrice(getSlotAliasOrName(slotName));
 	}
 
 	getTargetingKeys(slotName: string): string[] {
@@ -431,14 +441,13 @@ export class PrebidProvider extends BidderProvider {
 
 	async getTargetingParams(slotName: string): Promise<PrebidTargeting> {
 		const pbjs: Pbjs = await pbjsFactory.init();
-		const slotAlias: string = this.getSlotAlias(slotName);
 		const targeting = pbjs.getAdserverTargeting();
 
-		return targeting[slotAlias];
+		return targeting[getSlotAliasOrName(slotName)];
 	}
 
 	isSupported(slotName: string): boolean {
-		const slotAlias: string = this.getSlotAlias(slotName);
+		const slotAlias: string = getSlotAliasOrName(slotName);
 
 		return this.adUnits && this.adUnits.some((adUnit) => adUnit.code === slotAlias);
 	}

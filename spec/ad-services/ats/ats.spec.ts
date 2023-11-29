@@ -1,10 +1,10 @@
-import { Ats } from '@wikia/ad-bidders';
+import { Ats } from '@wikia/ad-services/ats';
 import { context, utils } from '@wikia/core';
 import { expect } from 'chai';
 import Cookies from 'js-cookie';
 
 describe('ATS', () => {
-	const ats = new Ats();
+	let ats;
 	let loadScriptStub;
 	let setAdditionalDataSpy;
 
@@ -25,6 +25,14 @@ describe('ATS', () => {
 		context.set('wiki.targeting.directedAtChildren', false);
 		context.set('wiki.opts.userEmailHashes', ['md5', 'sha1', 'sha256']);
 		context.set('state.isLogged', true);
+
+		window.fandomContext.partners.directedAtChildren = undefined;
+
+		ats = new Ats();
+	});
+
+	afterEach(() => {
+		global.sandbox.restore();
 	});
 
 	it('ATS.js is called', async () => {
@@ -59,7 +67,7 @@ describe('ATS', () => {
 	});
 
 	it('ATS is disabled on child-directed wiki', async () => {
-		context.set('wiki.targeting.directedAtChildren', true);
+		window.fandomContext.partners.directedAtChildren = true;
 
 		await ats.call();
 
@@ -67,7 +75,7 @@ describe('ATS', () => {
 	});
 
 	it('ATS is not loaded when there is no user email in context', async () => {
-		context.set('wiki.opts.userEmailHashes', undefined);
+		context.remove('wiki.opts.userEmailHashes');
 
 		await ats.call();
 

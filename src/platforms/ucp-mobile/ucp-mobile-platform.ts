@@ -1,20 +1,20 @@
 import {
-	AdEngineRunnerSetup,
 	BiddersStateSetup,
-	bootstrapAndGetConsent,
+	BiddersTargetingUpdater,
+	ConsentManagementPlatformSetup,
+	ensureGeoCookie,
 	InstantConfigSetup,
 	LabradorSetup,
 	LoadTimesSetup,
-	MetricReporter,
 	MetricReporterSetup,
 	NoAdsDetector,
-	NoAdsExperimentSetup,
 	NoAdsMode,
 	PlatformContextSetup,
+	PostAdStackPartnersSetup,
+	PreloadedLibrariesSetup,
 	SequentialMessagingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
-	UcpPartnersSetup,
 	UcpTargetingSetup,
 } from '@platforms/shared';
 import {
@@ -23,8 +23,10 @@ import {
 	context,
 	eventsRepository,
 	IdentitySetup,
+	logVersion,
 	parallel,
 	ProcessPipeline,
+	sequential,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
@@ -42,15 +44,20 @@ export class UcpMobilePlatform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
 	execute(): void {
+		logVersion();
+		context.extend(basicContext);
+		context.set('state.isMobile', true);
+
 		// Config
 		this.pipeline.add(
-			() => context.extend(basicContext),
-			() => context.set('state.isMobile', true),
 			PlatformContextSetup,
-			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
+			async () => await ensureGeoCookie(),
+			parallel(
+				sequential(InstantConfigSetup, PreloadedLibrariesSetup),
+				ConsentManagementPlatformSetup,
+			),
 			TrackingParametersSetup,
 			MetricReporterSetup,
-			MetricReporter,
 			UcpMobileBaseContextSetup,
 			UcpMobileSlotsContextSetup,
 			IdentitySetup,
@@ -60,19 +67,18 @@ export class UcpMobilePlatform {
 			UcpMobileA9ConfigSetup,
 			UcpMobileDynamicSlotsSetup,
 			UcpMobileTemplatesSetup,
+			UcpMobileExperimentsSetup,
 			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM will break
 			BiddersStateSetup,
+			BiddersTargetingUpdater,
+			LabradorSetup,
 			conditional(() => this.noAdsDetector.isAdsMode(), {
 				yes: UcpMobileAdsMode,
 				no: NoAdsMode,
 			}),
-			NoAdsExperimentSetup,
-			LabradorSetup,
-			UcpMobileExperimentsSetup,
 			TrackingSetup,
-			AdEngineRunnerSetup,
-			UcpPartnersSetup,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
+			PostAdStackPartnersSetup,
 		);
 
 		this.pipeline.execute();
