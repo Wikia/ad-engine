@@ -48,9 +48,6 @@ export const basicContext = {
 	slots: {},
 	src: ['comicvine'],
 	options: {
-		customAdLoader: {
-			globalMethodName: 'loadCustomAd',
-		},
 		preload: {
 			gpt: false,
 			audigent: true,
