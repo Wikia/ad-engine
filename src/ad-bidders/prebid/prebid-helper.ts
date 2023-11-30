@@ -1,17 +1,11 @@
 import { context, Dictionary, pbjsFactory, slotService } from '@ad-engine/core';
-import { getSlotAlias } from '../alias-helper';
+import { isUsedAsAlias } from '../bidder-helper';
 import { PrebidAdapterConfig } from './prebid-models';
 
 const uuidKey = 'hb_uuid';
 const videoType = 'video';
 
 export const validResponseStatusCode = 1;
-
-function isUsedAsAlias(code): boolean {
-	return Object.keys(context.get('slots')).some(
-		(slotName) => getSlotAlias(slotName) === code && slotService.getState(slotName),
-	);
-}
 
 export function isSlotApplicable(code): boolean {
 	// This can be simplified once we get rid of uppercase slot names

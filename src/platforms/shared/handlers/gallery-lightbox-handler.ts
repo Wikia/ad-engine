@@ -51,7 +51,9 @@ export class GalleryLightboxAdsHandler {
 					return;
 				}
 
-				insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]);
+				this.callPrebidBidders(() =>
+					insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]),
+				);
 				this.lockForFewSeconds();
 				this.isActive = true;
 				this.hideFloorAdhesion();
@@ -89,9 +91,10 @@ export class GalleryLightboxAdsHandler {
 				if (label) {
 					label.remove();
 				}
-				setTimeout(() => {
-					insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]);
-				}, 100);
+
+				this.callPrebidBidders(() =>
+					insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]),
+				);
 
 				this.lockForFewSeconds();
 			},
@@ -145,5 +148,12 @@ export class GalleryLightboxAdsHandler {
 	private showFloorAdhesion() {
 		const floor = document?.getElementById('floor_adhesion_anchor');
 		floor?.classList?.remove('hide-under-lightbox');
+	}
+
+	private callPrebidBidders(callback: () => void) {
+		communicationService.emit(eventsRepository.BIDDERS_CALL_PER_GROUP, {
+			group: 'gallery',
+			callback: callback,
+		});
 	}
 }

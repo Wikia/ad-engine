@@ -15,7 +15,13 @@ import {
 	trackingOptIn,
 	utils,
 } from '@ad-engine/core';
-import { getSlotAlias, getSlotAliasOrName, getSlotNameByBidderAlias } from '../alias-helper';
+import {
+	defaultSlotBidGroup,
+	getSlotAlias,
+	getSlotAliasOrName,
+	getSlotNameByBidderAlias,
+	hasCorrectBidGroup,
+} from '../bidder-helper';
 import { BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { Apstag } from '../wrappers';
 import { A9Bid, A9Bids, A9Config, A9SlotConfig, A9SlotDefinition, PriceMap } from './types';
@@ -40,7 +46,7 @@ export class A9Provider extends BidderProvider {
 			buyerId: bid.amznp,
 			price: bid.amznbid,
 			size: bid.amznsz,
-			slotName: getSlotNameByBidderAlias(slotName),
+			slotName: getSlotNameByBidderAlias(slotName, true),
 		};
 	}
 
@@ -65,7 +71,11 @@ export class A9Provider extends BidderProvider {
 	slots: Dictionary<A9SlotConfig>;
 	slotsNames: string[];
 
-	constructor(public bidderConfig: A9Config, public timeout: number = DEFAULT_MAX_DELAY) {
+	constructor(
+		public bidderConfig: A9Config,
+		public timeout: number = DEFAULT_MAX_DELAY,
+		private bidGroup: string = defaultSlotBidGroup,
+	) {
 		super('a9', bidderConfig, timeout);
 
 		this.amazonId = this.bidderConfig.amazonId;
@@ -135,6 +145,7 @@ export class A9Provider extends BidderProvider {
 	 */
 	getA9SlotsDefinitions(slotsNames: string[]): A9SlotDefinition[] {
 		return slotsNames
+			.filter((slotName: string) => hasCorrectBidGroup(slotName, this.bidGroup, true))
 			.map((slotName: string) => getSlotAliasOrName(slotName, true))
 			.filter((slotAlias: string) => this.isSlotEnabled(slotAlias))
 			.map((slotAlias: string) => this.createSlotDefinition(slotAlias))
