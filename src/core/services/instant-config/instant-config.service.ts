@@ -61,10 +61,12 @@ export class InstantConfigService implements InstantConfigServiceInterface {
 	}
 
 	get<T extends InstantConfigValue>(key: string, defaultValue?: T): T {
-		if (key in this.repository && this.repository[key] !== undefined) {
-			return this.repository[key] as any;
+		try {
+			return key in this.repository && this.repository[key] !== undefined
+				? (this.repository[key] as T)
+				: defaultValue;
+		} catch (e) {
+			return defaultValue;
 		}
-
-		return defaultValue;
 	}
 }

@@ -52,4 +52,13 @@ export const basicContext = {
 	},
 	slots: {},
 	src: ['gamefaqs'],
+	options: {
+		preload: {
+			gpt: false,
+			audigent: true,
+			prebid: true,
+			apstag: false,
+			intentIq: true,
+		},
+	},
 };

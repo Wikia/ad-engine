@@ -83,4 +83,13 @@ export const basicContext = {
 	},
 	slots: {},
 	src: ['tvguide'],
+	options: {
+		preload: {
+			gpt: false,
+			audigent: true,
+			prebid: true,
+			apstag: false,
+			intentIq: true,
+		},
+	},
 };

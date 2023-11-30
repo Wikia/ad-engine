@@ -200,6 +200,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					[320, 100],
 					[320, 50],
 				],
+				bidGroup: 'gallery',
 				targeting: {
 					loc: 'gallery',
 				},
