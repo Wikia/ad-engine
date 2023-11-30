@@ -32,14 +32,13 @@ export class PreloadedLibrariesSetup implements DiProcess {
 	}
 
 	async execute(): Promise<void> {
+		context.set('bidders.prebid.libraryUrl', this.getPrebidLibraryUrl());
 		this.preloadLibraries();
 		return this.options?.gpt ? this.gptSetup.call() : Promise.resolve();
 	}
 
 	private preloadLibraries() {
 		if (this.options?.prebid && this.instantConfig.get('icPrebid')) {
-			context.set('bidders.prebid.libraryUrl', this.getPrebidLibraryUrl());
-
 			pbjsFactory.init().then(() => {
 				if (this.options?.intentIq && this.instantConfig.get('icPrebidIntentIQ')) {
 					return intentIQ.preloadScript();

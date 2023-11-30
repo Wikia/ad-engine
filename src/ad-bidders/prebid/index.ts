@@ -22,9 +22,9 @@ import {
 } from '../bidder-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
-import { Ats } from './ats';
 import { id5 } from './id5';
 import { intentIQ } from './intent-iq';
+import { liveRampId, LiveRampIdTypes } from './liveramp-id';
 import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice, roundBucketCpm } from './price-helper';
 
@@ -218,6 +218,15 @@ export class PrebidProvider extends BidderProvider {
 	private configureUserSync(): void {
 		this.configureOzone();
 		this.configureId5();
+		this.configureLiveRamp();
+	}
+
+	private configureLiveRamp(): void {
+		const liveRampConfig = liveRampId.getConfig();
+		if (liveRampConfig !== undefined) {
+			this.prebidConfig.userSync.userIds.push(liveRampConfig);
+			this.prebidConfig.userSync.syncDelay = 3000;
+		}
 	}
 
 	private configureOzone(): void {
@@ -295,7 +304,10 @@ export class PrebidProvider extends BidderProvider {
 	}
 
 	private enableATSAnalytics(): void {
-		if (context.get('bidders.liveRampATSAnalytics.enabled')) {
+		if (
+			context.get('bidders.liveRampATSAnalytics.enabled') &&
+			context.get('bidders.liveRampId.enabled')
+		) {
 			utils.logger(logGroup, 'prebid enabling ATS Analytics');
 
 			(window as any).pbjs.que.push(() => {
@@ -303,7 +315,7 @@ export class PrebidProvider extends BidderProvider {
 					{
 						provider: 'atsAnalytics',
 						options: {
-							pid: Ats.PLACEMENT_ID,
+							pid: LiveRampIdTypes.PLACEMENT_ID,
 						},
 					},
 				]);
