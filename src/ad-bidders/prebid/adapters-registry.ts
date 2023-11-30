@@ -1,4 +1,5 @@
 import { Aliases, context, pbjsFactory } from '@ad-engine/core';
+import { hasCorrectBidGroup } from '../bidder-helper';
 import {
 	Appnexus,
 	AppnexusAst,
@@ -94,7 +95,7 @@ class AdaptersRegistry {
 		});
 	}
 
-	setupAdUnits(): PrebidAdUnit[] {
+	setupAdUnits(bidGroup: string): PrebidAdUnit[] {
 		const adUnits: PrebidAdUnit[] = [];
 
 		adaptersRegistry.getAdapters().forEach((adapter) => {
@@ -102,7 +103,11 @@ class AdaptersRegistry {
 				const adapterAdUnits = adapter.prepareAdUnits();
 
 				adapterAdUnits.forEach((adUnit) => {
-					if (adUnit && isSlotApplicable(adUnit.code)) {
+					if (
+						adUnit &&
+						isSlotApplicable(adUnit.code) &&
+						hasCorrectBidGroup(adUnit.code, bidGroup)
+					) {
 						adUnits.push(adUnit);
 					}
 				});

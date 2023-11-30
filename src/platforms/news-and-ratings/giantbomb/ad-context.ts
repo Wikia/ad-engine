@@ -41,11 +41,13 @@ export const basicContext = {
 	},
 	slots: {},
 	src: ['giantbomb'],
-	preload: {
-		gpt: true,
-		audigent: false,
-		prebid: true,
-		apstag: true,
-		intentIq: false,
+	options: {
+		preload: {
+			gpt: false,
+			audigent: true,
+			prebid: true,
+			apstag: false,
+			intentIq: true,
+		},
 	},
 };

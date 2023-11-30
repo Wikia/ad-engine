@@ -17,8 +17,8 @@ import {
 	PrebidNativeProvider,
 	Stroer,
 	System1,
-	videoDisplayTakeoverSynchronizer,
 	utils,
+	videoDisplayTakeoverSynchronizer,
 	Wunderkind,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
