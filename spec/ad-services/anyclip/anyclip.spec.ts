@@ -4,14 +4,7 @@ import {
 	communicationService,
 	CommunicationService,
 } from '@wikia/communication/communication-service';
-import {
-	AdSlot,
-	context,
-	slotService,
-	targetingService,
-	TargetingService,
-	utils,
-} from '@wikia/core';
+import { context, targetingService, TargetingService, utils } from '@wikia/core';
 import { WaitFor } from '@wikia/core/utils';
 import { expect } from 'chai';
 import sinon, { SinonStubbedInstance } from 'sinon';
@@ -44,7 +37,6 @@ describe('Anyclip', () => {
 			},
 		);
 		targetingServiceStub = global.sandbox.stub(targetingService);
-		slotService.add(new AdSlot({ id: 'incontent_player' }));
 	});
 
 	afterEach(() => {
