@@ -27,7 +27,7 @@ export function getMagniteS2sContext(): object {
 			incontent_boxad: {
 				sizes: [[300, 250]],
 			},
-			fandom_mw_galleries: {
+			gallery_leaderboard: {
 				sizes: [
 					[320, 50],
 					[320, 100],
