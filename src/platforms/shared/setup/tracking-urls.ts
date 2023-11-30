@@ -13,7 +13,7 @@ export interface TrackingUrl {
 	allowed: TrackingConfigOfAllowedOptions;
 }
 
-export const trackingUrls: Dictionary<TrackingUrl> = {
+export const trackingUrls = {
 	AD_ENG_LOAD_TIMES: {
 		name: 'AdEngLoadTimes',
 		icbmName: 'loadTimes',
@@ -55,6 +55,15 @@ export const trackingUrls: Dictionary<TrackingUrl> = {
 		name: 'KeyVals',
 		icbmName: 'kvs',
 		url: 'https://beacon.wikia-services.com/__track/special/keyvals',
+		allowed: {
+			sampling: false,
+			aggregation: false,
+		},
+	},
+	TOPICS: {
+		name: 'GoogleTopics',
+		icbmName: 'topics',
+		url: 'https://beacon.wikia-services.com/__track/special/topics',
 		allowed: {
 			sampling: false,
 			aggregation: false,
@@ -114,4 +123,4 @@ export const trackingUrls: Dictionary<TrackingUrl> = {
 			aggregation: false,
 		},
 	},
-};
+} as const satisfies Dictionary<TrackingUrl>;
