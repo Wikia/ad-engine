@@ -33,6 +33,9 @@ export function getMagniteS2sContext(): object {
 			},
 			featured: {
 				sizes: [[640, 480]],
+      },  
+			fandom_dt_galleries: {
+				sizes: [[728, 90]],
 			},
 		},
 	};
