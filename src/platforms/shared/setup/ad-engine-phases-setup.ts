@@ -5,6 +5,7 @@ import {
 	documentLoadedPromise,
 	domContentLoadedPromise,
 	eventsRepository,
+	utils,
 	waitForEventPromise,
 } from '@wikia/ad-engine';
 
@@ -52,10 +53,10 @@ export class AdEnginePhasesSetup implements DiProcess {
 	}
 
 	private shouldWaitForDomContentLoaded(): boolean | undefined {
-		return window.ads?.context?.domWait;
+		return window.ads?.context?.domWait || utils.queryString.get('domWait') == '1';
 	}
 
 	private shouldWaitForDocumentLoaded(): boolean | undefined {
-		return window.ads?.context?.docWait;
+		return window.ads?.context?.docWait || utils.queryString.get('docWait') == '1';
 	}
 }
