@@ -98,7 +98,6 @@ export class Apstag {
 		}
 
 		try {
-			const tokenConfig: ApstagTokenConfig = { hashedRecords: [{ type: 'email', record }] };
 			await this.script;
 			const optOut =
 				!trackingOptIn.isOptedIn(consents?.gdprConsent) ||
@@ -110,12 +109,10 @@ export class Apstag {
 			const userConsentHasChanged =
 				this.storage.getItem('apstagHEMoptOut', true) &&
 				optOutString !== this.storage.getItem('apstagHEMoptOut', true);
+			const tokenConfig: ApstagTokenConfig = { hashedRecords: [{ type: 'email', record }], optOut };
 			if (userConsentHasChanged) {
 				utils.logger(logGroup, 'Updating user consents', tokenConfig, 'optOut', optOut);
-				window.apstag.upa({
-					...tokenConfig,
-					optOut,
-				});
+				window.apstag.upa(tokenConfig);
 			} else if (!amazonTokenCreated || amazonTokenExpired) {
 				utils.logger(logGroup, 'Sending HEM to apstag', tokenConfig, 'optOut', optOut);
 				window.apstag.rpa(tokenConfig);

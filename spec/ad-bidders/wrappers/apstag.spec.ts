@@ -1,5 +1,4 @@
 import { Apstag } from '@wikia/ad-bidders';
-
 import { CcpaSignalPayload, GdprConsentPayload } from '@wikia/communication';
 import { context, targetingService, usp } from '@wikia/core';
 import { scriptLoader } from '@wikia/core/utils';
@@ -162,7 +161,11 @@ describe('Apstag', () => {
 				.withArgs('wiki.opts.userEmailHashes')
 				.returns(['hash1', 'hash2', 'hash3'])
 				.withArgs('bidders.a9.hem.enabled')
-				.returns(true);
+				.returns(true)
+				.withArgs('options.trackingOptIn')
+				.returns(true)
+				.withArgs('options.optOutSale')
+				.returns(false);
 
 			// when
 			await apstag.init();
@@ -171,7 +174,10 @@ describe('Apstag', () => {
 			expect(apstagInitStub.calledOnce, 'apstag.init not called').to.be.true;
 			expect(apstagRpaStub.calledOnce, 'apstag.rpa not called once').to.be.true;
 			expect(
-				apstagRpaStub.calledWithExactly({ hashedRecords: [{ type: 'email', record: 'hash3' }] }),
+				apstagRpaStub.calledWithExactly({
+					hashedRecords: [{ type: 'email', record: 'hash3' }],
+					optOut: false,
+				}),
 				'apstag.rpa not called with expected args',
 			).to.be.true;
 		});
@@ -184,7 +190,11 @@ describe('Apstag', () => {
 				.withArgs('wiki.opts.userEmailHashes')
 				.returns(['hash1', 'hash2', 'hash3'])
 				.withArgs('bidders.a9.hem.enabled')
-				.returns(true);
+				.returns(true)
+				.withArgs('options.trackingOptIn')
+				.returns(true)
+				.withArgs('options.optOutSale')
+				.returns(false);
 
 			// when
 			await apstag.init();
@@ -193,7 +203,10 @@ describe('Apstag', () => {
 			expect(apstagInitStub.calledOnce, 'apstag.init not called').to.be.true;
 			expect(apstagRpaStub.calledOnce, 'apstag.rpa not called once').to.be.true;
 			expect(
-				apstagRpaStub.calledWithExactly({ hashedRecords: [{ type: 'email', record: 'hash3' }] }),
+				apstagRpaStub.calledWithExactly({
+					hashedRecords: [{ type: 'email', record: 'hash3' }],
+					optOut: false,
+				}),
 				'apstag.rpa not called with expected args',
 			).to.be.true;
 		});
@@ -261,6 +274,10 @@ describe('Apstag', () => {
 				.withArgs('bidders.a9.hem.enabled')
 				.returns(true)
 				.withArgs('bidders.a9.hem.cleanup')
+				.returns(false)
+				.withArgs('options.trackingOptIn')
+				.returns(true)
+				.withArgs('options.optOutSale')
 				.returns(false);
 			global.sandbox
 				.stub(apstag.storage, 'getItem')
@@ -276,7 +293,10 @@ describe('Apstag', () => {
 			// then
 			expect(apstagRpaStub.calledOnce, 'apstag.rpa not called once').to.be.true;
 			expect(
-				apstagRpaStub.calledWithExactly({ hashedRecords: [{ type: 'email', record: 'hash' }] }),
+				apstagRpaStub.calledWithExactly({
+					hashedRecords: [{ type: 'email', record: 'hash' }],
+					optOut: false,
+				}),
 				'apstag.rpa not called with expected args',
 			).to.be.true;
 		});
@@ -289,6 +309,10 @@ describe('Apstag', () => {
 				.withArgs('bidders.a9.hem.enabled')
 				.returns(true)
 				.withArgs('bidders.a9.hem.cleanup')
+				.returns(false)
+				.withArgs('options.trackingOptIn')
+				.returns(true)
+				.withArgs('options.optOutSale')
 				.returns(false);
 			global.sandbox
 				.stub(apstag.storage, 'getItem')
@@ -301,7 +325,10 @@ describe('Apstag', () => {
 			// then
 			expect(apstagRpaStub.calledOnce, 'apstag.rpa not called once').to.be.true;
 			expect(
-				apstagRpaStub.calledWithExactly({ hashedRecords: [{ type: 'email', record: 'hash' }] }),
+				apstagRpaStub.calledWithExactly({
+					hashedRecords: [{ type: 'email', record: 'hash' }],
+					optOut: false,
+				}),
 				'apstag.rpa not called with expected args',
 			).to.be.true;
 		});
