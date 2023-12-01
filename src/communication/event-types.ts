@@ -173,6 +173,15 @@ export const eventsRepository = {
 		payload: props<Dictionary>(),
 	},
 	// Integrated partners events //
+	IDENTITY_PARTNER_DATA_OBTAINED: {
+		name: 'Identity partner data obtained',
+		payload: payload<IdentityDataPayload>(),
+	},
+	PARTNER_LOAD_STATUS: {
+		name: 'Partner load status',
+		payload: props<{ status: string }>(),
+	},
+	// Integrated partners events //
 	ANYCLIP_READY: {
 		name: 'Anyclip ready',
 	},
@@ -209,19 +218,6 @@ export const eventsRepository = {
 	IDENTITY_ENGINE_READY: {
 		category: '[IdentityEngine]',
 		name: 'Identity ready',
-	},
-	IDENTITY_PARTNER_DATA_OBTAINED: {
-		name: 'Identity partner data obtained',
-		payload: payload<IdentityDataPayload>(),
-	},
-	INTENTIQ_PPID_NOT_SET_ON_TIME: {
-		name: 'IntentIQ PPID not set on time',
-	},
-	INTENTIQ_START: {
-		name: 'IntentIQ start',
-	},
-	INTENTIQ_DONE: {
-		name: 'IntentIQ done',
 	},
 	LIVE_CONNECT_STARTED: {
 		name: 'LiveConnect started',
