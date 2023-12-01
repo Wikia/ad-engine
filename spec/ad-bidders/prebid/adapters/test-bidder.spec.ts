@@ -46,6 +46,11 @@ describe('TestBidder bidder adapter', () => {
 						],
 					},
 				},
+				ortb2Imp: {
+					ext: {
+						gpid: '/5441/something/_PB/bottom_leaderboard',
+					},
+				},
 				bids: [
 					{
 						bidder: 'testBidder',
