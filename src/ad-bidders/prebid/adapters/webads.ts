@@ -24,6 +24,7 @@ export class WebAds extends PrebidAdapter {
 					sizes,
 				},
 			},
+			ortb2Imp: this.getOrtb2Imp(code),
 			bids: [
 				{
 					bidder: this.bidderName,
