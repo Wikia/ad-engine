@@ -36,6 +36,7 @@ export class Roundel extends PrebidAdapter {
 					playerSize: [640, 480],
 				},
 			},
+			ortb2Imp: this.getOrtb2Imp(code),
 			bids: [
 				{
 					bidder: this.bidderName,
@@ -69,6 +70,7 @@ export class Roundel extends PrebidAdapter {
 					sizes,
 				},
 			},
+			ortb2Imp: this.getOrtb2Imp(code),
 			bids: sizes.map((size) => ({
 				bidder: this.bidderName,
 				params: {
