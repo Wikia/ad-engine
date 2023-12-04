@@ -188,17 +188,12 @@ export const eventsRepository = {
 	ANYCLIP_LATE_INJECT: {
 		name: 'Anyclip late inject',
 	},
-	AUDIGENT_SEGMENT_LIBRARY_LOADED: {
-		name: 'Audigent segment library loaded',
+	SYSTEM1_STARTED: {
+		name: 'System1 started',
 	},
-	AUDIGENT_MATCHES_LIBRARY_LOADED: {
-		name: 'Audigent matches library loaded',
-	},
-	AUDIGENT_SEGMENTS_READY: {
-		name: 'Audigent segments ready',
-	},
-	CAPTIFY_LOADED: {
-		name: 'Captify loaded',
+	NO_NATIVE_PREBID_AD: {
+		name: 'No native prebid ad',
+		payload: props<{ slotName: string }>(),
 	},
 	CONNATIX_LATE_INJECT: {
 		name: 'Connatix late inject',
@@ -206,18 +201,9 @@ export const eventsRepository = {
 	CONNATIX_READY: {
 		name: 'Connatix ready',
 	},
-	EXPERIAN_STARTED: {
-		name: 'Experian started',
-	},
-	EYEOTA_STARTED: {
-		name: 'Eyeota started',
-	},
-	EYEOTA_FAILED: {
-		name: 'Eyeota loading failed',
-	},
-	IDENTITY_ENGINE_READY: {
-		category: '[IdentityEngine]',
-		name: 'Identity ready',
+	NO_NATIVO_AD: {
+		name: 'No nativo ad',
+		payload: props<{ slotName: string }>(),
 	},
 	LIVE_CONNECT_STARTED: {
 		name: 'LiveConnect started',
@@ -228,40 +214,11 @@ export const eventsRepository = {
 	LIVE_CONNECT_RESPONDED_UUID: {
 		name: 'LiveConnect responded with UUID',
 	},
-	NATIVO_LOADED: {
-		name: 'Nativo loaded',
-		payload: props<{ isLoaded: boolean }>(),
+	IDENTITY_ENGINE_READY: {
+		category: '[IdentityEngine]',
+		name: 'Identity ready',
 	},
-	NO_NATIVE_PREBID_AD: {
-		name: 'No native prebid ad',
-		payload: props<{ slotName: string }>(),
-	},
-	NO_NATIVO_AD: {
-		name: 'No nativo ad',
-		payload: props<{ slotName: string }>(),
-	},
-	SYSTEM1_STARTED: {
-		name: 'System1 started',
-	},
-	SYSTEM1_FAILED: {
-		name: 'System1 loading failed',
-	},
-	TIMESTAMP_EVENT: {
-		name: 'Timestamp event',
-		payload: props<{ eventName: string; timestamp: number }>(),
-	},
-	LOTAME_LOADED: {
-		name: 'Lotame loaded',
-	},
-	LOTAME_READY: {
-		name: 'Lotame ready',
-	},
-	ID5_START: {
-		name: 'Id5 start',
-	},
-	ID5_DONE: {
-		name: 'Id5 done',
-	},
+
 	// Platforms events //
 	BINGEBOT_AD_SLOT_INJECTED: {
 		category: '[BingeBot]',
