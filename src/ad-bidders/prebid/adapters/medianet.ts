@@ -36,6 +36,7 @@ export class Medianet extends PrebidAdapter {
 					playbackmethod: [2, 3],
 				},
 			},
+			ortb2Imp: this.getOrtb2Imp(code),
 			bids: [
 				{
 					bidder: this.bidderName,
@@ -65,6 +66,7 @@ export class Medianet extends PrebidAdapter {
 					sizes,
 				},
 			},
+			ortb2Imp: this.getOrtb2Imp(code),
 			bids: [
 				{
 					bidder: this.bidderName,
