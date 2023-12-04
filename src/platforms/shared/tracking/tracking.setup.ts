@@ -52,6 +52,7 @@ export class TrackingSetup {
 		this.ctaTracker();
 		this.identityTracker();
 		this.keyValsTracker();
+		this.googleTopicsTracker();
 		this.adSizeTracker.init();
 	}
 
@@ -199,6 +200,27 @@ export class TrackingSetup {
 				keyvals: JSON.stringify(keyVals),
 			},
 			trackingUrls.KEY_VALS,
+		);
+	}
+
+	private async googleTopicsTracker(): Promise<void> {
+		const topicsApiSupported =
+			'browsingTopics' in document &&
+			'featurePolicy' in document &&
+			// @ts-expect-error document.featurePolicy is not available in TS dom lib
+			document.featurePolicy.allowsFeature('browsing-topics');
+
+		if (!topicsApiSupported) {
+			return;
+		}
+
+		// @ts-expect-error Google Topics API is not available in TS dom lib
+		const topics: unknown[] = await document.browsingTopics({ skipObservation: true });
+		this.dwTracker.track(
+			{
+				topic: JSON.stringify(topics),
+			},
+			trackingUrls.TOPICS,
 		);
 	}
 }
