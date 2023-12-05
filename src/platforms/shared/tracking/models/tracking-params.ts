@@ -28,6 +28,7 @@ export interface TrackingParams {
 	partner_name?: string;
 	partner_identity_id?: string;
 	position?: string;
+	ppid?: string;
 	prop_name?: string;
 	prop_value?: string;
 	pv_number?: number;
