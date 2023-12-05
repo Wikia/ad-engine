@@ -31,4 +31,8 @@ body:not(.skybox-loaded) {
 	}
 }
 
+.mapped-incontent-ad-plus-billboard-bottom.page-spacing-rem {
+	margin-top: 4rem;
+}
+
 @include out-of-page-styles();
