@@ -14,6 +14,7 @@ import {
 	usp,
 	utils,
 } from '@ad-engine/core';
+import Cookies from 'js-cookie';
 import { A9Bid, A9BidConfig, A9CCPA, ApstagConfig, ApstagTokenConfig } from '../a9/types';
 
 const logGroup = 'a9-apstag';
@@ -176,6 +177,9 @@ export class Apstag {
 			this.storage.removeItem('apstagRecord');
 			this.storage.removeItem('apstagHEMsent');
 			this.storage.removeItem('apstagHEMoptOut');
+			Cookies.remove('AMZN-Token', {
+				path: '/',
+			});
 			return;
 		}
 
