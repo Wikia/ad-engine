@@ -1,4 +1,4 @@
-import { context, utils } from '@ad-engine/core';
+import { context } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
 
@@ -27,16 +27,6 @@ export class IndexExchange extends PrebidAdapter {
 		return this.getStandardConfig(code, { sizes, siteId });
 	}
 
-	private getGPIDValue(code: string): string {
-		return utils.stringBuilder.build(context.get('adUnitId'), {
-			slotConfig: {
-				adProduct: code,
-				group: 'PB',
-				slotNameSuffix: '',
-			},
-		});
-	}
-
 	private getVideoConfig(code, siteId): PrebidAdUnit {
 		return {
 			code,
@@ -47,11 +37,7 @@ export class IndexExchange extends PrebidAdapter {
 					plcmt: [2],
 				},
 			},
-			ortb2Imp: {
-				ext: {
-					gpid: this.getGPIDValue(code),
-				},
-			},
+			ortb2Imp: this.getOrtb2Imp(code),
 			bids: [
 				{
 					bidder: this.bidderName,
@@ -89,11 +75,7 @@ export class IndexExchange extends PrebidAdapter {
 					sizes,
 				},
 			},
-			ortb2Imp: {
-				ext: {
-					gpid: this.getGPIDValue(code),
-				},
-			},
+			ortb2Imp: this.getOrtb2Imp(code),
 			bids: this.getBids(sizes, siteId),
 		};
 	}

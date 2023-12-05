@@ -1,10 +1,20 @@
 import { Wikia } from '@wikia/ad-bidders/prebid/adapters/wikia';
+import { context } from '@wikia/core';
 import { assert, expect } from 'chai';
 import { stubPbjs } from '../../../core/services/pbjs.stub';
 
 describe('Wikia bidder adapter', () => {
 	beforeEach(() => {
 		stubPbjs(global.sandbox);
+	});
+
+	before(() => {
+		context.extend({
+			adUnitId: '/5441/something/_{custom.pageType}/{slotConfig.adProduct}',
+			custom: {
+				pageType: 'PB',
+			},
+		});
 	});
 
 	it('can be enabled only via query parameter', () => {
@@ -31,6 +41,11 @@ describe('Wikia bidder adapter', () => {
 				mediaTypes: {
 					banner: {
 						sizes: [[320, 50]],
+					},
+				},
+				ortb2Imp: {
+					ext: {
+						gpid: '/5441/something/_PB/mobile_top_leaderboard',
 					},
 				},
 				bids: [
