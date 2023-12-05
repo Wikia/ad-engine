@@ -115,6 +115,13 @@ export class A9Provider extends BidderProvider {
 				false,
 			);
 
+			communicationService.on(
+				eventsRepository.AD_ENGINE_CONSENT_READY,
+				(consents: GdprConsentPayload & CcpaSignalPayload) =>
+					this.apstag.sendHEM(this.apstag.getRecord(), consents),
+				false,
+			);
+
 			if (!trackingOptIn.isOptedIn() || trackingOptIn.isOptOutSale()) {
 				utils.logger(logGroup, 'A9 was initialized without consents');
 				communicationService.emit(eventsRepository.A9_WITHOUT_CONSENTS);
