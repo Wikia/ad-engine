@@ -21,7 +21,7 @@ export function getMagniteS2sContext(isDesktop: boolean): object {
 		'incontent-ad-plus-bottom': {
 			sizes: [[728, 90]],
 		},
-		'leader-top': {
+		leader_top: {
 			sizes: [[728, 90]],
 		},
 		'leader-inc': {
@@ -33,7 +33,7 @@ export function getMagniteS2sContext(isDesktop: boolean): object {
 		'leader-middle2': {
 			sizes: [[728, 90]],
 		},
-		'leader-plus-top': {
+		leader_plus_top: {
 			sizes: [
 				[728, 90],
 				[970, 250],
@@ -96,19 +96,19 @@ export function getMagniteS2sContext(isDesktop: boolean): object {
 		'incontent-leaderboard-bottom': {
 			sizes: [[728, 90]],
 		},
-		'mpu-plus-top': {
+		mpu_plus_top: {
 			sizes: [
 				[300, 250],
 				[300, 600],
 			],
 		},
-		'mpu-top': {
+		mpu_top: {
 			sizes: [[300, 250]],
 		},
-		'mpu-middle': {
+		mpu_middle: {
 			sizes: [[300, 250]],
 		},
-		'mpu-bottom': {
+		mpu_bottom: {
 			sizes: [[300, 250]],
 		},
 	};
