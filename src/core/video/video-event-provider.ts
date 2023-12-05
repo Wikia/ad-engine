@@ -1,17 +1,11 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { utils } from '../index';
 import { VideoData, VideoEventData } from '../listeners';
-import { AdSlot } from '../models';
-import { context, slotService, targetingService } from '../services';
+import { context, targetingService } from '../services';
 
 export class VideoEventProvider {
 	static getEventData(videoData: VideoData): VideoEventData {
 		const now: Date = new Date();
-		const slot: AdSlot = slotService.get(videoData.position);
-
-		if (!slot) {
-			throw new Error(`Slot ${videoData.position} is not registered.`);
-		}
 
 		return {
 			ad_error_code: videoData.ad_error_code,
@@ -25,9 +19,9 @@ export class VideoEventProvider {
 			event_name: videoData.event_name,
 			line_item_id: videoData.line_item_id || '',
 			player: videoData.player,
-			position: slot.getSlotName().toLowerCase(),
+			position: videoData.position || '',
 			pv_number: context.get('wiki.pvNumber'),
-			rv: slot.getTargetingProperty('rv') || '',
+			rv: targetingService.get('rv', videoData.position) || '',
 			skin: targetingService.get('skin') || '',
 			timestamp: now.getTime(),
 			tz_offset: now.getTimezoneOffset(),
