@@ -24,16 +24,16 @@ export function getMagniteS2sContext(isDesktop: boolean): object {
 		'incontent-leaderboard-bottom': {
 			sizes: [[728, 90]],
 		},
-		'mpu-plus-top': {
+		mpu_plus_top: {
 			sizes: [[300, 250]],
 		},
-		'mpu-top': {
+		mpu_top: {
 			sizes: [[300, 250]],
 		},
 		'mpu-middle': {
 			sizes: [[300, 250]],
 		},
-		'mpu-bottom': {
+		mpu_bottom: {
 			sizes: [[300, 250]],
 		},
 	};
