@@ -1,7 +1,17 @@
 import { YahooSsp } from '@wikia/ad-bidders/prebid/adapters';
+import { context } from '@wikia/core';
 import { expect } from 'chai';
 
 describe('YahooSsp bidder adapter', () => {
+	before(() => {
+		context.extend({
+			adUnitId: '/5441/something/_{custom.pageType}/{slotConfig.adProduct}',
+			custom: {
+				pageType: 'PB',
+			},
+		});
+	});
+
 	it('can be enabled', () => {
 		const yahooSsp = new YahooSsp({
 			enabled: true,
@@ -32,6 +42,11 @@ describe('YahooSsp bidder adapter', () => {
 							[300, 250],
 							[320, 50],
 						],
+					},
+				},
+				ortb2Imp: {
+					ext: {
+						gpid: '/5441/something/_PB/bottom_leaderboard',
 					},
 				},
 				bids: [

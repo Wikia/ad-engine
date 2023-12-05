@@ -3,6 +3,15 @@ import { context } from '@wikia/core';
 import { expect } from 'chai';
 
 describe('Medianet bidder adapter', () => {
+	before(() => {
+		context.extend({
+			adUnitId: '/5441/something/_{custom.pageType}/{slotConfig.adProduct}',
+			custom: {
+				pageType: 'PB',
+			},
+		});
+	});
+
 	it('can be enabled', () => {
 		const medianet = new Medianet({
 			enabled: true,
@@ -35,6 +44,11 @@ describe('Medianet bidder adapter', () => {
 							[300, 250],
 							[320, 50],
 						],
+					},
+				},
+				ortb2Imp: {
+					ext: {
+						gpid: '/5441/something/_PB/bottom_leaderboard',
 					},
 				},
 				bids: [
@@ -75,6 +89,11 @@ describe('Medianet bidder adapter', () => {
 						maxduration: 30,
 						protocols: [2, 3, 5, 6],
 						playbackmethod: [2, 3],
+					},
+				},
+				ortb2Imp: {
+					ext: {
+						gpid: '/5441/something/_PB/featured',
 					},
 				},
 				bids: [

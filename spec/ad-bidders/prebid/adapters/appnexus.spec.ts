@@ -73,7 +73,12 @@ describe('Appnexus bidder adapter', () => {
 			.withArgs('bidders.prebid.native.enabled')
 			.returns(true)
 			.withArgs('bidders.prebid.appnexusNative.enabled')
-			.returns(true);
+			.returns(true)
+			.withArgs('adUnitId')
+			.returns('/5441/something/_{custom.pageType}/{slotConfig.adProduct}')
+			.withArgs('custom.pageType')
+			.returns('PB');
+
 		const appnexus = new Appnexus({
 			enabled: true,
 			slots: {
