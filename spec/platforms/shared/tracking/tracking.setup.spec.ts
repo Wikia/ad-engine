@@ -49,6 +49,8 @@ describe('TrackingSetup', () => {
 
 	it('should track Google Topics API when it is available', (done) => {
 		// given
+		targetingService.clear();
+		targetingService.set('ppid', 'ppid');
 		// @ts-expect-error Feature Policy API is not available in TS
 		global.window.document.featurePolicy = {
 			allowsFeature: (feature: string) => feature === 'browsing-topics',
@@ -68,10 +70,11 @@ describe('TrackingSetup', () => {
 
 		// then
 		setTimeout(() => {
+			targetingService.clear();
 			expect(
 				trackSpy
 					.getCall(trackSpy.callCount - 1)
-					.calledWithExactly({ topic: '["topic1","topic2"]' }, trackingUrls.TOPICS),
+					.calledWithExactly({ ppid: 'ppid', topic: '["topic1","topic2"]' }, trackingUrls.TOPICS),
 			).to.be.true;
 			done();
 		});

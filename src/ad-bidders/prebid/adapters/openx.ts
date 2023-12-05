@@ -34,6 +34,7 @@ export class Openx extends PrebidAdapter {
 					mimes: ['video/mp4', 'video/x-flv'],
 				},
 			},
+			ortb2Imp: this.getOrtb2Imp(code),
 			bids: [
 				{
 					bidder: this.bidderName,
@@ -54,6 +55,7 @@ export class Openx extends PrebidAdapter {
 					sizes,
 				},
 			},
+			ortb2Imp: this.getOrtb2Imp(code),
 			bids: [
 				{
 					bidder: this.bidderName,

@@ -37,6 +37,7 @@ export class MagniteS2s extends PrebidAdapter {
 		return {
 			code,
 			mediaTypes,
+			ortb2Imp: this.getOrtb2Imp(code),
 			bids: [
 				{
 					bidder: this.bidderName,

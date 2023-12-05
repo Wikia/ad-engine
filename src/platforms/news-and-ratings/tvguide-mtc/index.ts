@@ -1,11 +1,8 @@
 import { Container } from '@wikia/dependency-injection';
-import { TvGuideMTCContextSetup } from './setup/wiki-context.setup';
 import './styles.scss';
+import { TvGuideMTCPlatform } from './tvguide-mtc-platform';
 
-window.RLQ = window.RLQ || [];
-window.RLQ.push(async () => {
-	const container = new Container();
-	const platform = container.get(TvGuideMTCContextSetup);
+const container = new Container();
+const platform = container.get(TvGuideMTCPlatform);
 
-	platform.execute();
-});
+platform.execute();
