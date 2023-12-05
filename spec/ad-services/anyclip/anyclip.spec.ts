@@ -1,20 +1,13 @@
 import { Anyclip } from '@wikia/ad-services';
-import { EventOptions, eventsRepository } from '@wikia/communication';
+import { EventOptions } from '@wikia/communication';
 import {
 	communicationService,
 	CommunicationService,
 } from '@wikia/communication/communication-service';
-import {
-	AdSlot,
-	context,
-	slotService,
-	targetingService,
-	TargetingService,
-	utils,
-} from '@wikia/core';
+import { context, targetingService, TargetingService, utils } from '@wikia/core';
 import { WaitFor } from '@wikia/core/utils';
 import { expect } from 'chai';
-import sinon, { SinonStubbedInstance } from 'sinon';
+import { SinonStubbedInstance } from 'sinon';
 
 describe('Anyclip', () => {
 	let anyclip: Anyclip;
@@ -44,7 +37,6 @@ describe('Anyclip', () => {
 			},
 		);
 		targetingServiceStub = global.sandbox.stub(targetingService);
-		slotService.add(new AdSlot({ id: 'incontent_player' }));
 	});
 
 	afterEach(() => {
@@ -93,21 +85,6 @@ describe('Anyclip', () => {
 
 		anyclip.call();
 		expect(mockedIsApplicable.called).to.equal(false);
-	});
-
-	it('tracks "eligible" event', () => {
-		context.set('services.anyclip.loadWithoutAnchor', false);
-		context.set('custom.hasIncontentPlayer', true);
-		context.set('services.anyclip.playerElementId', 'incontent_player');
-
-		anyclip.call();
-
-		expect(
-			communicationServiceStub.emit.calledWithMatch(
-				eventsRepository.VIDEO_PLAYER_TRACKING,
-				sinon.match({ eventInfo: sinon.match({ event_name: 'eligible' }) }),
-			),
-		).to.equal(true);
 	});
 
 	it('sets up the Anyclip params based on the context', () => {

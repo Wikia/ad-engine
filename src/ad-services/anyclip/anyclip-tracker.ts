@@ -7,7 +7,6 @@ export class AnyclipTracker implements VideoTracker {
 
 	private trackingEvents = {
 		init: 'init',
-		eligible: 'eligible',
 		WidgetLoad: 'ready',
 		adImpression: 'impression',
 		adSkipped: 'skipped',
@@ -43,11 +42,6 @@ export class AnyclipTracker implements VideoTracker {
 
 	trackInit() {
 		const eventName = 'init';
-		this.track(eventName, VideoEventProvider.getEventData(this.getVideoData(eventName)));
-	}
-
-	trackEligible() {
-		const eventName = 'eligible';
 		this.track(eventName, VideoEventProvider.getEventData(this.getVideoData(eventName)));
 	}
 

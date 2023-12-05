@@ -1,4 +1,4 @@
-import { Aliases, context, Dictionary, targetingService } from '@ad-engine/core';
+import { Aliases, context, Dictionary, targetingService, utils } from '@ad-engine/core';
 import { PrebidAdapterConfig, PrebidAdSlotConfig, PrebidVideoPlacements } from './prebid-models';
 
 interface BidderSettings {
@@ -75,5 +75,23 @@ export abstract class PrebidAdapter {
 			pos: [placementName],
 			...customTargeting,
 		};
+	}
+
+	protected getOrtb2Imp(code: string) {
+		return {
+			ext: {
+				gpid: this.getGPIDValue(code),
+			},
+		};
+	}
+
+	private getGPIDValue(code: string): string {
+		return utils.stringBuilder.build(context.get('adUnitId'), {
+			slotConfig: {
+				adProduct: code,
+				group: 'PB',
+				slotNameSuffix: '',
+			},
+		});
 	}
 }

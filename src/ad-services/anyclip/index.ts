@@ -151,8 +151,6 @@ export class Anyclip extends BaseServiceSetup {
 	}
 
 	private loadOnUapStatus({ isLoaded, adProduct }: UapLoadStatus) {
-		this.tracker.trackEligible();
-
 		if (!isLoaded && adProduct !== 'ruap') {
 			if (!context.get('services.anyclip.latePageInject')) {
 				utils.logger(logGroup, 'No need to wait for ANYCLIP_LATE_INJECT');

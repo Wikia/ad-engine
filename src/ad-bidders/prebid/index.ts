@@ -15,7 +15,11 @@ import {
 	tcf,
 	utils,
 } from '@ad-engine/core';
-import { getSlotAliasOrName, getSlotNameByBidderAlias } from '../alias-helper';
+import {
+	defaultSlotBidGroup,
+	getSlotAliasOrName,
+	getSlotNameByBidderAlias,
+} from '../bidder-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
 import { id5 } from './id5';
@@ -102,11 +106,15 @@ export class PrebidProvider extends BidderProvider {
 	prebidConfig: Dictionary;
 	tcf: Tcf = tcf;
 
-	constructor(public bidderConfig: PrebidConfig, public timeout = DEFAULT_MAX_DELAY) {
+	constructor(
+		public bidderConfig: PrebidConfig,
+		public timeout = DEFAULT_MAX_DELAY,
+		private bidGroup: string = defaultSlotBidGroup,
+	) {
 		super('prebid', bidderConfig, timeout);
 		adaptersRegistry.configureAdapters();
 
-		this.adUnits = adaptersRegistry.setupAdUnits();
+		this.adUnits = adaptersRegistry.setupAdUnits(this.bidGroup);
 		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
 
 		this.prebidConfig = {
@@ -243,12 +251,12 @@ export class PrebidProvider extends BidderProvider {
 
 		this.prebidConfig.userSync.userIds.push(id5Config);
 
+		const pbjs: Pbjs = await pbjsFactory.init();
 		if (id5Config.params.abTesting.enabled) {
-			const pbjs: Pbjs = await pbjsFactory.init();
-			await id5.setupAbTesting(pbjs);
+			id5.trackControlGroup(pbjs);
 		}
 
-		this.enableId5Analytics();
+		id5.enableAnalytics(pbjs);
 		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
 			status: 'id5_done',
 		});
@@ -280,21 +288,6 @@ export class PrebidProvider extends BidderProvider {
 				},
 			},
 		});
-	}
-
-	private enableId5Analytics(): void {
-		if (context.get('bidders.prebid.id5Analytics.enabled')) {
-			utils.logger(logGroup, 'enabling ID5 Analytics');
-
-			(window as any).pbjs.que.push(() => {
-				(window as any).pbjs.enableAnalytics({
-					provider: 'id5Analytics',
-					options: {
-						partnerId: id5.getPartnerId(),
-					},
-				});
-			});
-		}
 	}
 
 	private enableATSAnalytics(): void {
@@ -390,7 +383,7 @@ export class PrebidProvider extends BidderProvider {
 		if (adUnits.length) {
 			this.adUnits = adUnits;
 		} else if (!this.adUnits) {
-			this.adUnits = adaptersRegistry.setupAdUnits();
+			this.adUnits = adaptersRegistry.setupAdUnits(this.bidGroup);
 		}
 	}
 
@@ -408,7 +401,7 @@ export class PrebidProvider extends BidderProvider {
 
 	protected callBids(bidsBackHandler: (...args: any[]) => void): void {
 		if (!this.adUnits) {
-			this.adUnits = adaptersRegistry.setupAdUnits();
+			this.adUnits = adaptersRegistry.setupAdUnits(this.bidGroup);
 		}
 
 		if (this.adUnits.length === 0) {

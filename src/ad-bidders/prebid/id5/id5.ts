@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { context, targetingService, UniversalStorage, utils } from '@ad-engine/core';
+import { context, targetingService, utils } from '@ad-engine/core';
 import { UserIdConfig } from '../index';
 
 interface Id5Config extends UserIdConfig {
@@ -16,12 +16,7 @@ const logGroup = 'Id5';
 
 class Id5 {
 	private partnerId = 1139;
-	private storage;
 	private id5GroupKey = 'id5_group';
-
-	constructor() {
-		this.storage = new UniversalStorage();
-	}
 
 	private isEnabled(): boolean {
 		return (
@@ -75,51 +70,45 @@ class Id5 {
 		return this.partnerId;
 	}
 
-	async setupAbTesting(pbjs: Pbjs): Promise<void> {
-		const controlGroup =
-			this.getControlGroupFromStorage() || (await this.getControlGroupFromPbjsObject(pbjs));
+	async trackControlGroup(pbjs: Pbjs): Promise<void> {
+		const controlGroup = await this.getControlGroup(pbjs);
 
 		utils.logger(logGroup, 'Control group', controlGroup);
 
 		this.setTargeting(this.id5GroupKey, controlGroup);
-
-		if (controlGroup && controlGroup !== 'U') {
-			this.saveInStorage(this.id5GroupKey, controlGroup);
-		}
 	}
 
-	private getControlGroupFromStorage(): id5GroupValue {
-		const storageValue = this.storage.getItem(this.id5GroupKey);
+	public async getControlGroup(pbjs: Pbjs): Promise<id5GroupValue> {
+		await new utils.WaitFor(
+			() => pbjs.getUserIds()?.id5id?.ext?.abTestingControlGroup !== undefined,
+			10,
+			20,
+		).until();
+		const isUserInControlGroup = pbjs.getUserIds()?.id5id?.ext?.abTestingControlGroup;
 
-		if (storageValue !== null) {
-			return storageValue;
-		}
-	}
-
-	private async getControlGroupFromPbjsObject(pbjs: Pbjs): Promise<id5GroupValue> {
-		await new utils.WaitFor(() => pbjs.getUserIds()?.id5id?.ext !== undefined, 10, 20).until();
-
-		const controlGroup = pbjs.getUserIds()?.id5id?.ext?.abTestingControlGroup;
-
-		if (controlGroup === undefined) {
+		if (isUserInControlGroup === undefined) {
 			return 'U';
 		}
 
-		return controlGroup === true ? 'A' : 'B';
-	}
-
-	private saveInStorage(key: string, value: string) {
-		if (this.storage.getItem(key) !== null) {
-			return;
-		}
-
-		this.storage.setItem(this.id5GroupKey, value);
-		utils.logger(logGroup, key, 'saved in storage', value);
+		return isUserInControlGroup === true ? 'B' : 'A';
 	}
 
 	private setTargeting(key: string, value: string): void {
 		targetingService.set(key, value);
 		utils.logger(logGroup, 'set targeting', key, value);
+	}
+
+	public enableAnalytics(pbjs: Pbjs): void {
+		if (context.get('bidders.prebid.id5Analytics.enabled')) {
+			utils.logger(logGroup, 'enabling ID5 Analytics');
+
+			pbjs.enableAnalytics({
+				provider: 'id5Analytics',
+				options: {
+					partnerId: this.partnerId,
+				},
+			});
+		}
 	}
 }
 

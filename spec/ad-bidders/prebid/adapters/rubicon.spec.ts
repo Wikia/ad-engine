@@ -1,5 +1,5 @@
 import { Rubicon } from '@wikia/ad-bidders/prebid/adapters/rubicon';
-import { TargetingService, targetingService } from '@wikia/core';
+import { context, TargetingService, targetingService } from '@wikia/core';
 import { expect } from 'chai';
 import { SinonStubbedInstance } from 'sinon';
 
@@ -8,6 +8,15 @@ describe('Rubicon bidder adapter', () => {
 
 	beforeEach(() => {
 		targetingServiceStub = global.sandbox.stub(targetingService);
+	});
+
+	before(() => {
+		context.extend({
+			adUnitId: '/5441/something/_{custom.pageType}/{slotConfig.adProduct}',
+			custom: {
+				pageType: 'PB',
+			},
+		});
 	});
 
 	it('can be enabled', () => {
@@ -49,6 +58,11 @@ describe('Rubicon bidder adapter', () => {
 						mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
 						maxduration: 30,
 						protocols: [2, 3, 5, 6],
+					},
+				},
+				ortb2Imp: {
+					ext: {
+						gpid: '/5441/something/_PB/mobile_in_content',
 					},
 				},
 				bids: [
@@ -112,6 +126,11 @@ describe('Rubicon bidder adapter', () => {
 						mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
 						maxduration: 30,
 						protocols: [2, 3, 5, 6],
+					},
+				},
+				ortb2Imp: {
+					ext: {
+						gpid: '/5441/something/_PB/mobile_in_content',
 					},
 				},
 				bids: [
@@ -175,6 +194,11 @@ describe('Rubicon bidder adapter', () => {
 						mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
 						maxduration: 30,
 						protocols: [2, 3, 5, 6],
+					},
+				},
+				ortb2Imp: {
+					ext: {
+						gpid: '/5441/something/_PB/mobile_in_content',
 					},
 				},
 				bids: [
