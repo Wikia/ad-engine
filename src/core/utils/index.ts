@@ -3,6 +3,7 @@ export * from './asset-loader';
 export * from './client';
 export * from './decorate';
 export * from './dimensions';
+export * from './display-and-video-ads-sync-context';
 export * from './document';
 export * from './fetch-timeout';
 export * from './flow-control';
