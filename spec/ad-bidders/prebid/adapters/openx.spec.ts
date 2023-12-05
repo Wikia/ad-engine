@@ -3,6 +3,15 @@ import { context } from '@wikia/core';
 import { expect } from 'chai';
 
 describe('Openx bidder adapter', () => {
+	before(() => {
+		context.extend({
+			adUnitId: '/5441/something/_{custom.pageType}/{slotConfig.adProduct}',
+			custom: {
+				pageType: 'PB',
+			},
+		});
+	});
+
 	it('can be enabled', () => {
 		const openx = new Openx({
 			enabled: true,
@@ -35,6 +44,11 @@ describe('Openx bidder adapter', () => {
 							[300, 250],
 							[320, 480],
 						],
+					},
+				},
+				ortb2Imp: {
+					ext: {
+						gpid: '/5441/something/_PB/mobile_in_content',
 					},
 				},
 				bids: [
@@ -70,6 +84,11 @@ describe('Openx bidder adapter', () => {
 						context: 'instream',
 						mimes: ['video/mp4', 'video/x-flv'],
 						playerSize: [640, 480],
+					},
+				},
+				ortb2Imp: {
+					ext: {
+						gpid: '/5441/something/_PB/featured',
 					},
 				},
 				bids: [
