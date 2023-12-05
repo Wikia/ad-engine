@@ -117,8 +117,12 @@ export class A9Provider extends BidderProvider {
 
 			communicationService.on(
 				eventsRepository.AD_ENGINE_CONSENT_READY,
-				(consents: GdprConsentPayload & CcpaSignalPayload) =>
-					this.apstag.sendHEM(this.apstag.getRecord(), consents),
+				(consents: GdprConsentPayload & CcpaSignalPayload) => {
+					const record = this.apstag.getRecord();
+					if (record) {
+						this.apstag.sendHEM(record, consents);
+					}
+				},
 				false,
 			);
 
