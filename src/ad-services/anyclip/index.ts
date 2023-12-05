@@ -67,6 +67,7 @@ export class Anyclip extends BaseServiceSetup {
 		}
 
 		utils.logger(logGroup, 'initialized', this.pubname, this.widgetname, this.libraryUrl);
+		communicationService.emit(eventsRepository.ANYCLIP_START);
 
 		this.tracker = new AnyclipTracker(SUBSCRIBE_FUNC_NAME);
 		this.bidRefresher = new AnyclipBidsRefresher(SUBSCRIBE_FUNC_NAME);

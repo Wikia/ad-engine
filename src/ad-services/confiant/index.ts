@@ -1,3 +1,4 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { BaseServiceSetup, context, slotService, utils } from '@ad-engine/core';
 
 const logGroup = 'confiant';
@@ -34,6 +35,10 @@ export class Confiant extends BaseServiceSetup {
 			return Promise.resolve();
 		}
 
+		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+			status: 'confiant_start',
+		});
+
 		this.overwritePropertyIdIfPresent();
 
 		utils.logger(logGroup, 'loading');
@@ -43,6 +48,9 @@ export class Confiant extends BaseServiceSetup {
 
 		return this.loadScript().then(() => {
 			utils.logger(logGroup, 'ready');
+			communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+				status: 'confiant_done',
+			});
 		});
 	}
 

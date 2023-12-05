@@ -1,3 +1,4 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { BaseServiceSetup, context, utils } from '@ad-engine/core';
 import Cookies from 'js-cookie';
 
@@ -17,6 +18,9 @@ export class Ats extends BaseServiceSetup {
 		}
 
 		utils.logger(logGroup, 'enabled');
+		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+			status: 'ats_start',
+		});
 
 		if (this.isLoaded) {
 			utils.logger(logGroup, 'not loaded');
@@ -48,6 +52,9 @@ export class Ats extends BaseServiceSetup {
 			utils.logger(logGroup, 'additional data set');
 
 			this.isLoaded = true;
+			communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+				status: 'ats_done',
+			});
 		});
 	}
 }

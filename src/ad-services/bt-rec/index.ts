@@ -1,3 +1,4 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { context, utils } from '@ad-engine/core';
 import { trackBab } from '../../platforms/shared';
 
@@ -18,12 +19,19 @@ class BTRec {
 			return Promise.resolve();
 		}
 
+		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+			status: 'bt_rec_start',
+		});
+
 		this.btDetectionEvents();
 		this.insertSideUnits();
 
 		utils.logger(logGroup, 'loading');
 		await this.loadScript().then(() => {
 			utils.logger(logGroup, 'ready');
+			communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+				status: 'bt_rec_done',
+			});
 		});
 	}
 

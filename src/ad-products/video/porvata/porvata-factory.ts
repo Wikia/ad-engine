@@ -1,3 +1,4 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { AdSlot, AdSlotStatus, slotService, utils } from '@ad-engine/core';
 import { GoogleImaWrapper } from './google-ima-wrapper';
 import { iasVideoTracker } from './plugins/ias/ias-video-tracker';
@@ -30,6 +31,9 @@ export class PorvataFactory {
 	private static loadSdkPromise: Promise<Event | void>;
 
 	static async create(settings: PorvataSettings): Promise<PorvataPlayer> {
+		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+			status: 'porvata_start',
+		});
 		settings.getPlayerContainer().style.opacity = '0';
 
 		await PorvataFactory.load();
@@ -52,7 +56,15 @@ export class PorvataFactory {
 
 		this.registerAdsLoaderListeners(adsLoader, player, settings, plugins);
 
+		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+			status: 'porvata_ready',
+		});
+
 		await player.requestAds();
+
+		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+			status: 'porvata_done',
+		});
 
 		return player;
 	}

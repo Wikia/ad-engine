@@ -185,6 +185,9 @@ export const eventsRepository = {
 	ANYCLIP_READY: {
 		name: 'Anyclip ready',
 	},
+	ANYCLIP_START: {
+		name: 'Anyclip start',
+	},
 	ANYCLIP_LATE_INJECT: {
 		name: 'Anyclip late inject',
 	},
