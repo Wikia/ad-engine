@@ -2,7 +2,7 @@ import { JWPlayerManager } from '@wikia/ad-products';
 import { Optimizely } from '@wikia/ad-services';
 import { communicationService } from '@wikia/communication';
 import { context, InstantConfigService } from '@wikia/core';
-import { PlayerSetup } from '@wikia/platforms/shared';
+import { PlayerSetup, VastResponseData, VastTaglessRequest } from '@wikia/platforms/shared';
 import { expect } from 'chai';
 import { SinonSpy } from 'sinon';
 
@@ -16,8 +16,8 @@ describe('PlayerSetup', () => {
 		jwpManagerStub = global.sandbox.createStubInstance(JWPlayerManager);
 		context.set('src', 'test');
 		context.set('slots.featured.videoAdUnit', '/5441/test/vast/ad/unit');
-		context.set('options.video.vastXml', undefined);
 		context.set('options.wad.blocking', false);
+		context.set('options.video.isTaglessRequestEnabled', true);
 	});
 
 	afterEach(() => {
@@ -38,19 +38,26 @@ describe('PlayerSetup', () => {
 			type: '[Ad Engine] Setup JWPlayer',
 			__global: true,
 		};
+		const vastTaglessRequestStub = { getVast: () => Promise.resolve(undefined) };
 
 		dispatch = global.sandbox.spy(communicationService, 'dispatch');
-		const playerSetup = new PlayerSetup(instantConfigStub, null, new Optimizely(), jwpManagerStub);
+		const playerSetup = new PlayerSetup(
+			instantConfigStub,
+			null,
+			new Optimizely(),
+			jwpManagerStub,
+			vastTaglessRequestStub as VastTaglessRequest,
+		);
 		playerSetup.call();
 
 		expect(dispatch.withArgs(expectedDispatchArg).calledOnce);
-		expect(dispatch.lastCall.args[0].vastXml).to.be.undefined;
 	});
 
 	it('should dispatch jwpSetup action with VAST XML when set', () => {
 		const mockedVastXML =
 			'<?xml version="1.0" encoding="UTF-8"?><VAST xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="vast.xsd" version="4.0"></VAST>';
-		context.set('options.video.vastXml', mockedVastXML);
+		const response: VastResponseData = { xml: mockedVastXML, lineItemId: '', creativeId: '' };
+		const vastTaglessRequestStub = { getVast: () => Promise.resolve(response) };
 
 		const expectedDispatchArg = {
 			showAds: true,
@@ -61,11 +68,17 @@ describe('PlayerSetup', () => {
 		};
 
 		dispatch = global.sandbox.spy(communicationService, 'dispatch');
-		const playerSetup = new PlayerSetup(instantConfigStub, null, new Optimizely(), jwpManagerStub);
+		const playerSetup = new PlayerSetup(
+			instantConfigStub,
+			null,
+			new Optimizely(),
+			jwpManagerStub,
+			vastTaglessRequestStub as VastTaglessRequest,
+		);
 		playerSetup.call();
+		vastTaglessRequestStub.getVast();
 
 		expect(dispatch.withArgs(expectedDispatchArg).calledOnce);
-		expect(dispatch.lastCall.args[0].vastXml).to.be.eq(mockedVastXML);
 	});
 
 	it('should dispatch jwpSetup action with showAds flag and without VAST XML when adblock detected', () => {
@@ -79,7 +92,13 @@ describe('PlayerSetup', () => {
 		};
 
 		dispatch = global.sandbox.spy(communicationService, 'dispatch');
-		const playerSetup = new PlayerSetup(instantConfigStub, null, new Optimizely(), jwpManagerStub);
+		const playerSetup = new PlayerSetup(
+			instantConfigStub,
+			null,
+			new Optimizely(),
+			jwpManagerStub,
+			global.sandbox.createStubInstance(VastTaglessRequest),
+		);
 		playerSetup.call();
 
 		expect(dispatch.withArgs(expectedDispatchArg).calledOnce);

@@ -106,7 +106,7 @@ export class BaseContextSetup implements DiProcess {
 		context.set('options.video.syncWithDisplay', this.instantConfig.get('icUAPJWPlayer'));
 		context.set(
 			'options.video.isTaglessRequestEnabled',
-			this.instantConfig.get('icTaglessRequestEnabled'),
+			this.instantConfig.get('icDisplayAndVideoAdsSyncEnabled'),
 		);
 		context.set(
 			'options.video.uapJWPLineItemIds',
