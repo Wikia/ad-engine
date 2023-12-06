@@ -1,4 +1,3 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { context, utils } from '@ad-engine/core';
 import { trackBab } from '../../platforms/shared';
 
@@ -16,20 +15,12 @@ class BTForce {
 			utils.logger(logGroup, 'disabled');
 			return Promise.resolve();
 		}
-		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
-			status: 'bt_force_start',
-		});
 
 		this.btDetectionEvents();
 		this.insertSideUnits();
 
 		utils.logger(logGroup, 'loading');
-		await this.loadScript().then(() => {
-			utils.logger(logGroup, 'ready');
-			communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
-				status: 'bt_force_done',
-			});
-		});
+		await this.loadScript();
 	}
 
 	btDetectionEvents() {
@@ -68,7 +59,12 @@ class BTForce {
 	 */
 	private loadScript(): Promise<Event> {
 		const btLibraryUrl = 'https://btloader.com/tag?o=5199505043488768&upapi=true';
-		return utils.scriptLoader.loadScript(btLibraryUrl, true, 'first');
+		return utils.timedPartnerScriptLoader.loadScriptWithStatus(
+			btLibraryUrl,
+			logGroup,
+			true,
+			'first',
+		);
 	}
 
 	private insertSideUnits(): void {

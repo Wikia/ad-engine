@@ -17,15 +17,8 @@ export class BrandMetrics extends BaseServiceSetup {
 		const libraryUrl = `//cdn.brandmetrics.com/tag/9097a5369e204e6eac53b45c7dde13c5/fandom.com_au.js`;
 		utils.logger(logGroup, 'loading', libraryUrl);
 
-		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
-			status: 'brand_metrics_start',
-		});
-
-		utils.scriptLoader.loadScript(libraryUrl).then(() => {
+		utils.timedPartnerScriptLoader.loadScriptWithStatus(libraryUrl, logGroup).then(() => {
 			utils.logger(logGroup, 'ready');
-			communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
-				status: 'brand_metrics_done',
-			});
 		});
 	}
 }

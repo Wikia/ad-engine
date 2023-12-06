@@ -25,6 +25,7 @@ export * from './service-base-url';
 export * from './string-builder';
 export * from './tagless-request-url-builder';
 export * from './targeting';
+export * from './timed-partner-script-loader';
 export * from './try-property';
 export * from './uuid';
 export * from './viewport-observer';

@@ -1,4 +1,3 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { BaseServiceSetup, context, slotService, utils } from '@ad-engine/core';
 
 const logGroup = 'confiant';
@@ -35,10 +34,6 @@ export class Confiant extends BaseServiceSetup {
 			return Promise.resolve();
 		}
 
-		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
-			status: 'confiant_start',
-		});
-
 		this.overwritePropertyIdIfPresent();
 
 		utils.logger(logGroup, 'loading');
@@ -48,9 +43,6 @@ export class Confiant extends BaseServiceSetup {
 
 		return this.loadScript().then(() => {
 			utils.logger(logGroup, 'ready');
-			communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
-				status: 'confiant_done',
-			});
 		});
 	}
 
@@ -63,6 +55,11 @@ export class Confiant extends BaseServiceSetup {
 	private loadScript(): Promise<Event> {
 		const confiantLibraryUrl = `//${this.scriptDomain}/${this.propertyId}/gpt_and_prebid/config.js`;
 
-		return utils.scriptLoader.loadScript(confiantLibraryUrl, true, 'first');
+		return utils.timedPartnerScriptLoader.loadScriptWithStatus(
+			confiantLibraryUrl,
+			logGroup,
+			true,
+			'first',
+		);
 	}
 }
