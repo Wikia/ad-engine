@@ -172,15 +172,19 @@ export class Apstag {
 		window.apstag.init(apsConfig);
 
 		if (context.get('bidders.a9.hem.cleanup')) {
-			utils.logger(logGroup, 'Cleaning Amazon Token...');
-			window.apstag.dpa();
-			this.storage.removeItem('apstagRecord');
-			this.storage.removeItem('apstagHEMsent');
-			this.storage.removeItem('apstagHEMoptOut');
-			Cookies.remove('AMZN-Token', {
-				path: '/',
-			});
-			return;
+			if (Cookies.get('AMZN-Token') || this.storage.getItem('apstagRecord')) {
+				utils.logger(logGroup, 'Cleaning Amazon Token...');
+				window.apstag.dpa();
+				this.storage.removeItem('apstagRecord');
+				this.storage.removeItem('apstagHEMsent');
+				this.storage.removeItem('apstagHEMoptOut');
+				Cookies.remove('AMZN-Token', {
+					path: '/',
+				});
+				return;
+			} else {
+				utils.logger(logGroup, 'Amazon Token already cleaned');
+			}
 		}
 
 		// Check if consent has not been changed between page views.
