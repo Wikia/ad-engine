@@ -17,6 +17,7 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 		'incontent_boxad_1',
 		'bottom_leaderboard',
 		'gallery_leaderboard',
+		'fandom_dt_galleries',
 	];
 
 	constructor(@Inject(TEMPLATE.PARAMS) private params: UapParams) {}
