@@ -70,9 +70,13 @@ export class LoadTimesTracker {
 			}
 		});
 
-		communicationService.on(eventsRepository.PARTNER_LOAD_STATUS, ({ status }) => {
-			this.trackLoadTime(status, Date.now());
-		});
+		communicationService.on(
+			eventsRepository.PARTNER_LOAD_STATUS,
+			({ status }) => {
+				this.trackLoadTime(status, Date.now());
+			},
+			false,
+		);
 	}
 
 	private trackLoadTime(eventName: string, timestamp: number): void {
