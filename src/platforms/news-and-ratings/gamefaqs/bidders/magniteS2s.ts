@@ -30,12 +30,6 @@ export function getMagniteS2sContext(isDesktop: boolean): object {
 		'nav-ad-plus': {
 			sizes: [[728, 90]],
 		},
-		'skybox-nav': {
-			sizes: [
-				[728, 90],
-				[970, 250],
-			],
-		},
 	};
 
 	const mobileSlots = {
@@ -100,15 +94,6 @@ export function getMagniteS2sContext(isDesktop: boolean): object {
 			sizes: [
 				[300, 250],
 				[320, 50],
-			],
-		},
-		'incontent-ad-plus': {
-			sizes: [[728, 90]],
-		},
-		'mobile-skybox-nav': {
-			sizes: [
-				[320, 50],
-				[320, 100],
 			],
 		},
 	};
