@@ -12,12 +12,6 @@ export function getMagniteS2sContext(isDesktop: boolean): object {
 				[970, 250],
 			],
 		},
-		'skybox-nav': {
-			sizes: [
-				[728, 90],
-				[970, 250],
-			],
-		},
 		leader_top: {
 			sizes: [[728, 90]],
 		},
@@ -39,12 +33,6 @@ export function getMagniteS2sContext(isDesktop: boolean): object {
 	};
 
 	const mobileSlots = {
-		'mobile-skybox-nav': {
-			sizes: [
-				[320, 50],
-				[320, 100],
-			],
-		},
 		'mobile-native': {
 			sizes: [[300, 250]],
 		},
