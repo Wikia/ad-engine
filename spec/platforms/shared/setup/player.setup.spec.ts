@@ -1,8 +1,8 @@
-import { JWPlayerManager } from '@wikia/ad-products';
+import { JWPlayerManager, VastResponseData, VastTaglessRequest } from '@wikia/ad-products';
 import { Optimizely } from '@wikia/ad-services';
 import { communicationService } from '@wikia/communication';
 import { context, InstantConfigService } from '@wikia/core';
-import { PlayerSetup, VastResponseData, VastTaglessRequest } from '@wikia/platforms/shared';
+import { PlayerSetup } from '@wikia/platforms/shared';
 import { expect } from 'chai';
 import { SinonSpy } from 'sinon';
 
