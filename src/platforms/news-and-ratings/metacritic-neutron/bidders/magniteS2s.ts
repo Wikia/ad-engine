@@ -30,7 +30,7 @@ export function getMagniteS2sContext(isDesktop: boolean): object {
 		mpu_top: {
 			sizes: [[300, 250]],
 		},
-		'mpu-middle': {
+		mpu_middle: {
 			sizes: [[300, 250]],
 		},
 		mpu_bottom: {
