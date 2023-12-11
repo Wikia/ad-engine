@@ -25,7 +25,11 @@ const availableVideoPositions: string[] = ['preroll', 'midroll', 'postroll'];
 const displayBaseUrl = 'https://securepubads.g.doubleclick.net/gampad/adx?';
 const vastBaseUrl = 'https://pubads.g.doubleclick.net/gampad/ads?';
 
-function getCustomParameters(slot: AdSlot, extraTargeting: Dictionary = {}): string {
+export function getCustomParameters(
+	slot: AdSlot,
+	extraTargeting: Dictionary = {},
+	encode = true,
+): string {
 	const targetingData = targetingService.dump() || {};
 	const targeting = {};
 
@@ -52,12 +56,12 @@ function getCustomParameters(slot: AdSlot, extraTargeting: Dictionary = {}): str
 		...extraTargeting,
 	};
 
-	return encodeURIComponent(
-		Object.keys(params)
-			.filter((key: string) => params[key])
-			.map((key: string) => `${key}=${params[key]}`)
-			.join('&'),
-	);
+	const paramsInString = Object.keys(params)
+		.filter((key: string) => params[key])
+		.map((key: string) => `${key}=${params[key]}`)
+		.join('&');
+
+	return encode ? encodeURIComponent(paramsInString) : paramsInString;
 }
 
 function getVideoSizes(slot: AdSlot): string {

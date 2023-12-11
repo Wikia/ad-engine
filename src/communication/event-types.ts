@@ -371,6 +371,16 @@ export const eventsRepository = {
 		payload: props<{ group: string; callback: () => void }>(),
 	},
 	// Video events //
+	VIDEO_SETUP: {
+		category: '[Video]',
+		name: 'Setup done',
+		payload: props<{
+			autoplayDisabled: boolean;
+			showAds: boolean;
+			videoAdUnitPath: string;
+			targetingParams: string;
+		}>(),
+	},
 	VIDEO_EVENT: {
 		category: '[Video]',
 		name: 'Video event',
