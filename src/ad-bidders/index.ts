@@ -47,6 +47,8 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 		communicationService.on(
 			eventsRepository.BIDDERS_CALL_PER_GROUP,
 			({ group, callback }) => {
+				utils.logger(logGroup, `${group} - before callback`);
+
 				this.callByBidGroup(group).then(() => {
 					utils.logger(logGroup, `${group} - callback`);
 					callback();

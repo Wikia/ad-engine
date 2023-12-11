@@ -24,6 +24,14 @@ export function getAppnexusContext(): object {
 				],
 				position: 'hivi',
 			},
+			incontent_boxad_2: {
+				sizes: [
+					[160, 600],
+					[300, 600],
+					[300, 250],
+				],
+				position: 'hivi',
+			},
 			bottom_leaderboard: {
 				sizes: [
 					[728, 90],

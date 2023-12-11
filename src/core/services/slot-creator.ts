@@ -1,4 +1,4 @@
-import { communicationService } from '@ad-engine/communication';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { Injectable } from '@wikia/dependency-injection';
 import { AdSlotEvent, RepeatConfig } from '../models';
 import {
@@ -204,25 +204,32 @@ export class SlotCreator {
 					return;
 				}
 
-				const updatedSlotConfig = {
-					...slotConfig,
-					...(slotConfig.repeat.updateCreator || {}),
-					slotName: newSlotName,
+				const callback = () => {
+					const updatedSlotConfig = {
+						...slotConfig,
+						...(slotConfig.repeat.updateCreator || {}),
+						slotName: newSlotName,
+					};
+
+					try {
+						this.createSlot(updatedSlotConfig);
+					} catch (e) {
+						logger(groupName, `There is not enough space for ${newSlotName}`);
+
+						return;
+					}
+
+					logger(groupName, 'Injecting slot:', newSlotName);
+
+					if (slotConfig.repeat.disablePushOnScroll !== true) {
+						context.push('events.pushOnScroll.ids', newSlotName);
+					}
 				};
 
-				try {
-					this.createSlot(updatedSlotConfig);
-				} catch (e) {
-					logger(groupName, `There is not enough space for ${newSlotName}`);
-
-					return;
-				}
-
-				logger(groupName, 'Injecting slot:', newSlotName);
-
-				if (slotConfig.repeat.disablePushOnScroll !== true) {
-					context.push('events.pushOnScroll.ids', newSlotName);
-				}
+				communicationService.emit(eventsRepository.BIDDERS_CALL_PER_GROUP, {
+					group: newSlotName,
+					callback: callback,
+				});
 			},
 			slotConfig.slotName,
 		);

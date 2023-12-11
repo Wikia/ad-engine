@@ -29,6 +29,7 @@ export class SlotRepeater {
 
 		context.set(`slots.${slotName}`, newSlotDefinition);
 		context.set(`slots.${slotName}.uid`, generateUniqueId());
+		context.set(`slots.${slotName}.bidGroup`, slotName);
 
 		this.updateProperties(repeatConfig, newSlotDefinition);
 
