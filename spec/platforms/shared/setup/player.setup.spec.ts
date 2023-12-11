@@ -17,7 +17,7 @@ describe('PlayerSetup', () => {
 		context.set('src', 'test');
 		context.set('slots.featured.videoAdUnit', '/5441/test/vast/ad/unit');
 		context.set('options.wad.blocking', false);
-		context.set('options.video.isTaglessRequestEnabled', true);
+		context.set('options.video.displayAndVideoAdsSyncEnabled', true);
 	});
 
 	afterEach(() => {
@@ -28,9 +28,10 @@ describe('PlayerSetup', () => {
 		context.remove('options.wad.blocking');
 	});
 
-	it('should dispatch jwpSetup action without VAST XML when not set', () => {
+	it('should dispatch jwpSetup action without VAST XML when tagless request is not enabled', () => {
 		context.set('src', 'test');
 		context.set('slots.featured.videoAdUnit', '/5441/test/vast/ad/unit');
+		context.set('options.video.displayAndVideoAdsSyncEnabled', false);
 		const expectedDispatchArg = {
 			showAds: true,
 			autoplayDisabled: false,
@@ -53,7 +54,7 @@ describe('PlayerSetup', () => {
 		expect(dispatch.withArgs(expectedDispatchArg).calledOnce);
 	});
 
-	it('should dispatch jwpSetup action with VAST XML when set', () => {
+	it('should dispatch jwpSetup action with VAST XML when tagless request is enabled', () => {
 		const mockedVastXML =
 			'<?xml version="1.0" encoding="UTF-8"?><VAST xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="vast.xsd" version="4.0"></VAST>';
 		const response: VastResponseData = { xml: mockedVastXML, lineItemId: '', creativeId: '' };

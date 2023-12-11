@@ -1,4 +1,4 @@
-import { utils } from '@ad-engine/core';
+import { displayAndVideoAdsSyncContext, utils } from '@ad-engine/core';
 import { universalAdPackage } from '../../../templates';
 
 /*
@@ -14,12 +14,7 @@ export class VideoDisplayTakeoverSynchronizer {
 	initialized: utils.ExtendedPromise<void> = utils.createExtendedPromise();
 
 	private isEnabled(): boolean {
-		return (
-			utils.displayAndVideoAdsSyncContext.hasFeaturedVideo() &&
-			utils.displayAndVideoAdsSyncContext.isEnabled() &&
-			utils.displayAndVideoAdsSyncContext.getSyncTimeout() &&
-			utils.displayAndVideoAdsSyncContext.getVideoSyncedWithDisplayLines().length > 0
-		);
+		return displayAndVideoAdsSyncContext.isSyncEnabled();
 	}
 
 	get(): Promise<void> {
@@ -39,7 +34,7 @@ export class VideoDisplayTakeoverSynchronizer {
 			return 0;
 		}
 
-		return utils.displayAndVideoAdsSyncContext.getSyncTimeout();
+		return displayAndVideoAdsSyncContext.getSyncTimeout();
 	}
 
 	resolve(lineItemId: string | null = null, creativeId: string | null = null): void {
@@ -51,7 +46,7 @@ export class VideoDisplayTakeoverSynchronizer {
 		if (
 			lineItemId &&
 			creativeId &&
-			utils.displayAndVideoAdsSyncContext.getVideoSyncedWithDisplayLines().includes(lineItemId)
+			displayAndVideoAdsSyncContext.getVideoSyncedWithDisplayLines().includes(lineItemId)
 		) {
 			universalAdPackage.updateSlotsTargeting(lineItemId, creativeId);
 			utils.logger(this.logGroup, 'video ad is from UAP:JWP campaign - updating key-vals');

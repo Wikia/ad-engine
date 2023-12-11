@@ -11,16 +11,12 @@ class DisplayAndVideoAdsSyncContext {
 		return context.get('options.video.uapJWPLineItemIds') || [];
 	}
 
-	getSyncTimeout() {
+	getSyncTimeout(): number | undefined {
 		return context.get('options.jwpMaxDelayTimeout');
 	}
 
-	getSyncWithDisplayConfig() {
-		return context.get('options.video.syncWithDisplay');
-	}
-
 	isTaglessRequestEnabled() {
-		return context.get('options.video.isTaglessRequestEnabled');
+		return context.get('options.video.displayAndVideoAdsSyncEnabled');
 	}
 
 	wasVastRequestedBeforePlayer(): boolean {
@@ -35,11 +31,17 @@ class DisplayAndVideoAdsSyncContext {
 		this.vastRequestedBeforePlayer = true;
 	}
 
-	isEnabled() {
-		if (this.isTaglessRequestEnabled()) {
-			return true;
-		}
-		const flag = displayAndVideoAdsSyncContext.getSyncWithDisplayConfig();
+	isSyncEnabled() {
+		return (
+			this.hasFeaturedVideo() &&
+			this.getSyncTimeout() &&
+			this.getVideoSyncedWithDisplayLines().length > 0 &&
+			this.isEnabledByConfig()
+		);
+	}
+
+	private isEnabledByConfig() {
+		const flag = context.get('options.video.syncWithDisplay');
 
 		if (typeof flag === 'string') {
 			return DisplayAndVideoAdsSyncContext.hasBundleOrTag(flag);

@@ -4,8 +4,7 @@ import { JWPlayerConfig } from '@wikia/ad-products/video/jwplayer/external-types
 import { JWPlayerListItem } from '@wikia/ad-products/video/jwplayer/external-types/jwplayer-list-item';
 import { JWPlayerHelper } from '@wikia/ad-products/video/jwplayer/helpers/jwplayer-helper';
 import { JwpState } from '@wikia/ad-products/video/jwplayer/streams/jwplayer-stream-state';
-import { context, slotService, VastParams } from '@wikia/core';
-import { displayAndVideoAdsSyncContext } from '@wikia/core/utils';
+import { context, displayAndVideoAdsSyncContext, slotService, VastParams } from '@wikia/core';
 
 type shouldPrerollAppear = boolean;
 type shouldMidrollAppear = boolean;

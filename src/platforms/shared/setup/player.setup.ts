@@ -2,6 +2,7 @@ import {
 	BaseServiceSetup,
 	communicationService,
 	context,
+	displayAndVideoAdsSyncContext,
 	InstantConfigService,
 	JWPlayerManager,
 	jwpSetup,
@@ -33,14 +34,15 @@ export class PlayerSetup extends BaseServiceSetup {
 		if (showAds) {
 			utils.logger(logGroup, 'JWP with ads controlled by AdEngine enabled');
 			const vastResponse: VastResponseData =
-				utils.displayAndVideoAdsSyncContext.isTaglessRequestEnabled()
+				displayAndVideoAdsSyncContext.isSyncEnabled() &&
+				displayAndVideoAdsSyncContext.isTaglessRequestEnabled()
 					? await this.vastTaglessRequest.getVast(
-							context.get('options.video.vastRequestTimeout') | 500,
+							context.get('options.video.vastRequestTimeout') || 500,
 					  )
 					: undefined;
 
 			if (vastResponse?.xml) {
-				utils.displayAndVideoAdsSyncContext.setVastRequestedBeforePlayer();
+				displayAndVideoAdsSyncContext.setVastRequestedBeforePlayer();
 			}
 			this.jwpManager.manage();
 			communicationService.dispatch(
