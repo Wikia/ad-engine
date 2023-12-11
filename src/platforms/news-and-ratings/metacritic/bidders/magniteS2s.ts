@@ -36,12 +36,6 @@ export function getMagniteS2sContext(isDesktop: boolean): object {
 				[970, 250],
 			],
 		},
-		nav_ad_omni: {
-			sizes: [
-				[728, 90],
-				[970, 250],
-			],
-		},
 	};
 
 	const mobileSlots = {
@@ -155,12 +149,6 @@ export function getMagniteS2sContext(isDesktop: boolean): object {
 		},
 		'mobile-nav-ad-plus-banner': {
 			sizes: [[320, 50]],
-		},
-		mobile_nav_ad_omni: {
-			sizes: [
-				[300, 100],
-				[320, 50],
-			],
 		},
 	};
 
