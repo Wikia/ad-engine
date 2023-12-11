@@ -84,6 +84,9 @@ export const basicContext = {
 	slots: {},
 	src: ['tvguide'],
 	options: {
+		customAdLoader: {
+			globalMethodName: 'loadCustomAd',
+		},
 		preload: {
 			gpt: false,
 			audigent: true,
