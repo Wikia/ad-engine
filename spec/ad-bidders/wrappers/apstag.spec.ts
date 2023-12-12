@@ -4,6 +4,7 @@ import { context, targetingService, usp } from '@wikia/core';
 import { scriptLoader } from '@wikia/core/utils';
 import { OpenRtb2Object } from '@wikia/platforms/shared';
 import { expect } from 'chai';
+import Cookies from 'js-cookie';
 import { SinonSpy } from 'sinon';
 
 describe('Apstag', () => {
@@ -142,6 +143,8 @@ describe('Apstag', () => {
 			// given
 			const apstag = Apstag.reset();
 			global.sandbox.stub(context, 'get').withArgs('bidders.a9.hem.cleanup').returns(true);
+			global.sandbox.stub(Cookies, 'get').withArgs('AMZN-Token').returns('token');
+			global.sandbox.stub(apstag.storage, 'getItem').withArgs('apstagRecord').returns('Token');
 
 			// when
 			await apstag.init();
