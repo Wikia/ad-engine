@@ -4,7 +4,7 @@ import { JWPlayerConfig } from '@wikia/ad-products/video/jwplayer/external-types
 import { JWPlayerListItem } from '@wikia/ad-products/video/jwplayer/external-types/jwplayer-list-item';
 import { JWPlayerHelper } from '@wikia/ad-products/video/jwplayer/helpers/jwplayer-helper';
 import { JwpState } from '@wikia/ad-products/video/jwplayer/streams/jwplayer-stream-state';
-import { context, slotService, VastParams } from '@wikia/core';
+import { context, displayAndVideoAdsSyncContext, slotService, VastParams } from '@wikia/core';
 
 type shouldPrerollAppear = boolean;
 type shouldMidrollAppear = boolean;
@@ -113,12 +113,12 @@ describe('JWPlayerHelper', () => {
 			expect(jwplayerMock.playAd.called).to.be.true;
 		});
 
-		it('restarts VAST XML once playVideoAd() called', () => {
-			context.set('options.video.vastXml', '<fake-xml></fake-xml>');
+		it('clears vast request context once playVideoAd() called', () => {
+			displayAndVideoAdsSyncContext.setVastRequestedBeforePlayer();
 
 			helper.playVideoAd('preroll', MOCKED_JWP_STATE as JwpState);
 
-			expect(context.get('options.video.vastXml')).to.be.undefined;
+			expect(displayAndVideoAdsSyncContext.wasVastRequestedBeforePlayer()).to.be.false;
 			expect(jwplayerMock.playAd.called).to.be.false;
 		});
 	});
