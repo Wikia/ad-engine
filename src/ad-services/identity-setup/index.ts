@@ -31,10 +31,11 @@ export class IdentitySetup implements DiProcess {
 					'browser',
 					globalContextService.getValue(GlobalContextCategories.targeting, 'browser'),
 				);
-				targetingService.set(
+				const adGroups = globalContextService.getValue(
+					GlobalContextCategories.targeting,
 					'adGroup',
-					globalContextService.getValue(GlobalContextCategories.targeting, 'adGroup'),
-				);
+				) as string;
+				targetingService.set('adGroup', adGroups?.split(',') || []);
 
 				if (context.get('services.identityPartners')) {
 					const segments = globalContextService.getValue(
