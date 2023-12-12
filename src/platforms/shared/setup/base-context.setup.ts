@@ -105,8 +105,8 @@ export class BaseContextSetup implements DiProcess {
 		context.set('options.video.iasTracking.enabled', this.instantConfig.get('icIASVideoTracking'));
 		context.set('options.video.syncWithDisplay', this.instantConfig.get('icUAPJWPlayer'));
 		context.set(
-			'options.video.isTaglessRequestEnabled',
-			this.instantConfig.get('icTaglessRequestEnabled'),
+			'options.video.displayAndVideoAdsSyncEnabled',
+			this.instantConfig.get('icDisplayAndVideoAdsSyncEnabled'),
 		);
 		context.set(
 			'options.video.uapJWPLineItemIds',
@@ -194,7 +194,9 @@ export class BaseContextSetup implements DiProcess {
 		);
 		context.set('bidders.s2s.bidders', this.instantConfig.get('icPrebidS2sBidders', []));
 		context.set('bidders.s2s.enabled', this.instantConfig.get('icPrebidS2sBidders', []).length > 0);
-		context.set('bidders.a9.rpa', this.instantConfig.get('icA9HEM'));
+
+		context.set('bidders.a9.hem.enabled', this.instantConfig.get('icA9HEM', false));
+		context.set('bidders.a9.hem.cleanup', this.instantConfig.get('icA9CleanHEM', false));
 
 		context.set('bidders.liveRampATS.enabled', this.instantConfig.get('icLiveRampATS'));
 		context.set(

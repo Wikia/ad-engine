@@ -1,6 +1,8 @@
 import {
+	CcpaSignalPayload,
 	communicationService,
 	eventsRepository,
+	GdprConsentPayload,
 	TrackingBidDefinition,
 } from '@ad-engine/communication';
 import {
@@ -105,6 +107,24 @@ export class A9Provider extends BidderProvider {
 			}
 
 			await this.apstag.init();
+
+			communicationService.on(
+				eventsRepository.AD_ENGINE_CONSENT_UPDATE,
+				(consents: GdprConsentPayload & CcpaSignalPayload) =>
+					this.apstag.sendHEM(this.apstag.getRecord(), consents),
+				false,
+			);
+
+			communicationService.on(
+				eventsRepository.AD_ENGINE_CONSENT_READY,
+				(consents: GdprConsentPayload & CcpaSignalPayload) => {
+					const record = this.apstag.getRecord();
+					if (record) {
+						this.apstag.sendHEM(record, consents);
+					}
+				},
+				false,
+			);
 
 			if (!trackingOptIn.isOptedIn() || trackingOptIn.isOptOutSale()) {
 				utils.logger(logGroup, 'A9 was initialized without consents');

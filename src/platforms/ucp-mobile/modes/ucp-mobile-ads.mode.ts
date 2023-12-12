@@ -1,10 +1,4 @@
-import {
-	AdEngineStackSetup,
-	DisplayAndVideoAdsSyncSetup,
-	GptSetup,
-	PlayerSetup,
-	WadRunner,
-} from '@platforms/shared';
+import { AdEngineStackSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
 	Anyclip,
 	Ats,
@@ -49,7 +43,6 @@ export class UcpMobileAdsMode implements DiProcess {
 		private prebidNativeProvider: PrebidNativeProvider,
 		private stroer: Stroer,
 		private system1: System1,
-		private displayAndAvideoAdsSyncSetup: DisplayAndVideoAdsSyncSetup,
 		private wadRunner: WadRunner,
 		private wunderkind: Wunderkind,
 	) {}
@@ -58,7 +51,6 @@ export class UcpMobileAdsMode implements DiProcess {
 		utils.logger('partners-pipeline', 'starting');
 		this.pipeline
 			.add(
-				this.displayAndAvideoAdsSyncSetup,
 				this.anyclip,
 				this.ats,
 				this.audigent,
@@ -82,7 +74,6 @@ export class UcpMobileAdsMode implements DiProcess {
 					dependencies: [
 						this.bidders.initialized,
 						this.gptSetup.initialized,
-						this.displayAndAvideoAdsSyncSetup.initialized,
 						videoDisplayTakeoverSynchronizer.isRequiredToRun()
 							? videoDisplayTakeoverSynchronizer.initialized
 							: Promise.resolve(),
