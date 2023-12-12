@@ -169,6 +169,7 @@ interface PrebidTargetingForAdUnits {
 
 interface PrebidUserIds {
 	id5id?: {
+		uid?: string;
 		ext?: {
 			abTestingControlGroup?: boolean;
 		};
@@ -211,4 +212,6 @@ interface Pbjs {
 	onEvent(name: string, callback: (...args: any[]) => void): void;
 
 	offEvent(name: string, callback: (...args: any[]) => void): void;
+
+	que: Array<() => void>;
 }

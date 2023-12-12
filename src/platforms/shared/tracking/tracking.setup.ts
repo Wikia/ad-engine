@@ -218,6 +218,7 @@ export class TrackingSetup {
 		const topics: unknown[] = await document.browsingTopics({ skipObservation: true });
 		this.dwTracker.track(
 			{
+				ppid: targetingService.get('ppid'),
 				topic: JSON.stringify(topics),
 			},
 			trackingUrls.TOPICS,
