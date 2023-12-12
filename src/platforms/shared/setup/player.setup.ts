@@ -3,6 +3,7 @@ import {
 	BaseServiceSetup,
 	communicationService,
 	context,
+	displayAndVideoAdsSyncContext,
 	eventsRepository,
 	InstantConfigService,
 	JWPlayerManager,
@@ -10,6 +11,8 @@ import {
 	Optimizely,
 	slotService,
 	utils,
+	VastResponseData,
+	VastTaglessRequest,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -22,22 +25,36 @@ export class PlayerSetup extends BaseServiceSetup {
 		protected globalTimeout: utils.GlobalTimeout,
 		protected optimizely: Optimizely,
 		protected jwpManager: JWPlayerManager,
+		protected vastTaglessRequest: VastTaglessRequest,
 	) {
 		super(instantConfig, globalTimeout);
 		this.jwpManager = jwpManager ? jwpManager : new JWPlayerManager();
 	}
 
-	call() {
+	async call() {
 		const showAds = !context.get('options.wad.blocking');
-		const vastXml = utils.displayAndVideoAdsSyncContext.getVideoVastXml();
+		const vastResponse: VastResponseData =
+			displayAndVideoAdsSyncContext.isSyncEnabled() &&
+			displayAndVideoAdsSyncContext.isTaglessRequestEnabled()
+				? await this.vastTaglessRequest.getVast(
+						context.get('options.video.vastRequestTimeout') || 500,
+				  )
+				: undefined;
 		const connatixInstreamEnabled = !!this.instantConfig.get('icConnatixInstream');
+
 		connatixInstreamEnabled
-			? PlayerSetup.initConnatixPlayer(showAds, vastXml)
-			: this.initJWPlayer(showAds, vastXml);
+			? PlayerSetup.initConnatixPlayer(showAds, vastResponse)
+			: this.initJWPlayer(showAds, vastResponse);
 	}
 
-	private initJWPlayer(showAds, vastXml) {
+	private initJWPlayer(showAds, vastResponse) {
 		utils.logger(logGroup, 'JWP with ads controlled by AdEngine enabled');
+
+		if (vastResponse?.xml) {
+			displayAndVideoAdsSyncContext.setVastRequestedBeforePlayer();
+			utils.logger(logGroup, 'display and video sync response available');
+		}
+
 		this.jwpManager.manage();
 
 		if (showAds) {
@@ -45,7 +62,7 @@ export class PlayerSetup extends BaseServiceSetup {
 				jwpSetup({
 					showAds,
 					autoplayDisabled: false,
-					vastXml,
+					vastXml: vastResponse?.xml,
 				}),
 			);
 		} else {
@@ -59,7 +76,7 @@ export class PlayerSetup extends BaseServiceSetup {
 		}
 	}
 
-	private static initConnatixPlayer(showAds, vastXml) {
+	private static initConnatixPlayer(showAds, vastResponse) {
 		utils.logger(logGroup, 'Connatix with ads not controlled by AdEngine enabled');
 
 		const adSlotName = 'featured';
@@ -70,7 +87,7 @@ export class PlayerSetup extends BaseServiceSetup {
 			autoplayDisabled: false,
 			videoAdUnitPath: adSlot.getVideoAdUnit(),
 			targetingParams: utils.getCustomParameters(adSlot, {}, false),
-			vastXml,
+			vastXml: vastResponse?.xml,
 		});
 	}
 }
