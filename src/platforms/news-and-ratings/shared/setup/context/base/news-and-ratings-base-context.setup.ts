@@ -40,6 +40,7 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 	}
 
 	private setupServicesOptions() {
+		context.set('options.maxDelayTimeout', this.instantConfig.get('icAdEngineDelay', 2000));
 		context.set(
 			'bidders.prebid.disableSendAllBids',
 			this.instantConfig.get('icPrebidDisableSendAllBids'),

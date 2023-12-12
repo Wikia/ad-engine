@@ -92,6 +92,11 @@ export const eventsRepository = {
 		name: 'set opt in',
 		payload: props<GdprConsentPayload & CcpaSignalPayload>(),
 	},
+	AD_ENGINE_CONSENT_UPDATE: {
+		category: '[AdEngine OptIn]',
+		name: 'update opt in',
+		payload: props<GdprConsentPayload & CcpaSignalPayload>(),
+	},
 	AD_ENGINE_GPT_READY: {
 		name: 'GPT Ready',
 	},

@@ -48,6 +48,9 @@ export const basicContext = {
 	slots: {},
 	src: ['gamespot'],
 	options: {
+		customAdLoader: {
+			globalMethodName: 'loadCustomAd',
+		},
 		preload: {
 			gpt: false,
 			audigent: true,

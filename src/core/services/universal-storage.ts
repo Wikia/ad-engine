@@ -66,15 +66,21 @@ export class UniversalStorage implements Storage<any> {
 		}
 	}
 
-	getItem<T>(key: string): T | string {
+	getItem<T>(key: string, raw = false): T | string {
 		try {
 			let value = this.provider.getItem(key);
+
+			if (raw) {
+				return value;
+			}
+
 			try {
 				value = JSON.parse(value);
 			} catch {
 				return value;
 			}
-			return value as any;
+
+			return value as T;
 		} catch (e) {
 			return this.fallbackStorage.getItem(key);
 		}
