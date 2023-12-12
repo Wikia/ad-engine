@@ -13,6 +13,7 @@ import {
 	utils,
 	VastResponseData,
 	VastTaglessRequest,
+	videoDisplayTakeoverSynchronizer,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -81,6 +82,19 @@ export class PlayerSetup extends BaseServiceSetup {
 
 		const adSlotName = 'featured';
 		const adSlot = slotService.get(adSlotName) || new AdSlot({ id: adSlotName });
+
+		if (vastResponse?.xml) {
+			displayAndVideoAdsSyncContext.setVastRequestedBeforePlayer();
+			utils.logger(logGroup, 'display and video sync response available');
+		}
+
+		communicationService.on(eventsRepository.VIDEO_EVENT, (payload) => {
+			const { state } = payload.videoEvent;
+			videoDisplayTakeoverSynchronizer.resolve(
+				state.vastParams.lineItemId,
+				state.vastParams.creativeId,
+			);
+		});
 
 		communicationService.emit(eventsRepository.VIDEO_SETUP, {
 			showAds,
