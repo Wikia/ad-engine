@@ -4,6 +4,12 @@ import { BidderConfig, BidsRefreshing } from '../bidder-provider';
 
 export type PriceMap = Dictionary<string>;
 
+export interface A9CCPA {
+	params: {
+		us_privacy: string;
+	};
+}
+
 export interface ApstagConfig extends Partial<A9CCPA> {
 	pubID: string;
 	videoAdServer: 'DFP';
@@ -13,10 +19,19 @@ export interface ApstagConfig extends Partial<A9CCPA> {
 	};
 }
 
-export interface A9CCPA {
-	params: {
-		us_privacy: string;
+export interface ApstagHashedRecords {
+	type: 'email';
+	record: string;
+}
+
+export interface ApstagTokenConfig {
+	gdpr?: {
+		enabled: boolean;
+		consent: string;
 	};
+	optOut?: boolean;
+	hashedRecords: ApstagHashedRecords[];
+	duration?: number;
 }
 
 export interface A9Config extends BidderConfig {

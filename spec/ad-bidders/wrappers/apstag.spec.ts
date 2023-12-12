@@ -1,14 +1,18 @@
 import { Apstag } from '@wikia/ad-bidders';
+import { CcpaSignalPayload, GdprConsentPayload } from '@wikia/communication';
 import { context, targetingService, usp } from '@wikia/core';
 import { scriptLoader } from '@wikia/core/utils';
 import { OpenRtb2Object } from '@wikia/platforms/shared';
 import { expect } from 'chai';
+import Cookies from 'js-cookie';
 import { SinonSpy } from 'sinon';
 
 describe('Apstag', () => {
 	let apstagInitStub: SinonSpy;
 	let apstagFetchBidsStub: SinonSpy;
 	let apstagRpaStub: SinonSpy;
+	let apstagUpaStub: SinonSpy;
+	let apstagDpaStub: SinonSpy;
 	let scriptLoaderStub: SinonSpy;
 	const amazonId = 12345;
 
@@ -16,11 +20,15 @@ describe('Apstag', () => {
 		apstagInitStub = global.sandbox.spy();
 		apstagFetchBidsStub = global.sandbox.spy();
 		apstagRpaStub = global.sandbox.spy();
+		apstagUpaStub = global.sandbox.spy();
+		apstagDpaStub = global.sandbox.spy();
 		global.window.apstag = global.window.apstag || ({} as typeof global.window.apstag);
 		global.sandbox.stub(window, 'apstag').value({
 			init: apstagInitStub,
 			fetchBids: apstagFetchBidsStub,
 			rpa: apstagRpaStub,
+			upa: apstagUpaStub,
+			dpa: apstagDpaStub,
 		});
 		scriptLoaderStub = global.sandbox.spy();
 		global.sandbox.stub(scriptLoader, 'loadScript').callsFake((src, defer, node) => {
@@ -66,7 +74,7 @@ describe('Apstag', () => {
 			await apstag.init();
 
 			// then
-			expect(apstagInitStub.calledOnce).to.be.true;
+			expect(apstagInitStub.calledOnce, 'apstag.init not called').to.be.true;
 			expect(
 				apstagInitStub.calledWithExactly({
 					pubID: amazonId,
@@ -74,6 +82,7 @@ describe('Apstag', () => {
 					deals: true,
 					signals: { ortb2: {} },
 				}),
+				'apstag.init not called with expected args',
 			).to.be.true;
 		});
 
@@ -88,7 +97,7 @@ describe('Apstag', () => {
 			await apstag.init();
 
 			// then
-			expect(apstagInitStub.calledOnce).to.be.true;
+			expect(apstagInitStub.calledOnce, 'apstag.init not called').to.be.true;
 			expect(
 				apstagInitStub.calledWithExactly({
 					pubID: amazonId,
@@ -99,6 +108,7 @@ describe('Apstag', () => {
 					},
 					signals: { ortb2: {} },
 				}),
+				'apstag.init not called with expected args',
 			).to.be.true;
 		});
 
@@ -117,7 +127,7 @@ describe('Apstag', () => {
 			await apstag.init();
 
 			// then
-			expect(apstagInitStub.calledOnce).to.be.true;
+			expect(apstagInitStub.calledOnce, 'apstag.init not called').to.be.true;
 			expect(
 				apstagInitStub.calledWithExactly({
 					pubID: amazonId,
@@ -125,6 +135,53 @@ describe('Apstag', () => {
 					deals: true,
 					signals: { ortb2 },
 				}),
+				'apstag.init not called with expected args',
+			).to.be.true;
+		});
+
+		it('should cleanup Amazon Token when proper ICBM variable is set', async () => {
+			// given
+			const apstag = Apstag.reset();
+			global.sandbox.stub(context, 'get').withArgs('bidders.a9.hem.cleanup').returns(true);
+			global.sandbox.stub(Cookies, 'get').withArgs('AMZN-Token').returns('token');
+			global.sandbox.stub(apstag.storage, 'getItem').withArgs('apstagRecord').returns('Token');
+
+			// when
+			await apstag.init();
+
+			// then
+			expect(apstagInitStub.calledOnce, 'apstag.init not called').to.be.true;
+			expect(apstagDpaStub.calledOnce, 'apstag.dpa not called').to.be.true;
+			expect(apstagRpaStub.notCalled, 'apstag.rpa call not expected').to.be.true;
+			expect(apstagUpaStub.notCalled, 'apstag.upa call not expected').to.be.true;
+		});
+
+		it('should update optOut HEM to Amazon when user consent changes', async () => {
+			// given
+			const apstag = Apstag.reset();
+			global.sandbox
+				.stub(context, 'get')
+				.withArgs('wiki.opts.userEmailHashes')
+				.returns(['hash1', 'hash2', 'hash3'])
+				.withArgs('bidders.a9.hem.enabled')
+				.returns(true)
+				.withArgs('options.trackingOptIn')
+				.returns(true)
+				.withArgs('options.optOutSale')
+				.returns(false);
+
+			// when
+			await apstag.init();
+
+			// then
+			expect(apstagInitStub.calledOnce, 'apstag.init not called').to.be.true;
+			expect(apstagRpaStub.calledOnce, 'apstag.rpa not called once').to.be.true;
+			expect(
+				apstagRpaStub.calledWithExactly({
+					hashedRecords: [{ type: 'email', record: 'hash3' }],
+					optOut: false,
+				}),
+				'apstag.rpa not called with expected args',
 			).to.be.true;
 		});
 
@@ -135,64 +192,235 @@ describe('Apstag', () => {
 				.stub(context, 'get')
 				.withArgs('wiki.opts.userEmailHashes')
 				.returns(['hash1', 'hash2', 'hash3'])
-				.withArgs('bidders.a9.rpa')
-				.returns(true);
+				.withArgs('bidders.a9.hem.enabled')
+				.returns(true)
+				.withArgs('options.trackingOptIn')
+				.returns(true)
+				.withArgs('options.optOutSale')
+				.returns(false);
 
 			// when
 			await apstag.init();
 
 			// then
+			expect(apstagInitStub.calledOnce, 'apstag.init not called').to.be.true;
+			expect(apstagRpaStub.calledOnce, 'apstag.rpa not called once').to.be.true;
 			expect(
-				apstagRpaStub.calledWithExactly({ hashedRecords: [{ type: 'email', record: 'hash3' }] }),
+				apstagRpaStub.calledWithExactly({
+					hashedRecords: [{ type: 'email', record: 'hash3' }],
+					optOut: false,
+				}),
+				'apstag.rpa not called with expected args',
 			).to.be.true;
 		});
 	});
 
 	describe('sendHEM', () => {
+		type UserConsentChangeTestCase = [
+			testCase: string,
+			previousOptOut: string,
+			expectedOptOut: boolean,
+			consents: GdprConsentPayload & CcpaSignalPayload,
+		];
+		const userConsentChangeTestCases: UserConsentChangeTestCase[] = [
+			[
+				'GDPR - OptIn -> OptOut',
+				'0',
+				true,
+				{
+					gdprConsent: false,
+					ccpaSignal: false,
+					geoRequiresConsent: true,
+					geoRequiresSignal: false,
+				},
+			],
+			[
+				'GDPR - OptOut -> OptIn',
+				'1',
+				false,
+				{
+					gdprConsent: true,
+					ccpaSignal: false,
+					geoRequiresConsent: true,
+					geoRequiresSignal: false,
+				},
+			],
+			[
+				'CCPA - OptIn -> OptOut',
+				'0',
+				true,
+				{
+					gdprConsent: true,
+					ccpaSignal: true,
+					geoRequiresConsent: false,
+					geoRequiresSignal: true,
+				},
+			],
+			[
+				'CCPA - OptOut -> OptIn',
+				'1',
+				false,
+				{
+					gdprConsent: true,
+					ccpaSignal: false,
+					geoRequiresConsent: false,
+					geoRequiresSignal: true,
+				},
+			],
+		];
+
 		it('should send provided HEM once', async () => {
 			// given
 			const apstag = Apstag.reset();
-			global.sandbox.stub(context, 'get').withArgs('bidders.a9.rpa').returns(true);
+			global.sandbox
+				.stub(context, 'get')
+				.withArgs('bidders.a9.hem.enabled')
+				.returns(true)
+				.withArgs('bidders.a9.hem.cleanup')
+				.returns(false)
+				.withArgs('options.trackingOptIn')
+				.returns(true)
+				.withArgs('options.optOutSale')
+				.returns(false);
 			global.sandbox
 				.stub(apstag.storage, 'getItem')
 				.onFirstCall()
 				.returns(undefined)
 				.onSecondCall()
-				.returns('1');
+				.returns(Date.now().toString());
 
 			// when
 			await apstag.sendHEM('hash');
 			await apstag.sendHEM('hash');
 
 			// then
-			expect(apstagRpaStub.callCount).to.equal(1);
+			expect(apstagRpaStub.calledOnce, 'apstag.rpa not called once').to.be.true;
 			expect(
-				apstagRpaStub.calledWithExactly({ hashedRecords: [{ type: 'email', record: 'hash' }] }),
+				apstagRpaStub.calledWithExactly({
+					hashedRecords: [{ type: 'email', record: 'hash' }],
+					optOut: false,
+				}),
+				'apstag.rpa not called with expected args',
 			).to.be.true;
+		});
+
+		it('should renew Amazon Token when it expired', async () => {
+			// given
+			const apstag = Apstag.reset();
+			global.sandbox
+				.stub(context, 'get')
+				.withArgs('bidders.a9.hem.enabled')
+				.returns(true)
+				.withArgs('bidders.a9.hem.cleanup')
+				.returns(false)
+				.withArgs('options.trackingOptIn')
+				.returns(true)
+				.withArgs('options.optOutSale')
+				.returns(false);
+			global.sandbox
+				.stub(apstag.storage, 'getItem')
+				.withArgs('apstagHEMsent', true)
+				.returns((Date.now() - 24 * 60 * 60 * 1000).toString());
+
+			// when
+			await apstag.sendHEM('hash');
+
+			// then
+			expect(apstagRpaStub.calledOnce, 'apstag.rpa not called once').to.be.true;
+			expect(
+				apstagRpaStub.calledWithExactly({
+					hashedRecords: [{ type: 'email', record: 'hash' }],
+					optOut: false,
+				}),
+				'apstag.rpa not called with expected args',
+			).to.be.true;
+		});
+
+		userConsentChangeTestCases.forEach(([testCase, previousOptOut, expectedOptOut, consents]) => {
+			it(`should update Amazon Token when user consent changes - ${testCase}`, async () => {
+				// given
+				const apstag = Apstag.reset();
+				global.sandbox
+					.stub(context, 'get')
+					.withArgs('bidders.a9.hem.enabled')
+					.returns(true)
+					.withArgs('bidders.a9.hem.cleanup')
+					.returns(false);
+				global.sandbox
+					.stub(apstag.storage, 'getItem')
+					.withArgs('apstagHEMsent', true)
+					.returns(Date.now().toString())
+					.withArgs('apstagHEMoptOut', true)
+					.returns(previousOptOut);
+
+				// when
+				await apstag.sendHEM('hash', consents);
+
+				// then
+				expect(apstagUpaStub.calledOnce, 'apstag.upa not called once').to.be.true;
+				expect(
+					apstagUpaStub.calledWithExactly({
+						hashedRecords: [{ type: 'email', record: 'hash' }],
+						optOut: expectedOptOut,
+					}),
+					'apstag.upa not called with expected args',
+				).to.be.true;
+			});
 		});
 
 		it('should not send HEM when feature flag is disabled', async () => {
 			// given
 			const apstag = Apstag.reset();
-			global.sandbox.stub(context, 'get').withArgs('bidders.a9.rpa').returns(false);
+			global.sandbox
+				.stub(context, 'get')
+				.withArgs('bidders.a9.hem.enabled')
+				.returns(false)
+				.withArgs('bidders.a9.hem.cleanup')
+				.returns(false);
 
 			// when
 			await apstag.sendHEM('hash');
 
 			// then
-			expect(apstagRpaStub.notCalled).to.be.true;
+			expect(apstagRpaStub.notCalled, 'apstag.rpa call not expected').to.be.true;
 		});
 
-		it('should not send HEM when it was already sent to Amazon', async () => {
+		it('should not send HEM when it was already sent to Amazon and not expired', async () => {
 			// given
 			const apstag = Apstag.reset();
-			global.sandbox.stub(apstag.storage, 'getItem').returns('1');
+			global.sandbox
+				.stub(context, 'get')
+				.withArgs('bidders.a9.hem.enabled')
+				.returns(true)
+				.withArgs('bidders.a9.hem.cleanup')
+				.returns(false);
+			global.sandbox
+				.stub(apstag.storage, 'getItem')
+				.withArgs('apstagHEMsent', true)
+				.returns((Date.now() + Apstag.AMAZON_TOKEN_TTL).toString());
 
 			// when
 			await apstag.sendHEM('hash');
 
 			// then
-			expect(apstagRpaStub.notCalled).to.be.true;
+			expect(apstagRpaStub.notCalled, 'apstag.rpa call not expected').to.be.true;
+		});
+
+		it('should not send HEM when cleanup feature flag is enabled', async () => {
+			// given
+			const apstag = Apstag.reset();
+			global.sandbox
+				.stub(context, 'get')
+				.withArgs('bidders.a9.hem.enabled')
+				.returns(true)
+				.withArgs('bidders.a9.hem.cleanup')
+				.returns(true);
+
+			// when
+			await apstag.sendHEM('hash');
+
+			// then
+			expect(apstagRpaStub.notCalled, 'apstag.rpa call not expected').to.be.true;
 		});
 	});
 });
