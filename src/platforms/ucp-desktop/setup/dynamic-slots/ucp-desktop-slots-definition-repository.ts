@@ -195,7 +195,7 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
 				repeat: {
 					index: 1,
-					limit: 20,
+					limit: 2,
 					slotNamePattern: `${slotNamePrefix}{slotConfig.repeat.index}`,
 					updateProperties: {
 						adProduct: '{slotConfig.slotName}',
