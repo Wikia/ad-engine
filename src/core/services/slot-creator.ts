@@ -195,8 +195,9 @@ export class SlotCreator {
 				}
 
 				logger(groupName, `Repeating: ${slotConfig.slotName}`);
-
-				slotConfig.repeat.index += 1;
+				if (slotConfig.repeat.index < 2) {
+					slotConfig.repeat.index += 1;
+				}
 
 				const newSlotName = this.slotRepeater.repeatSlot(slot, slotConfig.repeat);
 
