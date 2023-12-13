@@ -33,6 +33,12 @@ export class UcpDesktopA9ConfigSetup implements DiProcess {
 					[300, 600],
 				],
 			},
+			incontent_boxad_2: {
+				sizes: [
+					[300, 250],
+					[300, 600],
+				],
+			},
 			bottom_leaderboard: {
 				sizes: [
 					[728, 90],
