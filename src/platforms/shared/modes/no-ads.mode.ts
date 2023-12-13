@@ -1,10 +1,12 @@
 import {
 	Apstag,
 	Audigent,
+	CcpaSignalPayload,
 	communicationService,
 	context,
 	DiProcess,
 	eventsRepository,
+	GdprConsentPayload,
 	jwpSetup,
 	PartnerPipeline,
 } from '@wikia/ad-engine';
@@ -24,7 +26,17 @@ export class NoAdsMode implements DiProcess {
 		this.noAdsDetector.addReasons(window.ads.context.opts.noAdsReasons);
 		this.dispatchJWPlayerSetupAction();
 		if (context.get('state.isLogged')) {
-			Apstag.make().init();
+			const apstag = Apstag.make();
+			apstag
+				.init()
+				.then(() =>
+					communicationService.on(
+						eventsRepository.AD_ENGINE_CONSENT_UPDATE,
+						(consents: GdprConsentPayload & CcpaSignalPayload) =>
+							apstag.sendHEM(apstag.getRecord(), consents),
+						false,
+					),
+				);
 		}
 
 		this.pipeline

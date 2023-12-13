@@ -40,6 +40,7 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 	}
 
 	private setupServicesOptions() {
+		context.set('options.maxDelayTimeout', this.instantConfig.get('icAdEngineDelay', 2000));
 		context.set(
 			'bidders.prebid.disableSendAllBids',
 			this.instantConfig.get('icPrebidDisableSendAllBids'),
@@ -63,14 +64,6 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		context.set(
 			'options.video.isPostrollEnabled',
 			this.instantConfig.get('icFeaturedVideoPostroll'),
-		);
-		context.set(
-			'options.video.forceVideoAdsOnAllVideosExceptSecond',
-			this.instantConfig.get('icFeaturedVideoForceVideoAdsEverywhereExcept2ndVideo'),
-		);
-		context.set(
-			'options.video.forceVideoAdsOnAllVideosExceptSponsored',
-			this.instantConfig.get('icFeaturedVideoForceVideoAdsEverywhereExceptSponsoredVideo'),
 		);
 		context.set('options.video.iasTracking.enabled', this.instantConfig.get('icIASVideoTracking'));
 		context.set(

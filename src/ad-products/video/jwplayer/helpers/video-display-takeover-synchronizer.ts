@@ -1,4 +1,4 @@
-import { context, globalContextService, targetingService, utils } from '@ad-engine/core';
+import { displayAndVideoAdsSyncContext, utils } from '@ad-engine/core';
 import { universalAdPackage } from '../../../templates';
 
 /*
@@ -11,30 +11,10 @@ import { universalAdPackage } from '../../../templates';
  */
 export class VideoDisplayTakeoverSynchronizer {
 	private logGroup = 'video-display-takeover-sync';
-	private videoLines: Array<string>;
-	private maxDelayTimeoutInMs = 0;
-	private isUAPJWPEnabled: boolean = undefined;
 	initialized: utils.ExtendedPromise<void> = utils.createExtendedPromise();
 
 	private isEnabled(): boolean {
-		if (!this.videoLines) {
-			this.videoLines = context.get('options.video.uapJWPLineItemIds') || [];
-		}
-
-		if (!this.maxDelayTimeoutInMs) {
-			this.maxDelayTimeoutInMs = context.get('options.jwpMaxDelayTimeout') || 0;
-		}
-
-		if (this.isUAPJWPEnabled === undefined) {
-			this.isUAPJWPEnabled = this.checkIfUAPJWPEnabled();
-		}
-
-		return (
-			context.get('custom.hasFeaturedVideo') &&
-			this.isUAPJWPEnabled &&
-			this.maxDelayTimeoutInMs > 0 &&
-			this.videoLines.length > 0
-		);
+		return displayAndVideoAdsSyncContext.isSyncEnabled();
 	}
 
 	get(): Promise<void> {
@@ -54,7 +34,7 @@ export class VideoDisplayTakeoverSynchronizer {
 			return 0;
 		}
 
-		return this.maxDelayTimeoutInMs;
+		return displayAndVideoAdsSyncContext.getSyncTimeout();
 	}
 
 	resolve(lineItemId: string | null = null, creativeId: string | null = null): void {
@@ -63,7 +43,11 @@ export class VideoDisplayTakeoverSynchronizer {
 			return;
 		}
 
-		if (lineItemId && creativeId && this.videoLines.includes(lineItemId)) {
+		if (
+			lineItemId &&
+			creativeId &&
+			displayAndVideoAdsSyncContext.getVideoSyncedWithDisplayLines().includes(lineItemId)
+		) {
 			universalAdPackage.updateSlotsTargeting(lineItemId, creativeId);
 			utils.logger(this.logGroup, 'video ad is from UAP:JWP campaign - updating key-vals');
 		} else {
@@ -71,28 +55,6 @@ export class VideoDisplayTakeoverSynchronizer {
 		}
 
 		this.initialized.resolve(null);
-	}
-
-	private checkIfUAPJWPEnabled() {
-		const flag = context.get('options.video.syncWithDisplay');
-
-		if (typeof flag === 'string') {
-			return VideoDisplayTakeoverSynchronizer.hasBundleOrTag(flag);
-		} else if (Array.isArray(flag)) {
-			return flag.some((v) => VideoDisplayTakeoverSynchronizer.hasBundleOrTag(v));
-		}
-		return !!flag;
-	}
-
-	private static hasBundleOrTag(tagOrBundle: string): boolean {
-		const tag = tagOrBundle.split('=');
-
-		if (tag.length == 2) {
-			const value = targetingService.get(tag[0]);
-
-			return Array.isArray(value) ? value.includes(tag[1]) : value === tag[1];
-		}
-		return globalContextService.hasBundle(tagOrBundle);
 	}
 }
 

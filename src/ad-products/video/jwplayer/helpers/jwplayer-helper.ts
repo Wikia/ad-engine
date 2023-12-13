@@ -3,6 +3,7 @@ import {
 	AdSlotEvent,
 	AdSlotStatus,
 	context,
+	displayAndVideoAdsSyncContext,
 	utils,
 	vastDebugger,
 	VastParams,
@@ -135,11 +136,15 @@ export class JWPlayerHelper {
 	}
 
 	playVideoAd(position: 'midroll' | 'postroll' | 'preroll', state: JwpState): void {
-		this.adSlot.setConfigProperty('audio', !state.mute);
+		if (!displayAndVideoAdsSyncContext.wasVastRequestedBeforePlayer()) {
+			this.adSlot.setConfigProperty('audio', !state.mute);
 
-		const vastUrl = this.getVastUrl(position, state);
+			const vastUrl = this.getVastUrl(position, state);
 
-		this.jwplayer.playAd(vastUrl);
+			this.jwplayer.playAd(vastUrl);
+		} else {
+			displayAndVideoAdsSyncContext.clearVideoSyncStatus();
+		}
 	}
 
 	private getVastUrl(position: string, state: JwpState): string {
