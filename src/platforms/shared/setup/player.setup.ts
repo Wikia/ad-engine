@@ -89,11 +89,16 @@ export class PlayerSetup extends BaseServiceSetup {
 		}
 
 		communicationService.on(eventsRepository.VIDEO_EVENT, (payload) => {
-			const { state } = payload.videoEvent;
-			videoDisplayTakeoverSynchronizer.resolve(
-				state.vastParams.lineItemId,
-				state.vastParams.creativeId,
-			);
+			const { name, state } = payload.videoEvent;
+
+			if (name === 'adImpression') {
+				videoDisplayTakeoverSynchronizer.resolve(
+					state.vastParams.lineItemId,
+					state.vastParams.creativeId,
+				);
+			} else if (['adError', 'play', 'playError'].includes(name)) {
+				videoDisplayTakeoverSynchronizer.resolve();
+			}
 		});
 
 		communicationService.emit(eventsRepository.VIDEO_SETUP, {
