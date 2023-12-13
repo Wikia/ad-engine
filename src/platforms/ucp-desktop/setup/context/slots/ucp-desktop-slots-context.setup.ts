@@ -75,22 +75,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 					loc: 'hivi',
 				},
 			},
-			incontent_boxad_2: {
-				adProduct: 'incontent_boxad_2',
-				group: 'HiVi',
-				recirculationElementSelector: '#recirculation-rail',
-				sizes: [],
-				defaultSizes: [
-					[120, 600],
-					[160, 600],
-					[300, 250],
-					[300, 600],
-				],
-				targeting: {
-					loc: 'hivi',
-				},
-				bidGroup: 'incontent_boxad_2',
-			},
 			bottom_leaderboard: {
 				adProduct: 'bottom_leaderboard',
 				group: 'PF',

@@ -177,9 +177,7 @@ export class FmrRotator {
 
 	private pushNextSlot(): void {
 		context.push('state.adStack', { id: this.nextSlotName });
-		if (this.refreshInfo.repeatIndex < 2) {
-			this.refreshInfo.repeatIndex++;
-		}
+		this.refreshInfo.repeatIndex++;
 	}
 
 	private hideSlot(): void {
@@ -209,13 +207,7 @@ export class FmrRotator {
 	private scheduleNextSlotPush(): void {
 		if (this.isRefreshLimitAvailable()) {
 			setTimeout(() => {
-				communicationService.emit(eventsRepository.BIDDERS_CALL_PER_GROUP, {
-					group: 'incontent_boxad_2',
-					callback: () => {
-						console.log('hehe?');
-						this.tryPushNextSlot();
-					},
-				});
+				this.tryPushNextSlot();
 			}, this.refreshInfo.refreshDelay);
 		}
 	}
