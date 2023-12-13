@@ -8,6 +8,7 @@ const logGroup = 'slot-repeater';
 export class SlotRepeater {
 	repeatSlot(adSlot: AdSlot, repeatConfig: RepeatConfig): string {
 		const newSlotDefinition = adSlot.getCopy();
+		console.log('NOKIUSZ', { newSlotDefinition });
 		const slotName = stringBuilder.build(repeatConfig.slotNamePattern, {
 			slotConfig: {
 				...newSlotDefinition,
@@ -16,6 +17,8 @@ export class SlotRepeater {
 		});
 
 		newSlotDefinition.slotName = slotName;
+		//@ts-expect-error this will crash
+		newSlotDefinition.bidGroup = 'incontent_boxad_2';
 
 		if (repeatConfig.limit !== null && repeatConfig.index > repeatConfig.limit) {
 			logger(logGroup, `Limit reached for ${slotName}`);
