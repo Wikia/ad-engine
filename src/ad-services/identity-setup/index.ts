@@ -27,6 +27,16 @@ export class IdentitySetup implements DiProcess {
 					targetingService.set('ppid', ppid);
 				}
 
+				targetingService.set(
+					'browser',
+					globalContextService.getValue(GlobalContextCategories.targeting, 'browser'),
+				);
+				const adGroups = globalContextService.getValue(
+					GlobalContextCategories.targeting,
+					'adGroup',
+				) as string;
+				targetingService.set('adGroup', adGroups?.split(',') || []);
+
 				if (context.get('services.identityPartners')) {
 					const segments = globalContextService.getValue(
 						GlobalContextCategories.targeting,

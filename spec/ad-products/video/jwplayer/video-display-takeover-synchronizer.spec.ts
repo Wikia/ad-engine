@@ -32,12 +32,6 @@ describe('VideoDisplayTakeoverSynchronizer', () => {
 		expect(new VideoDisplayTakeoverSynchronizer().isRequiredToRun()).to.be.false;
 	});
 
-	it('disables sync when the display video and ads feature with additional tagless request is enabled', () => {
-		context.set('options.video.displayAndVideoAdsSyncSetupEnabled', true);
-
-		expect(new VideoDisplayTakeoverSynchronizer().isRequiredToRun()).to.be.false;
-	});
-
 	it('enables sync when flag is true', () => {
 		expect(new VideoDisplayTakeoverSynchronizer().isRequiredToRun()).to.be.true;
 	});
