@@ -28,6 +28,7 @@ export class InstantConfigService implements InstantConfigServiceInterface {
 			instantConfigEndpoint: context.get('services.instantConfig.endpoint'),
 			instantConfigVariant: context.get('wiki.services_instantConfig_variant'),
 			instantConfigFallbackEndpoint: context.get('services.instantConfig.fallback'),
+			lockDelay: 0,
 		});
 		const instantConfigInterpreter = new InstantConfigInterpreter(
 			new BrowserMatcher(utils.client.getBrowser()),
