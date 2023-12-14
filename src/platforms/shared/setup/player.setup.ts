@@ -80,8 +80,12 @@ export class PlayerSetup extends BaseServiceSetup {
 	private static initConnatixPlayer(showAds, vastResponse) {
 		utils.logger(logGroup, 'Connatix with ads not controlled by AdEngine enabled');
 
-		const adSlotName = 'featured';
-		const adSlot = slotService.get(adSlotName) || new AdSlot({ id: adSlotName });
+		const videoAdSlotName = 'featured';
+		const adSlot = slotService.get(videoAdSlotName) || new AdSlot({ id: videoAdSlotName });
+
+		if (!slotService.get(videoAdSlotName)) {
+			slotService.add(adSlot);
+		}
 
 		if (vastResponse?.xml) {
 			displayAndVideoAdsSyncContext.setVastRequestedBeforePlayer();
@@ -101,6 +105,14 @@ export class PlayerSetup extends BaseServiceSetup {
 			}
 		});
 
+		communicationService.on(eventsRepository.BIDDERS_BIDDING_DONE, ({ slotName }) => {
+			if (slotName === videoAdSlotName) {
+				PlayerSetup.emitVideoSetupEvent(showAds, adSlot, vastResponse);
+			}
+		});
+	}
+
+	private static emitVideoSetupEvent(showAds, adSlot, vastResponse) {
 		communicationService.emit(eventsRepository.VIDEO_SETUP, {
 			showAds,
 			autoplayDisabled: false,
