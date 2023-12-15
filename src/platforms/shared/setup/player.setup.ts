@@ -1,5 +1,7 @@
 import {
 	AdSlot,
+	AdSlotEvent,
+	AdSlotStatus,
 	BaseServiceSetup,
 	communicationService,
 	context,
@@ -100,6 +102,8 @@ export class PlayerSetup extends BaseServiceSetup {
 					state.vastParams.lineItemId,
 					state.vastParams.creativeId,
 				);
+				adSlot.setStatus(AdSlotStatus.STATUS_SUCCESS);
+				adSlot.emit(AdSlotEvent.VIDEO_AD_IMPRESSION);
 			} else if (['adError', 'play', 'playError'].includes(name)) {
 				videoDisplayTakeoverSynchronizer.resolve();
 			}
