@@ -187,10 +187,11 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				const scrollInterval = 100;
 				const scrollBreakpoint = (playerContainer.offsetTop || 0) + scrollInterval;
 
+				// TODO: this is hacky solution to wait for floating featured video player to be closed, we should use communicationService event instead
 				new utils.WaitFor(
 					() =>
 						window.scrollY > scrollBreakpoint &&
-						!playerContainer.querySelector('div.is-on-scroll-active'),
+						!playerContainer.querySelector('div.is-on-scroll-active, .cnx-float'),
 					noTries,
 					0,
 					retryTimeout,
