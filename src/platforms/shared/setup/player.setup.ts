@@ -33,12 +33,11 @@ export class PlayerSetup extends BaseServiceSetup {
 
 		if (showAds) {
 			utils.logger(logGroup, 'JWP with ads controlled by AdEngine enabled');
+
 			const vastResponse: VastResponseData =
 				displayAndVideoAdsSyncContext.isSyncEnabled() &&
 				displayAndVideoAdsSyncContext.isTaglessRequestEnabled()
-					? await this.vastTaglessRequest.getVast(
-							context.get('options.video.vastRequestTimeout') || 500,
-					  )
+					? await this.vastTaglessRequest.getVast()
 					: undefined;
 
 			if (vastResponse?.xml) {

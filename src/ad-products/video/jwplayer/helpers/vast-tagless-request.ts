@@ -1,4 +1,4 @@
-import { AdSlot, slotService, utils } from '@ad-engine/core';
+import { AdSlot, InstantConfigService, slotService, utils } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
 import { videoDisplayTakeoverSynchronizer } from './video-display-takeover-synchronizer';
 
@@ -14,16 +14,19 @@ export interface VastResponseData {
  */
 @Injectable()
 export class VastTaglessRequest {
-	private logGroup = 'display-and-video-ads-sync';
+	private readonly logGroup = 'display-and-video-ads-sync';
+	private readonly timeout: number;
 
-	constructor(private fetchTimeout: utils.FetchTimeout) {}
+	constructor(private fetchTimeout: utils.FetchTimeout, instantConfig: InstantConfigService) {
+		this.timeout = instantConfig.get('icVastRequestTimeout', 500);
+	}
 
-	async getVast(timeout = 500): Promise<VastResponseData | undefined> {
+	async getVast(): Promise<VastResponseData | undefined> {
 		const vastUrl = this.buildTaglessVideoRequest();
 		utils.logger(this.logGroup, 'Sending a tagless request: ', vastUrl);
 
 		return this.fetchTimeout
-			.fetch(vastUrl, timeout)
+			.fetch(vastUrl, this.timeout)
 			.then((res) => res.text())
 			.then((text) => this.handleTaglessResponse(text))
 			.catch(() => {
