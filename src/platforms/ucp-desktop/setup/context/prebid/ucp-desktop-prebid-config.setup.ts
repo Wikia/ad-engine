@@ -1,5 +1,5 @@
 import { filterVideoBids } from '@platforms/shared';
-import { context, DiProcess } from '@wikia/ad-engine';
+import { context, DiProcess, InstantConfigService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { getAppnexusContext } from '../../../bidders/prebid/appnexus';
 import { getAppnexusAstContext } from '../../../bidders/prebid/appnexus-ast';
@@ -24,14 +24,19 @@ import { getWikiaVideoContext } from '../../../bidders/prebid/wikia-video';
 
 @Injectable()
 export class UcpDesktopPrebidConfigSetup implements DiProcess {
+	constructor(private instantConfig: InstantConfigService) {}
+
 	execute(): void {
+		const icMagniteS2sVideo = !!this.instantConfig.get<boolean>('icMagniteS2sVideo');
+		console.log('icMagniteS2sVideo', icMagniteS2sVideo);
+
 		context.set('bidders.prebid.appnexus', filterVideoBids(getAppnexusContext()));
 		context.set('bidders.prebid.appnexusAst', filterVideoBids(getAppnexusAstContext()));
 		context.set('bidders.prebid.indexExchange', filterVideoBids(getIndexExchangeContext()));
 		context.set('bidders.prebid.freewheel', filterVideoBids(getFreewheelContext()));
 		context.set('bidders.prebid.kargo', filterVideoBids(getKargoContext()));
 		context.set('bidders.prebid.medianet', filterVideoBids(getMedianetContext()));
-		context.set('bidders.prebid.mgnipbs', filterVideoBids(getMagniteS2sContext()));
+		context.set('bidders.prebid.mgnipbs', filterVideoBids(getMagniteS2sContext(icMagniteS2sVideo)));
 		context.set('bidders.prebid.nobid', filterVideoBids(getNobidContext()));
 		context.set('bidders.prebid.openx', filterVideoBids(getOpenXContext()));
 		context.set('bidders.prebid.ozone', filterVideoBids(getOzoneContext()));
