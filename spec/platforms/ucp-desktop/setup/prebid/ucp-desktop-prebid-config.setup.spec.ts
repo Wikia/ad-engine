@@ -1,9 +1,15 @@
-import { context } from '@wikia/core';
+import { context, InstantConfigService } from '@wikia/core';
 import { UcpDesktopPrebidConfigSetup } from '@wikia/platforms/ucp-desktop/setup/context/prebid/ucp-desktop-prebid-config.setup';
 
 import { expect } from 'chai';
 
 describe('ucp-desktop prebid setup', () => {
+	let instantConfigStub;
+
+	before(() => {
+		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
+	});
+
 	after(() => {
 		context.remove('custom.hasFeaturedVideo');
 		context.remove('bidders.prebid');
@@ -11,7 +17,7 @@ describe('ucp-desktop prebid setup', () => {
 
 	it('filters out featured slot when JWP is not on the page', () => {
 		context.set('custom.hasFeaturedVideo', false);
-		const setup = new UcpDesktopPrebidConfigSetup();
+		const setup = new UcpDesktopPrebidConfigSetup(instantConfigStub);
 
 		setup.execute();
 
@@ -21,7 +27,7 @@ describe('ucp-desktop prebid setup', () => {
 
 	it('filters out incontent_player slot when JWP is on the page', () => {
 		context.set('custom.hasFeaturedVideo', true);
-		const setup = new UcpDesktopPrebidConfigSetup();
+		const setup = new UcpDesktopPrebidConfigSetup(instantConfigStub);
 
 		setup.execute();
 
@@ -31,7 +37,7 @@ describe('ucp-desktop prebid setup', () => {
 
 	it('filters out featured slot when JWP is not on the page for bidder with all kinds slots in config', () => {
 		context.set('custom.hasFeaturedVideo', false);
-		const setup = new UcpDesktopPrebidConfigSetup();
+		const setup = new UcpDesktopPrebidConfigSetup(instantConfigStub);
 
 		setup.execute();
 
