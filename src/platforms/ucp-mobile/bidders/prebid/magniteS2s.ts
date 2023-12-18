@@ -33,9 +33,6 @@ export function getMagniteS2sContext(video = false): object {
 					[320, 100],
 				],
 			},
-			featured: {
-				sizes: [[640, 480]],
-			},
 		},
 	};
 
