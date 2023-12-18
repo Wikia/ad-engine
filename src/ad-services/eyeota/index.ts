@@ -40,11 +40,15 @@ export class Eyeota extends BaseServiceSetup {
 		return utils.scriptLoader
 			.loadScript(await this.createScriptSource())
 			.then(() => {
-				communicationService.emit(eventsRepository.EYEOTA_STARTED);
+				communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+					status: 'eyeota_started',
+				});
 				utils.logger(logGroup, 'ready');
 			})
 			.catch(() => {
-				communicationService.emit(eventsRepository.EYEOTA_FAILED);
+				communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+					status: 'eyeota_failed',
+				});
 				throw new Error(`Error occurred while loading ${logGroup}`);
 			});
 	}

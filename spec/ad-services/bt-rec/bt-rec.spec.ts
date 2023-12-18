@@ -7,7 +7,7 @@ describe('BlockThrough recovery', () => {
 	let loadScriptStub;
 
 	beforeEach(() => {
-		loadScriptStub = global.sandbox.stub(utils.scriptLoader, 'loadScript');
+		loadScriptStub = global.sandbox.stub(utils.timedPartnerScriptLoader, 'loadScriptWithStatus');
 		context.set('options.wad.btRec.enabled', true);
 		context.set('options.wad.blocking', true);
 	});
