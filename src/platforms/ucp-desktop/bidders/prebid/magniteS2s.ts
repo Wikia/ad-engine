@@ -43,7 +43,6 @@ export function getMagniteS2sContext(video = false): object {
 	if (!video) {
 		return context;
 	}
-	console.log('icMagniteS2sVideo', context);
 
 	return {
 		...context,

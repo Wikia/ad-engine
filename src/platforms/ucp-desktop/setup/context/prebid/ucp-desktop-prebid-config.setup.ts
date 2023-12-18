@@ -28,7 +28,6 @@ export class UcpDesktopPrebidConfigSetup implements DiProcess {
 
 	execute(): void {
 		const icMagniteS2sVideo = !!this.instantConfig.get<boolean>('icMagniteS2sVideo');
-		console.log('icMagniteS2sVideo', icMagniteS2sVideo);
 
 		context.set('bidders.prebid.appnexus', filterVideoBids(getAppnexusContext()));
 		context.set('bidders.prebid.appnexusAst', filterVideoBids(getAppnexusAstContext()));
