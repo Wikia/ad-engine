@@ -193,17 +193,6 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 				anchorSelector: '#WikiaAdInContentPlaceHolder',
 				insertMethod: 'append',
 				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
-				repeat: {
-					index: 1,
-					limit: 2,
-					slotNamePattern: `${slotNamePrefix}{slotConfig.repeat.index}`,
-					updateProperties: {
-						adProduct: '{slotConfig.slotName}',
-						'targeting.rv': '{slotConfig.repeat.index}',
-						'targeting.pos': ['incontent_boxad'],
-					},
-					disablePushOnScroll: true,
-				},
 			},
 			activator: () => {
 				const rotator = new FmrRotator(slotName, slotNamePrefix, btRec, {
@@ -213,6 +202,23 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 				communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
 					rotator.rotateSlot();
 				});
+			},
+		};
+	}
+
+	getIncontentBoxad2Config(): SlotSetupDefinition {
+		if (!this.isRightRailApplicable()) {
+			return;
+		}
+
+		const slotName = 'incontent_boxad_2';
+
+		return {
+			slotCreatorConfig: {
+				slotName,
+				anchorSelector: '#WikiaAdInContentPlaceHolder',
+				insertMethod: 'append',
+				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 		};
 	}

@@ -76,7 +76,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				},
 			},
 			incontent_boxad_2: {
-				adProduct: 'incontent_boxad_2',
+				adProduct: 'incontent_boxad_1',
 				group: 'HiVi',
 				recirculationElementSelector: '#recirculation-rail',
 				sizes: [],

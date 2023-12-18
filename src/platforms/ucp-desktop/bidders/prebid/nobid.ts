@@ -24,6 +24,14 @@ export function getNobidContext(): object {
 				],
 				siteId: 21872987104,
 			},
+			incontent_boxad_2: {
+				sizes: [
+					[300, 250],
+					[300, 600],
+					[160, 600],
+				],
+				siteId: 21872987104,
+			},
 			bottom_leaderboard: {
 				sizes: [
 					[728, 90],

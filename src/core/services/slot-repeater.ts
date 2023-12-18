@@ -17,8 +17,6 @@ export class SlotRepeater {
 		});
 
 		newSlotDefinition.slotName = slotName;
-		//@ts-expect-error this will crash
-		newSlotDefinition.bidGroup = 'incontent_boxad_2';
 
 		if (repeatConfig.limit !== null && repeatConfig.index > repeatConfig.limit) {
 			logger(logGroup, `Limit reached for ${slotName}`);

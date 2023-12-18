@@ -94,6 +94,10 @@ export class FmrRotator {
 					communicationService.onSlotEvent(
 						AdSlotStatus.STATUS_COLLAPSE,
 						() => {
+							console.log(
+								`%cCOLLAPSE incontent_boxad => getSlotName: ${slot.getSlotName()}`,
+								'background-color:green;color:white;font-weight: 700;',
+							);
 							this.slotStatusChanged(AdSlotStatus.STATUS_COLLAPSE);
 							this.scheduleNextSlotPush();
 						},
@@ -177,6 +181,7 @@ export class FmrRotator {
 
 	private pushNextSlot(): void {
 		context.push('state.adStack', { id: this.nextSlotName });
+		console.log(`%c${this.nextSlotName}`, 'background-color: green; color:white');
 		if (this.refreshInfo.repeatIndex < 2) {
 			this.refreshInfo.repeatIndex++;
 		}
@@ -212,7 +217,6 @@ export class FmrRotator {
 				communicationService.emit(eventsRepository.BIDDERS_CALL_PER_GROUP, {
 					group: 'incontent_boxad_2',
 					callback: () => {
-						console.log('hehe?');
 						this.tryPushNextSlot();
 					},
 				});

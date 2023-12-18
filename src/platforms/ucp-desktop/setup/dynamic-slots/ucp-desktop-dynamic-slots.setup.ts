@@ -61,6 +61,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 		communicationService.on(eventsRepository.RAIL_READY, () => {
 			insertSlots([this.slotsDefinitionRepository.getIncontentBoxadConfig()]);
+			insertSlots([this.slotsDefinitionRepository.getIncontentBoxad2Config()]);
 
 			communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
 				this.performanceAdsDefinitionRepository.setup();
@@ -105,6 +106,10 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				'incontent_boxad_1',
 				universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['5x5'].size,
 			);
+			slotsContext.addSlotSize(
+				'incontent_boxad_2',
+				universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['5x5'].size,
+			);
 		} else {
 			context.set(`slots.${slotName}.sizes`, [
 				{
@@ -113,8 +118,13 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				},
 			]);
 			context.set('slots.incontent_boxad_1.defaultSizes', [[300, 250]]);
+			context.set('slots.incontent_boxad_2.defaultSizes', [[300, 250]]);
 			slotsContext.addSlotSize(
 				'incontent_boxad_1',
+				universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
+			);
+			slotsContext.addSlotSize(
+				'incontent_boxad_2',
 				universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
 			);
 		}

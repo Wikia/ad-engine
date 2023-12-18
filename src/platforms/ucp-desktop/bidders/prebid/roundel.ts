@@ -24,6 +24,14 @@ export function getRoundelContext(): object {
 				],
 				siteId: '820933',
 			},
+			incontent_boxad_2: {
+				sizes: [
+					[160, 600],
+					[300, 600],
+					[300, 250],
+				],
+				siteId: '820933',
+			},
 			bottom_leaderboard: {
 				sizes: [
 					[728, 90],

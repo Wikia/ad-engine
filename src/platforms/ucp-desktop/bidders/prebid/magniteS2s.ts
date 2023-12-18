@@ -25,6 +25,13 @@ export function getMagniteS2sContext(): object {
 					[300, 250],
 				],
 			},
+			incontent_boxad_2: {
+				sizes: [
+					[160, 600],
+					[300, 600],
+					[300, 250],
+				],
+			},
 			bottom_leaderboard: {
 				sizes: [
 					[728, 90],
