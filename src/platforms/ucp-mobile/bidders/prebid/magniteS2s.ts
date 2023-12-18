@@ -1,5 +1,5 @@
 export function getMagniteS2sContext(video = false): object {
-	const context = {
+	const context: any = {
 		enabled: false,
 		accountId: 7450,
 		slots: {
@@ -33,17 +33,15 @@ export function getMagniteS2sContext(video = false): object {
 					[320, 100],
 				],
 			},
+			featured: {
+				sizes: [[640, 480]],
+			},
 		},
 	};
 
 	if (!video) {
-		return context;
+		delete context.slots.featured;
 	}
 
-	return {
-		...context,
-		featured: {
-			sizes: [[640, 480]],
-		},
-	};
+	return context;
 }

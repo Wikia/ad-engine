@@ -31,6 +31,9 @@ export function getMagniteS2sContext(video = false): object {
 					[970, 250],
 				],
 			},
+			featured: {
+				sizes: [[640, 480]],
+			},
 			fandom_dt_galleries: {
 				sizes: [[728, 90]],
 			},
@@ -38,13 +41,8 @@ export function getMagniteS2sContext(video = false): object {
 	};
 
 	if (!video) {
-		return context;
+		delete context.slots.featured;
 	}
 
-	return {
-		...context,
-		featured: {
-			sizes: [[640, 480]],
-		},
-	};
+	return context;
 }
