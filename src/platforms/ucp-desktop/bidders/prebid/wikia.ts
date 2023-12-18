@@ -11,6 +11,9 @@ export function getWikiaContext(): object {
 			incontent_boxad_1: {
 				sizes: [[300, 250]],
 			},
+			incontent_boxad_2: {
+				sizes: [[300, 250]],
+			},
 			incontent_leaderboard: {
 				sizes: [[728, 90]],
 			},

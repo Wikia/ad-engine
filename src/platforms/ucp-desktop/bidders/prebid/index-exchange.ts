@@ -24,6 +24,14 @@ export function getIndexExchangeContext(): object {
 				],
 				siteId: '185049',
 			},
+			incontent_boxad_2: {
+				sizes: [
+					[160, 600],
+					[300, 600],
+					[300, 250],
+				],
+				siteId: '185049',
+			},
 			incontent_leaderboard: {
 				sizes: [[728, 90]],
 				siteId: '1019179',
