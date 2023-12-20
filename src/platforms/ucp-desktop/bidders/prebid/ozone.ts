@@ -33,11 +33,11 @@ export function getOzoneContext(): object {
 				pos: 'OZ_incontent_boxad',
 				placementId: '3500013048',
 			},
-			incontent_boxad_2: {
-				sizes: [[300, 250]],
-				pos: 'OZ_incontent_boxad',
-				placementId: '3500013048',
-			},
+			// incontent_boxad_2: {
+			// 	sizes: [[300, 250]],
+			// 	pos: 'OZ_incontent_boxad',
+			// 	placementId: '3500013048',
+			// },
 			bottom_leaderboard: {
 				sizes: [
 					[728, 90],
