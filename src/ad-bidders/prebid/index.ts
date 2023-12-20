@@ -261,7 +261,9 @@ export class PrebidProvider extends BidderProvider {
 		}
 
 		id5.enableAnalytics(pbjs);
-		communicationService.emit(eventsRepository.ID5_DONE);
+		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+			status: 'id5_done',
+		});
 	}
 
 	private configureSChain(): void {

@@ -33,7 +33,9 @@ class Id5 {
 		}
 
 		utils.logger(logGroup, 'enabled');
-		communicationService.emit(eventsRepository.ID5_START);
+		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+			status: 'id5_start',
+		});
 
 		const id5AbValue: number = context.get('bidders.prebid.id5AbValue');
 		if (id5AbValue) {

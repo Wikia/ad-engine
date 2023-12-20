@@ -29,7 +29,9 @@ export class Experian extends BaseServiceSetup {
 	}
 
 	insertExperianPixel(): void {
-		communicationService.emit(eventsRepository.EXPERIAN_STARTED);
+		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+			status: 'experian_started',
+		});
 		utils.assetLoader.loadPixel(this.getExperianPixelUrl());
 	}
 }

@@ -9,7 +9,7 @@ describe('Duration media service', () => {
 
 	beforeEach(() => {
 		loadScriptStub = global.sandbox
-			.stub(utils.scriptLoader, 'loadScript')
+			.stub(utils.timedPartnerScriptLoader, 'loadScriptWithStatus')
 			.returns(Promise.resolve({} as any));
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		instantConfigStub.get.withArgs('icDurationMedia').returns(undefined);
@@ -45,7 +45,7 @@ describe('Duration media service', () => {
 
 		expect(loadScriptStub.called).to.equal(true);
 		expect(
-			loadScriptStub.calledWith('//example.com/foo', false, null, {
+			loadScriptStub.calledWith('//example.com/foo', 'duration-media', false, null, {
 				id: 'dm-script',
 			}),
 		).to.equal(true);
