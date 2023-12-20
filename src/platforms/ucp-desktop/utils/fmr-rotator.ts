@@ -9,6 +9,7 @@ import {
 	slotService,
 	universalAdPackage,
 	utils,
+	type BTRec,
 } from '@wikia/ad-engine';
 
 interface FmrRotatorConfig {
@@ -32,7 +33,7 @@ export class FmrRotator {
 	constructor(
 		private slotName: string,
 		private fmrPrefix: string,
-		private btRec,
+		private btRec: BTRec,
 		private config: FmrRotatorConfig,
 	) {}
 
@@ -182,8 +183,15 @@ export class FmrRotator {
 
 	private hideSlot(): void {
 		if (context.get('options.floatingMedrecDestroyable')) {
+			if (this.currentAdSlot.getSlotName() === 'incontent_boxad_1') {
+				communicationService.emit(eventsRepository.ICB1_SLOT_DESTROYED);
+			}
+
 			slotService.remove(this.currentAdSlot);
 		} else {
+			if (this.currentAdSlot.getSlotName() === 'incontent_boxad_1') {
+				communicationService.emit(eventsRepository.ICB1_SLOT_DESTROYED);
+			}
 			this.currentAdSlot.hide();
 		}
 
@@ -191,23 +199,28 @@ export class FmrRotator {
 		this.scheduleNextSlotPush();
 	}
 
-	private slotStatusChanged(slotStatus): void {
+	private slotStatusChanged(slotStatus: AdSlotStatus): void {
 		this.currentAdSlot = slotService.get(this.nextSlotName);
-		this.nextSlotName = this.fmrPrefix + this.refreshInfo.repeatIndex;
+		this.nextSlotName = 'incontent_boxad_2';
 
 		if (slotStatus === AdSlotStatus.STATUS_SUCCESS) {
 			this.swapRecirculation(false);
 		}
 	}
 
-	private swapRecirculation(visible): void {
+	private swapRecirculation(visible: boolean): void {
 		this.recirculationElement.style.display = visible ? 'block' : 'none';
 	}
 
 	private scheduleNextSlotPush(): void {
 		if (this.isRefreshLimitAvailable()) {
 			setTimeout(() => {
-				this.tryPushNextSlot();
+				communicationService.emit(eventsRepository.BIDDERS_CALL_PER_GROUP, {
+					group: 'incontent_boxad_2',
+					callback: () => {
+						this.tryPushNextSlot();
+					},
+				});
 			}, this.refreshInfo.refreshDelay);
 		}
 	}
