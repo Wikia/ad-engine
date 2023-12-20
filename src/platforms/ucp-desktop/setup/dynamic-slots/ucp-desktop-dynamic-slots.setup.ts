@@ -66,6 +66,11 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				this.performanceAdsDefinitionRepository.setup();
 			});
 		});
+
+		communicationService.on(eventsRepository.ICB1_SLOT_DESTROYED, () => {
+			insertSlots([this.slotsDefinitionRepository.getIncontentBoxad2Config()]);
+		});
+
 		communicationService.on(
 			eventsRepository.QUIZ_AD_INJECTED,
 			({ slotId }) => {
@@ -105,6 +110,10 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				'incontent_boxad_1',
 				universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['5x5'].size,
 			);
+			slotsContext.addSlotSize(
+				'incontent_boxad_2',
+				universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['5x5'].size,
+			);
 		} else {
 			context.set(`slots.${slotName}.sizes`, [
 				{
@@ -113,8 +122,13 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				},
 			]);
 			context.set('slots.incontent_boxad_1.defaultSizes', [[300, 250]]);
+			context.set('slots.incontent_boxad_2.defaultSizes', [[300, 250]]);
 			slotsContext.addSlotSize(
 				'incontent_boxad_1',
+				universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
+			);
+			slotsContext.addSlotSize(
+				'incontent_boxad_2',
 				universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
 			);
 		}
