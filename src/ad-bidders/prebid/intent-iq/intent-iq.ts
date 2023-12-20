@@ -42,7 +42,9 @@ export class IntentIQ {
 			utils.logger(logGroup, 'disabled');
 			return;
 		}
-		communicationService.emit(eventsRepository.INTENTIQ_START);
+		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+			status: 'intentiq_ppid_not_set_on_time',
+		});
 
 		if (!this.loaded) {
 			await this.preloadScript();
@@ -80,7 +82,9 @@ export class IntentIQ {
 						this.intentIqObject.intentIqConfig.abTesting.currentTestGroup || 'U',
 					);
 				}
-				communicationService.emit(eventsRepository.INTENTIQ_DONE);
+				communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+					status: 'intentiq_done',
+				});
 			});
 		}
 	}
