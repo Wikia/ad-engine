@@ -7,7 +7,7 @@ type BTDetail = { detail: { ab: boolean } };
 /**
  * BT service handler
  */
-class BTRec {
+export class BTRec {
 	/**
 	 * Runs BT rec service and injects code
 	 */
