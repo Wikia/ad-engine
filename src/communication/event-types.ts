@@ -211,6 +211,9 @@ export const eventsRepository = {
 	EYEOTA_FAILED: {
 		name: 'Eyeota loading failed',
 	},
+	ICB1_SLOT_DESTROYED: {
+		name: 'incontent_boxad_1 Ad Slot destroyed',
+	},
 	IDENTITY_ENGINE_READY: {
 		category: '[IdentityEngine]',
 		name: 'Identity ready',
