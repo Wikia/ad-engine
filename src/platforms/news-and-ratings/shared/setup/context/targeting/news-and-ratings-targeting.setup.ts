@@ -73,6 +73,7 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 					mappedAdTags['slug'] = orgValue.split(',')[0] ?? 'null';
 					break;
 				case 'con':
+				case 'platforms':
 					mappedAdTags['pform'] = value;
 					break;
 				case 'franchise':
@@ -88,9 +89,6 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 					break;
 				case 'network':
 					mappedAdTags['tv'] = value;
-					break;
-				case 'platforms':
-					mappedAdTags['pform'] = value;
 					break;
 				case 'publishers':
 					mappedAdTags['pub'] = value;
