@@ -182,16 +182,13 @@ export class FmrRotator {
 	}
 
 	private hideSlot(): void {
-		if (context.get('options.floatingMedrecDestroyable')) {
-			if (this.currentAdSlot.getSlotName() === 'incontent_boxad_1') {
-				communicationService.emit(eventsRepository.ICB1_SLOT_DESTROYED);
-			}
+		if (this.currentAdSlot.getSlotName() === 'incontent_boxad_1') {
+			communicationService.emit(eventsRepository.ICB1_SLOT_DESTROYED);
+		}
 
+		if (context.get('options.floatingMedrecDestroyable')) {
 			slotService.remove(this.currentAdSlot);
 		} else {
-			if (this.currentAdSlot.getSlotName() === 'incontent_boxad_1') {
-				communicationService.emit(eventsRepository.ICB1_SLOT_DESTROYED);
-			}
 			this.currentAdSlot.hide();
 		}
 
@@ -216,7 +213,7 @@ export class FmrRotator {
 		if (this.isRefreshLimitAvailable()) {
 			setTimeout(() => {
 				communicationService.emit(eventsRepository.BIDDERS_CALL_PER_GROUP, {
-					group: 'incontent_boxad_2',
+					group: this.nextSlotName,
 					callback: () => {
 						this.tryPushNextSlot();
 					},

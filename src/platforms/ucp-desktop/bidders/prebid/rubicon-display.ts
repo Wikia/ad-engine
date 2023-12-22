@@ -39,18 +39,6 @@ export function getRubiconDisplayContext(): object {
 				siteId: '148804',
 				zoneId: '704676',
 			},
-			// incontent_boxad_2: {
-			// 	sizes: [
-			// 		[160, 600],
-			// 		[300, 600],
-			// 		[300, 250],
-			// 	],
-			// 	targeting: {
-			// 		loc: ['hivi'],
-			// 	},
-			// 	siteId: '148804',
-			// 	zoneId: '704676',
-			// },
 			bottom_leaderboard: {
 				sizes: [
 					[728, 90],
