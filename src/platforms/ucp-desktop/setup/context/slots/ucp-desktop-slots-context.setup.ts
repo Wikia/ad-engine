@@ -135,11 +135,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				trackEachStatus: true,
 				trackingKey: 'featured-video',
 			},
-			ntv_feed_ad: {
-				providers: ['nativo'],
-				trackEachStatus: true,
-				isNative: true,
-			},
 			quiz_leaderboard_start: {
 				adProduct: 'quiz_leaderboard_start',
 				defaultSizes: [
