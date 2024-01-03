@@ -19,6 +19,7 @@ export interface TrackingParams {
 	ga_label?: string;
 	ga_value?: any;
 	keyvals?: string;
+	topic?: string;
 	label?: string;
 	lc?: string;
 	line_item_id?: number | string;
@@ -27,6 +28,7 @@ export interface TrackingParams {
 	partner_name?: string;
 	partner_identity_id?: string;
 	position?: string;
+	ppid?: string;
 	prop_name?: string;
 	prop_value?: string;
 	pv_number?: number;

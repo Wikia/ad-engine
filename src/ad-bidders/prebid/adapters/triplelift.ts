@@ -26,6 +26,7 @@ export class Triplelift extends PrebidAdapter {
 					sizes,
 				},
 			},
+			ortb2Imp: this.getOrtb2Imp(code),
 			bids: inventoryCodes.map((inventoryCode) => ({
 				bidder: this.bidderName,
 				params: {

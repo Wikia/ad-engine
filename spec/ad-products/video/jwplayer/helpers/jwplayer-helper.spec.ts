@@ -1,7 +1,10 @@
 import { expect } from 'chai';
 
+import { JWPlayerConfig } from '@wikia/ad-products/video/jwplayer/external-types/jwplayer-config';
+import { JWPlayerListItem } from '@wikia/ad-products/video/jwplayer/external-types/jwplayer-list-item';
 import { JWPlayerHelper } from '@wikia/ad-products/video/jwplayer/helpers/jwplayer-helper';
-import { context } from '@wikia/core';
+import { JwpState } from '@wikia/ad-products/video/jwplayer/streams/jwplayer-stream-state';
+import { context, displayAndVideoAdsSyncContext, slotService, VastParams } from '@wikia/core';
 
 type shouldPrerollAppear = boolean;
 type shouldMidrollAppear = boolean;
@@ -9,7 +12,7 @@ type shouldPostrollAppear = boolean;
 type videoTestRow = [shouldPrerollAppear, shouldMidrollAppear, shouldPostrollAppear];
 
 describe('JWPlayerHelper', () => {
-	let adSlotStub, helper;
+	let adSlotStub, jwplayerMock, helper;
 
 	describe('should play pre-, mid- and post-rolls depending on the settings', () => {
 		beforeEach(() => {
@@ -82,4 +85,68 @@ describe('JWPlayerHelper', () => {
 			});
 		}
 	});
+
+	describe('playVideoAd() does two things', () => {
+		const MOCKED_JWP_STATE = createFakeJwpState();
+
+		beforeEach(() => {
+			(adSlotStub = createFakeVideoAdSlot()),
+				(jwplayerMock = {
+					playAd: global.sandbox.stub(),
+				});
+			helper = new JWPlayerHelper(adSlotStub, jwplayerMock, null);
+
+			context.set('options.video.playAdsOnNextVideo', true);
+		});
+
+		afterEach(() => {
+			context.remove('options.video.playAdsOnNextVideo');
+			context.remove('options.video.vastXml');
+		});
+
+		it('plays ad when VAST XML is not set in the context', () => {
+			context.set('options.video.vastXml', undefined);
+			slotService.add(adSlotStub);
+
+			helper.playVideoAd('preroll', MOCKED_JWP_STATE as JwpState);
+
+			expect(jwplayerMock.playAd.called).to.be.true;
+		});
+
+		it('clears vast request context once playVideoAd() called', () => {
+			displayAndVideoAdsSyncContext.setVastRequestedBeforePlayer();
+
+			helper.playVideoAd('preroll', MOCKED_JWP_STATE as JwpState);
+
+			expect(displayAndVideoAdsSyncContext.wasVastRequestedBeforePlayer()).to.be.false;
+			expect(jwplayerMock.playAd.called).to.be.false;
+		});
+	});
+
+	function createFakeJwpState() {
+		return {
+			correlator: 1234567890,
+			depth: 1,
+			vastParams: {} as VastParams,
+			playlistItem: {} as JWPlayerListItem,
+			config: {} as JWPlayerConfig,
+			mute: true,
+			rv: 1,
+			adInVideo: 'preroll',
+		};
+	}
+
+	function createFakeVideoAdSlot() {
+		return {
+			getConfigProperty: global.sandbox.stub().returns({}),
+			getElement: global.sandbox.stub().returns({}),
+			getSlotName: global.sandbox.stub().returns('fake-video-slot'),
+			getTargeting: global.sandbox.stub().returns({}),
+			getVideoAdUnit: global.sandbox.stub().returns(''),
+			getVideoSizes: global.sandbox.stub().returns(undefined),
+			getCustomParameters: global.sandbox.stub().returns(''),
+			isEnabled: global.sandbox.stub().returns(true),
+			setConfigProperty: global.sandbox.stub().returns({}),
+		};
+	}
 });

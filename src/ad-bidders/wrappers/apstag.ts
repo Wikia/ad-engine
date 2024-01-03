@@ -1,18 +1,26 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
+import {
+	CcpaSignalPayload,
+	communicationService,
+	eventsRepository,
+	GdprConsentPayload,
+} from '@ad-engine/communication';
 import {
 	context,
 	externalLogger,
 	targetingService,
+	trackingOptIn,
 	UniversalStorage,
 	Usp,
 	usp,
 	utils,
 } from '@ad-engine/core';
-import { A9Bid, A9BidConfig, A9CCPA, ApstagConfig } from '../a9/types';
+import Cookies from 'js-cookie';
+import { A9Bid, A9BidConfig, A9CCPA, ApstagConfig, ApstagTokenConfig } from '../a9/types';
 
 const logGroup = 'a9-apstag';
 
 export class Apstag {
+	public static AMAZON_TOKEN_TTL = 14 * 24 * 60 * 60 * 1000; // 14 days
 	private static instance: Apstag;
 
 	static make(): Apstag {
@@ -47,11 +55,19 @@ export class Apstag {
 	}
 
 	private insertScript(): void {
-		this.script = this.utils.scriptLoader.loadScript(
+		this.script = utils.scriptLoader.loadScript(
 			'//c.amazon-adsystem.com/aax2/apstag.js',
 			true,
 			'first',
 		);
+	}
+
+	public hasRecord(): boolean {
+		return !!this.storage.getItem('apstagRecord');
+	}
+
+	public getRecord(): string {
+		return this.storage.getItem('apstagRecord');
 	}
 
 	public sendMediaWikiHEM(): void {
@@ -63,17 +79,49 @@ export class Apstag {
 		this.sendHEM(record);
 	}
 
-	public async sendHEM(record: string): Promise<void> {
-		if (this.storage.getItem('apstagHEMsent') === '1' || !context.get('bidders.a9.rpa')) {
+	public async sendHEM(
+		record: string,
+		consents?: GdprConsentPayload & CcpaSignalPayload,
+	): Promise<void> {
+		if (!record) {
+			utils.warner(logGroup, 'Trying to send HEM without source record');
 			return;
 		}
 
-		const tokenConfig = { hashedRecords: [{ type: 'email', record }] };
+		// If delete/cleanup flag is being set, do not create new Amazon Tokens.
+		if (context.get('bidders.a9.hem.cleanup')) {
+			return;
+		}
+
+		// Amazon Tokens feature disabled.
+		if (!context.get('bidders.a9.hem.enabled')) {
+			return;
+		}
+
 		try {
 			await this.script;
-			utils.logger(logGroup, 'Sending HEM to apstag', tokenConfig);
-			window.apstag.rpa(tokenConfig);
-			this.storage.setItem('apstagHEMsent', '1');
+			const optOut =
+				!trackingOptIn.isOptedIn(consents?.gdprConsent) ||
+				trackingOptIn.isOptOutSale(consents?.ccpaSignal);
+			const optOutString = optOut ? '1' : '0';
+			const amazonTokenCreated = !!this.storage.getItem('apstagHEMsent', true);
+			const amazonTokenExpired =
+				amazonTokenCreated && this.storage.getItem('apstagHEMsent', true) < Date.now().toString();
+			const userConsentHasChanged =
+				this.storage.getItem('apstagHEMoptOut', true) &&
+				optOutString !== this.storage.getItem('apstagHEMoptOut', true);
+			const tokenConfig: ApstagTokenConfig = { hashedRecords: [{ type: 'email', record }], optOut };
+			if (userConsentHasChanged) {
+				utils.logger(logGroup, 'Updating user consents', tokenConfig, 'optOut', optOut);
+				window.apstag.upa(tokenConfig);
+			} else if (!amazonTokenCreated || amazonTokenExpired) {
+				utils.logger(logGroup, 'Sending HEM to apstag', tokenConfig, 'optOut', optOut);
+				window.apstag.rpa(tokenConfig);
+			}
+			// Necessary for updating optOut status.
+			this.storage.setItem('apstagRecord', record);
+			this.storage.setItem('apstagHEMsent', (Date.now() + Apstag.AMAZON_TOKEN_TTL).toString());
+			this.storage.setItem('apstagHEMoptOut', optOutString);
 			communicationService.emit(eventsRepository.A9_APSTAG_HEM_SENT);
 		} catch (e) {
 			utils.logger(logGroup, 'Error sending HEM to apstag', e);
@@ -122,6 +170,28 @@ export class Apstag {
 		const apsConfig = this.getApstagConfig(signalData);
 		await this.script;
 		window.apstag.init(apsConfig);
+
+		if (context.get('bidders.a9.hem.cleanup')) {
+			if (Cookies.get('AMZN-Token') || this.storage.getItem('apstagRecord')) {
+				utils.logger(logGroup, 'Cleaning Amazon Token...');
+				window.apstag.dpa();
+				this.storage.removeItem('apstagRecord');
+				this.storage.removeItem('apstagHEMsent');
+				this.storage.removeItem('apstagHEMoptOut');
+				Cookies.remove('AMZN-Token', {
+					path: '/',
+				});
+				return;
+			} else {
+				utils.logger(logGroup, 'Amazon Token already cleaned');
+			}
+		}
+
+		// Check if consent has not been changed between page views.
+		if (this.hasRecord()) {
+			this.sendHEM(this.getRecord());
+		}
+
 		this.sendMediaWikiHEM();
 	}
 
@@ -161,7 +231,7 @@ export class Apstag {
 
 	private getApstagConfig(signalData: SignalData): ApstagConfig {
 		const amazonId = context.get('bidders.a9.amazonId');
-		const ortb2 = targetingService.get('openrtb2', 'openrtb2');
+		const ortb2 = targetingService.get('openrtb2', 'openrtb2') ?? {};
 		externalLogger.log('openrtb2 signals', { signals: JSON.stringify(ortb2) });
 
 		return {

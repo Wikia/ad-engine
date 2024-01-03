@@ -43,4 +43,16 @@ export const basicContext = {
 	},
 	slots: {},
 	src: ['metacritic'],
+	options: {
+		customAdLoader: {
+			globalMethodName: 'loadCustomAd',
+		},
+		preload: {
+			gpt: false,
+			audigent: true,
+			prebid: true,
+			apstag: false,
+			intentIq: true,
+		},
+	},
 };

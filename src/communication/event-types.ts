@@ -92,6 +92,11 @@ export const eventsRepository = {
 		name: 'set opt in',
 		payload: props<GdprConsentPayload & CcpaSignalPayload>(),
 	},
+	AD_ENGINE_CONSENT_UPDATE: {
+		category: '[AdEngine OptIn]',
+		name: 'update opt in',
+		payload: props<GdprConsentPayload & CcpaSignalPayload>(),
+	},
 	AD_ENGINE_GPT_READY: {
 		name: 'GPT Ready',
 	},
@@ -173,49 +178,40 @@ export const eventsRepository = {
 		payload: props<Dictionary>(),
 	},
 	// Integrated partners events //
-	ANYCLIP_READY: {
-		name: 'Anyclip ready',
-	},
-	ANYCLIP_LATE_INJECT: {
-		name: 'Anyclip late inject',
-	},
-	AUDIGENT_SEGMENT_LIBRARY_LOADED: {
-		name: 'Audigent segment library loaded',
-	},
-	AUDIGENT_MATCHES_LIBRARY_LOADED: {
-		name: 'Audigent matches library loaded',
-	},
-	AUDIGENT_SEGMENTS_READY: {
-		name: 'Audigent segments ready',
-	},
-	CAPTIFY_LOADED: {
-		name: 'Captify loaded',
-	},
-	EXPERIAN_STARTED: {
-		name: 'Experian started',
-	},
-	EYEOTA_STARTED: {
-		name: 'Eyeota started',
-	},
-	EYEOTA_FAILED: {
-		name: 'Eyeota loading failed',
-	},
-	IDENTITY_ENGINE_READY: {
-		category: '[IdentityEngine]',
-		name: 'Identity ready',
-	},
 	IDENTITY_PARTNER_DATA_OBTAINED: {
 		name: 'Identity partner data obtained',
 		payload: payload<IdentityDataPayload>(),
 	},
-	INTENTIQ_PPID_NOT_SET_ON_TIME: {
-		name: 'IntentIQ PPID not set on time',
+	PARTNER_LOAD_STATUS: {
+		name: 'Partner load status',
+		payload: props<{ status: string }>(),
 	},
-	INTENTIQ_START: {
-		name: 'IntentIQ start',
+	// Integrated partners events //
+	ANYCLIP_READY: {
+		name: 'Anyclip ready',
 	},
-	INTENTIQ_DONE: {
-		name: 'IntentIQ done',
+	ANYCLIP_START: {
+		name: 'Anyclip start',
+	},
+	ANYCLIP_LATE_INJECT: {
+		name: 'Anyclip late inject',
+	},
+	SYSTEM1_STARTED: {
+		name: 'System1 started',
+	},
+	NO_NATIVE_PREBID_AD: {
+		name: 'No native prebid ad',
+		payload: props<{ slotName: string }>(),
+	},
+	CONNATIX_LATE_INJECT: {
+		name: 'Connatix late inject',
+	},
+	CONNATIX_READY: {
+		name: 'Connatix ready',
+	},
+	NO_NATIVO_AD: {
+		name: 'No nativo ad',
+		payload: props<{ slotName: string }>(),
 	},
 	LIVE_CONNECT_STARTED: {
 		name: 'LiveConnect started',
@@ -226,40 +222,11 @@ export const eventsRepository = {
 	LIVE_CONNECT_RESPONDED_UUID: {
 		name: 'LiveConnect responded with UUID',
 	},
-	NATIVO_LOADED: {
-		name: 'Nativo loaded',
-		payload: props<{ isLoaded: boolean }>(),
+	IDENTITY_ENGINE_READY: {
+		category: '[IdentityEngine]',
+		name: 'Identity ready',
 	},
-	NO_NATIVE_PREBID_AD: {
-		name: 'No native prebid ad',
-		payload: props<{ slotName: string }>(),
-	},
-	NO_NATIVO_AD: {
-		name: 'No nativo ad',
-		payload: props<{ slotName: string }>(),
-	},
-	SYSTEM1_STARTED: {
-		name: 'System1 started',
-	},
-	SYSTEM1_FAILED: {
-		name: 'System1 loading failed',
-	},
-	TIMESTAMP_EVENT: {
-		name: 'Timestamp event',
-		payload: props<{ eventName: string; timestamp: number }>(),
-	},
-	LOTAME_LOADED: {
-		name: 'Lotame loaded',
-	},
-	LOTAME_READY: {
-		name: 'Lotame ready',
-	},
-	ID5_START: {
-		name: 'Id5 start',
-	},
-	ID5_DONE: {
-		name: 'Id5 done',
-	},
+
 	// Platforms events //
 	BINGEBOT_AD_SLOT_INJECTED: {
 		category: '[BingeBot]',
@@ -358,6 +325,11 @@ export const eventsRepository = {
 	BIDDERS_AUCTION_DONE: {
 		category: '[Prebid]',
 		name: 'Auction done',
+	},
+	BIDDERS_CALL_PER_GROUP: {
+		category: '[Prebid]',
+		name: 'Call per group',
+		payload: props<{ group: string; callback: () => void }>(),
 	},
 	// Video events //
 	VIDEO_EVENT: {

@@ -17,14 +17,11 @@ class BTRec {
 
 			return Promise.resolve();
 		}
-
 		this.btDetectionEvents();
 		this.insertSideUnits();
 
 		utils.logger(logGroup, 'loading');
-		await this.loadScript().then(() => {
-			utils.logger(logGroup, 'ready');
-		});
+		await this.loadScript();
 	}
 
 	/**
@@ -64,7 +61,12 @@ class BTRec {
 		const btLibraryUrl =
 			context.get('options.wad.btRec.loaderUrl') || '//btloader.com/tag?h=wikia-inc-com&upapi=true';
 
-		return utils.scriptLoader.loadScript(btLibraryUrl, true, 'first');
+		return utils.timedPartnerScriptLoader.loadScriptWithStatus(
+			btLibraryUrl,
+			logGroup,
+			true,
+			'first',
+		);
 	}
 
 	/**

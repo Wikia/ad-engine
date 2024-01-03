@@ -1,14 +1,10 @@
-import { context, utils } from '@ad-engine/core';
+import { utils } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge, Observable } from 'rxjs';
 import { filter, mergeMap, tap } from 'rxjs/operators';
-import {
-	JWPlayerHelper,
-	JWPlayerHelperSkippingSecondVideo,
-	JwplayerHelperSkippingSponsoredVideo,
-} from '../helpers';
-import { jwPlayerInhibitor } from '../helpers/jwplayer-inhibitor';
+import { JWPlayerHelper, JwplayerHelperSkippingSponsoredVideo } from '../helpers';
 import { PlayerReadyResult } from '../helpers/player-ready-result';
+import { videoDisplayTakeoverSynchronizer } from '../helpers/video-display-takeover-synchronizer';
 import { JwpStream, ofJwpEvent } from '../streams/jwplayer-stream';
 
 const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
@@ -23,7 +19,7 @@ export class JWPlayerHandler {
 
 	handle({ jwplayer, adSlot, targeting, stream$ }: PlayerReadyResult): Observable<unknown> {
 		this.stream$ = stream$;
-		this.helper = this.createHelper(adSlot, jwplayer, targeting);
+		this.helper = new JwplayerHelperSkippingSponsoredVideo(adSlot, jwplayer, targeting);
 
 		return merge(
 			this.adError(),
@@ -34,26 +30,6 @@ export class JWPlayerHandler {
 			this.videoMidPoint(),
 			this.beforeComplete(),
 		);
-	}
-
-	private createHelper(adSlot, jwplayer, targeting) {
-		const videoAdsOnAllVideosExceptSecond = context.get(
-			'options.video.forceVideoAdsOnAllVideosExceptSecond',
-		);
-		const videoAdsOnAllVideosExceptSponsored = context.get(
-			'options.video.forceVideoAdsOnAllVideosExceptSponsored',
-		);
-
-		if (videoAdsOnAllVideosExceptSponsored) {
-			log('Creating JwplayerHelperSkippingSponsoredVideo...');
-			return new JwplayerHelperSkippingSponsoredVideo(adSlot, jwplayer, targeting);
-		} else if (videoAdsOnAllVideosExceptSecond) {
-			log('Creating JWPlayerHelperSkippingSecondVideo...');
-			return new JWPlayerHelperSkippingSecondVideo(adSlot, jwplayer, targeting);
-		} else {
-			log('Creating JWPlayerHelper...');
-			return new JWPlayerHelper(adSlot, jwplayer, targeting);
-		}
 	}
 
 	private adRequest(): Observable<unknown> {
@@ -73,7 +49,10 @@ export class JWPlayerHandler {
 				this.helper.setSlotParams(state.vastParams);
 				this.helper.setSlotElementAttributes('success', state.vastParams);
 				this.helper.emitVideoAdImpression();
-				jwPlayerInhibitor.resolve(state.vastParams.lineItemId, state.vastParams.creativeId);
+				videoDisplayTakeoverSynchronizer.resolve(
+					state.vastParams.lineItemId,
+					state.vastParams.creativeId,
+				);
 			}),
 		);
 	}
@@ -86,7 +65,7 @@ export class JWPlayerHandler {
 				this.helper.setSlotParams(state.vastParams);
 				this.helper.setSlotElementAttributes('error', state.vastParams);
 				this.helper.emitVideoAdError(payload.adErrorCode);
-				jwPlayerInhibitor.resolve();
+				videoDisplayTakeoverSynchronizer.resolve();
 			}),
 		);
 	}
@@ -103,9 +82,18 @@ export class JWPlayerHandler {
 		return this.stream$.pipe(
 			ofJwpEvent('beforePlay'),
 			tap(({ state }) => this.helper.updateVideoProperties(state)),
-			filter(({ state }) =>
-				this.helper.shouldPlayPreroll(state.depth, state?.playlistItem?.mediaid),
-			),
+			filter(({ state }) => {
+				const shouldPlayAd = this.helper.shouldPlayPreroll(
+					state.depth,
+					state?.playlistItem?.mediaid,
+				);
+
+				if (!shouldPlayAd) {
+					videoDisplayTakeoverSynchronizer.resolve();
+				}
+
+				return shouldPlayAd;
+			}),
 			mergeMap((payload) => this.helper.awaitIasTracking(payload)),
 			tap(({ state }) => this.helper.playVideoAd('preroll', state)),
 		);

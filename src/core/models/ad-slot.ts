@@ -32,6 +32,7 @@ export interface SlotConfig extends BaseSlotConfig {
 	uid: string;
 	adProduct: string;
 	bidderAlias: string;
+	a9Alias?: string;
 	disabled?: boolean;
 	firstCall?: boolean;
 	slotName?: string;

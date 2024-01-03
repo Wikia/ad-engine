@@ -1,6 +1,8 @@
 import {
+	CcpaSignalPayload,
 	communicationService,
 	eventsRepository,
+	GdprConsentPayload,
 	TrackingBidDefinition,
 } from '@ad-engine/communication';
 import {
@@ -15,7 +17,13 @@ import {
 	trackingOptIn,
 	utils,
 } from '@ad-engine/core';
-import { getSlotNameByBidderAlias } from '../alias-helper';
+import {
+	defaultSlotBidGroup,
+	getSlotAlias,
+	getSlotAliasOrName,
+	getSlotNameByBidderAlias,
+	hasCorrectBidGroup,
+} from '../bidder-helper';
 import { BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { Apstag } from '../wrappers';
 import { A9Bid, A9Bids, A9Config, A9SlotConfig, A9SlotDefinition, PriceMap } from './types';
@@ -40,13 +48,17 @@ export class A9Provider extends BidderProvider {
 			buyerId: bid.amznp,
 			price: bid.amznbid,
 			size: bid.amznsz,
-			slotName: getSlotNameByBidderAlias(slotName),
+			slotName: getSlotNameByBidderAlias(slotName, true),
 		};
 	}
 
 	public static isEnabled(): boolean {
 		const enabled = context.get('bidders.a9.enabled');
 		return enabled && !utils.isCoppaSubject();
+	}
+
+	public static initApstag() {
+		Apstag.make();
 	}
 
 	private loaded = false;
@@ -61,7 +73,11 @@ export class A9Provider extends BidderProvider {
 	slots: Dictionary<A9SlotConfig>;
 	slotsNames: string[];
 
-	constructor(public bidderConfig: A9Config, public timeout: number = DEFAULT_MAX_DELAY) {
+	constructor(
+		public bidderConfig: A9Config,
+		public timeout: number = DEFAULT_MAX_DELAY,
+		private bidGroup: string = defaultSlotBidGroup,
+	) {
 		super('a9', bidderConfig, timeout);
 
 		this.amazonId = this.bidderConfig.amazonId;
@@ -92,6 +108,24 @@ export class A9Provider extends BidderProvider {
 
 			await this.apstag.init();
 
+			communicationService.on(
+				eventsRepository.AD_ENGINE_CONSENT_UPDATE,
+				(consents: GdprConsentPayload & CcpaSignalPayload) =>
+					this.apstag.sendHEM(this.apstag.getRecord(), consents),
+				false,
+			);
+
+			communicationService.on(
+				eventsRepository.AD_ENGINE_CONSENT_READY,
+				(consents: GdprConsentPayload & CcpaSignalPayload) => {
+					const record = this.apstag.getRecord();
+					if (record) {
+						this.apstag.sendHEM(record, consents);
+					}
+				},
+				false,
+			);
+
 			if (!trackingOptIn.isOptedIn() || trackingOptIn.isOptOutSale()) {
 				utils.logger(logGroup, 'A9 was initialized without consents');
 				communicationService.emit(eventsRepository.A9_WITHOUT_CONSENTS);
@@ -102,7 +136,7 @@ export class A9Provider extends BidderProvider {
 	}
 
 	private removeBids(adSlot: AdSlot): void {
-		const slotAlias = this.getSlotAlias(adSlot.getSlotName());
+		const slotAlias = getSlotAliasOrName(adSlot.getSlotName(), true);
 
 		delete this.bids[slotAlias];
 
@@ -118,7 +152,7 @@ export class A9Provider extends BidderProvider {
 		const currentDate = new Date().getTime();
 
 		if (expirationDate < currentDate) {
-			const slotAlias = this.getSlotAlias(adSlot.getSlotName());
+			const slotAlias = getSlotAliasOrName(adSlot.getSlotName(), true);
 			delete this.bids[slotAlias];
 			this.targetingKeys.forEach((key: string) => {
 				targetingService.remove(key, adSlot.getSlotName());
@@ -131,7 +165,8 @@ export class A9Provider extends BidderProvider {
 	 */
 	getA9SlotsDefinitions(slotsNames: string[]): A9SlotDefinition[] {
 		return slotsNames
-			.map((slotName: string) => this.getSlotAlias(slotName))
+			.filter((slotName: string) => hasCorrectBidGroup(slotName, this.bidGroup, true))
+			.map((slotName: string) => getSlotAliasOrName(slotName, true))
 			.filter((slotAlias: string) => this.isSlotEnabled(slotAlias))
 			.map((slotAlias: string) => this.createSlotDefinition(slotAlias))
 			.filter((slot) => slot !== null);
@@ -213,7 +248,7 @@ export class A9Provider extends BidderProvider {
 
 			slot.addClass(A9Provider.A9_CLASS);
 			utils.logger(logGroup, `bid used for slot ${slotName}`);
-			delete this.bids[this.getSlotAlias(slotName)];
+			delete this.bids[getSlotAliasOrName(slotName, true)];
 
 			this.refreshBid(slot);
 
@@ -239,7 +274,7 @@ export class A9Provider extends BidderProvider {
 		}
 
 		const slotDef: A9SlotDefinition = this.createSlotDefinition(
-			this.getSlotAlias(slot.getSlotName()),
+			getSlotAliasOrName(slot.getSlotName(), true),
 		);
 
 		if (slotDef) {
@@ -252,7 +287,7 @@ export class A9Provider extends BidderProvider {
 	 * Checks if slot should be refreshed.
 	 */
 	private shouldRefreshSlot(slot: AdSlot): boolean {
-		return this.bidsRefreshing.slots.includes(this.getSlotAlias(slot.getSlotName()));
+		return this.bidsRefreshing.slots.includes(getSlotAliasOrName(slot.getSlotName(), true));
 	}
 
 	/**
@@ -341,28 +376,26 @@ export class A9Provider extends BidderProvider {
 	}
 
 	async getBestPrice(slotName: string): Promise<{ a9?: string }> {
-		const slotAlias: string = this.getSlotAlias(slotName);
+		const slotAlias: string = getSlotAliasOrName(slotName, true);
 
 		return this.priceMap[slotAlias] ? { a9: this.priceMap[slotAlias] } : {};
 	}
 
 	async getTargetingParams(slotName: string): Promise<Dictionary> {
-		return this.bids[this.getSlotAlias(slotName)] || {};
+		return this.bids[getSlotAliasOrName(slotName, true)] || {};
 	}
 
 	isSupported(slotName: string): boolean {
-		return !!this.slots[this.getSlotAlias(slotName)];
+		return !!this.slots[getSlotAliasOrName(slotName, true)];
 	}
 
 	/**
 	 * Checks whether given A9 slot definition is used by alias
 	 */
 	private isSlotEnabled(slotID: string): boolean {
-		const someEnabledByAlias: boolean = Object.keys(context.get('slots')).some((slotName) => {
-			const bidderAlias: string = context.get(`slots.${slotName}.bidderAlias`);
-
-			return bidderAlias === slotID && slotService.getState(slotName);
-		});
+		const someEnabledByAlias: boolean = Object.keys(context.get('slots')).some(
+			(slotName) => getSlotAlias(slotName, true) === slotID && slotService.getState(slotName),
+		);
 
 		const slotConfig: SlotConfig = context.get(`slots.${slotID}`);
 

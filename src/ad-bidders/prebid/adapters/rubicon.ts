@@ -46,6 +46,7 @@ export class Rubicon extends PrebidAdapter {
 					protocols: [2, 3, 5, 6],
 				},
 			},
+			ortb2Imp: this.getOrtb2Imp(code),
 			bids: [
 				{
 					bidder: this.bidderName,
