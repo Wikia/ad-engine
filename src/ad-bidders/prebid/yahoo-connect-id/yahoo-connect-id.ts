@@ -15,10 +15,10 @@ interface YahooConnectIdConfig {
 }
 const logGroup = 'YahooConnectId';
 class YahooConnectId {
-	private pixelId = '0000'; // TODO: change to proper pixelId
+	private pixelId = '58833';
 
 	getConfig(): YahooConnectIdConfig {
-		if (context.get('bidders.prebid.yahooConnectId.enabled')) {
+		if (!context.get('bidders.prebid.yahooConnectId.enabled')) {
 			utils.logger(logGroup, 'disabled');
 			return;
 		}
