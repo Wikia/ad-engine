@@ -68,11 +68,5 @@ export class MetricReporter {
 			action: `${state}_${slot.getSlotName()}`,
 			duration: Math.round(utils.getTimeDelta()),
 		});
-
-		// TODO: remove below statement within ADEN-13800
-		this.sender.sendToMeteringSystem({
-			slot: slot.getSlotName(),
-			state,
-		});
 	}
 }

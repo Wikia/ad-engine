@@ -6,11 +6,6 @@ interface EndpointInfo {
 	appName?: string;
 }
 
-export interface MetricReporterSenderSlotData {
-	slot: string;
-	state: string;
-}
-
 export interface MetricReporterSenderTimeData {
 	action?: string;
 	duration?: number;
@@ -18,9 +13,7 @@ export interface MetricReporterSenderTimeData {
 
 export interface MetricReporterSender {
 	activate: () => void;
-	sendToMeteringSystem: (
-		metricData: MetricReporterSenderSlotData | MetricReporterSenderTimeData,
-	) => void;
+	sendToMeteringSystem: (metricData: MetricReporterSenderTimeData) => void;
 }
 
 export class MetricReporterSenderService implements MetricReporterSender {
@@ -30,20 +23,13 @@ export class MetricReporterSenderService implements MetricReporterSender {
 		this.isActive = true;
 	}
 
-	public sendToMeteringSystem(
-		metricData: MetricReporterSenderSlotData | MetricReporterSenderTimeData,
-	): void {
+	public sendToMeteringSystem(metricData: MetricReporterSenderTimeData): void {
 		if (!this.isActive) {
 			return;
 		}
 
 		const endpointInfo = this.getEndpointInfoFromContext();
-		let endpointUrl = this.getEndpointUrlFor('time', endpointInfo);
-
-		// TODO: remove below condition within ADEN-13800
-		if (this.isMetricSlotData(metricData)) {
-			endpointUrl = this.getEndpointUrlFor('slot', endpointInfo);
-		}
+		const endpointUrl = this.getEndpointUrlFor('time', endpointInfo);
 
 		const queryParams = [];
 		Object.entries(metricData).forEach(([k, v]) => {
@@ -58,11 +44,6 @@ export class MetricReporterSenderService implements MetricReporterSender {
 				mode: 'no-cors',
 			},
 		);
-	}
-
-	// TODO: remove below func within ADEN-13800
-	private isMetricSlotData(item: any): item is MetricReporterSenderSlotData {
-		return item.slot && item.state;
 	}
 
 	private getEndpointInfoFromContext(): EndpointInfo {
