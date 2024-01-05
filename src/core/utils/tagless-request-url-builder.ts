@@ -84,7 +84,7 @@ export function buildVastUrl(
 	options: Partial<VastOptions> = {},
 ): string {
 	const params: string[] = [
-		'output=vast',
+		'output=xml_vast4',
 		'env=vp',
 		'gdfp_req=1',
 		'impl=s',

@@ -67,7 +67,7 @@ describe('tagless-request-url-builder', () => {
 	it('build VAST URL with required DFP parameters', () => {
 		const vastUrl = buildVastUrl(1, 'top_leaderboard');
 
-		expect(vastUrl.match(/output=vast&/g)).to.be.ok;
+		expect(vastUrl.match(/output=xml_vast4&/g)).to.be.ok;
 		expect(vastUrl.match(/&env=vp&/g)).to.be.ok;
 		expect(vastUrl.match(/&gdfp_req=1&/g)).to.be.ok;
 		expect(vastUrl.match(/&impl=s&/g)).to.be.ok;

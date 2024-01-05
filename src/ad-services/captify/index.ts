@@ -39,7 +39,9 @@ export class Captify extends BaseServiceSetup {
 		const elem = utils.scriptLoader.createScript(captifyPixelUrl, false, section);
 
 		elem.onload = () => {
-			communicationService.emit(eventsRepository.CAPTIFY_LOADED);
+			communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+				status: 'captify_loaded',
+			});
 			utils.logger(logGroup, 'loaded');
 		};
 	}

@@ -37,11 +37,10 @@ export class PlayerSetup extends BaseServiceSetup {
 	async call() {
 		const showAds = !context.get('options.wad.blocking');
 		const vastResponse: VastResponseData =
+			showAds &&
 			displayAndVideoAdsSyncContext.isSyncEnabled() &&
 			displayAndVideoAdsSyncContext.isTaglessRequestEnabled()
-				? await this.vastTaglessRequest.getVast(
-						context.get('options.video.vastRequestTimeout') || 500,
-				  )
+				? await this.vastTaglessRequest.getVast()
 				: undefined;
 		const connatixInstreamEnabled = !!this.instantConfig.get('icConnatixInstream');
 

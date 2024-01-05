@@ -1,3 +1,4 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { context, slotService, utils } from '@ad-engine/core';
 import { PorvataPlayer } from '../../porvata-player';
 import { PorvataSettings } from '../../porvata-settings';
@@ -35,6 +36,9 @@ class IasVideoTracker implements PorvataPlugin {
 	}
 
 	init(player: PorvataPlayer, settings: PorvataSettings): Promise<void> {
+		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+			status: 'ias_start',
+		});
 		return this.load().then(() => {
 			const config: IasConfig = context.get('options.video.iasTracking.config');
 			const slotName = settings.getSlotName();
@@ -52,6 +56,10 @@ class IasVideoTracker implements PorvataPlugin {
 				player.dom.getVideoContainer(),
 				config,
 			);
+
+			communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+				status: 'ias_done',
+			});
 		});
 	}
 }
