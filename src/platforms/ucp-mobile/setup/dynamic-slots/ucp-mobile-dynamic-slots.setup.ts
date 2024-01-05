@@ -188,6 +188,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				const scrollBreakpoint = (playerContainer.offsetTop || 0) + scrollInterval;
 
 				// TODO: this is hacky solution to wait for floating featured video player to be closed, we should use communicationService event instead
+				// ticket to fix it: https://fandom.atlassian.net/browse/COTECH-963
 				new utils.WaitFor(
 					() =>
 						window.scrollY > scrollBreakpoint &&
