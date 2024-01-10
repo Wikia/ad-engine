@@ -1,0 +1,121 @@
+name: Change Log & release generator
+
+on:
+  push:
+    tags:
+      - '*' # <= Action launched with every new tag.
+jobs:
+  create-changelog-and-release:
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Get current tag
+        id: get-current-tag
+        run: echo "CURRENT_TAG=$(git describe --tags)" >> $GITHUB_ENV
+      - name: Get previous tag
+        id: get-previous-tag
+        run: echo "PREVIOUS_TAG=$(git describe --tags --abbrev=0 --first-parent HEAD^)" >> $GITHUB_ENV
+      - name: Build Changelog
+        id: github_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: mikepenz/release-changelog-builder-action@v4
+        with:
+          fromTag: ${{ env.PREVIOUS_TAG }}
+          toTag: ${{ env.CURRENT_TAG }}
+          configurationJson: | #<= configuration for merged PR only, we don't want Open PR to find its way to the change log.
+            {
+              "categories": [
+                {
+                  "key": "minor-change",
+                  "title": "## **🚀 Minor Change**",
+                  "labels": ["Minor change"]
+                },
+                {
+                  "key": "major-change",
+                  "title": "## **💥 Major change**",
+                  "labels": ["Major change"]
+                },
+                {
+                  "key": "patch-change",
+                  "title": "## ** ⚡️ Patch change**",
+                  "labels": ["Patch change"]
+                },
+                {
+                  "key": "bug-fixes",
+                  "title": "## ** 🐛 Bug fixes**",
+                  "labels": ["Bug"]
+                },
+                {
+                  "key": "tests",
+                  "title": "## **🧪 Tests**",
+                  "labels": ["test"]
+                },
+                {
+                  "key": "experiment",
+                  "title": "## **⏳ Experiments**",
+                  "labels": ["experiment"]
+                },
+                {
+                  "key": "docs",
+                  "title": "## **📖 Documentations**",
+                  "labels": ["docs"]
+                },
+                {
+                  "key": "github_workflow",
+                  "title": "## **🤖 Github Workflows**",
+                  "labels": ["github_actions"]
+                }
+              ],
+              "ignore_labels": [
+                "dependencies"
+              ],
+              "sort": {
+                "order": "DESC",
+                "on_property": "mergedAt"
+              },
+              "template": "#{{CHANGELOG}}\n\nUncategorized: \n\n#{{UNCATEGORIZED}}\n",
+              "pr_template": "- **#{{TITLE}} (PR: ##{{NUMBER}})**\n\t Created By : #{{AUTHOR}}\n\t Merged At : #{{MERGED_AT}}"
+            }
+      - name: Create a release note
+        uses: mikepenz/action-gh-release@v0.2.0-a03 # after each Tag we add a new release
+        with:
+          body: ${{steps.github_release.outputs.changelog}}
+      - name: Send changelog notification to slack
+        id: slack
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": "GitHub Changelog generation notification",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*<http://github.com/${{ github.repository }}| Ad Engine> changelog generation was : ${{ job.status }}*"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Release Tag* : ${{steps.github_release.outputs.fromTag}} -> ${{steps.github_release.outputs.toTag}}, with *${{steps.github_release.outputs.changes}}* line changes"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Release Change Log* : <http://github.com/${{ github.repository}}/releases/tag/${{steps.github_release.outputs.toTag}}|${{ github.repository}}/releases/tag/${{steps.github_release.outputs.toTag}}>"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.RELEASE_LOG_SLACK_INCOMING_WEBHOOK }} # incoming webhook that sends data to #release-log channel.
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
