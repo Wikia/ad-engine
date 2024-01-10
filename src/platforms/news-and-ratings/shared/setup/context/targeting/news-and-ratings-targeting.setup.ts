@@ -63,42 +63,42 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 			return;
 		}
 
-		const mappedAdTags = {};
+		const mappedAdTags: TargetingParams = {};
 
 		for (const [key, orgValue] of Object.entries(adTagsToMap)) {
 			const value = NewsAndRatingsTargetingSetup.splitMultiValueTag(orgValue);
 
-			if (key === 'cid') {
-				mappedAdTags['slug'] = orgValue.split(',')[0] ?? 'null';
-				continue;
+			switch (key) {
+				case 'cid':
+					mappedAdTags['slug'] = orgValue.split(',')[0] ?? 'null';
+					break;
+				case 'con':
+				case 'platforms':
+					mappedAdTags['pform'] = value;
+					break;
+				case 'franchise':
+					mappedAdTags['franchise_nr'] = value;
+					break;
+				case 'franchiseRoot':
+				case 'franchises':
+					mappedAdTags['franchise'] = value;
+					break;
+				case 'genre':
+				case 'genres':
+					mappedAdTags['gnre'] = value;
+					break;
+				case 'network':
+					mappedAdTags['tv'] = value;
+					break;
+				case 'publishers':
+					mappedAdTags['pub'] = value;
+					break;
+				case 'themes':
+					mappedAdTags['theme'] = value;
+					break;
+				default:
+					mappedAdTags[key] = value;
 			}
-
-			if (key === 'con') {
-				mappedAdTags['pform'] = value;
-				continue;
-			}
-
-			if (key === 'genre') {
-				mappedAdTags['gnre'] = value;
-				continue;
-			}
-
-			if (key === 'network') {
-				mappedAdTags['tv'] = value;
-				continue;
-			}
-
-			if (key === 'franchise') {
-				mappedAdTags['franchise_nr'] = value;
-				continue;
-			}
-
-			if (key === 'franchiseRoot') {
-				mappedAdTags['franchise'] = value;
-				continue;
-			}
-
-			mappedAdTags[key] = value;
 		}
 
 		return mappedAdTags;
