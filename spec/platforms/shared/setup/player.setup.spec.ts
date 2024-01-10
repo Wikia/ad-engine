@@ -4,7 +4,7 @@ import { communicationService } from '@wikia/communication';
 import { context, InstantConfigService } from '@wikia/core';
 import { PlayerSetup } from '@wikia/platforms/shared';
 import { expect } from 'chai';
-import { SinonSpy } from 'sinon';
+import { SinonSpy, stub } from 'sinon';
 
 describe('PlayerSetup', () => {
 	let dispatch: SinonSpy;
@@ -95,5 +95,26 @@ describe('PlayerSetup', () => {
 		expect(dispatch.withArgs(expectedDispatchArg).calledOnce);
 		expect(dispatch.lastCall.args[0].showAds).to.be.false;
 		expect(dispatch.lastCall.args[0].vastXml).to.be.undefined;
+	});
+
+	it('should dispatch jwpSetup action with VAST URL when strategy rules are enabled', () => {
+		context.set('options.video.enableStrategyRules', true);
+
+		const expectedDispatchArg = {
+			showAds: true,
+			autoplayDisabled: false,
+			strategyRulesEnabled: true,
+			vastUrl: 'some_test_vast_url',
+			type: '[Ad Engine] Setup JWPlayer',
+			__global: true,
+		};
+
+		stub(subject as any, 'generateVastUrlForJWPlayer').returns('some_test_vast_url');
+
+		dispatch = global.sandbox.spy(communicationService, 'dispatch');
+
+		subject.call();
+
+		expect(dispatch.withArgs(expectedDispatchArg).calledOnce);
 	});
 });
