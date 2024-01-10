@@ -12,7 +12,7 @@ import {
 } from '../services';
 import { decorate, defer, isCoppaSubject, logger } from '../utils';
 import { GptSizeMap } from './gpt-size-map';
-import { setupGptTargeting } from './gpt-targeting';
+import { initGptTargeting } from './gpt-targeting';
 import { Provider } from './provider';
 
 const logGroup = 'gpt-provider';
@@ -188,7 +188,7 @@ export class GptProvider implements Provider {
 			return;
 		}
 
-		setupGptTargeting();
+		initGptTargeting();
 		configure();
 		this.setupRestrictDataProcessing();
 		this.setPPID();
