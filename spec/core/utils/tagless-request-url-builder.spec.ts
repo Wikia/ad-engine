@@ -198,6 +198,33 @@ describe('tagless-request-url-builder', () => {
 		expect(vastUrl.match(custParams)).to.not.be.ok;
 	});
 
+	it('builds VAST URL with bidders targeting params', () => {
+		const biddersParams = /&hb_.*=/;
+		const optionsWithBiddersTargeting = { targeting: { hb_param1: 'value1', hb_param2: 'value2' } };
+		const optionsWithoutBiddersTargeting = { targeting: { some_param: 'any value' } };
+		const optionsWithoutTargeting = {};
+
+		const urlWithBiddersTargetingParams = buildVastUrl(
+			1,
+			'top_leaderboard',
+			optionsWithBiddersTargeting,
+		);
+		const firstUrlWithoutBiddersTargetingParams = buildVastUrl(
+			1,
+			'top_leaderboard',
+			optionsWithoutBiddersTargeting,
+		);
+		const secondUrlWithoutBiddersTargetingParams = buildVastUrl(
+			1,
+			'top_leaderboard',
+			optionsWithoutTargeting,
+		);
+
+		expect(urlWithBiddersTargetingParams.match(biddersParams)).to.be.ok;
+		expect(firstUrlWithoutBiddersTargetingParams.match(biddersParams)).to.not.be.ok;
+		expect(secondUrlWithoutBiddersTargetingParams.match(biddersParams)).to.not.be.ok;
+	});
+
 	it('build tagless URL with DFP domain', () => {
 		const taglessUrl = buildTaglessRequestUrl();
 

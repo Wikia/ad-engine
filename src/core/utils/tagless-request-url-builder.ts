@@ -132,6 +132,12 @@ export function buildVastUrl(
 		params.push(`pmad=${options.numberOfAds}`);
 	}
 
+	if (options.targeting) {
+		Object.keys(options.targeting)
+			.filter((param) => param.startsWith('hb_'))
+			.forEach((param) => params.push(`${param}=${options.targeting[param]}`));
+	}
+
 	params.push(`rdp=${trackingOptIn.isOptOutSale() ? 1 : 0}`);
 
 	return vastBaseUrl + params.join('&');
