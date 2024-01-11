@@ -10,7 +10,7 @@ npm install github:Wikia/ad-engine
 
 ## Platforms
 
-- `npm run dev:platforms` - to serve ad-engine platforms code (UCP, Futhead, Muthead) on port 9000
+- `npm run dev:platforms` - to serve ad-engine platforms code (UCP, Futhead, Muthead) on port 9000 (you can use it on the page with `?adengine_version=local`)
 - `npm run build:platforms` - to create production build of platforms ad-engine code
 
 ## Available packages
