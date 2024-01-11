@@ -1,30 +1,7 @@
 import { targetingService } from '../services';
 
-export function setupGptTargeting(): void {
-	const tag = window.googletag.pubads();
-
-	function setTargetingValue(
-		key: string,
-		value: string | string[] | (() => string | string[]),
-	): void {
-		if (typeof value === 'undefined' || value === null) {
-			tag.clearTargeting(key);
-		} else if (typeof value === 'function') {
-			tag.setTargeting(key, value());
-		} else {
-			tag.setTargeting(key, value);
-		}
-	}
-
-	function setTargeting(): void {
-		const targeting = targetingService.dump() || {};
-
-		Object.keys(targeting).forEach((key) => {
-			setTargetingValue(key, targeting[key]);
-		});
-	}
-
-	setTargeting();
+export function initGptTargeting(): void {
+	updateGptTargeting();
 
 	targetingService.onChange((trigger, value) => {
 		// trigger=null means that whole targeting
@@ -37,4 +14,27 @@ export function setupGptTargeting(): void {
 			setTargetingValue(trigger, value);
 		}
 	});
+}
+
+export function updateGptTargeting(): void {
+	const targeting = targetingService.dump() || {};
+
+	Object.keys(targeting).forEach((key) => {
+		setTargetingValue(key, targeting[key]);
+	});
+}
+
+function setTargetingValue(
+	key: string,
+	value: string | string[] | (() => string | string[]),
+): void {
+	const tag = window.googletag.pubads();
+
+	if (typeof value === 'undefined' || value === null) {
+		tag.clearTargeting(key);
+	} else if (typeof value === 'function') {
+		tag.setTargeting(key, value());
+	} else {
+		tag.setTargeting(key, value);
+	}
 }

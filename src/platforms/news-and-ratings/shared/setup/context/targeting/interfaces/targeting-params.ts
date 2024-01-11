@@ -10,18 +10,20 @@ export interface TargetingParams extends CookieBasedTargetingParams {
 	category?: string;
 	contentid_nr?: string;
 	collection?: string;
-	franchise?: string;
+	franchise?: string | string[];
 	franchiseRoot?: string;
 	game?: string;
-	gnre?: string;
+	gnre?: string | string[];
 	env?: string;
-	pform?: string;
+	pform?: string | string[];
 	publisher?: string;
+	pub?: string | string[];
 	ptype?: string;
 	rating?: string;
 	rdate?: string;
 	score?: string;
-	tv?: string;
+	theme?: string | string[];
+	tv?: string | string[];
 	user?: string;
 	vguid?: string;
 }

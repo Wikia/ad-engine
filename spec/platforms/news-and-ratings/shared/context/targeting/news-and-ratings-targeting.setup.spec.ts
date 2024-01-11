@@ -99,15 +99,19 @@ describe('News and Ratings Targeting Setup', () => {
 			const parsedAdTags = {
 				cid: 'test-cid',
 				con: 'test-con',
+				franchises: 'test-fra,test-fra2',
 				genre: 'test-genre',
 				network: 'test-network',
+				score: '78',
 				user: 'test-user',
 			};
 
 			const expectedMappedAdTags = {
 				slug: 'test-cid',
 				pform: 'test-con',
+				franchise: ['test-fra', 'test-fra2'],
 				gnre: 'test-genre',
+				score: '78',
 				tv: 'test-network',
 				user: 'test-user',
 			};
