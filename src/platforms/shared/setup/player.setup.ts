@@ -21,6 +21,17 @@ import { Injectable } from '@wikia/dependency-injection';
 
 const logGroup = 'player-setup';
 
+const OPTIMIZELY_STRATEGY_RULES_EXPERIMENT = {
+	EXPERIMENT_ENABLED: 'strategy_rules',
+	EXPERIMENT_VARIANT: 'strategy_rules_variant',
+};
+
+const OPTIMIZELY_STRATEGY_RULES_EXPERIMENT_VARIANTS = {
+	DISABLED: 'strategy_rules_disabled',
+	ENABLED: 'strategy_rules_enabled',
+	UNDEFINED: 'strategy_rules_undefined',
+};
+
 @Injectable()
 export class PlayerSetup extends BaseServiceSetup {
 	constructor(
@@ -35,6 +46,8 @@ export class PlayerSetup extends BaseServiceSetup {
 	}
 
 	async call() {
+		this.setupOptimizelyExperiment();
+
 		const showAds = !context.get('options.wad.blocking');
 		const vastResponse: VastResponseData =
 			showAds &&
@@ -52,6 +65,8 @@ export class PlayerSetup extends BaseServiceSetup {
 	private initJWPlayer(showAds, vastResponse) {
 		utils.logger(logGroup, 'JWP with ads controlled by AdEngine enabled');
 
+		const strategyRulesEnabled = context.get('options.video.enableStrategyRules');
+
 		if (vastResponse?.xml) {
 			displayAndVideoAdsSyncContext.setVastRequestedBeforePlayer();
 			utils.logger(logGroup, 'display and video sync response available');
@@ -59,12 +74,26 @@ export class PlayerSetup extends BaseServiceSetup {
 
 		this.jwpManager.manage();
 
-		if (showAds) {
+		if (showAds && !strategyRulesEnabled) {
 			communicationService.dispatch(
 				jwpSetup({
 					showAds,
 					autoplayDisabled: false,
 					vastXml: vastResponse?.xml,
+				}),
+			);
+		} else if (strategyRulesEnabled) {
+			utils.logger(
+				logGroup,
+				'JWP Strategy Rules enabled - AdEngine does not control ads in JWP anymore',
+			);
+			this.jwpManager.manage();
+			communicationService.dispatch(
+				jwpSetup({
+					showAds,
+					autoplayDisabled: false,
+					vastUrl: VastTaglessRequest.buildTaglessVideoRequest(),
+					strategyRulesEnabled,
 				}),
 			);
 		} else {
@@ -123,5 +152,24 @@ export class PlayerSetup extends BaseServiceSetup {
 			targetingParams: utils.getCustomParameters(adSlot, {}, false),
 			vastXml: vastResponse?.xml,
 		});
+	}
+
+	private setupOptimizelyExperiment() {
+		this.optimizely.addVariantToTargeting(
+			OPTIMIZELY_STRATEGY_RULES_EXPERIMENT,
+			OPTIMIZELY_STRATEGY_RULES_EXPERIMENT_VARIANTS.UNDEFINED,
+		);
+
+		const variant = this.optimizely.getVariant(OPTIMIZELY_STRATEGY_RULES_EXPERIMENT);
+
+		if (!variant) {
+			return;
+		}
+
+		this.optimizely.addVariantToTargeting(OPTIMIZELY_STRATEGY_RULES_EXPERIMENT, variant);
+		context.set(
+			'options.video.enableStrategyRules',
+			variant === OPTIMIZELY_STRATEGY_RULES_EXPERIMENT_VARIANTS.ENABLED,
+		);
 	}
 }
