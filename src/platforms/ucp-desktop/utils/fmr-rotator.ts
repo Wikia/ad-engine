@@ -36,6 +36,12 @@ export class FmrRotator {
 		private config: FmrRotatorConfig,
 	) {}
 
+	static isApplicable(slotName: string): boolean {
+		return (
+			document.querySelector(context.get(`slots.${slotName}.recirculationElementSelector`)) !== null
+		);
+	}
+
 	rotateSlot(): void {
 		this.nextSlotName = this.slotName;
 		this.recirculationElement = document.querySelector(

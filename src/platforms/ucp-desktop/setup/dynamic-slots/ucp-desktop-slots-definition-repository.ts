@@ -18,6 +18,7 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { BasicRotator } from '../../utils/basic-rotator';
 import { FmrRotator } from '../../utils/fmr-rotator';
 
 const OPTIMIZELY_ANYCLIP_PLACEMENT_EXPERIMENT = {
@@ -206,12 +207,19 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 				},
 			},
 			activator: () => {
-				const rotator = new FmrRotator(slotName, slotNamePrefix, btRec, {
-					topPositionToRun: 65,
-				});
-
 				communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
-					rotator.rotateSlot();
+					if (FmrRotator.isApplicable(slotName)) {
+						const rotator = new FmrRotator(slotName, slotNamePrefix, btRec, {
+							topPositionToRun: 65,
+						});
+						rotator.rotateSlot();
+					} else {
+						const rotator = new BasicRotator(slotName, slotNamePrefix, {
+							topPositionToRun: 65,
+						});
+
+						rotator.rotateSlot();
+					}
 				});
 			},
 		};
