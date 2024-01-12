@@ -177,8 +177,8 @@ export const eventsRepository = {
 		name: 'Ad clicked',
 		payload: props<Dictionary>(),
 	},
-	ICB1_SLOT_DESTROYED: {
-		name: 'incontent_boxad_1 Ad Slot destroyed',
+	ICB_SLOT_DESTROYED: {
+		name: 'Ad Slot incontent_boxad_* destroyed',
 	},
 	// Integrated partners events //
 	IDENTITY_PARTNER_DATA_OBTAINED: {
