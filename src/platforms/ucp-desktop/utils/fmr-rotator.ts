@@ -178,6 +178,10 @@ export class FmrRotator {
 	}
 
 	private pushNextSlot(): void {
+		if (!this.isRefreshLimitAvailable()) {
+			return;
+		}
+
 		utils.logger(
 			'incontent_boxad_count',
 			`repeatIndex/repeatLimit: ${this.refreshInfo.repeatIndex} / ${this.refreshInfo.repeatLimit}`,
@@ -187,12 +191,11 @@ export class FmrRotator {
 	}
 
 	private removeSlot(): void {
-		if (!this.currentAdSlot) {
-			return;
+		if (this.currentAdSlot) {
+			slotService.remove(this.currentAdSlot);
+			this.currentAdSlot.getElement().remove();
 		}
 
-		this.currentAdSlot.destroy();
-		this.currentAdSlot.getElement().remove();
 		this.swapRecirculation(true);
 		setTimeout(() => {
 			communicationService.emit(eventsRepository.ICB_SLOT_DESTROYED);
