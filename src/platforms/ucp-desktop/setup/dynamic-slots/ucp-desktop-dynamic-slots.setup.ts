@@ -67,9 +67,13 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			});
 		});
 
-		communicationService.on(eventsRepository.ICB1_SLOT_DESTROYED, () => {
-			insertSlots([this.slotsDefinitionRepository.getIncontentBoxad2Config()]);
-		});
+		communicationService.on(
+			eventsRepository.ICB_SLOT_DESTROYED,
+			() => {
+				insertSlots([this.slotsDefinitionRepository.getIncontentBoxad2Config()]);
+			},
+			false,
+		);
 
 		communicationService.on(
 			eventsRepository.QUIZ_AD_INJECTED,
