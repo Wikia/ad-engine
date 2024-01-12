@@ -95,7 +95,8 @@ export class FmrRotator {
 					communicationService.onSlotEvent(
 						AdSlotStatus.STATUS_COLLAPSE,
 						() => {
-							// this.slotStatusChanged(AdSlotStatus.STATUS_COLLAPSE);
+							this.slotStatusChanged(AdSlotStatus.STATUS_COLLAPSE);
+
 							this.removeSlot();
 						},
 						slot.getSlotName(),
@@ -192,12 +193,12 @@ export class FmrRotator {
 
 		this.currentAdSlot.destroy();
 		this.currentAdSlot.getElement().remove();
+		this.swapRecirculation(true);
 		setTimeout(() => {
 			communicationService.emit(eventsRepository.ICB_SLOT_DESTROYED);
 
-			this.swapRecirculation(true);
 			this.scheduleNextSlotPush();
-		}, 1000);
+		}, 2000);
 	}
 
 	private slotStatusChanged(slotStatus: AdSlotStatus): void {
