@@ -1,5 +1,4 @@
 import {
-	AdSlot,
 	AdSlotEvent,
 	AdSlotStatus,
 	communicationService,
@@ -7,6 +6,7 @@ import {
 	eventsRepository,
 	scrollListener,
 	slotService,
+	targetingService,
 	universalAdPackage,
 	utils,
 	type BTRec,
@@ -18,7 +18,7 @@ interface FmrRotatorConfig {
 
 export class FmrRotator {
 	private nextSlotName: string;
-	private currentAdSlot: AdSlot;
+	private currentAdSlot = slotService.get(this.slotName);
 	private recirculationElement: HTMLElement;
 	private refreshInfo = {
 		recSlotViewed: 2000,
@@ -81,7 +81,7 @@ export class FmrRotator {
 								() => {
 									const customDelays = context.get('options.rotatorDelay');
 									setTimeout(() => {
-										this.hideSlot();
+										this.removeSlot();
 									}, customDelays[slot.lineItemId] || this.refreshInfo.refreshDelay);
 								},
 								slot.getSlotName(),
@@ -177,23 +177,27 @@ export class FmrRotator {
 	}
 
 	private pushNextSlot(): void {
+		utils.logger(
+			'incontent_boxad_count',
+			`repeatIndex/repeatLimit: ${this.refreshInfo.repeatIndex} / ${this.refreshInfo.repeatLimit}`,
+		);
 		context.push('state.adStack', { id: this.nextSlotName });
 		this.refreshInfo.repeatIndex++;
 	}
 
-	private hideSlot(): void {
-		if (this.currentAdSlot.getSlotName() === 'incontent_boxad_1') {
-			communicationService.emit(eventsRepository.ICB1_SLOT_DESTROYED);
+	private removeSlot(): void {
+		if (!this.currentAdSlot) {
+			return;
 		}
 
-		if (context.get('options.floatingMedrecDestroyable')) {
-			slotService.remove(this.currentAdSlot);
-		} else {
-			this.currentAdSlot.hide();
-		}
+		this.currentAdSlot.destroy();
+		this.currentAdSlot.getElement().remove();
+		setTimeout(() => {
+			communicationService.emit(eventsRepository.ICB_SLOT_DESTROYED);
 
-		this.swapRecirculation(true);
-		this.scheduleNextSlotPush();
+			this.swapRecirculation(true);
+			this.scheduleNextSlotPush();
+		}, 1000);
 	}
 
 	private slotStatusChanged(slotStatus: AdSlotStatus): void {
@@ -209,14 +213,18 @@ export class FmrRotator {
 		this.recirculationElement.style.display = visible ? 'block' : 'none';
 	}
 
+	private callBidders(callback: () => void) {
+		communicationService.emit(eventsRepository.BIDDERS_CALL_PER_GROUP, {
+			group: 'incontent_boxad_2',
+			callback: callback,
+		});
+	}
+
 	private scheduleNextSlotPush(): void {
 		if (this.isRefreshLimitAvailable()) {
 			setTimeout(() => {
-				communicationService.emit(eventsRepository.BIDDERS_CALL_PER_GROUP, {
-					group: this.nextSlotName,
-					callback: () => {
-						this.tryPushNextSlot();
-					},
+				this.callBidders(() => {
+					this.tryPushNextSlot();
 				});
 			}, this.refreshInfo.refreshDelay);
 		}
@@ -227,6 +235,7 @@ export class FmrRotator {
 	}
 
 	private tryPushNextSlot(): void {
+		targetingService.set('icb_idx', this.refreshInfo.repeatIndex, this.nextSlotName);
 		this.runNowOrOnScroll(this.isInViewport.bind(this), this.pushNextSlot.bind(this));
 	}
 }
