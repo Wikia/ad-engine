@@ -218,7 +218,7 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 				slotName,
 				anchorSelector: '#WikiaAdInContentPlaceHolder',
 				insertMethod: 'append',
-				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
+				classList: ['ad-slot'],
 			},
 		};
 	}
