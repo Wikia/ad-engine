@@ -6,7 +6,9 @@ import { SinonSpy, SinonStub } from 'sinon';
 
 describe('InstantConfigSetup', () => {
 	let container;
-	const instantConfigService = new InstantConfigService();
+	const instantConfigService = new InstantConfigService({
+		appName: 'testapp',
+	});
 	let containerBindStub: SinonStub;
 	let containerValueSpy: SinonSpy;
 
@@ -17,6 +19,12 @@ describe('InstantConfigSetup', () => {
 		containerBindStub = global.sandbox.stub(container, 'bind').returns({
 			value: containerValueSpy,
 		} as unknown as Binding<any>);
+		window.ads = {
+			...window.ads,
+			context: {
+				app: 'testapp',
+			},
+		};
 	});
 
 	it('should bind InstantConfigService to container', async () => {
