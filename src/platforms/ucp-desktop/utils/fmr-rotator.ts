@@ -95,8 +95,8 @@ export class FmrRotator {
 					communicationService.onSlotEvent(
 						AdSlotStatus.STATUS_COLLAPSE,
 						() => {
-							this.slotStatusChanged(AdSlotStatus.STATUS_COLLAPSE);
-							this.scheduleNextSlotPush();
+							// this.slotStatusChanged(AdSlotStatus.STATUS_COLLAPSE);
+							this.removeSlot();
 						},
 						slot.getSlotName(),
 						true,
