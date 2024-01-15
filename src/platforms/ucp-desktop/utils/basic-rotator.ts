@@ -1,4 +1,5 @@
 import {
+	AdSlotStatus,
 	communicationService,
 	context,
 	eventsRepository,
@@ -39,11 +40,18 @@ export class BasicRotator {
 					return;
 				}
 
-				setInterval(() => {
-					slot.destroy();
-					slot.getElement().remove();
-					this.pushNextSlot();
-				}, this.refreshInfo.refreshInterval);
+				communicationService.onSlotEvent(
+					AdSlotStatus.STATUS_SUCCESS,
+					() => {
+						setTimeout(() => {
+							slot.destroy();
+							slot.getElement().remove();
+							this.pushNextSlot();
+						}, this.refreshInfo.refreshInterval);
+					},
+					slot.getSlotName(),
+					true,
+				);
 			},
 			false,
 		);
