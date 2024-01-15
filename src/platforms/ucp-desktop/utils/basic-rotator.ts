@@ -43,6 +43,10 @@ export class BasicRotator {
 				communicationService.onSlotEvent(
 					AdSlotStatus.STATUS_SUCCESS,
 					() => {
+						if (this.isItTheLastOne()) {
+							return;
+						}
+
 						setTimeout(() => {
 							slot.destroy();
 							slot.getElement().remove();
@@ -100,6 +104,10 @@ export class BasicRotator {
 			scrollListener.removeCallback(this.rotatorListener);
 			this.rotatorListener = null;
 		}
+	}
+
+	private isItTheLastOne(): boolean {
+		return !context.get(`slots.${this.slotNamePrefix}${this.refreshInfo.repeatIndex}`);
 	}
 
 	private pushNextSlot(): void {
