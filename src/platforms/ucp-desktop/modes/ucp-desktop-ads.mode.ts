@@ -1,4 +1,4 @@
-import { AdEngineStackSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
+import { AdEngineStackSetup, GptSetup, PlayerSetup, WadRunner, VideoPlayerSetup } from '@platforms/shared';
 import {
 	Anyclip,
 	Ats,
@@ -22,7 +22,6 @@ import {
 	Wunderkind,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import {VideoPlayerSetup} from "../../shared/setup/video-player.setup";
 
 @Injectable()
 export class UcpDesktopAdsMode implements DiProcess {
