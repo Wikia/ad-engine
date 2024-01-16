@@ -8,7 +8,7 @@ const logGroup = 'player-setup';
 export class VideoPlayerSetup extends BaseServiceSetup {
 
     async execute(): Promise<void> {
-        communicationService.on(eventsRepository.PLAYER_READY, () => {
+        communicationService.on(eventsRepository.VIDEO_PLAYER_RENDERED, () => {
             this.loadIasTrackerIfEnabled();
         })
     }
