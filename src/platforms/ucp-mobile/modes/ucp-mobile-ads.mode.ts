@@ -22,6 +22,7 @@ import {
 	Wunderkind,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import {VideoPlayerSetup} from "../../shared/setup/video-player.setup";
 
 @Injectable()
 export class UcpMobileAdsMode implements DiProcess {
@@ -40,6 +41,7 @@ export class UcpMobileAdsMode implements DiProcess {
 		private iasPublisherOptimization: IasPublisherOptimization,
 		private openWeb: OpenWeb,
 		private playerSetup: PlayerSetup,
+		private videoPlayerSetup: VideoPlayerSetup,
 		private prebidNativeProvider: PrebidNativeProvider,
 		private stroer: Stroer,
 		private system1: System1,
@@ -68,6 +70,7 @@ export class UcpMobileAdsMode implements DiProcess {
 				this.playerSetup.setOptions({
 					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
 				}),
+				this.videoPlayerSetup,
 				this.gptSetup,
 				this.doubleVerify,
 				this.adEngineStackSetup.setOptions({
