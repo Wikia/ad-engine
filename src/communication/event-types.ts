@@ -342,9 +342,9 @@ export const eventsRepository = {
 		name: 'Video player tracking',
 		payload: props<{ eventInfo: object }>(),
 	},
-	PLAYER_READY: {
+	VIDEO_AD_READY: {
 		category: '[Video]',
-		name: 'Player ready',
+		name: 'Ad ready',
 		payload: props<{ videoEvent: object }>(),
 	},
 	// Events emitted by Google Ad Manager creatives //
