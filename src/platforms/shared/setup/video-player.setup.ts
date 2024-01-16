@@ -1,5 +1,6 @@
 import {BaseServiceSetup, communicationService, context, eventsRepository, utils} from "@wikia/ad-engine";
-import {iasVideoTracker} from "../../../ad-products/video/porvata/plugins/ias/ias-video-tracker";
+// eslint-disable-next-line no-restricted-imports
+import { iasVideoTracker } from "../../../ad-products/video/porvata/plugins/ias/ias-video-tracker";
 import {Injectable} from "@wikia/dependency-injection";
 
 const logGroup = 'player-setup';
