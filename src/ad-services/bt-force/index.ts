@@ -20,9 +20,7 @@ class BTForce {
 		this.insertSideUnits();
 
 		utils.logger(logGroup, 'loading');
-		await this.loadScript().then(() => {
-			utils.logger(logGroup, 'ready');
-		});
+		await this.loadScript();
 	}
 
 	btDetectionEvents() {
@@ -61,7 +59,12 @@ class BTForce {
 	 */
 	private loadScript(): Promise<Event> {
 		const btLibraryUrl = 'https://btloader.com/tag?o=5199505043488768&upapi=true';
-		return utils.scriptLoader.loadScript(btLibraryUrl, true, 'first');
+		return utils.timedPartnerScriptLoader.loadScriptWithStatus(
+			btLibraryUrl,
+			logGroup,
+			true,
+			'first',
+		);
 	}
 
 	private insertSideUnits(): void {

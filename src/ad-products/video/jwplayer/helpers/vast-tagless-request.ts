@@ -1,5 +1,6 @@
-import { AdSlot, slotService, utils } from '@ad-engine/core';
+import { AdSlot, InstantConfigService, slotService, utils } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
+import { Bidders } from '../../../../ad-bidders';
 import { videoDisplayTakeoverSynchronizer } from './video-display-takeover-synchronizer';
 
 export interface VastResponseData {
@@ -14,16 +15,23 @@ export interface VastResponseData {
  */
 @Injectable()
 export class VastTaglessRequest {
-	private logGroup = 'display-and-video-ads-sync';
+	private readonly logGroup = 'display-and-video-ads-sync';
+	private readonly timeout: number;
 
-	constructor(private fetchTimeout: utils.FetchTimeout) {}
+	constructor(
+		private fetchTimeout: utils.FetchTimeout,
+		instantConfig: InstantConfigService,
+		private bidders: Bidders,
+	) {
+		this.timeout = instantConfig.get('icVastRequestTimeout', 500);
+	}
 
-	async getVast(timeout = 500): Promise<VastResponseData | undefined> {
-		const vastUrl = this.buildTaglessVideoRequest();
+	async getVast(): Promise<VastResponseData | undefined> {
+		const vastUrl = await this.buildTaglessVideoRequest();
 		utils.logger(this.logGroup, 'Sending a tagless request: ', vastUrl);
 
 		return this.fetchTimeout
-			.fetch(vastUrl, timeout)
+			.fetch(vastUrl, this.timeout)
 			.then((res) => res.text())
 			.then((text) => this.handleTaglessResponse(text))
 			.catch(() => {
@@ -45,7 +53,7 @@ export class VastTaglessRequest {
 		}
 	}
 
-	private buildTaglessVideoRequest() {
+	private async buildTaglessVideoRequest(): Promise<string> {
 		const aspectRatio = 16 / 9;
 		const slotName = 'featured';
 		const position = 'preroll';
@@ -54,8 +62,11 @@ export class VastTaglessRequest {
 		if (!slotService.get(slotName)) {
 			slotService.add(adSlot);
 		}
-
-		return utils.buildVastUrl(aspectRatio, adSlot.getSlotName(), { vpos: position });
+		const biddersTargeting = await this.bidders.getBidParameters(slotName);
+		return utils.buildVastUrl(aspectRatio, slotName, {
+			vpos: position,
+			targeting: biddersTargeting,
+		});
 	}
 
 	private getFirstAdFromTaglessResponse(textXml: string): VastResponseData {

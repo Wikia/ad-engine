@@ -130,6 +130,10 @@ export class PrebidProvider extends BidderProvider {
 				video: videoGranularity,
 				'video-outstream': videoGranularity,
 			},
+			ozone: {
+				enhancedAdserverTargeting: false,
+				oz_whitelist_adserver_keys: [],
+			},
 			rubicon: {
 				singleRequest: true,
 			},
@@ -257,7 +261,9 @@ export class PrebidProvider extends BidderProvider {
 		}
 
 		id5.enableAnalytics(pbjs);
-		communicationService.emit(eventsRepository.ID5_DONE);
+		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+			status: 'id5_done',
+		});
 	}
 
 	private configureSChain(): void {

@@ -37,7 +37,10 @@ export class Lotame extends BaseServiceSetup {
 			},
 			config: {
 				clientId: this.CLIENT_ID,
-				onTagReady: () => communicationService.emit(eventsRepository.LOTAME_READY),
+				onTagReady: () =>
+					communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+						status: 'lotame_ready',
+					}),
 			},
 		};
 
@@ -49,6 +52,6 @@ export class Lotame extends BaseServiceSetup {
 
 		utils.logger(this.logGroup, 'pixel enabled');
 		await utils.scriptLoader.loadScript(this.PIXEL_URL);
-		communicationService.emit(eventsRepository.LOTAME_LOADED);
+		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, { status: 'lotame_loaded' });
 	}
 }

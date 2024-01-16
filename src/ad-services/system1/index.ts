@@ -156,12 +156,12 @@ export class System1 extends BaseServiceSetup {
 
 	private onSetupResolve(): void {
 		utils.logger(logGroup, 'completed');
-		communicationService.emit(eventsRepository.SYSTEM1_STARTED);
+		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, { status: 'system1_loaded' });
 	}
 
 	private onSetupRejected(message: string): void {
 		utils.logger(logGroup, 'Error: ' + message);
-		communicationService.emit(eventsRepository.SYSTEM1_FAILED);
+		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, { status: 'system1_failed' });
 	}
 
 	private isBot(): boolean {

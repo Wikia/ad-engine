@@ -14,7 +14,7 @@ describe('Confiant', () => {
 	beforeEach(() => {
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		loadScriptStub = global.sandbox
-			.stub(utils.scriptLoader, 'loadScript')
+			.stub(utils.timedPartnerScriptLoader, 'loadScriptWithStatus')
 			.returns(Promise.resolve({} as any));
 
 		confiant = new Confiant(instantConfigStub);
