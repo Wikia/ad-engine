@@ -1,4 +1,5 @@
 import {
+	AdSlot,
 	AdSlotStatus,
 	communicationService,
 	context,
@@ -12,6 +13,8 @@ interface RotatorConfig {
 }
 
 export class BasicRotator {
+	private logGroup = 'basic-rotator';
+
 	private rotatorListener: string;
 	private slotContainer: HTMLElement;
 	private refreshInfo = {
@@ -23,6 +26,7 @@ export class BasicRotator {
 		repeatLimit: 20,
 		refreshInterval: 30000,
 	};
+	private currentSlotName = '';
 
 	constructor(
 		private slotName: string,
@@ -30,6 +34,7 @@ export class BasicRotator {
 		private config: RotatorConfig,
 	) {
 		this.slotContainer = document.querySelector(`#${this.slotName}`);
+		utils.logger(this.logGroup, 'initialized');
 	}
 
 	rotateSlot(): void {
@@ -43,15 +48,17 @@ export class BasicRotator {
 				communicationService.onSlotEvent(
 					AdSlotStatus.STATUS_SUCCESS,
 					() => {
-						if (this.isRotationFinished()) {
-							return;
-						}
-
-						setTimeout(() => {
-							slot.destroy();
-							slot.getElement().remove();
-							this.pushNextSlot();
-						}, this.refreshInfo.refreshInterval);
+						utils.logger(this.logGroup, 'success detected', slot.getSlotName());
+						this.rotationCallbackAction(slot);
+					},
+					slot.getSlotName(),
+					true,
+				);
+				communicationService.onSlotEvent(
+					AdSlotStatus.STATUS_COLLAPSE,
+					() => {
+						utils.logger(this.logGroup, 'collapse detected', slot.getSlotName());
+						this.rotationCallbackAction(slot);
 					},
 					slot.getSlotName(),
 					true,
@@ -61,6 +68,29 @@ export class BasicRotator {
 		);
 
 		this.startFirstRotation();
+	}
+
+	private rotationCallbackAction(slot: AdSlot): void {
+		if (this.currentSlotName === slot.getSlotName()) {
+			return;
+		}
+
+		if (this.isRotationFinished()) {
+			utils.logger(this.logGroup, 'rotation finished');
+			return;
+		}
+
+		utils.logger(
+			this.logGroup,
+			'rotation scheduled',
+			`${this.slotNamePrefix}${this.refreshInfo.repeatIndex}`,
+		);
+		this.currentSlotName = slot.getSlotName();
+		setTimeout(() => {
+			slot.destroy();
+			slot.getElement().remove();
+			this.pushNextSlot();
+		}, this.refreshInfo.refreshInterval);
 	}
 
 	private startFirstRotation(): void {
