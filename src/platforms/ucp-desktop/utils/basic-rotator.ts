@@ -43,7 +43,7 @@ export class BasicRotator {
 				communicationService.onSlotEvent(
 					AdSlotStatus.STATUS_SUCCESS,
 					() => {
-						if (this.isItTheLastOne()) {
+						if (this.isRotationFinished()) {
 							return;
 						}
 
@@ -106,7 +106,7 @@ export class BasicRotator {
 		}
 	}
 
-	private isItTheLastOne(): boolean {
+	private isRotationFinished(): boolean {
 		return !context.get(`slots.${this.slotNamePrefix}${this.refreshInfo.repeatIndex}`);
 	}
 

@@ -208,7 +208,7 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 			},
 			activator: () => {
 				communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
-					if (FmrRotator.isApplicable(slotName)) {
+					if (this.isApplicable(slotName)) {
 						const rotator = new FmrRotator(slotName, slotNamePrefix, btRec, {
 							topPositionToRun: 65,
 						});
@@ -223,6 +223,12 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 				});
 			},
 		};
+	}
+
+	private isApplicable(slotName: string): boolean {
+		return (
+			document.querySelector(context.get(`slots.${slotName}.recirculationElementSelector`)) !== null
+		);
 	}
 
 	private isRightRailApplicable(rightRailBreakingPoint = 1024): boolean {
