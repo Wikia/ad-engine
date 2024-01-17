@@ -1,4 +1,7 @@
 import {
+	AdSlot,
+	AdSlotEvent,
+	AdSlotStatus,
 	BaseServiceSetup,
 	communicationService,
 	context,
@@ -8,15 +11,28 @@ import {
 	JWPlayerManager,
 	jwpSetup,
 	Optimizely,
+	slotService,
 	utils,
 	VastResponseData,
 	VastTaglessRequest,
+	videoDisplayTakeoverSynchronizer,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 // eslint-disable-next-line no-restricted-imports
 import { iasVideoTracker } from '../../../ad-products/video/porvata/plugins/ias/ias-video-tracker';
 
 const logGroup = 'player-setup';
+
+const OPTIMIZELY_STRATEGY_RULES_EXPERIMENT = {
+	EXPERIMENT_ENABLED: 'strategy_rules',
+	EXPERIMENT_VARIANT: 'strategy_rules_variant',
+};
+
+const OPTIMIZELY_STRATEGY_RULES_EXPERIMENT_VARIANTS = {
+	DISABLED: 'strategy_rules_disabled',
+	ENABLED: 'strategy_rules_enabled',
+	UNDEFINED: 'strategy_rules_undefined',
+};
 
 @Injectable()
 export class PlayerSetup extends BaseServiceSetup {
@@ -38,21 +54,35 @@ export class PlayerSetup extends BaseServiceSetup {
 	}
 
 	async call() {
+		this.setupOptimizelyExperiment();
+
 		const showAds = !context.get('options.wad.blocking');
+		const vastResponse: VastResponseData =
+			showAds &&
+			displayAndVideoAdsSyncContext.isSyncEnabled() &&
+			displayAndVideoAdsSyncContext.isTaglessRequestEnabled()
+				? await this.vastTaglessRequest.getVast()
+				: undefined;
+		const connatixInstreamEnabled = !!this.instantConfig.get('icConnatixInstream');
 
-		if (showAds) {
-			utils.logger(logGroup, 'JWP with ads controlled by AdEngine enabled');
+		connatixInstreamEnabled
+			? PlayerSetup.initConnatixPlayer(showAds, vastResponse)
+			: this.initJWPlayer(showAds, vastResponse);
+	}
 
-			const vastResponse: VastResponseData =
-				displayAndVideoAdsSyncContext.isSyncEnabled() &&
-				displayAndVideoAdsSyncContext.isTaglessRequestEnabled()
-					? await this.vastTaglessRequest.getVast()
-					: undefined;
+	private async initJWPlayer(showAds, vastResponse) {
+		utils.logger(logGroup, 'JWP with ads controlled by AdEngine enabled');
 
-			if (vastResponse?.xml) {
-				displayAndVideoAdsSyncContext.setVastRequestedBeforePlayer();
-			}
-			this.jwpManager.manage();
+		const strategyRulesEnabled = context.get('options.video.enableStrategyRules');
+
+		if (vastResponse?.xml) {
+			displayAndVideoAdsSyncContext.setVastRequestedBeforePlayer();
+			utils.logger(logGroup, 'display and video sync response available');
+		}
+
+		this.jwpManager.manage();
+
+		if (showAds && !strategyRulesEnabled) {
 			communicationService.dispatch(
 				jwpSetup({
 					showAds,
@@ -60,12 +90,25 @@ export class PlayerSetup extends BaseServiceSetup {
 					vastXml: vastResponse?.xml,
 				}),
 			);
-		} else {
-			utils.logger(logGroup, 'ad block detected, without ads');
+		} else if (strategyRulesEnabled) {
+			utils.logger(
+				logGroup,
+				'JWP Strategy Rules enabled - AdEngine does not control ads in JWP anymore',
+			);
 			this.jwpManager.manage();
 			communicationService.dispatch(
 				jwpSetup({
-					showAds: false,
+					showAds,
+					autoplayDisabled: false,
+					vastUrl: await this.vastTaglessRequest.buildTaglessVideoRequest(),
+					strategyRulesEnabled,
+				}),
+			);
+		} else {
+			utils.logger(logGroup, 'ad block detected, without ads');
+			communicationService.dispatch(
+				jwpSetup({
+					showAds,
 					autoplayDisabled: false,
 				}),
 			);
@@ -77,5 +120,71 @@ export class PlayerSetup extends BaseServiceSetup {
 			utils.logger(logGroup, 'Loading IAS tracker for video player');
 			iasVideoTracker.load();
 		}
+  }
+  
+	private static initConnatixPlayer(showAds, vastResponse) {
+		utils.logger(logGroup, 'Connatix with ads not controlled by AdEngine enabled');
+
+		const videoAdSlotName = 'featured';
+		const adSlot = slotService.get(videoAdSlotName) || new AdSlot({ id: videoAdSlotName });
+
+		if (!slotService.get(videoAdSlotName)) {
+			slotService.add(adSlot);
+		}
+
+		if (vastResponse?.xml) {
+			displayAndVideoAdsSyncContext.setVastRequestedBeforePlayer();
+			utils.logger(logGroup, 'display and video sync response available');
+		}
+
+		communicationService.on(eventsRepository.VIDEO_EVENT, (payload) => {
+			const { name, state } = payload.videoEvent;
+
+			if (name === 'adImpression') {
+				videoDisplayTakeoverSynchronizer.resolve(
+					state.vastParams.lineItemId,
+					state.vastParams.creativeId,
+				);
+				adSlot.setStatus(AdSlotStatus.STATUS_SUCCESS);
+				adSlot.emit(AdSlotEvent.VIDEO_AD_IMPRESSION);
+			} else if (['adError', 'play', 'playError'].includes(name)) {
+				videoDisplayTakeoverSynchronizer.resolve();
+			}
+		});
+
+		communicationService.on(eventsRepository.BIDDERS_BIDDING_DONE, ({ slotName }) => {
+			if (slotName === videoAdSlotName) {
+				PlayerSetup.emitVideoSetupEvent(showAds, adSlot, vastResponse);
+			}
+		});
+	}
+
+	private static emitVideoSetupEvent(showAds, adSlot, vastResponse) {
+		communicationService.emit(eventsRepository.VIDEO_SETUP, {
+			showAds,
+			autoplayDisabled: false,
+			videoAdUnitPath: adSlot.getVideoAdUnit(),
+			targetingParams: utils.getCustomParameters(adSlot, {}, false),
+			vastXml: vastResponse?.xml,
+		});
+	}
+
+	private setupOptimizelyExperiment() {
+		this.optimizely.addVariantToTargeting(
+			OPTIMIZELY_STRATEGY_RULES_EXPERIMENT,
+			OPTIMIZELY_STRATEGY_RULES_EXPERIMENT_VARIANTS.UNDEFINED,
+		);
+
+		const variant = this.optimizely.getVariant(OPTIMIZELY_STRATEGY_RULES_EXPERIMENT);
+
+		if (!variant) {
+			return;
+		}
+
+		this.optimizely.addVariantToTargeting(OPTIMIZELY_STRATEGY_RULES_EXPERIMENT, variant);
+		context.set(
+			'options.video.enableStrategyRules',
+			variant === OPTIMIZELY_STRATEGY_RULES_EXPERIMENT_VARIANTS.ENABLED,
+		);
 	}
 }
