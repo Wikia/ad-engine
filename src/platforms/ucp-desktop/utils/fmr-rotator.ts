@@ -29,7 +29,7 @@ export class FmrRotator {
 		repeatLimit: 20,
 	};
 	private rotatorListener: string;
-
+	// private isFirstSlotAdded = true;
 	constructor(
 		private slotName: string,
 		private fmrPrefix: string,
@@ -54,55 +54,67 @@ export class FmrRotator {
 		communicationService.on(
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
 			({ slot }) => {
-				if (slot.getSlotName().substring(0, this.fmrPrefix.length) === this.fmrPrefix) {
-					if (
-						universalAdPackage.isFanTakeoverLoaded() ||
-						context.get('state.provider') === 'prebidium'
-					) {
+				if (slot.getSlotName().substring(0, this.fmrPrefix.length) !== this.fmrPrefix) {
+					return;
+				}
+
+				// if (slot.getSlotName() == 'incontent_boxad_2') {
+				// 	if (this.isFirstSlotAdded) {
+				// 		this.isFirstSlotAdded = false;
+				// 	} else {
+				// 		return;
+				// 	}
+				// }
+
+				if (
+					universalAdPackage.isFanTakeoverLoaded() ||
+					context.get('state.provider') === 'prebidium'
+				) {
+					communicationService.onSlotEvent(
+						AdSlotStatus.STATUS_SUCCESS,
+						() => {
+							this.swapRecirculation(false);
+						},
+						slot.getSlotName(),
+						true,
+					);
+
+					return;
+				}
+
+				communicationService.onSlotEvent(
+					AdSlotStatus.STATUS_SUCCESS,
+					() => {
+						console.log('%cincontent_boxad_ STATUS_SUCCESS called', 'background-color:green;');
+
+						this.slotStatusChanged(AdSlotStatus.STATUS_SUCCESS);
+
 						communicationService.onSlotEvent(
-							AdSlotStatus.STATUS_SUCCESS,
+							AdSlotEvent.SLOT_VIEWED_EVENT,
 							() => {
-								this.swapRecirculation(false);
+								const customDelays = context.get('options.rotatorDelay');
+								setTimeout(() => {
+									this.removeSlot();
+								}, customDelays[slot.lineItemId] || this.refreshInfo.refreshDelay);
 							},
 							slot.getSlotName(),
 							true,
 						);
+					},
+					slot.getSlotName(),
+					true,
+				);
 
-						return;
-					}
+				communicationService.onSlotEvent(
+					AdSlotStatus.STATUS_COLLAPSE,
+					() => {
+						this.slotStatusChanged(AdSlotStatus.STATUS_COLLAPSE);
 
-					communicationService.onSlotEvent(
-						AdSlotStatus.STATUS_SUCCESS,
-						() => {
-							this.slotStatusChanged(AdSlotStatus.STATUS_SUCCESS);
-
-							communicationService.onSlotEvent(
-								AdSlotEvent.SLOT_VIEWED_EVENT,
-								() => {
-									const customDelays = context.get('options.rotatorDelay');
-									setTimeout(() => {
-										this.removeSlot();
-									}, customDelays[slot.lineItemId] || this.refreshInfo.refreshDelay);
-								},
-								slot.getSlotName(),
-								true,
-							);
-						},
-						slot.getSlotName(),
-						true,
-					);
-
-					communicationService.onSlotEvent(
-						AdSlotStatus.STATUS_COLLAPSE,
-						() => {
-							this.slotStatusChanged(AdSlotStatus.STATUS_COLLAPSE);
-
-							this.removeSlot();
-						},
-						slot.getSlotName(),
-						true,
-					);
-				}
+						this.removeSlot();
+					},
+					slot.getSlotName(),
+					true,
+				);
 			},
 			false,
 		);
@@ -119,7 +131,6 @@ export class FmrRotator {
 
 	private initializeBTRotation(): void {
 		this.pushNextSlot();
-
 		let recirculationVisible = false;
 
 		setInterval(() => {
@@ -191,17 +202,16 @@ export class FmrRotator {
 	}
 
 	private removeSlot(): void {
-		if (this.currentAdSlot) {
-			slotService.remove(this.currentAdSlot);
-			this.currentAdSlot.getElement().remove();
+		if (!this.currentAdSlot) {
+			return;
 		}
 
-		this.swapRecirculation(true);
-		setTimeout(() => {
-			communicationService.emit(eventsRepository.ICB_SLOT_DESTROYED);
+		slotService.remove(this.currentAdSlot);
+		this.currentAdSlot.getElement().remove();
 
-			this.scheduleNextSlotPush();
-		}, 2000);
+		communicationService.emit(eventsRepository.ICB_SLOT_DESTROYED);
+		this.swapRecirculation(true);
+		this.scheduleNextSlotPush();
 	}
 
 	private slotStatusChanged(slotStatus: AdSlotStatus): void {
@@ -226,11 +236,11 @@ export class FmrRotator {
 
 	private scheduleNextSlotPush(): void {
 		if (this.isRefreshLimitAvailable()) {
-			setTimeout(() => {
-				this.callBidders(() => {
+			this.callBidders(() => {
+				setTimeout(() => {
 					this.tryPushNextSlot();
-				});
-			}, this.refreshInfo.refreshDelay);
+				}, this.refreshInfo.refreshDelay);
+			});
 		}
 	}
 

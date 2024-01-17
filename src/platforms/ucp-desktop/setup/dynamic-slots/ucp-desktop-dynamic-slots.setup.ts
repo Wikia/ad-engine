@@ -22,6 +22,8 @@ import { Injectable } from '@wikia/dependency-injection';
 import { UcpDesktopPerformanceAdsDefinitionRepository } from './ucp-desktop-performance-ads-definition-repository';
 import { UcpDesktopSlotsDefinitionRepository } from './ucp-desktop-slots-definition-repository';
 
+// let tmp = 0;
+
 @Injectable()
 export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	constructor(
@@ -70,6 +72,15 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		communicationService.on(
 			eventsRepository.ICB_SLOT_DESTROYED,
 			() => {
+				// if (tmp == 0) {
+				// 	targetingService.set('cid', 'adeng-collapse', 'incontent_boxad_2');
+				// 	console.log('incontent_boxad_2 - cid');
+				// 	tmp = 1;
+				// } else if (tmp == 1) {
+				// 	targetingService.remove('cid', 'incontent_boxad_2');
+				// 	console.log('incontent_boxad_2 - cid removed');
+				// 	tmp = 9999;
+				// }
 				insertSlots([this.slotsDefinitionRepository.getIncontentBoxad2Config()]);
 			},
 			false,
@@ -114,10 +125,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				'incontent_boxad_1',
 				universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['5x5'].size,
 			);
-			slotsContext.addSlotSize(
-				'incontent_boxad_2',
-				universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['5x5'].size,
-			);
 		} else {
 			context.set(`slots.${slotName}.sizes`, [
 				{
@@ -129,10 +136,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			context.set('slots.incontent_boxad_2.defaultSizes', [[300, 250]]);
 			slotsContext.addSlotSize(
 				'incontent_boxad_1',
-				universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
-			);
-			slotsContext.addSlotSize(
-				'incontent_boxad_2',
 				universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
 			);
 		}

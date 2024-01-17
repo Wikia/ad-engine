@@ -15,7 +15,6 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 	private enabledSlots: string[] = [
 		'top_boxad',
 		'incontent_boxad_1',
-		'incontent_boxad_2',
 		'bottom_leaderboard',
 		'gallery_leaderboard',
 		'fandom_dt_galleries',
@@ -55,7 +54,6 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 			this.enabledSlots = [
 				'top_boxad',
 				'incontent_boxad_1',
-				'incontent_boxad_2',
 				'bottom_leaderboard',
 				'floor_adhesion',
 			];
