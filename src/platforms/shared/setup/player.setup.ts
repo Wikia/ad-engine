@@ -67,7 +67,7 @@ export class PlayerSetup extends BaseServiceSetup {
 
 		const strategyRulesEnabled = context.get('options.video.enableStrategyRules');
 
-    if (vastResponse?.xml) {
+		if (vastResponse?.xml) {
 			displayAndVideoAdsSyncContext.setVastRequestedBeforePlayer();
 			utils.logger(logGroup, 'display and video sync response available');
 		}
