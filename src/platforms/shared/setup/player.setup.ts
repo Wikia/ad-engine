@@ -1,15 +1,21 @@
 import {
+	AdSlot,
+	AdSlotEvent,
+	AdSlotStatus,
 	BaseServiceSetup,
 	communicationService,
 	context,
 	displayAndVideoAdsSyncContext,
+	eventsRepository,
 	InstantConfigService,
 	JWPlayerManager,
 	jwpSetup,
 	Optimizely,
+	slotService,
 	utils,
 	VastResponseData,
 	VastTaglessRequest,
+	videoDisplayTakeoverSynchronizer,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -30,20 +36,30 @@ export class PlayerSetup extends BaseServiceSetup {
 
 	async call() {
 		const showAds = !context.get('options.wad.blocking');
+		const vastResponse: VastResponseData =
+			showAds &&
+			displayAndVideoAdsSyncContext.isSyncEnabled() &&
+			displayAndVideoAdsSyncContext.isTaglessRequestEnabled()
+				? await this.vastTaglessRequest.getVast()
+				: undefined;
+		const connatixInstreamEnabled = !!this.instantConfig.get('icConnatixInstream');
+
+		connatixInstreamEnabled
+			? PlayerSetup.initConnatixPlayer(showAds, vastResponse)
+			: this.initJWPlayer(showAds, vastResponse);
+	}
+
+	private initJWPlayer(showAds, vastResponse) {
+		utils.logger(logGroup, 'JWP with ads controlled by AdEngine enabled');
+
+		if (vastResponse?.xml) {
+			displayAndVideoAdsSyncContext.setVastRequestedBeforePlayer();
+			utils.logger(logGroup, 'display and video sync response available');
+		}
+
+		this.jwpManager.manage();
 
 		if (showAds) {
-			utils.logger(logGroup, 'JWP with ads controlled by AdEngine enabled');
-
-			const vastResponse: VastResponseData =
-				displayAndVideoAdsSyncContext.isSyncEnabled() &&
-				displayAndVideoAdsSyncContext.isTaglessRequestEnabled()
-					? await this.vastTaglessRequest.getVast()
-					: undefined;
-
-			if (vastResponse?.xml) {
-				displayAndVideoAdsSyncContext.setVastRequestedBeforePlayer();
-			}
-			this.jwpManager.manage();
 			communicationService.dispatch(
 				jwpSetup({
 					showAds,
@@ -53,13 +69,59 @@ export class PlayerSetup extends BaseServiceSetup {
 			);
 		} else {
 			utils.logger(logGroup, 'ad block detected, without ads');
-			this.jwpManager.manage();
 			communicationService.dispatch(
 				jwpSetup({
-					showAds: false,
+					showAds,
 					autoplayDisabled: false,
 				}),
 			);
 		}
+	}
+
+	private static initConnatixPlayer(showAds, vastResponse) {
+		utils.logger(logGroup, 'Connatix with ads not controlled by AdEngine enabled');
+
+		const videoAdSlotName = 'featured';
+		const adSlot = slotService.get(videoAdSlotName) || new AdSlot({ id: videoAdSlotName });
+
+		if (!slotService.get(videoAdSlotName)) {
+			slotService.add(adSlot);
+		}
+
+		if (vastResponse?.xml) {
+			displayAndVideoAdsSyncContext.setVastRequestedBeforePlayer();
+			utils.logger(logGroup, 'display and video sync response available');
+		}
+
+		communicationService.on(eventsRepository.VIDEO_EVENT, (payload) => {
+			const { name, state } = payload.videoEvent;
+
+			if (name === 'adImpression') {
+				videoDisplayTakeoverSynchronizer.resolve(
+					state.vastParams.lineItemId,
+					state.vastParams.creativeId,
+				);
+				adSlot.setStatus(AdSlotStatus.STATUS_SUCCESS);
+				adSlot.emit(AdSlotEvent.VIDEO_AD_IMPRESSION);
+			} else if (['adError', 'play', 'playError'].includes(name)) {
+				videoDisplayTakeoverSynchronizer.resolve();
+			}
+		});
+
+		communicationService.on(eventsRepository.BIDDERS_BIDDING_DONE, ({ slotName }) => {
+			if (slotName === videoAdSlotName) {
+				PlayerSetup.emitVideoSetupEvent(showAds, adSlot, vastResponse);
+			}
+		});
+	}
+
+	private static emitVideoSetupEvent(showAds, adSlot, vastResponse) {
+		communicationService.emit(eventsRepository.VIDEO_SETUP, {
+			showAds,
+			autoplayDisabled: false,
+			videoAdUnitPath: adSlot.getVideoAdUnit(),
+			targetingParams: utils.getCustomParameters(adSlot, {}, false),
+			vastXml: vastResponse?.xml,
+		});
 	}
 }
