@@ -62,7 +62,7 @@ export class PlayerSetup extends BaseServiceSetup {
 			: this.initJWPlayer(showAds, vastResponse);
 	}
 
-	private initJWPlayer(showAds, vastResponse) {
+	private async initJWPlayer(showAds, vastResponse) {
 		utils.logger(logGroup, 'JWP with ads controlled by AdEngine enabled');
 
 		const strategyRulesEnabled = context.get('options.video.enableStrategyRules');
@@ -92,7 +92,7 @@ export class PlayerSetup extends BaseServiceSetup {
 				jwpSetup({
 					showAds,
 					autoplayDisabled: false,
-					vastUrl: VastTaglessRequest.buildTaglessVideoRequest(),
+					vastUrl: await this.vastTaglessRequest.buildTaglessVideoRequest(),
 					strategyRulesEnabled,
 				}),
 			);
