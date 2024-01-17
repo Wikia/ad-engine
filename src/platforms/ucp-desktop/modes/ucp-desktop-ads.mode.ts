@@ -1,4 +1,4 @@
-import { AdEngineStackSetup, GptSetup, PlayerSetup, WadRunner, VideoPlayerSetup } from '@platforms/shared';
+import { AdEngineStackSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
 	Anyclip,
 	Ats,
@@ -40,7 +40,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 		private iasPublisherOptimization: IasPublisherOptimization,
 		private openWeb: OpenWeb,
 		private playerSetup: PlayerSetup,
-		private videoPlayerSetup: VideoPlayerSetup,
 		private prebidNativeProvider: PrebidNativeProvider,
 		private stroer: Stroer,
 		private system1: System1,
@@ -69,7 +68,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 				this.playerSetup.setOptions({
 					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
 				}),
-				this.videoPlayerSetup,
 				this.gptSetup,
 				this.doubleVerify,
 				this.adEngineStackSetup.setOptions({
