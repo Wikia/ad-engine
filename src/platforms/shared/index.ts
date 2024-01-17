@@ -25,7 +25,6 @@ export * from './setup/load-times.setup';
 export * from './setup/metric-reporter.setup';
 export * from './setup/platform-context.setup';
 export * from './setup/player.setup';
-export * from './setup/video-player.setup';
 export * from './setup/post-ad-stack-partners.setup';
 export * from './setup/preloaded-libraries-setup';
 export * from './setup/slots-config-extender';
