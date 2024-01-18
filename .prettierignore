@@ -7,6 +7,7 @@ lib/**/*
 node_modules/**/*
 spec/build/**/*
 
+src/ad-services/connatix/head-script.ts
 src/ad-services/facebook-pixel/facebook-pixel-script.ts
 src/ad-services/nielsen/static-queue-script.ts
 
