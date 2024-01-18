@@ -7,6 +7,8 @@ import { expect } from 'chai';
 import { SinonSpy } from 'sinon';
 
 describe('PlayerSetup', () => {
+	const MOCKED_VAST_AD_UNIT = '/5441/test/vast/ad/unit';
+
 	let dispatch: SinonSpy;
 	let instantConfigStub;
 	let jwpManagerStub;
@@ -24,23 +26,25 @@ describe('PlayerSetup', () => {
 			jwpManagerStub,
 			vastTaglessRequestStub as VastTaglessRequest,
 		);
-		context.set('src', 'test');
-		context.set('slots.featured.videoAdUnit', '/5441/test/vast/ad/unit');
 		context.set('options.wad.blocking', false);
 		context.set('options.video.displayAndVideoAdsSyncEnabled', true);
+		context.set('src', 'test');
+		context.set('slots.featured.videoAdUnit', MOCKED_VAST_AD_UNIT);
+		context.set('vast.adUnitId', MOCKED_VAST_AD_UNIT);
 	});
 
 	afterEach(() => {
 		global.sandbox.restore();
-		context.remove('src');
-		context.remove('slots.featured.videoAdUnit');
 		context.remove('options.video.vastXml');
 		context.remove('options.wad.blocking');
+		context.remove('src');
+		context.remove('slots.featured.videoAdUnit');
+		context.remove('vast.adUnitId');
 	});
 
 	it('should dispatch jwpSetup action without VAST XML when tagless request is not enabled', () => {
 		context.set('src', 'test');
-		context.set('slots.featured.videoAdUnit', '/5441/test/vast/ad/unit');
+		context.set('slots.featured.videoAdUnit', MOCKED_VAST_AD_UNIT);
 		context.set('options.video.displayAndVideoAdsSyncEnabled', false);
 		const expectedDispatchArg = {
 			showAds: true,
@@ -95,5 +99,26 @@ describe('PlayerSetup', () => {
 		expect(dispatch.withArgs(expectedDispatchArg).calledOnce);
 		expect(dispatch.lastCall.args[0].showAds).to.be.false;
 		expect(dispatch.lastCall.args[0].vastXml).to.be.undefined;
+	});
+
+	it('should dispatch video setup action when Connatix is enabled', () => {
+		instantConfigStub.get.withArgs('icConnatixInstream').returns(true);
+		context.set('slots.featured.videoAdUnit', MOCKED_VAST_AD_UNIT);
+		context.set('vast.adUnitId', MOCKED_VAST_AD_UNIT);
+
+		const expectedDispatchArg = {
+			showAds: true,
+			autoplayDisabled: false,
+			videoAdUnitPath: MOCKED_VAST_AD_UNIT,
+			targetingParams: 'src=test',
+			vastXml: undefined,
+			type: '[Video] Setup done',
+			__global: true,
+		};
+
+		dispatch = global.sandbox.spy(communicationService, 'dispatch');
+		subject.call();
+
+		expect(dispatch.withArgs(expectedDispatchArg).calledOnce);
 	});
 });
