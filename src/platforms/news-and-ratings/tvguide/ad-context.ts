@@ -77,9 +77,6 @@ export const basicContext = {
 		iasPublisherOptimization: {
 			slots: ['mpu-plus-top'],
 		},
-		instantConfig: {
-			appName: 'tvguide',
-		},
 	},
 	slots: {},
 	src: ['tvguide'],

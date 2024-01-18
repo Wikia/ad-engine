@@ -37,9 +37,6 @@ export const basicContext = {
 		iasPublisherOptimization: {
 			slots: ['mpu-plus-top'],
 		},
-		instantConfig: {
-			appName: 'metacritic-neutron',
-		},
 	},
 	slots: {},
 	src: ['metacritic'],
