@@ -30,7 +30,7 @@ describe('AppnexusAst bidder adapter', () => {
 				code: 'mobile_in_content',
 				mediaTypes: {
 					video: {
-						context: 'pre_roll',
+						context: 'instream',
 						playerSize: [640, 480],
 					},
 				},
