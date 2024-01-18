@@ -29,6 +29,13 @@ export function getAppnexusContext(): object {
 			ntv_ad: {
 				placementId: '25599354',
 			},
+			gallery_leaderboard: {
+				sizes: [
+					[320, 100],
+					[320, 50],
+				],
+				placementId: '31782784',
+			},
 		},
 		placements: {
 			ent: '9412992',
