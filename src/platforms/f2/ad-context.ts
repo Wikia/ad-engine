@@ -42,11 +42,6 @@ export const basicContext = {
 		iasPublisherOptimization: {
 			slots: ['top_leaderboard', 'top_boxad', 'incontent_boxad', 'bottom_leaderboard', 'featured'],
 		},
-		instantConfig: {
-			endpoint: 'https://services.fandom.com',
-			appName: 'f2',
-			fallback: 'https://script.wikia.nocookie.net/fandom-ae-assets/icbm/prod/icbm_state_f2.json',
-		},
 		nielsen: {
 			customSection: 'news_and_stories',
 		},
