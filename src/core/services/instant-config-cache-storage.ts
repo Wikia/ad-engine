@@ -44,7 +44,6 @@ export class InstantConfigCacheStorage implements InstantConfigCacheStorageServi
 	resetCache(): void {
 		this.initCacheFromCookie();
 		communicationService.emit(eventsRepository.AD_ENGINE_INSTANT_CONFIG_CACHE_RESET);
-		utils.logger(logGroup, 'reset cache', this.cacheStorage);
 	}
 
 	get(id: string): CacheData {
@@ -91,5 +90,6 @@ export class InstantConfigCacheStorage implements InstantConfigCacheStorageServi
 	private initCacheFromCookie(): void {
 		const serializedCache = this.cookieStorage.getItem<string>(this.cacheKey) || '';
 		this.cacheStorage = deserializeCache(serializedCache);
+		utils.logger(logGroup, 'initialized cache storage', this.cacheStorage);
 	}
 }
