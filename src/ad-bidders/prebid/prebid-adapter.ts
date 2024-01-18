@@ -1,5 +1,5 @@
 import { Aliases, context, Dictionary, targetingService, utils } from '@ad-engine/core';
-import { PrebidAdapterConfig, PrebidAdSlotConfig, PrebidVideoPlacements } from './prebid-models';
+import { PrebidAdapterConfig, PrebidAdSlotConfig } from './prebid-models';
 
 interface BidderSettings {
 	storageAllowed?: boolean | string[];
@@ -33,39 +33,10 @@ export abstract class PrebidAdapter {
 
 	abstract get bidderName(): string;
 
-	private adUnitConfigDefaultFactory(slotName: string) {
-		return this.prepareConfigForAdUnit(slotName, this.slots[slotName]);
-	}
-
-	private adUnitConfigWithForcedPlacementForVideoFactory(slotName: string) {
-		const adUnitConfig = this.prepareConfigForAdUnit(slotName, this.slots[slotName]);
-
-		if (!adUnitConfig) {
-			console.warn('Wrong ad unit config for slot: ', slotName, this.bidderName);
-		}
-
-		if (adUnitConfig?.mediaTypes?.video) {
-			adUnitConfig.mediaTypes.video.placement = PrebidVideoPlacements.IN_ARTICLE;
-
-			adUnitConfig.bids.map(({ params }) => {
-				if (params.video?.placement) {
-					params.video.placement = PrebidVideoPlacements.IN_ARTICLE;
-				}
-			});
-		}
-
-		return adUnitConfig;
-	}
-
 	prepareAdUnits(): PrebidAdUnit[] {
-		const forcedPlacementForVideoEnabled = context.get(
-			'bidders.prebid.forceInArticleVideoPlacement',
+		return Object.keys(this.slots).map((slotName) =>
+			this.prepareConfigForAdUnit(slotName, this.slots[slotName]),
 		);
-		const factoryCallback = forcedPlacementForVideoEnabled
-			? this.adUnitConfigWithForcedPlacementForVideoFactory.bind(this)
-			: this.adUnitConfigDefaultFactory.bind(this);
-
-		return Object.keys(this.slots).map(factoryCallback);
 	}
 
 	protected getTargeting(placementName: string, customTargeting = {}): Dictionary {
