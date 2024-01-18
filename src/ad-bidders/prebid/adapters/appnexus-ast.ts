@@ -30,7 +30,7 @@ export class AppnexusAst extends PrebidAdapter {
 			code,
 			mediaTypes: {
 				video: {
-					context: 'instream',
+					context: 'pre_roll',
 					playerSize: [640, 480],
 				},
 			},
@@ -45,6 +45,7 @@ export class AppnexusAst extends PrebidAdapter {
 						video: {
 							skippable: false,
 							playback_method: ['auto_play_sound_off'],
+							placement: 3,
 							plcmt: 2,
 						},
 					},
