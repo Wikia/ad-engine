@@ -21,6 +21,8 @@ export class Freewheel extends PrebidAdapter {
 			mediaTypes: {
 				video: {
 					playerSize: [640, 480],
+					placement: 3,
+					plcmt: 2,
 				},
 			},
 			bids: [

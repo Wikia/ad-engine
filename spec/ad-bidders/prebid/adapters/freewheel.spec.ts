@@ -28,6 +28,8 @@ describe('Freewheel bidder adapter', () => {
 				mediaTypes: {
 					video: {
 						playerSize: [640, 480],
+						placement: 3,
+						plcmt: 2,
 					},
 				},
 				bids: [
@@ -63,6 +65,8 @@ describe('Freewheel bidder adapter', () => {
 				mediaTypes: {
 					video: {
 						playerSize: [640, 480],
+						placement: 3,
+						plcmt: 2,
 					},
 				},
 				bids: [
