@@ -1,6 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { BaseServiceSetup, context, utils } from '@ad-engine/core';
-import Cookies from 'js-cookie';
+import { BaseServiceSetup, context, tcf, usp, utils } from '@ad-engine/core';
 
 const logGroup = 'ATS';
 
@@ -37,10 +36,12 @@ export class Ats extends BaseServiceSetup {
 		const launchpadScript = utils.scriptLoader.loadScript(this.launchpadScriptUrl);
 		const launchpadBundleScript = utils.scriptLoader.loadScript(this.launchpadBundleScriptUrl);
 
-		return Promise.all([launchpadScript, launchpadBundleScript]).then(() => {
+		return Promise.all([launchpadScript, launchpadBundleScript]).then(async () => {
 			const consentType = context.get('options.geoRequiresConsent') ? 'gdpr' : 'ccpa';
 			const consentString =
-				consentType === 'gdpr' ? Cookies.get('euconsent-v2') : Cookies.get('usprivacy');
+				consentType === 'gdpr'
+					? (await tcf.getTCData()).tcString
+					: (await usp.getSignalData()).uspString;
 
 			window.ats.setAdditionalData({
 				consentType,

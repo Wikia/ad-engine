@@ -1,11 +1,7 @@
-import { queryString } from '../utils/query-string';
 import { context } from './context-service';
 
-const isOptInByQueryParam = queryString.get('tracking-opt-in-status') === 'true';
-const isOptOutSaleByQueryParam = queryString.get('opt-out-sale-status') === 'true';
-
 function isOptedIn(optIn?: boolean): boolean {
-	return isOptInByQueryParam || !!(optIn ?? context.get('options.trackingOptIn'));
+	return !!(optIn ?? context.get('options.trackingOptIn'));
 }
 
 function isOptOutSale(optOutSale?: boolean): boolean {
@@ -15,7 +11,7 @@ function isOptOutSale(optOutSale?: boolean): boolean {
 		return true;
 	}
 
-	return isOptOutSaleByQueryParam || !!(optOutSale ?? context.get('options.optOutSale'));
+	return !!(optOutSale ?? context.get('options.optOutSale'));
 }
 
 export const trackingOptIn = {
