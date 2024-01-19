@@ -1,4 +1,8 @@
 import { Roundel } from '@wikia/ad-bidders/prebid/adapters/roundel';
+import {
+	PrebidPlcmtVideoSubtypes,
+	PrebidVideoPlacements,
+} from '@wikia/ad-bidders/prebid/prebid-models';
 import { context } from '@wikia/core';
 import { expect } from 'chai';
 
@@ -87,7 +91,9 @@ describe('Roundel bidder adapter', () => {
 				mediaTypes: {
 					video: {
 						context: 'instream',
+						placement: PrebidVideoPlacements.IN_ARTICLE,
 						playerSize: [640, 480],
+						plcmt: PrebidPlcmtVideoSubtypes.ACCOMPANYING_CONTENT,
 					},
 				},
 				ortb2Imp: {
