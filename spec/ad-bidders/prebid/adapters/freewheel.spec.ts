@@ -32,8 +32,8 @@ describe('Freewheel bidder adapter', () => {
 				mediaTypes: {
 					video: {
 						playerSize: [640, 480],
-						placement: 3,
-						plcmt: 2,
+						placement: PrebidVideoPlacements.IN_ARTICLE,
+						plcmt: PrebidPlcmtVideoSubtypes.ACCOMPANYING_CONTENT,
 					},
 				},
 				bids: [
