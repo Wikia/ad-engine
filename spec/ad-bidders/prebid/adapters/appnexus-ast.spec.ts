@@ -1,4 +1,8 @@
 import { AppnexusAst } from '@wikia/ad-bidders/prebid/adapters/appnexus-ast';
+import {
+	PrebidPlcmtVideoSubtypes,
+	PrebidVideoPlacements,
+} from '@wikia/ad-bidders/prebid/prebid-models';
 import { context } from '@wikia/core';
 import { expect } from 'chai';
 
@@ -46,8 +50,8 @@ describe('AppnexusAst bidder adapter', () => {
 							video: {
 								skippable: false,
 								playback_method: ['auto_play_sound_off'],
-								placement: 3,
-								plcmt: 2,
+								placement: PrebidVideoPlacements.IN_ARTICLE,
+								plcmt: PrebidPlcmtVideoSubtypes.ACCOMPANYING_CONTENT,
 							},
 						},
 					},

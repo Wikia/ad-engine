@@ -1,4 +1,8 @@
 import { Freewheel } from '@wikia/ad-bidders/prebid/adapters/freewheel';
+import {
+	PrebidPlcmtVideoSubtypes,
+	PrebidVideoPlacements,
+} from '@wikia/ad-bidders/prebid/prebid-models';
 import { context } from '@wikia/core';
 import { expect } from 'chai';
 
@@ -65,8 +69,8 @@ describe('Freewheel bidder adapter', () => {
 				mediaTypes: {
 					video: {
 						playerSize: [640, 480],
-						placement: 3,
-						plcmt: 2,
+						placement: PrebidVideoPlacements.IN_ARTICLE,
+						plcmt: PrebidPlcmtVideoSubtypes.ACCOMPANYING_CONTENT,
 					},
 				},
 				bids: [
