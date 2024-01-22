@@ -1,6 +1,10 @@
 import { context } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
-import { PrebidAdSlotConfig } from '../prebid-models';
+import {
+	PrebidAdSlotConfig,
+	PrebidPlcmtVideoSubtypes,
+	PrebidVideoPlacements,
+} from '../prebid-models';
 
 export class IndexExchange extends PrebidAdapter {
 	static bidderName = 'indexExchange';
@@ -33,8 +37,9 @@ export class IndexExchange extends PrebidAdapter {
 			mediaTypes: {
 				video: {
 					context: 'instream',
+					placement: PrebidVideoPlacements.IN_ARTICLE,
 					playerSize: [640, 480],
-					plcmt: [2],
+					plcmt: [PrebidPlcmtVideoSubtypes.ACCOMPANYING_CONTENT],
 				},
 			},
 			ortb2Imp: this.getOrtb2Imp(code),
