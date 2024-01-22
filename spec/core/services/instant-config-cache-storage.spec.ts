@@ -28,6 +28,7 @@ describe('Instant Config Cache Storage', () => {
 				limit: 11,
 				name: 'testId',
 				result: true,
+				withCookie: true,
 			});
 		});
 	});
