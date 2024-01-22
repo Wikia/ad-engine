@@ -35,16 +35,15 @@ export class InstantConfigCacheStorage implements InstantConfigCacheStorageServi
 	private readonly cacheKey = 'basset';
 
 	private constructor() {
+		this.initCacheFromCookie();
 		communicationService.on(eventsRepository.AD_ENGINE_INSTANT_CONFIG_CACHE_READY, () => {
 			this.resetCache();
 		});
 	}
 
 	resetCache(): void {
-		const serializedCache = this.cookieStorage.getItem<string>(this.cacheKey) || '';
-		this.cacheStorage = deserializeCache(serializedCache);
+		this.initCacheFromCookie();
 		communicationService.emit(eventsRepository.AD_ENGINE_INSTANT_CONFIG_CACHE_RESET);
-		utils.logger(logGroup, 'reset cache', this.cacheStorage);
 	}
 
 	get(id: string): CacheData {
@@ -86,5 +85,11 @@ export class InstantConfigCacheStorage implements InstantConfigCacheStorageServi
 		const nameHyphenIndex: number = name.lastIndexOf('-');
 
 		return nameHyphenIndex !== -1 ? name.substring(0, nameHyphenIndex) : name;
+	}
+
+	private initCacheFromCookie(): void {
+		const serializedCache = this.cookieStorage.getItem<string>(this.cacheKey) || '';
+		this.cacheStorage = deserializeCache(serializedCache);
+		utils.logger(logGroup, 'initialized cache storage', this.cacheStorage);
 	}
 }

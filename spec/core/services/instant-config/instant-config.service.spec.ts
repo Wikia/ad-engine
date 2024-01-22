@@ -29,7 +29,9 @@ describe('Instant Config Service', () => {
 			getConfigStub.returns(Promise.resolve({}));
 			getValuesStub.returns({ testKey: 'testValue' });
 
-			const instantConfigService = await new InstantConfigService().init();
+			const instantConfigService = await new InstantConfigService({
+				appName: 'testapp',
+			}).init();
 
 			expect(instantConfigService.get('testKey')).to.equal('testValue');
 		});
@@ -37,7 +39,9 @@ describe('Instant Config Service', () => {
 		it('should pass InstantConfig to InstantConfigOverrider', async () => {
 			getConfigStub.returns(Promise.resolve({ config: true }));
 
-			await new InstantConfigService().init();
+			await new InstantConfigService({
+				appName: 'testapp',
+			}).init();
 
 			expect(overrideStub.firstCall.args[1]).to.deep.equal({ config: true });
 		});
@@ -47,7 +51,9 @@ describe('Instant Config Service', () => {
 			getValuesStub.returns({});
 			overrideStub.callsFake((_, input) => input);
 
-			await new InstantConfigService().init();
+			await new InstantConfigService({
+				appName: 'testapp',
+			}).init();
 
 			expect(initInterpreterStub.firstCall.args).to.deep.equal([
 				{ config: true },
@@ -61,7 +67,9 @@ describe('Instant Config Service', () => {
 			getValuesStub.returns({});
 			overrideStub.callsFake((_, input) => input);
 
-			await new InstantConfigService().init({ globals: true });
+			await new InstantConfigService({
+				appName: 'testapp',
+			}).init({ globals: true });
 
 			expect(initInterpreterStub.firstCall.args).to.deep.equal([
 				{ config: true },
@@ -74,7 +82,9 @@ describe('Instant Config Service', () => {
 			getConfigStub.returns(Promise.resolve({}));
 			getValuesStub.returns({});
 
-			await new InstantConfigService().init();
+			await new InstantConfigService({
+				appName: 'testapp',
+			}).init();
 			const numberOfCalls = getValuesStub.getCalls().length;
 
 			communicationService.emit(eventsRepository.AD_ENGINE_INSTANT_CONFIG_CACHE_RESET);
@@ -97,7 +107,9 @@ describe('Instant Config Service', () => {
 			getConfigStub.returns(Promise.resolve({}));
 			overrideStub.callsFake((input) => input);
 			getValuesStub.returns(repository);
-			instance = await new InstantConfigService().init();
+			instance = await new InstantConfigService({
+				appName: 'testapp',
+			}).init();
 		});
 
 		describe('get', () => {

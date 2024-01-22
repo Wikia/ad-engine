@@ -28,6 +28,7 @@ export class BiddersStateSetup implements DiProcess {
 		triplelift: 'icPrebidTriplelift',
 		verizon: 'icPrebidVerizon',
 		yahoossp: 'icPrebidYahooSsp',
+		yahooConnectId: 'icPrebidYahooConnectId',
 	};
 	private notCoppaCompliantBidders: Array<keyof typeof this.prebidBidders> = ['kargo', 'verizon'];
 
