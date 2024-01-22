@@ -46,7 +46,7 @@ describe('PlayerSetup', () => {
 		context.remove('vast.adUnitId');
 	});
 
-	it('should dispatch jwpSetup action without VAST XML when tagless request is not enabled', () => {
+	it('should dispatch jwpSetup action without VAST XML when tagless request is not enabled', async () => {
 		context.set('src', 'test');
 		context.set('slots.featured.videoAdUnit', MOCKED_VAST_AD_UNIT);
 		context.set('options.video.displayAndVideoAdsSyncEnabled', false);
@@ -59,16 +59,15 @@ describe('PlayerSetup', () => {
 		};
 		vastTaglessRequestStub.getVast = () => Promise.resolve(undefined);
 
-		subject.call();
+		await subject.call();
 
 		expect(dispatch.calledOnceWith(expectedDispatchArg)).to.be.true;
 	});
 
-	it('should dispatch jwpSetup action with VAST XML when tagless request is enabled', () => {
+	it('should dispatch jwpSetup action with VAST XML when tagless request is enabled', async () => {
 		const mockedVastXML =
 			'<?xml version="1.0" encoding="UTF-8"?><VAST xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="vast.xsd" version="4.0"></VAST>';
 		const response: VastResponseData = { xml: mockedVastXML, lineItemId: '', creativeId: '' };
-
 		const expectedDispatchArg = {
 			showAds: true,
 			autoplayDisabled: false,
@@ -76,17 +75,16 @@ describe('PlayerSetup', () => {
 			type: '[Ad Engine] Setup JWPlayer',
 			__global: true,
 		};
-
 		vastTaglessRequestStub.getVast = () => Promise.resolve(response);
 
-		subject.call();
+		await subject.call();
 
-		expect(dispatch.calledOnceWith(expectedDispatchArg)).to.be.true;
+		expect(dispatch.calledOnce).to.be.true;
+		expect(dispatch.firstCall.args[0]).to.equal(expectedDispatchArg);
 	});
 
-	it('should dispatch jwpSetup action with showAds flag and without VAST XML when adblock detected', () => {
+	it('should dispatch jwpSetup action with showAds flag and without VAST XML when adblock detected', async () => {
 		context.set('options.wad.blocking', true);
-
 		const expectedDispatchArg = {
 			showAds: false,
 			autoplayDisabled: false,
@@ -94,18 +92,17 @@ describe('PlayerSetup', () => {
 			__global: true,
 		};
 
-		subject.call();
+		await subject.call();
 
 		expect(dispatch.calledOnceWith(expectedDispatchArg)).to.be.true;
-		expect(dispatch.lastCall.args[0].showAds).to.be.false;
-		expect(dispatch.lastCall.args[0].vastXml).to.be.undefined;
+		expect(dispatch.firstCall.args[0].showAds).to.be.false;
+		expect(dispatch.firstCall.args[0].vastXml).to.be.undefined;
 	});
 
-	it('should dispatch video setup action when Connatix is enabled', () => {
+	it('should dispatch video setup action when Connatix is enabled', async () => {
 		instantConfigStub.get.withArgs('icConnatixInstream').returns(true);
 		context.set('slots.featured.videoAdUnit', MOCKED_VAST_AD_UNIT);
 		context.set('vast.adUnitId', MOCKED_VAST_AD_UNIT);
-
 		const expectedDispatchArg = {
 			showAds: true,
 			autoplayDisabled: false,
@@ -116,8 +113,9 @@ describe('PlayerSetup', () => {
 			__global: true,
 		};
 
-		subject.call();
+		await subject.call();
 
-		expect(dispatch.calledOnceWith(expectedDispatchArg)).to.be.true;
+		expect(dispatch.calledOnce).to.be.true;
+		expect(dispatch.firstCall.args[0]).to.equal(expectedDispatchArg);
 	});
 });
