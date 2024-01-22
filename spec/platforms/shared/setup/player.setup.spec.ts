@@ -1,5 +1,4 @@
 import { JWPlayerManager, VastResponseData, VastTaglessRequest } from '@wikia/ad-products';
-import { Optimizely } from '@wikia/ad-services';
 import { communicationService } from '@wikia/communication';
 import { context, InstantConfigService } from '@wikia/core';
 import { PlayerSetup } from '@wikia/platforms/shared';
@@ -22,7 +21,6 @@ describe('PlayerSetup', () => {
 		subject = new PlayerSetup(
 			instantConfigStub,
 			null,
-			new Optimizely(),
 			jwpManagerStub,
 			vastTaglessRequestStub as VastTaglessRequest,
 		);
