@@ -26,5 +26,6 @@ export const jwpSetup = globalAction(
 		autoplayDisabled: boolean;
 		vastUrl?: string;
 		vastXml?: string;
+		strategyRulesEnabled?: boolean;
 	}>(),
 );

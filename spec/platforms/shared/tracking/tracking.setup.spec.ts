@@ -11,7 +11,9 @@ describe('TrackingSetup', () => {
 	const dwTracker = new DataWarehouseTracker();
 	const labradorTracker = new LabradorTracker(dwTracker);
 	const adSizeTracker = new AdSizeTracker(dwTracker);
-	const instantConfig = new InstantConfigService();
+	const instantConfig = new InstantConfigService({
+		appName: 'testapp',
+	});
 	const globalTimeout = new GlobalTimeout();
 	const bidders = new Bidders(instantConfig, globalTimeout);
 	let trackSpy: SinonSpy;
