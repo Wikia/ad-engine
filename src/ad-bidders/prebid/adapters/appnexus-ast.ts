@@ -1,6 +1,10 @@
 import { utils } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
-import { PrebidAdSlotConfig } from '../prebid-models';
+import {
+	PrebidAdSlotConfig,
+	PrebidPlcmtVideoSubtypes,
+	PrebidVideoPlacements,
+} from '../prebid-models';
 
 export class AppnexusAst extends PrebidAdapter {
 	static bidderName = 'appnexusAst';
@@ -45,7 +49,8 @@ export class AppnexusAst extends PrebidAdapter {
 						video: {
 							skippable: false,
 							playback_method: ['auto_play_sound_off'],
-							plcmt: 2,
+							placement: PrebidVideoPlacements.IN_ARTICLE,
+							plcmt: PrebidPlcmtVideoSubtypes.ACCOMPANYING_CONTENT,
 						},
 					},
 				},
