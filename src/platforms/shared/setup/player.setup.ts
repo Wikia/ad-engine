@@ -59,7 +59,7 @@ export class PlayerSetup extends BaseServiceSetup {
 
 		connatixInstreamEnabled
 			? PlayerSetup.initConnatixPlayer(showAds, vastResponse)
-			: this.initJWPlayer(showAds, vastResponse);
+			: await this.initJWPlayer(showAds, vastResponse);
 	}
 
 	private async initJWPlayer(showAds, vastResponse) {
