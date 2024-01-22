@@ -119,6 +119,7 @@ export class PrebidProvider extends BidderProvider {
 		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
 
 		this.prebidConfig = {
+			enableTIDs: true,
 			bidderSequence: 'random',
 			bidderTimeout: this.timeout,
 			cache: {
