@@ -166,6 +166,7 @@ export class PrebidProvider extends BidderProvider {
 			...this.configureTargeting(),
 			...this.configureTCF(),
 			...this.configureS2sBidding(),
+			...this.configureJwpRtd(),
 		};
 
 		this.configureUserSync();
@@ -380,6 +381,30 @@ export class PrebidProvider extends BidderProvider {
 				},
 			],
 		};
+	}
+
+	private configureJwpRtd(): object {
+		if (
+			context.get('custom.hasFeaturedVideo') &&
+			context.get('options.video.enableStrategyRules')
+		) {
+			return {
+				realTimeData: {
+					auctionDelay: 100,
+					dataProviders: [
+						{
+							name: 'jwplayer',
+							waitForIt: true,
+							params: {
+								mediaIDs: [],
+							},
+						},
+					],
+				},
+			};
+		}
+
+		return {};
 	}
 
 	private prepareExtPrebidBiders(s2sBidders: string[]): Record<string, { wrappername: string }> {
