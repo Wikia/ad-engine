@@ -21,11 +21,17 @@ export function getMagniteS2sContext(isDesktop: boolean): object {
 				[970, 250],
 			],
 		},
+		'incontent-ad': {
+			sizes: [[728, 90]],
+		},
 		'incontent-leaderboard-bottom': {
 			sizes: [[728, 90]],
 		},
 		mpu_plus_top: {
-			sizes: [[300, 250]],
+			sizes: [
+				[300, 250],
+				[300, 600],
+			],
 		},
 		mpu_top: {
 			sizes: [[300, 250]],
@@ -50,9 +56,18 @@ export function getMagniteS2sContext(isDesktop: boolean): object {
 		},
 		'mobile-incontent-plus': {
 			sizes: [
+				[320, 100],
+				[320, 50],
+			],
+		},
+		'mobile-incontent-ad': {
+			sizes: [
 				[300, 250],
 				[320, 50],
 			],
+		},
+		'mobile-mpu': {
+			sizes: [[300, 250]],
 		},
 		'mobile-incontent-plus-bottom': {
 			sizes: [
