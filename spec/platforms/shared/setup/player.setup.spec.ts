@@ -33,6 +33,10 @@ describe('PlayerSetup', () => {
 		context.set('vast.adUnitId', MOCKED_VAST_AD_UNIT);
 	});
 
+	beforeEach(() => {
+		dispatch = global.sandbox.spy(communicationService, 'dispatch');
+	});
+
 	afterEach(() => {
 		global.sandbox.restore();
 		context.remove('options.video.vastXml');
@@ -54,11 +58,10 @@ describe('PlayerSetup', () => {
 			__global: true,
 		};
 		vastTaglessRequestStub.getVast = () => Promise.resolve(undefined);
-		dispatch = global.sandbox.spy(communicationService, 'dispatch');
 
 		subject.call();
 
-		expect(dispatch.withArgs(expectedDispatchArg).calledOnce).to.be.true;
+		expect(dispatch.calledOnceWith(expectedDispatchArg)).to.be.true;
 	});
 
 	it('should dispatch jwpSetup action with VAST XML when tagless request is enabled', () => {
@@ -75,11 +78,10 @@ describe('PlayerSetup', () => {
 		};
 
 		vastTaglessRequestStub.getVast = () => Promise.resolve(response);
-		dispatch = global.sandbox.spy(communicationService, 'dispatch');
 
 		subject.call();
 
-		expect(dispatch.withArgs(expectedDispatchArg).calledOnce).to.be.true;
+		expect(dispatch.calledOnceWith(expectedDispatchArg)).to.be.true;
 	});
 
 	it('should dispatch jwpSetup action with showAds flag and without VAST XML when adblock detected', () => {
@@ -92,11 +94,9 @@ describe('PlayerSetup', () => {
 			__global: true,
 		};
 
-		dispatch = global.sandbox.spy(communicationService, 'dispatch');
-
 		subject.call();
 
-		expect(dispatch.withArgs(expectedDispatchArg).calledOnce).to.be.true;
+		expect(dispatch.calledOnceWith(expectedDispatchArg)).to.be.true;
 		expect(dispatch.lastCall.args[0].showAds).to.be.false;
 		expect(dispatch.lastCall.args[0].vastXml).to.be.undefined;
 	});
@@ -116,9 +116,8 @@ describe('PlayerSetup', () => {
 			__global: true,
 		};
 
-		dispatch = global.sandbox.spy(communicationService, 'dispatch');
 		subject.call();
 
-		expect(dispatch.withArgs(expectedDispatchArg).calledOnce).to.be.true;
+		expect(dispatch.calledOnceWith(expectedDispatchArg)).to.be.true;
 	});
 });
