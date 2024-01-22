@@ -46,9 +46,6 @@ export const basicContext = {
 		iasPublisherOptimization: {
 			slots: ['mpu_top'],
 		},
-		instantConfig: {
-			appName: 'gamefaqs',
-		},
 	},
 	slots: {},
 	src: ['gamefaqs'],

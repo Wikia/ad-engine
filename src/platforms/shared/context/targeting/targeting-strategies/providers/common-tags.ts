@@ -15,7 +15,7 @@ export class CommonTags implements TargetingProvider<Partial<SlotTargeting>> {
 
 	public getCommonParams(): Partial<SlotTargeting> {
 		const domain = getDomain();
-		const wiki: MediaWikiAdsContext = context.get('wiki');
+		const wiki: AdsContext = context.get('wiki');
 		const isMobile = context.get('state.isMobile');
 
 		const commonParams: Partial<SlotTargeting> = {

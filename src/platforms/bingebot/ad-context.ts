@@ -9,12 +9,4 @@ export const basicContext = {
 	slots: {},
 	src: ['bingebot'],
 	wiki: {},
-	services: {
-		instantConfig: {
-			endpoint: 'https://services.fandom.com',
-			appName: 'bingebot',
-			fallback:
-				'https://script.wikia.nocookie.net/fandom-ae-assets/icbm/prod/icbm_state_bingebot.json',
-		},
-	},
 };
