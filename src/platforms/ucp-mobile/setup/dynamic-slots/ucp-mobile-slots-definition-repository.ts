@@ -5,6 +5,7 @@ import {
 	context,
 	CookieStorageAdapter,
 	eventsRepository,
+	InsertMethodType,
 	InstantConfigService,
 	OpenWeb,
 	RepeatableSlotPlaceholderConfig,
@@ -15,6 +16,11 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+
+interface TopBoxadConfigExperiment {
+	anchorSelector: string;
+	insertMethod: InsertMethodType;
+}
 
 @Injectable()
 export class UcpMobileSlotsDefinitionRepository {
@@ -77,7 +83,8 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'top_boxad';
-		const isHome = context.get('wiki.targeting.pageType') === 'home';
+
+		const config = this.getTopBoxadExperimentConfig();
 
 		return {
 			slotCreatorConfig: {
@@ -85,10 +92,8 @@ export class UcpMobileSlotsDefinitionRepository {
 				placeholderConfig: {
 					createLabel: true,
 				},
-				anchorSelector: isHome
-					? '.mobile-main-page__wiki-description'
-					: context.get('templates.incontentAnchorSelector'),
-				insertMethod: isHome ? 'after' : 'before',
+				anchorSelector: config.anchorSelector,
+				insertMethod: config.insertMethod,
 				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
 				avoidConflictWith: ['.ntv-ad'],
 			},
@@ -372,5 +377,86 @@ export class UcpMobileSlotsDefinitionRepository {
 				context.push('state.adStack', { id: slotName });
 			}
 		});
+	}
+
+	private getTopBoxadExperimentConfig(): TopBoxadConfigExperiment {
+		const isHome = context.get('wiki.targeting.pageType') === 'home';
+		const isExperiment = true;
+		const defaultNonHomeConfig: TopBoxadConfigExperiment = {
+			anchorSelector: context.get('templates.incontentAnchorSelector'),
+			insertMethod: 'before',
+		};
+
+		const getParagraphSelector = (nthOfType) => `.mw-parser-output > p:nth-of-type(${nthOfType})`;
+
+		if (isHome) {
+			return {
+				anchorSelector: '.mobile-main-page__wiki-description',
+				insertMethod: 'after',
+			};
+		} else if (isExperiment) {
+			const paragraphs = Array.from(document.querySelectorAll('.mw-parser-output > p'));
+			let firstParagraphIndex = paragraphs.findIndex(
+				(element) => element.textContent.trim() !== '',
+			);
+			let secondParagraphIndex = paragraphs.findIndex(
+				(element, index) => index != firstParagraphIndex && element.textContent.trim() !== '',
+			);
+
+			firstParagraphIndex += 1;
+			secondParagraphIndex += 1;
+
+			if (!firstParagraphIndex) {
+				return defaultNonHomeConfig;
+			}
+
+			const firstParagraph = document.querySelector(getParagraphSelector(firstParagraphIndex));
+			const secondParagraph = document.querySelector(getParagraphSelector(secondParagraphIndex));
+
+			const isBeforeFirstH2 = (element: Element) => {
+				const firstH2 = document.querySelector('.mw-parser-output > h2');
+
+				if (element.nextElementSibling == firstH2) {
+					return true;
+				}
+
+				const tocElement = document.querySelector('.mw-parser-output > #toc');
+
+				return element.nextElementSibling == tocElement && tocElement.nextElementSibling == firstH2;
+			};
+
+			if (!firstParagraph) {
+				return defaultNonHomeConfig;
+			}
+
+			if (isBeforeFirstH2(firstParagraph)) {
+				utils.logger('slotDefinition', 'only one <p>');
+				return {
+					anchorSelector: getParagraphSelector(firstParagraphIndex),
+					insertMethod: 'after',
+				};
+			} else if (
+				firstParagraph.textContent &&
+				(firstParagraph.textContent.length >= 400 || firstParagraph.clientHeight >= 350)
+			) {
+				utils.logger('slotDefinition', 'long first <p>');
+				return {
+					anchorSelector: getParagraphSelector(firstParagraphIndex),
+					insertMethod: 'after',
+				};
+			} else if (
+				firstParagraph.textContent &&
+				firstParagraph.textContent.length < 400 &&
+				secondParagraph
+			) {
+				utils.logger('slotDefinition', 'after second <p>');
+				return {
+					anchorSelector: getParagraphSelector(secondParagraphIndex),
+					insertMethod: 'after',
+				};
+			}
+		}
+
+		return defaultNonHomeConfig;
 	}
 }
