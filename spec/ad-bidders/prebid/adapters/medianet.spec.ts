@@ -1,4 +1,8 @@
 import { Medianet } from '@wikia/ad-bidders/prebid/adapters/medianet';
+import {
+	PrebidPlcmtVideoSubtypes,
+	PrebidVideoPlacements,
+} from '@wikia/ad-bidders/prebid/prebid-models';
 import { context } from '@wikia/core';
 import { expect } from 'chai';
 
@@ -89,6 +93,8 @@ describe('Medianet bidder adapter', () => {
 						maxduration: 30,
 						protocols: [2, 3, 5, 6],
 						playbackmethod: [2, 3],
+						placement: PrebidVideoPlacements.IN_ARTICLE,
+						plcmt: PrebidPlcmtVideoSubtypes.ACCOMPANYING_CONTENT,
 					},
 				},
 				ortb2Imp: {

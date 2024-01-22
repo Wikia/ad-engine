@@ -1,5 +1,9 @@
 import { PrebidAdapter } from '../prebid-adapter';
-import { PrebidAdSlotConfig } from '../prebid-models';
+import {
+	PrebidAdSlotConfig,
+	PrebidPlcmtVideoSubtypes,
+	PrebidVideoPlacements,
+} from '../prebid-models';
 
 export class Freewheel extends PrebidAdapter {
 	static bidderName = 'freewheel';
@@ -21,6 +25,8 @@ export class Freewheel extends PrebidAdapter {
 			mediaTypes: {
 				video: {
 					playerSize: [640, 480],
+					placement: PrebidVideoPlacements.IN_ARTICLE,
+					plcmt: PrebidPlcmtVideoSubtypes.ACCOMPANYING_CONTENT,
 				},
 			},
 			bids: [

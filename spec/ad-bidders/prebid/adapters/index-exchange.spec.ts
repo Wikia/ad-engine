@@ -1,5 +1,8 @@
 import { IndexExchange } from '@wikia/ad-bidders/prebid/adapters/index-exchange';
-import { PrebidVideoPlacements } from '@wikia/ad-bidders/prebid/prebid-models';
+import {
+	PrebidPlcmtVideoSubtypes,
+	PrebidVideoPlacements,
+} from '@wikia/ad-bidders/prebid/prebid-models';
 import { context } from '@wikia/core';
 import { expect } from 'chai';
 
@@ -9,8 +12,9 @@ describe('IndexExchange bidder adapter', () => {
 		mediaTypes: {
 			video: {
 				context: 'instream',
+				placement: PrebidVideoPlacements.IN_ARTICLE,
 				playerSize: [640, 480],
-				plcmt: [2],
+				plcmt: [PrebidPlcmtVideoSubtypes.ACCOMPANYING_CONTENT],
 			},
 		},
 		ortb2Imp: {
@@ -130,33 +134,5 @@ describe('IndexExchange bidder adapter', () => {
 		context.set('slots.featured.isVideo', true);
 
 		expect(indexExchange.prepareAdUnits()).to.deep.equal([EXPECTED_VIDEO_AD_UNIT_CONFIG]);
-	});
-
-	it('prepareAdUnits for video returns data in correct shape when placement is forced', () => {
-		const indexExchange = new IndexExchange({
-			enabled: true,
-			slots: {
-				featured: {
-					siteId: '112233',
-				},
-			},
-		});
-		context.set('slots.featured.isVideo', true);
-		context.set('bidders.prebid.forceInArticleVideoPlacement', true);
-		const expectedVideoAdUnitConfig = {
-			...EXPECTED_VIDEO_AD_UNIT_CONFIG,
-			...{
-				mediaTypes: {
-					video: {
-						context: 'instream',
-						placement: PrebidVideoPlacements.IN_ARTICLE,
-						playerSize: [640, 480],
-						plcmt: [2],
-					},
-				},
-			},
-		};
-
-		expect(indexExchange.prepareAdUnits()).to.deep.equal([expectedVideoAdUnitConfig]);
 	});
 });
