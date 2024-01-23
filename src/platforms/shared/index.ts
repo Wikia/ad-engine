@@ -82,6 +82,7 @@ export * from './templates/interstitial-template';
 export * from './tracking/bab-tracker';
 export * from './tracking/data-warehouse';
 export * from './tracking/metric-reporter';
+export * from './tracking/metric-reporter/metric-reporter-sender';
 export * from './tracking/tracking.setup';
 export * from './utils/collapsed-messages/message-box-creator';
 export * from './utils/collapsed-messages/message-box-service';
