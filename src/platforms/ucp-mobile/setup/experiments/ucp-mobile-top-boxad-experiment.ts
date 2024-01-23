@@ -1,4 +1,4 @@
-import { context, InsertMethodType, utils } from '@wikia/ad-engine';
+import { context, InsertMethodType, InstantConfigService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 interface TopBoxadConfigExperiment {
@@ -10,7 +10,6 @@ const logGroup = 'UcpMobileTopBoxadExperiment';
 
 @Injectable()
 export class UcpMobileTopBoxadExperiment {
-	private isExperiment = true;
 	private defaultAnchorSelector = context.get('templates.incontentAnchorSelector');
 	private defaultNonHomeConfig: TopBoxadConfigExperiment = {
 		anchorSelector: this.defaultAnchorSelector,
@@ -21,11 +20,13 @@ export class UcpMobileTopBoxadExperiment {
 		insertMethod: 'after',
 	};
 
+	constructor(private instantConfig: InstantConfigService) {}
+
 	public getConfig(): TopBoxadConfigExperiment {
 		if (this.isHome()) {
 			utils.logger(logGroup, 'Home page');
 			return this.defaultHomeConfig;
-		} else if (this.isExperiment) {
+		} else if (this.isExperimentEnabled()) {
 			return this.getExperimentConfig();
 		}
 
@@ -61,6 +62,7 @@ export class UcpMobileTopBoxadExperiment {
 
 		if (this.existParagraph(secondParagraph) && this.isSmallParagraph(firstParagraph.element)) {
 			utils.logger(logGroup, 'Short first <p>, ad after second <p>');
+
 			return this.prepareConfig(
 				`${this.getParagraphSelector(secondParagraph.nthOfType)}, ${this.defaultAnchorSelector}`,
 				'after',
@@ -79,6 +81,10 @@ export class UcpMobileTopBoxadExperiment {
 			anchorSelector: anchorSelector,
 			insertMethod: insertMethod,
 		};
+	}
+
+	private isExperimentEnabled() {
+		return this.instantConfig.get('icExperiments', []).includes('topBoxadNewLogic');
 	}
 
 	private isHome() {
