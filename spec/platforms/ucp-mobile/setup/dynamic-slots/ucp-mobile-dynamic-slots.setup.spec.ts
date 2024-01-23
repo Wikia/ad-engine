@@ -20,9 +20,19 @@ describe('floor_adhesion on ucp-mobile', () => {
 		isActive: () => false,
 	} as any;
 
+	const ucpMobileExperiments = {
+		getConfig: () => {
+			return {
+				anchorSelector: '.mobile-main-page__wiki-description',
+				insertMethod: 'after',
+			};
+		},
+	} as any;
+
 	const slotDefinitionRepositoryMock = new UcpMobileSlotsDefinitionRepository(
 		instantConfig,
 		openWebService,
+		ucpMobileExperiments,
 	);
 	const nativoDefinitionRepositoryMock = new NativoSlotsDefinitionRepository(new DomListener());
 	const quizDefinitionRepositoryMock = new QuizSlotsDefinitionRepository();
@@ -30,7 +40,7 @@ describe('floor_adhesion on ucp-mobile', () => {
 	const connatixMock = new Connatix(null, null, null, null);
 	const galleryLightboxAdsMock = {
 		handler: new GalleryLightboxAdsHandler(
-			new UcpMobileSlotsDefinitionRepository(instantConfig, openWebService),
+			new UcpMobileSlotsDefinitionRepository(instantConfig, openWebService, ucpMobileExperiments),
 		),
 		initialized: true,
 	};
