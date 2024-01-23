@@ -1,3 +1,4 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { context, targetingService, utils } from '@ad-engine/core';
 
 interface YahooConnectIdConfig {
@@ -24,6 +25,8 @@ class YahooConnectId {
 		}
 
 		utils.logger(logGroup, 'enabled');
+
+		communicationService.emit(eventsRepository.YAHOO_LOADED);
 
 		const config: YahooConnectIdConfig = {
 			name: 'connectId',
