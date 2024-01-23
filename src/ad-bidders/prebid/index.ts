@@ -388,7 +388,7 @@ export class PrebidProvider extends BidderProvider {
 			context.get('custom.hasFeaturedVideo') &&
 			context.get('options.video.enableStrategyRules')
 		) {
-			const initialMediaId = context.get('options.video.initialMediaId');
+			const initialMediaId = context.get('options.video.jwplayer.initialMediaId');
 
 			return {
 				realTimeData: {

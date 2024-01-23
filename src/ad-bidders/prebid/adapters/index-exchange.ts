@@ -42,7 +42,7 @@ export class IndexExchange extends PrebidAdapter {
 					plcmt: [PrebidPlcmtVideoSubtypes.ACCOMPANYING_CONTENT],
 				},
 			},
-			ortb2Imp: this.getOrtb2Imp(code),
+			ortb2Imp: this.extendOrtbWithJwpRtdDataWhenStrategyRulesEnabled(this.getOrtb2Imp(code)),
 			bids: [
 				{
 					bidder: this.bidderName,
@@ -107,5 +107,24 @@ export class IndexExchange extends PrebidAdapter {
 				siteId: id,
 			},
 		}));
+	}
+
+	private extendOrtbWithJwpRtdDataWhenStrategyRulesEnabled(ortbData) {
+		const strategyRulesEnabled = context.get('options.video.enableStrategyRules');
+		const initialMediaId = context.get('options.video.jwplayer.initialMediaId');
+
+		if (!strategyRulesEnabled) {
+			return ortbData;
+		}
+
+		return {
+			...ortbData,
+			data: {
+				jwTargeting: {
+					playerID: '#featured-video__player-container',
+					mediaID: initialMediaId,
+				},
+			},
+		};
 	}
 }

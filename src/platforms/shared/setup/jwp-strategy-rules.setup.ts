@@ -60,7 +60,7 @@ export class JwpStrategyRulesSetup extends BaseServiceSetup {
 		}
 
 		context.set(
-			'options.video.initialMediaId',
+			'options.video.jwplayer.initialMediaId',
 			window?.mw?.config?.get('wgArticleFeaturedVideo')?.mediaId,
 		);
 	}
