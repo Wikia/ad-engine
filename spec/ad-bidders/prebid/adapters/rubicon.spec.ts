@@ -1,4 +1,8 @@
 import { Rubicon } from '@wikia/ad-bidders/prebid/adapters/rubicon';
+import {
+	PrebidPlcmtVideoSubtypes,
+	PrebidVideoPlacements,
+} from '@wikia/ad-bidders/prebid/prebid-models';
 import { context, TargetingService, targetingService } from '@wikia/core';
 import { expect } from 'chai';
 import { SinonStubbedInstance } from 'sinon';
@@ -17,6 +21,11 @@ describe('Rubicon bidder adapter', () => {
 				pageType: 'PB',
 			},
 		});
+		context.set('custom.hasFeaturedVideo', true);
+	});
+
+	after(() => {
+		context.remove('custom.hasFeaturedVideo');
 	});
 
 	it('can be enabled', () => {
@@ -37,7 +46,7 @@ describe('Rubicon bidder adapter', () => {
 			enabled: true,
 			accountId: 1234,
 			slots: {
-				mobile_in_content: {
+				featured: {
 					siteId: '55111',
 					sizeId: '101',
 					zoneId: '88888',
@@ -48,7 +57,7 @@ describe('Rubicon bidder adapter', () => {
 
 		expect(rubicon.prepareAdUnits()).to.deep.equal([
 			{
-				code: 'mobile_in_content',
+				code: 'featured',
 				mediaTypes: {
 					video: {
 						playerSize: [640, 480],
@@ -58,11 +67,13 @@ describe('Rubicon bidder adapter', () => {
 						mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
 						maxduration: 30,
 						protocols: [2, 3, 5, 6],
+						placement: PrebidVideoPlacements.IN_ARTICLE,
+						plcmt: PrebidPlcmtVideoSubtypes.ACCOMPANYING_CONTENT,
 					},
 				},
 				ortb2Imp: {
 					ext: {
-						gpid: '/5441/something/_PB/mobile_in_content',
+						gpid: '/5441/something/_PB/featured',
 					},
 				},
 				bids: [
@@ -72,148 +83,12 @@ describe('Rubicon bidder adapter', () => {
 							accountId: 1234,
 							siteId: '55111',
 							zoneId: '88888',
-							name: 'mobile_in_content',
+							name: 'featured',
 							position: 'btf',
 							inventory: {
 								lang: ['en'],
 								mappedVerticalName: ['gaming'],
-								pos: ['mobile_in_content'],
-								s1: ['not a top1k wiki'],
-								src: ['gpt'],
-								testKeyval: ['yes'],
-							},
-							video: {
-								playerWidth: '640',
-								playerHeight: '480',
-								size_id: '101',
-								language: 'en',
-							},
-						},
-					},
-				],
-			},
-		]);
-	});
-
-	it('prepareAdUnits returns data in correct shape', () => {
-		targetingServiceStub.dump.returns({
-			testKeyval: 'yes',
-			mappedVerticalName: 'gaming',
-		});
-
-		const rubicon = new Rubicon({
-			enabled: true,
-			accountId: 1234,
-			slots: {
-				mobile_in_content: {
-					siteId: '55111',
-					sizeId: '101',
-					zoneId: '88888',
-					position: 'btf',
-				},
-			},
-		});
-
-		expect(rubicon.prepareAdUnits()).to.deep.equal([
-			{
-				code: 'mobile_in_content',
-				mediaTypes: {
-					video: {
-						playerSize: [640, 480],
-						context: 'instream',
-						api: [2],
-						linearity: 1,
-						mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
-						maxduration: 30,
-						protocols: [2, 3, 5, 6],
-					},
-				},
-				ortb2Imp: {
-					ext: {
-						gpid: '/5441/something/_PB/mobile_in_content',
-					},
-				},
-				bids: [
-					{
-						bidder: 'rubicon',
-						params: {
-							accountId: 1234,
-							siteId: '55111',
-							zoneId: '88888',
-							name: 'mobile_in_content',
-							position: 'btf',
-							inventory: {
-								lang: ['en'],
-								mappedVerticalName: ['gaming'],
-								pos: ['mobile_in_content'],
-								s1: ['not a top1k wiki'],
-								src: ['gpt'],
-								testKeyval: ['yes'],
-							},
-							video: {
-								playerWidth: '640',
-								playerHeight: '480',
-								size_id: '101',
-								language: 'en',
-							},
-						},
-					},
-				],
-			},
-		]);
-	});
-
-	it('prepareAdUnits returns data in correct shape with additional key-vals', () => {
-		targetingServiceStub.dump.returns({
-			testKeyval: 'yes',
-			mappedVerticalName: 'gaming',
-		});
-
-		const rubicon = new Rubicon({
-			enabled: true,
-			accountId: 1234,
-			slots: {
-				mobile_in_content: {
-					siteId: '55111',
-					sizeId: '101',
-					zoneId: '88888',
-					position: 'btf',
-				},
-			},
-		});
-
-		expect(rubicon.prepareAdUnits()).to.deep.equal([
-			{
-				code: 'mobile_in_content',
-				mediaTypes: {
-					video: {
-						playerSize: [640, 480],
-						context: 'instream',
-						api: [2],
-						linearity: 1,
-						mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
-						maxduration: 30,
-						protocols: [2, 3, 5, 6],
-					},
-				},
-				ortb2Imp: {
-					ext: {
-						gpid: '/5441/something/_PB/mobile_in_content',
-					},
-				},
-				bids: [
-					{
-						bidder: 'rubicon',
-						params: {
-							accountId: 1234,
-							siteId: '55111',
-							zoneId: '88888',
-							name: 'mobile_in_content',
-							position: 'btf',
-							inventory: {
-								lang: ['en'],
-								mappedVerticalName: ['gaming'],
-								pos: ['mobile_in_content'],
+								pos: ['featured'],
 								s1: ['not a top1k wiki'],
 								src: ['gpt'],
 								testKeyval: ['yes'],

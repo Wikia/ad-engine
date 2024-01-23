@@ -49,7 +49,7 @@ export class PlayerSetup extends BaseServiceSetup {
 		this.setupOptimizelyExperiment();
 
 		const showAds = !context.get('options.wad.blocking');
-		const vastResponse: VastResponseData =
+		const vastResponse: VastResponseData | undefined =
 			showAds &&
 			displayAndVideoAdsSyncContext.isSyncEnabled() &&
 			displayAndVideoAdsSyncContext.isTaglessRequestEnabled()
@@ -59,10 +59,10 @@ export class PlayerSetup extends BaseServiceSetup {
 
 		connatixInstreamEnabled
 			? PlayerSetup.initConnatixPlayer(showAds, vastResponse)
-			: this.initJWPlayer(showAds, vastResponse);
+			: await this.initJWPlayer(showAds, vastResponse);
 	}
 
-	private async initJWPlayer(showAds, vastResponse) {
+	private async initJWPlayer(showAds: boolean, vastResponse?: VastResponseData) {
 		utils.logger(logGroup, 'JWP with ads controlled by AdEngine enabled');
 
 		const strategyRulesEnabled = context.get('options.video.enableStrategyRules');
@@ -107,7 +107,7 @@ export class PlayerSetup extends BaseServiceSetup {
 		}
 	}
 
-	private static initConnatixPlayer(showAds, vastResponse) {
+	private static initConnatixPlayer(showAds: boolean, vastResponse?: VastResponseData) {
 		utils.logger(logGroup, 'Connatix with ads not controlled by AdEngine enabled');
 
 		const videoAdSlotName = 'featured';
@@ -144,7 +144,11 @@ export class PlayerSetup extends BaseServiceSetup {
 		});
 	}
 
-	private static emitVideoSetupEvent(showAds, adSlot, vastResponse) {
+	private static emitVideoSetupEvent(
+		showAds: boolean,
+		adSlot: AdSlot,
+		vastResponse?: VastResponseData,
+	) {
 		communicationService.emit(eventsRepository.VIDEO_SETUP, {
 			showAds,
 			autoplayDisabled: false,

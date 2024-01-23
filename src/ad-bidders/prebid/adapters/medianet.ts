@@ -1,6 +1,10 @@
 import { context } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
-import { PrebidAdSlotConfig } from '../prebid-models';
+import {
+	PrebidAdSlotConfig,
+	PrebidPlcmtVideoSubtypes,
+	PrebidVideoPlacements,
+} from '../prebid-models';
 
 export class Medianet extends PrebidAdapter {
 	static bidderName = 'medianet';
@@ -34,6 +38,8 @@ export class Medianet extends PrebidAdapter {
 					maxduration: 30,
 					protocols: [2, 3, 5, 6],
 					playbackmethod: [2, 3],
+					placement: PrebidVideoPlacements.IN_ARTICLE,
+					plcmt: PrebidPlcmtVideoSubtypes.ACCOMPANYING_CONTENT,
 				},
 			},
 			ortb2Imp: this.getOrtb2Imp(code),
