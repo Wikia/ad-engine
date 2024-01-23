@@ -50,6 +50,21 @@ describe('Instant Config Cache Storage', () => {
 		});
 	});
 
+	describe('remove', () => {
+		it('should remove data from cache', () => {
+			cacheStorage.set({
+				name: 'testId',
+				group: 'B',
+				limit: 30,
+				result: true,
+				withCookie: false,
+			});
+
+			cacheStorage.remove('testId');
+
+			expect(cacheStorage.get('testId')).to.equal(undefined);
+		});
+	});
 	describe('getSamplingResults', () => {
 		it('should return empty array', () => {
 			expect(cacheStorage.getSamplingResults()).to.deep.equal([]);
