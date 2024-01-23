@@ -5,6 +5,7 @@ import {
 	context,
 	eventsRepository,
 	scrollListener,
+	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
 
@@ -42,6 +43,11 @@ export class BasicRotator {
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
 			({ slot }) => {
 				if (slot.getSlotName().substring(0, this.slotNamePrefix.length) !== this.slotNamePrefix) {
+					return;
+				}
+
+				if (universalAdPackage.isFanTakeoverLoaded()) {
+					utils.logger(this.logGroup, 'fan takeover loaded ', 'rotator stopped');
 					return;
 				}
 
@@ -137,7 +143,10 @@ export class BasicRotator {
 	}
 
 	private isRotationFinished(): boolean {
-		return !context.get(`slots.${this.slotNamePrefix}${this.refreshInfo.repeatIndex}`);
+		return (
+			!context.get(`slots.${this.slotNamePrefix}${this.refreshInfo.repeatIndex}`) ||
+			universalAdPackage.isFanTakeoverLoaded()
+		);
 	}
 
 	private pushNextSlot(): void {
