@@ -1,6 +1,10 @@
 import { context } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
-import { PrebidAdSlotConfig } from '../prebid-models';
+import {
+	PrebidAdSlotConfig,
+	PrebidPlcmtVideoSubtypes,
+	PrebidVideoPlacements,
+} from '../prebid-models';
 
 export class Pubmatic extends PrebidAdapter {
 	static bidderName = 'pubmatic';
@@ -36,8 +40,8 @@ export class Pubmatic extends PrebidAdapter {
 				api: [2],
 				protocols: [2, 3, 5, 6],
 				linearity: 1,
-				placement: 1,
-				plcmt: 2,
+				placement: PrebidVideoPlacements.IN_ARTICLE,
+				plcmt: PrebidPlcmtVideoSubtypes.ACCOMPANYING_CONTENT,
 			},
 		};
 
@@ -47,6 +51,7 @@ export class Pubmatic extends PrebidAdapter {
 				video: {
 					playerSize: [640, 480],
 					context: 'instream',
+					placement: PrebidVideoPlacements.IN_ARTICLE,
 				},
 			},
 			bids: this.getBids(ids, videoParams),
