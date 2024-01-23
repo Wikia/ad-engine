@@ -4,14 +4,14 @@ import { communicationService, eventsRepository } from '@wikia/communication';
 import { context, displayAndVideoAdsSyncContext, InstantConfigService } from '@wikia/core';
 import { PlayerSetup } from '@wikia/platforms/shared';
 import { expect } from 'chai';
-import { SinonSpy } from 'sinon';
+import { SinonSpy, SinonStubbedInstance } from 'sinon';
 
 describe('PlayerSetup', () => {
 	const MOCKED_VAST_AD_UNIT = '/5441/test/vast/ad/unit';
 
 	let dispatchSpy: SinonSpy;
-	let instantConfigStub;
-	let jwpManagerStub;
+	let instantConfigStub: SinonStubbedInstance<InstantConfigService>;
+	let jwpManagerStub: SinonStubbedInstance<JWPlayerManager>;
 	let vastTaglessRequestStub;
 	let subject: PlayerSetup;
 
