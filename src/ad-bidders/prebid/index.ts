@@ -388,6 +388,8 @@ export class PrebidProvider extends BidderProvider {
 			context.get('custom.hasFeaturedVideo') &&
 			context.get('options.video.enableStrategyRules')
 		) {
+			const initialMediaId = context.get('options.video.initialMediaId');
+
 			return {
 				realTimeData: {
 					auctionDelay: 100,
@@ -396,7 +398,7 @@ export class PrebidProvider extends BidderProvider {
 							name: 'jwplayer',
 							waitForIt: true,
 							params: {
-								mediaIDs: [],
+								mediaIDs: initialMediaId ? [initialMediaId] : [],
 							},
 						},
 					],

@@ -30,6 +30,7 @@ export class JwpStrategyRulesSetup extends BaseServiceSetup {
 
 	call() {
 		this.setupOptimizelyExperiment();
+		this.addMediaIdToContextWhenStrategyRulesEnabled();
 	}
 
 	private setupOptimizelyExperiment() {
@@ -48,6 +49,19 @@ export class JwpStrategyRulesSetup extends BaseServiceSetup {
 		context.set(
 			'options.video.enableStrategyRules',
 			variant === OPTIMIZELY_STRATEGY_RULES_EXPERIMENT_VARIANTS.ENABLED,
+		);
+	}
+
+	private addMediaIdToContextWhenStrategyRulesEnabled() {
+		const strategyRulesEnabled = context.get('options.video.enableStrategyRules');
+
+		if (!strategyRulesEnabled) {
+			return;
+		}
+
+		context.set(
+			'options.video.initialMediaId',
+			window?.mw?.config?.get('wgArticleFeaturedVideo')?.mediaId,
 		);
 	}
 }
