@@ -1,4 +1,10 @@
-import { context, InsertMethodType, InstantConfigService, utils } from '@wikia/ad-engine';
+import {
+	context,
+	InsertMethodType,
+	InstantConfigService,
+	targetingService,
+	utils,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 interface TopBoxadConfigExperiment {
@@ -25,12 +31,14 @@ export class UcpMobileTopBoxadExperiment {
 	public getConfig(): TopBoxadConfigExperiment {
 		if (this.isHome()) {
 			utils.logger(logGroup, 'Home page');
+
 			return this.defaultHomeConfig;
 		} else if (this.isExperimentEnabled()) {
 			return this.getExperimentConfig();
 		}
 
 		utils.logger(logGroup, 'Default config');
+		this.addToTargeting('top_boxad_default');
 		return this.defaultNonHomeConfig;
 	}
 
@@ -40,17 +48,20 @@ export class UcpMobileTopBoxadExperiment {
 
 		if (!this.existParagraph(firstParagraph)) {
 			utils.logger(logGroup, 'First paragraph does not exist');
+			this.addToTargeting('top_boxad_default');
 
 			return this.defaultNonHomeConfig;
 		} else if (this.isBeforeFirstH2(firstParagraph.element)) {
 			utils.logger(logGroup, 'One <p> before <h2>');
+			this.addToTargeting('top_boxad_one_paragraph');
 
 			return this.prepareConfig(
 				`${this.getParagraphSelector(firstParagraph.nthOfType)}, ${this.defaultAnchorSelector}`,
 				'after',
 			);
 		} else if (this.isLargeParagraph(firstParagraph.element)) {
-			utils.logger(logGroup, 'Long first <p>');
+			utils.logger(logGroup, 'Large first <p>');
+			this.addToTargeting('top_boxad_large_paragraph');
 
 			return this.prepareConfig(
 				`${this.getParagraphSelector(firstParagraph.nthOfType)}, ${this.defaultAnchorSelector}`,
@@ -62,6 +73,7 @@ export class UcpMobileTopBoxadExperiment {
 
 		if (this.existParagraph(secondParagraph) && this.isSmallParagraph(firstParagraph.element)) {
 			utils.logger(logGroup, 'Short first <p>, ad after second <p>');
+			this.addToTargeting('top_boxad_second_paragraph');
 
 			return this.prepareConfig(
 				`${this.getParagraphSelector(secondParagraph.nthOfType)}, ${this.defaultAnchorSelector}`,
@@ -70,7 +82,16 @@ export class UcpMobileTopBoxadExperiment {
 		}
 
 		utils.logger(logGroup, 'Experiment, but default config');
+		this.addToTargeting('top_boxad_default');
+
 		return this.defaultNonHomeConfig;
+	}
+
+	private addToTargeting(experimentGroup: string) {
+		const targetingData = targetingService.get('experiment_groups') || [];
+		targetingData.push(experimentGroup);
+
+		targetingService.set('experiment_groups', targetingData);
 	}
 
 	private prepareConfig(
