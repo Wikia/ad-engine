@@ -14,6 +14,9 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 import { NoAdsDetector } from '../services/no-ads-detector';
 
+const OPTIMIZELY_NO_INCONTENT_PLAYER_EXPERIMENT_ID = '27295370448';
+const OPTIMIZELY_NO_INCONTENT_VARIATION_ID = '27266830455';
+
 @Injectable()
 export class BaseContextSetup implements DiProcess {
 	constructor(
@@ -117,11 +120,21 @@ export class BaseContextSetup implements DiProcess {
 			this.instantConfig.get('icComscoreJwpTracking'),
 		);
 
-		context.set('services.anyclip.enabled', this.instantConfig.get('icAnyclipPlayer'));
+		const noInContentVideoVariationActive =
+			window.optimizely?.get('state')?.getVariationMap()?.[
+				OPTIMIZELY_NO_INCONTENT_PLAYER_EXPERIMENT_ID
+			]?.id === OPTIMIZELY_NO_INCONTENT_VARIATION_ID;
+		context.set(
+			'services.anyclip.enabled',
+			this.instantConfig.get('icAnyclipPlayer') && !noInContentVideoVariationActive,
+		);
 		context.set('services.anyclip.isApplicable', () => {
 			return !context.get('custom.hasFeaturedVideo') && !this.instantConfig.get('icConnatixPlayer');
 		});
-		context.set('services.connatix.enabled', this.instantConfig.get('icConnatixPlayer'));
+		context.set(
+			'services.connatix.enabled',
+			this.instantConfig.get('icConnatixPlayer') && !noInContentVideoVariationActive,
+		);
 	}
 
 	private setInContentExperiment(): void {
