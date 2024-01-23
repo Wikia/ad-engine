@@ -1,6 +1,6 @@
 import { JWPlayerManager, VastResponseData, VastTaglessRequest } from '@wikia/ad-products';
 import { Optimizely } from '@wikia/ad-services';
-import { communicationService } from '@wikia/communication';
+import { communicationService, eventsRepository } from '@wikia/communication';
 import { context, displayAndVideoAdsSyncContext, InstantConfigService } from '@wikia/core';
 import { PlayerSetup } from '@wikia/platforms/shared';
 import { expect } from 'chai';
@@ -9,7 +9,7 @@ import { SinonSpy } from 'sinon';
 describe('PlayerSetup', () => {
 	const MOCKED_VAST_AD_UNIT = '/5441/test/vast/ad/unit';
 
-	let dispatch: SinonSpy;
+	let dispatchSpy: SinonSpy;
 	let instantConfigStub;
 	let jwpManagerStub;
 	let vastTaglessRequestStub;
@@ -33,7 +33,7 @@ describe('PlayerSetup', () => {
 	});
 
 	beforeEach(() => {
-		dispatch = global.sandbox.spy(communicationService, 'dispatch');
+		dispatchSpy = global.sandbox.spy(communicationService, 'dispatch');
 	});
 
 	afterEach(() => {
@@ -60,7 +60,7 @@ describe('PlayerSetup', () => {
 
 		await subject.call();
 
-		expect(dispatch.calledOnceWith(expectedDispatchArg)).to.be.true;
+		expect(dispatchSpy.calledOnceWith(expectedDispatchArg)).to.be.true;
 	});
 
 	it('should dispatch jwpSetup action with VAST XML when tagless request is enabled', async () => {
@@ -80,8 +80,8 @@ describe('PlayerSetup', () => {
 
 		await subject.call();
 
-		expect(dispatch.calledOnce).to.be.true;
-		expect(dispatch.firstCall.args[0]).to.deep.equal(expectedDispatchArg);
+		expect(dispatchSpy.calledOnce).to.be.true;
+		expect(dispatchSpy.firstCall.args[0]).to.deep.equal(expectedDispatchArg);
 	});
 
 	it('should dispatch jwpSetup action with showAds flag and without VAST XML when adblock detected', async () => {
@@ -95,28 +95,30 @@ describe('PlayerSetup', () => {
 
 		await subject.call();
 
-		expect(dispatch.calledOnceWith(expectedDispatchArg)).to.be.true;
-		expect(dispatch.firstCall.args[0].showAds).to.be.false;
-		expect(dispatch.firstCall.args[0].vastXml).to.be.undefined;
+		expect(dispatchSpy.calledOnceWith(expectedDispatchArg)).to.be.true;
+		expect(dispatchSpy.firstCall.args[0].showAds).to.be.false;
+		expect(dispatchSpy.firstCall.args[0].vastXml).to.be.undefined;
 	});
 
-	it.skip('should dispatch video setup action when Connatix is enabled', async () => {
-		context.set('icConnatixInstream', true);
+	it('should dispatch video setup action when Connatix is enabled', async () => {
+		instantConfigStub.get.withArgs('icConnatixInstream').returns(true);
 		context.set('slots.featured.videoAdUnit', MOCKED_VAST_AD_UNIT);
 		context.set('vast.adUnitId', MOCKED_VAST_AD_UNIT);
+		const slotName = 'featured';
 		const expectedDispatchArg = {
 			showAds: true,
 			autoplayDisabled: false,
 			videoAdUnitPath: MOCKED_VAST_AD_UNIT,
-			targetingParams: 'src=test',
+			targetingParams: 'experiment_groups=strategy_rules_undefined&pos=featured&rv=1',
 			vastXml: undefined,
 			type: '[Video] Setup done',
 			__global: true,
 		};
 
 		await subject.call();
+		communicationService.emit(eventsRepository.BIDDERS_BIDDING_DONE, { slotName });
 
-		expect(dispatch.calledOnce).to.be.true;
-		expect(dispatch.firstCall.args[0]).to.deep.equal(expectedDispatchArg);
+		expect(dispatchSpy.called).to.be.true;
+		expect(dispatchSpy.lastCall.args[0]).to.deep.equal(expectedDispatchArg);
 	});
 });
