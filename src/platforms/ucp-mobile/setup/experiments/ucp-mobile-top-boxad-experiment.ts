@@ -59,7 +59,9 @@ export class UcpMobileTopBoxadExperiment {
 				`${this.getParagraphSelector(firstParagraph.nthOfType)}, ${this.defaultAnchorSelector}`,
 				'after',
 			);
-		} else if (this.isLargeParagraph(firstParagraph.element)) {
+		}
+
+		if (this.isLargeParagraph(firstParagraph.element)) {
 			utils.logger(logGroup, 'Large first <p>');
 			this.addToTargeting('top_boxad_large_paragraph');
 
@@ -67,18 +69,18 @@ export class UcpMobileTopBoxadExperiment {
 				`${this.getParagraphSelector(firstParagraph.nthOfType)}, ${this.defaultAnchorSelector}`,
 				'after',
 			);
-		}
+		} else {
+			const secondParagraph = this.getSecondParagraph(paragraphs, firstParagraph.nthOfType);
 
-		const secondParagraph = this.getSecondParagraph(paragraphs, firstParagraph.nthOfType);
+			if (this.existParagraph(secondParagraph)) {
+				utils.logger(logGroup, 'Short first <p>, ad after second <p>');
+				this.addToTargeting('top_boxad_second_paragraph');
 
-		if (this.existParagraph(secondParagraph) && this.isSmallParagraph(firstParagraph.element)) {
-			utils.logger(logGroup, 'Short first <p>, ad after second <p>');
-			this.addToTargeting('top_boxad_second_paragraph');
-
-			return this.prepareConfig(
-				`${this.getParagraphSelector(secondParagraph.nthOfType)}, ${this.defaultAnchorSelector}`,
-				'after',
-			);
+				return this.prepareConfig(
+					`${this.getParagraphSelector(secondParagraph.nthOfType)}, ${this.defaultAnchorSelector}`,
+					'after',
+				);
+			}
 		}
 
 		utils.logger(logGroup, 'Experiment, but default config');
@@ -157,10 +159,6 @@ export class UcpMobileTopBoxadExperiment {
 			paragraph.textContent &&
 			(paragraph.textContent.length >= 400 || paragraph.clientHeight >= 350)
 		);
-	}
-
-	private isSmallParagraph(paragraph: Element) {
-		return paragraph.textContent && paragraph.textContent.length < 400;
 	}
 
 	private existParagraph(paragraph: { element: any; nthOfType: any }) {
