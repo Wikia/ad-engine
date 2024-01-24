@@ -54,6 +54,10 @@ export class InstantConfigCacheStorage implements InstantConfigCacheStorageServi
 		this.cacheStorage[data.name] = data;
 	}
 
+	remove(id: string): void {
+		delete this.cacheStorage[id];
+	}
+
 	/**
 	 * Transform sampling results using supplied key-values map.
 	 */
