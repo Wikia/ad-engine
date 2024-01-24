@@ -65,6 +65,10 @@ export class OpenWeb extends BaseServiceSetup {
 	}
 
 	public isActive(): boolean {
+		if (this.isTopBoxadExperiment()) {
+			return false;
+		}
+
 		if (!this.config) {
 			this.readConfig(this.instantConfig);
 		}
@@ -77,6 +81,10 @@ export class OpenWeb extends BaseServiceSetup {
 			isActive: false,
 			spotId: 'n-a',
 		});
+	}
+
+	private isTopBoxadExperiment() {
+		return this.instantConfig.get('icExperiments', []).includes('topBoxadNewLogic');
 	}
 
 	private loadScript(spotId: string, postUniqueId: string, postUrl: string, title: string): void {
