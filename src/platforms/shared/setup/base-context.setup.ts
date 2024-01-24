@@ -14,19 +14,6 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 import { NoAdsDetector } from '../services/no-ads-detector';
 
-const OPTIMIZELY_NO_INCONTENT_PLAYER_EXPERIMENT = {
-	// https://app.optimizely.com/v2/projects/17632281258/experiments/27342680309/variations
-	MOBILE: {
-		EXPERIMENT_ID: '27342680309',
-		NO_INCONTENT_PLAYER_VARIATION_ID: '27359980218',
-	},
-	// https://app.optimizely.com/v2/projects/17632281258/experiments/27295370448/variations
-	DESKTOP: {
-		EXPERIMENT_ID: '27295370448',
-		NO_INCONTENT_PLAYER_VARIATION_ID: '27266830455',
-	},
-};
-
 @Injectable()
 export class BaseContextSetup implements DiProcess {
 	constructor(
@@ -130,31 +117,11 @@ export class BaseContextSetup implements DiProcess {
 			this.instantConfig.get('icComscoreJwpTracking'),
 		);
 
-		const isMobile = context.get('state.isMobile');
-		const optimizelyVariationMap = window.optimizely?.get('state')?.getVariationMap();
-		const desktopNoInContentVideoVariationActive =
-			optimizelyVariationMap?.[OPTIMIZELY_NO_INCONTENT_PLAYER_EXPERIMENT.DESKTOP.EXPERIMENT_ID]
-				?.id ===
-				OPTIMIZELY_NO_INCONTENT_PLAYER_EXPERIMENT.DESKTOP.NO_INCONTENT_PLAYER_VARIATION_ID &&
-			!isMobile;
-		const mobileNoInContentVideoVariationActive =
-			optimizelyVariationMap?.[OPTIMIZELY_NO_INCONTENT_PLAYER_EXPERIMENT.MOBILE.EXPERIMENT_ID]
-				?.id ===
-				OPTIMIZELY_NO_INCONTENT_PLAYER_EXPERIMENT.MOBILE.NO_INCONTENT_PLAYER_VARIATION_ID &&
-			isMobile;
-		const noInContentVideoVariationActive =
-			desktopNoInContentVideoVariationActive || mobileNoInContentVideoVariationActive;
-		context.set(
-			'services.anyclip.enabled',
-			this.instantConfig.get('icAnyclipPlayer') && !noInContentVideoVariationActive,
-		);
+		context.set('services.anyclip.enabled', this.instantConfig.get('icAnyclipPlayer'));
 		context.set('services.anyclip.isApplicable', () => {
 			return !context.get('custom.hasFeaturedVideo') && !this.instantConfig.get('icConnatixPlayer');
 		});
-		context.set(
-			'services.connatix.enabled',
-			this.instantConfig.get('icConnatixPlayer') && !noInContentVideoVariationActive,
-		);
+		context.set('services.connatix.enabled', this.instantConfig.get('icConnatixPlayer'));
 	}
 
 	private setInContentExperiment(): void {
