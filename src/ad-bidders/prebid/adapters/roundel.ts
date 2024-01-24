@@ -1,6 +1,10 @@
 import { context } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
-import { PrebidAdSlotConfig } from '../prebid-models';
+import {
+	PrebidAdSlotConfig,
+	PrebidPlcmtVideoSubtypes,
+	PrebidVideoPlacements,
+} from '../prebid-models';
 
 export class Roundel extends PrebidAdapter {
 	static bidderName = 'roundel';
@@ -33,7 +37,9 @@ export class Roundel extends PrebidAdapter {
 			mediaTypes: {
 				video: {
 					context: 'instream',
+					placement: PrebidVideoPlacements.IN_ARTICLE,
 					playerSize: [640, 480],
+					plcmt: PrebidPlcmtVideoSubtypes.ACCOMPANYING_CONTENT,
 				},
 			},
 			ortb2Imp: this.getOrtb2Imp(code),
