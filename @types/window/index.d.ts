@@ -55,6 +55,7 @@ interface Window {
 	sessionId?: string;
 	session_id?: string;
 	SilverSurferSDK?: SilverSurferSDK;
+	sitePageVars?: any;
 	// Fandom JWPlayer sets the sponsored videos list
 	sponsoredVideos?: string[];
 	trackingOptIn?: any;
