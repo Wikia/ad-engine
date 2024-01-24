@@ -3,11 +3,11 @@ import { expect } from 'chai';
 
 describe('Gamespot Targeting Setup', () => {
 	afterEach(() => {
-		window.utag_data = undefined;
+		window.sitePageVars.trackingSettings.google_tag_manager.data = undefined;
 	});
 
 	describe('getVerticalName', () => {
-		it('returns "gaming" when utag_data is not available', () => {
+		it('returns "gaming" when google_tag_manager is not available', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
 
@@ -21,7 +21,7 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "ent" when isEnterteinmentSite() returns true', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.utag_data = { 'dom.pathname': '/entertainment' };
+			window.location.pathname = '/entertainment';
 
 			//when
 			const verticalName = gamespotTargetingSetup.getVerticalName();
@@ -33,7 +33,7 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "gaming" on siteSection=news when topicName is not available', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.utag_data = { siteSection: 'news' };
+			window.sitePageVars.trackingSettings.google_tag_manager.data = { siteSection: 'news' };
 
 			//when
 			const verticalName = gamespotTargetingSetup.getVerticalName();
@@ -45,7 +45,7 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "gaming" on siteSection=news when topicName is empty array', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.utag_data = { siteSection: 'news' };
+			window.sitePageVars.trackingSettings.google_tag_manager.data = { siteSection: 'news' };
 
 			//when
 			const verticalName = gamespotTargetingSetup.getVerticalName();
@@ -57,7 +57,10 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "gaming" on siteSection=news when topicName array include "Games"', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.utag_data = { siteSection: 'news', topicName: ['Games'] };
+			window.sitePageVars.trackingSettings.google_tag_manager.data = {
+				siteSection: 'news',
+				topicName: ['Games'],
+			};
 
 			//when
 			const verticalName = gamespotTargetingSetup.getVerticalName();
@@ -69,7 +72,7 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "gaming" on siteSection=news when topicName does not include "Games" but contentTopicId does', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.utag_data = {
+			window.sitePageVars.trackingSettings.google_tag_manager.data = {
 				siteSection: 'news',
 				topicName: ['Tech'],
 				contentTopicName: 'gaming-tech',
@@ -85,7 +88,10 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "ent" on siteSection=news when topicName array does not include "Games"', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.utag_data = { siteSection: 'news', topicName: ['TV'] };
+			window.sitePageVars.trackingSettings.google_tag_manager.data = {
+				siteSection: 'news',
+				topicName: ['TV'],
+			};
 
 			//when
 			const verticalName = gamespotTargetingSetup.getVerticalName();
@@ -97,7 +103,10 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "gaming" on siteSection=reviews when topicName array include "Games"', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.utag_data = { siteSection: 'reviews', topicName: ['Games'] };
+			window.sitePageVars.trackingSettings.google_tag_manager.data = {
+				siteSection: 'reviews',
+				topicName: ['Games'],
+			};
 
 			//when
 			const verticalName = gamespotTargetingSetup.getVerticalName();
@@ -109,7 +118,10 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "gaming" on siteSection=reviews when topicName array include "Game Review"', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.utag_data = { siteSection: 'reviews', topicName: ['Games'] };
+			window.sitePageVars.trackingSettings.google_tag_manager.data = {
+				siteSection: 'reviews',
+				topicName: ['Games'],
+			};
 
 			//when
 			const verticalName = gamespotTargetingSetup.getVerticalName();
@@ -121,7 +133,10 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "ent" on siteSection=reviews when topicName array does not include "Games"', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.utag_data = { siteSection: 'reviews', topicName: ['TV'] };
+			window.sitePageVars.trackingSettings.google_tag_manager.data = {
+				siteSection: 'reviews',
+				topicName: ['TV'],
+			};
 
 			//when
 			const verticalName = gamespotTargetingSetup.getVerticalName();
@@ -133,7 +148,10 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "gaming" on siteSection=galleries when topicName array include "Games"', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.utag_data = { siteSection: 'galleries', topicName: ['Games'] };
+			window.sitePageVars.trackingSettings.google_tag_manager.data = {
+				siteSection: 'galleries',
+				topicName: ['Games'],
+			};
 
 			//when
 			const verticalName = gamespotTargetingSetup.getVerticalName();
@@ -145,7 +163,10 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "ent" on siteSection=galleries when topicName array does not include "Games"', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.utag_data = { siteSection: 'galleries', topicName: ['TV'] };
+			window.sitePageVars.trackingSettings.google_tag_manager.data = {
+				siteSection: 'galleries',
+				topicName: ['TV'],
+			};
 
 			//when
 			const verticalName = gamespotTargetingSetup.getVerticalName();
@@ -157,7 +178,7 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "gaming" on siteSection=reviews when topicName is not available', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.utag_data = { siteSection: 'news' };
+			window.sitePageVars.trackingSettings.google_tag_manager.data = { siteSection: 'news' };
 
 			//when
 			const verticalName = gamespotTargetingSetup.getVerticalName();
@@ -169,7 +190,7 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "gaming" when siteSection does not exist', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.utag_data = {};
+			window.sitePageVars.trackingSettings.google_tag_manager.data = {};
 
 			//when
 			const verticalName = gamespotTargetingSetup.getVerticalName();
@@ -181,7 +202,7 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "gaming" when siteSection is different than news and entertainment', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.utag_data = { siteSection: 'different' };
+			window.sitePageVars.trackingSettings.google_tag_manager.data = { siteSection: 'different' };
 
 			//when
 			const verticalName = gamespotTargetingSetup.getVerticalName();
