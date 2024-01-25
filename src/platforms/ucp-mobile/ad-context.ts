@@ -89,12 +89,6 @@ export const basicContext = {
 		externalLogger: {
 			endpoint: '/wikia.php?controller=AdEngine&method=postLog',
 		},
-		instantConfig: {
-			endpoint: 'https://services.fandom.com',
-			appName: 'fandommobile',
-			fallback:
-				'https://script.wikia.nocookie.net/fandom-ae-assets/icbm/prod/icbm_state_fandommobile.json',
-		},
 		iasPublisherOptimization: {
 			slots: [
 				'top_leaderboard',

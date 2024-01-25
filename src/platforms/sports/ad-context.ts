@@ -51,12 +51,6 @@ const futheadContext = {
 		iasPublisherOptimization: {
 			slots: ['cdm-zone-01', 'cdm-zone-02', 'cdm-zone-03', 'cdm-zone-04', 'cdm-zone-06'],
 		},
-		instantConfig: {
-			endpoint: 'https://services.fandom.com',
-			appName: 'futhead',
-			fallback:
-				'https://script.wikia.nocookie.net/fandom-ae-assets/icbm/prod/icbm_state_futhead.json',
-		},
 	},
 };
 
@@ -71,12 +65,6 @@ const mutheadContext = {
 		},
 		iasPublisherOptimization: {
 			slots: ['cdm-zone-01', 'cdm-zone-02', 'cdm-zone-03', 'cdm-zone-04', 'cdm-zone-06'],
-		},
-		instantConfig: {
-			endpoint: 'https://services.fandom.com',
-			appName: 'muthead',
-			fallback:
-				'https://script.wikia.nocookie.net/fandom-ae-assets/icbm/prod/icbm_state_muthead.json',
 		},
 	},
 };

@@ -41,9 +41,6 @@ export const basicContext = {
 		iasPublisherOptimization: {
 			slots: ['mpu_top'],
 		},
-		instantConfig: {
-			appName: 'comicvine',
-		},
 	},
 	slots: {},
 	src: ['comicvine'],

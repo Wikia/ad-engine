@@ -18,6 +18,7 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { BasicRotator } from '../../utils/basic-rotator';
 import { FmrRotator } from '../../utils/fmr-rotator';
 
 const OPTIMIZELY_ANYCLIP_PLACEMENT_EXPERIMENT = {
@@ -206,15 +207,33 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 				},
 			},
 			activator: () => {
-				const rotator = new FmrRotator(slotName, slotNamePrefix, btRec, {
-					topPositionToRun: 65,
-				});
-
 				communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
-					rotator.rotateSlot();
+					if (this.isFmrApplicable(slotName)) {
+						const rotator = new FmrRotator(slotName, slotNamePrefix, btRec, {
+							topPositionToRun: 65,
+						});
+						rotator.rotateSlot();
+					} else {
+						const rotator = new BasicRotator(slotName, slotNamePrefix, {
+							topPositionToRun: 65,
+						});
+
+						rotator.rotateSlot();
+					}
 				});
 			},
 		};
+	}
+
+	private isFmrApplicable(slotName: string): boolean {
+		const fmrRecirculationElement = document.querySelector(
+			context.get(`slots.${slotName}.recirculationElementSelector`),
+		);
+		if (fmrRecirculationElement === null) {
+			return false;
+		}
+		const displayValue = window.getComputedStyle(fmrRecirculationElement, null).display;
+		return displayValue !== 'none';
 	}
 
 	private isRightRailApplicable(rightRailBreakingPoint = 1024): boolean {

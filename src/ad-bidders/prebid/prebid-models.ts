@@ -9,6 +9,14 @@ export enum PrebidVideoPlacements {
 	FLOATING = 5,
 }
 
+export enum PrebidPlcmtVideoSubtypes {
+	// https://github.com/InteractiveAdvertisingBureau/AdCOM/blob/develop/AdCOM%20v1.0%20FINAL.md#list_plcmtsubtypesvideo
+	IN_STREAM = 1,
+	ACCOMPANYING_CONTENT = 2,
+	INTERSTITIAL = 3,
+	STANDALONE = 4,
+}
+
 export type PrebidConfig = {
 	enabled: boolean;
 	bidsRefreshing: {

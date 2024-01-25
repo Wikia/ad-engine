@@ -27,6 +27,7 @@ import { intentIQ } from './intent-iq';
 import { liveRampId, LiveRampIdTypes } from './liveramp-id';
 import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice, roundBucketCpm } from './price-helper';
+import { yahooConnectId } from './yahoo-connect-id';
 
 const logGroup = 'prebid';
 
@@ -118,6 +119,7 @@ export class PrebidProvider extends BidderProvider {
 		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
 
 		this.prebidConfig = {
+			enableTIDs: true,
 			bidderSequence: 'random',
 			bidderTimeout: this.timeout,
 			cache: {
@@ -223,6 +225,7 @@ export class PrebidProvider extends BidderProvider {
 		this.configureOzone();
 		this.configureId5();
 		this.configureLiveRamp();
+		this.configureYahooConnectId();
 	}
 
 	private configureLiveRamp(): void {
@@ -264,6 +267,18 @@ export class PrebidProvider extends BidderProvider {
 		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
 			status: 'id5_done',
 		});
+	}
+
+	private configureYahooConnectId(): void {
+		const yahooConnectIdConfig = yahooConnectId.getConfig();
+
+		if (!yahooConnectIdConfig) {
+			return;
+		}
+
+		communicationService.emit(eventsRepository.YAHOO_LOADED);
+
+		this.prebidConfig.userSync.userIds.push(yahooConnectIdConfig);
 	}
 
 	private configureSChain(): void {
