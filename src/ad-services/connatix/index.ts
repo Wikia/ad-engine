@@ -1,5 +1,10 @@
 import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
-import { BaseServiceSetup, context, utils } from '@ad-engine/core';
+import {
+	BaseServiceSetup,
+	context,
+	isNoInContentVideoVariationActive,
+	utils,
+} from '@ad-engine/core';
 import { ConnatixBidsRefresher } from './connatix-bids-refresher';
 import { ConnatixPlayer, ConnatixPlayerApi } from './connatix-player';
 import { ConnatixTracker } from './connatix-tracker';
@@ -47,7 +52,11 @@ export class Connatix extends BaseServiceSetup {
 	async call(): Promise<void> {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'Connatix player is disabled');
-			return Promise.resolve();
+			return;
+		}
+
+		if (isNoInContentVideoVariationActive()) {
+			return;
 		}
 
 		utils.logger(logGroup, 'initialized', this.cid);
