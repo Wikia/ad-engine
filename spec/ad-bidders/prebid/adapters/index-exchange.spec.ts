@@ -57,7 +57,6 @@ describe('IndexExchange bidder adapter', () => {
 				gpid: '/5441/something/_PB/featured',
 				data: {
 					jwTargeting: {
-						playerID: 'featured-video__player-container',
 						mediaID: MOCKED_INITIAL_MEDIA_ID,
 					},
 				},

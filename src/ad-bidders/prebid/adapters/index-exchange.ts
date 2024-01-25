@@ -122,7 +122,6 @@ export class IndexExchange extends PrebidAdapter {
 				...ortbData.ext,
 				data: {
 					jwTargeting: {
-						playerID: 'featured-video__player-container',
 						mediaID: initialMediaId,
 					},
 				},
