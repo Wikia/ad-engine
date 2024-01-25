@@ -3,6 +3,7 @@ import {
 	AdSlot,
 	BaseServiceSetup,
 	context,
+	isNoInContentVideoVariationActive,
 	slotDataParamsUpdater,
 	slotService,
 	targetingService,
@@ -63,6 +64,10 @@ export class Anyclip extends BaseServiceSetup {
 	call() {
 		if (!this.isEnabled('services.anyclip.enabled', false)) {
 			utils.logger(logGroup, 'disabled');
+			return;
+		}
+
+		if (isNoInContentVideoVariationActive()) {
 			return;
 		}
 
