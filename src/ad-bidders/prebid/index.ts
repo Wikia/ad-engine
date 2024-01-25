@@ -277,6 +277,8 @@ export class PrebidProvider extends BidderProvider {
 			return;
 		}
 
+		communicationService.emit(eventsRepository.YAHOO_LOADED);
+
 		this.prebidConfig.userSync.userIds.push(yahooConnectIdConfig);
 	}
 
