@@ -2,27 +2,10 @@ import {
 	AdSlot,
 	AdSlotEvent,
 	communicationService,
-	context,
 	eventsRepository,
 	utils,
 } from '@wikia/ad-engine';
-import { clickDetector } from './metric-reporter-trackers/click-detector';
-
-interface EndpointInfo {
-	baseUrl: string;
-	service: string;
-	appName?: string;
-}
-
-export interface MetricReporterSenderSlotData {
-	slot: string;
-	state: string;
-}
-
-export interface MetricReporterSenderTimeData {
-	action?: string;
-	duration?: number;
-}
+import { MetricReporterSender } from './metric-reporter/metric-reporter-sender';
 
 const REPORTABLE_SLOTS = {
 	stateMetric: ['top_leaderboard'],
@@ -31,9 +14,8 @@ const REPORTABLE_SLOTS = {
 
 export class MetricReporter {
 	private readonly isActive: boolean;
-	private slotTimeDiffRequestToRender = new Map<string, number>();
 
-	constructor() {
+	constructor(private readonly sender: MetricReporterSender) {
 		this.isActive = utils.outboundTrafficRestrict.isOutboundTrafficAllowed('monitoring-default');
 	}
 
@@ -47,60 +29,20 @@ export class MetricReporter {
 
 		this.trackGamSlotRequest();
 		this.trackGamSlotRendered();
-
-		clickDetector((data) => this.sendToMeteringSystem(data));
-	}
-
-	private sendToMeteringSystem(
-		metricData: MetricReporterSenderSlotData | MetricReporterSenderTimeData,
-	): void {
-		const endpointInfo = this.getEndpointInfoFromContext();
-		let endpointUrl = '';
-
-		if (this.isMetricSlotData(metricData)) {
-			endpointUrl = this.getEndpointUrlFor('slot', endpointInfo);
-		}
-		if (this.isMetricTimeData(metricData)) {
-			endpointUrl = this.getEndpointUrlFor('time', endpointInfo);
-		}
-
-		const queryParams = [];
-		Object.entries(metricData).forEach(([k, v]) => {
-			queryParams.push(`${k}=${encodeURIComponent(v)}`);
-		});
-
-		const fetchTimeout = new utils.FetchTimeout();
-		fetchTimeout.fetch(
-			`${endpointUrl}?app=${endpointInfo.appName}&${queryParams.join('&')}`,
-			2000,
-			{
-				mode: 'no-cors',
-			},
-		);
-	}
-
-	private isMetricSlotData(item: any): item is MetricReporterSenderSlotData {
-		return item.slot && item.state;
-	}
-	private isMetricTimeData(item: any): item is MetricReporterSenderTimeData {
-		return item.action && item.duration;
 	}
 
 	private trackLibInitialization(): void {
-		this.sendToMeteringSystem({
+		this.sender.sendToMeteringSystem({
 			action: 'init',
 			duration: Math.round(utils.getTimeDelta()),
 		});
 	}
 
 	private trackGptLibReady(): void {
-		if (!this.isActive) {
-			return;
-		}
-		communicationService.on(eventsRepository.AD_ENGINE_GPT_READY, ({ time }) => {
-			this.sendToMeteringSystem({
+		communicationService.on(eventsRepository.AD_ENGINE_GPT_READY, () => {
+			this.sender.sendToMeteringSystem({
 				action: 'gpt-ready',
-				duration: Math.round(time),
+				duration: Math.round(utils.getTimeDelta()),
 			});
 		});
 	}
@@ -108,14 +50,12 @@ export class MetricReporter {
 	private trackGamSlotRequest(): void {
 		communicationService.onSlotEvent(AdSlotEvent.SLOT_REQUESTED_EVENT, ({ slot }) => {
 			this.sendSlotInfoToMeteringSystem(slot, 'request');
-			this.slotTimeDiffRequestToRender.set(slot.getSlotName(), Math.round(utils.getTimeDelta()));
 		});
 	}
 
 	private trackGamSlotRendered(): void {
 		communicationService.onSlotEvent(AdSlotEvent.SLOT_RENDERED_EVENT, ({ slot }) => {
 			this.sendSlotInfoToMeteringSystem(slot, 'render');
-			this.sendSlotLoadTimeDiffToMeteringSystem(slot);
 		});
 	}
 
@@ -124,40 +64,9 @@ export class MetricReporter {
 			return;
 		}
 
-		this.sendToMeteringSystem({
-			slot: slot.getSlotName(),
-			state,
+		this.sender.sendToMeteringSystem({
+			action: `${state}_${slot.getSlotName()}`,
+			duration: Math.round(utils.getTimeDelta()),
 		});
-	}
-
-	private sendSlotLoadTimeDiffToMeteringSystem(slot: AdSlot): void {
-		if (
-			!REPORTABLE_SLOTS.timingMetric.includes(slot.getSlotName()) ||
-			!this.slotTimeDiffRequestToRender.has(slot.getSlotName())
-		) {
-			return;
-		}
-
-		const requestTime = this.slotTimeDiffRequestToRender.get(slot.getSlotName());
-		const duration = Math.round(utils.getTimeDelta()) - requestTime;
-
-		this.sendToMeteringSystem({
-			action: `${slot.getSlotName()}_ratio`,
-			duration,
-		});
-	}
-
-	private getEndpointInfoFromContext(): EndpointInfo {
-		return {
-			baseUrl: context.get('services.monitoring.endpoint'),
-			service: context.get('services.monitoring.service'),
-			appName: context.get('services.instantConfig.appName'),
-		};
-	}
-
-	private getEndpointUrlFor(endpointSpecific: string, { baseUrl, service }): string {
-		return [baseUrl, service, 'api', 'adengine', 'meter', endpointSpecific]
-			.filter((element) => !!element)
-			.join('/');
 	}
 }
