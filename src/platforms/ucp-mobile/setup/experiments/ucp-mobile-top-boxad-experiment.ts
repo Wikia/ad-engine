@@ -2,6 +2,7 @@ import {
 	context,
 	InsertMethodType,
 	InstantConfigService,
+	OpenWeb,
 	targetingService,
 	utils,
 } from '@wikia/ad-engine';
@@ -26,7 +27,7 @@ export class UcpMobileTopBoxadExperiment {
 		insertMethod: 'after',
 	};
 
-	constructor(private instantConfig: InstantConfigService) {}
+	constructor(private instantConfig: InstantConfigService, private openWeb: OpenWeb) {}
 
 	public getConfig(): TopBoxadConfigExperiment {
 		if (this.isHome()) {
@@ -107,6 +108,12 @@ export class UcpMobileTopBoxadExperiment {
 	}
 
 	private isExperimentEnabled() {
+		if (this.openWeb.isActive()) {
+			utils.logger(logGroup, 'OpenWeb is on');
+
+			return false;
+		}
+
 		return this.instantConfig.get('icExperiments', []).includes('topBoxadNewLogic');
 	}
 

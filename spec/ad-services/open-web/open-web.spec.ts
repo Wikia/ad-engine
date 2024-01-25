@@ -21,7 +21,6 @@ describe('OpenWeb', () => {
 			.stub(utils.scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
-		instantConfigStub.get.withArgs('icExperiments').returns([]);
 		contextStub = global.sandbox.stub(context);
 		communicationServiceStub = global.sandbox.stub(communicationService);
 
