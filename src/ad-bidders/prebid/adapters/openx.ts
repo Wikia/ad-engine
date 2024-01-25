@@ -1,6 +1,10 @@
 import { context } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
-import { PrebidAdSlotConfig } from '../prebid-models';
+import {
+	PrebidAdSlotConfig,
+	PrebidPlcmtVideoSubtypes,
+	PrebidVideoPlacements,
+} from '../prebid-models';
 
 export class Openx extends PrebidAdapter {
 	static bidderName = 'openx';
@@ -29,9 +33,11 @@ export class Openx extends PrebidAdapter {
 			code,
 			mediaTypes: {
 				video: {
-					playerSize: [640, 480],
 					context: 'instream',
 					mimes: ['video/mp4', 'video/x-flv'],
+					playerSize: [640, 480],
+					placement: PrebidVideoPlacements.IN_ARTICLE,
+					plcmt: PrebidPlcmtVideoSubtypes.ACCOMPANYING_CONTENT,
 				},
 			},
 			ortb2Imp: this.getOrtb2Imp(code),

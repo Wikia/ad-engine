@@ -119,6 +119,7 @@ export class PrebidProvider extends BidderProvider {
 		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
 
 		this.prebidConfig = {
+			enableTIDs: true,
 			bidderSequence: 'random',
 			bidderTimeout: this.timeout,
 			cache: {
@@ -274,6 +275,8 @@ export class PrebidProvider extends BidderProvider {
 		if (!yahooConnectIdConfig) {
 			return;
 		}
+
+		communicationService.emit(eventsRepository.YAHOO_LOADED);
 
 		this.prebidConfig.userSync.userIds.push(yahooConnectIdConfig);
 	}

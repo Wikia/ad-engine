@@ -228,6 +228,9 @@ export const eventsRepository = {
 	LIVE_CONNECT_RESPONDED_UUID: {
 		name: 'LiveConnect responded with UUID',
 	},
+	YAHOO_LOADED: {
+		name: 'Yahoo loaded',
+	},
 	IDENTITY_ENGINE_READY: {
 		category: '[IdentityEngine]',
 		name: 'Identity ready',
