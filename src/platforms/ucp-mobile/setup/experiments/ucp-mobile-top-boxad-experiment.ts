@@ -31,6 +31,7 @@ export class UcpMobileTopBoxadExperiment {
 	public getConfig(): TopBoxadConfigExperiment {
 		if (this.isHome()) {
 			utils.logger(logGroup, 'Home page');
+			this.addToTargeting('top_boxad_default');
 
 			return this.defaultHomeConfig;
 		} else if (this.isExperimentEnabled()) {
@@ -83,7 +84,6 @@ export class UcpMobileTopBoxadExperiment {
 			}
 		}
 
-		utils.logger(logGroup, 'Experiment, but default config');
 		this.addToTargeting('top_boxad_default');
 
 		return this.defaultNonHomeConfig;
