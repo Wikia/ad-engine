@@ -138,7 +138,9 @@ describe('IndexExchange bidder adapter', () => {
 		]);
 	});
 
-	it('prepareAdUnits for video returns data in correct shape', () => {
+	it('prepareAdUnits returns data in correct shape for video', () => {
+		context.set('slots.featured.isVideo', true);
+
 		const indexExchange = new IndexExchange({
 			enabled: true,
 			slots: {
@@ -147,14 +149,14 @@ describe('IndexExchange bidder adapter', () => {
 				},
 			},
 		});
-		context.set('slots.featured.isVideo', true);
 
 		expect(indexExchange.prepareAdUnits()).to.deep.equal([EXPECTED_VIDEO_AD_UNIT_CONFIG]);
 	});
 
-	it('prepareAdUnits for video returns data in correct shape when JWP RTD module is enabled', () => {
+	it('prepareAdUnits returns data in correct shape when JWP RTD module is enabled for video', () => {
 		context.set('options.video.enableStrategyRules', true); // we use JWP RTD when strategy rules are enabled
 		context.set('options.video.jwplayer.initialMediaId', MOCKED_INITIAL_MEDIA_ID);
+		context.set('slots.featured.isVideo', true);
 
 		const indexExchange = new IndexExchange({
 			enabled: true,
@@ -164,7 +166,6 @@ describe('IndexExchange bidder adapter', () => {
 				},
 			},
 		});
-		context.set('slots.featured.isVideo', true);
 
 		expect(indexExchange.prepareAdUnits()).to.deep.equal([
 			EXPECTED_VIDEO_AD_UNIT_CONFIG_WITH_JWP_RTD_DATA,
