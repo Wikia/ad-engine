@@ -118,11 +118,13 @@ export class IndexExchange extends PrebidAdapter {
 		}
 
 		return {
-			...ortbData,
-			data: {
-				jwTargeting: {
-					playerID: '#featured-video__player-container',
-					mediaID: initialMediaId,
+			ext: {
+				...ortbData.ext,
+				data: {
+					jwTargeting: {
+						playerID: 'featured-video__player-container',
+						mediaID: initialMediaId,
+					},
 				},
 			},
 		};
