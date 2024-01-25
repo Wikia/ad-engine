@@ -14,6 +14,7 @@ import {
 	SlotConfig,
 	slotService,
 	targetingService,
+	tcf,
 	trackingOptIn,
 	utils,
 } from '@ad-engine/core';
@@ -182,6 +183,11 @@ export class A9Provider extends BidderProvider {
 		if (!slots || slots.length === 0) {
 			utils.logger(logGroup, 'there is no slots to fetch bids');
 			return;
+		}
+
+		if (trackingOptIn.isGdprConsentRequired()) {
+			// make sure TCF API is available before fetching bids
+			await tcf.getTCData();
 		}
 
 		const startTime = new Date().getTime();

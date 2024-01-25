@@ -1,5 +1,9 @@
 import { context } from './context-service';
 
+function isGdprConsentRequired(): boolean {
+	return !!context.get('options.geoRequiresConsent');
+}
+
 function isOptedIn(optIn?: boolean): boolean {
 	return !!(optIn ?? context.get('options.trackingOptIn'));
 }
@@ -15,6 +19,7 @@ function isOptOutSale(optOutSale?: boolean): boolean {
 }
 
 export const trackingOptIn = {
+	isGdprConsentRequired,
 	isOptedIn,
 	isOptOutSale,
 };
