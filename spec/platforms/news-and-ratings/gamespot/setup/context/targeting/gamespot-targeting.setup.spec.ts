@@ -2,7 +2,10 @@ import { GamespotTargetingSetup } from '@wikia/platforms/news-and-ratings/gamesp
 import { expect } from 'chai';
 
 describe('Gamespot Targeting Setup', () => {
-	afterEach(() => {
+	beforeEach(() => {
+		window.sitePageVars = {};
+		window.sitePageVars.trackingSettings = {};
+		window.sitePageVars.trackingSettings.google_tag_manager = {};
 		window.sitePageVars.trackingSettings.google_tag_manager.data = undefined;
 	});
 
@@ -18,16 +21,18 @@ describe('Gamespot Targeting Setup', () => {
 			expect(verticalName).to.equal('gaming');
 		});
 
-		it('returns "ent" when isEnterteinmentSite() returns true', () => {
+		it('returns "true" when isEntertainmentSite() receives pathname that includes entertainment', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.location.pathname = '/entertainment';
+			global.sandbox.stub(window, 'location').value({
+				pathname: '/entertainment',
+			});
 
 			//when
-			const verticalName = gamespotTargetingSetup.getVerticalName();
+			const isEnt = gamespotTargetingSetup.isEntertainmentSite(window.location.pathname);
 
 			//then
-			expect(verticalName).to.equal('ent');
+			expect(isEnt).to.equal(true);
 		});
 
 		it('returns "gaming" on siteSection=news when topicName is not available', () => {
