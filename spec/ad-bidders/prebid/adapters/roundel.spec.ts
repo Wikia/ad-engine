@@ -78,16 +78,16 @@ describe('Roundel bidder adapter', () => {
 		const roundel = new Roundel({
 			enabled: true,
 			slots: {
-				featured: {
+				incontent_player: {
 					siteId: '820935',
 				},
 			},
 		});
-		context.set('slots.featured.isVideo', true);
+		context.set('slots.incontent_player.isVideo', true);
 
 		expect(roundel.prepareAdUnits()).to.deep.equal([
 			{
-				code: 'featured',
+				code: 'incontent_player',
 				mediaTypes: {
 					video: {
 						context: 'instream',
@@ -98,7 +98,7 @@ describe('Roundel bidder adapter', () => {
 				},
 				ortb2Imp: {
 					ext: {
-						gpid: '/5441/something/_PB/featured',
+						gpid: '/5441/something/_PB/incontent_player',
 					},
 				},
 				bids: [
