@@ -23,6 +23,12 @@ interface PrebidAdUnit {
 	ortb2Imp?: {
 		ext: {
 			gpid: string;
+			data?: {
+				jwTargeting: {
+					playerID: string;
+					mediaID: string;
+				};
+			};
 		};
 	};
 }
