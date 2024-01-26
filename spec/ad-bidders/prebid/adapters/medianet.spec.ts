@@ -72,17 +72,17 @@ describe('Medianet bidder adapter', () => {
 		const medianet = new Medianet({
 			enabled: true,
 			slots: {
-				featured: {
+				testvideoadslot: {
 					cid: '1234',
 					crid: '5678',
 				},
 			},
 		});
-		context.set('slots.featured.isVideo', true);
+		context.set('slots.testvideoadslot.isVideo', true);
 
 		expect(medianet.prepareAdUnits()).to.deep.equal([
 			{
-				code: 'featured',
+				code: 'testvideoadslot',
 				mediaTypes: {
 					video: {
 						playerSize: [640, 480],
@@ -99,7 +99,7 @@ describe('Medianet bidder adapter', () => {
 				},
 				ortb2Imp: {
 					ext: {
-						gpid: '/5441/something/_PB/featured',
+						gpid: '/5441/something/_PB/testvideoadslot',
 					},
 				},
 				bids: [
