@@ -1,4 +1,10 @@
-import { AdEngineStackSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
+import {
+	AdEngineStackSetup,
+	GptSetup,
+	JwpStrategyRulesSetup,
+	PlayerSetup,
+	WadRunner,
+} from '@platforms/shared';
 import {
 	Anyclip,
 	Ats,
@@ -38,6 +44,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 		private durationMedia: DurationMedia,
 		private gptSetup: GptSetup,
 		private iasPublisherOptimization: IasPublisherOptimization,
+		private jwpStrategyRules: JwpStrategyRulesSetup,
 		private openWeb: OpenWeb,
 		private playerSetup: PlayerSetup,
 		private prebidNativeProvider: PrebidNativeProvider,
@@ -51,6 +58,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 		utils.logger('partners-pipeline', 'starting');
 		this.pipeline
 			.add(
+				this.jwpStrategyRules,
 				this.anyclip,
 				this.ats,
 				this.audigent,
