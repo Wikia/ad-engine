@@ -31,6 +31,7 @@ interface Window {
 	googletag: googletag.Googletag;
 	headertag?: any;
 	IntentIqObject?: IntentIqObject;
+	jwplayer?: function;
 	liQ?: LiQ;
 	mw?: MediaWiki;
 	ntv?: NativoApi;
