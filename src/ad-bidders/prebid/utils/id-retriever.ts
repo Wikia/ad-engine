@@ -31,3 +31,5 @@ export class IdRetriever {
 		});
 	}
 }
+
+export const prebidIdRetriever = new IdRetriever();
