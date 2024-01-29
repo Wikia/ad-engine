@@ -1,6 +1,7 @@
 import { context, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { MetricReporter } from '../tracking/metric-reporter';
+import { metricReporterSender } from '../tracking/metric-reporter/metric-reporter-sender';
 
 @Injectable()
 export class MetricReporterSetup implements DiProcess {
@@ -21,6 +22,9 @@ export class MetricReporterSetup implements DiProcess {
 			context.set(`services.monitoring-${key}.threshold`, monitorTrafficThreshold[key]);
 		});
 
-		new MetricReporter().initialise();
+		if (utils.outboundTrafficRestrict.isOutboundTrafficAllowed('monitoring-default')) {
+			metricReporterSender.activate();
+		}
+		new MetricReporter(metricReporterSender).initialise();
 	}
 }

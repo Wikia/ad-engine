@@ -23,12 +23,21 @@ export class Ozone extends PrebidAdapter {
 		this.dcn = options.dcn;
 
 		if (this.enabled) {
-			targetingService.set('testgroup', this.testGroup);
+			this.setTargeting();
 		}
 	}
 
 	get bidderName(): string {
 		return Ozone.bidderName;
+	}
+
+	private setTargeting() {
+		const ozoneContext = context.get('bidders.prebid.ozone');
+		if (ozoneContext && ozoneContext.slots) {
+			Object.keys(ozoneContext.slots).forEach((slotName) => {
+				targetingService.set('testgroup', this.testGroup, slotName);
+			});
+		}
 	}
 
 	prepareConfigForAdUnit(code, { sizes, pos, placementId }: PrebidAdSlotConfig): PrebidAdUnit {
