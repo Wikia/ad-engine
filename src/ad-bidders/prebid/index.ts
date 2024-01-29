@@ -447,7 +447,6 @@ export class PrebidProvider extends BidderProvider {
 	}
 
 	protected callBids(bidsBackHandler: (...args: any[]) => void): void {
-		utils.logger(this.logGroup, 'Setting up bids');
 		if (!this.adUnits) {
 			this.adUnits = adaptersRegistry.setupAdUnits(this.bidGroup);
 		}
