@@ -17,8 +17,6 @@ import {
 	videoDisplayTakeoverSynchronizer,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-// eslint-disable-next-line no-restricted-imports
-import { iasVideoTracker } from '../../../ad-products/video/porvata/plugins/ias/ias-video-tracker';
 
 const logGroup = 'player-setup';
 
@@ -32,12 +30,6 @@ export class PlayerSetup extends BaseServiceSetup {
 	) {
 		super(instantConfig, globalTimeout);
 		this.jwpManager = jwpManager ? jwpManager : new JWPlayerManager();
-	}
-
-	async execute(): Promise<void> {
-		communicationService.on(eventsRepository.VIDEO_PLAYER_RENDERED, () => {
-			this.loadIasTrackerIfEnabled();
-		});
 	}
 
 	async call() {
@@ -99,13 +91,6 @@ export class PlayerSetup extends BaseServiceSetup {
 			);
 		}
 	}
-
-	private loadIasTrackerIfEnabled(): void {
-		if (context.get('options.video.iasTracking.enabled')) {
-			utils.logger(logGroup, 'Loading IAS tracker for video player');
-			iasVideoTracker.load();
-		}
-  }
 
 	private static initConnatixPlayer(showAds: boolean, vastResponse?: VastResponseData) {
 		utils.logger(logGroup, 'Connatix with ads not controlled by AdEngine enabled');
