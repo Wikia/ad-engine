@@ -34,13 +34,10 @@ export class PlayerSetup extends BaseServiceSetup {
 		this.jwpManager = jwpManager ? jwpManager : new JWPlayerManager();
 	}
 
-	async execute(): Promise<void> {
+	async call() {
 		communicationService.on(eventsRepository.VIDEO_PLAYER_RENDERED, () => {
 			this.loadIasTrackerIfEnabled();
 		});
-	}
-
-	async call() {
 		const showAds = !context.get('options.wad.blocking');
 		const vastResponse: VastResponseData | undefined =
 			showAds &&
@@ -105,7 +102,7 @@ export class PlayerSetup extends BaseServiceSetup {
 			utils.logger(logGroup, 'Loading IAS tracker for video player');
 			iasVideoTracker.load();
 		}
-  }
+	}
 
 	private static initConnatixPlayer(showAds: boolean, vastResponse?: VastResponseData) {
 		utils.logger(logGroup, 'Connatix with ads not controlled by AdEngine enabled');
