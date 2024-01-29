@@ -10,7 +10,10 @@ export class UcpMobileA9ConfigSetup implements DiProcess {
 	getA9Context(): object {
 		return {
 			mobile_top_leaderboard: {
-				sizes: [[320, 50]],
+				sizes: [
+					[320, 100],
+					[320, 50],
+				],
 			},
 			mobile_in_content: {
 				sizes: [[300, 250]],
