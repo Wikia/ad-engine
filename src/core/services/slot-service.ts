@@ -107,6 +107,10 @@ class SlotService {
 			}
 		});
 
+		if (slotByPos === null && context.get('state.extenal.adengine') === 'mtc' && id.includes('-')) {
+			return this.get(id.replace('-', '_'));
+		}
+
 		return slotByPos;
 	}
 
