@@ -38,6 +38,16 @@ describe('Metacritic Targeting Setup', () => {
 		expect(verticalName).to.equal('ent');
 	});
 
+	it('getVerticalName() returns "ent" when data is missing from the dataLayer', () => {
+		window.dataLayer.add({
+			event: 'Pageview',
+		});
+
+		const verticalName = new MetacriticTargetingSetup().getVerticalName();
+
+		expect(verticalName).to.equal('ent');
+	});
+
 	it('getPageType() returns correct pageType from dataLayer', () => {
 		window.dataLayer.add({
 			event: 'Pageview',
@@ -53,6 +63,16 @@ describe('Metacritic Targeting Setup', () => {
 		window.dataLayer.add({
 			event: 'Pageview',
 			data: { siteType: 'article' },
+		});
+
+		const ptype = new MetacriticTargetingSetup().getPageType();
+
+		expect(ptype).to.be.undefined;
+	});
+
+	it('getPageType() returns undefined when data is missing from dataLayer', () => {
+		window.dataLayer.add({
+			event: 'Pageview',
 		});
 
 		const ptype = new MetacriticTargetingSetup().getPageType();
