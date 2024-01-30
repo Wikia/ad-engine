@@ -222,6 +222,20 @@ describe('Gamespot Targeting Setup', () => {
 			expect(verticalName).to.equal('gaming');
 		});
 
+		it('returns "gaming" when data array is missing in dataLayer', () => {
+			// given
+			const gamespotTargetingSetup = new GamespotTargetingSetup();
+			window.dataLayer.add({
+				event: 'Pageview',
+			});
+
+			//when
+			const verticalName = gamespotTargetingSetup.getVerticalName();
+
+			//then
+			expect(verticalName).to.equal('gaming');
+		});
+
 		it('returns "gaming" when siteSection is different than news and entertainment', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();

@@ -17,7 +17,7 @@ export class GamespotTargetingSetup implements DiProcess {
 		const gtagData = window.dataLayer.find(({ event }) => event === 'Pageview');
 		const pathname = window.location.pathname;
 
-		if (!gtagData) {
+		if (!gtagData || !gtagData.data) {
 			return 'gaming';
 		}
 
