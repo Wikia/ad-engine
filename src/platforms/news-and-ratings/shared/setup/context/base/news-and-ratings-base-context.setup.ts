@@ -132,7 +132,7 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 
 	private getPagePathFromGtagData() {
 		const dataWithPagePath = this.getGtagData();
-		return dataWithPagePath?.data.siteSection;
+		return dataWithPagePath?.data?.siteSection;
 	}
 
 	getDataSettingsFromMetaTag() {
