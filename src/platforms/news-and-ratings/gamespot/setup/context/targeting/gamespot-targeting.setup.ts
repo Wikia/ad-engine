@@ -14,7 +14,7 @@ export class GamespotTargetingSetup implements DiProcess {
 	}
 
 	getVerticalName(): 'gaming' | 'ent' {
-		const gtagData = window.sitePageVars?.trackingSettings?.google_tag_manager?.data;
+		const gtagData = window.dataLayer.find(({ event }) => event === 'Pageview');
 		const pathname = window.location.pathname;
 
 		if (!gtagData) {
@@ -25,11 +25,9 @@ export class GamespotTargetingSetup implements DiProcess {
 			return 'ent';
 		}
 
-		if (
-			gtagData.siteSection === 'news' ||
-			gtagData.siteSection === 'reviews' ||
-			gtagData.siteSection === 'galleries'
-		) {
+		const validSiteSections = ['news', 'reviews', 'galleries'];
+
+		if (validSiteSections.includes(gtagData.data.siteSection)) {
 			return this.getVerticalNameBasedOnTopicName(gtagData);
 		}
 
@@ -45,8 +43,8 @@ export class GamespotTargetingSetup implements DiProcess {
 	}
 
 	private getVerticalNameBasedOnTopicName(gtagData): 'gaming' | 'ent' {
-		const topicName = gtagData.topicName;
-		const contentTopicName = gtagData.contentTopicName;
+		const topicName = gtagData.data.topicName;
+		const contentTopicName = gtagData.data.contentTopicName;
 
 		if (!Array.isArray(topicName) || topicName.length === 0) {
 			return 'gaming';

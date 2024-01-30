@@ -3,10 +3,8 @@ import { expect } from 'chai';
 
 describe('Gamespot Targeting Setup', () => {
 	beforeEach(() => {
-		window.sitePageVars = {};
-		window.sitePageVars.trackingSettings = {};
-		window.sitePageVars.trackingSettings.google_tag_manager = {};
-		window.sitePageVars.trackingSettings.google_tag_manager.data = undefined;
+		window.dataLayer = {};
+		window.dataLayer.data = undefined;
 	});
 
 	describe('getVerticalName', () => {
@@ -38,7 +36,7 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "gaming" on siteSection=news when topicName is not available', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.sitePageVars.trackingSettings.google_tag_manager.data = { siteSection: 'news' };
+			window.dataLayer.data = { siteSection: 'news' };
 
 			//when
 			const verticalName = gamespotTargetingSetup.getVerticalName();
@@ -50,7 +48,7 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "gaming" on siteSection=news when topicName is empty array', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.sitePageVars.trackingSettings.google_tag_manager.data = { siteSection: 'news' };
+			window.dataLayer.data = { siteSection: 'news' };
 
 			//when
 			const verticalName = gamespotTargetingSetup.getVerticalName();
@@ -62,7 +60,7 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "gaming" on siteSection=news when topicName array include "Games"', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.sitePageVars.trackingSettings.google_tag_manager.data = {
+			window.dataLayer.data = {
 				siteSection: 'news',
 				topicName: ['Games'],
 			};
@@ -77,7 +75,7 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "gaming" on siteSection=news when topicName does not include "Games" but contentTopicId does', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.sitePageVars.trackingSettings.google_tag_manager.data = {
+			window.dataLayer.data = {
 				siteSection: 'news',
 				topicName: ['Tech'],
 				contentTopicName: 'gaming-tech',
@@ -93,7 +91,7 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "ent" on siteSection=news when topicName array does not include "Games"', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.sitePageVars.trackingSettings.google_tag_manager.data = {
+			window.dataLayer.data = {
 				siteSection: 'news',
 				topicName: ['TV'],
 			};
@@ -108,7 +106,7 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "gaming" on siteSection=reviews when topicName array include "Games"', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.sitePageVars.trackingSettings.google_tag_manager.data = {
+			window.dataLayer.data = {
 				siteSection: 'reviews',
 				topicName: ['Games'],
 			};
@@ -123,7 +121,7 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "gaming" on siteSection=reviews when topicName array include "Game Review"', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.sitePageVars.trackingSettings.google_tag_manager.data = {
+			window.dataLayer.data = {
 				siteSection: 'reviews',
 				topicName: ['Games'],
 			};
@@ -138,7 +136,7 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "ent" on siteSection=reviews when topicName array does not include "Games"', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.sitePageVars.trackingSettings.google_tag_manager.data = {
+			window.dataLayer.data = {
 				siteSection: 'reviews',
 				topicName: ['TV'],
 			};
@@ -153,7 +151,7 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "gaming" on siteSection=galleries when topicName array include "Games"', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.sitePageVars.trackingSettings.google_tag_manager.data = {
+			window.dataLayer.data = {
 				siteSection: 'galleries',
 				topicName: ['Games'],
 			};
@@ -168,7 +166,7 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "ent" on siteSection=galleries when topicName array does not include "Games"', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.sitePageVars.trackingSettings.google_tag_manager.data = {
+			window.dataLayer.data = {
 				siteSection: 'galleries',
 				topicName: ['TV'],
 			};
@@ -183,7 +181,7 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "gaming" on siteSection=reviews when topicName is not available', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.sitePageVars.trackingSettings.google_tag_manager.data = { siteSection: 'news' };
+			window.dataLayer.data = { siteSection: 'news' };
 
 			//when
 			const verticalName = gamespotTargetingSetup.getVerticalName();
@@ -195,7 +193,7 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "gaming" when siteSection does not exist', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.sitePageVars.trackingSettings.google_tag_manager.data = {};
+			window.dataLayer.data = {};
 
 			//when
 			const verticalName = gamespotTargetingSetup.getVerticalName();
@@ -207,7 +205,7 @@ describe('Gamespot Targeting Setup', () => {
 		it('returns "gaming" when siteSection is different than news and entertainment', () => {
 			// given
 			const gamespotTargetingSetup = new GamespotTargetingSetup();
-			window.sitePageVars.trackingSettings.google_tag_manager.data = { siteSection: 'different' };
+			window.dataLayer.data = { siteSection: 'different' };
 
 			//when
 			const verticalName = gamespotTargetingSetup.getVerticalName();
