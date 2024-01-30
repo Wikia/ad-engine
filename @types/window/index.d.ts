@@ -59,7 +59,6 @@ interface Window {
 	// Fandom JWPlayer sets the sponsored videos list
 	sponsoredVideos?: string[];
 	trackingOptIn?: any;
-	utag_data?: any;
 	wgCookiePath?: string;
 	XMLHttpRequest?: any;
 	optimizely?: {
