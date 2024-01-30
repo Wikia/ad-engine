@@ -77,6 +77,12 @@ export interface IdentityDataPayload {
 	partnerIdentityId: string | null;
 }
 
+export interface VideoAdsOptions {
+	showAds: boolean;
+	targetingParams?: string;
+	videoAdUnitPath?: string;
+}
+
 export const eventsRepository = {
 	// AdEngine life cycle events //
 	AD_ENGINE_BAB_DETECTION: {
@@ -354,6 +360,11 @@ export const eventsRepository = {
 		category: '[Video]',
 		name: 'Video player tracking',
 		payload: props<{ eventInfo: object }>(),
+	},
+	VIDEO_PLAYER_RENDERED: {
+		category: '[Video]',
+		name: 'Player rendered',
+		payload: props<{ renderId: string; videoAdsOptions: VideoAdsOptions }>(),
 	},
 	// Events emitted by Google Ad Manager creatives //
 	GAM_AD_INTERVENTION: {
