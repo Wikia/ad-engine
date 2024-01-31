@@ -2,20 +2,21 @@
 @import '../shared/styles/out-of-page-styles';
 
 body {
-	@include uap-styles();
+	@include uap-styles('#top-leaderboard');
 
 	&.has-uap {
 		.c-siteHeader {
 			z-index: 201;
 		}
 
-		.c-layoutDefault:has(.c-searchBox_autoSuggest.isActive) #top_leaderboard {
+		.c-layoutDefault:has(.c-searchBox_autoSuggest.isActive) #top_leaderboard,
+		.c-layoutDefault:has(.c-searchBox_autoSuggest.isActive) #top-leaderboard {
 			display: none;
 		}
 	}
 
 	&.has-uap {
-		#top_leaderboard {
+		#top-leaderboard {
 			&.sticky-tlb,
 			&.bfaa-template {
 				z-index: 5000001;

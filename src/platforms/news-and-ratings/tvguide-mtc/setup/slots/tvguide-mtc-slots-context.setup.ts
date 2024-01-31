@@ -2,7 +2,7 @@ import { context, DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class TvGuideSlotsContextSetup implements DiProcess {
+export class TvGuideMtcSlotsContextSetup implements DiProcess {
 	execute(): void {
 		const slots = {
 			top_leaderboard: {

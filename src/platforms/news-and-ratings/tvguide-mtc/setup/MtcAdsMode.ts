@@ -1,5 +1,11 @@
 import { AdEngineStackSetup } from '@platforms/shared';
-import { DiProcess, PartnerPipeline } from '@wikia/ad-engine';
+import {
+	AdSlotEvent,
+	communicationService,
+	DiProcess,
+	PartnerPipeline,
+	slotService,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -8,5 +14,21 @@ export class MtcAdsMode implements DiProcess {
 
 	execute(): void {
 		this.pipeline.add(this.adEngineStackSetup).execute();
+		this.prepareFakeGptEvents();
+	}
+
+	private prepareFakeGptEvents() {
+		communicationService.onSlotEvent(
+			AdSlotEvent.SHOWED_EVENT,
+			() => {
+				const adSlot = slotService.get('top-leaderboard');
+
+				if (adSlot) {
+					adSlot.emit(AdSlotEvent.SLOT_LOADED_EVENT);
+				}
+			},
+			'top-leaderboard',
+			true,
+		);
 	}
 }

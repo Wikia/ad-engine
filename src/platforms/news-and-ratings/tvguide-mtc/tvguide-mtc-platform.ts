@@ -12,9 +12,9 @@ import {
 import { IdentitySetup, parallel, ProcessPipeline } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { MtcAdsMode } from './setup/MtcAdsMode';
-import { TvGuideSlotsContextSetup } from './setup/slots/tvguide-slots-context.setup';
+import { TvGuideMtcSlotsContextSetup } from './setup/slots/tvguide-mtc-slots-context.setup';
 import { TvGuideMTCContextSetup } from './setup/wiki-context.setup';
-import { TvGuideTemplatesSetup } from './templates/tvguide-templates.setup';
+import { TvGuideMtcTemplatesSetup } from './templates/tvguide-mtc-templates.setup';
 
 @Injectable()
 export class TvGuideMTCPlatform {
@@ -31,8 +31,8 @@ export class TvGuideMTCPlatform {
 			BaseContextSetup,
 			IdentitySetup,
 			TrackingSetup,
-			TvGuideTemplatesSetup,
-			TvGuideSlotsContextSetup,
+			TvGuideMtcTemplatesSetup,
+			TvGuideMtcSlotsContextSetup,
 			MtcAdsMode,
 			NoAdsMode,
 		);
