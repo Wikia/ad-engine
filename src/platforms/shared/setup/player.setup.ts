@@ -17,6 +17,8 @@ import {
 	videoDisplayTakeoverSynchronizer,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+// eslint-disable-next-line no-restricted-imports
+import { iasVideoTracker } from '../../../ad-products/video/porvata/plugins/ias/ias-video-tracker';
 
 const logGroup = 'player-setup';
 
@@ -33,6 +35,9 @@ export class PlayerSetup extends BaseServiceSetup {
 	}
 
 	async call() {
+		communicationService.on(eventsRepository.VIDEO_PLAYER_RENDERED, () => {
+			this.loadIasTrackerIfEnabled();
+		});
 		const showAds = !context.get('options.wad.blocking');
 		const vastResponse: VastResponseData | undefined =
 			showAds &&
@@ -89,6 +94,13 @@ export class PlayerSetup extends BaseServiceSetup {
 					autoplayDisabled: false,
 				}),
 			);
+		}
+	}
+
+	private loadIasTrackerIfEnabled(): void {
+		if (context.get('options.video.iasTracking.enabled')) {
+			utils.logger(logGroup, 'Loading IAS tracker for video player');
+			iasVideoTracker.load();
 		}
 	}
 
