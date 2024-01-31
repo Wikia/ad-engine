@@ -9,6 +9,7 @@ export class TvGuideMtcSlotsContextSetup implements DiProcess {
 				adProduct: 'top_leaderboard',
 				group: 'LB',
 				sizes: [],
+				defaultTemplates: ['stickyTlb'],
 				defaultSizes: [],
 				providers: ['nothing'],
 			},
