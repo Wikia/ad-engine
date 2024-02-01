@@ -3,7 +3,6 @@ import { context, DiProcess, InstantConfigService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { getAppnexusContext } from '../../../bidders/prebid/appnexus';
 import { getAppnexusAstContext } from '../../../bidders/prebid/appnexus-ast';
-import { getFreewheelContext } from '../../../bidders/prebid/freewheel';
 import { getIndexExchangeContext } from '../../../bidders/prebid/index-exchange';
 import { getKargoContext } from '../../../bidders/prebid/kargo';
 import { getMagniteS2sContext } from '../../../bidders/prebid/magniteS2s';
@@ -32,7 +31,6 @@ export class UcpDesktopPrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.appnexus', filterVideoBids(getAppnexusContext()));
 		context.set('bidders.prebid.appnexusAst', filterVideoBids(getAppnexusAstContext()));
 		context.set('bidders.prebid.indexExchange', filterVideoBids(getIndexExchangeContext()));
-		context.set('bidders.prebid.freewheel', filterVideoBids(getFreewheelContext()));
 		context.set('bidders.prebid.kargo', filterVideoBids(getKargoContext()));
 		context.set('bidders.prebid.medianet', filterVideoBids(getMedianetContext()));
 		context.set('bidders.prebid.mgnipbs', filterVideoBids(getMagniteS2sContext(icMagniteS2sVideo)));
