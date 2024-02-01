@@ -186,6 +186,7 @@ export class BaseContextSetup implements DiProcess {
 			'bidders.prebid.disableSendAllBids',
 			this.instantConfig.get('icPrebidDisableSendAllBids'),
 		);
+		context.set('bidders.prebid.config', this.instantConfig.get('icPrebidConfig', {}));
 		context.set('bidders.prebid.native.enabled', this.instantConfig.get('icPrebidNative'));
 		context.set(
 			'templates.sizeOverwritingMap',
