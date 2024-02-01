@@ -16,6 +16,16 @@ export class TvGuideMtcSlotsContextSetup implements DiProcess {
 		};
 
 		context.set('slots', slots);
+		context.set('vast.adUnitId', this.buildVastAdUnit());
 		context.push('state.adStack', { id: 'top_leaderboard' });
+	}
+
+	private buildVastAdUnit(): string {
+		const dfpId = context.get('custom.dfpId');
+		const region = context.get('custom.region');
+		const property = context.get('custom.property') || 'tvguide';
+		const device = context.get('custom.device') === 'm' ? 'mobile' : 'desktop';
+
+		return `${dfpId}/v${region}-${property}/${device}`;
 	}
 }
