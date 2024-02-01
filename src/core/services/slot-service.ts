@@ -107,7 +107,7 @@ class SlotService {
 			}
 		});
 
-		if (slotByPos === null && context.get('state.extenal.adengine') === 'mtc' && id.includes('-')) {
+		if (slotByPos === null && context.get('state.external.adengine') === 'mtc' && id.includes('-')) {
 			return this.get(id.replace('-', '_'));
 		}
 
