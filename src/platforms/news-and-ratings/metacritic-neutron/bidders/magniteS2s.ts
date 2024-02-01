@@ -1,68 +1,82 @@
 export function getMagniteS2sContext(isDesktop: boolean): object {
 	const desktopSlots = {
-		metacritic_dt_top_leaderboard: {
+		'omni-skybox-leader-nav': {
+			sizes: [[728, 90]],
+		},
+		'omni-skybox-leaderboard-nav': {
+			sizes: [[728, 90]],
+		},
+		'incontent-leader-plus-top': {
 			sizes: [
+				[970, 250],
 				[728, 90],
-				[970, 66],
 			],
 		},
-		metacritic_bottom_leaderboard_dt: {
+		'incontent-leaderboard-top': {
+			sizes: [[728, 90]],
+		},
+		'incontent-leader-plus-bottom': {
 			sizes: [
 				[728, 90],
 				[970, 250],
 			],
 		},
-		metacritic_ic_leaderboard_dt: {
+		'incontent-ad': {
 			sizes: [[728, 90]],
 		},
-		metacritic_dt_floor_adhesion: {
-			sizes: [
-				[728, 90],
-				[320, 50],
-				[320, 100],
-			],
+		'incontent-leaderboard-bottom': {
+			sizes: [[728, 90]],
 		},
-		metacritic_top_boxad_dt: {
+		mpu_plus_top: {
 			sizes: [
 				[300, 250],
 				[300, 600],
 			],
 		},
+		mpu_top: {
+			sizes: [[300, 250]],
+		},
+		mpu_middle: {
+			sizes: [[300, 250]],
+		},
+		mpu_bottom: {
+			sizes: [[300, 250]],
+		},
 	};
 
 	const mobileSlots = {
-		metacritic_adhesion_mw: {
+		'mobile-omni-skybox-plus-nav': {
+			sizes: [[320, 50]],
+		},
+		'mobile-banner-plus': {
 			sizes: [
 				[320, 50],
-				[320, 100],
+				[300, 250],
 			],
 		},
-		metacritic_bottom_leaderboard_mw: {
+		'mobile-incontent-plus': {
+			sizes: [
+				[320, 100],
+				[320, 50],
+			],
+		},
+		'mobile-incontent-ad': {
+			sizes: [
+				[300, 250],
+				[320, 50],
+			],
+		},
+		'mobile-mpu': {
+			sizes: [[300, 250]],
+		},
+		'mobile-incontent-plus-bottom': {
 			sizes: [
 				[320, 50],
-				[320, 100],
+				[300, 250],
 			],
 		},
-		metacritic_ic_leaderboard_mw: {
-			sizes: [
-				[320, 50],
-				[320, 100],
-			],
-		},
-		metacritic_mw_floor_adhesion: {
-			sizes: [
-				[320, 50],
-				[320, 100],
-			],
-		},
-		metacritic_mw_top_leaderboard: {
-			sizes: [
-				[320, 50],
-				[320, 100],
-			],
-		},
-		metacritic_top_boxad_mw: {
-			sizes: [[320, 250]],
+		'leaderboard-middle': {
+			sizes: [[728, 90]],
 		},
 	};
 

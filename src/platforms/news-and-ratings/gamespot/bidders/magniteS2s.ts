@@ -1,64 +1,31 @@
 export function getMagniteS2sContext(isDesktop: boolean): object {
 	const desktopSlots = {
-		'gamespot_dt_ic-lb': {
-			sizes: [
-				[728, 90],
-				[970, 250],
-				[970, 66],
-			],
-		},
-		'gamespot_dt_bottom-lb': {
-			sizes: [
-				[728, 90],
-				[970, 250],
-				[970, 66],
-			],
-		},
-		'gamespot_dt_ic-boxad': {
-			sizes: [
-				[300, 250],
-				[300, 600],
-				[160, 600],
-			],
-		},
-		gamespot_dt_top_boxad: {
+		mpu_plus_top: {
 			sizes: [
 				[300, 250],
 				[300, 600],
 			],
+		},
+		leader_plus_top: {
+			sizes: [
+				[728, 90],
+				[970, 250],
+			],
+		},
+		leader_bottom: {
+			sizes: [[728, 90]],
 		},
 	};
 
 	const mobileSlots = {
-		gamespot_adhesion_mw: {
+		'mobile-banner-bottom': {
 			sizes: [
 				[320, 50],
 				[320, 100],
 			],
 		},
-		gamespot_mw_bottom_lb: {
-			sizes: [
-				[320, 50],
-				[320, 100],
-			],
-		},
-		'gamespot_mw_ic-boxad': {
-			sizes: [
-				[320, 50],
-				[320, 100],
-			],
-		},
-		'gamespot_mw_ic-lb': {
-			sizes: [
-				[320, 50],
-				[320, 100],
-			],
-		},
-		gamespot_mw_top_boxad: {
-			sizes: [
-				[320, 50],
-				[320, 100],
-			],
+		'mobile-mpu': {
+			sizes: [[300, 250]],
 		},
 	};
 
