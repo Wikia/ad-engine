@@ -68,7 +68,6 @@ export class BaseContextSetup implements DiProcess {
 	private setOptionsContext(): void {
 		this.setInContentExperiment();
 
-		context.set('options.performanceAds', this.instantConfig.get('icPerformanceAds'));
 		context.set('options.stickyTbExperiment', this.instantConfig.get('icStickyTbExperiment'));
 		context.set(
 			'options.uapExtendedSrcTargeting',
@@ -187,6 +186,7 @@ export class BaseContextSetup implements DiProcess {
 			'bidders.prebid.disableSendAllBids',
 			this.instantConfig.get('icPrebidDisableSendAllBids'),
 		);
+		context.set('bidders.prebid.config', this.instantConfig.get('icPrebidConfig', {}));
 		context.set('bidders.prebid.native.enabled', this.instantConfig.get('icPrebidNative'));
 		context.set(
 			'templates.sizeOverwritingMap',
