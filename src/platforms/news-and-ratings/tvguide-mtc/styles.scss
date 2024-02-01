@@ -4,6 +4,13 @@
 body {
 	@include uap-styles('#top-leaderboard');
 
+	#top-leaderboard {
+		.video-player {
+			top: 0;
+			transform: none;
+		}
+	}
+
 	&.has-uap {
 		.c-siteHeader {
 			z-index: 201;
