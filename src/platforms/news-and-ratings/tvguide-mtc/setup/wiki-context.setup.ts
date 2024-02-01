@@ -5,7 +5,7 @@ export class TvGuideMTCContextSetup implements DiProcess {
 		targetingService.set('skin', 'tvguide-mtc');
 
 		context.set('state.provider', 'nothing');
-		context.set('state.extenal.adengine', 'mtc');
+		context.set('state.external.adengine', 'mtc');
 
 		registerCustomAdLoader(context.get('options.customAdLoader.globalMethodName'));
 	}
