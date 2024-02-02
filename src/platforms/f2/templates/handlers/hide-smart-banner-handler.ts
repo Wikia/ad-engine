@@ -1,4 +1,5 @@
-import { communicationService, eventsRepository, TemplateStateHandler } from '@wikia/ad-engine';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { TemplateStateHandler } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })

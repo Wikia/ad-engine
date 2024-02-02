@@ -1,4 +1,4 @@
-import { InstantConfigServiceInterface } from '@wikia/ad-engine';
+import { InstantConfigServiceInterface } from '@ad-engine/core';
 
 export interface Experiment {
 	enabled: boolean;

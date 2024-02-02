@@ -1,13 +1,7 @@
-import {
-	communicationService,
-	Dictionary,
-	DiProcess,
-	eventsRepository,
-	ofType,
-	SlotTargeting,
-	targetingService,
-	utils,
-} from '@wikia/ad-engine';
+import { communicationService, eventsRepository, ofType } from '@ad-engine/communication';
+import { Dictionary, SlotTargeting, targetingService } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
+import { geoService, queryString } from '@ad-engine/utils';
 import { Injectable } from '@wikia/dependency-injection';
 import { shareReplay } from 'rxjs/operators';
 
@@ -31,13 +25,13 @@ export class BingeBotTargetingSetup implements DiProcess {
 
 	getPageLevelTargeting(): Partial<SlotTargeting> {
 		const pageTargeting: Dictionary<string> = {
-			geo: utils.geoService.getCountryCode() || 'none',
+			geo: geoService.getCountryCode() || 'none',
 			s0: 'ent',
 			s2: 'bingebot_selection',
 			skin: 'bingebot',
 		};
 
-		const cid = utils.queryString.get('cid');
+		const cid = queryString.get('cid');
 
 		if (cid !== undefined) {
 			pageTargeting.cid = cid;

@@ -1,4 +1,5 @@
-import { context, utils } from '@ad-engine/core';
+import { context } from '@ad-engine/core';
+import { logger, timedPartnerScriptLoader } from '@ad-engine/utils';
 import { trackBab } from '../../platforms/shared';
 
 const logGroup = 'bt-loader';
@@ -13,14 +14,14 @@ class BTRec {
 	 */
 	async run(): Promise<void> {
 		if (!this.isEnabled()) {
-			utils.logger(logGroup, 'disabled');
+			logger(logGroup, 'disabled');
 
 			return Promise.resolve();
 		}
 		this.btDetectionEvents();
 		this.insertSideUnits();
 
-		utils.logger(logGroup, 'loading');
+		logger(logGroup, 'loading');
 		await this.loadScript();
 	}
 
@@ -35,7 +36,7 @@ class BTRec {
 		// detail.ab : boolean - ad block detected
 		const handleDetectionEvent = (e: BTDetail & CustomEvent) => {
 			if (e.detail.ab) {
-				utils.logger(logGroup, 'BTAADetection - AdBlock detected');
+				logger(logGroup, 'BTAADetection - AdBlock detected');
 				trackBab(true, 'wad-runner-bt');
 			} else {
 				trackBab(false, 'wad-runner-bt');
@@ -47,7 +48,7 @@ class BTRec {
 		// AcceptableAdsInit event - tells us that BT is trying to recover ads now
 		const handleRecoveryEvent = (e: CustomEvent) => {
 			if (e.detail) {
-				utils.logger(logGroup, 'AcceptableAdsInit');
+				logger(logGroup, 'AcceptableAdsInit');
 			}
 			window.removeEventListener('AcceptableAdsInit', handleRecoveryEvent);
 		};
@@ -61,12 +62,7 @@ class BTRec {
 		const btLibraryUrl =
 			context.get('options.wad.btRec.loaderUrl') || '//btloader.com/tag?h=wikia-inc-com&upapi=true';
 
-		return utils.timedPartnerScriptLoader.loadScriptWithStatus(
-			btLibraryUrl,
-			logGroup,
-			true,
-			'first',
-		);
+		return timedPartnerScriptLoader.loadScriptWithStatus(btLibraryUrl, logGroup, true, 'first');
 	}
 
 	/**

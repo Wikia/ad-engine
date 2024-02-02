@@ -1,5 +1,7 @@
+import { context } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
 import { insertSlots, slotsContext } from '@platforms/shared';
-import { context, DiProcess, universalAdPackage } from '@wikia/ad-engine';
+import { universalAdPackage } from '@wikia/ad-products';
 import { Injectable } from '@wikia/dependency-injection';
 import { SportsSlotsDefinitionRepository } from './sports-slots-definition-repository';
 

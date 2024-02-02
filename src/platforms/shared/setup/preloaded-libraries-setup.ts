@@ -1,12 +1,7 @@
-import {
-	A9Provider,
-	Audigent,
-	context,
-	DiProcess,
-	InstantConfigService,
-	intentIQ,
-	pbjsFactory,
-} from '@wikia/ad-engine';
+import { context, InstantConfigService, pbjsFactory } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
+import { A9Provider, intentIQ } from '@wikia/ad-bidders';
+import { Audigent } from '@wikia/ad-services';
 import { Injectable } from '@wikia/dependency-injection';
 import { GptSetup } from './gpt.setup';
 

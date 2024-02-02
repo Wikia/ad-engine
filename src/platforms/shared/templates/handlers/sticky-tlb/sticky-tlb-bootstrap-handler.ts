@@ -4,8 +4,8 @@ import {
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
-	utils,
-} from '@wikia/ad-engine';
+} from '@ad-engine/core';
+import { once } from '@ad-engine/utils';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })
@@ -21,7 +21,7 @@ export class StickyTlbBootstrapHandler implements TemplateStateHandler {
 
 	private async awaitVisibleDOM(): Promise<void> {
 		if (document.hidden) {
-			await utils.once(window, 'visibilitychange');
+			await once(window, 'visibilitychange');
 		}
 	}
 }

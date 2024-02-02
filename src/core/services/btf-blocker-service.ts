@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, AdSlotStatus, Dictionary, SlotConfig } from '../models';
+import { AdSlotStatus, Dictionary, SlotConfig, type AdSlot } from '../models';
 import { AdSlotEvent } from '../models/ad-slot-event';
 import { LazyQueue, logger } from '../utils';
 import { context } from './context-service';

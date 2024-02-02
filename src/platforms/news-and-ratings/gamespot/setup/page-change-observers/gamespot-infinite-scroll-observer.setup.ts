@@ -1,4 +1,6 @@
-import { context, DiProcess, targetingService, utils } from '@wikia/ad-engine';
+import { context, targetingService } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
+import { logger, queryString } from '@ad-engine/utils';
 
 export class GamespotInfiniteScrollObserverSetup implements DiProcess {
 	private NOT_REQUESTED_SLOT_WRAPPER_SELECTOR = '.mapped-ad > .ad-wrap:not(.gpt-ad)';
@@ -9,19 +11,19 @@ export class GamespotInfiniteScrollObserverSetup implements DiProcess {
 		const infiniteScrollElement = document.getElementById('js-infinite-scroll');
 
 		if (!infiniteScrollElement) {
-			utils.logger('pageChangeWatcher', 'InfiniteScrollObserver - abortted');
+			logger('pageChangeWatcher', 'InfiniteScrollObserver - abortted');
 			return;
 		}
 
 		const config = { subtree: true, childList: true };
 		const observer = new MutationObserver(() => this.handleMutation());
 
-		utils.logger('pageChangeWatcher', 'InfiniteScrollObserver setting the observer');
+		logger('pageChangeWatcher', 'InfiniteScrollObserver setting the observer');
 		observer.observe(infiniteScrollElement, config);
 	}
 
 	private handleMutation() {
-		utils.logger(
+		logger(
 			'pageChangeWatcher',
 			'InfiniteScrollObserver detected mutation',
 			this.currentPage,
@@ -37,7 +39,7 @@ export class GamespotInfiniteScrollObserverSetup implements DiProcess {
 		}
 
 		if (this.currentPage !== pageNumber) {
-			utils.logger('pageChangeWatcher', 'page changed', pageNumber);
+			logger('pageChangeWatcher', 'page changed', pageNumber);
 			this.currentPage = pageNumber;
 			this.requestAdForUnfilledSlots();
 		}
@@ -53,7 +55,7 @@ export class GamespotInfiniteScrollObserverSetup implements DiProcess {
 				return adWrapper;
 			}
 		});
-		utils.logger('pageChangeWatcher', 'adSlotsToFill: ', adSlotsToFill);
+		logger('pageChangeWatcher', 'adSlotsToFill: ', adSlotsToFill);
 
 		adSlotsToFill.forEach((adWrapper: Element) => {
 			const placeholder = adWrapper.parentElement;
@@ -64,7 +66,7 @@ export class GamespotInfiniteScrollObserverSetup implements DiProcess {
 			}
 
 			const slotName = this.calculateSeamlessSlotName(placeholder);
-			utils.logger('pageChangeWatcher', 'slot to copy: ', baseSlotName, slotName);
+			logger('pageChangeWatcher', 'slot to copy: ', baseSlotName, slotName);
 
 			placeholder.id = slotName;
 
@@ -74,7 +76,7 @@ export class GamespotInfiniteScrollObserverSetup implements DiProcess {
 	}
 
 	private getPageFromSearchInLocation(): number {
-		const pageNumber = utils.queryString.get('page') || '1';
+		const pageNumber = queryString.get('page') || '1';
 
 		return parseInt(pageNumber, 10);
 	}
@@ -95,7 +97,7 @@ export class GamespotInfiniteScrollObserverSetup implements DiProcess {
 		targetingService.set('pos', slotName, slotName);
 		targetingService.set('pos_nr', targetingService.get('pos_nr', baseSlotName), slotName);
 
-		utils.logger(
+		logger(
 			'pageChangeWatcher',
 			'new slot config: ',
 			context.get(`slots.${slotName}`),

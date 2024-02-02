@@ -1,3 +1,3 @@
-import { SlotTargeting } from '@wikia/ad-engine';
+import { SlotTargeting } from '@ad-engine/core';
 
 export type TargetingTags = Partial<SlotTargeting> | TaxonomyTags;

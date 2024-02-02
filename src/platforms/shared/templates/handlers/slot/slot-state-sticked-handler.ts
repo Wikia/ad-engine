@@ -1,4 +1,4 @@
-import { AdSlot, TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
+import { AdSlot, TEMPLATE, TemplateStateHandler } from '@ad-engine/core';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { UapDomManager } from '../../helpers/uap-dom-manager';

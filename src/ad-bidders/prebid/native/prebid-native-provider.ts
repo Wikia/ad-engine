@@ -1,5 +1,7 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlotStatus, BaseServiceSetup, slotService, utils } from '@ad-engine/core';
+import { AdSlotStatus, slotService } from '@ad-engine/core';
+import { BaseServiceSetup } from '@ad-engine/pipeline';
+import { logger } from '@ad-engine/utils';
 import { PrebidNativeData } from './native-models';
 import { PrebidNativeConfig } from './prebid-native-config';
 import { PrebidNativeHelper } from './prebid-native-helper';
@@ -12,7 +14,7 @@ export class PrebidNativeProvider extends BaseServiceSetup {
 
 	call() {
 		if (!this.isEnabled('bidders.prebid.native.enabled', false)) {
-			utils.logger(logGroup, 'disabled');
+			logger(logGroup, 'disabled');
 			return;
 		}
 

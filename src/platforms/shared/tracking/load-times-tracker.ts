@@ -1,4 +1,5 @@
-import { communicationService, eventsRepository, utils } from '@wikia/ad-engine';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { geoService, getTimeOrigin } from '@ad-engine/utils';
 import { trackingUrls } from '../setup/tracking-urls';
 import { DataWarehouseTracker } from './data-warehouse';
 
@@ -38,7 +39,7 @@ export class LoadTimesTracker {
 	initStartTime(): void {
 		const now = new Date();
 		if (!this.startTime) {
-			this.startTime = utils.getTimeOrigin();
+			this.startTime = getTimeOrigin();
 			this.tzOffset = now.getTimezoneOffset();
 		}
 		communicationService.emit(eventsRepository.AD_ENGINE_LOAD_TIME_INIT, {
@@ -87,7 +88,7 @@ export class LoadTimesTracker {
 				browser_ts: timestamp,
 				load_time: timestamp - this.getStartTime(),
 				tz_offset: this.getTimezoneOffset(),
-				country: utils.geoService.getCountryCode() || '',
+				country: geoService.getCountryCode() || '',
 			},
 			trackingUrls.AD_ENG_LOAD_TIMES,
 		);

@@ -1,12 +1,13 @@
-import { context, Dictionary, pbjsFactory, utils } from '@ad-engine/core';
+import { context, Dictionary, pbjsFactory } from '@ad-engine/core';
+import { queryString } from '@ad-engine/utils';
 import { PrebidNativeConfig } from '../native';
 import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
 
-const price = utils.queryString.get('wikia_adapter');
-const limit = parseInt(utils.queryString.get('wikia_adapter_limit'), 10) || 99;
-const timeout = parseInt(utils.queryString.get('wikia_adapter_timeout'), 10) || 100;
-const useRandomPrice = utils.queryString.get('wikia_adapter_random') === '1';
+const price = queryString.get('wikia_adapter');
+const limit = parseInt(queryString.get('wikia_adapter_limit'), 10) || 99;
+const timeout = parseInt(queryString.get('wikia_adapter_timeout'), 10) || 100;
+const useRandomPrice = queryString.get('wikia_adapter_random') === '1';
 
 export class Wikia extends PrebidAdapter {
 	static bidderName = 'wikia';

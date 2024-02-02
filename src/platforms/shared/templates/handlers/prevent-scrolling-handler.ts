@@ -1,4 +1,4 @@
-import { TemplateStateHandler } from '@wikia/ad-engine';
+import { TemplateStateHandler } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
 import { DomManipulator } from '../helpers/manipulators/dom-manipulator';
 

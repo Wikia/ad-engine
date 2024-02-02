@@ -1,4 +1,5 @@
-import { DomListener, startAndRespondTo, TemplateStateHandler, utils } from '@wikia/ad-engine';
+import { DomListener, startAndRespondTo, TemplateStateHandler } from '@ad-engine/core';
+import { defer } from '@ad-engine/utils';
 import { Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
@@ -19,7 +20,7 @@ export class VideoSizeImpactHandler implements TemplateStateHandler {
 		this.playerRegistry.video$
 			.pipe(
 				startAndRespondTo(this.domListener.resize$),
-				tap(({ player }) => utils.defer(() => this.manager.setVideoSizeImpact(player))),
+				tap(({ player }) => defer(() => this.manager.setVideoSizeImpact(player))),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();

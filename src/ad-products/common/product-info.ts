@@ -1,4 +1,5 @@
-import { context, Dictionary, utils } from '@ad-engine/core';
+import { context, Dictionary } from '@ad-engine/core';
+import { stringBuilder } from '@ad-engine/utils';
 import { FAN_TAKEOVER_TYPES } from '../templates/uap/constants';
 
 interface AdProductInfo {
@@ -32,7 +33,7 @@ export function getAdProductInfo(slotName, loadedTemplate, loadedProduct): AdPro
 }
 
 export function getAdUnitString(adslotName: string, slotConfig: Dictionary<unknown>): string {
-	return utils.stringBuilder.build(
+	return stringBuilder.build(
 		context.get(`slots.${adslotName}.videoAdUnit`) || context.get('vast.adUnitId'),
 		{
 			slotConfig,

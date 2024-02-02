@@ -1,11 +1,5 @@
-import {
-	communicationService,
-	DiProcess,
-	eventsRepository,
-	ofType,
-	onlyNew,
-} from '@wikia/ad-engine';
-
+import { communicationService, eventsRepository, ofType, onlyNew } from '@ad-engine/communication';
+import { DiProcess } from '@ad-engine/pipeline';
 export class BingeBotBeforeViewChangeSetup implements DiProcess {
 	async execute(): Promise<void> {
 		communicationService.action$

@@ -1,4 +1,6 @@
-import { BaseServiceSetup, context, utils } from '@ad-engine/core';
+import { context } from '@ad-engine/core';
+import { BaseServiceSetup } from '@ad-engine/pipeline';
+import { logger, timedPartnerScriptLoader } from '@ad-engine/utils';
 
 const logGroup = 'duration-media';
 
@@ -7,15 +9,15 @@ export class DurationMedia extends BaseServiceSetup {
 		const libraryUrl: string = context.get('services.durationMedia.libraryUrl');
 
 		if (this.isEnabled('icDurationMedia', false) && libraryUrl) {
-			utils.logger(logGroup, 'loading', libraryUrl);
+			logger(logGroup, 'loading', libraryUrl);
 
-			utils.timedPartnerScriptLoader
+			timedPartnerScriptLoader
 				.loadScriptWithStatus(libraryUrl, logGroup, false, null, { id: 'dm-script' })
 				.then(() => {
-					utils.logger(logGroup, 'ready');
+					logger(logGroup, 'ready');
 				});
 		} else {
-			utils.logger(logGroup, 'disabled');
+			logger(logGroup, 'disabled');
 		}
 		return Promise.resolve();
 	}

@@ -1,4 +1,6 @@
-import { context, Dictionary, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
+import { context, Dictionary, InstantConfigService } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
+import { logger, queryString } from '@ad-engine/utils';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -102,11 +104,11 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 	}
 
 	private shouldSwitchGamToRV() {
-		return utils.queryString.get('switch_to_rv_gam') === '1';
+		return queryString.get('switch_to_rv_gam') === '1';
 	}
 
 	private shouldSwitchSrcToTest() {
-		return utils.queryString.get('switch_src_to_test') === '1';
+		return queryString.get('switch_src_to_test') === '1';
 	}
 
 	private getPagePath(): string {
@@ -158,6 +160,6 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 	}
 
 	private log(...logValues) {
-		utils.logger('setup', ...logValues);
+		logger('setup', ...logValues);
 	}
 }

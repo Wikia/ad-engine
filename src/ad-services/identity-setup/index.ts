@@ -1,18 +1,18 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import {
 	context,
-	DiProcess,
 	GlobalContextCategories,
 	globalContextService,
 	targetingService,
-	utils,
 } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
+import { isCoppaSubject, logger } from '@ad-engine/utils';
 
 export class IdentitySetup implements DiProcess {
 	private logGroup = 'identity-setup';
 
 	async execute(): Promise<void> {
-		utils.logger(this.logGroup, 'initialized');
+		logger(this.logGroup, 'initialized');
 
 		await this.identityEngineReady();
 		this.setupOver18Targeting();
@@ -50,10 +50,10 @@ export class IdentitySetup implements DiProcess {
 					'directedAtChildren',
 				);
 				if (isDirectedAtChildren) {
-					targetingService.set('monetization', utils.isCoppaSubject() ? 'restricted' : 'regular');
+					targetingService.set('monetization', isCoppaSubject() ? 'restricted' : 'regular');
 				}
 
-				utils.logger(this.logGroup, 'ready');
+				logger(this.logGroup, 'ready');
 				resolve();
 			});
 		});

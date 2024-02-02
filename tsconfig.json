@@ -26,13 +26,14 @@
 			// Core
 			"@ad-engine/core": ["src/core/index.ts"],
 			"@ad-engine/communication": ["src/communication/index.ts"],
+			"@ad-engine/pipeline": ["src/core/pipeline/index.ts"],
+			"@ad-engine/utils": ["src/core/utils/index.ts"],
 			// Packages
 			"@ad-engine/bidders": ["src/ad-bidders/index.ts"],
 			"@ad-engine/products": ["src/ad-products/index.ts"],
 			"@ad-engine/services": ["src/ad-services/index.ts"],
 			"@ad-engine/tracking": ["src/ad-tracking/index.ts"],
 			// Platforms
-			"@wikia/ad-engine": ["src/index.ts"],
 			"@platforms/shared": ["src/platforms/shared/index.ts"]
 		}
 	},

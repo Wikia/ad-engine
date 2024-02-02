@@ -1,13 +1,14 @@
 import { expect } from 'chai';
 
 import { btRec } from '@wikia/ad-services';
-import { context, utils } from '@wikia/core';
+import { context } from '@wikia/core';
+import { timedPartnerScriptLoader } from '@wikia/core/utils';
 
 describe('BlockThrough recovery', () => {
 	let loadScriptStub;
 
 	beforeEach(() => {
-		loadScriptStub = global.sandbox.stub(utils.timedPartnerScriptLoader, 'loadScriptWithStatus');
+		loadScriptStub = global.sandbox.stub(timedPartnerScriptLoader, 'loadScriptWithStatus');
 		context.set('options.wad.btRec.enabled', true);
 		context.set('options.wad.blocking', true);
 	});

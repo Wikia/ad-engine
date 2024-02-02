@@ -1,4 +1,4 @@
-import { AdSlot, DomListener, TEMPLATE } from '@wikia/ad-engine';
+import { AdSlot, DomListener, TEMPLATE } from '@ad-engine/core';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { from, Observable } from 'rxjs';
 import { filter, startWith, take, tap } from 'rxjs/operators';

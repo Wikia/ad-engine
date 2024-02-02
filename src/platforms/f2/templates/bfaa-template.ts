@@ -1,3 +1,4 @@
+import { context, TemplateAction, TemplateRegistry } from '@ad-engine/core';
 import {
 	AdvertisementLabelHandler,
 	BfaaBootstrapHandler,
@@ -29,7 +30,7 @@ import {
 	VideoSizeImpactToResolvedHandler,
 	VideoSizeResolvedHandler,
 } from '@platforms/shared';
-import { context, TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
+import { universalAdPackage } from '@wikia/ad-products';
 import { Observable } from 'rxjs';
 import { registerF2UapDomElements } from './configs/register-f2-uap-dom-elements';
 import { BfaaF2ConfigHandler } from './handlers/bfaa/bfaa-f2-config-handler';

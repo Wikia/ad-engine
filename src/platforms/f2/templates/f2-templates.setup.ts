@@ -1,11 +1,6 @@
+import { context, logTemplates, TemplateRegistry, templateService } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
 import { StickedBoxadHelper } from '@platforms/shared';
-import {
-	context,
-	DiProcess,
-	logTemplates,
-	TemplateRegistry,
-	templateService,
-} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
 import { registerBfaaTemplate } from './bfaa-template';

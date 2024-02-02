@@ -5,8 +5,8 @@ import {
 	TargetingService,
 	targetingService,
 	tcf,
-	utils,
 } from '@wikia/core';
+import { scriptLoader } from '@wikia/core/utils';
 import {
 	FandomContext,
 	Site,
@@ -23,7 +23,7 @@ describe('Eyeota', () => {
 		window.__tcfapi = window.__tcfapi as WindowTCF;
 
 		loadScriptStub = global.sandbox
-			.stub(utils.scriptLoader, 'loadScript')
+			.stub(scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		instantConfigStub.get.withArgs('icEyeota').returns(true);

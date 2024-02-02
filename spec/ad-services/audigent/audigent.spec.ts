@@ -5,9 +5,8 @@ import {
 	InstantConfigService,
 	TargetingService,
 	targetingService,
-	utils,
 } from '@wikia/core';
-import { WaitFor } from '@wikia/core/utils';
+import { scriptLoader, WaitFor } from '@wikia/core/utils';
 import { expect } from 'chai';
 import { SinonStubbedInstance } from 'sinon';
 
@@ -22,7 +21,7 @@ describe('Audigent', () => {
 	}
 
 	beforeEach(() => {
-		loadScriptStub = global.sandbox.spy(utils.scriptLoader, 'loadScript');
+		loadScriptStub = global.sandbox.spy(scriptLoader, 'loadScript');
 		externalLoggerLogStub = global.sandbox.stub(externalLogger, 'log').returns({} as any);
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		instantConfigStub.get.withArgs('icAudigent').returns(true);

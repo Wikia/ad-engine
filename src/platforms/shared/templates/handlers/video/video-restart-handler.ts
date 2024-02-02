@@ -1,4 +1,4 @@
-import { TemplateStateHandler, TemplateTransition } from '@wikia/ad-engine';
+import { TemplateStateHandler, TemplateTransition } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
 import { fromEvent, Subject } from 'rxjs';
 import { skip, switchMap, take, takeUntil, tap } from 'rxjs/operators';

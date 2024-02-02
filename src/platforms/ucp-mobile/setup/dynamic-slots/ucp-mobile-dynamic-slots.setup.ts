@@ -1,3 +1,19 @@
+import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
+import {
+	AdSlotClass,
+	AdSlotEvent,
+	AdSlotStatus,
+	btfBlockerService,
+	context,
+	CookieStorageAdapter,
+	globalContextService,
+	InstantConfigService,
+	Nativo,
+	slotImpactWatcher,
+	slotService,
+} from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
+import { WaitFor } from '@ad-engine/utils';
 import {
 	GalleryLightboxAds,
 	GalleryLightboxAdsHandler,
@@ -8,27 +24,8 @@ import {
 	QuizSlotsDefinitionRepository,
 	slotsContext,
 } from '@platforms/shared';
-import {
-	AdSlot,
-	AdSlotEvent,
-	AdSlotStatus,
-	Anyclip,
-	btfBlockerService,
-	communicationService,
-	Connatix,
-	context,
-	CookieStorageAdapter,
-	DiProcess,
-	eventsRepository,
-	globalContextService,
-	InstantConfigService,
-	Nativo,
-	slotImpactWatcher,
-	slotService,
-	UapLoadStatus,
-	universalAdPackage,
-	utils,
-} from '@wikia/ad-engine';
+import { universalAdPackage } from '@wikia/ad-products';
+import { Anyclip, Connatix } from '@wikia/ad-services';
 import { Injectable } from '@wikia/dependency-injection';
 import { UcpMobileSlotsDefinitionRepository } from './ucp-mobile-slots-definition-repository';
 
@@ -68,7 +65,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				slotName: Nativo.FEED_AD_SLOT_NAME,
 				anchorSelector: '.recirculation-prefooter',
 				insertMethod: 'before',
-				classList: ['ntv-ad', AdSlot.HIDDEN_AD_CLASS],
+				classList: ['ntv-ad', AdSlotClass.HIDDEN_AD_CLASS],
 			}),
 		]);
 
@@ -189,7 +186,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 				// TODO: this is hacky solution to wait for floating featured video player to be closed, we should use communicationService event instead
 				// ticket to fix it: https://fandom.atlassian.net/browse/COTECH-963
-				new utils.WaitFor(
+				new WaitFor(
 					() =>
 						window.scrollY > scrollBreakpoint &&
 						!playerContainer.querySelector('div.is-on-scroll-active, .cnx-float'),
@@ -236,7 +233,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		const hideFloorAdhesionAnchor = () => {
 			document
 				.getElementById('floor_adhesion_anchor')
-				?.classList.add('hide', AdSlot.HIDDEN_AD_CLASS);
+				?.classList.add('hide', AdSlotClass.HIDDEN_AD_CLASS);
 		};
 
 		const disableFloorAdhesion = () => {

@@ -1,4 +1,4 @@
-import { utils } from '@wikia/ad-engine';
+import { logger } from '@ad-engine/utils';
 import { TargetingProvider } from '../interfaces/targeting-provider';
 import { TargetingStrategy } from '../interfaces/targeting-strategy';
 import { TargetingTags } from '../interfaces/taxonomy-tags';
@@ -18,14 +18,14 @@ export function createSelectedStrategy(
 ): TargetingProvider<TargetingTags> {
 	switch (selectedStrategy) {
 		case TargetingStrategy.SITE_CONTEXT:
-			utils.logger(logGroup, 'Executing SiteContext strategy...');
+			logger(logGroup, 'Executing SiteContext strategy...');
 
 			return new TagsPlainSumBuilder([
 				new CommonTags(fandomContext),
 				new SiteLevelTaxonomyTags(fandomContext),
 			]);
 		case TargetingStrategy.PAGE_CONTEXT:
-			utils.logger(logGroup, 'Executing PageContext strategy...');
+			logger(logGroup, 'Executing PageContext strategy...');
 
 			return new TagsPlainSumBuilder([
 				new CommonTags(fandomContext),
@@ -33,7 +33,7 @@ export function createSelectedStrategy(
 			]);
 		case TargetingStrategy.COMBINED:
 		default:
-			utils.logger(logGroup, 'Executing Combined strategy...');
+			logger(logGroup, 'Executing Combined strategy...');
 
 			return new TagsPlainSumBuilder([
 				new CommonTags(fandomContext),

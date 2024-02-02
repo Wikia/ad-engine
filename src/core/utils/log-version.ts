@@ -1,4 +1,4 @@
-import { logger } from './utils';
+import { logger } from './logger';
 
 export function logVersion(): void {
 	if (window.ads.adEngineVersion) {

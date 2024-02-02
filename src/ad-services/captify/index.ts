@@ -1,5 +1,7 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { BaseServiceSetup, context, utils } from '@ad-engine/core';
+import { context } from '@ad-engine/core';
+import { BaseServiceSetup } from '@ad-engine/pipeline';
+import { logger, scriptLoader } from '@ad-engine/utils';
 
 const logGroup = 'captify';
 
@@ -8,7 +10,7 @@ export class Captify extends BaseServiceSetup {
 
 	async call(): Promise<void> {
 		if (!this.isEnabled('icCaptify')) {
-			utils.logger(logGroup, 'disabled');
+			logger(logGroup, 'disabled');
 
 			return Promise.resolve();
 		}
@@ -36,13 +38,13 @@ export class Captify extends BaseServiceSetup {
 		const captifyPixelUrl = `https://p.cpx.to/p/${this.propertyId}/px.js`;
 
 		const section = document.getElementsByTagName('script')[0];
-		const elem = utils.scriptLoader.createScript(captifyPixelUrl, false, section);
+		const elem = scriptLoader.createScript(captifyPixelUrl, false, section);
 
 		elem.onload = () => {
 			communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
 				status: 'captify_loaded',
 			});
-			utils.logger(logGroup, 'loaded');
+			logger(logGroup, 'loaded');
 		};
 	}
 }

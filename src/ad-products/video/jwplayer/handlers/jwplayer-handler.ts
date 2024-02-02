@@ -1,4 +1,4 @@
-import { utils } from '@ad-engine/core';
+import { logger } from '@ad-engine/utils';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge, Observable } from 'rxjs';
 import { filter, mergeMap, tap } from 'rxjs/operators';
@@ -7,7 +7,7 @@ import { PlayerReadyResult } from '../helpers/player-ready-result';
 import { videoDisplayTakeoverSynchronizer } from '../helpers/video-display-takeover-synchronizer';
 import { JwpStream, ofJwpEvent } from '../streams/jwplayer-stream';
 
-const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
+const log = (...args) => logger('jwplayer-ads-factory', ...args);
 
 /**
  * Describes what is done

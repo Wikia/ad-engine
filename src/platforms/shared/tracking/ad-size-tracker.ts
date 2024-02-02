@@ -1,4 +1,5 @@
-import { AdSlot, communicationService, eventsRepository } from '@wikia/ad-engine';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { type AdSlot } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
 import { trackingUrls } from '../setup/tracking-urls';
 import { DataWarehouseTracker } from './data-warehouse';

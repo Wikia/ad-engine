@@ -1,21 +1,22 @@
-import { BaseServiceSetup, utils } from '@ad-engine/core';
+import { BaseServiceSetup } from '@ad-engine/pipeline';
+import { logger, scriptLoader } from '@ad-engine/utils';
 
 const logGroup = 'stroer';
 
 export class Stroer extends BaseServiceSetup {
 	call(): Promise<void> {
 		if (!this.isEnabled('icStroer', false)) {
-			utils.logger(logGroup, 'disabled');
+			logger(logGroup, 'disabled');
 
 			return Promise.resolve();
 		}
 
 		const libraryUrl = `//js.adscale.de/map.js`;
 
-		utils.logger(logGroup, 'loading', libraryUrl);
+		logger(logGroup, 'loading', libraryUrl);
 
-		return utils.scriptLoader.loadScript(libraryUrl, false).then(() => {
-			utils.logger(logGroup, 'ready');
+		return scriptLoader.loadScript(libraryUrl, false).then(() => {
+			logger(logGroup, 'ready');
 		});
 	}
 }

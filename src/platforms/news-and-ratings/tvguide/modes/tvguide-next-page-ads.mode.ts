@@ -1,13 +1,9 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { DiProcess, PartnerPipeline } from '@ad-engine/pipeline';
+import { logger } from '@ad-engine/utils';
 import { PlayerSetup, WadRunner } from '@platforms/shared';
-import {
-	Anyclip,
-	Bidders,
-	communicationService,
-	DiProcess,
-	eventsRepository,
-	PartnerPipeline,
-	utils,
-} from '@wikia/ad-engine';
+import { Bidders } from '@wikia/ad-bidders';
+import { Anyclip } from '@wikia/ad-services';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -28,7 +24,7 @@ export class TvGuideNextPageAdsMode implements DiProcess {
 			.execute()
 			.then(() => {
 				this.bidders.initialized.then(() => {
-					utils.logger('SPA', 'pipeline refreshed');
+					logger('SPA', 'pipeline refreshed');
 					communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);
 				});
 			});

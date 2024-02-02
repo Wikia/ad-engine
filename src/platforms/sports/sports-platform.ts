@@ -1,3 +1,7 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { context } from '@ad-engine/core';
+import { conditional, parallel, ProcessPipeline, sequential } from '@ad-engine/pipeline';
+import { client, logVersion } from '@ad-engine/utils';
 import {
 	BaseContextSetup,
 	BiddersStateSetup,
@@ -12,21 +16,11 @@ import {
 	NoAdsMode,
 	PlatformContextSetup,
 	PreloadedLibrariesSetup,
+	SlotTrackingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
-import {
-	communicationService,
-	conditional,
-	context,
-	eventsRepository,
-	IdentitySetup,
-	logVersion,
-	parallel,
-	ProcessPipeline,
-	sequential,
-	utils,
-} from '@wikia/ad-engine';
+import { IdentitySetup } from '@wikia/ad-services';
 import { Injectable } from '@wikia/dependency-injection';
 import { getBasicContext } from './ad-context';
 import { SportsAdsMode } from './modes/sports-ads.mode';
@@ -45,7 +39,7 @@ export class SportsPlatform {
 	execute(): void {
 		logVersion();
 		context.extend(getBasicContext());
-		context.set('state.isMobile', utils.client.getDeviceMode() === 'mobile');
+		context.set('state.isMobile', client.getDeviceMode() === 'mobile');
 		document.body.classList.add(`ae-${selectApplication('futhead', 'muthead')}`);
 
 		// Config
@@ -69,6 +63,7 @@ export class SportsPlatform {
 			BiddersStateSetup,
 			SportsTemplatesSetup,
 			LabradorSetup,
+			SlotTrackingSetup,
 			TrackingSetup,
 			BiddersTargetingUpdater,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),

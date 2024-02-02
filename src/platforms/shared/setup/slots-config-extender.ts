@@ -1,10 +1,5 @@
-import {
-	BaseSlotConfig,
-	context,
-	Dictionary,
-	DiProcess,
-	InstantConfigService,
-} from '@wikia/ad-engine';
+import { BaseSlotConfig, context, Dictionary, InstantConfigService } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()

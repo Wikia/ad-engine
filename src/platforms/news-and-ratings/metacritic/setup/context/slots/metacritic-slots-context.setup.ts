@@ -1,4 +1,6 @@
-import { context, DiProcess, universalAdPackage } from '@wikia/ad-engine';
+import { context } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
+import { universalAdPackage } from '@wikia/ad-products';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()

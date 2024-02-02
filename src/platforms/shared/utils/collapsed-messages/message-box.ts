@@ -1,4 +1,5 @@
-import { communicationService, eventsRepository, type AdSlot } from '@wikia/ad-engine';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { type AdSlot } from '@ad-engine/core';
 import type { MessageBoxType } from './message-box-type';
 
 type MessageBoxEvents =

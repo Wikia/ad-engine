@@ -1,4 +1,9 @@
-import { communicationService, eventsRepository, ofType, UapLoadStatus } from '@wikia/ad-engine';
+import {
+	communicationService,
+	eventsRepository,
+	ofType,
+	UapLoadStatus,
+} from '@ad-engine/communication';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 

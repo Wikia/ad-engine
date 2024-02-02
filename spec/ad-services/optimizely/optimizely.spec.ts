@@ -1,5 +1,6 @@
 import { Optimizely } from '@wikia/ad-services/optimizely';
-import { targetingService, TargetingService, utils } from '@wikia/core';
+import { targetingService, TargetingService } from '@wikia/core';
+import { queryString } from '@wikia/core/utils';
 import { expect } from 'chai';
 import { SinonStubbedInstance } from 'sinon';
 
@@ -52,7 +53,7 @@ describe('Optimizely service', () => {
 		};
 
 		global.sandbox
-			.stub(utils.queryString, 'get')
+			.stub(queryString, 'get')
 			.withArgs('optimizely_experiment_xyz_forced_variant')
 			.returns('B');
 

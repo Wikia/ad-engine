@@ -1,9 +1,5 @@
-import {
-	DiProcess,
-	InstantConfigCacheStorage,
-	InstantConfigService,
-	targetingService,
-} from '@wikia/ad-engine';
+import { InstantConfigCacheStorage, InstantConfigService, targetingService } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()

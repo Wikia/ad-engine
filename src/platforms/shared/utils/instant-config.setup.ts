@@ -1,11 +1,6 @@
-import {
-	communicationService,
-	context,
-	DiProcess,
-	globalAction,
-	InstantConfigCacheStorage,
-	InstantConfigService,
-} from '@wikia/ad-engine';
+import { communicationService, globalAction } from '@ad-engine/communication';
+import { context, InstantConfigCacheStorage, InstantConfigService } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
 import { Container, Injectable } from '@wikia/dependency-injection';
 import { props } from 'ts-action';
 

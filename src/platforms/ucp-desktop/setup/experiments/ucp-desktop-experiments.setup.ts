@@ -1,4 +1,6 @@
-import { context, DiProcess, Optimizely } from '@wikia/ad-engine';
+import { context } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
+import { Optimizely } from '@wikia/ad-services';
 import { Injectable } from '@wikia/dependency-injection';
 
 const OPTIMIZELY_NTC_2_0 = {

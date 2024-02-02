@@ -1,11 +1,7 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import {
-	BaseServiceSetup,
-	InstantConfigService,
-	targetingService,
-	tcf,
-	utils,
-} from '@ad-engine/core';
+import { InstantConfigService, targetingService, tcf } from '@ad-engine/core';
+import { BaseServiceSetup } from '@ad-engine/pipeline';
+import { GlobalTimeout, logger, scriptLoader } from '@ad-engine/utils';
 
 const logGroup = 'eyeota';
 const pid = 'r8rcb20';
@@ -25,25 +21,25 @@ export function parseContextTags(tags: TaxonomyTags): string {
 export class Eyeota extends BaseServiceSetup {
 	constructor(
 		protected instantConfig: InstantConfigService,
-		protected globalTimeout: utils.GlobalTimeout = null,
+		protected globalTimeout: GlobalTimeout = null,
 	) {
 		super(instantConfig, globalTimeout);
 	}
 	async call(): Promise<void> {
 		if (!this.isEnabled('icEyeota')) {
-			utils.logger(logGroup, 'disabled');
+			logger(logGroup, 'disabled');
 
 			return Promise.resolve();
 		}
 
-		utils.logger(logGroup, 'loading');
-		return utils.scriptLoader
+		logger(logGroup, 'loading');
+		return scriptLoader
 			.loadScript(await this.createScriptSource())
 			.then(() => {
 				communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
 					status: 'eyeota_started',
 				});
-				utils.logger(logGroup, 'ready');
+				logger(logGroup, 'ready');
 			})
 			.catch(() => {
 				communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {

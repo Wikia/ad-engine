@@ -1,4 +1,4 @@
-import { AdSlot, AdSlotStatus } from '@wikia/ad-engine';
+import { AdSlot, AdSlotStatus } from '@ad-engine/core';
 import { MessageBoxCreator } from './message-box-creator';
 import type { MessageBoxType } from './message-box-type';
 

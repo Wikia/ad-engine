@@ -1,12 +1,6 @@
-import {
-	communicationService,
-	context,
-	eventsRepository,
-	TEMPLATE,
-	TemplateStateHandler,
-	UapParams,
-	universalAdPackage,
-} from '@wikia/ad-engine';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { context, TEMPLATE, TemplateStateHandler } from '@ad-engine/core';
+import { UapParams, universalAdPackage } from '@wikia/ad-products';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })

@@ -1,5 +1,6 @@
 import { communicationService } from '@ad-engine/communication';
-import { AdSlot, AdSlotEvent, context, utils } from '@ad-engine/core';
+import { AdSlot, AdSlotEvent, context } from '@ad-engine/core';
+import { buildVastUrl } from '@ad-engine/utils';
 import { PorvataSettings } from './porvata-settings';
 
 export class GoogleImaWrapper {
@@ -66,7 +67,7 @@ export class GoogleImaWrapper {
 
 		adsRequest.adTagUrl =
 			settings.getVastUrl() ||
-			utils.buildVastUrl(width / height, settings.getSlotName(), {
+			buildVastUrl(width / height, settings.getSlotName(), {
 				targeting: settings.getVastTargeting(),
 			});
 		adsRequest.linearAdSlotWidth = width;

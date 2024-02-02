@@ -1,3 +1,7 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { context } from '@ad-engine/core';
+import { conditional, parallel, ProcessPipeline, sequential } from '@ad-engine/pipeline';
+import { logVersion } from '@ad-engine/utils';
 import {
 	BiddersStateSetup,
 	BiddersTargetingUpdater,
@@ -13,21 +17,12 @@ import {
 	PostAdStackPartnersSetup,
 	PreloadedLibrariesSetup,
 	SequentialMessagingSetup,
+	SlotTrackingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 	UcpTargetingSetup,
 } from '@platforms/shared';
-import {
-	communicationService,
-	conditional,
-	context,
-	eventsRepository,
-	IdentitySetup,
-	logVersion,
-	parallel,
-	ProcessPipeline,
-	sequential,
-} from '@wikia/ad-engine';
+import { IdentitySetup } from '@wikia/ad-services';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
 import { UcpDesktopAdsMode } from './modes/ucp-desktop-ads.mode';
@@ -75,6 +70,7 @@ export class UcpDesktopPlatform {
 				yes: UcpDesktopAdsMode,
 				no: NoAdsMode,
 			}),
+			SlotTrackingSetup,
 			TrackingSetup,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 			PostAdStackPartnersSetup,

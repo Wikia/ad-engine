@@ -1,11 +1,6 @@
 import { DoubleVerify } from '@wikia/ad-services';
-import {
-	context,
-	InstantConfigService,
-	targetingService,
-	TargetingService,
-	utils,
-} from '@wikia/core';
+import { context, InstantConfigService, targetingService, TargetingService } from '@wikia/core';
+import { scriptLoader } from '@wikia/core/utils';
 import { expect } from 'chai';
 import sinon, { SinonStubbedInstance } from 'sinon';
 
@@ -17,7 +12,7 @@ describe('DoubleVerify', () => {
 
 	beforeEach(() => {
 		loadScriptStub = global.sandbox
-			.stub(utils.scriptLoader, 'loadScript')
+			.stub(scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		targetingServiceStub = global.sandbox.stub(targetingService);

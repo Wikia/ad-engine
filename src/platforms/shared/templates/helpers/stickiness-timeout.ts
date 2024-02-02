@@ -1,4 +1,6 @@
-import { AdSlot, TEMPLATE, TemplateDependency, UapParams, utils } from '@wikia/ad-engine';
+import { AdSlot, TEMPLATE, TemplateDependency } from '@ad-engine/core';
+import { wait } from '@ad-engine/utils';
+import { type UapParams } from '@wikia/ad-products';
 import { Container, Inject, Injectable } from '@wikia/dependency-injection';
 import { from, merge, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -29,7 +31,7 @@ export class StickinessTimeout {
 
 	isViewedAndDelayed(): Observable<boolean> {
 		const bootstrap$ = of(false);
-		const completed$ = from(this.adSlot.loaded.then(() => utils.wait(this.fallbackTimeout))).pipe(
+		const completed$ = from(this.adSlot.loaded.then(() => wait(this.fallbackTimeout))).pipe(
 			map(() => true),
 		);
 

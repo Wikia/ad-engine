@@ -1,4 +1,6 @@
-import { context, Dictionary, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
+import { context, Dictionary, InstantConfigService } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
+import { isCoppaSubject, queryString } from '@ad-engine/utils';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -32,7 +34,7 @@ export class BiddersStateSetup implements DiProcess {
 	private notCoppaCompliantBidders: Array<keyof typeof this.prebidBidders> = ['kargo', 'verizon'];
 
 	constructor(private instantConfig: InstantConfigService) {
-		this.selectedBidder = utils.queryString.get('select_bidder') || '';
+		this.selectedBidder = queryString.get('select_bidder') || '';
 	}
 
 	execute(): void {
@@ -91,7 +93,7 @@ export class BiddersStateSetup implements DiProcess {
 			return;
 		}
 
-		if (utils.isCoppaSubject() && !this.isBidderCoppaCompliant(name)) {
+		if (isCoppaSubject() && !this.isBidderCoppaCompliant(name)) {
 			context.set(`bidders.prebid.${name}.enabled`, false);
 			return;
 		}

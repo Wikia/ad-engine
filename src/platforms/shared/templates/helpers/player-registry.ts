@@ -1,12 +1,11 @@
+import { AdSlot, AdSlotClass, TEMPLATE } from '@ad-engine/core';
 import {
-	AdSlot,
 	Porvata,
 	PorvataPlayer,
 	PorvataTemplateParams,
 	resolvedState,
-	TEMPLATE,
 	UapParams,
-} from '@wikia/ad-engine';
+} from '@wikia/ad-products';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { ReplaySubject } from 'rxjs';
 
@@ -43,7 +42,7 @@ export class PlayerRegistry {
 	private createPlayerContainer(): HTMLDivElement {
 		const playerContainer = Porvata.createVideoContainer(this.adSlot.getElement());
 
-		playerContainer.parentElement.classList.add(AdSlot.HIDDEN_AD_CLASS);
+		playerContainer.parentElement.classList.add(AdSlotClass.HIDDEN_AD_CLASS);
 
 		return playerContainer;
 	}

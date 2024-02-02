@@ -1,4 +1,4 @@
-import { Binder } from '@wikia/ad-engine';
+import { Binder } from '@ad-engine/core';
 import { F2State } from './f2-state';
 
 export const F2_STATE = Symbol('F2 State');

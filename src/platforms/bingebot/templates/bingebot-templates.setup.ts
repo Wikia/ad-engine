@@ -1,4 +1,5 @@
-import { DiProcess, logTemplates, TemplateRegistry, templateService } from '@wikia/ad-engine';
+import { logTemplates, TemplateRegistry, templateService } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
 import { registerSponsoredLogoTemplate } from './sponsored-logo-template';

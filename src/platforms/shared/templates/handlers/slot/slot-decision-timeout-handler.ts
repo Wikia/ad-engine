@@ -4,8 +4,8 @@ import {
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
-	universalAdPackage,
-} from '@wikia/ad-engine';
+} from '@ad-engine/core';
+import { universalAdPackage } from '@wikia/ad-products';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';

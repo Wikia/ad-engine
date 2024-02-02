@@ -1,5 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { context, targetingService, utils } from '@ad-engine/core';
+import { context, targetingService } from '@ad-engine/core';
+import { isCoppaSubject, logger, WaitFor } from '@ad-engine/utils';
 import { UserIdConfig } from '../index';
 
 interface Id5Config extends UserIdConfig {
@@ -20,28 +21,26 @@ class Id5 {
 
 	private isEnabled(): boolean {
 		return (
-			context.get('bidders.prebid.id5') &&
-			!context.get('options.optOutSale') &&
-			!utils.isCoppaSubject()
+			context.get('bidders.prebid.id5') && !context.get('options.optOutSale') && !isCoppaSubject()
 		);
 	}
 
 	getConfig(): Id5Config {
 		if (!this.isEnabled()) {
-			utils.logger(logGroup, 'disabled');
+			logger(logGroup, 'disabled');
 			return;
 		}
 
-		utils.logger(logGroup, 'enabled');
+		logger(logGroup, 'enabled');
 		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
 			status: 'id5_start',
 		});
 
 		const id5AbValue: number = context.get('bidders.prebid.id5AbValue');
 		if (id5AbValue) {
-			utils.logger(logGroup, 'A/B testing enabled', 'value=', id5AbValue);
+			logger(logGroup, 'A/B testing enabled', 'value=', id5AbValue);
 		} else {
-			utils.logger(logGroup, 'A/B testing disabled');
+			logger(logGroup, 'A/B testing disabled');
 		}
 
 		const config = {
@@ -61,7 +60,7 @@ class Id5 {
 			},
 		};
 
-		utils.logger(logGroup, 'config', config);
+		logger(logGroup, 'config', config);
 
 		return config;
 	}
@@ -73,13 +72,13 @@ class Id5 {
 	async trackControlGroup(pbjs: Pbjs): Promise<void> {
 		const controlGroup = await this.getControlGroup(pbjs);
 
-		utils.logger(logGroup, 'Control group', controlGroup);
+		logger(logGroup, 'Control group', controlGroup);
 
 		this.setTargeting(this.id5GroupKey, controlGroup);
 	}
 
 	public async getControlGroup(pbjs: Pbjs): Promise<id5GroupValue> {
-		await new utils.WaitFor(
+		await new WaitFor(
 			() => pbjs.getUserIds()?.id5id?.ext?.abTestingControlGroup !== undefined,
 			10,
 			20,
@@ -95,12 +94,12 @@ class Id5 {
 
 	private setTargeting(key: string, value: string): void {
 		targetingService.set(key, value);
-		utils.logger(logGroup, 'set targeting', key, value);
+		logger(logGroup, 'set targeting', key, value);
 	}
 
 	public enableAnalytics(pbjs: Pbjs): void {
 		if (context.get('bidders.prebid.id5Analytics.enabled')) {
-			utils.logger(logGroup, 'enabling ID5 Analytics');
+			logger(logGroup, 'enabling ID5 Analytics');
 
 			pbjs.enableAnalytics({
 				provider: 'id5Analytics',

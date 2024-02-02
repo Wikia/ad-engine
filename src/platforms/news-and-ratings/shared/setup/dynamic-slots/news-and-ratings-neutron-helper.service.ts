@@ -1,12 +1,8 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { targetingService, updateGptTargeting } from '@ad-engine/core';
+import { ProcessPipeline } from '@ad-engine/pipeline';
+import { logger } from '@ad-engine/utils';
 import { TrackingParametersSetup } from '@platforms/shared';
-import {
-	communicationService,
-	eventsRepository,
-	ProcessPipeline,
-	targetingService,
-	updateGptTargeting,
-	utils,
-} from '@wikia/ad-engine';
 import { Container, Injectable } from '@wikia/dependency-injection';
 
 const logGroup = 'SPA';
@@ -17,13 +13,13 @@ export class NewsAndRatingsNeutronHelper {
 		communicationService.on(
 			eventsRepository.PLATFORM_PAGE_EXTENDED,
 			() => {
-				utils.logger(logGroup, 'page extended', location.href);
+				logger(logGroup, 'page extended', location.href);
 
 				targetingService.clear();
 
 				const refreshPipeline = new ProcessPipeline(container);
 				refreshPipeline
-					.add(() => utils.logger(logGroup, 'starting pipeline refresh'), ...steps)
+					.add(() => logger(logGroup, 'starting pipeline refresh'), ...steps)
 					.execute();
 			},
 			false,
@@ -34,7 +30,7 @@ export class NewsAndRatingsNeutronHelper {
 		communicationService.on(
 			eventsRepository.PLATFORM_PAGE_CHANGED,
 			async () => {
-				utils.logger(logGroup, 'url changed', location.href);
+				logger(logGroup, 'url changed', location.href);
 
 				const trackingParametersSetup = container.get(TrackingParametersSetup);
 				await trackingParametersSetup.setTrackingParameters();
@@ -44,7 +40,7 @@ export class NewsAndRatingsNeutronHelper {
 				const refreshPipeline = new ProcessPipeline(container);
 				refreshPipeline
 					.add(
-						() => utils.logger(logGroup, 'starting pipeline refresh'),
+						() => logger(logGroup, 'starting pipeline refresh'),
 						...steps,
 						() => updateGptTargeting(),
 					)

@@ -1,4 +1,4 @@
-import { AdSlot, VideoData, VideoEventData, VideoEventProvider } from '@ad-engine/core';
+import { VideoData, VideoEventData, VideoEventProvider, type AdSlot } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
 import Cookies from 'js-cookie';
 import { Observable } from 'rxjs';

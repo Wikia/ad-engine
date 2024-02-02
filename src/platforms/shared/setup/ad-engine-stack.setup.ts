@@ -1,4 +1,6 @@
-import { AdEngine, AdSlotEvent, BaseServiceSetup, communicationService } from '@wikia/ad-engine';
+import { communicationService } from '@ad-engine/communication';
+import { AdEngine, AdSlotEvent } from '@ad-engine/core';
+import { BaseServiceSetup } from '@ad-engine/pipeline';
 
 let adEngineInstance: AdEngine;
 

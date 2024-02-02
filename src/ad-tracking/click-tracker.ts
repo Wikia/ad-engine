@@ -1,5 +1,6 @@
 import { communicationService, EventOptions, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, AdSlotEvent, AdSlotStatus, Dictionary, slotService, utils } from '@ad-engine/core';
+import { AdSlot, AdSlotEvent, AdSlotStatus, Dictionary, slotService } from '@ad-engine/core';
+import { logger } from '@ad-engine/utils';
 import { BaseTracker, BaseTrackerInterface } from './base-tracker';
 import { slotPropertiesTrackingCompiler, slotTrackingCompiler } from './compilers';
 
@@ -47,7 +48,7 @@ class AdClickTracker extends BaseTracker implements BaseTrackerInterface {
 				return;
 			}
 
-			utils.logger(logGroup, `Click! on slot='${slotName}' is detected.`);
+			logger(logGroup, `Click! on slot='${slotName}' is detected.`);
 
 			const adSlot = slotService.get(slotName);
 			this.handleClickEvent(callback, adSlot);

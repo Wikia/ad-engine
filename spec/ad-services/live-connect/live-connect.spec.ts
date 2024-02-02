@@ -1,6 +1,7 @@
 import { LiveConnect } from '@wikia/ad-services';
 import { communicationService, eventsRepository } from '@wikia/communication';
-import { context, InstantConfigService, utils } from '@wikia/core';
+import { context, InstantConfigService } from '@wikia/core';
+import { scriptLoader } from '@wikia/core/utils';
 import { expect } from 'chai';
 import { SinonSpy } from 'sinon';
 
@@ -22,7 +23,7 @@ describe('LiveConnect', () => {
 			.returns(mockedStorageStrategyVariable);
 		instantConfigStub.get.withArgs('icIdentityPartners').returns(false);
 		loadScriptStub = global.sandbox
-			.stub(utils.scriptLoader, 'loadScript')
+			.stub(scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);

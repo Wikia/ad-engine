@@ -1,11 +1,6 @@
-import {
-	AdSlotEvent,
-	AdSlotStatus,
-	communicationService,
-	context,
-	eventsRepository,
-	universalAdPackage,
-} from '@wikia/ad-engine';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { AdSlotEvent, AdSlotStatus, context } from '@ad-engine/core';
+import { universalAdPackage } from '@wikia/ad-products';
 import { Injectable } from '@wikia/dependency-injection';
 
 interface StickedBoxadHelperConfiguration {

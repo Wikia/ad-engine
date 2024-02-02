@@ -1,3 +1,4 @@
+import { context, TemplateAction, TemplateRegistry } from '@ad-engine/core';
 import {
 	AdvertisementLabelHandler,
 	BfaaBootstrapHandler,
@@ -28,7 +29,7 @@ import {
 	VideoSizeImpactToResolvedHandler,
 	VideoSizeResolvedHandler,
 } from '@platforms/shared';
-import { context, TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
+import { universalAdPackage } from '@wikia/ad-products';
 import { Observable } from 'rxjs';
 import { selectApplication } from '../utils/application-helper';
 import { registerFutheadUapDomElements } from './configs/register-futhead-uap-dom-elements';

@@ -1,4 +1,4 @@
-import { context } from '../../index';
+import { context } from '../services';
 
 const OPTIMIZELY_NO_INCONTENT_PLAYER_EXPERIMENT = {
 	// https://app.optimizely.com/v2/projects/17632281258/experiments/27342680309/variations

@@ -1,10 +1,6 @@
-import {
-	AdSlotStatus,
-	communicationService,
-	eventsRepository,
-	slotService,
-	utils,
-} from '@wikia/ad-engine';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { AdSlotStatus, slotService } from '@ad-engine/core';
+import { logger } from '@ad-engine/utils';
 import { Injectable } from '@wikia/dependency-injection';
 import { insertSlots, SlotsDefinitionRepository } from '../utils/insert-slots';
 
@@ -58,7 +54,7 @@ export class GalleryLightboxAdsHandler {
 				this.isActive = true;
 				this.hideFloorAdhesion();
 				this.showMobileGalleryAdPlaceholder();
-				utils.logger(this.logGroup, 'Ad placement on Lightbox ready', placementId);
+				logger(this.logGroup, 'Ad placement on Lightbox ready', placementId);
 			},
 			false,
 		);
@@ -68,11 +64,7 @@ export class GalleryLightboxAdsHandler {
 		communicationService.on(
 			eventsRepository.PLATFORM_LIGHTBOX_IMAGE_CHANGE,
 			({ placementId }) => {
-				utils.logger(
-					this.logGroup,
-					'Ad placement on Lightbox is going to be refreshed',
-					placementId,
-				);
+				logger(this.logGroup, 'Ad placement on Lightbox is going to be refreshed', placementId);
 
 				if (placementId !== this.slotName || this.refreshLock || !this.isActive) {
 					return;
@@ -116,7 +108,7 @@ export class GalleryLightboxAdsHandler {
 				}
 
 				gallerySlot.destroy();
-				utils.logger(this.logGroup, 'Ad placement on Lightbox destroy', placementId);
+				logger(this.logGroup, 'Ad placement on Lightbox destroy', placementId);
 				this.isActive = false;
 				this.showFloorAdhesion();
 			},

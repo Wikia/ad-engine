@@ -1,5 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { BaseServiceSetup, utils } from '@ad-engine/core';
+import { BaseServiceSetup } from '@ad-engine/pipeline';
+import { logger, scriptLoader } from '@ad-engine/utils';
 
 interface LotameNamespace {
 	config?: { clientId?: number };
@@ -22,7 +23,7 @@ export class Lotame extends BaseServiceSetup {
 
 	async call(): Promise<void> {
 		if (!this.isEnabled('icLotame')) {
-			utils.logger(this.logGroup, 'pixel disabled');
+			logger(this.logGroup, 'pixel disabled');
 			return;
 		}
 
@@ -50,8 +51,8 @@ export class Lotame extends BaseServiceSetup {
 		namespace.data = lotameTagInput.data || {};
 		namespace.cmd = namespace.cmd || [];
 
-		utils.logger(this.logGroup, 'pixel enabled');
-		await utils.scriptLoader.loadScript(this.PIXEL_URL);
+		logger(this.logGroup, 'pixel enabled');
+		await scriptLoader.loadScript(this.PIXEL_URL);
 		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, { status: 'lotame_loaded' });
 	}
 }

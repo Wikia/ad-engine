@@ -4,10 +4,10 @@ import {
 	AdSlotStatus,
 	context,
 	displayAndVideoAdsSyncContext,
-	utils,
 	vastDebugger,
 	VastParams,
 } from '@ad-engine/core';
+import { buildVastUrl, logger } from '@ad-engine/utils';
 import { iasVideoTracker } from '../../porvata/plugins/ias/ias-video-tracker';
 import { JWPlayer, JWPlayerEventParams } from '../external-types/jwplayer';
 import { VideoTargeting } from '../jwplayer-actions';
@@ -126,7 +126,7 @@ export class JWPlayerHelper {
 		currentMediaId: string = null,
 	): boolean {
 		const capping = context.get('options.video.adsOnNextVideoFrequency');
-		utils.logger(JWPlayerHelper.LOG_GROUP_NAME, videoPlaylistOrderNumber, currentMediaId);
+		logger(JWPlayerHelper.LOG_GROUP_NAME, videoPlaylistOrderNumber, currentMediaId);
 
 		return (
 			context.get('options.video.playAdsOnNextVideo') &&
@@ -155,7 +155,7 @@ export class JWPlayerHelper {
 			this.updateVideoProperties(state);
 		}
 
-		return utils.buildVastUrl(16 / 9, this.adSlot.getSlotName(), {
+		return buildVastUrl(16 / 9, this.adSlot.getSlotName(), {
 			correlator: state.correlator,
 			vpos: position,
 			targeting: {

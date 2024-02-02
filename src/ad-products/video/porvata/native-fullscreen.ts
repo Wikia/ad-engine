@@ -1,4 +1,4 @@
-import { utils } from '@ad-engine/core';
+import { tryProperty, whichProperty } from '@ad-engine/utils';
 
 export class NativeFullscreen {
 	readonly enter: () => boolean | undefined;
@@ -28,11 +28,11 @@ export class NativeFullscreen {
 	private fullscreen = false;
 
 	constructor(video: HTMLElement) {
-		this.enter = utils.tryProperty(video, NativeFullscreen.enterEvents);
+		this.enter = tryProperty(video, NativeFullscreen.enterEvents);
 		this.exit =
-			utils.tryProperty(video, NativeFullscreen.exitEvents) ||
-			utils.tryProperty(document, NativeFullscreen.exitEvents);
-		this.fullscreenChangeEvent = (utils.whichProperty(video, NativeFullscreen.changeEvents) || '')
+			tryProperty(video, NativeFullscreen.exitEvents) ||
+			tryProperty(document, NativeFullscreen.exitEvents);
+		this.fullscreenChangeEvent = (whichProperty(video, NativeFullscreen.changeEvents) || '')
 			.replace(/^on/, '')
 			.replace('msfullscreenchange', 'MSFullscreenChange');
 

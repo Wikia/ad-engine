@@ -1,13 +1,12 @@
 import {
 	AdSlot,
-	resolvedState,
 	slotTweaker,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
-	UapParams,
-	utils,
-} from '@wikia/ad-engine';
+} from '@ad-engine/core';
+import { logger, once } from '@ad-engine/utils';
+import { resolvedState, UapParams } from '@wikia/ad-products';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })
@@ -19,7 +18,7 @@ export class BfabBootstrapHandler implements TemplateStateHandler {
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 	) {}
 
-	private logger = (...args: any[]) => utils.logger(BfabBootstrapHandler.LOG_GROUP, ...args);
+	private logger = (...args: any[]) => logger(BfabBootstrapHandler.LOG_GROUP, ...args);
 
 	async onEnter(transition: TemplateTransition<'resolved' | 'impact'>): Promise<void> {
 		this.logger('onEnter', this.params);
@@ -51,7 +50,7 @@ export class BfabBootstrapHandler implements TemplateStateHandler {
 
 	private async awaitVisibleDOM(): Promise<void> {
 		if (document.hidden) {
-			await utils.once(window, 'visibilitychange');
+			await once(window, 'visibilitychange');
 		}
 	}
 

@@ -1,10 +1,6 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { DiProcess, PartnerPipeline } from '@ad-engine/pipeline';
 import { GptSetup } from '@platforms/shared';
-import {
-	communicationService,
-	DiProcess,
-	eventsRepository,
-	PartnerPipeline,
-} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()

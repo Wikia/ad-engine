@@ -1,16 +1,8 @@
-import {
-	communicationService,
-	context,
-	Dictionary,
-	DiProcess,
-	eventsRepository,
-	globalContextService,
-	InstantConfigService,
-	setupNpaContext,
-	setupRdpContext,
-	universalAdPackage,
-	utils,
-} from '@wikia/ad-engine';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { context, Dictionary, globalContextService, InstantConfigService } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
+import { client, pageInIframe, queryString } from '@ad-engine/utils';
+import { setupNpaContext, setupRdpContext, universalAdPackage } from '@wikia/ad-products';
 import { Injectable } from '@wikia/dependency-injection';
 import { NoAdsDetector } from '../services/no-ads-detector';
 
@@ -32,11 +24,11 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setBaseState(): void {
-		if (utils.pageInIframe()) {
+		if (pageInIframe()) {
 			this.noAdsDetector.addReason('in_iframe');
 		}
 
-		if (utils.client.isSteamPlatform()) {
+		if (client.isSteamPlatform()) {
 			this.noAdsDetector.addReason('steam_browser');
 
 			const topLeaderboard = document.querySelector('.top-leaderboard');
@@ -45,15 +37,15 @@ export class BaseContextSetup implements DiProcess {
 			const bottomLeaderboard = document.querySelector('.bottom-leaderboard');
 			bottomLeaderboard?.classList.remove('is-loading');
 		}
-		if (utils.queryString.get('noexternals')) {
+		if (queryString.get('noexternals')) {
 			this.noAdsDetector.addReason('noexternals_querystring');
 		}
-		if (utils.queryString.get('noads')) {
+		if (queryString.get('noads')) {
 			this.noAdsDetector.addReason('noads_querystring');
 		}
 
 		context.set('state.showAds', this.noAdsDetector.isAdsMode());
-		context.set('state.deviceType', utils.client.getDeviceType());
+		context.set('state.deviceType', client.getDeviceType());
 		context.set('state.isLogged', !!context.get('wiki.wgUserId'));
 
 		if (this.instantConfig.get('icPrebidium')) {

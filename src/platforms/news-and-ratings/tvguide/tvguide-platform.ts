@@ -1,3 +1,6 @@
+import { context } from '@ad-engine/core';
+import { parallel, ProcessPipeline, sequential } from '@ad-engine/pipeline';
+import { client, logVersion } from '@ad-engine/utils';
 import {
 	BiddersStateSetup,
 	ConsentManagementPlatformSetup,
@@ -7,18 +10,11 @@ import {
 	MetricReporterSetup,
 	PreloadedLibrariesSetup,
 	SlotsConfigurationExtender,
+	SlotTrackingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
-import {
-	context,
-	IdentitySetup,
-	logVersion,
-	parallel,
-	ProcessPipeline,
-	sequential,
-	utils,
-} from '@wikia/ad-engine';
+import { IdentitySetup } from '@wikia/ad-services';
 import { Container, Injectable } from '@wikia/dependency-injection';
 import {
 	BiddersStateOverwriteSetup,
@@ -48,7 +44,7 @@ export class TvGuidePlatform {
 	execute(container: Container): void {
 		logVersion();
 		context.extend(basicContext);
-		context.set('state.isMobile', !utils.client.isDesktop());
+		context.set('state.isMobile', !client.isDesktop());
 
 		this.pipeline.add(
 			async () => await ensureGeoCookie(),
@@ -74,6 +70,7 @@ export class TvGuidePlatform {
 			BiddersStateOverwriteSetup,
 			TvGuideTemplatesSetup,
 			NewsAndRatingsAdsMode,
+			SlotTrackingSetup,
 			TrackingSetup,
 		);
 

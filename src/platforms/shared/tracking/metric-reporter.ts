@@ -1,10 +1,6 @@
-import {
-	AdSlot,
-	AdSlotEvent,
-	communicationService,
-	eventsRepository,
-	utils,
-} from '@wikia/ad-engine';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { AdSlot, AdSlotEvent } from '@ad-engine/core';
+import { getTimeDelta, outboundTrafficRestrict } from '@ad-engine/utils';
 import { MetricReporterSender } from './metric-reporter/metric-reporter-sender';
 
 const REPORTABLE_SLOTS = {
@@ -16,7 +12,7 @@ export class MetricReporter {
 	private readonly isActive: boolean;
 
 	constructor(private readonly sender: MetricReporterSender) {
-		this.isActive = utils.outboundTrafficRestrict.isOutboundTrafficAllowed('monitoring-default');
+		this.isActive = outboundTrafficRestrict.isOutboundTrafficAllowed('monitoring-default');
 	}
 
 	initialise() {
@@ -34,7 +30,7 @@ export class MetricReporter {
 	private trackLibInitialization(): void {
 		this.sender.sendToMeteringSystem({
 			action: 'init',
-			duration: Math.round(utils.getTimeDelta()),
+			duration: Math.round(getTimeDelta()),
 		});
 	}
 
@@ -42,7 +38,7 @@ export class MetricReporter {
 		communicationService.on(eventsRepository.AD_ENGINE_GPT_READY, () => {
 			this.sender.sendToMeteringSystem({
 				action: 'gpt-ready',
-				duration: Math.round(utils.getTimeDelta()),
+				duration: Math.round(getTimeDelta()),
 			});
 		});
 	}
@@ -66,7 +62,7 @@ export class MetricReporter {
 
 		this.sender.sendToMeteringSystem({
 			action: `${state}_${slot.getSlotName()}`,
-			duration: Math.round(utils.getTimeDelta()),
+			duration: Math.round(getTimeDelta()),
 		});
 	}
 }

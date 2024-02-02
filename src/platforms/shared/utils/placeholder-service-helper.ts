@@ -1,4 +1,4 @@
-import { AdSlot, AdSlotEvent, AdSlotStatus } from '@wikia/ad-engine';
+import { AdSlotClass, AdSlotEvent, AdSlotStatus } from '@ad-engine/core';
 
 export class PlaceholderServiceHelper {
 	statusesToStopLoadingSlot: string[] = [
@@ -23,7 +23,7 @@ export class PlaceholderServiceHelper {
 	};
 
 	displayPlaceholder = (placeholder: HTMLElement): void => {
-		placeholder.classList.remove(AdSlot.HIDDEN_AD_CLASS);
+		placeholder.classList.remove(AdSlotClass.HIDDEN_AD_CLASS);
 	};
 
 	shouldKeepPlaceholder = (eventName: string, slotStatus: string): boolean => {
@@ -47,7 +47,7 @@ export class PlaceholderServiceHelper {
 
 	hidePlaceholder = (placeholder: HTMLElement): void => {
 		if (this.shouldHidePlaceholder) {
-			placeholder.classList.add(AdSlot.HIDDEN_AD_CLASS);
+			placeholder.classList.add(AdSlotClass.HIDDEN_AD_CLASS);
 
 			this.hideWrapperIfExists(placeholder);
 		}
@@ -55,21 +55,21 @@ export class PlaceholderServiceHelper {
 
 	hideWrapperIfExists = (placeholder: HTMLElement): void => {
 		if (placeholder?.parentElement?.className.includes('-ads-container')) {
-			placeholder.parentElement.classList.add(AdSlot.HIDDEN_AD_CLASS);
+			placeholder.parentElement.classList.add(AdSlotClass.HIDDEN_AD_CLASS);
 		}
 	};
 
 	shouldHidePlaceholder = (placeholder: HTMLElement): boolean => {
-		return !placeholder.classList.contains(AdSlot.HIDDEN_AD_CLASS);
+		return !placeholder.classList.contains(AdSlotClass.HIDDEN_AD_CLASS);
 	};
 
 	hideAdLabel = (adLabel: HTMLElement): void => {
 		if (this.shouldHideAdLabel) {
-			adLabel.classList.add(AdSlot.HIDDEN_AD_CLASS);
+			adLabel.classList.add(AdSlotClass.HIDDEN_AD_CLASS);
 		}
 	};
 
 	shouldHideAdLabel = (adLabel: HTMLElement): boolean => {
-		return !adLabel.classList.contains(AdSlot.HIDDEN_AD_CLASS);
+		return !adLabel.classList.contains(AdSlotClass.HIDDEN_AD_CLASS);
 	};
 }

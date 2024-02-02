@@ -1,13 +1,12 @@
 import {
 	AdSlot,
-	resolvedState,
 	slotTweaker,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
-	UapParams,
-	utils,
-} from '@wikia/ad-engine';
+} from '@ad-engine/core';
+import { once } from '@ad-engine/utils';
+import { resolvedState, UapParams } from '@wikia/ad-products';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })
@@ -38,7 +37,7 @@ export class BfaaBootstrapHandler implements TemplateStateHandler {
 
 	private async awaitVisibleDOM(): Promise<void> {
 		if (document.hidden) {
-			await utils.once(window, 'visibilitychange');
+			await once(window, 'visibilitychange');
 		}
 	}
 

@@ -1,4 +1,4 @@
-import { utils } from '@ad-engine/core';
+import { queryString } from '@ad-engine/utils';
 import { PrebidAdapter } from '../prebid-adapter';
 import {
 	PrebidAdSlotConfig,
@@ -22,7 +22,7 @@ export class AppnexusAst extends PrebidAdapter {
 		super(options);
 
 		this.debugPlacementId = options.debugPlacementId;
-		this.isDebugMode = utils.queryString.get('appnexusast_debug_mode') === '1';
+		this.isDebugMode = queryString.get('appnexusast_debug_mode') === '1';
 	}
 
 	get bidderName(): string {

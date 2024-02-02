@@ -1,4 +1,4 @@
-import { utils } from '@wikia/core';
+import { client } from '@ad-engine/utils';
 import { TargetingProvider } from '../interfaces/targeting-provider';
 import { FandomContext } from '../models/fandom-context';
 import { OpenRtb2ContentCategories, OpenRtb2Object } from '../models/open-rtb2';
@@ -34,7 +34,7 @@ export class OpenRtb2Tags implements TargetingProvider<OpenRtb2Object> {
 				name: page.pageName,
 				domain: window.location.hostname,
 				cat: categories,
-				mobile: utils.client.getDeviceMode() === 'mobile' ? 1 : 0,
+				mobile: client.getDeviceMode() === 'mobile' ? 1 : 0,
 				content: {
 					language: page.lang,
 					context: 5,

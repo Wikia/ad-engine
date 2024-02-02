@@ -1,4 +1,4 @@
-import { utils } from '@wikia/ad-engine';
+import { queryString } from '@ad-engine/utils';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { F2Environment, F2_ENV } from '../setup-f2';
 
@@ -12,7 +12,7 @@ export class F2SrcAdapter {
 	getSrcBasedOnEnv(): string {
 		let src = 'ns';
 		const adMirrorSrc = this.getAdMirrorSrc(window.location.hostname);
-		const overwriteSrc = utils.queryString.get('overwriteadmirror') ?? '';
+		const overwriteSrc = queryString.get('overwriteadmirror') ?? '';
 
 		if (this.f2Env.isAdMirror && adMirrorSrc !== 'test') {
 			src = adMirrorSrc;

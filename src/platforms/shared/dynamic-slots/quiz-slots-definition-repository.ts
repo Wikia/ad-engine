@@ -1,4 +1,4 @@
-import { context, slotService } from '@wikia/ad-engine';
+import { context, slotService } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
 
 import { SlotSetupDefinition } from '../utils/insert-slots';

@@ -2,11 +2,12 @@ import {
 	AdSlotEvent,
 	context,
 	slotService,
-	utils,
 	vastParser,
 	VideoData,
 	VideoEventListener,
 } from '@ad-engine/core';
+import { logger } from '@ad-engine/utils';
+
 import { PorvataPlayer } from './porvata-player';
 
 export interface PorvataListenerParams {
@@ -66,7 +67,7 @@ export class PorvataListener {
 		);
 	}
 
-	logger = (...args: any[]): void => utils.logger(PorvataListener.LOG_GROUP, ...args);
+	logger = (...args: any[]): void => logger(PorvataListener.LOG_GROUP, ...args);
 
 	init(): void {
 		this.dispatch('init');

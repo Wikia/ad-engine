@@ -4,7 +4,6 @@ import {
 	TrackingBidDefinition,
 } from '@ad-engine/communication';
 import {
-	AdSlot,
 	AdSlotEvent,
 	context,
 	DEFAULT_MAX_DELAY,
@@ -13,8 +12,9 @@ import {
 	targetingService,
 	Tcf,
 	tcf,
-	utils,
+	type AdSlot,
 } from '@ad-engine/core';
+import { isCoppaSubject, logger, queryString } from '@ad-engine/utils';
 import {
 	defaultSlotBidGroup,
 	getSlotAliasOrName,
@@ -96,7 +96,7 @@ async function markWinningVideoBidAsUsed(adSlot: AdSlot): Promise<void> {
 	if (adId) {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
-		utils.logger(logGroup, 'marking video bid as used', adSlot.getSlotName(), adId);
+		logger(logGroup, 'marking video bid as used', adSlot.getSlotName(), adId);
 		pbjs.markWinningBidAsUsed({ adId });
 		adSlot.emit(AdSlotEvent.VIDEO_AD_USED);
 	}
@@ -126,7 +126,7 @@ export class PrebidProvider extends BidderProvider {
 			cache: {
 				url: 'https://prebid.adnxs.com/pbc/v1/cache',
 			},
-			debug: ['1', 'true'].includes(utils.queryString.get('pbjs_debug')),
+			debug: ['1', 'true'].includes(queryString.get('pbjs_debug')),
 			cpmRoundingFunction: roundBucketCpm,
 			mediaTypePriceGranularity: {
 				banner: displayGranularity,
@@ -158,7 +158,7 @@ export class PrebidProvider extends BidderProvider {
 			},
 		};
 
-		if (utils.isCoppaSubject()) {
+		if (isCoppaSubject()) {
 			this.prebidConfig.coppa = true;
 		}
 
@@ -180,7 +180,7 @@ export class PrebidProvider extends BidderProvider {
 		this.registerBidsTracking();
 		this.enableATSAnalytics();
 
-		utils.logger(logGroup, 'prebid created', this.prebidConfig);
+		logger(logGroup, 'prebid created', this.prebidConfig);
 	}
 
 	private configureTargeting(): object {
@@ -317,7 +317,7 @@ export class PrebidProvider extends BidderProvider {
 			context.get('bidders.liveRampATSAnalytics.enabled') &&
 			context.get('bidders.liveRampId.enabled')
 		) {
-			utils.logger(logGroup, 'prebid enabling ATS Analytics');
+			logger(logGroup, 'prebid enabling ATS Analytics');
 
 			(window as any).pbjs.que.push(() => {
 				(window as any).pbjs.enableAnalytics([
@@ -359,7 +359,7 @@ export class PrebidProvider extends BidderProvider {
 		}
 
 		const s2sBidders = context.get('bidders.s2s.bidders') || [];
-		utils.logger(logGroup, 'Prebid s2s enabled', s2sBidders);
+		logger(logGroup, 'Prebid s2s enabled', s2sBidders);
 
 		const extPrebidBidders = this.prepareExtPrebidBiders(s2sBidders);
 
@@ -468,7 +468,7 @@ export class PrebidProvider extends BidderProvider {
 	}
 
 	private saveBidIds(): void {
-		utils.logger(this.logGroup, 'Saving bid ids');
+		logger(this.logGroup, 'Saving bid ids');
 		prebidIdRetriever.saveCurrentPrebidIds();
 	}
 

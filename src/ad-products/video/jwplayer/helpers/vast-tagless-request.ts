@@ -1,4 +1,5 @@
-import { AdSlot, InstantConfigService, slotService, utils } from '@ad-engine/core';
+import { AdSlot, InstantConfigService, slotService } from '@ad-engine/core';
+import { buildVastUrl, FetchTimeout, logger } from '@ad-engine/utils';
 import { Injectable } from '@wikia/dependency-injection';
 import { Bidders } from '../../../../ad-bidders';
 import { videoDisplayTakeoverSynchronizer } from './video-display-takeover-synchronizer';
@@ -19,7 +20,7 @@ export class VastTaglessRequest {
 	private readonly timeout: number;
 
 	constructor(
-		private fetchTimeout: utils.FetchTimeout,
+		private fetchTimeout: FetchTimeout,
 		instantConfig: InstantConfigService,
 		private bidders: Bidders,
 	) {
@@ -36,7 +37,7 @@ export class VastTaglessRequest {
 			slotService.add(adSlot);
 		}
 		const biddersTargeting = await this.bidders.getBidParameters(slotName);
-		return utils.buildVastUrl(aspectRatio, slotName, {
+		return buildVastUrl(aspectRatio, slotName, {
 			vpos: position,
 			targeting: biddersTargeting,
 		});
@@ -44,14 +45,14 @@ export class VastTaglessRequest {
 
 	public async getVast(): Promise<VastResponseData | undefined> {
 		const vastUrl = await this.buildTaglessVideoRequest();
-		utils.logger(this.logGroup, 'Sending a tagless request: ', vastUrl);
+		logger(this.logGroup, 'Sending a tagless request: ', vastUrl);
 
 		return this.fetchTimeout
 			.fetch(vastUrl, this.timeout)
 			.then((res) => res.text())
 			.then((text) => this.handleTaglessResponse(text))
 			.catch(() => {
-				utils.logger(this.logGroup, 'Fetching error occurred');
+				logger(this.logGroup, 'Fetching error occurred');
 				return undefined;
 			});
 	}
@@ -60,12 +61,12 @@ export class VastTaglessRequest {
 		try {
 			const vastData = this.getFirstAdFromTaglessResponse(text);
 
-			utils.logger(this.logGroup, 'Ad received: ', vastData?.lineItemId);
+			logger(this.logGroup, 'Ad received: ', vastData?.lineItemId);
 
 			videoDisplayTakeoverSynchronizer.resolve(vastData?.lineItemId, vastData?.creativeId);
 			return vastData;
 		} catch {
-			utils.logger(this.logGroup, 'No XML available - not a VAST response from the ad server?');
+			logger(this.logGroup, 'No XML available - not a VAST response from the ad server?');
 		}
 	}
 

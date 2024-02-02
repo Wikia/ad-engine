@@ -1,13 +1,7 @@
-import {
-	AdSlot,
-	AdSlotStatus,
-	communicationService,
-	context,
-	eventsRepository,
-	scrollListener,
-	universalAdPackage,
-	utils,
-} from '@wikia/ad-engine';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { AdSlot, AdSlotStatus, context, scrollListener } from '@ad-engine/core';
+import { isInViewport, logger, queryString } from '@ad-engine/utils';
+import { universalAdPackage } from '@wikia/ad-products';
 
 interface RotatorConfig {
 	topPositionToRun: number;
@@ -20,7 +14,7 @@ export class BasicRotator {
 	private slotContainer: HTMLElement;
 	private refreshInfo = {
 		recSlotViewed: 2000,
-		refreshDelay: utils.queryString.isUrlParamSet('fmr-debug') ? 2000 : 10000,
+		refreshDelay: queryString.isUrlParamSet('fmr-debug') ? 2000 : 10000,
 		startPosition: 0,
 		positionTopToViewport: undefined,
 		repeatIndex: 1,
@@ -35,7 +29,7 @@ export class BasicRotator {
 		private config: RotatorConfig,
 	) {
 		this.slotContainer = document.querySelector(`#${this.slotName}`);
-		utils.logger(this.logGroup, 'initialized');
+		logger(this.logGroup, 'initialized');
 	}
 
 	rotateSlot(): void {
@@ -47,14 +41,14 @@ export class BasicRotator {
 				}
 
 				if (universalAdPackage.isFanTakeoverLoaded()) {
-					utils.logger(this.logGroup, 'fan takeover loaded ', 'rotator stopped');
+					logger(this.logGroup, 'fan takeover loaded ', 'rotator stopped');
 					return;
 				}
 
 				communicationService.onSlotEvent(
 					AdSlotStatus.STATUS_SUCCESS,
 					() => {
-						utils.logger(this.logGroup, 'success detected', slot.getSlotName());
+						logger(this.logGroup, 'success detected', slot.getSlotName());
 						this.rotationCallbackAction(slot);
 					},
 					slot.getSlotName(),
@@ -63,7 +57,7 @@ export class BasicRotator {
 				communicationService.onSlotEvent(
 					AdSlotStatus.STATUS_COLLAPSE,
 					() => {
-						utils.logger(this.logGroup, 'collapse detected', slot.getSlotName());
+						logger(this.logGroup, 'collapse detected', slot.getSlotName());
 						this.rotationCallbackAction(slot);
 					},
 					slot.getSlotName(),
@@ -82,11 +76,11 @@ export class BasicRotator {
 		}
 
 		if (this.isRotationFinished()) {
-			utils.logger(this.logGroup, 'rotation finished');
+			logger(this.logGroup, 'rotation finished');
 			return;
 		}
 
-		utils.logger(
+		logger(
 			this.logGroup,
 			'rotation scheduled',
 			`${this.slotNamePrefix}${this.refreshInfo.repeatIndex}`,
@@ -132,7 +126,7 @@ export class BasicRotator {
 	}
 
 	private isInViewport(): boolean {
-		return utils.isInViewport(this.slotContainer);
+		return isInViewport(this.slotContainer);
 	}
 
 	private removeScrollListener(): void {

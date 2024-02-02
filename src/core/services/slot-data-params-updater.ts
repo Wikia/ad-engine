@@ -1,4 +1,4 @@
-import { AdSlot } from '../models';
+import { type AdSlot } from '../models';
 import { slotTweaker } from './slot-tweaker';
 import { targetingService } from './targeting-service';
 

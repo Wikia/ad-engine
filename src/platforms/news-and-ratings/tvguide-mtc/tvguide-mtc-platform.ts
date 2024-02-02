@@ -1,3 +1,4 @@
+import { parallel, ProcessPipeline } from '@ad-engine/pipeline';
 import {
 	BaseContextSetup,
 	ConsentManagementPlatformSetup,
@@ -9,7 +10,7 @@ import {
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
-import { IdentitySetup, parallel, ProcessPipeline } from '@wikia/ad-engine';
+import { IdentitySetup } from '@wikia/ad-services';
 import { Injectable } from '@wikia/dependency-injection';
 import { TvGuideMTCContextSetup } from './setup/wiki-context.setup';
 

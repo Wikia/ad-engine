@@ -1,5 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { context, slotService, utils } from '@ad-engine/core';
+import { context, slotService } from '@ad-engine/core';
+import { logger, scriptLoader } from '@ad-engine/utils';
 import { PorvataPlayer } from '../../porvata-player';
 import { PorvataSettings } from '../../porvata-settings';
 import { PorvataPlugin } from '../porvata-plugin';
@@ -29,7 +30,7 @@ class IasVideoTracker implements PorvataPlugin {
 
 	load(): Promise<Event> {
 		if (!this.scriptPromise) {
-			this.scriptPromise = utils.scriptLoader.loadScript(scriptUrl, true, 'first');
+			this.scriptPromise = scriptLoader.loadScript(scriptUrl, true, 'first');
 		}
 
 		return this.scriptPromise;
@@ -48,7 +49,7 @@ class IasVideoTracker implements PorvataPlugin {
 			config.custom2 = pos;
 			config.custom3 = loc;
 
-			utils.logger(logGroup, 'ready');
+			logger(logGroup, 'ready');
 
 			window.googleImaVansAdapter.init(
 				window.google,

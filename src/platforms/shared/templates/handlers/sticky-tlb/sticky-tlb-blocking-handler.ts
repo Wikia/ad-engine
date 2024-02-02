@@ -1,16 +1,15 @@
+import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
 import {
 	AdSlot,
 	babDetection,
-	communicationService,
 	context,
-	eventsRepository,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
-	UapLoadStatus,
-	universalAdPackage,
-	utils,
-} from '@wikia/ad-engine';
+} from '@ad-engine/core';
+import { logger } from '@ad-engine/utils';
+import { universalAdPackage } from '@wikia/ad-products';
+
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })
@@ -80,6 +79,6 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 	}
 
 	private logger(...logMsgs: any): void {
-		utils.logger(StickyTlbBlockingHandler.LOG_GROUP, ...logMsgs);
+		logger(StickyTlbBlockingHandler.LOG_GROUP, ...logMsgs);
 	}
 }

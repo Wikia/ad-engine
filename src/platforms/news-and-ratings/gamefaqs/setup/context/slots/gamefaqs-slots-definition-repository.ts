@@ -1,5 +1,5 @@
+import { context } from '@ad-engine/core';
 import { SlotSetupDefinition } from '@platforms/shared';
-import { context } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()

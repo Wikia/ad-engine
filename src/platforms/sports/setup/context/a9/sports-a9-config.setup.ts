@@ -1,4 +1,6 @@
-import { context, DiProcess, utils } from '@wikia/ad-engine';
+import { context } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
+import { type DeviceMode } from '@ad-engine/utils';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -9,7 +11,7 @@ export class SportsA9ConfigSetup implements DiProcess {
 		context.set('bidders.a9.slots', this.getA9Context(mode));
 	}
 
-	private getA9Context(device: utils.DeviceMode): any {
+	private getA9Context(device: DeviceMode): any {
 		const a9Context = {
 			desktop: {
 				'01_LB': {

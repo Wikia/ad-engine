@@ -1,4 +1,5 @@
-import { targetingService, utils } from '@ad-engine/core';
+import { targetingService } from '@ad-engine/core';
+import { logger, queryString } from '@ad-engine/utils';
 import { Injectable } from '@wikia/dependency-injection';
 
 type OptimizelyVariablesType = {
@@ -20,31 +21,25 @@ export class Optimizely {
 		const forcedValue = this.getForcedValue(optimizelyVariables.EXPERIMENT_VARIANT);
 
 		if (forcedValue) {
-			utils.logger(logGroup, `Experiment ${optimizelyVariables.EXPERIMENT_ENABLED} - forced value`);
+			logger(logGroup, `Experiment ${optimizelyVariables.EXPERIMENT_ENABLED} - forced value`);
 			return forcedValue;
 		}
 
 		if (!this.getOptimizelyValue(optimizelyVariables.EXPERIMENT_ENABLED)) {
-			utils.logger(logGroup, `Experiment ${optimizelyVariables.EXPERIMENT_ENABLED} is disabled`);
+			logger(logGroup, `Experiment ${optimizelyVariables.EXPERIMENT_ENABLED} is disabled`);
 			return;
 		}
 
 		const variant = this.getOptimizelyValue(optimizelyVariables.EXPERIMENT_VARIANT);
-		utils.logger(logGroup, `Variant name: ${optimizelyVariables.EXPERIMENT_VARIANT}`);
+		logger(logGroup, `Variant name: ${optimizelyVariables.EXPERIMENT_VARIANT}`);
 
 		if (variant === undefined) {
-			utils.logger(
-				logGroup,
-				`Experiment ${optimizelyVariables.EXPERIMENT_VARIANT} has undefined value`,
-			);
+			logger(logGroup, `Experiment ${optimizelyVariables.EXPERIMENT_VARIANT} has undefined value`);
 
 			return;
 		}
 
-		utils.logger(
-			logGroup,
-			`Experiment ${optimizelyVariables.EXPERIMENT_VARIANT} variant: ${variant}`,
-		);
+		logger(logGroup, `Experiment ${optimizelyVariables.EXPERIMENT_VARIANT} variant: ${variant}`);
 
 		return variant.toString();
 	}
@@ -62,6 +57,6 @@ export class Optimizely {
 	}
 
 	private getForcedValue(variantVariableName: string): string {
-		return utils.queryString.get(`optimizely_${variantVariableName}`);
+		return queryString.get(`optimizely_${variantVariableName}`);
 	}
 }

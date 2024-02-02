@@ -6,11 +6,11 @@ import {
 	SlotTargeting,
 	slotTweaker,
 	targetingService,
-	utils,
 } from '../';
 import { ADX, type GptSizeMapping } from '../providers';
 import { context, slotDataParamsUpdater, templateService } from '../services';
-import { AD_LABEL_CLASS, getTopOffset, logger, stringBuilder } from '../utils';
+import { AD_LABEL_CLASS, getTopOffset, logger, stringBuilder, uuid } from '../utils';
+import { AdSlotClass } from './ad-slot-class';
 import { AdSlotEvent } from './ad-slot-event';
 import { Dictionary } from './dictionary';
 
@@ -63,10 +63,6 @@ export interface WinningBidderDetails {
 export class AdSlot {
 	static LOG_GROUP = 'AdSlot';
 
-	static AD_CLASS = 'gpt-ad';
-	static AD_SLOT_PLACEHOLDER_CLASS = 'ad-slot-placeholder';
-	static HIDDEN_AD_CLASS = 'hidead';
-
 	private customIframe: HTMLIFrameElement = null;
 
 	config: SlotConfig;
@@ -95,7 +91,7 @@ export class AdSlot {
 		this.enabled = !this.config.disabled;
 
 		if (!this.config.uid) {
-			context.set(`slots.${ad.id}.uid`, utils.generateUniqueId());
+			context.set(`slots.${ad.id}.uid`, uuid.v4());
 		}
 
 		this.config.slotName = this.config.slotName || ad.id;
@@ -156,7 +152,7 @@ export class AdSlot {
 			this.slotViewed = true;
 		});
 
-		this.addClass(AdSlot.AD_CLASS);
+		this.addClass(AdSlotClass.AD_CLASS);
 		if (!this.enabled) {
 			this.hide();
 		}
@@ -199,7 +195,9 @@ export class AdSlot {
 	getPlaceholder(): HTMLElement | null {
 		const placeholder = this.getElement()?.parentElement;
 
-		return placeholder?.classList.contains(AdSlot.AD_SLOT_PLACEHOLDER_CLASS) ? placeholder : null;
+		return placeholder?.classList.contains(AdSlotClass.AD_SLOT_PLACEHOLDER_CLASS)
+			? placeholder
+			: null;
 	}
 
 	getAdLabel(adLabelParentSelector?: string): HTMLElement | null {
@@ -567,7 +565,7 @@ export class AdSlot {
 	 * Adds class AdSlot.HIDDEN_AD_CLASS to adSlot's element.
 	 */
 	hide(): void {
-		const added = this.addClass(AdSlot.HIDDEN_AD_CLASS);
+		const added = this.addClass(AdSlotClass.HIDDEN_AD_CLASS);
 
 		if (added) {
 			this.emit(AdSlotEvent.HIDDEN_EVENT);
@@ -580,7 +578,7 @@ export class AdSlot {
 	 * Removes class AdSlot.HIDDEN_AD_CLASS from adSlot's element.
 	 */
 	show(): void {
-		const removed = this.removeClass(AdSlot.HIDDEN_AD_CLASS);
+		const removed = this.removeClass(AdSlotClass.HIDDEN_AD_CLASS);
 
 		if (removed) {
 			this.emit(AdSlotEvent.SHOWED_EVENT);

@@ -5,7 +5,6 @@ import {
 	ofType,
 } from '@ad-engine/communication';
 import {
-	AdSlot,
 	AdSlotEvent,
 	AdSlotStatus,
 	btfBlockerService,
@@ -13,8 +12,8 @@ import {
 	runtimeVariableSetter,
 	slotService,
 	targetingService,
-	utils,
 } from '@ad-engine/core';
+import { client } from '@ad-engine/utils';
 import { filter, take } from 'rxjs/operators';
 import * as constants from './constants';
 
@@ -114,7 +113,7 @@ function disableSlots(slotsToDisable): void {
 }
 
 function initSlot(params: UapParams): void {
-	const adSlot: AdSlot = slotService.get(params.slotName);
+	const adSlot = slotService.get(params.slotName);
 
 	params.container = adSlot.getElement();
 
@@ -126,7 +125,7 @@ function initSlot(params: UapParams): void {
 		params.container.classList.add('is-mobile-layout');
 	}
 
-	if (utils.client.isSmartphone() || utils.client.isTablet()) {
+	if (client.isSmartphone() || client.isTablet()) {
 		params.container.classList.add('is-mobile-device');
 	}
 

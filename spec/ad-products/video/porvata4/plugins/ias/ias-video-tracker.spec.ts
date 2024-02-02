@@ -1,6 +1,7 @@
 import { PorvataPlayer, PorvataSettings } from '@wikia/ad-products';
 import { iasVideoTracker } from '@wikia/ad-products/video/porvata/plugins/ias/ias-video-tracker';
-import { AdSlot, context, slotService, utils } from '@wikia/core';
+import { AdSlot, context, slotService } from '@wikia/core';
+import { scriptLoader } from '@wikia/core/utils';
 import { assert } from 'chai';
 
 describe('IAS video tracker', () => {
@@ -28,9 +29,7 @@ describe('IAS video tracker', () => {
 		};
 
 		global.sandbox.stub(window.googleImaVansAdapter, 'init');
-		global.sandbox
-			.stub(utils.scriptLoader, 'loadScript')
-			.returns(Promise.resolve(new Event('foo')));
+		global.sandbox.stub(scriptLoader, 'loadScript').returns(Promise.resolve(new Event('foo')));
 
 		global.sandbox.stub(slotService, 'get').returns({
 			getTargeting: () => ({

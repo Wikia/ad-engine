@@ -1,4 +1,5 @@
-import { PorvataPlayer, TemplateStateHandler } from '@wikia/ad-engine';
+import { TemplateStateHandler } from '@ad-engine/core';
+import { PorvataPlayer } from '@wikia/ad-products';
 import { Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { take, takeUntil, tap } from 'rxjs/operators';

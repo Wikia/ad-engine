@@ -1,4 +1,5 @@
-import { Dictionary, FuncPipeline, FuncPipelineStep, messageBus } from '@ad-engine/core';
+import { Dictionary, messageBus } from '@ad-engine/core';
+import { FuncPipeline, FuncPipelineStep } from '@ad-engine/pipeline';
 
 export const TrackingTarget = {
 	DataWarehouse: 'DW',

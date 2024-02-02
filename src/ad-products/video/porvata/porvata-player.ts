@@ -1,4 +1,5 @@
-import { AdSlot, AdSlotStatus, Dictionary, utils } from '@ad-engine/core';
+import { AdSlotClass, AdSlotStatus, Dictionary } from '@ad-engine/core';
+import { LazyQueue } from '@ad-engine/utils';
 import { GoogleImaWrapper } from './google-ima-wrapper';
 import { NativeFullscreen } from './native-fullscreen';
 import { PorvataDom } from './porvata-dom';
@@ -27,7 +28,7 @@ export class PorvataPlayer {
 
 	readonly dom: PorvataDom;
 	readonly nativeFullscreen: NativeFullscreen;
-	readonly destroyCallbacks = new utils.LazyQueue();
+	readonly destroyCallbacks = new LazyQueue();
 
 	constructor(
 		private readonly adDisplayContainer: google.ima.AdDisplayContainer,
@@ -72,10 +73,10 @@ export class PorvataPlayer {
 		this.addEventListener('allAdsCompleted', () => this.setState('stopped'));
 
 		this.addEventListener('adCanPlay', () =>
-			this.dom.getInterfaceContainer().classList.remove(AdSlot.HIDDEN_AD_CLASS),
+			this.dom.getInterfaceContainer().classList.remove(AdSlotClass.HIDDEN_AD_CLASS),
 		);
 		this.addEventListener('wikiaAdCompleted', () =>
-			this.dom.getInterfaceContainer().classList.add(AdSlot.HIDDEN_AD_CLASS),
+			this.dom.getInterfaceContainer().classList.add(AdSlotClass.HIDDEN_AD_CLASS),
 		);
 	}
 

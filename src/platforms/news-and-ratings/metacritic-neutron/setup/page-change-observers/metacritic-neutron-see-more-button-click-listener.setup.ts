@@ -1,4 +1,6 @@
-import { context, DiProcess, targetingService, utils } from '@wikia/ad-engine';
+import { context, targetingService } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
+import { logger, WaitFor } from '@ad-engine/utils';
 
 export class MetacriticNeutronSeeMoreButtonClickListenerSetup implements DiProcess {
 	private notRequestedSlotWrapperSelector = '.c-adDisplay_container > .c-adDisplay:not(.gpt-ad)';
@@ -15,7 +17,7 @@ export class MetacriticNeutronSeeMoreButtonClickListenerSetup implements DiProce
 		}
 
 		seeMoreButton.addEventListener('click', () => {
-			new utils.WaitFor(
+			new WaitFor(
 				() => document.querySelectorAll(this.notRequestedSlotWrapperSelector)?.length > 0,
 				10,
 				50,
@@ -27,13 +29,13 @@ export class MetacriticNeutronSeeMoreButtonClickListenerSetup implements DiProce
 
 	private requestAdForUnfilledSlots() {
 		const adSlotsToFill = document.querySelectorAll(this.notRequestedSlotWrapperSelector);
-		utils.logger('pageChangeWatcher', 'adSlotsToFill: ', adSlotsToFill);
+		logger('pageChangeWatcher', 'adSlotsToFill: ', adSlotsToFill);
 		adSlotsToFill.forEach((adWrapper: Element) => {
 			const placeholder = this.useParentAsAdPlaceholder ? adWrapper.parentElement : adWrapper;
 			const baseSlotName = placeholder?.getAttribute(this.dataAdAttribute);
 
 			if (!this.isSlotDefinedInContext(baseSlotName)) {
-				utils.logger(
+				logger(
 					'pageChangeWatcher',
 					'slot not defined in the context:',
 					baseSlotName,
@@ -44,7 +46,7 @@ export class MetacriticNeutronSeeMoreButtonClickListenerSetup implements DiProce
 			}
 
 			const slotName = this.calculateSeamlessSlotName(baseSlotName);
-			utils.logger('pageChangeWatcher', 'slot to copy: ', baseSlotName, slotName);
+			logger('pageChangeWatcher', 'slot to copy: ', baseSlotName, slotName);
 
 			placeholder.id = slotName;
 
@@ -68,7 +70,7 @@ export class MetacriticNeutronSeeMoreButtonClickListenerSetup implements DiProce
 		targetingService.set('pos', slotName, slotName);
 		targetingService.set('pos_nr', targetingService.get('pos_nr', baseSlotName), slotName);
 
-		utils.logger(
+		logger(
 			'pageChangeWatcher',
 			'new slot config: ',
 			context.get(`slots.${slotName}`),

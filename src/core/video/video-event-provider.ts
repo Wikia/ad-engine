@@ -1,7 +1,7 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { utils } from '../index';
 import { VideoData, VideoEventData } from '../listeners';
 import { context, targetingService } from '../services';
+import { client, geoService } from '../utils';
 
 export class VideoEventProvider {
 	static getEventData(videoData: VideoData): VideoEventData {
@@ -11,9 +11,9 @@ export class VideoEventProvider {
 			ad_error_code: videoData.ad_error_code,
 			ad_product: videoData.ad_product,
 			audio: videoData.audio ? 1 : 0,
-			browser: `${utils.client.getOperatingSystem()} ${utils.client.getBrowser()}`,
+			browser: `${client.getOperatingSystem()} ${client.getBrowser()}`,
 			content_type: videoData.content_type || '',
-			country: utils.geoService.getCountryCode() || '',
+			country: geoService.getCountryCode() || '',
 			creative_id: videoData.creative_id || '',
 			ctp: videoData.ctp ? 1 : 0,
 			event_name: videoData.event_name,

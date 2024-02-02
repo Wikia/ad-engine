@@ -1,4 +1,5 @@
-import { AdSlot, AdvertisementLabel, TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
+import { AdSlot, TEMPLATE, TemplateStateHandler } from '@ad-engine/core';
+import { AdvertisementLabel } from '@wikia/ad-products';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })

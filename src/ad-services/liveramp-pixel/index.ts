@@ -1,5 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { BaseServiceSetup, utils } from '@ad-engine/core';
+import { BaseServiceSetup } from '@ad-engine/pipeline';
+import { assetLoader, logger } from '@ad-engine/utils';
 
 export class LiveRampPixel extends BaseServiceSetup {
 	private PIXEL_ID = 712315;
@@ -8,12 +9,12 @@ export class LiveRampPixel extends BaseServiceSetup {
 
 	insertLiveRampPixel(token): void {
 		const pixelUrl = this.PIXEL_URL + token;
-		utils.assetLoader.loadPixel(pixelUrl);
+		assetLoader.loadPixel(pixelUrl);
 	}
 
 	async call(): Promise<void> {
 		if (!this.isEnabled('icLiveRampPixel')) {
-			utils.logger(this.logGroup, 'pixel disabled');
+			logger(this.logGroup, 'pixel disabled');
 			return;
 		}
 

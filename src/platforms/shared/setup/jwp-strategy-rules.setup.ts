@@ -1,10 +1,7 @@
-import {
-	BaseServiceSetup,
-	context,
-	InstantConfigService,
-	Optimizely,
-	utils,
-} from '@wikia/ad-engine';
+import { context, InstantConfigService } from '@ad-engine/core';
+import { BaseServiceSetup } from '@ad-engine/pipeline';
+import { GlobalTimeout } from '@ad-engine/utils';
+import { Optimizely } from '@wikia/ad-services';
 import { Injectable } from '@wikia/dependency-injection';
 
 const OPTIMIZELY_STRATEGY_RULES_EXPERIMENT = {
@@ -22,7 +19,7 @@ const OPTIMIZELY_STRATEGY_RULES_EXPERIMENT_VARIANTS = {
 export class JwpStrategyRulesSetup extends BaseServiceSetup {
 	constructor(
 		protected instantConfig: InstantConfigService,
-		protected globalTimeout: utils.GlobalTimeout,
+		protected globalTimeout: GlobalTimeout,
 		protected optimizely: Optimizely,
 	) {
 		super(instantConfig, globalTimeout);

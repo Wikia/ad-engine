@@ -1,21 +1,22 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import {
 	AdSlot,
 	AdSlotEvent,
 	AdSlotStatus,
-	BaseServiceSetup,
-	communicationService,
 	context,
 	displayAndVideoAdsSyncContext,
-	eventsRepository,
 	InstantConfigService,
+	slotService,
+} from '@ad-engine/core';
+import { BaseServiceSetup } from '@ad-engine/pipeline';
+import { getCustomParameters, GlobalTimeout, logger } from '@ad-engine/utils';
+import {
 	JWPlayerManager,
 	jwpSetup,
-	slotService,
-	utils,
 	VastResponseData,
 	VastTaglessRequest,
 	videoDisplayTakeoverSynchronizer,
-} from '@wikia/ad-engine';
+} from '@wikia/ad-products';
 import { Injectable } from '@wikia/dependency-injection';
 // eslint-disable-next-line no-restricted-imports
 import { iasVideoTracker } from '../../../ad-products/video/porvata/plugins/ias/ias-video-tracker';
@@ -26,7 +27,7 @@ const logGroup = 'player-setup';
 export class PlayerSetup extends BaseServiceSetup {
 	constructor(
 		protected instantConfig: InstantConfigService,
-		protected globalTimeout: utils.GlobalTimeout,
+		protected globalTimeout: GlobalTimeout,
 		protected jwpManager: JWPlayerManager,
 		protected vastTaglessRequest: VastTaglessRequest,
 	) {
@@ -53,13 +54,13 @@ export class PlayerSetup extends BaseServiceSetup {
 	}
 
 	private async initJWPlayer(showAds: boolean, vastResponse?: VastResponseData) {
-		utils.logger(logGroup, 'JWP with ads controlled by AdEngine enabled');
+		logger(logGroup, 'JWP with ads controlled by AdEngine enabled');
 
 		const strategyRulesEnabled = context.get('options.video.enableStrategyRules');
 
 		if (vastResponse?.xml) {
 			displayAndVideoAdsSyncContext.setVastRequestedBeforePlayer();
-			utils.logger(logGroup, 'display and video sync response available');
+			logger(logGroup, 'display and video sync response available');
 		}
 
 		this.jwpManager.manage();
@@ -73,10 +74,7 @@ export class PlayerSetup extends BaseServiceSetup {
 				}),
 			);
 		} else if (strategyRulesEnabled) {
-			utils.logger(
-				logGroup,
-				'JWP Strategy Rules enabled - AdEngine does not control ads in JWP anymore',
-			);
+			logger(logGroup, 'JWP Strategy Rules enabled - AdEngine does not control ads in JWP anymore');
 			this.jwpManager.manage();
 			communicationService.dispatch(
 				jwpSetup({
@@ -87,7 +85,7 @@ export class PlayerSetup extends BaseServiceSetup {
 				}),
 			);
 		} else {
-			utils.logger(logGroup, 'ad block detected, without ads');
+			logger(logGroup, 'ad block detected, without ads');
 			communicationService.dispatch(
 				jwpSetup({
 					showAds,
@@ -99,13 +97,13 @@ export class PlayerSetup extends BaseServiceSetup {
 
 	private loadIasTrackerIfEnabled(): void {
 		if (context.get('options.video.iasTracking.enabled')) {
-			utils.logger(logGroup, 'Loading IAS tracker for video player');
+			logger(logGroup, 'Loading IAS tracker for video player');
 			iasVideoTracker.load();
 		}
 	}
 
 	private static initConnatixPlayer(showAds: boolean, vastResponse?: VastResponseData) {
-		utils.logger(logGroup, 'Connatix with ads not controlled by AdEngine enabled');
+		logger(logGroup, 'Connatix with ads not controlled by AdEngine enabled');
 
 		const videoAdSlotName = 'featured';
 		const adSlot = slotService.get(videoAdSlotName) || new AdSlot({ id: videoAdSlotName });
@@ -116,7 +114,7 @@ export class PlayerSetup extends BaseServiceSetup {
 
 		if (vastResponse?.xml) {
 			displayAndVideoAdsSyncContext.setVastRequestedBeforePlayer();
-			utils.logger(logGroup, 'display and video sync response available');
+			logger(logGroup, 'display and video sync response available');
 		}
 
 		communicationService.on(eventsRepository.VIDEO_EVENT, (payload) => {
@@ -150,7 +148,7 @@ export class PlayerSetup extends BaseServiceSetup {
 			showAds,
 			autoplayDisabled: false,
 			videoAdUnitPath: adSlot.getVideoAdUnit(),
-			targetingParams: utils.getCustomParameters(adSlot, {}, false),
+			targetingParams: getCustomParameters(adSlot, {}, false),
 			vastXml: vastResponse?.xml,
 		});
 	}

@@ -1,4 +1,4 @@
-import { DiProcess } from '@wikia/ad-engine';
+import { DiProcess } from '@ad-engine/pipeline';
 import { Injectable } from '@wikia/dependency-injection';
 import { LoadTimesTracker } from '../tracking/load-times-tracker';
 

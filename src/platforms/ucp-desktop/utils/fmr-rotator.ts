@@ -1,15 +1,14 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import {
 	AdSlot,
 	AdSlotEvent,
 	AdSlotStatus,
-	communicationService,
 	context,
-	eventsRepository,
 	scrollListener,
 	slotService,
-	universalAdPackage,
-	utils,
-} from '@wikia/ad-engine';
+} from '@ad-engine/core';
+import { getTopOffset, isInViewport, queryString } from '@ad-engine/utils';
+import { universalAdPackage } from '@wikia/ad-products';
 
 interface FmrRotatorConfig {
 	topPositionToRun: number;
@@ -21,7 +20,7 @@ export class FmrRotator {
 	private recirculationElement: HTMLElement;
 	private refreshInfo = {
 		recSlotViewed: 2000,
-		refreshDelay: utils.queryString.isUrlParamSet('fmr-debug') ? 2000 : 10000,
+		refreshDelay: queryString.isUrlParamSet('fmr-debug') ? 2000 : 10000,
 		startPosition: 0,
 		positionTopToViewport: undefined,
 		repeatIndex: 1,
@@ -107,7 +106,7 @@ export class FmrRotator {
 
 		setTimeout(() => {
 			this.refreshInfo.startPosition =
-				utils.getTopOffset(this.recirculationElement) -
+				getTopOffset(this.recirculationElement) -
 				(document.querySelector('.fandom-sticky-header')?.clientHeight || 0);
 			this.refreshInfo.positionTopToViewport =
 				this.recirculationElement?.getBoundingClientRect()?.top;
@@ -152,11 +151,11 @@ export class FmrRotator {
 	}
 
 	private isInViewport(): boolean {
-		const recirculationElementInViewport = utils.isInViewport(this.recirculationElement);
+		const recirculationElementInViewport = isInViewport(this.recirculationElement);
 		const adSlotInViewport =
 			this.currentAdSlot &&
 			this.currentAdSlot.getElement() &&
-			utils.isInViewport(this.currentAdSlot.getElement());
+			isInViewport(this.currentAdSlot.getElement());
 
 		return recirculationElementInViewport || adSlotInViewport;
 	}

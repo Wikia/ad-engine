@@ -1,11 +1,5 @@
-import {
-	AdSlot,
-	CloseButton,
-	TEMPLATE,
-	TemplateStateHandler,
-	TemplateTransition,
-	universalAdPackage,
-} from '@wikia/ad-engine';
+import { AdSlot, TEMPLATE, TemplateStateHandler, TemplateTransition } from '@ad-engine/core';
+import { CloseButton, universalAdPackage } from '@wikia/ad-products';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

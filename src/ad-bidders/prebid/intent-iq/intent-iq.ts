@@ -1,11 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import {
-	context,
-	DEFAULT_MAX_DELAY,
-	externalLogger,
-	targetingService,
-	utils,
-} from '@ad-engine/core';
+import { context, DEFAULT_MAX_DELAY, externalLogger, targetingService } from '@ad-engine/core';
+import { isCoppaSubject, logger, scriptLoader, WaitFor, warner } from '@ad-engine/utils';
 
 const logGroup = 'IntentIQ';
 
@@ -29,17 +24,15 @@ export class IntentIQ {
 			return this.loadPromise;
 		}
 
-		this.loadPromise = utils.scriptLoader
-			.loadScript(this.intentIQScriptUrl, true, 'first')
-			.then(() => {
-				this.loaded = true;
-				utils.logger(logGroup, 'loaded');
-			});
+		this.loadPromise = scriptLoader.loadScript(this.intentIQScriptUrl, true, 'first').then(() => {
+			this.loaded = true;
+			logger(logGroup, 'loaded');
+		});
 	}
 
 	async initialize(pbjs: Pbjs): Promise<void> {
 		if (!this.isEnabled()) {
-			utils.logger(logGroup, 'disabled');
+			logger(logGroup, 'disabled');
 			return;
 		}
 		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
@@ -48,7 +41,7 @@ export class IntentIQ {
 
 		if (!this.loaded) {
 			await this.preloadScript();
-			await new utils.WaitFor(() => window.IntentIqObject !== undefined, 10, 10).until();
+			await new WaitFor(() => window.IntentIqObject !== undefined, 10, 10).until();
 		}
 
 		if (!this.intentIqObject) {
@@ -67,7 +60,7 @@ export class IntentIQ {
 					browserBlackList: 'Chrome',
 					domainName,
 					callback: (data) => {
-						utils.logger(logGroup, 'got data', data);
+						logger(logGroup, 'got data', data);
 						resolve();
 						this.setupPpid(data);
 					},
@@ -106,7 +99,7 @@ export class IntentIQ {
 			placementId: bid.adUnitCode,
 		};
 
-		utils.logger(logGroup, 'reporting prebid win', data);
+		logger(logGroup, 'reporting prebid win', data);
 
 		this.intentIqObject.reportExternalWin(data);
 
@@ -119,12 +112,12 @@ export class IntentIQ {
 		}
 
 		if (!isIntentIqData(data)) {
-			utils.logger(logGroup, 'no data received');
+			logger(logGroup, 'no data received');
 			return;
 		}
 
 		const ppid = this.getPpid(data);
-		utils.logger(logGroup, 'ppid', ppid);
+		logger(logGroup, 'ppid', ppid);
 
 		if (context.get('services.intentIq.ppid.enabled')) {
 			this.setPpid(ppid);
@@ -139,7 +132,7 @@ export class IntentIQ {
 			context.get('bidders.prebid.intentIQ') &&
 			context.get('options.trackingOptIn') &&
 			!context.get('options.optOutSale') &&
-			!utils.isCoppaSubject()
+			!isCoppaSubject()
 		);
 	}
 
@@ -147,14 +140,14 @@ export class IntentIQ {
 		try {
 			return this.extractId(data);
 		} catch (error) {
-			utils.warner(logGroup, 'error setting ppid', error);
+			warner(logGroup, 'error setting ppid', error);
 			return null;
 		}
 	}
 
 	setPpid(ppid: string | null): void {
 		targetingService.set('intent_iq_ppid', ppid, 'intent_iq');
-		utils.logger(logGroup, 'set ppid ', ppid);
+		logger(logGroup, 'set ppid ', ppid);
 	}
 
 	private extractId(data: IntentIqData): string | null {
@@ -177,7 +170,7 @@ export class IntentIQ {
 			partnerIdentityId: ppid,
 		});
 
-		utils.logger(logGroup, 'track ppid');
+		logger(logGroup, 'track ppid');
 	}
 }
 

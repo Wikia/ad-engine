@@ -6,7 +6,6 @@ import {
 	TrackingBidDefinition,
 } from '@ad-engine/communication';
 import {
-	AdSlot,
 	AdSlotEvent,
 	context,
 	DEFAULT_MAX_DELAY,
@@ -15,8 +14,9 @@ import {
 	slotService,
 	targetingService,
 	trackingOptIn,
-	utils,
+	type AdSlot,
 } from '@ad-engine/core';
+import { isCoppaSubject, logger } from '@ad-engine/utils';
 import {
 	defaultSlotBidGroup,
 	getSlotAlias,
@@ -54,7 +54,7 @@ export class A9Provider extends BidderProvider {
 
 	public static isEnabled(): boolean {
 		const enabled = context.get('bidders.a9.enabled');
-		return enabled && !utils.isCoppaSubject();
+		return enabled && !isCoppaSubject();
 	}
 
 	public static initApstag() {
@@ -127,7 +127,7 @@ export class A9Provider extends BidderProvider {
 			);
 
 			if (!trackingOptIn.isOptedIn() || trackingOptIn.isOptOutSale()) {
-				utils.logger(logGroup, 'A9 was initialized without consents');
+				logger(logGroup, 'A9 was initialized without consents');
 				communicationService.emit(eventsRepository.A9_WITHOUT_CONSENTS);
 			}
 
@@ -177,10 +177,10 @@ export class A9Provider extends BidderProvider {
 	 * Calls this.onBidResponse() upon success.
 	 */
 	private async fetchBids(slots: A9SlotDefinition[], refresh = false): Promise<void> {
-		utils.logger(logGroup, 'fetching bids for slots', slots);
+		logger(logGroup, 'fetching bids for slots', slots);
 
 		if (!slots || slots.length === 0) {
-			utils.logger(logGroup, 'there is no slots to fetch bids');
+			logger(logGroup, 'there is no slots to fetch bids');
 			return;
 		}
 
@@ -189,7 +189,7 @@ export class A9Provider extends BidderProvider {
 		const endTime: number = new Date().getTime();
 		const expirationDate = new Date(endTime + A9Provider.VIDEO_TTL);
 
-		utils.logger(logGroup, 'bids fetched for slots', slots, 'bids', currentBids);
+		logger(logGroup, 'bids fetched for slots', slots, 'bids', currentBids);
 		this.configureApstagOnce();
 
 		await Promise.all(
@@ -236,18 +236,18 @@ export class A9Provider extends BidderProvider {
 	 * Calls this.refreshBid() if bids refreshing is enabled.
 	 */
 	private addApstagRenderImpHook(): void {
-		utils.logger(logGroup, 'overwriting window.apstag.renderImp');
+		logger(logGroup, 'overwriting window.apstag.renderImp');
 		this.apstag.onRenderImpEnd((doc: HTMLDocument, impId: string) => {
 			if (!impId) {
-				utils.logger(logGroup, 'apstag.renderImp() called with 1 argument only');
+				logger(logGroup, 'apstag.renderImp() called with 1 argument only');
 				return;
 			}
 
-			const slot: AdSlot = this.getRenderedSlot(impId);
+			const slot = this.getRenderedSlot(impId);
 			const slotName: string = slot.getSlotName();
 
 			slot.addClass(A9Provider.A9_CLASS);
-			utils.logger(logGroup, `bid used for slot ${slotName}`);
+			logger(logGroup, `bid used for slot ${slotName}`);
 			delete this.bids[getSlotAliasOrName(slotName, true)];
 
 			this.refreshBid(slot);
@@ -278,7 +278,7 @@ export class A9Provider extends BidderProvider {
 		);
 
 		if (slotDef) {
-			utils.logger(logGroup, 'refresh bids for slot', slotDef);
+			logger(logGroup, 'refresh bids for slot', slotDef);
 			this.fetchBids([slotDef], true);
 		}
 	}

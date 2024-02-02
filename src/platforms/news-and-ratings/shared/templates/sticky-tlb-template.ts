@@ -1,3 +1,4 @@
+import { TemplateAction, TemplateDependency, TemplateRegistry } from '@ad-engine/core';
 import {
 	AdvertisementLabelHandler,
 	CloseButtonHelper,
@@ -19,12 +20,7 @@ import {
 	UapDomManager,
 	UapDomReader,
 } from '@platforms/shared';
-import {
-	TemplateAction,
-	TemplateDependency,
-	TemplateRegistry,
-	universalAdPackage,
-} from '@wikia/ad-engine';
+import { universalAdPackage } from '@wikia/ad-products';
 import { Observable } from 'rxjs';
 
 export function registerStickyTlbTemplate(

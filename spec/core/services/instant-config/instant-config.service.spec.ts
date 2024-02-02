@@ -1,6 +1,6 @@
 import { communicationService, eventsRepository } from '@wikia/communication';
-import { utils } from '@wikia/core';
 import { InstantConfigService } from '@wikia/core/services/instant-config/instant-config.service';
+import { geoService } from '@wikia/core/utils';
 import {
 	InstantConfigInterpreter,
 	InstantConfigLoader,
@@ -58,7 +58,7 @@ describe('Instant Config Service', () => {
 			expect(initInterpreterStub.firstCall.args).to.deep.equal([
 				{ config: true },
 				{},
-				utils.geoService.isProperGeo,
+				geoService.isProperGeo,
 			]);
 		});
 
@@ -74,7 +74,7 @@ describe('Instant Config Service', () => {
 			expect(initInterpreterStub.firstCall.args).to.deep.equal([
 				{ config: true },
 				{ globals: true },
-				utils.geoService.isProperGeo,
+				geoService.isProperGeo,
 			]);
 		});
 

@@ -1,10 +1,6 @@
-import {
-	AdSlot,
-	communicationService,
-	eventsRepository,
-	TEMPLATE,
-	UapParams,
-} from '@wikia/ad-engine';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { AdSlot, TEMPLATE } from '@ad-engine/core';
+import { type UapParams } from '@wikia/ad-products';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { PAGE } from '../configs/uap-dom-elements';
 import { DomManipulator } from './manipulators/dom-manipulator';

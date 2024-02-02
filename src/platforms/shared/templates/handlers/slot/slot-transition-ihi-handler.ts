@@ -1,10 +1,5 @@
-import {
-	AdSlot,
-	TEMPLATE,
-	TemplateStateHandler,
-	TemplateTransition,
-	universalAdPackage,
-} from '@wikia/ad-engine';
+import { AdSlot, TEMPLATE, TemplateStateHandler, TemplateTransition } from '@ad-engine/core';
+import { universalAdPackage } from '@wikia/ad-products';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Observable, Subject, timer } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';

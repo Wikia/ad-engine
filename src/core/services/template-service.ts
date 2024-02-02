@@ -5,7 +5,7 @@ import {
 	ofType,
 } from '@ad-engine/communication';
 import { tap } from 'rxjs/operators';
-import { AdSlot, Dictionary } from '../models';
+import type { AdSlot, Dictionary } from '../models';
 import { logger } from '../utils';
 import { context, slotService } from './';
 

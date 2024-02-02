@@ -1,14 +1,8 @@
-import {
-	communicationService,
-	context,
-	CookieStorageAdapter,
-	DiProcess,
-	eventsRepository,
-	setupNpaContext,
-	setupRdpContext,
-	targetingService,
-	utils,
-} from '@wikia/ad-engine';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { context, CookieStorageAdapter, targetingService } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
+import { queryString } from '@ad-engine/utils';
+import { setupNpaContext, setupRdpContext } from '@wikia/ad-products';
 import isMatch from 'lodash/isMatch.js';
 import { CookieBasedTargetingParams, TargetingParams } from './interfaces/targeting-params';
 
@@ -265,15 +259,15 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 	}
 
 	getForcedCampaignsTargeting() {
-		if (utils.queryString.get('cid')) {
+		if (queryString.get('cid')) {
 			return {
-				cid: utils.queryString.get('cid'),
+				cid: queryString.get('cid'),
 			};
 		}
 
-		if (utils.queryString.get('adTargeting_campaign')) {
+		if (queryString.get('adTargeting_campaign')) {
 			return {
-				campaign: utils.queryString.get('adTargeting_campaign'),
+				campaign: queryString.get('adTargeting_campaign'),
 			};
 		}
 

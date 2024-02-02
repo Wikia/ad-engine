@@ -1,4 +1,4 @@
-import { AdSlot } from '../../models';
+import { type AdSlot } from '../../models';
 import { logger } from '../../utils';
 import { Provider } from '../provider';
 

@@ -1,4 +1,4 @@
-import { BaseServiceSetup, PartnerPipeline } from '@wikia/core';
+import { BaseServiceSetup, PartnerPipeline } from '@wikia/core/pipeline';
 import { wait } from '@wikia/core/utils';
 import { Container } from '@wikia/dependency-injection';
 import { expect } from 'chai';

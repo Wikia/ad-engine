@@ -1,14 +1,14 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import {
 	AdSlotEvent,
-	BaseServiceSetup,
 	context,
 	Dictionary,
 	InstantConfigService,
 	SlotPriceProvider,
 	targetingService,
-	utils,
 } from '@ad-engine/core';
+import { BaseServiceSetup } from '@ad-engine/pipeline';
+import { createExtendedPromise, GlobalTimeout, logger } from '@ad-engine/utils';
 import { A9Provider } from './a9';
 import { defaultSlotBidGroup, getSlotBidGroupByName } from './bidder-helper';
 import { PrebidProvider } from './prebid';
@@ -26,7 +26,7 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 
 	constructor(
 		protected instantConfig: InstantConfigService,
-		protected globalTimeout: utils.GlobalTimeout,
+		protected globalTimeout: GlobalTimeout,
 	) {
 		super(instantConfig, globalTimeout);
 
@@ -48,7 +48,7 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 			eventsRepository.BIDDERS_CALL_PER_GROUP,
 			({ group, callback }) => {
 				this.callByBidGroup(group).then(() => {
-					utils.logger(logGroup, `${group} - callback`);
+					logger(logGroup, `${group} - callback`);
 					callback();
 				});
 			},
@@ -117,7 +117,7 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 			});
 		});
 
-		utils.logger(logGroup, 'resetTargetingKeys', slotName);
+		logger(logGroup, 'resetTargetingKeys', slotName);
 	}
 
 	call(): Promise<void> {
@@ -126,7 +126,7 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 
 	callByBidGroup(group: string): Promise<void> {
 		const config = context.get('bidders') || {};
-		const promise = utils.createExtendedPromise();
+		const promise = createExtendedPromise();
 
 		this.biddersProviders[group] = this.biddersProviders[group] || {};
 
@@ -141,21 +141,18 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 		if (A9Provider.isEnabled()) {
 			this.biddersProviders[group].a9 = new A9Provider(config.a9, config.timeout, group);
 		} else {
-			utils.logger(logGroup, `Group: ${group} - A9 has been disabled`);
+			logger(logGroup, `Group: ${group} - A9 has been disabled`);
 		}
 
 		if (!this.getBiddersProviders(group).length) {
-			utils.logger(
-				logGroup,
-				`Group: ${group} - resolving call() promise because of no bidder providers`,
-			);
+			logger(logGroup, `Group: ${group} - resolving call() promise because of no bidder providers`);
 			return Promise.resolve();
 		}
 
 		this.getBiddersProviders(group).forEach((provider) => {
 			provider.addResponseListener(() => {
 				if (this.hasAllResponses(group)) {
-					utils.logger(
+					logger(
 						logGroup,
 						`Group: ${group} - ${provider.name} - resolving call() promise because of having all responses`,
 					);
@@ -166,7 +163,7 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 			provider.call();
 		});
 
-		utils.logger(logGroup, `Group: ${group} - returning call() promise`);
+		logger(logGroup, `Group: ${group} - returning call() promise`);
 		return promise;
 	}
 
@@ -182,7 +179,7 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 		this.resetTargetingKeys(slotName);
 		this.applyTargetingParams(slotName, bidderTargeting);
 
-		utils.logger(logGroup, 'updateSlotTargeting', slotName, bidderTargeting);
+		logger(logGroup, 'updateSlotTargeting', slotName, bidderTargeting);
 		communicationService.emit(eventsRepository.BIDDERS_BIDDING_DONE, {
 			slotName,
 			provider: 'prebid',

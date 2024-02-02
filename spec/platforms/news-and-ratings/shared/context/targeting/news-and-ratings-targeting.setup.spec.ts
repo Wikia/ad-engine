@@ -1,6 +1,6 @@
-import { utils } from '@wikia/core';
 import { NewsAndRatingsTargetingSetup } from '@wikia/platforms/news-and-ratings/shared/setup/context/targeting/news-and-ratings-targeting.setup';
 
+import { queryString } from '@wikia/core/utils';
 import { expect } from 'chai';
 
 describe('News and Ratings Targeting Setup', () => {
@@ -8,7 +8,7 @@ describe('News and Ratings Targeting Setup', () => {
 	let newsAndRatingsTargetingSetup;
 
 	beforeEach(() => {
-		queryStringGetStub = global.sandbox.stub(utils.queryString, 'get');
+		queryStringGetStub = global.sandbox.stub(queryString, 'get');
 		newsAndRatingsTargetingSetup = new NewsAndRatingsTargetingSetup();
 	});
 

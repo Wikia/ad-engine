@@ -1,4 +1,4 @@
-import { ContextInterface, TargetingServiceInterface } from '@wikia/ad-engine';
+import { ContextInterface, TargetingServiceInterface } from '@ad-engine/core';
 import { SlotsContextInterface } from '../../slots/slots-context';
 import { SequenceState } from '../domain/data-structures/user-sequential-message-state';
 import { TargetingManagerInterface } from '../domain/interfaces/targeting-manager.interface';

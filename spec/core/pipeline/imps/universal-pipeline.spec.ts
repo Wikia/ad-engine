@@ -3,7 +3,7 @@ import {
 	FuncPipelineStep,
 	UniversalPipeline,
 	UniversalPipelineStep,
-} from '@wikia/core';
+} from '@wikia/core/pipeline';
 import { PipelineNext } from '@wikia/core/pipeline/pipeline-types';
 import { Container } from '@wikia/dependency-injection';
 import { PipelineTestSuite } from './pipeline-test-suite';

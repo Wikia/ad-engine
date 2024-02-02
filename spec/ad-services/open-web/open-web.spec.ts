@@ -1,6 +1,7 @@
 import { OpenWeb, PlacementsBuilder, PlacementsHandler } from '@wikia/ad-services';
 import { communicationService, EventOptions } from '@wikia/communication';
-import { context, InstantConfigService, utils } from '@wikia/core';
+import { context, InstantConfigService } from '@wikia/core';
+import { scriptLoader } from '@wikia/core/utils';
 import { expect } from 'chai';
 
 describe('OpenWeb', () => {
@@ -18,7 +19,7 @@ describe('OpenWeb', () => {
 
 	beforeEach(() => {
 		loadScriptStub = global.sandbox
-			.stub(utils.scriptLoader, 'loadScript')
+			.stub(scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		contextStub = global.sandbox.stub(context);

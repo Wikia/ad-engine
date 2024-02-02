@@ -3,8 +3,8 @@ import {
 	InstantConfigCacheStorage,
 	TargetingData,
 	targetingService,
-	utils,
 } from '@ad-engine/core';
+import { client, geoService } from '@ad-engine/utils';
 import { CompilerPartial } from '../base-tracker';
 
 function checkOptIn(): string {
@@ -37,9 +37,9 @@ export const slotTrackingCompiler = ({ data, slot }: CompilerPartial): CompilerP
 		data: {
 			...data,
 			timestamp,
-			browser: `${utils.client.getOperatingSystem()} ${utils.client.getBrowser()}`,
-			country: (utils.geoService.getCountryCode() || '').toUpperCase(),
-			device: utils.client.getDeviceType(),
+			browser: `${client.getOperatingSystem()} ${client.getBrowser()}`,
+			country: (geoService.getCountryCode() || '').toUpperCase(),
+			device: client.getDeviceType(),
 			is_uap: isUap ? 1 : 0,
 			kv_ah: window.document.body.scrollHeight,
 			kv_lang: targetingData.lang || '',

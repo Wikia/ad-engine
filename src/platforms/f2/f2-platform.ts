@@ -1,3 +1,7 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { context } from '@ad-engine/core';
+import { conditional, parallel, ProcessPipeline } from '@ad-engine/pipeline';
+import { logVersion } from '@ad-engine/utils';
 import {
 	BiddersTargetingUpdater,
 	ConsentManagementPlatformSetup,
@@ -10,19 +14,11 @@ import {
 	NoAdsMode,
 	PlatformContextSetup,
 	SequentialMessagingSetup,
+	SlotTrackingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
-import {
-	communicationService,
-	conditional,
-	context,
-	eventsRepository,
-	IdentitySetup,
-	logVersion,
-	parallel,
-	ProcessPipeline,
-} from '@wikia/ad-engine';
+import { IdentitySetup } from '@wikia/ad-services';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
 import { F2IocSetup } from './f2-ioc.setup';
@@ -62,6 +58,7 @@ export class F2Platform {
 			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM might break
 			LabradorSetup,
 			F2ExperimentsSetup,
+			SlotTrackingSetup,
 			TrackingSetup,
 			BiddersTargetingUpdater,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),

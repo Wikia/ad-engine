@@ -1,15 +1,7 @@
 import { Injectable } from '@wikia/dependency-injection';
 
-import {
-	communicationService,
-	context,
-	DomListener,
-	eventsRepository,
-	Nativo,
-	nativoLazyLoader,
-	SlotCreatorConfig,
-	UapLoadStatus,
-} from '@wikia/ad-engine';
+import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
+import { context, DomListener, Nativo, nativoLazyLoader, SlotCreatorConfig } from '@ad-engine/core';
 
 import { SlotSetupDefinition } from '../utils/insert-slots';
 import { fanFeedNativeAdListener } from './fan-feed-native-ad-listener';

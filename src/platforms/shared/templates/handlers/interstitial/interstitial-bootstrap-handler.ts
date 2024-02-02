@@ -1,12 +1,11 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import {
 	AdSlot,
-	communicationService,
-	eventsRepository,
 	slotTweaker,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
-} from '@wikia/ad-engine';
+} from '@ad-engine/core';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })

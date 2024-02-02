@@ -1,4 +1,5 @@
-import { utils, VideoData, VideoEventProvider, VideoTracker } from '@ad-engine/core';
+import { VideoData, VideoEventProvider, VideoTracker } from '@ad-engine/core';
+import { logger } from '@ad-engine/utils';
 import { ConnatixPlayerApi, ConnatixPlayerType } from './connatix-player';
 
 const logGroup = 'connatix';
@@ -28,11 +29,11 @@ export class ConnatixTracker implements VideoTracker {
 
 	private setupListeners() {
 		if (typeof this.playerApi !== 'object') {
-			utils.logger(logGroup, 'Given playerApi is not an object', this.playerApi);
+			logger(logGroup, 'Given playerApi is not an object', this.playerApi);
 			return;
 		}
 
-		utils.logger(logGroup, 'Subscribing to Connatix events...');
+		logger(logGroup, 'Subscribing to Connatix events...');
 		Object.keys(this.trackingEvents).map((eventName) => {
 			this.playerApi.on(eventName, (data) => this.track(eventName, data));
 		});
@@ -51,7 +52,7 @@ export class ConnatixTracker implements VideoTracker {
 	private track(eventName: string, eventData) {
 		const dataForDataWarehouse = VideoEventProvider.getEventData(this.getVideoData(eventName));
 
-		utils.logger(
+		logger(
 			logGroup,
 			`Connatix ${eventName} event data: `,
 			eventData,

@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { utils } from '@ad-engine/core';
+import { getTranslation } from '@ad-engine/utils';
 import { createIcon, icons } from '../icons';
 
 export class LearnMore {
@@ -8,7 +8,7 @@ export class LearnMore {
 		const icon = createIcon(icons.LEARN_MORE, ['learn-more-icon', 'porvata-icon']);
 		const label = document.createElement('div');
 
-		label.innerText = utils.getTranslation('learn-more');
+		label.innerText = getTranslation('learn-more');
 		learnMore.appendChild(label);
 		learnMore.appendChild(icon);
 

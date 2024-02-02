@@ -1,4 +1,5 @@
-import { context, utils } from '@ad-engine/core';
+import { context } from '@ad-engine/core';
+import { isCoppaSubject, logger } from '@ad-engine/utils';
 import { UserIdConfig } from '../index';
 
 const logGroup = 'LiveRamp';
@@ -11,11 +12,11 @@ export abstract class LiveRampIdTypes {
 class LiveRampId {
 	getConfig(): UserIdConfig {
 		if (!this.isEnabled()) {
-			utils.logger(logGroup, 'disabled');
+			logger(logGroup, 'disabled');
 			return;
 		}
 
-		utils.logger(logGroup, 'enabled');
+		logger(logGroup, 'enabled');
 		return {
 			name: 'identityLink',
 			params: {
@@ -34,7 +35,7 @@ class LiveRampId {
 		return (
 			context.get('bidders.liveRampId.enabled') &&
 			!context.get('options.optOutSale') &&
-			!utils.isCoppaSubject()
+			!isCoppaSubject()
 		);
 	}
 }

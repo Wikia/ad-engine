@@ -1,13 +1,7 @@
-import {
-	communicationService,
-	context,
-	DiProcess,
-	eventsRepository,
-	InstantConfigService,
-	targetingService,
-	UapLoadStatus,
-	utils,
-} from '@wikia/ad-engine';
+import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
+import { context, InstantConfigService, targetingService } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
+import { logger, targeting } from '@ad-engine/utils';
 import { Injectable } from '@wikia/dependency-injection';
 import { getOptimizelyTargeting } from '../../utils/optimizely';
 import { createFandomContext } from './targeting-strategies/factories/create-fandom-context';
@@ -52,7 +46,7 @@ export class UcpTargetingSetup implements DiProcess {
 
 		targetingService.set(
 			'bundles',
-			utils.targeting.getTargetingBundles(this.instantConfig.get('icTargetingBundles')),
+			targeting.getTargetingBundles(this.instantConfig.get('icTargetingBundles')),
 		);
 
 		const optimizelyTargeting = getOptimizelyTargeting();
@@ -69,7 +63,7 @@ export class UcpTargetingSetup implements DiProcess {
 	private getPageLevelTargeting(fandomContext: FandomContext): TargetingTags {
 		const selectedStrategy: string = this.instantConfig.get('icTargetingStrategy');
 
-		utils.logger('Targeting', `Selected targeting priority strategy: ${selectedStrategy}`);
+		logger('Targeting', `Selected targeting priority strategy: ${selectedStrategy}`);
 
 		return createSelectedStrategy(selectedStrategy, fandomContext).get();
 	}

@@ -1,4 +1,4 @@
-import { context } from '@wikia/ad-engine';
+import { context } from '@ad-engine/core';
 
 export function filterVideoBids(bidderContext) {
 	const hasFeaturedVideo = context.get('custom.hasFeaturedVideo');

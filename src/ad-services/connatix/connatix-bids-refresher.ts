@@ -1,11 +1,11 @@
 import {
-	AdSlot,
 	AdSlotEvent,
 	slotService,
 	slotTweaker,
 	targetingService,
-	utils,
+	type AdSlot,
 } from '@ad-engine/core';
+import { logger } from '@ad-engine/utils';
 import { ConnatixPlayerApi } from './connatix-player';
 
 const logGroup = 'connatix';
@@ -17,15 +17,12 @@ export class ConnatixBidsRefresher {
 		if (typeof this.playerApi === 'object') {
 			this.playerApi.on('adImpression', () => this.onAdImpressionHandler());
 		} else {
-			utils.logger(logGroup, 'No Connatix player API available...');
+			logger(logGroup, 'No Connatix player API available...');
 		}
 	}
 
 	private onAdImpressionHandler() {
-		utils.logger(
-			logGroup,
-			'ConnatixBidsRefresher: ad impression in Connatix detected - refreshing',
-		);
+		logger(logGroup, 'ConnatixBidsRefresher: ad impression in Connatix detected - refreshing');
 
 		const slotName = 'incontent_player';
 		const playerAdSlot = slotService.get(slotName);

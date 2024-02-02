@@ -1,3 +1,6 @@
+import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
+import { AdSlotEvent, AdSlotStatus, context, slotService } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
 import {
 	GalleryLightboxAds,
 	GalleryLightboxAdsHandler,
@@ -7,17 +10,7 @@ import {
 	QuizSlotsDefinitionRepository,
 	slotsContext,
 } from '@platforms/shared';
-import {
-	AdSlotEvent,
-	AdSlotStatus,
-	communicationService,
-	context,
-	DiProcess,
-	eventsRepository,
-	slotService,
-	UapLoadStatus,
-	universalAdPackage,
-} from '@wikia/ad-engine';
+import { universalAdPackage } from '@wikia/ad-products';
 import { Injectable } from '@wikia/dependency-injection';
 import { UcpDesktopSlotsDefinitionRepository } from './ucp-desktop-slots-definition-repository';
 
