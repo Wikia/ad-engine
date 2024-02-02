@@ -81,6 +81,7 @@ class VastParser {
 		const vastParams: Dictionary<string> = queryString.getValues(
 			vastUrl ? vastUrl.substr(1 + vastUrl.indexOf('?')) : '?',
 		);
+
 		const customParams: Dictionary<string> = queryString.getValues(
 			encodeURI(vastParams.cust_params),
 		);
@@ -98,7 +99,7 @@ class VastParser {
 			creativeId,
 			customParams,
 			lineItemId,
-			position: vastParams.vpos,
+			position: vastParams.vpos || 'preroll',
 			size: vastParams.sz,
 		};
 	}
