@@ -168,6 +168,7 @@ export class PrebidProvider extends BidderProvider {
 			...this.configureTCF(),
 			...this.configureS2sBidding(),
 			...this.configureJwpRtd(),
+			...context.get('bidders.prebid.config'),
 		};
 
 		this.configureUserSync();
