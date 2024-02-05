@@ -3,7 +3,6 @@ import { context, DiProcess, InstantConfigService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { getAppnexusContext } from '../../../bidders/prebid/appnexus';
 import { getAppnexusAstContext } from '../../../bidders/prebid/appnexus-ast';
-import { getFreewheelContext } from '../../../bidders/prebid/freewheel';
 import { getGumgumContext } from '../../../bidders/prebid/gumgum';
 import { getIndexExchangeContext } from '../../../bidders/prebid/index-exchange';
 import { getKargoContext } from '../../../bidders/prebid/kargo';
@@ -32,7 +31,6 @@ export class UcpMobilePrebidConfigSetup implements DiProcess {
 
 		context.set('bidders.prebid.appnexus', filterVideoBids(getAppnexusContext()));
 		context.set('bidders.prebid.appnexusAst', filterVideoBids(getAppnexusAstContext()));
-		context.set('bidders.prebid.freewheel', filterVideoBids(getFreewheelContext()));
 		context.set('bidders.prebid.gumgum', filterVideoBids(getGumgumContext()));
 		context.set('bidders.prebid.indexExchange', filterVideoBids(getIndexExchangeContext()));
 		context.set('bidders.prebid.kargo', filterVideoBids(getKargoContext()));
