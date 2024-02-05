@@ -268,7 +268,7 @@ export class PrebidProvider extends BidderProvider {
 
 		id5.enableAnalytics(pbjs);
 		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
-			status: 'id5_loaded',
+			status: 'id5_started',
 		});
 	}
 
