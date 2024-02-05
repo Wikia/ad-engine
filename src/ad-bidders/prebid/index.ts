@@ -421,7 +421,7 @@ export class PrebidProvider extends BidderProvider {
 					regs: {
 						ext: {
 							dsa: {
-								required: 1,
+								dsarequired: 1,
 								pubrender: 2,
 								datatopub: 2,
 							},
