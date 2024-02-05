@@ -6,6 +6,7 @@ import {
 } from '@ad-engine/communication';
 import {
 	context,
+	DEFAULT_MAX_DELAY,
 	externalLogger,
 	targetingService,
 	trackingOptIn,
@@ -238,6 +239,9 @@ export class Apstag {
 			pubID: amazonId,
 			videoAdServer: 'DFP',
 			deals: true,
+			gdpr: {
+				cmpTimeout: DEFAULT_MAX_DELAY,
+			},
 			...Apstag.getCcpaIfApplicable(signalData),
 			signals: { ortb2 },
 		};
