@@ -1,4 +1,8 @@
-import { communicationService, ofType } from '@ad-engine/communication';
+import {
+	communicationService,
+	ObservableCommunicationService,
+	ofType,
+} from '@ad-engine/communication';
 import { AdSlot, context, slotService, tapOnce } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge, Observable } from 'rxjs';
@@ -29,7 +33,10 @@ export class JWPlayerManager {
 	}
 
 	private onPlayerReady(): Observable<PlayerReadyResult> {
-		return communicationService.action$.pipe(
+		const observableCommunicationService = new ObservableCommunicationService(
+			communicationService.communicator,
+		);
+		return observableCommunicationService.action$.pipe(
 			ofType(jwpReady),
 			tapOnce(() => {
 				this.loadIasTrackerIfEnabled();

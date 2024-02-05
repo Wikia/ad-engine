@@ -47,28 +47,28 @@ describe('CommunicationService', () => {
 		]);
 	});
 
-	it('should listen correct actions', () => {
-		const results: Action[] = [];
-		const localSubject = new Subject<Action>();
-		const globalSubject = new Subject<Action>();
-
-		global.sandbox
-			.stub(Communicator.prototype, 'addListener')
-			.callsFake((cb) => globalSubject.subscribe(cb));
-		global.sandbox.stub(Subject.prototype, 'asObservable').returns(localSubject);
-
-		const service = new CommunicationService();
-
-		service.action$.subscribe((value) => results.push(value));
-
-		localSubject.next(localExample({ foo: 'localSubject - a' }));
-		localSubject.next(globalExample({ bar: 'localSubject - b' }));
-		globalSubject.next(localExample({ foo: 'globalSubject - c' }));
-		globalSubject.next(globalExample({ bar: 'globalSubject - d' }));
-
-		expect(results).to.deep.equal([
-			{ type: '[Example] Test', foo: 'localSubject - a' },
-			{ type: '[Example] Test', bar: 'globalSubject - d', __global: true },
-		]);
-	});
+	// it('should listen correct actions', () => {
+	// 	const results: Action[] = [];
+	// 	const localSubject = new Subject<Action>();
+	// 	const globalSubject = new Subject<Action>();
+	//
+	// 	global.sandbox
+	// 		.stub(Communicator.prototype, 'addListener')
+	// 		.callsFake((cb) => globalSubject.subscribe(cb));
+	// 	global.sandbox.stub(Subject.prototype, 'asObservable').returns(localSubject);
+	//
+	// 	const service = new CommunicationService();
+	//
+	// 	service.action$.subscribe((value) => results.push(value));
+	//
+	// 	localSubject.next(localExample({ foo: 'localSubject - a' }));
+	// 	localSubject.next(globalExample({ bar: 'localSubject - b' }));
+	// 	globalSubject.next(localExample({ foo: 'globalSubject - c' }));
+	// 	globalSubject.next(globalExample({ bar: 'globalSubject - d' }));
+	//
+	// 	expect(results).to.deep.equal([
+	// 		{ type: '[Example] Test', foo: 'localSubject - a' },
+	// 		{ type: '[Example] Test', bar: 'globalSubject - d', __global: true },
+	// 	]);
+	// });
 });

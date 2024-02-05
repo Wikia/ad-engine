@@ -2,11 +2,9 @@ import {
 	AdSlotEventPayload,
 	communicationService,
 	eventsRepository,
-	ofType,
 	slotService,
 	UapLoadStatus,
 } from '@wikia/ad-engine';
-import { filter } from 'rxjs/operators';
 import { MessageBoxService } from './collapsed-messages/message-box-service';
 import { PlaceholderServiceHelper } from './placeholder-service-helper';
 
@@ -24,12 +22,8 @@ export class PlaceholderService {
 	}
 
 	private start(): void {
-		communicationService.action$
-			.pipe(
-				ofType(communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
-				filter((action: AdSlotEventPayload) => this.placeholderHelper.isLoadingOrCollapsed(action)),
-			)
-			.subscribe((action) => {
+		communicationService.on(eventsRepository.AD_ENGINE_SLOT_EVENT, (action: AdSlotEventPayload) => {
+			if (this.placeholderHelper.isLoadingOrCollapsed(action)) {
 				const adSlot = slotService.get(action.adSlotName);
 				if (!adSlot) return;
 
@@ -66,7 +60,8 @@ export class PlaceholderService {
 						}
 					}
 				}
-			});
+			}
+		});
 	}
 
 	private registerUapChecker(): void {

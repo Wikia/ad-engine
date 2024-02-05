@@ -6,7 +6,6 @@ import {
 	createBottomPanel,
 	eventsRepository,
 	LearnMore,
-	ofType,
 	PlayerOverlay,
 	PorvataPlayer,
 	PorvataTemplateParams,
@@ -21,7 +20,7 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { fromEvent, merge, Observable, Subject } from 'rxjs';
-import { debounceTime, filter, mergeMap, take, takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, mergeMap, take, takeUntil, tap } from 'rxjs/operators';
 import { slotsContext } from '../../../slots/slots-context';
 import { PlayerRegistry } from '../../helpers/player-registry';
 
@@ -54,6 +53,16 @@ export class VideoBootstrapHandler implements TemplateStateHandler {
 	}
 
 	private handleEvents(player: PorvataPlayer): Observable<unknown> {
+		communicationService.on(eventsRepository.AD_ENGINE_SLOT_EVENT, (action: AdSlotEventPayload) => {
+			if (
+				action.event === AdSlotEvent.CUSTOM_EVENT &&
+				action.adSlotName === this.adSlot.getSlotName() &&
+				action.payload?.status === universalAdPackage.SLOT_FORCE_UNSTICK
+			) {
+				player.stop();
+			}
+		});
+
 		return merge(
 			fromEvent(player, 'adCanPlay').pipe(
 				tap(() => player.dom.getVideoContainer().classList.remove(AdSlot.HIDDEN_AD_CLASS)),
@@ -66,17 +75,6 @@ export class VideoBootstrapHandler implements TemplateStateHandler {
 				// as a quick P2 fix - more in ADEN-11546 and related tickets
 				debounceTime(VideoBootstrapHandler.DEBOUNCE_TIME),
 				tap(() => player.reload()),
-			),
-
-			communicationService.action$.pipe(
-				ofType(communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
-				filter(
-					(action: AdSlotEventPayload) =>
-						action.event === AdSlotEvent.CUSTOM_EVENT &&
-						action.adSlotName === this.adSlot.getSlotName() &&
-						action.payload?.status === universalAdPackage.SLOT_FORCE_UNSTICK,
-				),
-				tap(() => player.stop()),
 			),
 		);
 	}
