@@ -1,6 +1,7 @@
 import { Action, Communicator } from '@wikia/post-quecast';
 import { fromEventPattern, merge, Observable, Subject } from 'rxjs';
 import { filter, shareReplay } from 'rxjs/operators';
+import { communicationService } from './communication-service';
 import { isGlobalAction } from './global-action';
 
 export class ObservableCommunicationService {
@@ -19,7 +20,8 @@ export class ObservableCommunicationService {
 			this.subject.asObservable().pipe(filter((action: Action<string>) => !isGlobalAction(action))),
 		);
 	}
-	static toObservable(communicator: Communicator) {
-		return new ObservableCommunicationService(communicator);
-	}
 }
+
+export const observableCommunicationService = new ObservableCommunicationService(
+	communicationService.communicator,
+);
