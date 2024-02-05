@@ -114,6 +114,7 @@ function createVastParams<T extends { payload: JWPlayerEvent }>(): RxJsOperator<
 			map((event: { payload: JWPlayerEvent }) =>
 				vastParser.parse(event.payload.tag, {
 					imaAd: event.payload.ima && event.payload.ima.ad,
+					eventAdPosition: event.payload.adposition,
 				}),
 			),
 		);

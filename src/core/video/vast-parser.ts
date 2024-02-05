@@ -10,6 +10,7 @@ export interface VideoAdInfo {
 
 export interface EventExtra {
 	imaAd?: google.ima.Ad;
+	eventAdPosition?: string;
 }
 
 export interface VastParams {
@@ -20,6 +21,12 @@ export interface VastParams {
 	position: string;
 	size: string;
 }
+
+const eventAdPositionMap = {
+	pre: 'preroll',
+	mid: 'midroll',
+	post: 'postroll',
+};
 
 class VastParser {
 	/**
@@ -74,12 +81,13 @@ class VastParser {
 		return adInfo;
 	}
 
-	parse(vastUrl: string, extra: EventExtra = {}): VastParams {
+	parse(vastTag: string, extra: EventExtra = {}): VastParams {
 		let contentType: string;
 		let creativeId: string;
 		let lineItemId: string;
+		let position: string;
 		const vastParams: Dictionary<string> = queryString.getValues(
-			vastUrl ? vastUrl.substr(1 + vastUrl.indexOf('?')) : '?',
+			vastTag ? vastTag.substr(1 + vastTag.indexOf('?')) : '?',
 		);
 
 		const customParams: Dictionary<string> = queryString.getValues(
@@ -94,12 +102,18 @@ class VastParser {
 			lineItemId = currentAd.lineItemId;
 		}
 
+		if (extra.eventAdPosition && !vastParams.vpos) {
+			position = eventAdPositionMap[extra.eventAdPosition];
+		} else {
+			position = vastParams.vpos;
+		}
+
 		return {
 			contentType,
 			creativeId,
 			customParams,
 			lineItemId,
-			position: vastParams.vpos || 'preroll',
+			position,
 			size: vastParams.sz,
 		};
 	}
