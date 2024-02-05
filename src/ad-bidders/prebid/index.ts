@@ -168,6 +168,7 @@ export class PrebidProvider extends BidderProvider {
 			...this.configureTCF(),
 			...this.configureS2sBidding(),
 			...this.configureJwpRtd(),
+			...this.configureDSA(),
 			...context.get('bidders.prebid.config'),
 		};
 
@@ -410,6 +411,25 @@ export class PrebidProvider extends BidderProvider {
 			};
 		}
 
+		return {};
+	}
+
+	private configureDSA(): object {
+		if (context.get('options.dsa.enabled')) {
+			return {
+				ortb2: {
+					regs: {
+						ext: {
+							dsa: {
+								required: 1,
+								pubrender: 2,
+								datatopub: 2,
+							},
+						},
+					},
+				},
+			};
+		}
 		return {};
 	}
 
