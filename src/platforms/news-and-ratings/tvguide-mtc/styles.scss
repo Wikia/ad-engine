@@ -11,6 +11,17 @@ body {
 		}
 	}
 
+	#mtop-leaderboard {
+		.video-overlay {
+			position: fixed;
+			right: 0;
+			.video-player {
+				top: 0;
+				transform: translateX(20%);
+			}
+		}
+	}
+
 	&.has-uap {
 		.c-siteHeader {
 			z-index: 201;

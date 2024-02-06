@@ -5,7 +5,15 @@ import { Injectable } from '@wikia/dependency-injection';
 export class TvGuideMtcSlotsContextSetup implements DiProcess {
 	execute(): void {
 		const slots = {
-			top_leaderboard: {
+			'top-leaderboard': {
+				adProduct: 'top_leaderboard',
+				group: 'LB',
+				sizes: [],
+				defaultTemplates: ['stickyTlb'],
+				defaultSizes: [],
+				providers: ['nothing'],
+			},
+			'mtop-leaderboard': {
 				adProduct: 'top_leaderboard',
 				group: 'LB',
 				sizes: [],
@@ -18,6 +26,7 @@ export class TvGuideMtcSlotsContextSetup implements DiProcess {
 		context.set('slots', slots);
 		context.set('vast.adUnitId', this.buildVastAdUnit());
 		context.push('state.adStack', { id: 'top_leaderboard' });
+		context.push('state.adStack', { id: 'mtop-leaderboard' });
 	}
 
 	private buildVastAdUnit(): string {

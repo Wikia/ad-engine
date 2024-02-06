@@ -276,9 +276,6 @@ export class AdSlot {
 	}
 
 	getSlotName(): string {
-		if (context.get('state.external.adengine') === 'mtc' && this.config.slotName.includes('_')) {
-			return this.config.slotName.replace('_', '-');
-		}
 		return this.config.slotName;
 	}
 
