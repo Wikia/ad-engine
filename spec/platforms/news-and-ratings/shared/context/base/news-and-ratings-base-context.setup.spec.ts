@@ -88,8 +88,8 @@ describe('News and Ratings base context setup', () => {
 				'getDataSettingsFromMetaTag',
 			);
 			getDataSettingsFromMetaTagStub.returns(null);
-			const getGtagDataStub = global.sandbox.stub(baseContextSetup, 'getGtagData');
-			getGtagDataStub.returns({ event: 'Pageview', data: { siteSection: 'home' } });
+			const getUtagDataStub = global.sandbox.stub(baseContextSetup, 'getUtagData');
+			getUtagDataStub.returns({ siteSection: 'home' });
 
 			baseContextSetup.execute();
 
@@ -103,38 +103,38 @@ describe('News and Ratings base context setup', () => {
 				'getDataSettingsFromMetaTag',
 			);
 			getDataSettingsFromMetaTagStub.returns({ foo: 'bar' });
-			const getGtagDataStub = global.sandbox.stub(baseContextSetup, 'getGtagData');
-			getGtagDataStub.returns({ event: 'Pageview', data: { siteSection: 'home' } });
+			const getUtagDataStub = global.sandbox.stub(baseContextSetup, 'getUtagData');
+			getUtagDataStub.returns({ siteSection: 'home' });
 
 			baseContextSetup.execute();
 
 			expect(context.get('custom.pagePath')).to.eq('/home');
 		});
 
-		it('sets proper page path based - incorrect ad-settings meta tag and no data from gtag data', () => {
+		it('sets proper page path based - incorrect ad-settings meta tag and no data from utag data', () => {
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
 			const getDataSettingsFromMetaTagStub = global.sandbox.stub(
 				baseContextSetup,
 				'getDataSettingsFromMetaTag',
 			);
 			getDataSettingsFromMetaTagStub.returns(null);
-			const getGtagDataStub = global.sandbox.stub(baseContextSetup, 'getGtagData');
-			getGtagDataStub.returns({});
+			const getUtagDataStub = global.sandbox.stub(baseContextSetup, 'getUtagData');
+			getUtagDataStub.returns({});
 
 			baseContextSetup.execute();
 
 			expect(context.get('custom.pagePath')).to.eq('');
 		});
 
-		it('sets proper page path based - incorrect ad-settings meta tag and no gtag', () => {
+		it('sets proper page path based - incorrect ad-settings meta tag and no utag', () => {
 			const baseContextSetup = new NewsAndRatingsBaseContextSetup(instantConfigStub);
 			const getDataSettingsFromMetaTagStub = global.sandbox.stub(
 				baseContextSetup,
 				'getDataSettingsFromMetaTag',
 			);
 			getDataSettingsFromMetaTagStub.returns(null);
-			const getGtagDataStub = global.sandbox.stub(baseContextSetup, 'getGtagData');
-			getGtagDataStub.returns(undefined);
+			const getUtagDataStub = global.sandbox.stub(baseContextSetup, 'getUtagData');
+			getUtagDataStub.returns(undefined);
 
 			baseContextSetup.execute();
 

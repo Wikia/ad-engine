@@ -19,7 +19,6 @@ interface Window {
 	canPlayVideo?: any;
 	cnx?: any;
 	confiant?: Confiant;
-	dataLayer: any;
 	DOMParser: DOMParser;
 	fandomContext: WindowFandomContext;
 	ga?: (
@@ -60,6 +59,7 @@ interface Window {
 	// Fandom JWPlayer sets the sponsored videos list
 	sponsoredVideos?: string[];
 	trackingOptIn?: any;
+	utag_data?: any;
 	wgCookiePath?: string;
 	XMLHttpRequest?: any;
 	optimizely?: {

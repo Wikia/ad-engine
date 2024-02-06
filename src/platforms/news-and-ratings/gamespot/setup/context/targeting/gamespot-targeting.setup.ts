@@ -14,21 +14,21 @@ export class GamespotTargetingSetup implements DiProcess {
 	}
 
 	getVerticalName(): 'gaming' | 'ent' {
-		const gtagData = window.dataLayer.find(({ event }) => event === 'Pageview');
-		const pathname = window.location.pathname;
-
-		if (!gtagData || !gtagData.data) {
+		const utagData = window.utag_data;
+		if (!utagData) {
 			return 'gaming';
 		}
 
-		if (this.isEntertainmentSite(pathname)) {
+		if (this.isEntertainmentSite(utagData['dom.pathname'])) {
 			return 'ent';
 		}
 
-		const validSiteSections = ['news', 'reviews', 'galleries'];
-
-		if (validSiteSections.includes(gtagData.data.siteSection)) {
-			return this.getVerticalNameBasedOnTopicName(gtagData);
+		if (
+			utagData.siteSection === 'news' ||
+			utagData.siteSection === 'reviews' ||
+			utagData.siteSection === 'galleries'
+		) {
+			return this.getVerticalNameBasedOnTopicName(utagData);
 		}
 
 		return 'gaming';
@@ -42,9 +42,9 @@ export class GamespotTargetingSetup implements DiProcess {
 		return pathname.includes('entertainment');
 	}
 
-	private getVerticalNameBasedOnTopicName(gtagData): 'gaming' | 'ent' {
-		const topicName = gtagData.data.topicName;
-		const contentTopicName = gtagData.data.contentTopicName;
+	private getVerticalNameBasedOnTopicName(utagData): 'gaming' | 'ent' {
+		const topicName = utagData.topicName;
+		const contentTopicName = utagData.contentTopicName;
 
 		if (!Array.isArray(topicName) || topicName.length === 0) {
 			return 'gaming';
