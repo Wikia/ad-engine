@@ -13,10 +13,12 @@ export class MetacriticTargetingSetup implements DiProcess {
 	}
 
 	getVerticalName(): 'gaming' | 'ent' {
-		return window.utag_data?.siteSection === 'games' ? 'gaming' : 'ent';
+		const gtagData = window.dataLayer.find(({ event }) => event === 'Pageview');
+		return gtagData?.data?.siteSection === 'games' ? 'gaming' : 'ent';
 	}
 
 	getPageType(): string | undefined {
-		return window.utag_data?.pageType;
+		const gtagData = window.dataLayer.find(({ event }) => event === 'Pageview');
+		return gtagData?.data?.pageType;
 	}
 }
