@@ -99,7 +99,7 @@ describe('PlayerSetup', () => {
 	});
 
 	it('should dispatch video setup action when Connatix is enabled', async () => {
-		instantConfigStub.get.withArgs('icConnatixInstream').returns(true);
+		instantConfigStub.get.withArgs('icFeaturedVideoPlayer').returns('connatix');
 		context.set('slots.featured.videoAdUnit', MOCKED_VAST_AD_UNIT);
 		context.set('vast.adUnitId', MOCKED_VAST_AD_UNIT);
 		const slotName = 'featured';
