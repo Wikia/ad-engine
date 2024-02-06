@@ -111,13 +111,12 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 	}
 
 	getViewGuid() {
-		const pageViewGuid = this.getViewGuidFromGtagData() || this.getViewGuidFromMetaTag();
+		const pageViewGuid = this.getViewGuidFromUtagData() || this.getViewGuidFromMetaTag();
 		return { vguid: pageViewGuid };
 	}
 
-	getViewGuidFromGtagData() {
-		const tagData = window.dataLayer.find(({ event }) => event === 'Pageview');
-		return tagData?.pageview_id;
+	getViewGuidFromUtagData() {
+		return window.utag_data?.pageViewGuid;
 	}
 
 	getViewGuidFromMetaTag() {
