@@ -8,8 +8,7 @@ import {
 	DomManipulator,
 	PlayerRegistry,
 	ScrollCorrector,
-	SlotDecisionImpactToResolvedHandler,
-	SlotDecisionTimeoutHandler,
+	SlotDecisionStickyToResolvedHandler,
 	SlotHeightClippingHandler,
 	SlotSizeImpactWithPlaceholderHandler,
 	SlotSizeResolvedWithPlaceholderHandler,
@@ -47,7 +46,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 			],
 			impact: [
 				SlotSizeImpactWithPlaceholderHandler,
-				SlotDecisionImpactToResolvedHandler,
+				SlotDecisionStickyToResolvedHandler,
 				SlotHeightClippingHandler,
 				VideoSizeImpactToResolvedHandler,
 				VideoCompletedHandler,
@@ -55,7 +54,6 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 			],
 			sticky: [
 				SlotSizeResolvedWithPlaceholderHandler,
-				SlotDecisionTimeoutHandler,
 				SlotStateStickedHandler,
 				CloseToTransitionButtonHandler,
 				VideoSizeResolvedHandler,
