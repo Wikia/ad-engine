@@ -27,6 +27,7 @@ import { intentIQ } from './intent-iq';
 import { liveRampId, LiveRampIdTypes } from './liveramp-id';
 import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice, roundBucketCpm } from './price-helper';
+import { prebidIdRetriever } from './utils/id-retriever';
 import { yahooConnectId } from './yahoo-connect-id';
 
 const logGroup = 'prebid';
@@ -167,6 +168,7 @@ export class PrebidProvider extends BidderProvider {
 			...this.configureTCF(),
 			...this.configureS2sBidding(),
 			...this.configureJwpRtd(),
+			...context.get('bidders.prebid.config'),
 		};
 
 		this.configureUserSync();
@@ -456,12 +458,18 @@ export class PrebidProvider extends BidderProvider {
 
 		this.applySettings();
 		this.removeAdUnits();
+		this.saveBidIds();
 		this.requestBids(this.adUnits, () => {
 			bidsBackHandler();
 			communicationService.emit(eventsRepository.BIDDERS_AUCTION_DONE);
 		});
 
 		communicationService.emit(eventsRepository.BIDDERS_BIDS_CALLED);
+	}
+
+	private saveBidIds(): void {
+		utils.logger(this.logGroup, 'Saving bid ids');
+		prebidIdRetriever.saveCurrentPrebidIds();
 	}
 
 	async removeAdUnits(): Promise<void> {

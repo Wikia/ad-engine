@@ -4,9 +4,12 @@ import { vastParser } from '@wikia/core/video/vast-parser';
 import { expect } from 'chai';
 import { SinonStubbedInstance } from 'sinon';
 
-const dummyVast =
+const dummyVastTagUrl =
 	'dummy.vast?sz=640x480&foo=bar&cust_params=foo1%3Dbar1%26foo2%3Dbar2' +
 	'%26customTitle%3D100%25%20Orange%20Juice%3Dbar2&vpos=preroll';
+
+const dummyVastTagXml =
+	'<?xml version="1.0" encoding="UTF-8"?><VAST xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="vast.xsd" version="4.0">';
 
 function getImaAd(
 	wrapperIds = [],
@@ -47,7 +50,7 @@ describe('vast-parser', () => {
 	});
 
 	it('parse custom parameters from VAST url', () => {
-		const adInfo = vastParser.parse(dummyVast);
+		const adInfo = vastParser.parse(dummyVastTagUrl);
 
 		expect(adInfo.customParams.foo1).to.equal('bar1');
 		expect(adInfo.customParams.foo2).to.equal('bar2');
@@ -55,19 +58,19 @@ describe('vast-parser', () => {
 	});
 
 	it('parse size from VAST url', () => {
-		const adInfo = vastParser.parse(dummyVast);
+		const adInfo = vastParser.parse(dummyVastTagUrl);
 
 		expect(adInfo.size).to.equal('640x480');
 	});
 
 	it('parse position from VAST url', () => {
-		const adInfo = vastParser.parse(dummyVast);
+		const adInfo = vastParser.parse(dummyVastTagUrl);
 
 		expect(adInfo.position).to.equal('preroll');
 	});
 
 	it('current ad info is not set by default', () => {
-		const adInfo = vastParser.parse(dummyVast);
+		const adInfo = vastParser.parse(dummyVastTagUrl);
 
 		expect(adInfo.contentType).to.equal(undefined);
 		expect(adInfo.creativeId).to.equal(undefined);
@@ -75,13 +78,22 @@ describe('vast-parser', () => {
 	});
 
 	it('current ad info from IMA object', () => {
-		const adInfo = vastParser.parse(dummyVast, {
+		const adInfo = vastParser.parse(dummyVastTagUrl, {
 			imaAd: getImaAd(),
 		});
 
 		expect(adInfo.contentType).to.equal('text/javascript');
 		expect(adInfo.creativeId).to.equal('999');
 		expect(adInfo.lineItemId).to.equal('000');
+	});
+
+	it('position from extra.eventAdPosition is mapped properly when VAST is not URL', () => {
+		const adInfo = vastParser.parse(dummyVastTagXml, {
+			imaAd: getImaAd(),
+			eventAdPosition: 'post',
+		});
+
+		expect(adInfo.position).to.equal('postroll');
 	});
 
 	it('current ad info from IMA object', () => {
