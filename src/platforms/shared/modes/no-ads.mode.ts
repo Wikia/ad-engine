@@ -1,15 +1,11 @@
 import {
-	Apstag,
 	Ats,
 	Audigent,
-	CcpaSignalPayload,
 	communicationService,
-	context,
 	DiProcess,
 	eventsRepository,
 	Experian,
 	Eyeota,
-	GdprConsentPayload,
 	jwpSetup,
 	LiveConnect,
 	LiveRampPixel,
@@ -36,19 +32,6 @@ export class NoAdsMode implements DiProcess {
 		this.noAdsDetector.addReasons(window.ads.context.opts.noAdsReasons);
 		this.dispatchJWPlayerSetupAction();
 		this.dispatchVideoSetupAction();
-		if (context.get('state.isLogged')) {
-			const apstag = Apstag.make();
-			apstag
-				.init()
-				.then(() =>
-					communicationService.on(
-						eventsRepository.AD_ENGINE_CONSENT_UPDATE,
-						(consents: GdprConsentPayload & CcpaSignalPayload) =>
-							apstag.sendHEM(apstag.getRecord(), consents),
-						false,
-					),
-				);
-		}
 
 		this.pipeline
 			.add(

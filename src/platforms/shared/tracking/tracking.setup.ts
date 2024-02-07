@@ -1,10 +1,6 @@
 import {
 	adClickTracker,
-	Apstag,
-	Bidders,
-	bidderTracker,
 	communicationService,
-	context,
 	ctaTracker,
 	Dictionary,
 	eventsRepository,
@@ -36,7 +32,6 @@ export class TrackingSetup {
 		private labradorTracker: LabradorTracker,
 		private adSizeTracker: AdSizeTracker,
 		private dwTracker: DataWarehouseTracker,
-		private bidders: Bidders,
 		private instantConfig: InstantConfigService = null,
 	) {}
 
@@ -44,7 +39,6 @@ export class TrackingSetup {
 		this.porvataTracker();
 		this.slotTracker();
 		this.viewabilityTracker();
-		this.bidderTracker();
 		this.postmessageTrackingTracker();
 		this.experimentGroupsTracker();
 		this.interventionTracker();
@@ -69,11 +63,6 @@ export class TrackingSetup {
 						},
 						trackingUrls.IDENTITY_INFO,
 					);
-
-					if (['liveConnect', 'MediaWiki-sha256'].includes(partnerName)) {
-						const apstag = Apstag.make();
-						apstag.init().then(() => apstag.sendHEM(partnerIdentityId));
-					}
 				},
 				false,
 			);
@@ -93,19 +82,10 @@ export class TrackingSetup {
 	}
 
 	private slotTracker(): void {
-		let withBidders = null;
-
-		if (context.get('bidders.prebid.enabled') || context.get('bidders.a9.enabled')) {
-			withBidders = this.bidders;
-		}
-
 		slotTracker.onChangeStatusToTrack.push('top-conflict');
-		slotTracker.register(
-			({ data }: Dictionary) => {
-				this.dwTracker.track(data, trackingUrls.AD_ENG_AD_INFO);
-			},
-			{ bidders: withBidders },
-		);
+		slotTracker.register(({ data }: Dictionary) => {
+			this.dwTracker.track(data, trackingUrls.AD_ENG_AD_INFO);
+		});
 	}
 
 	private viewabilityTracker(): void {
@@ -127,16 +107,6 @@ export class TrackingSetup {
 			// event listeners might be outside of AdEngine, f.e. in the SilverSurfer interactions module
 			communicationService.dispatch(adClickedAction(data));
 			this.dwTracker.track(data, trackingUrls.AD_ENG_AD_INFO);
-		});
-	}
-
-	private bidderTracker(): void {
-		if (!context.get('bidders.prebid.enabled') && !context.get('bidders.a9.enabled')) {
-			return;
-		}
-
-		bidderTracker.register(({ data }: Dictionary) => {
-			this.dwTracker.track(data, trackingUrls.AD_ENG_BIDDERS);
 		});
 	}
 
