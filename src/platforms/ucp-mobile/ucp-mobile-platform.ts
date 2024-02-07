@@ -9,7 +9,6 @@ import {
 	NoAdsMode,
 	PlatformContextSetup,
 	PostAdStackPartnersSetup,
-	PreloadedLibrariesSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 	UcpTargetingSetup,
@@ -46,10 +45,7 @@ export class UcpMobilePlatform {
 		this.pipeline.add(
 			PlatformContextSetup,
 			async () => await ensureGeoCookie(),
-			parallel(
-				sequential(InstantConfigSetup, PreloadedLibrariesSetup),
-				ConsentManagementPlatformSetup,
-			),
+			parallel(sequential(InstantConfigSetup), ConsentManagementPlatformSetup),
 			TrackingParametersSetup,
 			MetricReporterSetup,
 			UcpMobileBaseContextSetup,
