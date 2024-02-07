@@ -305,41 +305,6 @@ export const eventsRepository = {
 		category: '[Rail]',
 		name: 'Ready',
 	},
-	// Bidders events //
-	A9_WITHOUT_CONSENTS: {
-		name: 'A9 without consents',
-	},
-	A9_APSTAG_HEM_SENT: {
-		name: 'A9 Apstag HEM sent',
-	},
-	BIDDERS_BIDDING_DONE: {
-		category: '[Prebid]',
-		name: 'Bidding done',
-		payload: props<BiddersEventPayload>(),
-	},
-	BIDDERS_BIDS_CALLED: {
-		category: '[Prebid]',
-		name: 'Bids called',
-	},
-	BIDDERS_BIDS_REFRESH: {
-		category: '[Prebid]',
-		name: 'Bids refresh',
-		payload: props<{ refreshedSlotNames: string[] }>(),
-	},
-	BIDDERS_BIDS_RESPONSE: {
-		category: '[Prebid]',
-		name: 'Bids response',
-		payload: props<{ bidResponse: TrackingBidDefinition }>(),
-	},
-	BIDDERS_AUCTION_DONE: {
-		category: '[Prebid]',
-		name: 'Auction done',
-	},
-	BIDDERS_CALL_PER_GROUP: {
-		category: '[Prebid]',
-		name: 'Call per group',
-		payload: props<{ group: string; callback: () => void }>(),
-	},
 	// Video events //
 	VIDEO_SETUP: {
 		category: '[Video]',
