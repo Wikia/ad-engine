@@ -1,5 +1,5 @@
 import { Action, Communicator, setupPostQuecast } from '@wikia/post-quecast';
-import { fromEventPattern, merge, Observable, Subject } from 'rxjs';
+import { debounce, fromEventPattern, interval, merge, Observable, Subject } from 'rxjs';
 import { filter, shareReplay, skip, take } from 'rxjs/operators';
 import { EventOptions, eventsRepository } from './event-types';
 import { globalAction, isGlobalAction } from './global-action';
@@ -43,6 +43,16 @@ export class CommunicationService {
 
 	emit(event: EventOptions, payload?: object): void {
 		this.dispatch(this.getGlobalAction(event)(payload));
+	}
+
+	onMany(events: EventOptions[], callback: (payload?: any) => void, once = true): void {
+		this.action$
+			.pipe(
+				ofType(...events.map((event) => this.getGlobalAction(event))),
+				debounce((i) => interval(10 * i)),
+				once ? take(1) : skip(0),
+			)
+			.subscribe(callback);
 	}
 
 	on(event: EventOptions, callback: (payload?: any) => void, once = true): void {
@@ -102,9 +112,10 @@ export class CommunicationService {
 			try {
 				if (message.source === '@devtools-extension' && message.type === 'ACTION') {
 					// According to:
-					// * https://medium.com/@zalmoxis/redux-devtools-without-redux-or-how-to-have-a-predictable-state-with-any-architecture-61c5f5a7716f
-					// * https://github.com/zalmoxisus/mobx-remotedev/blob/master/src/monitorActions.js
-					// * https://github.com/zalmoxisus/remotedev-utils/blob/98ca5b35d8dd042d35dbcdd2653e5e168a2022f5/src/index.js#L75-L78
+					// *
+					// https://medium.com/@zalmoxis/redux-devtools-without-redux-or-how-to-have-a-predictable-state-with-any-architecture-61c5f5a7716f
+					// * https://github.com/zalmoxisus/mobx-remotedev/blob/master/src/monitorActions.js *
+					// https://github.com/zalmoxisus/remotedev-utils/blob/98ca5b35d8dd042d35dbcdd2653e5e168a2022f5/src/index.js#L75-L78
 					const action = new Function(`return ${message.payload}`)();
 
 					this.dispatch(action);
