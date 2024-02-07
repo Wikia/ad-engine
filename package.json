@@ -8,9 +8,9 @@
 		"url": "https://github.com/Wikia/AdEngine"
 	},
 	"dependencies": {
-		"@fandom/pathfinder-lite": "1.0.5",
 		"@wikia/dependency-injection": "2.2.3",
 		"@wikia/instant-config-loader": "github:Wikia/instant-config-loader#semver:0.10.0",
+		"@wikia/pathfinder-lite": "1.0.5-github.0",
 		"@wikia/post-quecast": "2.0.1",
 		"blockadblock": "3.2.1",
 		"current-device": "0.10.2",
