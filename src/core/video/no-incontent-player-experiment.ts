@@ -1,6 +1,6 @@
-import defineExperiment from '@fandom/pathfinder-lite/experiments/defineExperiment';
-import getExperiment from '@fandom/pathfinder-lite/experiments/getExperiment';
-import { Experiment } from '@fandom/pathfinder-lite/types';
+import defineExperiment from '@wikia/pathfinder-lite/experiments/defineExperiment';
+import getExperiment from '@wikia/pathfinder-lite/experiments/getExperiment';
+import { Experiment } from '@wikia/pathfinder-lite/types';
 import { context } from '../../index';
 
 export const incontentPlayerRemovalVariants = {
@@ -19,7 +19,7 @@ const getMobileExperiments = () => [
 	}),
 	defineExperiment({
 		name: incontentPlayerRemovalVariants.mobileActive,
-		buckets: ['a', 'b', 'c'],
+		buckets: ['e', 'f', 'g'],
 	}),
 ];
 
