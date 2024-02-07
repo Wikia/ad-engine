@@ -1,5 +1,5 @@
 import { JWPlayerManager, VastResponseData, VastTaglessRequest } from '@wikia/ad-products';
-import { communicationService, eventsRepository } from '@wikia/communication';
+import { communicationService } from '@wikia/communication';
 import { context, displayAndVideoAdsSyncContext, InstantConfigService } from '@wikia/core';
 import { PlayerSetup } from '@wikia/platforms/shared';
 import { expect } from 'chai';
@@ -102,7 +102,6 @@ describe('PlayerSetup', () => {
 		instantConfigStub.get.withArgs('icFeaturedVideoPlayer').returns('connatix');
 		context.set('slots.featured.videoAdUnit', MOCKED_VAST_AD_UNIT);
 		context.set('vast.adUnitId', MOCKED_VAST_AD_UNIT);
-		const slotName = 'featured';
 		const expectedDispatchArg = {
 			showAds: true,
 			autoplayDisabled: false,
@@ -114,7 +113,6 @@ describe('PlayerSetup', () => {
 		};
 
 		await subject.call();
-		communicationService.emit(eventsRepository.BIDDERS_BIDDING_DONE, { slotName });
 
 		expect(dispatchSpy.called).to.be.true;
 		expect(dispatchSpy.lastCall.args[0]).to.deep.equal(expectedDispatchArg);

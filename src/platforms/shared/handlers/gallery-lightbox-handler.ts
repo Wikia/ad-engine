@@ -6,7 +6,6 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { insertSlots, SlotsDefinitionRepository } from '../utils/insert-slots';
 
 export interface GalleryLightboxAds {
 	handler: GalleryLightboxAdsHandler;
@@ -20,7 +19,7 @@ export class GalleryLightboxAdsHandler {
 	private logGroup = 'gallery-lightbox-handler';
 	private isActive: boolean;
 
-	constructor(private slotsDefinitionRepository: SlotsDefinitionRepository) {
+	constructor() {
 		this.refreshLock = false;
 		this.isActive = true;
 	}
@@ -51,9 +50,6 @@ export class GalleryLightboxAdsHandler {
 					return;
 				}
 
-				this.callPrebidBidders(() =>
-					insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]),
-				);
 				this.lockForFewSeconds();
 				this.isActive = true;
 				this.hideFloorAdhesion();
@@ -91,10 +87,6 @@ export class GalleryLightboxAdsHandler {
 				if (label) {
 					label.remove();
 				}
-
-				this.callPrebidBidders(() =>
-					insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]),
-				);
 
 				this.lockForFewSeconds();
 			},
@@ -148,12 +140,5 @@ export class GalleryLightboxAdsHandler {
 	private showFloorAdhesion() {
 		const floor = document?.getElementById('floor_adhesion_anchor');
 		floor?.classList?.remove('hide-under-lightbox');
-	}
-
-	private callPrebidBidders(callback: () => void) {
-		communicationService.emit(eventsRepository.BIDDERS_CALL_PER_GROUP, {
-			group: 'gallery',
-			callback: callback,
-		});
 	}
 }

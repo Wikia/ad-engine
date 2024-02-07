@@ -1,6 +1,3 @@
-export * from './bidders/bidders-state.setup';
-export * from './bidders/filter-video-bids';
-export * from './bidders/wikia-adapter';
 export * from './consent/consent-management-platform.setup';
 export * from './context/targeting/targeting-strategies/models/open-rtb2';
 export * from './context/targeting/ucp-targeting.setup';

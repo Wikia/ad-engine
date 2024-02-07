@@ -5,13 +5,9 @@ import { DataWarehouseTracker } from './data-warehouse';
 const eventsToTrack = {
 	ad_engine_configured: eventsRepository.AD_ENGINE_CONFIGURED,
 	ad_engine_stack_start: eventsRepository.AD_ENGINE_STACK_START,
-	prebid_auction_started: eventsRepository.BIDDERS_BIDS_CALLED,
-	prebid_auction_ended: eventsRepository.BIDDERS_AUCTION_DONE,
 	live_connect_cached: eventsRepository.LIVE_CONNECT_CACHED,
 	live_connect_started: eventsRepository.LIVE_CONNECT_STARTED,
 	live_connect_responded_uuid: eventsRepository.LIVE_CONNECT_RESPONDED_UUID,
-	a9_without_consents: eventsRepository.A9_WITHOUT_CONSENTS,
-	a9_apstag_hem_sent: eventsRepository.A9_APSTAG_HEM_SENT,
 	yahoo_loaded: eventsRepository.YAHOO_LOADED,
 };
 

@@ -156,7 +156,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 	private handleGalleryLightboxAdsSlots(): void {
 		if (!this.galleryLightbox.initialized) {
-			this.galleryLightbox.handler = new GalleryLightboxAdsHandler(this.slotsDefinitionRepository);
+			this.galleryLightbox.handler = new GalleryLightboxAdsHandler();
 			this.galleryLightbox.initialized = true;
 		}
 		this.galleryLightbox.handler.handle();
