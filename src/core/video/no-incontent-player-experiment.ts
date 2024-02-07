@@ -57,9 +57,9 @@ export function isNoInContentVideoVariationActive() {
 	const isActive = isMobile
 		? isExperimentActive(incontentPlayerRemovalVariants.mobileActive)
 		: isExperimentActive(incontentPlayerRemovalVariants.desktopActive);
-	const forceDisabledExperiment = !!context.get(
-		'options.video.experiments.disabled.no_incontent_player',
+	const isExperimentForcefullyDisabled = !!context.get(
+		'options.video.experiments.disabled.incontentPlayerRemoval',
 	);
 
-	return isActive && !forceDisabledExperiment;
+	return isActive && !isExperimentForcefullyDisabled;
 }
