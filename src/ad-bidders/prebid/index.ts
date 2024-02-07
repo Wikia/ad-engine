@@ -24,6 +24,7 @@ import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider
 import { adaptersRegistry } from './adapters-registry';
 import { id5 } from './id5';
 import { intentIQ } from './intent-iq';
+import { connectedId } from './liveintent-connected-id';
 import { liveRampId, LiveRampIdTypes } from './liveramp-id';
 import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice, roundBucketCpm } from './price-helper';
@@ -229,6 +230,18 @@ export class PrebidProvider extends BidderProvider {
 		this.configureId5();
 		this.configureLiveRamp();
 		this.configureYahooConnectId();
+		this.configureLiveIntentConnectedId();
+	}
+
+	private configureLiveIntentConnectedId(): void {
+		const liveIntentConnectedIdConfig = connectedId.getConfig();
+		if (liveIntentConnectedIdConfig) {
+			this.prebidConfig.userSync.userIds.push(liveIntentConnectedIdConfig);
+			targetingService.set('li-module-enabled', ['on']);
+		} else {
+			this.prebidConfig.userSync.userIds.push([]);
+			targetingService.set('li-module-enabled', ['off']);
+		}
 	}
 
 	private configureLiveRamp(): void {
