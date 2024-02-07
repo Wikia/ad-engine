@@ -187,7 +187,6 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 
 		const slotNamePrefix = 'incontent_boxad_';
 		const slotName = `${slotNamePrefix}1`;
-		const bidGroup = 'incontent_boxad';
 
 		return {
 			slotCreatorConfig: {
@@ -212,11 +211,6 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 					if (this.isFmrApplicable(slotName)) {
 						const rotator = new FmrRotator(slotName, slotNamePrefix, btRec, {
 							topPositionToRun: 65,
-							bidders: {
-								bidGroup: bidGroup,
-								a9Alias: slotName,
-								bidderAlias: slotName,
-							},
 						});
 						rotator.rotateSlot();
 					} else {

@@ -19,7 +19,6 @@ import {
 	IasPublisherOptimization,
 	OpenWeb,
 	PartnerPipeline,
-	PrebidNativeProvider,
 	Stroer,
 	System1,
 	utils,
@@ -45,7 +44,6 @@ export class UcpMobileAdsMode implements DiProcess {
 		private jwpStrategyRules: JwpStrategyRulesSetup,
 		private openWeb: OpenWeb,
 		private playerSetup: PlayerSetup,
-		private prebidNativeProvider: PrebidNativeProvider,
 		private stroer: Stroer,
 		private system1: System1,
 		private wadRunner: WadRunner,
@@ -67,7 +65,6 @@ export class UcpMobileAdsMode implements DiProcess {
 				this.durationMedia,
 				this.stroer,
 				this.system1,
-				this.prebidNativeProvider,
 				this.wunderkind,
 				this.openWeb,
 				this.playerSetup.setOptions({

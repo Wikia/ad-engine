@@ -14,7 +14,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			top_leaderboard: {
 				firstCall: true,
 				adProduct: 'top_leaderboard',
-				bidderAlias: 'mobile_top_leaderboard',
 				group: 'LB',
 				sizes: [],
 				defaultSizes: [
@@ -34,7 +33,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			},
 			top_boxad: {
 				adProduct: 'top_boxad',
-				bidderAlias: 'mobile_in_content',
 				group: 'MR',
 				sizes: [
 					{
@@ -59,7 +57,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			},
 			incontent_boxad_1: {
 				adProduct: 'incontent_boxad_1',
-				bidderAlias: 'mobile_in_content',
 				group: 'HiVi',
 				sizes: [
 					{
@@ -200,7 +197,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					[320, 100],
 					[320, 50],
 				],
-				bidGroup: 'gallery',
 				targeting: {
 					loc: 'gallery',
 				},

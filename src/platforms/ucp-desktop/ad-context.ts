@@ -6,24 +6,6 @@ export const basicContext = {
 		'/{state.deviceType}' +
 		'/{targeting.skin}-{targeting.original_host}-{targeting.s2}' +
 		'/{custom.wikiIdentifier}-{targeting.s0}',
-	bidders: {
-		enabled: false,
-		timeout: 2000,
-		a9: {
-			enabled: false,
-			videoEnabled: false,
-			amazonId: '3115',
-			bidsRefreshing: {
-				slots: ['featured', 'gallery_leaderboard', 'incontent_leaderboard'],
-			},
-		},
-		prebid: {
-			enabled: false,
-			bidsRefreshing: {
-				slots: ['gallery_leaderboard', 'incontent_leaderboard', 'incontent_player'],
-			},
-		},
-	},
 	custom: {
 		dbNameForAdUnit: '_not_a_top1k_wiki',
 		dfpId: '5441',
@@ -134,7 +116,6 @@ export const basicContext = {
 		preload: {
 			gpt: false,
 			audigent: true,
-			prebid: true,
 			apstag: false,
 			intentIq: true,
 		},
