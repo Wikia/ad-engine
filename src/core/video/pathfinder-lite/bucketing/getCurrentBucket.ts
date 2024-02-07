@@ -1,8 +1,12 @@
-import { getWikiaBeaconId } from '@fandom/context';
+import Cookies from 'js-cookie';
 
 import getForcedBucket from '../utils/getForcedBucket';
 
 import { DEFAULT_BUCKET_INDEX } from './validation';
+
+const getWikiaBeaconId = () => {
+	return Cookies.get('wikia_beacon_id') || '';
+};
 
 /**
  * Gets the current bucket for user based on the following rules:
