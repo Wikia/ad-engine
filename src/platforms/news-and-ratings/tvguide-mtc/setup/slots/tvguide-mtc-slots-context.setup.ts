@@ -25,7 +25,7 @@ export class TvGuideMtcSlotsContextSetup implements DiProcess {
 
 		context.set('slots', slots);
 		context.set('vast.adUnitId', this.buildVastAdUnit());
-		context.push('state.adStack', { id: 'top_leaderboard' });
+		context.push('state.adStack', { id: 'top-leaderboard' });
 		context.push('state.adStack', { id: 'mtop-leaderboard' });
 	}
 
