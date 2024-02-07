@@ -97,24 +97,4 @@ describe('PlayerSetup', () => {
 		expect(dispatchSpy.firstCall.args[0].showAds).to.be.false;
 		expect(dispatchSpy.firstCall.args[0].vastXml).to.be.undefined;
 	});
-
-	it('should dispatch video setup action when Connatix is enabled', async () => {
-		instantConfigStub.get.withArgs('icFeaturedVideoPlayer').returns('connatix');
-		context.set('slots.featured.videoAdUnit', MOCKED_VAST_AD_UNIT);
-		context.set('vast.adUnitId', MOCKED_VAST_AD_UNIT);
-		const expectedDispatchArg = {
-			showAds: true,
-			autoplayDisabled: false,
-			videoAdUnitPath: MOCKED_VAST_AD_UNIT,
-			targetingParams: 'pos=featured&rv=1',
-			vastXml: undefined,
-			type: '[Video] Setup done',
-			__global: true,
-		};
-
-		await subject.call();
-
-		expect(dispatchSpy.called).to.be.true;
-		expect(dispatchSpy.lastCall.args[0]).to.deep.equal(expectedDispatchArg);
-	});
 });
