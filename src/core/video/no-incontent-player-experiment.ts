@@ -52,7 +52,7 @@ const isExperimentActive = (experimentName: string): boolean => {
 	return getRunningExperiment()?.name === experimentName;
 };
 
-export function isNoInContentVideoVariationActive() {
+export function isIncontentPlayerRemovalVariationActive() {
 	const isMobile = context.get('state.isMobile');
 	const isActive = isMobile
 		? isExperimentActive(incontentPlayerRemovalVariants.mobileActive)

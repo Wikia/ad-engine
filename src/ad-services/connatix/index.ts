@@ -2,7 +2,7 @@ import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engin
 import {
 	BaseServiceSetup,
 	context,
-	isNoInContentVideoVariationActive,
+	isIncontentPlayerRemovalVariationActive,
 	utils,
 } from '@ad-engine/core';
 import { ConnatixBidsRefresher } from './connatix-bids-refresher';
@@ -55,7 +55,7 @@ export class Connatix extends BaseServiceSetup {
 			return;
 		}
 
-		if (isNoInContentVideoVariationActive()) {
+		if (isIncontentPlayerRemovalVariationActive()) {
 			return;
 		}
 

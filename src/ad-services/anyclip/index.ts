@@ -3,7 +3,7 @@ import {
 	AdSlot,
 	BaseServiceSetup,
 	context,
-	isNoInContentVideoVariationActive,
+	isIncontentPlayerRemovalVariationActive,
 	slotDataParamsUpdater,
 	slotService,
 	targetingService,
@@ -67,7 +67,7 @@ export class Anyclip extends BaseServiceSetup {
 			return;
 		}
 
-		if (isNoInContentVideoVariationActive()) {
+		if (isIncontentPlayerRemovalVariationActive()) {
 			return;
 		}
 
