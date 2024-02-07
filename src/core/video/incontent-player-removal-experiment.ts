@@ -15,19 +15,19 @@ type RunningExperimentType = Experiment | null | undefined;
 const getAllExperiments = () => [
 	defineExperiment({
 		name: incontentPlayerRemovalVariants.desktopControl,
-		buckets: ['a', 'b', 'c', 'd'],
-	}),
-	defineExperiment({
-		name: incontentPlayerRemovalVariants.desktopActive,
 		buckets: ['4', '5', '6', '7'],
 	}),
 	defineExperiment({
+		name: incontentPlayerRemovalVariants.desktopActive,
+		buckets: ['8', '9', '_', '-'],
+	}),
+	defineExperiment({
 		name: incontentPlayerRemovalVariants.mobileControl,
-		buckets: ['a', 'b', 'c'],
+		buckets: ['e', 'f', 'g', 'h'],
 	}),
 	defineExperiment({
 		name: incontentPlayerRemovalVariants.mobileActive,
-		buckets: ['C', 'D', 'E'],
+		buckets: ['C', 'D', 'E', 'F'],
 	}),
 ];
 
