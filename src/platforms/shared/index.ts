@@ -13,7 +13,6 @@ export * from './ensure-geo-cookie';
 export * from './experiments/experiment';
 export * from './handlers/gallery-lightbox-handler';
 export * from './modes/no-ads.mode';
-export * from './sequential-messaging/sequential-messaging.setup';
 export * from './services/no-ads-detector';
 export * from './services/wad-runner';
 export * from './setup/ad-engine-stack.setup';
