@@ -4,7 +4,7 @@ import { context } from '../../index';
 
 const NO_INCONTENT_PLAYER_EXPERIMENT = defineExperiment({
 	name: 'no-incontent-player-experiment',
-	buckets: ['A', 'B', 'C', 'D', 'E', 'F', 'G'], // 10.93%
+	buckets: ['A', 'B', 'C', 'D'], // 6.25%
 });
 
 export function isNoInContentVideoVariationActive() {
