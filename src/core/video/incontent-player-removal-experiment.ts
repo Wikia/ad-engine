@@ -12,18 +12,7 @@ export const incontentPlayerRemovalVariants = {
 
 type RunningExperimentType = Experiment | null | undefined;
 
-const getMobileExperiments = () => [
-	defineExperiment({
-		name: incontentPlayerRemovalVariants.mobileControl,
-		buckets: ['C', 'D', 'E'],
-	}),
-	defineExperiment({
-		name: incontentPlayerRemovalVariants.mobileActive,
-		buckets: ['e', 'f', 'g'],
-	}),
-];
-
-const getDesktopExperiments = () => [
+const getAllExperiments = () => [
 	defineExperiment({
 		name: incontentPlayerRemovalVariants.desktopControl,
 		buckets: ['a', 'b', 'c', 'd'],
@@ -32,11 +21,15 @@ const getDesktopExperiments = () => [
 		name: incontentPlayerRemovalVariants.desktopActive,
 		buckets: ['4', '5', '6', '7'],
 	}),
+	defineExperiment({
+		name: incontentPlayerRemovalVariants.mobileControl,
+		buckets: ['a', 'b', 'c'],
+	}),
+	defineExperiment({
+		name: incontentPlayerRemovalVariants.mobileActive,
+		buckets: ['C', 'D', 'E'],
+	}),
 ];
-
-const getAllExperiments = () => {
-	return context.get('state.isMobile') ? getMobileExperiments() : getDesktopExperiments();
-};
 
 let runningExperiment: RunningExperimentType;
 
