@@ -238,6 +238,9 @@ export class PrebidProvider extends BidderProvider {
 		if (liveIntentConnectedIdConfig) {
 			this.prebidConfig.userSync.userIds.push(liveIntentConnectedIdConfig);
 			targetingService.set('li-module-enabled', ['on']);
+			communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+				status: 'liveintent_connectid_started',
+			});
 		} else {
 			this.prebidConfig.userSync.userIds.push([]);
 			targetingService.set('li-module-enabled', ['off']);
