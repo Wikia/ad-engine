@@ -9,7 +9,6 @@ import {
 	Anyclip,
 	Ats,
 	Audigent,
-	Bidders,
 	communicationService,
 	Confiant,
 	Connatix,
@@ -37,7 +36,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 		private anyclip: Anyclip,
 		private ats: Ats,
 		private audigent: Audigent,
-		private bidders: Bidders,
 		private confiant: Confiant,
 		private connatix: Connatix,
 		private doubleVerify: DoubleVerify,
@@ -62,7 +60,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 				this.anyclip,
 				this.ats,
 				this.audigent,
-				this.bidders,
 				this.connatix,
 				this.wadRunner,
 				this.iasPublisherOptimization,
@@ -74,13 +71,12 @@ export class UcpDesktopAdsMode implements DiProcess {
 				this.openWeb,
 				this.system1,
 				this.playerSetup.setOptions({
-					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
+					dependencies: [this.wadRunner.initialized],
 				}),
 				this.gptSetup,
 				this.doubleVerify,
 				this.adEngineStackSetup.setOptions({
 					dependencies: [
-						this.bidders.initialized,
 						this.wadRunner.initialized,
 						this.gptSetup.initialized,
 						videoDisplayTakeoverSynchronizer.isRequiredToRun()
