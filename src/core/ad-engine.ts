@@ -1,7 +1,7 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { scrollListener } from './listeners';
 import { AdSlot } from './models';
-import { GptProvider, Nativo, NativoProvider, PrebidiumProvider, Provider } from './providers';
+import { GptProvider, Nativo, NativoProvider, Provider } from './providers';
 import {
 	btfBlockerService,
 	context,
@@ -106,8 +106,6 @@ export class AdEngine {
 
 	private createProvider(providerName: string) {
 		switch (providerName) {
-			case 'prebidium':
-				return new PrebidiumProvider();
 			case 'nativo':
 				return new NativoProvider(window.ntv);
 			default:
