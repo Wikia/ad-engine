@@ -34,7 +34,7 @@ import { registerUcpDesktopUapDomElements } from './configs/register-ucp-desktop
 import { BfaaUcpDesktopConfigHandler } from './handlers/bfaa/bfaa-ucp-desktop-config-handler';
 
 export function registerBfaaTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
-	// Use the correct class based on the stick leaderboard context
+	// Use the correct class based on the sticky leaderboard context
 	const slotDecisionResolvedHandler = () =>
 		context.get('options.stickyTopLeaderboard')
 			? SlotDecisionStickyToResolvedHandler
