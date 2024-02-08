@@ -31,6 +31,21 @@ describe('slot-tweaker', () => {
 			);
 		});
 
+		it('should accept an object and convert " to \' with useSingleQuotes option', () => {
+			const mockedValue = {
+				param1: 'value1',
+				param2: 'value2',
+			};
+
+			slotTweaker.setDataParam(adSlotFake as any, 'qunitParam', mockedValue, {
+				useSingleQuotes: true,
+			});
+
+			expect(adSlotFake.getElement().dataset.qunitParam).to.equal(
+				"{'param1':'value1','param2':'value2'}",
+			);
+		});
+
 		it('should accept an array', () => {
 			const mockedValue = ['value1', 'value2'];
 

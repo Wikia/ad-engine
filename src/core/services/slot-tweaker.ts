@@ -10,6 +10,10 @@ interface SlotActionMessage {
 	aspectRatio?: number;
 }
 
+interface DataParamOptions {
+	useSingleQuotes?: boolean;
+}
+
 export class SlotTweaker {
 	static readonly SLOT_CLOSE_IMMEDIATELY = 'force-close';
 
@@ -166,10 +170,21 @@ export class SlotTweaker {
 		);
 	}
 
-	setDataParam(adSlot: AdSlot, attrName: string, data: any): void {
+	setDataParam(adSlot: AdSlot, attrName: string, data: any, options?: DataParamOptions): void {
 		const container = adSlot.getElement();
 		if (container) {
-			container.dataset[attrName] = typeof data === 'string' ? data : JSON.stringify(data);
+			let attrValue: string;
+			if (typeof data === 'string') {
+				attrValue = data;
+			} else {
+				attrValue = JSON.stringify(data);
+				console.log('setDataParam stringified object: ', attrValue);
+				if (options?.useSingleQuotes) {
+					console.log('setDataParam useSingleQuotes was set to true.');
+					attrValue = attrValue.replaceAll('"', "'");
+				}
+			}
+			container.dataset[attrName] = attrValue;
 		}
 	}
 }
