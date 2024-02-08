@@ -56,3 +56,7 @@ export function isIncontentPlayerRemovalVariationActive() {
 
 	return isActive && !isExperimentForcefullyDisabled;
 }
+
+export const incontentVideoRemovalExperimentName = 'pf-lite-experiments: Incontent Video Removal';
+export const incontentVideoRemovalVariationName =
+	getRunningExperiment()?.name ?? 'no-variation-assigned';
