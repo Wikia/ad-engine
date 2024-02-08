@@ -115,6 +115,10 @@ export class BaseContextSetup implements DiProcess {
 			'options.video.comscoreJwpTracking',
 			this.instantConfig.get('icComscoreJwpTracking'),
 		);
+		context.set(
+			'options.video.experiments.disabled.incontentPlayerRemoval',
+			this.instantConfig.get('icDisableIncontentPlayerRemoval'),
+		);
 
 		context.set('services.anyclip.enabled', this.instantConfig.get('icAnyclipPlayer'));
 		context.set('services.anyclip.isApplicable', () => {

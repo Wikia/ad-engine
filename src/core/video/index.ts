@@ -1,5 +1,5 @@
 export * from './display-and-video-ads-sync-context';
-export * from './no-incontent-player-experiment';
+export * from './incontent-player-removal-experiment';
 export * from './vast-debugger';
 export * from './vast-parser';
 export * from './video-event-provider';
