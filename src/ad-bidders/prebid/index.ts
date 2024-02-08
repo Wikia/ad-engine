@@ -27,6 +27,7 @@ import { intentIQ } from './intent-iq';
 import { liveRampId, LiveRampIdTypes } from './liveramp-id';
 import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice, roundBucketCpm } from './price-helper';
+import { prebidIdRetriever } from './utils/id-retriever';
 import { yahooConnectId } from './yahoo-connect-id';
 
 const logGroup = 'prebid';
@@ -166,6 +167,8 @@ export class PrebidProvider extends BidderProvider {
 			...this.configureTargeting(),
 			...this.configureTCF(),
 			...this.configureS2sBidding(),
+			...this.configureJwpRtd(),
+			...context.get('bidders.prebid.config'),
 		};
 
 		this.configureUserSync();
@@ -276,6 +279,8 @@ export class PrebidProvider extends BidderProvider {
 			return;
 		}
 
+		communicationService.emit(eventsRepository.YAHOO_LOADED);
+
 		this.prebidConfig.userSync.userIds.push(yahooConnectIdConfig);
 	}
 
@@ -382,6 +387,32 @@ export class PrebidProvider extends BidderProvider {
 		};
 	}
 
+	private configureJwpRtd(): object {
+		if (
+			context.get('custom.hasFeaturedVideo') &&
+			context.get('options.video.enableStrategyRules')
+		) {
+			const initialMediaId = context.get('options.video.jwplayer.initialMediaId');
+
+			return {
+				realTimeData: {
+					auctionDelay: 100,
+					dataProviders: [
+						{
+							name: 'jwplayer',
+							waitForIt: true,
+							params: {
+								mediaIDs: initialMediaId ? [initialMediaId] : [],
+							},
+						},
+					],
+				},
+			};
+		}
+
+		return {};
+	}
+
 	private prepareExtPrebidBiders(s2sBidders: string[]): Record<string, { wrappername: string }> {
 		const extPrebidBidders: Record<string, { wrappername: string }> = {};
 
@@ -427,12 +458,18 @@ export class PrebidProvider extends BidderProvider {
 
 		this.applySettings();
 		this.removeAdUnits();
+		this.saveBidIds();
 		this.requestBids(this.adUnits, () => {
 			bidsBackHandler();
 			communicationService.emit(eventsRepository.BIDDERS_AUCTION_DONE);
 		});
 
 		communicationService.emit(eventsRepository.BIDDERS_BIDS_CALLED);
+	}
+
+	private saveBidIds(): void {
+		utils.logger(this.logGroup, 'Saving bid ids');
+		prebidIdRetriever.saveCurrentPrebidIds();
 	}
 
 	async removeAdUnits(): Promise<void> {

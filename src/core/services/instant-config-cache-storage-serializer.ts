@@ -17,7 +17,7 @@ function parseCacheDictionary(cache): CacheDictionary {
 	const [name, group, limit_string] = key.split('_');
 	const limit = parseFloat(limit_string) || undefined;
 
-	return { [name]: { name, group, limit, result } };
+	return { [name]: { name, group, limit, result, withCookie: true } };
 }
 
 function serializeCache(cache: CacheDictionary): string {

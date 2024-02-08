@@ -43,6 +43,7 @@ describe('serialize/deserialize cache object', () => {
 				limit: 99.99,
 				name: 'icUAPJWPlayer-0',
 				result: false,
+				withCookie: true,
 			},
 		};
 		expect(result).to.deep.equal(expectedResult);
