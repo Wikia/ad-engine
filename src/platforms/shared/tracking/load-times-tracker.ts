@@ -8,7 +8,7 @@ const eventsToTrack = {
 	live_connect_cached: eventsRepository.LIVE_CONNECT_CACHED,
 	live_connect_started: eventsRepository.LIVE_CONNECT_STARTED,
 	live_connect_responded_uuid: eventsRepository.LIVE_CONNECT_RESPONDED_UUID,
-	yahoo_loaded: eventsRepository.YAHOO_LOADED,
+	yahoo_started: eventsRepository.YAHOO_STARTED,
 };
 
 export class LoadTimesTracker {
