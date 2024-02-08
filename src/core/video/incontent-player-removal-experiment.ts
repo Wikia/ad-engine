@@ -1,7 +1,7 @@
-import defineExperiment from '@wikia/pathfinder-lite/experiments/defineExperiment';
-import getExperiment from '@wikia/pathfinder-lite/experiments/getExperiment';
-import { Experiment } from '@wikia/pathfinder-lite/types';
 import { context } from '../../index';
+import defineExperiment from './pathfinder-lite/experiments/defineExperiment';
+import getExperiment from './pathfinder-lite/experiments/getExperiment';
+import { Experiment } from './pathfinder-lite/types';
 
 export const incontentPlayerRemovalVariants = {
 	desktopControl: 'incontent-player-removal-experiment-desktop-control',
