@@ -180,25 +180,10 @@ export class BaseContextSetup implements DiProcess {
 	private setMiscContext(): void {
 		this.instantConfig.get('icLABradorTest');
 
-		const priceFloorRule = this.instantConfig.get<object>('icPrebidSizePriceFloorRule');
-		context.set('bidders.prebid.priceFloor', priceFloorRule || null);
-		context.set(
-			'bidders.prebid.disableSendAllBids',
-			this.instantConfig.get('icPrebidDisableSendAllBids'),
-		);
-		context.set('bidders.prebid.config', this.instantConfig.get('icPrebidConfig', {}));
-		context.set('bidders.prebid.native.enabled', this.instantConfig.get('icPrebidNative'));
 		context.set(
 			'templates.sizeOverwritingMap',
 			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes,
 		);
-		context.set('bidders.s2s.bidders', this.instantConfig.get('icPrebidS2sBidders', []));
-		context.set('bidders.s2s.enabled', this.instantConfig.get('icPrebidS2sBidders', []).length > 0);
-
-		context.set('bidders.a9.hem.enabled', this.instantConfig.get('icA9HEM', false));
-		context.set('bidders.a9.hem.cleanup', this.instantConfig.get('icA9CleanHEM', false));
-
-		context.set('bidders.liveRampId.enabled', this.instantConfig.get('icLiveRampId'));
 		context.set('bidders.liveRampATS.enabled', this.instantConfig.get('icLiveRampATS'));
 		context.set(
 			'bidders.liveRampATSAnalytics.enabled',
