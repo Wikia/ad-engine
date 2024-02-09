@@ -215,10 +215,6 @@ export const eventsRepository = {
 	CONNATIX_READY: {
 		name: 'Connatix ready',
 	},
-	NO_NATIVO_AD: {
-		name: 'No nativo ad',
-		payload: props<{ slotName: string }>(),
-	},
 	LIVE_CONNECT_STARTED: {
 		name: 'LiveConnect started',
 	},

@@ -32,7 +32,7 @@ describe('metric-reporter', () => {
 		const metricReporter = new MetricReporter(metricSender);
 		await metricReporter.initialise();
 
-		expect(sendSpy.callCount, 'sendToMeteringSystem').to.be.eq(2);
+		expect(sendSpy.callCount, 'sendToMeteringSystem').to.be.eq(1);
 		expect(sendSpy.calledWithMatch(sinon.match({ action: 'init' }))).to.be.true;
 	});
 });

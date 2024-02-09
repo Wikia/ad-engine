@@ -34,12 +34,10 @@ interface Window {
 	jwplayer?: function;
 	liQ?: LiQ;
 	mw?: MediaWiki;
-	ntv?: NativoApi;
 	NOLBUNDLE?: any;
 	adsExperiments?: any;
 	pbjs?: any;
 	Phoenix?: Phoenix;
-	PostRelease?: NativoPostRelease;
 	pvNumber?: number;
 	pvNumberGlobal?: number;
 	pvUID?: string;

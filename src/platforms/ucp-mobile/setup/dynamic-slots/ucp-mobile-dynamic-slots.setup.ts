@@ -3,7 +3,6 @@ import {
 	GalleryLightboxAdsHandler,
 	insertSlots,
 	MessageBoxService,
-	NativoSlotsDefinitionRepository,
 	PlaceholderService,
 	QuizSlotsDefinitionRepository,
 	slotsContext,
@@ -22,7 +21,6 @@ import {
 	eventsRepository,
 	globalContextService,
 	InstantConfigService,
-	Nativo,
 	slotImpactWatcher,
 	slotService,
 	UapLoadStatus,
@@ -36,7 +34,6 @@ import { UcpMobileSlotsDefinitionRepository } from './ucp-mobile-slots-definitio
 export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	constructor(
 		private slotsDefinitionRepository: UcpMobileSlotsDefinitionRepository,
-		private nativoSlotDefinitionRepository: NativoSlotsDefinitionRepository,
 		private quizSlotsDefinitionRepository: QuizSlotsDefinitionRepository,
 		private anyclip: Anyclip,
 		private connatix: Connatix,
@@ -59,17 +56,10 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 		insertSlots([
 			topLeaderboardDefinition,
-			this.nativoSlotDefinitionRepository.getNativoIncontentAdConfig(4),
 			this.slotsDefinitionRepository.getTopBoxadConfig(),
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
 			this.slotsDefinitionRepository.getMobilePrefooterConfig(),
 			this.slotsDefinitionRepository.getInterstitialConfig(),
-			this.nativoSlotDefinitionRepository.getNativoFeedAdConfig({
-				slotName: Nativo.FEED_AD_SLOT_NAME,
-				anchorSelector: '.recirculation-prefooter',
-				insertMethod: 'before',
-				classList: ['ntv-ad', AdSlot.HIDDEN_AD_CLASS],
-			}),
 		]);
 
 		if (context.get('custom.hasFeaturedVideo')) {

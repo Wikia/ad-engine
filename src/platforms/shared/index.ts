@@ -3,7 +3,6 @@ export * from './context/targeting/targeting-strategies/models/open-rtb2';
 export * from './context/targeting/ucp-targeting.setup';
 export * from './dynamic-slots/activate-floor-adhesion-on-uap';
 export * from './dynamic-slots/fan-feed-native-ad-listener';
-export * from './dynamic-slots/nativo-slots-definition-repository';
 export * from './dynamic-slots/quiz-slots-definition-repository';
 export * from './dynamic-slots/sticked-boxad-helper';
 export * from './ensure-geo-cookie';
