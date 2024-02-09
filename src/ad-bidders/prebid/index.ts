@@ -284,7 +284,7 @@ export class PrebidProvider extends BidderProvider {
 
 		id5.enableAnalytics(pbjs);
 		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
-			status: 'id5_done',
+			status: 'id5_started',
 		});
 	}
 
@@ -295,7 +295,7 @@ export class PrebidProvider extends BidderProvider {
 			return;
 		}
 
-		communicationService.emit(eventsRepository.YAHOO_LOADED);
+		communicationService.emit(eventsRepository.YAHOO_STARTED);
 
 		this.prebidConfig.userSync.userIds.push(yahooConnectIdConfig);
 	}

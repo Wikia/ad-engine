@@ -3,12 +3,15 @@ import {
 	AdSlot,
 	BaseServiceSetup,
 	context,
-	isNoInContentVideoVariationActive,
+	incontentVideoRemovalExperimentName,
+	incontentVideoRemovalVariationName,
+	isIncontentPlayerRemovalVariationActive,
 	slotDataParamsUpdater,
 	slotService,
 	targetingService,
 	utils,
 } from '@ad-engine/core';
+import { DataWarehouseTracker } from '../../platforms/shared';
 import { AnyclipBidsRefresher } from './anyclip-bids-refresher';
 import { AnyclipTracker } from './anyclip-tracker';
 
@@ -60,6 +63,7 @@ export class Anyclip extends BaseServiceSetup {
 
 	private tracker: AnyclipTracker;
 	private bidRefresher: AnyclipBidsRefresher;
+	private dwTracker: DataWarehouseTracker;
 
 	call() {
 		if (!this.isEnabled('services.anyclip.enabled', false)) {
@@ -67,7 +71,22 @@ export class Anyclip extends BaseServiceSetup {
 			return;
 		}
 
-		if (isNoInContentVideoVariationActive()) {
+		this.dwTracker = new DataWarehouseTracker();
+
+		this.dwTracker.track({
+			value: 'anyclip-in-content',
+			action: 'impression',
+			label: incontentVideoRemovalVariationName,
+			category: incontentVideoRemovalExperimentName,
+		});
+
+		if (isIncontentPlayerRemovalVariationActive()) {
+			this.dwTracker.track({
+				value: 'anyclip-in-content',
+				action: 'player-removed',
+				label: incontentVideoRemovalVariationName,
+				category: incontentVideoRemovalExperimentName,
+			});
 			return;
 		}
 

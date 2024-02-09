@@ -12,7 +12,7 @@ const eventsToTrack = {
 	live_connect_responded_uuid: eventsRepository.LIVE_CONNECT_RESPONDED_UUID,
 	a9_without_consents: eventsRepository.A9_WITHOUT_CONSENTS,
 	a9_apstag_hem_sent: eventsRepository.A9_APSTAG_HEM_SENT,
-	yahoo_loaded: eventsRepository.YAHOO_LOADED,
+	yahoo_started: eventsRepository.YAHOO_STARTED,
 };
 
 export class LoadTimesTracker {
