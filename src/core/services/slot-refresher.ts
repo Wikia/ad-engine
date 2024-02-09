@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
-import { AdSlot, AdSlotEvent } from '../models';
+import { AdSlot, AdSlotEvent, AdSlotStatus } from '../models';
 import { GptProvider } from '../providers';
 import { logger } from '../utils';
 import { context } from './context-service';
@@ -89,7 +89,22 @@ class SlotRefresher {
 
 		communicationService.onSlotEvent(AdSlotEvent.SLOT_VIEWED_EVENT, ({ adSlotName, slot }) => {
 			logger(`${adSlotName} viewed`);
-			this.refreshSlot(slot);
+			// this.refreshSlot(slot);
+			this.callBidders(slot, () => {
+				this.refreshSlot(slot);
+			});
+		});
+
+		communicationService.onSlotEvent(AdSlotStatus.STATUS_COLLAPSE, ({ adSlotName, slot }) => {
+			logger(`${adSlotName} collapse`);
+			slot.hide();
+			this.callBidders(slot, () => {
+				this.refreshSlot(slot);
+			});
+
+			setTimeout(() => {
+				slot.show();
+			}, this.config.timeoutMS);
 		});
 
 		communicationService.onSlotEvent(AdSlotEvent.SLOT_BACK_TO_VIEWPORT, ({ adSlotName }) => {
@@ -107,6 +122,19 @@ class SlotRefresher {
 
 	async init() {
 		this.setupSlotRefresher(context.get('services.slotRefresher.config'), await isUAP(), this.log);
+	}
+
+	private callBidders(slot: AdSlot, callback: () => void) {
+		const slotName = slot.getSlotName();
+
+		// context.set(`slots.${slotName}.a9Alias`, slot.config.a9Alias || slot.getSlotName());
+		// context.set(`slots.${slotName}.bidderAlias`, slot.config.bidderAlias || slot.getSlotName());
+		context.set(`slots.${slotName}.bidGroup`, slot.getSlotName());
+
+		communicationService.emit(eventsRepository.BIDDERS_CALL_PER_GROUP, {
+			group: slotName,
+			callback: callback,
+		});
 	}
 }
 

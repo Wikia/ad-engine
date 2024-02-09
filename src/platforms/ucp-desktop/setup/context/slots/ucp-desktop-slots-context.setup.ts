@@ -38,6 +38,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 					createLabel: false,
 					adLabelParent: '.top-ads-container',
 				},
+				slotRefreshing: true,
 			},
 			top_boxad: {
 				adProduct: 'top_boxad',

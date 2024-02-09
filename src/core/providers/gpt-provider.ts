@@ -330,12 +330,16 @@ export class GptProvider implements Provider {
 		// gptSlot.clearTargeting();
 		// const sizeMapping = window.googletag.sizeMapping();
 		// console.log('>>> [AE], refreshSlot', adSlot, adSlot.getDefaultSizes());
-		// adSlot.getDefaultSizes().forEach(adSize => {
+		// adSlot.getDefaultSizes().forEach((adSize) => {
 		// 	sizeMapping.addSize(AllViewportSizes, adSize);
 		// 	console.log('>>> [AE], addSize', sizeMapping, adSize);
 		// });
-		//
+
 		// gptSlot.defineSizeMapping(sizeMapping.build());
+
+		console.log('slot-refresher gpt ad', adSlot.targeting);
+		gptSlot.setTargeting('rv', String(Number(adSlot.targeting.rv) + 1));
+
 		window.googletag.pubads().refresh([gptSlot]);
 	}
 }
