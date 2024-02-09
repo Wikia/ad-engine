@@ -202,6 +202,11 @@ export class BaseContextSetup implements DiProcess {
 		context.set('bidders.a9.hem.enabled', this.instantConfig.get('icA9HEM', false));
 		context.set('bidders.a9.hem.cleanup', this.instantConfig.get('icA9CleanHEM', false));
 
+		context.set(
+			'bidders.liveIntentConnectedId.enabled',
+			this.instantConfig.get('icLiveIntentConnectedId'),
+		);
+
 		context.set('bidders.liveRampId.enabled', this.instantConfig.get('icLiveRampId'));
 		context.set('bidders.liveRampATS.enabled', this.instantConfig.get('icLiveRampATS'));
 		context.set(
