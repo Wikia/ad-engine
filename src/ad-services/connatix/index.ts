@@ -2,9 +2,12 @@ import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engin
 import {
 	BaseServiceSetup,
 	context,
-	isNoInContentVideoVariationActive,
+	incontentVideoRemovalExperimentName,
+	incontentVideoRemovalVariationName,
+	isIncontentPlayerRemovalVariationActive,
 	utils,
 } from '@ad-engine/core';
+import { DataWarehouseTracker } from '../../platforms/shared';
 import { ConnatixBidsRefresher } from './connatix-bids-refresher';
 import { ConnatixPlayer, ConnatixPlayerApi } from './connatix-player';
 import { ConnatixTracker } from './connatix-tracker';
@@ -41,6 +44,7 @@ export class Connatix extends BaseServiceSetup {
 		protected globalTimeout,
 		private playerInjector: PlayerInjectorInterface,
 		private tracker: ConnatixTracker,
+		private dwTracker: DataWarehouseTracker,
 	) {
 		super();
 
@@ -55,7 +59,20 @@ export class Connatix extends BaseServiceSetup {
 			return;
 		}
 
-		if (isNoInContentVideoVariationActive()) {
+		this.dwTracker.track({
+			value: 'connatix-in-content',
+			action: 'impression',
+			label: incontentVideoRemovalVariationName,
+			category: incontentVideoRemovalExperimentName,
+		});
+
+		if (isIncontentPlayerRemovalVariationActive()) {
+			this.dwTracker.track({
+				value: 'connatix-in-content',
+				action: 'player-removed',
+				label: incontentVideoRemovalVariationName,
+				category: incontentVideoRemovalExperimentName,
+			});
 			return;
 		}
 
