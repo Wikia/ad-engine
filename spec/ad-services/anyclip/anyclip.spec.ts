@@ -84,7 +84,7 @@ describe('Anyclip', () => {
 		context.set('services.anyclip.isApplicable', mockedIsApplicable);
 
 		anyclip.call();
-		expect(mockedIsApplicable.called).to.equal(false);
+		expect(mockedIsApplicable.calledThrice).to.equal(false);
 	});
 
 	it('tracks "eligible" event', () => {
