@@ -73,14 +73,16 @@ export class Anyclip extends BaseServiceSetup {
 
 		this.dwTracker = new DataWarehouseTracker();
 
-		this.dwTracker.track({
-			value: 'anyclip-in-content',
-			action: 'impression',
-			label: incontentVideoRemovalVariationName,
-			category: incontentVideoRemovalExperimentName,
-		});
+		if (Anyclip.isApplicable()) {
+			this.dwTracker.track({
+				value: 'anyclip-in-content',
+				action: 'impression',
+				label: incontentVideoRemovalVariationName,
+				category: incontentVideoRemovalExperimentName,
+			});
+		}
 
-		if (isIncontentPlayerRemovalVariationActive()) {
+		if (Anyclip.isApplicable() && isIncontentPlayerRemovalVariationActive()) {
 			this.dwTracker.track({
 				value: 'anyclip-in-content',
 				action: 'player-removed',
