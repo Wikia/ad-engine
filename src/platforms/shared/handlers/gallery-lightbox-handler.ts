@@ -6,6 +6,7 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { insertSlots, SlotsDefinitionRepository } from '../utils/insert-slots';
 
 export interface GalleryLightboxAds {
 	handler: GalleryLightboxAdsHandler;
@@ -19,7 +20,7 @@ export class GalleryLightboxAdsHandler {
 	private logGroup = 'gallery-lightbox-handler';
 	private isActive: boolean;
 
-	constructor() {
+	constructor(private slotsDefinitionRepository: SlotsDefinitionRepository) {
 		this.refreshLock = false;
 		this.isActive = true;
 	}
@@ -49,6 +50,8 @@ export class GalleryLightboxAdsHandler {
 				if (placementId !== this.slotName) {
 					return;
 				}
+
+				insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]);
 
 				this.lockForFewSeconds();
 				this.isActive = true;
@@ -87,6 +90,7 @@ export class GalleryLightboxAdsHandler {
 				if (label) {
 					label.remove();
 				}
+				insertSlots([this.slotsDefinitionRepository.getGalleryLeaderboardConfig()]);
 
 				this.lockForFewSeconds();
 			},
