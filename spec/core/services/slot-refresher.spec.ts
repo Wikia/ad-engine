@@ -3,16 +3,25 @@ import { slotRefresher } from '@wikia/core/services/slot-refresher';
 import sinon, { assert } from 'sinon';
 
 describe('slot-refresher', () => {
-	const basicConfig = { slots: ['test_slot'] };
+	const basicConfig = {
+		slots: ['test_slot'],
+	};
+
 	const fakeGPTSlot = {
 		getSlotElementId: () => 'test_slot',
 		clearTargeting: sinon.spy(),
 		defineSizeMapping: sinon.spy(),
+		setTargeting: sinon.spy(),
+		updateTargetingFromMap: sinon.spy(),
 	};
+
 	const fakeAdSlot = {
 		isEnabled: () => true,
 		getSlotName: () => 'test_slot',
 		getCreativeSizeAsArray: () => [0, 0],
+		targeting: {
+			rv: 1,
+		},
 	};
 
 	let clock;
