@@ -12,7 +12,7 @@ interface Config {
 	slots?: string[];
 }
 const defaultConfig: Config = {
-	timeoutMS: 30000,
+	timeoutMS: 30_000,
 	slots: [],
 };
 
@@ -25,11 +25,17 @@ async function isUAP(): Promise<boolean> {
 	});
 }
 
-function refreshWhenBackInViewport(adSlot) {
+function refreshWhenBackInViewport(adSlot: AdSlot) {
 	function refresh(event) {
 		if (event.slot.getSlotElementId() === adSlot.getSlotName()) {
 			logger(logGroup, `${adSlot.getSlotName()} back in the viewport, refreshing.`, event);
-			GptProvider.refreshSlot(adSlot);
+
+			this.callBidders(adSlot.getSlotName(), () => {
+				setTimeout(() => {
+					GptProvider.refreshSlot(adSlot);
+				}, 2000);
+			});
+
 			window.googletag.pubads().removeEventListener('slotVisibilityChanged', refresh);
 		}
 	}
@@ -45,6 +51,7 @@ class SlotRefresher {
 	}
 
 	refreshSlot(adSlot: AdSlot) {
+		console.log('NOKIUSZ', adSlot);
 		if (!this.config.slots.includes(adSlot.getSlotName())) return;
 
 		setTimeout(() => {
@@ -53,7 +60,13 @@ class SlotRefresher {
 
 				if (this.slotsInTheViewport.includes(adSlot.getSlotName())) {
 					this.log(`refreshing ${adSlot.getSlotName()}`);
-					GptProvider.refreshSlot(adSlot);
+
+					this.callBidders(adSlot.getSlotName(), () => {
+						setTimeout(() => {
+							GptProvider.refreshSlot(adSlot);
+						}, 2000);
+					});
+
 					return;
 				}
 
@@ -89,18 +102,13 @@ class SlotRefresher {
 
 		communicationService.onSlotEvent(AdSlotEvent.SLOT_VIEWED_EVENT, ({ adSlotName, slot }) => {
 			logger(`${adSlotName} viewed`);
-			// this.refreshSlot(slot);
-			this.callBidders(slot, () => {
-				this.refreshSlot(slot);
-			});
+			this.refreshSlot(slot);
 		});
 
 		communicationService.onSlotEvent(AdSlotStatus.STATUS_COLLAPSE, ({ adSlotName, slot }) => {
 			logger(`${adSlotName} collapse`);
 			slot.hide();
-			this.callBidders(slot, () => {
-				this.refreshSlot(slot);
-			});
+			this.refreshSlot(slot);
 
 			setTimeout(() => {
 				slot.show();
@@ -124,12 +132,8 @@ class SlotRefresher {
 		this.setupSlotRefresher(context.get('services.slotRefresher.config'), await isUAP(), this.log);
 	}
 
-	private callBidders(slot: AdSlot, callback: () => void) {
-		const slotName = slot.getSlotName();
-
-		// context.set(`slots.${slotName}.a9Alias`, slot.config.a9Alias || slot.getSlotName());
-		// context.set(`slots.${slotName}.bidderAlias`, slot.config.bidderAlias || slot.getSlotName());
-		context.set(`slots.${slotName}.bidGroup`, slot.getSlotName());
+	private callBidders(slotName: string, callback: () => void) {
+		context.set(`slots.${slotName}.bidGroup`, slotName);
 
 		communicationService.emit(eventsRepository.BIDDERS_CALL_PER_GROUP, {
 			group: slotName,
