@@ -329,7 +329,9 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 		if (this.instantConfig.get('icMobileGalleryAds') && !communityExcludedByTag) {
 			if (!this.galleryLightbox.initialized) {
-				this.galleryLightbox.handler = new GalleryLightboxAdsHandler();
+				this.galleryLightbox.handler = new GalleryLightboxAdsHandler(
+					this.slotsDefinitionRepository,
+				);
 				this.galleryLightbox.initialized = true;
 			}
 			this.galleryLightbox.handler.handle();
