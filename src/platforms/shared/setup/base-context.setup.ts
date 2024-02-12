@@ -25,6 +25,7 @@ export class BaseContextSetup implements DiProcess {
 		this.setServicesContext();
 		this.setMiscContext();
 		this.setupStickySlotContext();
+		this.setupDSAContext();
 		setupNpaContext();
 		setupRdpContext();
 	}
@@ -184,5 +185,9 @@ export class BaseContextSetup implements DiProcess {
 		if (stickySlotsLines && stickySlotsLines.length) {
 			context.set('templates.stickyTlb.lineItemIds', stickySlotsLines);
 		}
+	}
+
+	private setupDSAContext(): void {
+		context.set('options.dsa.enabled', this.instantConfig.get('icDSA'));
 	}
 }
