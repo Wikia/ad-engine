@@ -5,7 +5,6 @@ import {
 } from '@platforms/shared';
 import {
 	AdSlot,
-	btRec,
 	communicationService,
 	context,
 	eventsRepository,
@@ -209,7 +208,7 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 			activator: () => {
 				communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
 					if (this.isFmrApplicable(slotName)) {
-						const rotator = new FmrRotator(slotName, slotNamePrefix, btRec, {
+						const rotator = new FmrRotator(slotName, slotNamePrefix, {
 							topPositionToRun: 65,
 						});
 						rotator.rotateSlot();

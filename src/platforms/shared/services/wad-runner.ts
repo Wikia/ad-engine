@@ -3,14 +3,12 @@ import {
 	BaseServiceSetup,
 	btfBlockerService,
 	btForce,
-	btRec,
 	context,
 } from '@wikia/ad-engine';
 import { trackBab } from '../tracking/bab-tracker';
 
 const defaultOnDetect = () => {
 	btfBlockerService.finishFirstCall();
-	btRec.run();
 };
 
 export class WadRunner extends BaseServiceSetup {

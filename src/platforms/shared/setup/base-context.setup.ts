@@ -138,11 +138,6 @@ export class BaseContextSetup implements DiProcess {
 
 		// BlockAdBlock detection
 		context.set('options.wad.enabled', babEnabled);
-
-		if (babEnabled && !context.get('state.isLogged') && context.get('state.showAds')) {
-			context.set('options.wad.btRec.enabled', this.instantConfig.get('icBTRec'));
-			context.set('options.wad.btRec.sideUnits', this.instantConfig.get('icBTRecSideUnits'));
-		}
 	}
 
 	private setServicesContext(): void {
@@ -164,10 +159,7 @@ export class BaseContextSetup implements DiProcess {
 			'services.messageBox.enabled',
 			this.instantConfig.get('icAdCollapsedMessageBox', false),
 		);
-		context.set(
-			'services.slotRefresher.config',
-			!this.instantConfig.get('icDurationMedia') && this.instantConfig.get('icSlotRefresher'),
-		);
+		context.set('services.slotRefresher.config', this.instantConfig.get('icSlotRefresher'));
 	}
 
 	private setMiscContext(): void {

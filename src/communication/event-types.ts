@@ -202,9 +202,6 @@ export const eventsRepository = {
 	ANYCLIP_LATE_INJECT: {
 		name: 'Anyclip late inject',
 	},
-	SYSTEM1_STARTED: {
-		name: 'System1 started',
-	},
 	NO_NATIVE_PREBID_AD: {
 		name: 'No native prebid ad',
 		payload: props<{ slotName: string }>(),

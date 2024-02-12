@@ -65,9 +65,6 @@ export const basicContext = {
 				'incontent_player',
 			],
 		},
-		durationMedia: {
-			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',
-		},
 		externalLogger: {
 			endpoint: '/wikia.php?controller=AdEngine&method=postLog',
 		},
@@ -80,9 +77,6 @@ export const basicContext = {
 				'featured',
 				'incontent_player',
 			],
-		},
-		openWeb: {
-			placementSelector: 'div[class*="openweb-slot"]',
 		},
 	},
 	slotGroups: {

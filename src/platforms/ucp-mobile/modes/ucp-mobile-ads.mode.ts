@@ -16,13 +16,9 @@ import {
 	DoubleVerify,
 	eventsRepository,
 	IasPublisherOptimization,
-	OpenWeb,
 	PartnerPipeline,
-	Stroer,
-	System1,
 	utils,
 	videoDisplayTakeoverSynchronizer,
-	Wunderkind,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -40,12 +36,8 @@ export class UcpMobileAdsMode implements DiProcess {
 		private gptSetup: GptSetup,
 		private iasPublisherOptimization: IasPublisherOptimization,
 		private jwpStrategyRules: JwpStrategyRulesSetup,
-		private openWeb: OpenWeb,
 		private playerSetup: PlayerSetup,
-		private stroer: Stroer,
-		private system1: System1,
 		private wadRunner: WadRunner,
-		private wunderkind: Wunderkind,
 	) {}
 
 	execute(): void {
@@ -60,10 +52,6 @@ export class UcpMobileAdsMode implements DiProcess {
 				this.iasPublisherOptimization,
 				this.confiant,
 				this.connatix,
-				this.stroer,
-				this.system1,
-				this.wunderkind,
-				this.openWeb,
 				this.playerSetup.setOptions({
 					dependencies: [this.wadRunner.initialized],
 				}),

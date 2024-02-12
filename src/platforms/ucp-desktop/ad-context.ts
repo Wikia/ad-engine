@@ -61,9 +61,6 @@ export const basicContext = {
 				'incontent_player',
 			],
 		},
-		durationMedia: {
-			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',
-		},
 		connatix: {
 			cid: '016551d5-7095-47c0-a46b-fd0cb9bf4c72',
 			playerId: '96b46997-3bf8-4c9d-9761-c06758f44607',
@@ -83,9 +80,6 @@ export const basicContext = {
 		},
 		externalLogger: {
 			endpoint: '/wikia.php?controller=AdEngine&method=postLog',
-		},
-		openWeb: {
-			placementSelector: '#WikiaAdInContentPlaceHolder',
 		},
 	},
 	slotGroups: {
@@ -108,9 +102,6 @@ export const basicContext = {
 		wad: {
 			enabled: false,
 			blocking: false,
-			btRec: {
-				enabled: false,
-			},
 		},
 		preload: {
 			gpt: false,

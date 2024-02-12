@@ -32,7 +32,6 @@ export class FmrRotator {
 	constructor(
 		private slotName: string,
 		private fmrPrefix: string,
-		private btRec,
 		private config: FmrRotatorConfig,
 	) {}
 
@@ -42,11 +41,7 @@ export class FmrRotator {
 			context.get(`slots.${this.slotName}.recirculationElementSelector`),
 		);
 
-		if (this.btRec?.isEnabled()) {
-			this.initializeBTRotation();
-		} else {
-			this.initializeStandardRotation();
-		}
+		this.initializeStandardRotation();
 	}
 
 	private initializeStandardRotation(): void {
@@ -110,17 +105,6 @@ export class FmrRotator {
 				this.recirculationElement?.getBoundingClientRect()?.top;
 			this.startFirstRotation();
 		}, this.refreshInfo.refreshDelay);
-	}
-
-	private initializeBTRotation(): void {
-		this.pushNextSlot();
-
-		let recirculationVisible = false;
-
-		setInterval(() => {
-			this.swapRecirculation(recirculationVisible);
-			recirculationVisible = !recirculationVisible;
-		}, this.refreshInfo.refreshDelay + this.refreshInfo.recSlotViewed);
 	}
 
 	private startFirstRotation(): void {
