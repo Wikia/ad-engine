@@ -1,5 +1,5 @@
 import { Action, Communicator, setupPostQuecast } from '@wikia/post-quecast';
-import { debounce, fromEventPattern, interval, merge, Observable, Subject } from 'rxjs';
+import { fromEventPattern, merge, Observable, Subject } from 'rxjs';
 import { filter, shareReplay, skip, take } from 'rxjs/operators';
 import { EventOptions, eventsRepository } from './event-types';
 import { globalAction, isGlobalAction } from './global-action';
@@ -43,16 +43,6 @@ export class CommunicationService {
 
 	emit(event: EventOptions, payload?: object): void {
 		this.dispatch(this.getGlobalAction(event)(payload));
-	}
-
-	onMany(events: EventOptions[], callback: (payload?: any) => void, once = true): void {
-		this.action$
-			.pipe(
-				ofType(...events.map((event) => this.getGlobalAction(event))),
-				debounce((i) => interval(10 * i)),
-				once ? take(1) : skip(0),
-			)
-			.subscribe(callback);
 	}
 
 	on(event: EventOptions, callback: (payload?: any) => void, once = true): void {

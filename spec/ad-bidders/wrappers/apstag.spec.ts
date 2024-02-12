@@ -5,7 +5,7 @@ import { scriptLoader } from '@wikia/core/utils';
 import { OpenRtb2Object } from '@wikia/platforms/shared';
 import { expect } from 'chai';
 import Cookies from 'js-cookie';
-import { SinonSpy } from 'sinon';
+import { SinonFakeTimers, SinonSpy, useFakeTimers } from 'sinon';
 
 describe('Apstag', () => {
 	let apstagInitStub: SinonSpy;
@@ -14,6 +14,7 @@ describe('Apstag', () => {
 	let apstagUpaStub: SinonSpy;
 	let apstagDpaStub: SinonSpy;
 	let scriptLoaderStub: SinonSpy;
+	let clock: SinonFakeTimers;
 	const amazonId = 12345;
 
 	beforeEach(() => {
@@ -36,10 +37,17 @@ describe('Apstag', () => {
 			return Promise.resolve(undefined);
 		});
 		context.set('bidders.a9.amazonId', amazonId);
+		clock = useFakeTimers({
+			now: Date.now(),
+			shouldAdvanceTime: true,
+			advanceTimeDelta: 650,
+			toFake: ['Date', 'setTimeout', 'clearTimeout'],
+		});
 	});
 
 	afterEach(() => {
 		context.remove('bidders.a9.amazonId');
+		clock.restore();
 	});
 
 	describe('make', () => {
@@ -157,6 +165,8 @@ describe('Apstag', () => {
 
 			// when
 			await apstag.init();
+			// proceed time as workaround debounce decorator
+			await clock.nextAsync();
 
 			// then
 			expect(apstagInitStub.calledOnce, 'apstag.init not called').to.be.true;
@@ -181,6 +191,8 @@ describe('Apstag', () => {
 
 			// when
 			await apstag.init();
+			// proceed time as workaround debounce decorator
+			await clock.nextAsync();
 
 			// then
 			expect(apstagInitStub.calledOnce, 'apstag.init not called').to.be.true;
@@ -210,6 +222,8 @@ describe('Apstag', () => {
 
 			// when
 			await apstag.init();
+			// proceed time as workaround debounce decorator
+			await clock.nextAsync();
 
 			// then
 			expect(apstagInitStub.calledOnce, 'apstag.init not called').to.be.true;
@@ -299,8 +313,14 @@ describe('Apstag', () => {
 				.returns(Date.now().toString());
 
 			// when
+			// call #1
 			await apstag.sendHEM('hash');
+			// proceed time as workaround debounce decorator
+			await clock.nextAsync();
+			// call #2
 			await apstag.sendHEM('hash');
+			// proceed time as workaround debounce decorator
+			await clock.nextAsync();
 
 			// then
 			expect(apstagRpaStub.calledOnce, 'apstag.rpa not called once').to.be.true;
@@ -333,6 +353,8 @@ describe('Apstag', () => {
 
 			// when
 			await apstag.sendHEM('hash');
+			// proceed time as workaround debounce decorator
+			await clock.nextAsync();
 
 			// then
 			expect(apstagRpaStub.calledOnce, 'apstag.rpa not called once').to.be.true;
@@ -364,6 +386,8 @@ describe('Apstag', () => {
 
 				// when
 				await apstag.sendHEM('hash', consents);
+				// proceed time as workaround debounce decorator
+				await clock.nextAsync();
 
 				// then
 				expect(apstagUpaStub.calledOnce, 'apstag.upa not called once').to.be.true;
@@ -389,6 +413,8 @@ describe('Apstag', () => {
 
 			// when
 			await apstag.sendHEM('hash');
+			// proceed time as workaround debounce decorator
+			await clock.nextAsync();
 
 			// then
 			expect(apstagRpaStub.notCalled, 'apstag.rpa call not expected').to.be.true;
@@ -410,6 +436,8 @@ describe('Apstag', () => {
 
 			// when
 			await apstag.sendHEM('hash');
+			// proceed time as workaround debounce decorator
+			await clock.nextAsync();
 
 			// then
 			expect(apstagRpaStub.notCalled, 'apstag.rpa call not expected').to.be.true;
@@ -427,6 +455,8 @@ describe('Apstag', () => {
 
 			// when
 			await apstag.sendHEM('hash');
+			// proceed time as workaround debounce decorator
+			await clock.nextAsync();
 
 			// then
 			expect(apstagRpaStub.notCalled, 'apstag.rpa call not expected').to.be.true;
