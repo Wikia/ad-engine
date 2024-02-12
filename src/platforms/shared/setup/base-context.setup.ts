@@ -1,9 +1,7 @@
 import {
-	communicationService,
 	context,
 	Dictionary,
 	DiProcess,
-	eventsRepository,
 	globalContextService,
 	InstantConfigService,
 	setupNpaContext,
@@ -55,14 +53,6 @@ export class BaseContextSetup implements DiProcess {
 		context.set('state.showAds', this.noAdsDetector.isAdsMode());
 		context.set('state.deviceType', utils.client.getDeviceType());
 		context.set('state.isLogged', !!context.get('wiki.wgUserId'));
-
-		if (this.instantConfig.get('icPrebidium')) {
-			context.set('state.provider', 'prebidium');
-			communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
-				isLoaded: false,
-				adProduct: universalAdPackage.DEFAULT_UAP_TYPE,
-			});
-		}
 	}
 
 	private setOptionsContext(): void {
