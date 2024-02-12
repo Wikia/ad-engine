@@ -37,4 +37,18 @@ describe('Prebid Id Retriever', () => {
 			}),
 		);
 	});
+
+	it('can generate boi empty string', async () => {
+		const retriever = IdRetriever.get();
+		pbjsStub.getUserIdsAsEids.returns([{ source: 'foo', uids: [{ id: 'bar' }] }]);
+		const idString = await retriever.generateBoiString();
+		expect(idString).to.equal('AAAAAxxxxxxxxxxx');
+	});
+
+	it('can generate boi string with one partner', async () => {
+		const retriever = IdRetriever.get();
+		pbjsStub.getUserIdsAsEids.returns([{ source: 'id5-sync.com', uids: [{ id: 'bar' }] }]);
+		const idString = await retriever.generateBoiString();
+		expect(idString).to.equal('APAAAxxxxxxxxxxx');
+	});
 });

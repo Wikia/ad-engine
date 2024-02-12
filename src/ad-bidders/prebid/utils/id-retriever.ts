@@ -18,7 +18,7 @@ export class IdRetriever {
 	// Generated IDString will be sent to GAM in this form:
 	// PAAAAxxxxxxxxxxxxxxxx
 	// Where P is Present, A is Absent and x is empty placeholder for new IDs
-	private async generateBoiString() {
+	async generateBoiString() {
 		const userIds: string[] = (await this.getIds()).map((id) => id.source);
 		const idString = new Array(this.ID_STRING_LENGTH).fill('x');
 		Object.keys(this.ID_MAP).forEach((idTouple) => {
