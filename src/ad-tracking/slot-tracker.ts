@@ -35,7 +35,7 @@ class SlotTracker extends BaseTracker implements BaseTrackerInterface {
 			return;
 		}
 
-		const slotBiddersTrackingCompiler = ({ data, slot }: CompilerPartial) => {
+		const slotTrackingCompiler = ({ data, slot }: CompilerPartial) => {
 			return { slot, data };
 		};
 
@@ -53,7 +53,7 @@ class SlotTracker extends BaseTracker implements BaseTrackerInterface {
 					this.onRenderEndedStatusToTrack.includes(status) ||
 					slot.getConfigProperty('trackEachStatus')
 				) {
-					callback(slotBiddersTrackingCompiler(this.compileData(slot)));
+					callback(slotTrackingCompiler(this.compileData(slot)));
 					return;
 				}
 			}
@@ -62,14 +62,12 @@ class SlotTracker extends BaseTracker implements BaseTrackerInterface {
 				this.onChangeStatusToTrack.includes(status) ||
 				slot.getConfigProperty('trackEachStatus')
 			) {
-				callback(slotBiddersTrackingCompiler(this.compileData(slot)));
+				callback(slotTrackingCompiler(this.compileData(slot)));
 			}
 		});
 
 		communicationService.onSlotEvent(AdSlotEvent.CUSTOM_EVENT, async ({ slot, payload }) => {
-			callback(
-				slotBiddersTrackingCompiler(this.compileData(slot, null, { ad_status: payload?.status })),
-			);
+			callback(slotTrackingCompiler(this.compileData(slot, null, { ad_status: payload?.status })));
 		});
 	}
 }

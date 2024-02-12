@@ -59,11 +59,6 @@ export interface UapLoadStatus {
 	adProduct: string;
 }
 
-export interface BiddersEventPayload {
-	provider: string;
-	slotName: string;
-}
-
 export interface AdSlotEventPayload {
 	event: string;
 	slot: AdSlot;

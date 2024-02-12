@@ -24,15 +24,6 @@ export const trackingUrls = {
 			aggregationLimit: 5,
 		},
 	},
-	AD_ENG_BIDDERS: {
-		name: 'AdEngBidders',
-		icbmName: 'bidders',
-		url: 'https://beacon.wikia-services.com/__track/special/adengbidders',
-		allowed: {
-			sampling: false,
-			aggregation: false,
-		},
-	},
 	AD_ENG_VIEWABILITY: {
 		name: 'AdEngViewability',
 		icbmName: 'viewability',
