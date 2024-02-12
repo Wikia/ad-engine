@@ -1,6 +1,8 @@
+import { communicationService, EventOptions, eventsRepository } from '@wikia/communication';
+import { CommunicationService } from '@wikia/communication/communication-service';
 import { AdSlot } from '@wikia/core';
 import { slotRefresher } from '@wikia/core/services/slot-refresher';
-import sinon, { assert } from 'sinon';
+import sinon, { assert, SinonStubbedInstance } from 'sinon';
 
 describe('slot-refresher', () => {
 	const basicConfig = {
@@ -22,6 +24,7 @@ describe('slot-refresher', () => {
 		targeting: {
 			rv: 1,
 		},
+		getDefaultSizes: () => [],
 	};
 
 	let clock;
@@ -30,6 +33,7 @@ describe('slot-refresher', () => {
 	let loggerSpy;
 	let refreshSpy;
 	let addEventListenerSpy;
+	let communicationServiceStub: SinonStubbedInstance<CommunicationService>;
 
 	before(function () {
 		clock = sinon.useFakeTimers({
@@ -39,6 +43,9 @@ describe('slot-refresher', () => {
 		window.googletag = {
 			sizeMapping: () => ({
 				addSize: () => ({
+					build: sinon.spy(),
+				}),
+				build: () => ({
 					build: sinon.spy(),
 				}),
 			}),
@@ -55,6 +62,13 @@ describe('slot-refresher', () => {
 		refreshSpy = global.sandbox.spy();
 		addEventListenerSpy = global.sandbox.spy();
 		slotRefresher.slotsInTheViewport = ['test_slot'];
+
+		communicationServiceStub = global.sandbox.stub(communicationService);
+		communicationServiceStub.emit
+			.withArgs(eventsRepository.BIDDERS_CALL_PER_GROUP)
+			.callsFake((event: EventOptions, payload: { group: any; callback: () => void }) => {
+				payload.callback();
+			});
 	});
 
 	after(function () {
