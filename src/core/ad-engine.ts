@@ -2,6 +2,7 @@ import { communicationService, eventsRepository } from '@ad-engine/communication
 import { scrollListener } from './listeners';
 import { AdSlot } from './models';
 import { GptProvider, Provider } from './providers';
+import { NothingProvider } from './providers/nothing-provider';
 import {
 	btfBlockerService,
 	context,
@@ -99,6 +100,8 @@ export class AdEngine {
 
 	private createProvider(providerName: string) {
 		switch (providerName) {
+			case 'nothing':
+				return new NothingProvider();
 			default:
 				return new GptProvider();
 		}
