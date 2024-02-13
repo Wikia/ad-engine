@@ -67,4 +67,5 @@ interface Window {
 			getVariationMap: () => Record<string, { id: string; name: string }>;
 		};
 	};
+	OneTrust?: any;
 }

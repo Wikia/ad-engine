@@ -53,6 +53,9 @@ export class IdentitySetup implements DiProcess {
 					targetingService.set('monetization', utils.isCoppaSubject() ? 'restricted' : 'regular');
 				}
 
+				// TODO: Remove once OneTrust replaces Tracking Opt In
+				this.setCmpTargetingKey();
+
 				utils.logger(this.logGroup, 'ready');
 				resolve();
 			});
@@ -67,5 +70,11 @@ export class IdentitySetup implements DiProcess {
 				targetingService.set('over_18', over18);
 			}
 		});
+	}
+
+	setCmpTargetingKey() {
+		const cmp = window.OneTrust !== null ? '1t' : 'toi';
+
+		targetingService.set('cmp', cmp);
 	}
 }
