@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { pbjsFactory, targetingService, utils } from '@ad-engine/core';
+import { pbjsFactory, targetingService, UniversalStorage, utils } from '@ad-engine/core';
 
 export class IdRetriever {
 	private static _instance: IdRetriever;
@@ -10,9 +10,8 @@ export class IdRetriever {
 	private readonly ID_MAP = {
 		0: 'yahoo.com',
 		1: 'id5-sync.com',
-		2: 'liveConnect',
-		3: 'Experian',
-		4: 'liveintent.com',
+		2: 'HEM',
+		3: 'liveintent.com',
 	};
 
 	static get(): IdRetriever {
@@ -20,9 +19,9 @@ export class IdRetriever {
 	}
 
 	// Generated IDString will be sent to GAM in this form:
-	// PAAAAxxxxxxxxxxxxxxxx
-
+	// PZALxxxxxxxxxxxxxxxxx
 	// Where P is Present, A is Absent and x is empty placeholder for new IDs
+	// L, M and Z are partner-specific values. L = LiveIntent HEM, M = MediaWiki HEM, Z = id5=0
 	async generateBoiString() {
 		const prebidUserIds = await this.getIds();
 		const idSources: string[] = prebidUserIds.map((id) => id.source);
@@ -31,10 +30,11 @@ export class IdRetriever {
 			const idProvider = this.ID_MAP[idTouple];
 			switch (idProvider) {
 				case 'id5-sync.com':
-					idString[idTouple] = this.getID5BitStatus(prebidUserIds);
-					break;
+					return (idString[idTouple] = this.getID5BitStatus(prebidUserIds));
+				case 'HEM':
+					return (idString[idTouple] = this.getHEMBitStatus());
 				default:
-					idString[idTouple] = idSources.includes(this.ID_MAP[idTouple]) ? 'P' : 'A';
+					return (idString[idTouple] = idSources.includes(this.ID_MAP[idTouple]) ? 'P' : 'A');
 			}
 		});
 		utils.logger(this.logGroup, 'Generated BOI string ', idString);
@@ -44,7 +44,7 @@ export class IdRetriever {
 	async getIds(): Promise<PrebidEids[]> {
 		utils.logger(this.logGroup, 'Retrieving tracking ids');
 		this.pbjs = await pbjsFactory.init();
-		return this.pbjs.getUserIdsAsEids();
+		return this.pbjs.getUserIdsAsEids() || [];
 	}
 
 	async saveCurrentPrebidIds(): Promise<void> {
@@ -69,7 +69,21 @@ export class IdRetriever {
 		if (!id5IdentityObject) {
 			return 'A';
 		}
-		return id5IdentityObject.uids[0]?.id === '0' ? '0' : 'P';
+		return id5IdentityObject.uids[0]?.id === '0' ? 'Z' : 'P';
+	}
+
+	// HEM bit status is determined by the presence of HEM provided by LiveIntent (L) or MediaWiki (M).
+	// In case if there is no HEM present, the bit is set to P.
+	private getHEMBitStatus(): string {
+		const storage = new UniversalStorage();
+		switch (true) {
+			case !!storage.getItem('liveConnect'):
+				return 'L';
+			case !!window.ads.context?.opts?.userEmailHashes:
+				return 'M';
+			default:
+				return 'A';
+		}
 	}
 }
 
