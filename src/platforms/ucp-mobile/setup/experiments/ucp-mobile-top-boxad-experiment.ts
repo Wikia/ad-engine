@@ -1,5 +1,8 @@
 import {
 	context,
+	defineExperiment,
+	Experiment,
+	getExperiment,
 	InsertMethodType,
 	InstantConfigService,
 	targetingService,
@@ -12,6 +15,8 @@ interface TopBoxadConfigExperiment {
 	anchorSelector: string;
 	insertMethod: InsertMethodType;
 }
+
+type RunningExperimentType = Experiment | null | undefined;
 
 const logGroup = 'UcpMobileTopBoxadExperiment';
 
@@ -27,30 +32,56 @@ export class UcpMobileTopBoxadExperiment {
 		insertMethod: 'after',
 	};
 
+	private pathfinderExperimentVariantNames = {
+		control: 'top-boxad-paragraphs-mobile-experiment-control',
+		active: 'top-boxad-paragraphs-mobile-experiment-active',
+	};
+
+	private pathfinderExperimentVariants = [
+		defineExperiment({
+			name: this.pathfinderExperimentVariantNames.active,
+			buckets: ['Y', 'Z'],
+		}),
+		defineExperiment({
+			name: this.pathfinderExperimentVariantNames.control,
+			buckets: ['W', 'X'],
+		}),
+	];
+
+	private pathfinderActiveExperimentVariant: RunningExperimentType = getExperiment(
+		this.pathfinderExperimentVariants,
+	);
+
 	constructor(
 		private instantConfig: InstantConfigService,
 		private paragraphHelper: UcpMobileTopBoxadParagraphHelper,
 	) {}
 
 	public getConfig(): TopBoxadConfigExperiment {
-		if (this.isExperimentEnabled() && !this.isHome()) {
+		if (this.isExperimentEnabled()) {
 			utils.logger(logGroup, 'New topbox_ad config');
 			return this.getExperimentConfig();
 		}
 
 		utils.logger(logGroup, this.isHome() ? 'Home page' : 'Default config');
-		this.addToTargeting('top_boxad_default');
 		return this.isHome() ? this.defaultHomeConfig : this.defaultNonHomeConfig;
 	}
 
 	private getExperimentConfig(): TopBoxadConfigExperiment {
+		if (this.isPathfinderControlVariant()) {
+			utils.logger(logGroup, 'Experiment but control group');
+			this.addToTargeting(this.pathfinderExperimentVariantNames.control);
+			return this.defaultNonHomeConfig;
+		}
+
+		this.addToTargeting(this.pathfinderExperimentVariantNames.active);
+
 		const paragraphSelector = this.paragraphHelper.getParagraphSelector();
 		const paragraphs = Array.from(document.querySelectorAll(paragraphSelector));
 		const firstParagraph = this.paragraphHelper.getFirstParagraph(paragraphs);
 
 		if (!this.paragraphHelper.existParagraph(firstParagraph)) {
 			utils.logger(logGroup, 'First paragraph does not exist');
-			this.addToTargeting('top_boxad_default');
 			return this.defaultNonHomeConfig;
 		}
 
@@ -71,13 +102,11 @@ export class UcpMobileTopBoxadExperiment {
 			return this.getSecondParagraphConfig(secondParagraph);
 		}
 
-		this.addToTargeting('top_boxad_default');
 		return this.defaultNonHomeConfig;
 	}
 
 	private getSecondParagraphConfig(secondParagraph: { element: Element; nthOfType: number }) {
 		utils.logger(logGroup, 'Short first <p>, ad after second <p>');
-		this.addToTargeting('top_boxad_second_paragraph');
 
 		return this.prepareConfig(
 			`${this.paragraphHelper.getNthParagraphSelector(secondParagraph.nthOfType)}, ${
@@ -89,7 +118,6 @@ export class UcpMobileTopBoxadExperiment {
 
 	private getLargeParagraphConfig(firstParagraph: { element: Element; nthOfType: number }) {
 		utils.logger(logGroup, 'Large first <p>');
-		this.addToTargeting('top_boxad_large_paragraph');
 
 		return this.prepareConfig(
 			`${this.paragraphHelper.getNthParagraphSelector(firstParagraph.nthOfType)}, ${
@@ -101,7 +129,6 @@ export class UcpMobileTopBoxadExperiment {
 
 	private getBeforeFirstH2Config(firstParagraph: { element: Element; nthOfType: number }) {
 		utils.logger(logGroup, 'One <p> before <h2>');
-		this.addToTargeting('top_boxad_one_paragraph');
 
 		return this.prepareConfig(
 			`${this.paragraphHelper.getNthParagraphSelector(firstParagraph.nthOfType)}, ${
@@ -129,7 +156,11 @@ export class UcpMobileTopBoxadExperiment {
 	}
 
 	private isExperimentEnabled() {
-		return this.instantConfig.get('icExperiments', []).includes('topBoxadNewLogic');
+		return (
+			this.instantConfig.get('icExperiments', []).includes('topBoxadNewLogic') &&
+			!this.isHome() &&
+			this.pathfinderActiveExperimentVariant
+		);
 	}
 
 	private isHome() {
@@ -146,5 +177,11 @@ export class UcpMobileTopBoxadExperiment {
 		const tocElement = document.querySelector('.mw-parser-output > #toc');
 
 		return element.nextElementSibling == tocElement && tocElement.nextElementSibling == firstH2;
+	}
+
+	private isPathfinderControlVariant() {
+		return (
+			this.pathfinderActiveExperimentVariant?.name === this.pathfinderExperimentVariantNames.control
+		);
 	}
 }
