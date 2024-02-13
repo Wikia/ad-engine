@@ -25,7 +25,7 @@ export class IdRetriever {
 			idString[idTouple] = userIds.includes(this.ID_MAP[idTouple]) ? 'P' : 'A';
 		});
 		utils.logger(this.logGroup, 'Generated BOI string ', idString);
-		return idString.join('');
+		return idString;
 	}
 
 	static get(): IdRetriever {
