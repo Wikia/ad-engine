@@ -51,4 +51,11 @@ describe('Prebid Id Retriever', () => {
 		const idString = await retriever.generateBoiString();
 		expect(idString).to.equal('APAAAxxxxxxxxxxx');
 	});
+
+	it('can generate proper status for id5', async () => {
+		const retriever = IdRetriever.get();
+		pbjsStub.getUserIdsAsEids.returns([{ source: 'id5-sync.com', uids: [{ id: '0' }] }]);
+		const idString = await retriever.generateBoiString();
+		expect(idString).to.equal('APAAAxxxxxxxxxxx');
+	});
 });
