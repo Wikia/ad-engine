@@ -42,7 +42,7 @@ export class IdRetriever {
 	async getIds(): Promise<PrebidEids[]> {
 		utils.logger(this.logGroup, 'Retrieving tracking ids');
 		this.pbjs = await pbjsFactory.init();
-		return this.pbjs.getUserIdsAsEids() || [];
+		return this.pbjs.getUserIdsAsEids() ?? [];
 	}
 
 	async saveCurrentPrebidIds(): Promise<void> {
