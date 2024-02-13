@@ -20,7 +20,7 @@ export class IdRetriever {
 	// Where P is Present, A is Absent and x is empty placeholder for new IDs
 	async generateBoiString() {
 		const userIds: string[] = (await this.getIds()).map((id) => id.source);
-		const idString = new Array(this.ID_STRING_LENGTH).fill('x');
+		const idString = 'x'.repeat(this.ID_STRING_LENGTH);
 		Object.keys(this.ID_MAP).forEach((idTouple) => {
 			idString[idTouple] = userIds.includes(this.ID_MAP[idTouple]) ? 'P' : 'A';
 		});
