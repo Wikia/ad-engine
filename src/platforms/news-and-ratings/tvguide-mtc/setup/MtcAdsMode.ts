@@ -30,5 +30,18 @@ export class MtcAdsMode implements DiProcess {
 			'top-leaderboard',
 			true,
 		);
+
+		communicationService.onSlotEvent(
+			AdSlotEvent.SHOWED_EVENT,
+			() => {
+				const adSlot = slotService.get('mtop-leaderboard');
+
+				if (adSlot) {
+					adSlot.emit(AdSlotEvent.SLOT_LOADED_EVENT);
+				}
+			},
+			'mtop-leaderboard',
+			true,
+		);
 	}
 }
