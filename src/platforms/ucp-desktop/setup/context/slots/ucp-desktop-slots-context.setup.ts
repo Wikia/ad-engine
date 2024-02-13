@@ -51,6 +51,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'top',
 				},
+				slotRefreshing: true,
 			},
 			incontent_leaderboard: {
 				adProduct: 'incontent_leaderboard',
