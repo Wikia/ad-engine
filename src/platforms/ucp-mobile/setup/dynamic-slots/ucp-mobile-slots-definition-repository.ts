@@ -128,7 +128,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			slotCreatorConfig: {
 				slotName,
 				anchorSelector: '.incontent-boxad',
-				avoidConflictWith: ['.ad-slot', '#incontent_player'],
+				avoidConflictWith: ['.ad-slot'],
 				insertMethod: 'append',
 				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
 				repeat: {
