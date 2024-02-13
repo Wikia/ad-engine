@@ -7,7 +7,7 @@ export class IdRetriever {
 	private readonly logGroup = 'bidder-id-retriever';
 	private pbjs: Pbjs;
 
-	private readonly ID_MAP: { [key: number]: (sources: PrebidEids[]) => string } = {
+	private readonly ID_MAP: Record<number, (sources: PrebidEids[]) => string>= {
 		0: (sources: PrebidEids[]) => this.getDefaultBitStatus(sources, 'yahoo.com'),
 		1: (sources: PrebidEids[]) => this.getID5BitStatus(sources),
 		2: () => this.getHEMBitStatus(),
