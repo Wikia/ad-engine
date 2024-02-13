@@ -165,7 +165,6 @@ export class UcpMobileSlotsDefinitionRepository {
 			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder', '.incontent-boxad'],
 			repeatStart: 1,
 			repeatLimit: count,
-			repeatExceptions: [],
 		};
 
 		slotPlaceholderInjector.injectAndRepeat(icbPlaceholderConfig, adSlotCategory);

@@ -21,7 +21,6 @@ export interface SlotPlaceholderConfig {
 export interface RepeatableSlotPlaceholderConfig extends SlotPlaceholderConfig {
 	repeatStart: number;
 	repeatLimit: number;
-	repeatExceptions?: Array<any>;
 }
 
 class SlotPlaceholderInjector {
@@ -36,9 +35,7 @@ class SlotPlaceholderInjector {
 		let repeat = placeholderConfig.repeatStart;
 
 		while (repeat <= placeholderConfig.repeatLimit) {
-			const placeholder = this.inject(
-				this.placeholderConfigRepeatException(placeholderConfig, repeat),
-			);
+			const placeholder = this.inject(placeholderConfig);
 
 			if (!placeholder) {
 				return this.getLastPlaceholderNumber(repeat);
@@ -50,27 +47,6 @@ class SlotPlaceholderInjector {
 		}
 
 		return this.getLastPlaceholderNumber(repeat);
-	}
-
-	private placeholderConfigRepeatException(
-		placeholderConfig: RepeatableSlotPlaceholderConfig,
-		currentRepeat: number,
-	): RepeatableSlotPlaceholderConfig {
-		if (!placeholderConfig.repeatExceptions) {
-			return placeholderConfig;
-		}
-
-		let results: Array<any> = [];
-		placeholderConfig.repeatExceptions.forEach((exceptionCheck) => {
-			results.push(exceptionCheck(currentRepeat));
-		});
-		results = results.filter((result) => result);
-
-		if (!results.length) {
-			return placeholderConfig;
-		}
-
-		return { ...placeholderConfig, ...results[0] };
 	}
 
 	inject(placeholderConfig: SlotPlaceholderConfigType): HTMLElement | null {
