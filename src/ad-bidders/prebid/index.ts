@@ -24,6 +24,7 @@ import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider
 import { adaptersRegistry } from './adapters-registry';
 import { id5 } from './id5';
 import { intentIQ } from './intent-iq';
+import { connectedId } from './liveintent-connected-id';
 import { liveRampId, LiveRampIdTypes } from './liveramp-id';
 import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice, roundBucketCpm } from './price-helper';
@@ -168,6 +169,7 @@ export class PrebidProvider extends BidderProvider {
 			...this.configureTCF(),
 			...this.configureS2sBidding(),
 			...this.configureJwpRtd(),
+			...this.configureDSA(),
 			...context.get('bidders.prebid.config'),
 		};
 
@@ -229,6 +231,21 @@ export class PrebidProvider extends BidderProvider {
 		this.configureId5();
 		this.configureLiveRamp();
 		this.configureYahooConnectId();
+		this.configureLiveIntentConnectedId();
+	}
+
+	private configureLiveIntentConnectedId(): void {
+		const liveIntentConnectedIdConfig = connectedId.getConfig();
+		if (liveIntentConnectedIdConfig) {
+			this.prebidConfig.userSync.userIds.push(liveIntentConnectedIdConfig);
+			targetingService.set('li-module-enabled', ['on']);
+			communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+				status: 'liveintent_connectid_started',
+			});
+		} else {
+			this.prebidConfig.userSync.userIds.push([]);
+			targetingService.set('li-module-enabled', ['off']);
+		}
 	}
 
 	private configureLiveRamp(): void {
@@ -268,7 +285,7 @@ export class PrebidProvider extends BidderProvider {
 
 		id5.enableAnalytics(pbjs);
 		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
-			status: 'id5_done',
+			status: 'id5_started',
 		});
 	}
 
@@ -279,7 +296,7 @@ export class PrebidProvider extends BidderProvider {
 			return;
 		}
 
-		communicationService.emit(eventsRepository.YAHOO_LOADED);
+		communicationService.emit(eventsRepository.YAHOO_STARTED);
 
 		this.prebidConfig.userSync.userIds.push(yahooConnectIdConfig);
 	}
@@ -410,6 +427,25 @@ export class PrebidProvider extends BidderProvider {
 			};
 		}
 
+		return {};
+	}
+
+	private configureDSA(): object {
+		if (context.get('options.dsa.enabled')) {
+			return {
+				ortb2: {
+					regs: {
+						ext: {
+							dsa: {
+								dsarequired: 1,
+								pubrender: 2,
+								datatopub: 2,
+							},
+						},
+					},
+				},
+			};
+		}
 		return {};
 	}
 
