@@ -2,6 +2,7 @@ import { communicationService, eventsRepository } from '@ad-engine/communication
 import { scrollListener } from './listeners';
 import { AdSlot } from './models';
 import { GptProvider, Nativo, NativoProvider, PrebidiumProvider, Provider } from './providers';
+import { NothingProvider } from './providers/nothing-provider';
 import {
 	btfBlockerService,
 	context,
@@ -110,6 +111,8 @@ export class AdEngine {
 				return new PrebidiumProvider();
 			case 'nativo':
 				return new NativoProvider(window.ntv);
+			case 'nothing':
+				return new NothingProvider();
 			default:
 				return new GptProvider();
 		}
