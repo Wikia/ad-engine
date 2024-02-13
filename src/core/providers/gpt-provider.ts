@@ -330,13 +330,10 @@ export class GptProvider implements Provider {
 		const gptSlot = activeSlots.find((slot) => slot.getSlotElementId() === adSlot.getSlotName());
 		const { targeting } = adSlot;
 		gptSlot.clearTargeting();
-		console.log(`slot-refresher ${adSlot.getSlotName()}`, adSlot.getDefaultSizes());
 
 		const sizeMapping = window.googletag.sizeMapping();
-		console.log('>>> [AE], refreshSlot', adSlot, adSlot.getDefaultSizes());
 		adSlot.getDefaultSizes().forEach((adSize) => {
 			sizeMapping.addSize(AllViewportSizes, adSize);
-			console.log('>>> [AE], addSize', sizeMapping, adSize);
 		});
 
 		gptSlot.defineSizeMapping(sizeMapping.build());
