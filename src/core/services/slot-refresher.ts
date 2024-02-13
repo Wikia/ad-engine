@@ -57,7 +57,6 @@ function refreshWhenBackInViewport(adSlot: AdSlot) {
 class SlotRefresher {
 	config: Config;
 	slotsInTheViewport: Array<string> = [];
-	collapseLock = false;
 
 	log(...logValues) {
 		logger(logGroup, ...logValues);
@@ -129,9 +128,8 @@ class SlotRefresher {
 		communicationService.onSlotEvent(
 			AdSlotStatus.STATUS_COLLAPSE,
 			({ adSlotName, slot }: EventPayload) => {
-				if (this.collapseLock || !this.isSlotRefreshable(adSlotName)) return;
+				if (!this.isSlotRefreshable(adSlotName)) return;
 				slot.hide();
-				this.collapseLock = true;
 
 				logger(`${adSlotName} collapse`);
 				this.refreshSlot(slot);
@@ -141,7 +139,6 @@ class SlotRefresher {
 
 					setTimeout(() => {
 						slot.show();
-						this.collapseLock = false;
 					}, this.config.timeoutMS);
 				}, this.config.timeoutMS);
 			},
