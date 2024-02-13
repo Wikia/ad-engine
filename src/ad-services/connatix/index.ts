@@ -51,6 +51,7 @@ export class Connatix extends BaseServiceSetup {
 		const connatixPlayer = new ConnatixPlayer();
 		this.playerInjector = playerInjector ? playerInjector : new PlayerInjector(connatixPlayer);
 		this.tracker = tracker ? tracker : new ConnatixTracker();
+		this.dwTracker = dwTracker ? dwTracker : new DataWarehouseTracker();
 	}
 
 	async call(): Promise<void> {

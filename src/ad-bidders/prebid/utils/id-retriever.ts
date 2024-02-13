@@ -20,12 +20,12 @@ export class IdRetriever {
 	// Where P is Present, A is Absent and x is empty placeholder for new IDs
 	async generateBoiString() {
 		const idSources: string[] = (await this.getIds()).map((id) => id.source);
-		const idString = new Array(this.ID_STRING_LENGTH).fill('x');
+		const idString = 'x'.repeat(this.ID_STRING_LENGTH);
 		Object.keys(this.ID_MAP).forEach((idTouple) => {
 			idString[idTouple] = idSources.includes(this.ID_MAP[idTouple]) ? 'P' : 'A';
 		});
 		utils.logger(this.logGroup, 'Generated BOI string ', idString);
-		return idString.join('');
+		return idString;
 	}
 
 	static get(): IdRetriever {

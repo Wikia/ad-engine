@@ -33,7 +33,7 @@ export class NoAdsMode implements DiProcess {
 
 	execute(): void {
 		this.removeAdSlotsPlaceholders();
-		this.noAdsDetector.addReasons(window.ads.context.opts.noAdsReasons);
+		this.noAdsDetector.addReasons(window.ads.context?.opts?.noAdsReasons ?? []);
 		this.dispatchJWPlayerSetupAction();
 		this.dispatchVideoSetupAction();
 		if (context.get('state.isLogged')) {
