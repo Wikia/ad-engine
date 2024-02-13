@@ -127,20 +127,10 @@ class SlotRefresher {
 
 		communicationService.onSlotEvent(
 			AdSlotStatus.STATUS_COLLAPSE,
-			({ adSlotName, slot }: EventPayload) => {
+			({ adSlotName }: EventPayload) => {
 				if (!this.isSlotRefreshable(adSlotName)) return;
-				slot.hide();
 
 				logger(`${adSlotName} collapse`);
-				this.refreshSlot(slot);
-
-				setTimeout(() => {
-					logger(`${adSlotName} showing after collapse`);
-
-					setTimeout(() => {
-						slot.show();
-					}, this.config.timeoutMS);
-				}, this.config.timeoutMS);
 			},
 		);
 
