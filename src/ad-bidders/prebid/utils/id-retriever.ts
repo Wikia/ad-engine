@@ -7,11 +7,11 @@ export class IdRetriever {
 	private readonly logGroup = 'bidder-id-retriever';
 	private pbjs: Pbjs;
 
-	private readonly ID_MAP = {
-		0: 'yahoo.com',
-		1: 'id5-sync.com',
-		2: 'HEM',
-		3: 'liveintent.com',
+	private readonly ID_MAP: { [key: number]: (sources: PrebidEids[]) => string } = {
+		0: (sources: PrebidEids[]) => this.getDefaultBitStatus(sources, 'yahoo.com'),
+		1: (sources: PrebidEids[]) => this.getID5BitStatus(sources),
+		2: () => this.getHEMBitStatus(),
+		3: (sources: PrebidEids[]) => this.getDefaultBitStatus(sources, 'liveintent.com'),
 	};
 
 	static get(): IdRetriever {
@@ -24,21 +24,19 @@ export class IdRetriever {
 	// L, M and Z are partner-specific values. L = LiveIntent HEM, M = MediaWiki HEM, Z = id5=0
 	async generateBoiString() {
 		const prebidUserIds = await this.getIds();
-		const idSources: string[] = prebidUserIds.map((id) => id.source);
-		const idString = new Array(this.ID_STRING_LENGTH).fill('x');
-		Object.keys(this.ID_MAP).forEach((idTouple) => {
-			const idProvider = this.ID_MAP[idTouple];
-			switch (idProvider) {
-				case 'id5-sync.com':
-					return (idString[idTouple] = this.getID5BitStatus(prebidUserIds));
-				case 'HEM':
-					return (idString[idTouple] = this.getHEMBitStatus());
-				default:
-					return (idString[idTouple] = idSources.includes(this.ID_MAP[idTouple]) ? 'P' : 'A');
+		let idString = '';
+		for (let i = 0; i < this.ID_STRING_LENGTH; i++) {
+			const idProvider = this.ID_MAP[i];
+			if (idProvider) {
+				const bitStatus = idProvider(prebidUserIds);
+				idString += bitStatus;
+			} else {
+				idString += this.getBitPlaceholder();
 			}
-		});
+		}
+
 		utils.logger(this.logGroup, 'Generated BOI string ', idString);
-		return idString.join('');
+		return idString;
 	}
 
 	async getIds(): Promise<PrebidEids[]> {
@@ -64,6 +62,15 @@ export class IdRetriever {
 		targetingService.set('boi', idString);
 	}
 
+	private getDefaultBitStatus(prebidUserIds: PrebidEids[], sourceName): string {
+		return prebidUserIds.find((obj) => obj.source === sourceName) ? 'P' : 'A';
+	}
+
+	private getBitPlaceholder(): string {
+		return 'x';
+	}
+
+	// ID5 bit status is determined by the test group. If user is in test group, and contains 0 as their ID, we put Z.
 	private getID5BitStatus(prebidUserIds: PrebidEids[]): string {
 		const id5IdentityObject = prebidUserIds.find((obj) => obj.source === 'id5-sync.com');
 		if (!id5IdentityObject) {
