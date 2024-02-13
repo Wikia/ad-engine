@@ -22,7 +22,7 @@ export class IdRetriever {
 	// PZALxxxxxxxxxxxxxxxxx
 	// Where P is Present, A is Absent and x is empty placeholder for new IDs
 	// L, M and Z are partner-specific values. L = LiveIntent HEM, M = MediaWiki HEM, Z = id5=0
-	async generateBoiString() {
+	async generateBoiString(): string {
 		const prebidUserIds = await this.getIds();
 		let idString = '';
 		for (let i = 0; i < this.ID_STRING_LENGTH; i++) {
