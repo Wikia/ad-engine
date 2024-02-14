@@ -15,7 +15,7 @@ interface Config {
 type EventPayload = Partial<{ adSlotName: string; slot: AdSlot }>;
 
 const defaultConfig: Config = {
-	timeoutMS: 28_000,
+	timeoutMS: 30_000,
 	slots: [],
 };
 
@@ -88,7 +88,7 @@ class SlotRefresher {
 				this.log(`${adSlot.getSlotName()} waiting for being in viewport.`);
 				refreshWhenBackInViewport(adSlot);
 			}
-		}, this.config.timeoutMS);
+		}, this.config.timeoutMS - 2000);
 	}
 
 	private addSlotsConfiguredToRefreshing() {
