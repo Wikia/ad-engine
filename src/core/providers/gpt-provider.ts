@@ -337,9 +337,10 @@ export class GptProvider implements Provider {
 		});
 
 		gptSlot.defineSizeMapping(sizeMapping.build());
+		const castedRV = targeting.rv ? String(Number(targeting.rv) + 1) : '1';
 
 		gptSlot.updateTargetingFromMap(targeting);
-		gptSlot.setTargeting('rv', String(Number(targeting.rv) + 1) || '1');
+		gptSlot.setTargeting('rv', castedRV);
 		window.googletag.pubads().refresh([gptSlot]);
 	}
 }

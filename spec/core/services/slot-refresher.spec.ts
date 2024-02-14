@@ -2,6 +2,7 @@ import { communicationService, EventOptions, eventsRepository } from '@wikia/com
 import { CommunicationService } from '@wikia/communication/communication-service';
 import { AdSlot } from '@wikia/core';
 import { slotRefresher } from '@wikia/core/services/slot-refresher';
+import { expect } from 'chai';
 import sinon, { assert, SinonStubbedInstance } from 'sinon';
 
 describe('slot-refresher', () => {
@@ -14,6 +15,7 @@ describe('slot-refresher', () => {
 		clearTargeting: sinon.spy(),
 		defineSizeMapping: sinon.spy(),
 		setTargeting: sinon.spy(),
+		getTargeting: sinon.stub().withArgs('rv').returns(1),
 		updateTargetingFromMap: sinon.spy(),
 	};
 
@@ -144,5 +146,23 @@ describe('slot-refresher', () => {
 		clock.runAll();
 
 		assert.calledOnce(addEventListenerSpy);
+	});
+
+	it('should return 1 when targeting.rv is undefined', () => {
+		const rv = undefined;
+		const castedRV = rv ? String(Number(rv) + 1) : '1';
+		expect(castedRV).to.be.equal('1');
+	});
+
+	it('should return 2 when targeting.rv is 1', () => {
+		const rv = 1;
+		const castedRV = rv ? String(Number(rv) + 1) : '1';
+		expect(castedRV).to.be.equal('2');
+	});
+
+	it('should return 1 when targeting.rv is null', () => {
+		const rv = null;
+		const castedRV = rv ? String(Number(rv) + 1) : '1';
+		expect(castedRV).to.be.equal('1');
 	});
 });

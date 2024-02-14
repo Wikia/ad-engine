@@ -15,7 +15,7 @@ interface Config {
 type EventPayload = Partial<{ adSlotName: string; slot: AdSlot }>;
 
 const defaultConfig: Config = {
-	timeoutMS: 30_000,
+	timeoutMS: 28_000,
 	slots: [],
 };
 
