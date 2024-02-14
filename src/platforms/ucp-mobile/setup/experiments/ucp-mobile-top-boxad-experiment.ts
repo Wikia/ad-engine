@@ -40,11 +40,11 @@ export class UcpMobileTopBoxadExperiment {
 	private pathfinderExperimentVariants = [
 		defineExperiment({
 			name: this.pathfinderExperimentVariantNames.active,
-			buckets: ['Y', 'Z'],
+			buckets: ['k', 'l'],
 		}),
 		defineExperiment({
 			name: this.pathfinderExperimentVariantNames.control,
-			buckets: ['W', 'X'],
+			buckets: ['i', 'j'],
 		}),
 	];
 
