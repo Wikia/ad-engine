@@ -15,7 +15,6 @@ describe('slot-refresher', () => {
 		clearTargeting: sinon.spy(),
 		defineSizeMapping: sinon.spy(),
 		setTargeting: sinon.spy(),
-		getTargeting: sinon.stub().withArgs('rv').returns(1),
 		updateTargetingFromMap: sinon.spy(),
 	};
 
