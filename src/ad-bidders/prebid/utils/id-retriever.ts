@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { pbjsFactory, targetingService, UniversalStorage, utils } from '@ad-engine/core';
+import { context, pbjsFactory, targetingService, UniversalStorage, utils } from '@ad-engine/core';
 
 export class IdRetriever {
 	private static _instance: IdRetriever;
@@ -7,11 +7,11 @@ export class IdRetriever {
 	private readonly logGroup = 'bidder-id-retriever';
 	private pbjs: Pbjs;
 
-	private readonly ID_MAP: Record<number, (sources: PrebidEids[]) => string>= {
-		0: (sources: PrebidEids[]) => this.getDefaultBitStatus(sources, 'yahoo.com'),
-		1: (sources: PrebidEids[]) => this.getID5BitStatus(sources),
-		2: () => this.getHEMBitStatus(),
-		3: (sources: PrebidEids[]) => this.getDefaultBitStatus(sources, 'liveintent.com'),
+	private readonly ID_MAP: Record<string, (sources: PrebidEids[]) => string> = {
+		'0': (sources: PrebidEids[]) => this.getDefaultBitStatus(sources, 'yahoo.com'),
+		'1': (sources: PrebidEids[]) => this.getID5BitStatus(sources),
+		'2': () => this.getHEMBitStatus(),
+		'3': (sources: PrebidEids[]) => this.getDefaultBitStatus(sources, 'liveintent.com'),
 	};
 
 	static get(): IdRetriever {
@@ -86,7 +86,7 @@ export class IdRetriever {
 		switch (true) {
 			case !!storage.getItem('liveConnect'):
 				return 'L';
-			case !!window.ads.context?.opts?.userEmailHashes:
+			case !!context.get('wiki.opts.userEmailHashes'):
 				return 'M';
 			default:
 				return 'A';
