@@ -14,7 +14,13 @@ export const basicContext = {
 			videoEnabled: false,
 			amazonId: '3115',
 			bidsRefreshing: {
-				slots: ['top_leaderboard', 'top_boxad', 'gallery_leaderboard', 'incontent_leaderboard'],
+				slots: [
+					'top_leaderboard',
+					'top_boxad',
+					'featured',
+					'gallery_leaderboard',
+					'incontent_leaderboard',
+				],
 			},
 		},
 		prebid: {
@@ -23,6 +29,7 @@ export const basicContext = {
 				slots: [
 					'top_leaderboard',
 					'top_boxad',
+					'featured',
 					'gallery_leaderboard',
 					'incontent_leaderboard',
 					'incontent_player',
