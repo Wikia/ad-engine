@@ -11,7 +11,7 @@ export function registerRoadblockTemplate(registry: TemplateRegistry): Observabl
 		'initial',
 		[
 			RoadblockHandler.config({
-				enabledSlots: ['top_boxad'],
+				enabledSlots: ['top_boxad', 'fandom_dt_galleries', 'gallery_leaderboard'],
 				disableSlots: ['floor_adhesion'],
 			}),
 		],

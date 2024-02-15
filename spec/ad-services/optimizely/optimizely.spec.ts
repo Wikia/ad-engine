@@ -90,4 +90,19 @@ describe('Optimizely service', () => {
 			targetingServiceStub.set.calledWith('experiment_groups', ['firstV', 'secondV']),
 		).to.equal(true);
 	});
+
+	it('Add experiment variant to existing targeting', () => {
+		const experiment = {
+			EXPERIMENT_ENABLED: 'experiment_xyz',
+			EXPERIMENT_VARIANT: 'experiment_xyz_variant',
+		};
+
+		targetingServiceStub.get.withArgs('experiment_groups').returns(['existing_group']);
+
+		optimizelyService.addVariantToTargeting(experiment, 'test');
+
+		expect(
+			targetingServiceStub.set.calledWith('experiment_groups', ['existing_group', 'test']),
+		).to.equal(true);
+	});
 });

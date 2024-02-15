@@ -8,7 +8,7 @@ import { context } from '@ad-engine/core';
 import { DiProcess, PartnerPipeline } from '@ad-engine/pipeline';
 import { Apstag } from '@wikia/ad-bidders';
 import { jwpSetup } from '@wikia/ad-products';
-import { Ats, Audigent, Experian, Eyeota, LiveConnect, LiveRampPixel } from '@wikia/ad-services';
+import { Ats, Audigent, Experian, LiveConnect, LiveRampPixel } from '@wikia/ad-services';
 import { Injectable } from '@wikia/dependency-injection';
 import { NoAdsDetector } from '../services/no-ads-detector';
 
@@ -19,7 +19,6 @@ export class NoAdsMode implements DiProcess {
 		private noAdsDetector: NoAdsDetector,
 		private ats: Ats,
 		private audigent: Audigent,
-		private eyeota: Eyeota,
 		private liveConnect: LiveConnect,
 		private experian: Experian,
 		private liveRampPixel: LiveRampPixel,
@@ -27,7 +26,7 @@ export class NoAdsMode implements DiProcess {
 
 	execute(): void {
 		this.removeAdSlotsPlaceholders();
-		this.noAdsDetector.addReasons(window.ads.context.opts.noAdsReasons);
+		this.noAdsDetector.addReasons(window.ads.context?.opts?.noAdsReasons ?? []);
 		this.dispatchJWPlayerSetupAction();
 		this.dispatchVideoSetupAction();
 		if (context.get('state.isLogged')) {
@@ -45,14 +44,7 @@ export class NoAdsMode implements DiProcess {
 		}
 
 		this.pipeline
-			.add(
-				this.liveRampPixel,
-				this.ats,
-				this.audigent,
-				this.eyeota,
-				this.liveConnect,
-				this.experian,
-			)
+			.add(this.liveRampPixel, this.ats, this.audigent, this.liveConnect, this.experian)
 			.execute()
 			.then(() => {
 				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);

@@ -19,6 +19,7 @@ export class BaseContextSetup implements DiProcess {
 		this.setServicesContext();
 		this.setMiscContext();
 		this.setupStickySlotContext();
+		this.setupDSAContext();
 		setupNpaContext();
 		setupRdpContext();
 	}
@@ -107,6 +108,10 @@ export class BaseContextSetup implements DiProcess {
 			'options.video.comscoreJwpTracking',
 			this.instantConfig.get('icComscoreJwpTracking'),
 		);
+		context.set(
+			'options.video.experiments.disabled.incontentPlayerRemoval',
+			this.instantConfig.get('icDisableIncontentPlayerRemoval'),
+		);
 
 		context.set('services.anyclip.enabled', this.instantConfig.get('icAnyclipPlayer'));
 		context.set('services.anyclip.isApplicable', () => {
@@ -153,11 +158,6 @@ export class BaseContextSetup implements DiProcess {
 		context.set('services.ppidRepository', this.instantConfig.get('icPpidRepository'));
 		context.set('services.identityTtl', this.instantConfig.get('icIdentityTtl'));
 		context.set('services.identityPartners', this.instantConfig.get('icIdentityPartners'));
-		context.set('services.intentIq.ppid.enabled', this.instantConfig.get('icIntentIqPpid', false));
-		context.set(
-			'services.intentIq.ppid.tracking.enabled',
-			this.instantConfig.get('icIntentIqPpidTracking', false),
-		);
 
 		context.set(
 			'services.messageBox.enabled',
@@ -190,6 +190,11 @@ export class BaseContextSetup implements DiProcess {
 		context.set('bidders.a9.hem.enabled', this.instantConfig.get('icA9HEM', false));
 		context.set('bidders.a9.hem.cleanup', this.instantConfig.get('icA9CleanHEM', false));
 
+		context.set(
+			'bidders.liveIntentConnectedId.enabled',
+			this.instantConfig.get('icLiveIntentConnectedId'),
+		);
+
 		context.set('bidders.liveRampId.enabled', this.instantConfig.get('icLiveRampId'));
 		context.set('bidders.liveRampATS.enabled', this.instantConfig.get('icLiveRampATS'));
 		context.set(
@@ -206,5 +211,9 @@ export class BaseContextSetup implements DiProcess {
 		if (stickySlotsLines && stickySlotsLines.length) {
 			context.set('templates.stickyTlb.lineItemIds', stickySlotsLines);
 		}
+	}
+
+	private setupDSAContext(): void {
+		context.set('options.dsa.enabled', this.instantConfig.get('icDSA'));
 	}
 }

@@ -39,7 +39,7 @@ export class IndexExchange extends PrebidAdapter {
 					context: 'instream',
 					placement: PrebidVideoPlacements.IN_ARTICLE,
 					playerSize: [640, 480],
-					plcmt: [PrebidPlcmtVideoSubtypes.ACCOMPANYING_CONTENT],
+					plcmt: PrebidPlcmtVideoSubtypes.ACCOMPANYING_CONTENT,
 				},
 			},
 			ortb2Imp: this.extendOrtbWithJwpRtdDataWhenStrategyRulesEnabled(this.getOrtb2Imp(code)),

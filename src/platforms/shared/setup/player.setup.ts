@@ -46,9 +46,10 @@ export class PlayerSetup extends BaseServiceSetup {
 			displayAndVideoAdsSyncContext.isTaglessRequestEnabled()
 				? await this.vastTaglessRequest.getVast()
 				: undefined;
-		const connatixInstreamEnabled = !!this.instantConfig.get('icConnatixInstream');
+		const connatixFeaturedVideoEnabled =
+			this.instantConfig.get('icFeaturedVideoPlayer') === 'connatix';
 
-		connatixInstreamEnabled
+		connatixFeaturedVideoEnabled
 			? PlayerSetup.initConnatixPlayer(showAds, vastResponse)
 			: await this.initJWPlayer(showAds, vastResponse);
 	}

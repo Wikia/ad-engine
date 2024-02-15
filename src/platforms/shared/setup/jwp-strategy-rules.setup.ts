@@ -1,52 +1,23 @@
 import { context, InstantConfigService } from '@ad-engine/core';
 import { BaseServiceSetup } from '@ad-engine/pipeline';
 import { GlobalTimeout } from '@ad-engine/utils';
-import { Optimizely } from '@wikia/ad-services';
 import { Injectable } from '@wikia/dependency-injection';
-
-const OPTIMIZELY_STRATEGY_RULES_EXPERIMENT = {
-	EXPERIMENT_ENABLED: 'strategy_rules',
-	EXPERIMENT_VARIANT: 'strategy_rules_variant',
-};
-
-const OPTIMIZELY_STRATEGY_RULES_EXPERIMENT_VARIANTS = {
-	DISABLED: 'strategy_rules_disabled',
-	ENABLED: 'strategy_rules_enabled',
-	UNDEFINED: 'strategy_rules_undefined',
-};
 
 @Injectable()
 export class JwpStrategyRulesSetup extends BaseServiceSetup {
 	constructor(
 		protected instantConfig: InstantConfigService,
 		protected globalTimeout: GlobalTimeout,
-		protected optimizely: Optimizely,
 	) {
 		super(instantConfig, globalTimeout);
 	}
 
 	call() {
-		this.setupOptimizelyExperiment();
-		this.addMediaIdToContextWhenStrategyRulesEnabled();
-	}
-
-	private setupOptimizelyExperiment() {
-		this.optimizely.addVariantToTargeting(
-			OPTIMIZELY_STRATEGY_RULES_EXPERIMENT,
-			OPTIMIZELY_STRATEGY_RULES_EXPERIMENT_VARIANTS.UNDEFINED,
-		);
-
-		const variant = this.optimizely.getVariant(OPTIMIZELY_STRATEGY_RULES_EXPERIMENT);
-
-		if (!variant) {
-			return;
-		}
-
-		this.optimizely.addVariantToTargeting(OPTIMIZELY_STRATEGY_RULES_EXPERIMENT, variant);
 		context.set(
 			'options.video.enableStrategyRules',
-			variant === OPTIMIZELY_STRATEGY_RULES_EXPERIMENT_VARIANTS.ENABLED,
+			this.instantConfig.get('icFeaturedVideoPlayer') === 'jwp-strategy-rules',
 		);
+		this.addMediaIdToContextWhenStrategyRulesEnabled();
 	}
 
 	private addMediaIdToContextWhenStrategyRulesEnabled() {

@@ -64,7 +64,7 @@ export class UapDomReader {
 
 	getSlotHeightImpact(): number {
 		if (this.params?.config?.aspectRatio?.default === undefined) {
-			return this.adSlot.element.offsetHeight;
+			return this.adSlot.getElement().offsetHeight;
 		}
 
 		return this.calculateSlotHeight(this.params.config.aspectRatio.default);
@@ -72,14 +72,14 @@ export class UapDomReader {
 
 	getSlotHeightResolved(): number {
 		if (this.params?.config?.aspectRatio?.resolved === undefined) {
-			return this.adSlot.element.offsetHeight;
+			return this.adSlot.getElement().offsetHeight;
 		}
 
 		return this.calculateSlotHeight(this.params.config.aspectRatio.resolved);
 	}
 
 	private calculateSlotHeight(ratio: number): number {
-		return (1 / ratio) * this.adSlot.element.offsetWidth;
+		return (1 / ratio) * this.adSlot.getElement().offsetWidth;
 	}
 
 	getSlotHeightClipping(): string {
@@ -89,12 +89,12 @@ export class UapDomReader {
 			return 'unset';
 		}
 
-		if (scroll >= this.adSlot.element.offsetHeight) {
+		if (scroll >= this.adSlot.getElement().offsetHeight) {
 			return 'rect(0, 0, 0, 0)';
 		}
 
-		return `rect(0 ${this.adSlot.element.offsetWidth}px ${
-			this.adSlot.element.offsetHeight - scroll
+		return `rect(0 ${this.adSlot.getElement().offsetWidth}px ${
+			this.adSlot.getElement().offsetHeight - scroll
 		}px 0)`;
 	}
 }

@@ -13,10 +13,15 @@ import { getViewportHeight } from '@ad-engine/utils';
 import { activateFloorAdhesionOnUAP, SlotSetupDefinition } from '@platforms/shared';
 import { OpenWeb } from '@wikia/ad-services';
 import { Injectable } from '@wikia/dependency-injection';
+import { UcpMobileTopBoxadExperiment } from '../experiments/ucp-mobile-top-boxad-experiment';
 
 @Injectable()
 export class UcpMobileSlotsDefinitionRepository {
-	constructor(protected instantConfig: InstantConfigService, private openWeb: OpenWeb) {}
+	constructor(
+		protected instantConfig: InstantConfigService,
+		private openWeb: OpenWeb,
+		private ucpMobileTopBoxadExperiment: UcpMobileTopBoxadExperiment,
+	) {}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
 		if (!this.isTopLeaderboardApplicable()) {
@@ -75,7 +80,8 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'top_boxad';
-		const isHome = context.get('wiki.targeting.pageType') === 'home';
+
+		const config = this.ucpMobileTopBoxadExperiment.getConfig();
 
 		return {
 			slotCreatorConfig: {
@@ -83,10 +89,8 @@ export class UcpMobileSlotsDefinitionRepository {
 				placeholderConfig: {
 					createLabel: true,
 				},
-				anchorSelector: isHome
-					? '.mobile-main-page__wiki-description'
-					: context.get('templates.incontentAnchorSelector'),
-				insertMethod: isHome ? 'after' : 'before',
+				anchorSelector: config.anchorSelector,
+				insertMethod: config.insertMethod,
 				classList: [AdSlotClass.HIDDEN_AD_CLASS, 'ad-slot'],
 				avoidConflictWith: ['.ntv-ad'],
 			},
@@ -122,7 +126,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			slotCreatorConfig: {
 				slotName,
 				anchorSelector: '.incontent-boxad',
-				avoidConflictWith: ['.ad-slot', '#incontent_player'],
+				avoidConflictWith: ['.ad-slot'],
 				insertMethod: 'append',
 				classList: [AdSlotClass.HIDDEN_AD_CLASS, 'ad-slot'],
 				repeat: {

@@ -34,11 +34,6 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
 		context.set('services.ppidRepository', this.instantConfig.get('icPpidRepository'));
 		context.set('services.identityTtl', this.instantConfig.get('icIdentityTtl'));
-		context.set('services.intentIq.ppid.enabled', this.instantConfig.get('icIntentIqPpid', false));
-		context.set(
-			'services.intentIq.ppid.tracking.enabled',
-			this.instantConfig.get('icIntentIqPpidTracking', false),
-		);
 	}
 
 	private setupServicesOptions() {
@@ -115,7 +110,7 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		const dataWithPagePath = this.getDataSettingsFromMetaTag();
 		const pagePath = dataWithPagePath?.unit_name
 			? this.getPagePathFromMetaTagData(dataWithPagePath)
-			: this.getPagePathFromUtagData();
+			: this.getPagePathFromGtagData();
 
 		if (!pagePath) {
 			return '';
@@ -132,9 +127,9 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		return slicedUnitName.replace(adUnitPropertyPart, '');
 	}
 
-	private getPagePathFromUtagData() {
-		const dataWithPagePath = this.getUtagData();
-		return dataWithPagePath?.siteSection;
+	private getPagePathFromGtagData() {
+		const dataWithPagePath = this.getGtagData();
+		return dataWithPagePath?.data?.siteSection;
 	}
 
 	getDataSettingsFromMetaTag() {
@@ -153,10 +148,10 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		}
 	}
 
-	getUtagData() {
-		const utagData = window.utag_data;
-		this.log('utag data: ', utagData);
-		return utagData;
+	getGtagData() {
+		const gtagData = window.dataLayer.find(({ event }) => event === 'Pageview');
+		this.log('tag data: ', gtagData);
+		return gtagData;
 	}
 
 	private log(...logValues) {

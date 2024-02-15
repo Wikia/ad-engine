@@ -47,7 +47,15 @@ export class Optimizely {
 	addVariantToTargeting(optimizelyVariables: OptimizelyVariablesType, value: string) {
 		this.targetingValues[optimizelyVariables.EXPERIMENT_ENABLED] = value;
 
-		targetingService.set('experiment_groups', Object.values(this.targetingValues));
+		targetingService.set(
+			'experiment_groups',
+			Array.from(
+				new Set([
+					...(targetingService.get('experiment_groups') || []),
+					...Object.values(this.targetingValues),
+				]),
+			),
+		);
 	}
 
 	private getOptimizelyValue(variableName: string): string | boolean | undefined {
