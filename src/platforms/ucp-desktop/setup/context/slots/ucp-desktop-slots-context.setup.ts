@@ -79,6 +79,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 			bottom_leaderboard: {
 				adProduct: 'bottom_leaderboard',
+				slotName: 'bottom_leaderboard',
 				group: 'PF',
 				sizes: [
 					{
