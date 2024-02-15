@@ -11,8 +11,15 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 
+interface FmrRotatorBiddersConfig {
+	bidGroup: string;
+	a9Alias?: string;
+	bidderAlias?: string;
+}
+
 interface FmrRotatorConfig {
 	topPositionToRun: number;
+	bidders?: FmrRotatorBiddersConfig;
 }
 
 export class FmrRotator {
@@ -205,11 +212,20 @@ export class FmrRotator {
 	}
 
 	private scheduleNextSlotPush(): void {
-		if (this.isRefreshLimitAvailable()) {
-			setTimeout(() => {
-				this.tryPushNextSlot();
-			}, this.refreshInfo.refreshDelay);
+		if (!this.isRefreshLimitAvailable()) {
+			return;
 		}
+
+		const hasBidGroup = !!this.config.bidders.bidGroup;
+		const isRepeatIndexGreaterThanOne = this.refreshInfo.repeatIndex > 1;
+
+		setTimeout(() => {
+			if (hasBidGroup && isRepeatIndexGreaterThanOne) {
+				this.callBidders(this.config.bidders, () => this.tryPushNextSlot());
+			} else {
+				this.tryPushNextSlot();
+			}
+		}, this.refreshInfo.refreshDelay);
 	}
 
 	private isRefreshLimitAvailable(): boolean {
@@ -218,5 +234,16 @@ export class FmrRotator {
 
 	private tryPushNextSlot(): void {
 		this.runNowOrOnScroll(this.isInViewport.bind(this), this.pushNextSlot.bind(this));
+	}
+
+	private callBidders(biddersConfig: FmrRotatorBiddersConfig, callback: () => void) {
+		context.set(`slots.${this.nextSlotName}.a9Alias`, biddersConfig.a9Alias);
+		context.set(`slots.${this.nextSlotName}.bidderAlias`, biddersConfig.bidderAlias);
+		context.set(`slots.${this.nextSlotName}.bidGroup`, biddersConfig.bidGroup);
+
+		communicationService.emit(eventsRepository.BIDDERS_CALL_PER_GROUP, {
+			group: biddersConfig.bidGroup,
+			callback: callback,
+		});
 	}
 }
