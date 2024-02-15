@@ -23,6 +23,10 @@ function checkOptOutSale(): string {
 	return '';
 }
 
+function getCmp(): '1t' | 'toi' {
+	return window.OneTrust !== undefined ? '1t' : 'toi';
+}
+
 export const slotTrackingCompiler = ({ data, slot }: CompilerPartial): CompilerPartial => {
 	const cacheStorage = InstantConfigCacheStorage.make();
 	const now = new Date();
@@ -58,6 +62,7 @@ export const slotTrackingCompiler = ({ data, slot }: CompilerPartial): CompilerP
 			scroll_y: window.scrollY || window.pageYOffset,
 			tz_offset: now.getTimezoneOffset(),
 			viewport_height: window.innerHeight || 0,
+			rollout_tracking: getCmp(), // TODO: Remove once OneTrust replaces Tracking Opt In
 		},
 	};
 };

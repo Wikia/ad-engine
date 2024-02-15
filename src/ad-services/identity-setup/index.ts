@@ -54,7 +54,7 @@ export class IdentitySetup implements DiProcess {
 				}
 
 				// TODO: Remove once OneTrust replaces Tracking Opt In
-				this.setCmpTargetingKey();
+				targetingService.set('cmp', this.getCmp());
 
 				utils.logger(this.logGroup, 'ready');
 				resolve();
@@ -72,9 +72,7 @@ export class IdentitySetup implements DiProcess {
 		});
 	}
 
-	setCmpTargetingKey() {
-		const cmp = window.OneTrust !== null ? '1t' : 'toi';
-
-		targetingService.set('cmp', cmp);
+	private getCmp(): '1t' | 'toi' {
+		return window.OneTrust !== undefined ? '1t' : 'toi';
 	}
 }
