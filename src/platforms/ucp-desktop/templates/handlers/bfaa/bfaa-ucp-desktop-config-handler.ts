@@ -18,6 +18,10 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 		'bottom_leaderboard',
 		'gallery_leaderboard',
 		'fandom_dt_galleries',
+		'quiz_leaderboard_start',
+		'quiz_leaderboard_questions',
+		'quiz_incontent',
+		'quiz_leaderboard_finish',
 	];
 
 	constructor(@Inject(TEMPLATE.PARAMS) private params: UapParams) {}
