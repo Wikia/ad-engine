@@ -7,6 +7,7 @@ import {
 	MetricReporterSetup,
 	PreloadedLibrariesSetup,
 	SlotsConfigurationExtender,
+	SlotTrackingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
@@ -70,6 +71,7 @@ export class GamefaqsPlatform {
 			GamefaqsTemplatesSetup,
 			NewsAndRatingsAdsMode,
 			TrackingSetup,
+			SlotTrackingSetup,
 		);
 
 		this.pipeline.execute();

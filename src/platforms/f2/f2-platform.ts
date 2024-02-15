@@ -10,6 +10,7 @@ import {
 	NoAdsMode,
 	PlatformContextSetup,
 	SequentialMessagingSetup,
+	SlotTrackingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
@@ -63,6 +64,7 @@ export class F2Platform {
 			LabradorSetup,
 			F2ExperimentsSetup,
 			TrackingSetup,
+			SlotTrackingSetup,
 			BiddersTargetingUpdater,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 		);

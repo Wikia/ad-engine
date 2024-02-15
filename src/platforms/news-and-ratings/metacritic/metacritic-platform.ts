@@ -9,6 +9,7 @@ import {
 	MetricReporterSetup,
 	PreloadedLibrariesSetup,
 	SlotsConfigurationExtender,
+	SlotTrackingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
@@ -72,6 +73,7 @@ export class MetacriticPlatform {
 			MetacriticTemplatesSetup,
 			NewsAndRatingsAdsMode,
 			TrackingSetup,
+			SlotTrackingSetup,
 			MetacriticPageChangeGalleryObserver,
 		);
 

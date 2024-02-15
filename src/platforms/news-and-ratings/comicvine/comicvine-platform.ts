@@ -20,6 +20,7 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { SlotTrackingSetup } from '../../shared/tracking/slot-tracking.setup';
 import {
 	BiddersStateOverwriteSetup,
 	NewsAndRatingsAdsMode,
@@ -70,6 +71,7 @@ export class ComicvinePlatform {
 			ComicvineTemplatesSetup,
 			NewsAndRatingsAdsMode,
 			TrackingSetup,
+			SlotTrackingSetup,
 		);
 
 		this.pipeline.execute();
