@@ -1,6 +1,6 @@
 import { communicationService, EventOptions, eventsRepository } from '@wikia/communication';
 import { CommunicationService } from '@wikia/communication/communication-service';
-import { AdSlot } from '@wikia/core';
+import { AdSlot, context } from '@wikia/core';
 import { slotRefresher } from '@wikia/core/services/slot-refresher';
 import { expect } from 'chai';
 import sinon, { assert, SinonStubbedInstance } from 'sinon';
@@ -84,6 +84,7 @@ describe('slot-refresher', () => {
 	});
 
 	it('should be disabled if there is no slots in config', () => {
+		context.set('services.durationMedia.enabled', true);
 		slotRefresher.setupSlotRefresher({}, false, loggerSpy);
 
 		assert.calledOnce(loggerSpy.withArgs('disabled'));
