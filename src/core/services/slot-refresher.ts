@@ -109,8 +109,7 @@ export class SlotRefresher {
 		this.addSlotsConfiguredToRefreshing();
 
 		const disabled =
-			this.config.slots.length < 1 && Boolean(context.get('services.durationMedia.enabled'));
-
+			this.config.slots.length < 1 || Boolean(context.get('services.durationMedia.enabled'));
 		if (disabled || isUap) {
 			logger('disabled');
 			return;
