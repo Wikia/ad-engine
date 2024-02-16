@@ -180,6 +180,7 @@ export class BaseContextSetup implements DiProcess {
 			'services.slotRefresher.config',
 			!this.instantConfig.get('icDurationMedia') && this.instantConfig.get('icSlotRefresher'),
 		);
+		context.set('services.durationMedia.enabled', this.instantConfig.get('icDurationMedia', false));
 	}
 
 	private setMiscContext(): void {

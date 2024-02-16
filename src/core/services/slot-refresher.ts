@@ -54,7 +54,7 @@ function refreshWhenBackInViewport(adSlot: AdSlot) {
 	window.googletag.pubads().addEventListener('slotVisibilityChanged', refresh);
 }
 
-class SlotRefresher {
+export class SlotRefresher {
 	config: Config;
 	slotsInTheViewport: Array<string> = [];
 
@@ -108,7 +108,8 @@ class SlotRefresher {
 
 		this.addSlotsConfiguredToRefreshing();
 
-		const disabled = this.config.slots.length < 1;
+		const disabled =
+			this.config.slots.length < 1 && Boolean(context.get('services.durationMedia.enabled'));
 
 		if (disabled || isUap) {
 			logger('disabled');
