@@ -203,17 +203,7 @@ export class GptProvider implements Provider {
 	}
 
 	setPPID() {
-		const intentIqPpid = targetingService.get('intent_iq_ppid', 'intent_iq');
-
-		if (!intentIqPpid && targetingService.get('intent_iq_ppid', 'intent_iq') !== null) {
-			communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
-				status: 'intentiq_ppid_not_set_on_time',
-			});
-		}
-
-		const ppid = context.get('services.intentIq.ppid.enabled')
-			? intentIqPpid
-			: targetingService.get('ppid');
+		const ppid = targetingService.get('ppid');
 
 		if (ppid) {
 			const tag = window.googletag.pubads();

@@ -8,7 +8,6 @@ import {
 	DiProcess,
 	eventsRepository,
 	Experian,
-	Eyeota,
 	GdprConsentPayload,
 	jwpSetup,
 	LiveConnect,
@@ -25,7 +24,6 @@ export class NoAdsMode implements DiProcess {
 		private noAdsDetector: NoAdsDetector,
 		private ats: Ats,
 		private audigent: Audigent,
-		private eyeota: Eyeota,
 		private liveConnect: LiveConnect,
 		private experian: Experian,
 		private liveRampPixel: LiveRampPixel,
@@ -51,14 +49,7 @@ export class NoAdsMode implements DiProcess {
 		}
 
 		this.pipeline
-			.add(
-				this.liveRampPixel,
-				this.ats,
-				this.audigent,
-				this.eyeota,
-				this.liveConnect,
-				this.experian,
-			)
+			.add(this.liveRampPixel, this.ats, this.audigent, this.liveConnect, this.experian)
 			.execute()
 			.then(() => {
 				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);
