@@ -31,6 +31,10 @@ export class IdentitySetup implements DiProcess {
 					'browser',
 					globalContextService.getValue(GlobalContextCategories.targeting, 'browser'),
 				);
+				targetingService.set(
+					'chrome_label',
+					globalContextService.getValue(GlobalContextCategories.tracking, 'chromeLabel'),
+				);
 				const adGroups = globalContextService.getValue(
 					GlobalContextCategories.targeting,
 					'adGroup',
