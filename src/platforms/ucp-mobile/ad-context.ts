@@ -6,24 +6,6 @@ export const basicContext = {
 		'/{state.deviceType}' +
 		'/{targeting.skin}-{targeting.original_host}-{targeting.s2}' +
 		'/{custom.wikiIdentifier}-{targeting.s0}',
-	bidders: {
-		enabled: false,
-		timeout: 2000,
-		a9: {
-			enabled: false,
-			videoEnabled: false,
-			amazonId: '3115',
-			bidsRefreshing: {
-				slots: ['featured', 'gallery_leaderboard', 'mobile_in_content'],
-			},
-		},
-		prebid: {
-			enabled: false,
-			bidsRefreshing: {
-				slots: ['gallery_leaderboard', 'mobile_in_content'],
-			},
-		},
-	},
 	custom: {
 		dbNameForAdUnit: '_not_a_top1k_wiki',
 		dfpId: '5441',
@@ -83,9 +65,6 @@ export const basicContext = {
 				'incontent_player',
 			],
 		},
-		durationMedia: {
-			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',
-		},
 		externalLogger: {
 			endpoint: '/wikia.php?controller=AdEngine&method=postLog',
 		},
@@ -98,9 +77,6 @@ export const basicContext = {
 				'featured',
 				'incontent_player',
 			],
-		},
-		openWeb: {
-			placementSelector: 'div[class*="openweb-slot"]',
 		},
 	},
 	slotGroups: {
@@ -127,7 +103,6 @@ export const basicContext = {
 		preload: {
 			gpt: false,
 			audigent: true,
-			prebid: true,
 			apstag: false,
 			intentIq: true,
 		},

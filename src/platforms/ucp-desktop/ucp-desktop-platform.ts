@@ -1,6 +1,4 @@
 import {
-	BiddersStateSetup,
-	BiddersTargetingUpdater,
 	ConsentManagementPlatformSetup,
 	ensureGeoCookie,
 	InstantConfigSetup,
@@ -11,8 +9,6 @@ import {
 	NoAdsMode,
 	PlatformContextSetup,
 	PostAdStackPartnersSetup,
-	PreloadedLibrariesSetup,
-	SequentialMessagingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 	UcpTargetingSetup,
@@ -31,12 +27,9 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
 import { UcpDesktopAdsMode } from './modes/ucp-desktop-ads.mode';
-import { UcpDesktopA9ConfigSetup } from './setup/context/a9/ucp-desktop-a9-config.setup';
 import { UcpDesktopBaseContextSetup } from './setup/context/base/ucp-desktop-base-context.setup';
-import { UcpDesktopPrebidConfigSetup } from './setup/context/prebid/ucp-desktop-prebid-config.setup';
 import { UcpDesktopSlotsContextSetup } from './setup/context/slots/ucp-desktop-slots-context.setup';
 import { UcpDesktopDynamicSlotsSetup } from './setup/dynamic-slots/ucp-desktop-dynamic-slots.setup';
-import { UcpDesktopExperimentsSetup } from './setup/experiments/ucp-desktop-experiments.setup';
 import { UcpDesktopTemplatesSetup } from './templates/ucp-desktop-templates.setup';
 
 @Injectable()
@@ -51,10 +44,7 @@ export class UcpDesktopPlatform {
 		this.pipeline.add(
 			PlatformContextSetup,
 			async () => await ensureGeoCookie(),
-			parallel(
-				sequential(InstantConfigSetup, PreloadedLibrariesSetup),
-				ConsentManagementPlatformSetup,
-			),
+			parallel(sequential(InstantConfigSetup), ConsentManagementPlatformSetup),
 			TrackingParametersSetup,
 			MetricReporterSetup,
 			UcpDesktopBaseContextSetup,
@@ -62,14 +52,8 @@ export class UcpDesktopPlatform {
 			IdentitySetup,
 			UcpTargetingSetup,
 			LoadTimesSetup,
-			UcpDesktopPrebidConfigSetup,
-			UcpDesktopA9ConfigSetup,
-			UcpDesktopExperimentsSetup,
 			UcpDesktopDynamicSlotsSetup,
 			UcpDesktopTemplatesSetup,
-			SequentialMessagingSetup,
-			BiddersStateSetup,
-			BiddersTargetingUpdater,
 			LabradorSetup,
 			conditional(() => this.noAdsDetector.isAdsMode(), {
 				yes: UcpDesktopAdsMode,

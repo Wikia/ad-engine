@@ -1,9 +1,7 @@
 import {
-	communicationService,
 	context,
 	Dictionary,
 	DiProcess,
-	eventsRepository,
 	globalContextService,
 	InstantConfigService,
 	setupNpaContext,
@@ -56,14 +54,6 @@ export class BaseContextSetup implements DiProcess {
 		context.set('state.showAds', this.noAdsDetector.isAdsMode());
 		context.set('state.deviceType', utils.client.getDeviceType());
 		context.set('state.isLogged', !!context.get('wiki.wgUserId'));
-
-		if (this.instantConfig.get('icPrebidium')) {
-			context.set('state.provider', 'prebidium');
-			communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
-				isLoaded: false,
-				adProduct: universalAdPackage.DEFAULT_UAP_TYPE,
-			});
-		}
 	}
 
 	private setOptionsContext(): void {
@@ -149,11 +139,6 @@ export class BaseContextSetup implements DiProcess {
 
 		// BlockAdBlock detection
 		context.set('options.wad.enabled', babEnabled);
-
-		if (babEnabled && !context.get('state.isLogged') && context.get('state.showAds')) {
-			context.set('options.wad.btRec.enabled', this.instantConfig.get('icBTRec'));
-			context.set('options.wad.btRec.sideUnits', this.instantConfig.get('icBTRecSideUnits'));
-		}
 	}
 
 	private setServicesContext(): void {
@@ -161,7 +146,6 @@ export class BaseContextSetup implements DiProcess {
 			'services.interventionTracker.enabled',
 			this.instantConfig.get('icInterventionTracking'),
 		);
-		context.set('services.nativo.enabled', this.instantConfig.get('icNativo'));
 		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
 		context.set('services.ppidRepository', this.instantConfig.get('icPpidRepository'));
 		context.set('services.identityTtl', this.instantConfig.get('icIdentityTtl'));
@@ -171,39 +155,16 @@ export class BaseContextSetup implements DiProcess {
 			'services.messageBox.enabled',
 			this.instantConfig.get('icAdCollapsedMessageBox', false),
 		);
-		context.set(
-			'services.slotRefresher.config',
-			!this.instantConfig.get('icDurationMedia') && this.instantConfig.get('icSlotRefresher'),
-		);
+		context.set('services.slotRefresher.config', this.instantConfig.get('icSlotRefresher'));
 	}
 
 	private setMiscContext(): void {
 		this.instantConfig.get('icLABradorTest');
 
-		const priceFloorRule = this.instantConfig.get<object>('icPrebidSizePriceFloorRule');
-		context.set('bidders.prebid.priceFloor', priceFloorRule || null);
-		context.set(
-			'bidders.prebid.disableSendAllBids',
-			this.instantConfig.get('icPrebidDisableSendAllBids'),
-		);
-		context.set('bidders.prebid.config', this.instantConfig.get('icPrebidConfig', {}));
-		context.set('bidders.prebid.native.enabled', this.instantConfig.get('icPrebidNative'));
 		context.set(
 			'templates.sizeOverwritingMap',
 			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes,
 		);
-		context.set('bidders.s2s.bidders', this.instantConfig.get('icPrebidS2sBidders', []));
-		context.set('bidders.s2s.enabled', this.instantConfig.get('icPrebidS2sBidders', []).length > 0);
-
-		context.set('bidders.a9.hem.enabled', this.instantConfig.get('icA9HEM', false));
-		context.set('bidders.a9.hem.cleanup', this.instantConfig.get('icA9CleanHEM', false));
-
-		context.set(
-			'bidders.liveIntentConnectedId.enabled',
-			this.instantConfig.get('icLiveIntentConnectedId'),
-		);
-
-		context.set('bidders.liveRampId.enabled', this.instantConfig.get('icLiveRampId'));
 		context.set('bidders.liveRampATS.enabled', this.instantConfig.get('icLiveRampATS'));
 		context.set(
 			'bidders.liveRampATSAnalytics.enabled',

@@ -1,9 +1,8 @@
 import { communicationService } from '@ad-engine/communication';
 import { AdSlotEvent, AdSlotStatus } from '@ad-engine/core';
-import { BaseTracker, BaseTrackerInterface } from './base-tracker';
+import { BaseTracker, BaseTrackerInterface, CompilerPartial } from './base-tracker';
 import {
 	pageTrackingCompiler,
-	slotBiddersTrackingCompiler,
 	slotPropertiesTrackingCompiler,
 	slotTrackingCompiler,
 } from './compilers';
@@ -31,10 +30,14 @@ class SlotTracker extends BaseTracker implements BaseTrackerInterface {
 		return true;
 	}
 
-	register(callback, { bidders }): void {
+	register(callback): void {
 		if (!this.isEnabled()) {
 			return;
 		}
+
+		const slotTrackingCompiler = ({ data, slot }: CompilerPartial) => {
+			return { slot, data };
+		};
 
 		communicationService.onSlotEvent(AdSlotEvent.SLOT_RENDERED_EVENT, ({ slot }) => {
 			slot.trackStatusAfterRendered = true;
@@ -50,7 +53,7 @@ class SlotTracker extends BaseTracker implements BaseTrackerInterface {
 					this.onRenderEndedStatusToTrack.includes(status) ||
 					slot.getConfigProperty('trackEachStatus')
 				) {
-					callback(await slotBiddersTrackingCompiler(this.compileData(slot), bidders));
+					callback(slotTrackingCompiler(this.compileData(slot)));
 					return;
 				}
 			}
@@ -59,17 +62,12 @@ class SlotTracker extends BaseTracker implements BaseTrackerInterface {
 				this.onChangeStatusToTrack.includes(status) ||
 				slot.getConfigProperty('trackEachStatus')
 			) {
-				callback(await slotBiddersTrackingCompiler(this.compileData(slot), bidders));
+				callback(slotTrackingCompiler(this.compileData(slot)));
 			}
 		});
 
 		communicationService.onSlotEvent(AdSlotEvent.CUSTOM_EVENT, async ({ slot, payload }) => {
-			callback(
-				await slotBiddersTrackingCompiler(
-					this.compileData(slot, null, { ad_status: payload?.status }),
-					bidders,
-				),
-			);
+			callback(slotTrackingCompiler(this.compileData(slot, null, { ad_status: payload?.status })));
 		});
 	}
 }

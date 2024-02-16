@@ -5,7 +5,6 @@ import {
 } from '@platforms/shared';
 import {
 	AdSlot,
-	btRec,
 	communicationService,
 	context,
 	eventsRepository,
@@ -186,7 +185,6 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 
 		const slotNamePrefix = 'incontent_boxad_';
 		const slotName = `${slotNamePrefix}1`;
-		const bidGroup = 'incontent_boxad';
 
 		return {
 			slotCreatorConfig: {
@@ -209,13 +207,8 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 			activator: () => {
 				communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
 					if (this.isFmrApplicable(slotName)) {
-						const rotator = new FmrRotator(slotName, slotNamePrefix, btRec, {
+						const rotator = new FmrRotator(slotName, slotNamePrefix, {
 							topPositionToRun: 65,
-							bidders: {
-								bidGroup: bidGroup,
-								a9Alias: slotName,
-								bidderAlias: slotName,
-							},
 						});
 						rotator.rotateSlot();
 					} else {

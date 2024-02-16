@@ -1,5 +1,5 @@
 import { JWPlayerManager, VastResponseData, VastTaglessRequest } from '@wikia/ad-products';
-import { communicationService, eventsRepository } from '@wikia/communication';
+import { communicationService } from '@wikia/communication';
 import { context, displayAndVideoAdsSyncContext, InstantConfigService } from '@wikia/core';
 import { PlayerSetup } from '@wikia/platforms/shared';
 import { expect } from 'chai';
@@ -96,27 +96,5 @@ describe('PlayerSetup', () => {
 		expect(dispatchSpy.calledOnceWith(expectedDispatchArg)).to.be.true;
 		expect(dispatchSpy.firstCall.args[0].showAds).to.be.false;
 		expect(dispatchSpy.firstCall.args[0].vastXml).to.be.undefined;
-	});
-
-	it('should dispatch video setup action when Connatix is enabled', async () => {
-		instantConfigStub.get.withArgs('icFeaturedVideoPlayer').returns('connatix');
-		context.set('slots.featured.videoAdUnit', MOCKED_VAST_AD_UNIT);
-		context.set('vast.adUnitId', MOCKED_VAST_AD_UNIT);
-		const slotName = 'featured';
-		const expectedDispatchArg = {
-			showAds: true,
-			autoplayDisabled: false,
-			videoAdUnitPath: MOCKED_VAST_AD_UNIT,
-			targetingParams: 'pos=featured&rv=1',
-			vastXml: undefined,
-			type: '[Video] Setup done',
-			__global: true,
-		};
-
-		await subject.call();
-		communicationService.emit(eventsRepository.BIDDERS_BIDDING_DONE, { slotName });
-
-		expect(dispatchSpy.called).to.be.true;
-		expect(dispatchSpy.lastCall.args[0]).to.deep.equal(expectedDispatchArg);
 	});
 });

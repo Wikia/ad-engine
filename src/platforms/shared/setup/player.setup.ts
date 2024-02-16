@@ -134,25 +134,5 @@ export class PlayerSetup extends BaseServiceSetup {
 				videoDisplayTakeoverSynchronizer.resolve();
 			}
 		});
-
-		communicationService.on(eventsRepository.BIDDERS_BIDDING_DONE, ({ slotName }) => {
-			if (slotName === videoAdSlotName) {
-				PlayerSetup.emitVideoSetupEvent(showAds, adSlot, vastResponse);
-			}
-		});
-	}
-
-	private static emitVideoSetupEvent(
-		showAds: boolean,
-		adSlot: AdSlot,
-		vastResponse?: VastResponseData,
-	) {
-		communicationService.emit(eventsRepository.VIDEO_SETUP, {
-			showAds,
-			autoplayDisabled: false,
-			videoAdUnitPath: adSlot.getVideoAdUnit(),
-			targetingParams: utils.getCustomParameters(adSlot, {}, false),
-			vastXml: vastResponse?.xml,
-		});
 	}
 }

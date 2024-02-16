@@ -9,24 +9,6 @@ type ChangeCallback = (key: string, value: any) => void;
 
 const contextObject: ContextObject = {
 	adUnitId: '',
-	bidders: {
-		enabled: false,
-		timeout: 2000,
-		a9: {
-			enabled: false,
-			videoEnabled: false,
-			amazonId: '3115',
-			bidsRefreshing: {
-				slots: [],
-			},
-		},
-		prebid: {
-			enabled: false,
-			bidsRefreshing: {
-				slots: [],
-			},
-		},
-	},
 	events: {},
 	listeners: {
 		porvata: [],

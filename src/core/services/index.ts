@@ -9,7 +9,6 @@ export * from './instant-config-cache-storage';
 export * from './instant-config/instant-config.service';
 export * from './local-cache';
 export * from './message-bus';
-export * from './pbjs-factory';
 export * from './slot-data-params-updater';
 export * from './slot-impact-watcher';
 export * from './slot-repeater';

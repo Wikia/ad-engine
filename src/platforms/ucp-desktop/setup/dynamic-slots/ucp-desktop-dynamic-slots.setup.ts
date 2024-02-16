@@ -2,7 +2,6 @@ import {
 	GalleryLightboxAds,
 	GalleryLightboxAdsHandler,
 	insertSlots,
-	NativoSlotsDefinitionRepository,
 	PlaceholderService,
 	QuizSlotsDefinitionRepository,
 	slotsContext,
@@ -25,7 +24,6 @@ import { UcpDesktopSlotsDefinitionRepository } from './ucp-desktop-slots-definit
 export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	constructor(
 		private slotsDefinitionRepository: UcpDesktopSlotsDefinitionRepository,
-		private nativoSlotDefinitionRepository: NativoSlotsDefinitionRepository,
 		private quizSlotsDefinitionRepository: QuizSlotsDefinitionRepository,
 		private galleryLightbox: GalleryLightboxAds,
 	) {}
@@ -40,7 +38,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 	private injectSlots(): void {
 		insertSlots([
-			this.nativoSlotDefinitionRepository.getNativoFeedAdConfig(),
 			this.slotsDefinitionRepository.getTopLeaderboardConfig(),
 			this.slotsDefinitionRepository.getTopBoxadConfig(),
 			this.slotsDefinitionRepository.getIncontentPlayerConfig(),

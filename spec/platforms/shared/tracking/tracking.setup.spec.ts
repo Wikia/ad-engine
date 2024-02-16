@@ -1,6 +1,4 @@
-import { Bidders } from '@wikia/ad-bidders';
 import { InstantConfigService, targetingService } from '@wikia/core';
-import { GlobalTimeout } from '@wikia/core/utils';
 import { DataWarehouseTracker, TrackingSetup, trackingUrls } from '@wikia/platforms/shared';
 import { AdSizeTracker } from '@wikia/platforms/shared/tracking/ad-size-tracker';
 import { LabradorTracker } from '@wikia/platforms/shared/tracking/labrador-tracker';
@@ -14,8 +12,6 @@ describe('TrackingSetup', () => {
 	const instantConfig = new InstantConfigService({
 		appName: 'testapp',
 	});
-	const globalTimeout = new GlobalTimeout();
-	const bidders = new Bidders(instantConfig, globalTimeout);
 	let trackSpy: SinonSpy;
 
 	beforeEach(() => {
@@ -30,7 +26,6 @@ describe('TrackingSetup', () => {
 			labradorTracker,
 			adSizeTracker,
 			dwTracker,
-			bidders,
 			instantConfig,
 		);
 
@@ -63,7 +58,6 @@ describe('TrackingSetup', () => {
 			labradorTracker,
 			adSizeTracker,
 			dwTracker,
-			bidders,
 			instantConfig,
 		);
 
