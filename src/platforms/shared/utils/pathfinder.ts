@@ -19,9 +19,13 @@ export function waitForPathFinder(callback: () => void): void {
 		makeCall();
 	}, 500);
 
-	window.addEventListener('PathfinderModulesLoaded', () => {
-		setTimeout(() => {
-			makeCall();
-		}, 50);
-	});
+	window.addEventListener(
+		'PathfinderModulesLoaded',
+		() => {
+			setTimeout(() => {
+				makeCall();
+			}, 50);
+		},
+		{ once: true },
+	);
 }
