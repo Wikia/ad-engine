@@ -10,7 +10,6 @@ import {
 	InstantConfigService,
 	JWPlayerManager,
 	jwpSetup,
-	Optimizely,
 	slotService,
 	utils,
 	VastResponseData,
@@ -18,26 +17,16 @@ import {
 	videoDisplayTakeoverSynchronizer,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+// eslint-disable-next-line no-restricted-imports
+import { iasVideoTracker } from '../../../ad-products/video/porvata/plugins/ias/ias-video-tracker';
 
 const logGroup = 'player-setup';
-
-const OPTIMIZELY_STRATEGY_RULES_EXPERIMENT = {
-	EXPERIMENT_ENABLED: 'strategy_rules',
-	EXPERIMENT_VARIANT: 'strategy_rules_variant',
-};
-
-const OPTIMIZELY_STRATEGY_RULES_EXPERIMENT_VARIANTS = {
-	DISABLED: 'strategy_rules_disabled',
-	ENABLED: 'strategy_rules_enabled',
-	UNDEFINED: 'strategy_rules_undefined',
-};
 
 @Injectable()
 export class PlayerSetup extends BaseServiceSetup {
 	constructor(
 		protected instantConfig: InstantConfigService,
 		protected globalTimeout: utils.GlobalTimeout,
-		protected optimizely: Optimizely,
 		protected jwpManager: JWPlayerManager,
 		protected vastTaglessRequest: VastTaglessRequest,
 	) {
@@ -46,8 +35,9 @@ export class PlayerSetup extends BaseServiceSetup {
 	}
 
 	async call() {
-		this.setupOptimizelyExperiment();
-
+		communicationService.on(eventsRepository.VIDEO_PLAYER_RENDERED, () => {
+			this.loadIasTrackerIfEnabled();
+		});
 		const showAds = !context.get('options.wad.blocking');
 		const vastResponse: VastResponseData | undefined =
 			showAds &&
@@ -55,9 +45,10 @@ export class PlayerSetup extends BaseServiceSetup {
 			displayAndVideoAdsSyncContext.isTaglessRequestEnabled()
 				? await this.vastTaglessRequest.getVast()
 				: undefined;
-		const connatixInstreamEnabled = !!this.instantConfig.get('icConnatixInstream');
+		const connatixFeaturedVideoEnabled =
+			this.instantConfig.get('icFeaturedVideoPlayer') === 'connatix';
 
-		connatixInstreamEnabled
+		connatixFeaturedVideoEnabled
 			? PlayerSetup.initConnatixPlayer(showAds, vastResponse)
 			: await this.initJWPlayer(showAds, vastResponse);
 	}
@@ -104,6 +95,13 @@ export class PlayerSetup extends BaseServiceSetup {
 					autoplayDisabled: false,
 				}),
 			);
+		}
+	}
+
+	private loadIasTrackerIfEnabled(): void {
+		if (context.get('options.video.iasTracking.enabled')) {
+			utils.logger(logGroup, 'Loading IAS tracker for video player');
+			iasVideoTracker.load();
 		}
 	}
 
@@ -156,24 +154,5 @@ export class PlayerSetup extends BaseServiceSetup {
 			targetingParams: utils.getCustomParameters(adSlot, {}, false),
 			vastXml: vastResponse?.xml,
 		});
-	}
-
-	private setupOptimizelyExperiment() {
-		this.optimizely.addVariantToTargeting(
-			OPTIMIZELY_STRATEGY_RULES_EXPERIMENT,
-			OPTIMIZELY_STRATEGY_RULES_EXPERIMENT_VARIANTS.UNDEFINED,
-		);
-
-		const variant = this.optimizely.getVariant(OPTIMIZELY_STRATEGY_RULES_EXPERIMENT);
-
-		if (!variant) {
-			return;
-		}
-
-		this.optimizely.addVariantToTargeting(OPTIMIZELY_STRATEGY_RULES_EXPERIMENT, variant);
-		context.set(
-			'options.video.enableStrategyRules',
-			variant === OPTIMIZELY_STRATEGY_RULES_EXPERIMENT_VARIANTS.ENABLED,
-		);
 	}
 }

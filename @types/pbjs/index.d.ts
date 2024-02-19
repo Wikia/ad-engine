@@ -23,6 +23,12 @@ interface PrebidAdUnit {
 	ortb2Imp?: {
 		ext: {
 			gpid: string;
+			data?: {
+				jwTargeting: {
+					playerID: string;
+					mediaID: string;
+				};
+			};
 		};
 	};
 }
@@ -174,6 +180,18 @@ interface PrebidUserIds {
 			abTestingControlGroup?: boolean;
 		};
 	};
+	pubcid?: string;
+	connectId?: string;
+}
+
+interface PrebidUid {
+	atype: number;
+	id: string;
+}
+
+interface PrebidEids {
+	source: string;
+	uids: PrebidUid[];
 }
 
 interface Pbjs {
@@ -212,6 +230,8 @@ interface Pbjs {
 	onEvent(name: string, callback: (...args: any[]) => void): void;
 
 	offEvent(name: string, callback: (...args: any[]) => void): void;
+
+	getUserIdsAsEids(): PrebidEids[];
 
 	que: Array<() => void>;
 }

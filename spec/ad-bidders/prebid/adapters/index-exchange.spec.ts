@@ -14,7 +14,7 @@ describe('IndexExchange bidder adapter', () => {
 				context: 'instream',
 				placement: PrebidVideoPlacements.IN_ARTICLE,
 				playerSize: [640, 480],
-				plcmt: [PrebidPlcmtVideoSubtypes.ACCOMPANYING_CONTENT],
+				plcmt: PrebidPlcmtVideoSubtypes.ACCOMPANYING_CONTENT,
 			},
 		},
 		ortb2Imp: {
@@ -49,6 +49,20 @@ describe('IndexExchange bidder adapter', () => {
 			},
 		],
 	};
+	const MOCKED_INITIAL_MEDIA_ID = '666';
+	const EXPECTED_VIDEO_AD_UNIT_CONFIG_WITH_JWP_RTD_DATA = {
+		...EXPECTED_VIDEO_AD_UNIT_CONFIG,
+		ortb2Imp: {
+			ext: {
+				gpid: '/5441/something/_PB/featured',
+				data: {
+					jwTargeting: {
+						mediaID: MOCKED_INITIAL_MEDIA_ID,
+					},
+				},
+			},
+		},
+	};
 
 	before(() => {
 		context.extend({
@@ -61,6 +75,8 @@ describe('IndexExchange bidder adapter', () => {
 
 	afterEach(() => {
 		context.remove('bidders.prebid.forceInArticleVideoPlacement');
+		context.remove('options.video.enableStrategyRules');
+		context.remove('options.video.jwplayer.initialMediaId');
 	});
 
 	it('can be enabled', () => {
@@ -122,7 +138,9 @@ describe('IndexExchange bidder adapter', () => {
 		]);
 	});
 
-	it('prepareAdUnits for video returns data in correct shape', () => {
+	it('prepareAdUnits returns data in correct shape for video', () => {
+		context.set('slots.featured.isVideo', true);
+
 		const indexExchange = new IndexExchange({
 			enabled: true,
 			slots: {
@@ -131,8 +149,26 @@ describe('IndexExchange bidder adapter', () => {
 				},
 			},
 		});
-		context.set('slots.featured.isVideo', true);
 
 		expect(indexExchange.prepareAdUnits()).to.deep.equal([EXPECTED_VIDEO_AD_UNIT_CONFIG]);
+	});
+
+	it('prepareAdUnits returns data in correct shape when JWP RTD module is enabled for video', () => {
+		context.set('options.video.enableStrategyRules', true); // we use JWP RTD when strategy rules are enabled
+		context.set('options.video.jwplayer.initialMediaId', MOCKED_INITIAL_MEDIA_ID);
+		context.set('slots.featured.isVideo', true);
+
+		const indexExchange = new IndexExchange({
+			enabled: true,
+			slots: {
+				featured: {
+					siteId: '112233',
+				},
+			},
+		});
+
+		expect(indexExchange.prepareAdUnits()).to.deep.equal([
+			EXPECTED_VIDEO_AD_UNIT_CONFIG_WITH_JWP_RTD_DATA,
+		]);
 	});
 });

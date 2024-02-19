@@ -24,9 +24,11 @@ import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider
 import { adaptersRegistry } from './adapters-registry';
 import { id5 } from './id5';
 import { intentIQ } from './intent-iq';
+import { connectedId } from './liveintent-connected-id';
 import { liveRampId, LiveRampIdTypes } from './liveramp-id';
 import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice, roundBucketCpm } from './price-helper';
+import { prebidIdRetriever } from './utils/id-retriever';
 import { yahooConnectId } from './yahoo-connect-id';
 
 const logGroup = 'prebid';
@@ -166,6 +168,9 @@ export class PrebidProvider extends BidderProvider {
 			...this.configureTargeting(),
 			...this.configureTCF(),
 			...this.configureS2sBidding(),
+			...this.configureJwpRtd(),
+			...this.configureDSA(),
+			...context.get('bidders.prebid.config'),
 		};
 
 		this.configureUserSync();
@@ -226,6 +231,21 @@ export class PrebidProvider extends BidderProvider {
 		this.configureId5();
 		this.configureLiveRamp();
 		this.configureYahooConnectId();
+		this.configureLiveIntentConnectedId();
+	}
+
+	private configureLiveIntentConnectedId(): void {
+		const liveIntentConnectedIdConfig = connectedId.getConfig();
+		if (liveIntentConnectedIdConfig) {
+			this.prebidConfig.userSync.userIds.push(liveIntentConnectedIdConfig);
+			targetingService.set('li-module-enabled', ['on']);
+			communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+				status: 'liveintent_connectid_started',
+			});
+		} else {
+			this.prebidConfig.userSync.userIds.push([]);
+			targetingService.set('li-module-enabled', ['off']);
+		}
 	}
 
 	private configureLiveRamp(): void {
@@ -265,7 +285,7 @@ export class PrebidProvider extends BidderProvider {
 
 		id5.enableAnalytics(pbjs);
 		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
-			status: 'id5_done',
+			status: 'id5_started',
 		});
 	}
 
@@ -276,7 +296,7 @@ export class PrebidProvider extends BidderProvider {
 			return;
 		}
 
-		communicationService.emit(eventsRepository.YAHOO_LOADED);
+		communicationService.emit(eventsRepository.YAHOO_STARTED);
 
 		this.prebidConfig.userSync.userIds.push(yahooConnectIdConfig);
 	}
@@ -384,6 +404,51 @@ export class PrebidProvider extends BidderProvider {
 		};
 	}
 
+	private configureJwpRtd(): object {
+		if (
+			context.get('custom.hasFeaturedVideo') &&
+			context.get('options.video.enableStrategyRules')
+		) {
+			const initialMediaId = context.get('options.video.jwplayer.initialMediaId');
+
+			return {
+				realTimeData: {
+					auctionDelay: 100,
+					dataProviders: [
+						{
+							name: 'jwplayer',
+							waitForIt: true,
+							params: {
+								mediaIDs: initialMediaId ? [initialMediaId] : [],
+							},
+						},
+					],
+				},
+			};
+		}
+
+		return {};
+	}
+
+	private configureDSA(): object {
+		if (context.get('options.dsa.enabled')) {
+			return {
+				ortb2: {
+					regs: {
+						ext: {
+							dsa: {
+								dsarequired: 1,
+								pubrender: 2,
+								datatopub: 2,
+							},
+						},
+					},
+				},
+			};
+		}
+		return {};
+	}
+
 	private prepareExtPrebidBiders(s2sBidders: string[]): Record<string, { wrappername: string }> {
 		const extPrebidBidders: Record<string, { wrappername: string }> = {};
 
@@ -429,12 +494,18 @@ export class PrebidProvider extends BidderProvider {
 
 		this.applySettings();
 		this.removeAdUnits();
+		this.saveBidIds();
 		this.requestBids(this.adUnits, () => {
 			bidsBackHandler();
 			communicationService.emit(eventsRepository.BIDDERS_AUCTION_DONE);
 		});
 
 		communicationService.emit(eventsRepository.BIDDERS_BIDS_CALLED);
+	}
+
+	private saveBidIds(): void {
+		utils.logger(this.logGroup, 'Saving bid ids');
+		prebidIdRetriever.saveCurrentPrebidIds();
 	}
 
 	async removeAdUnits(): Promise<void> {

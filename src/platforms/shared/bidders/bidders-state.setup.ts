@@ -9,7 +9,6 @@ export class BiddersStateSetup implements DiProcess {
 		appnexusAst: 'icPrebidAppNexusAst',
 		appnexusNative: 'icPrebidAppNexusNative',
 		criteo: 'icPrebidCriteo',
-		freewheel: 'icPrebidFreewheel',
 		gumgum: 'icPrebidGumGum',
 		indexExchange: 'icPrebidIndexExchange',
 		kargo: 'icPrebidKargo',

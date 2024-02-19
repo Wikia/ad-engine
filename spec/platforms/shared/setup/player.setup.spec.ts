@@ -1,5 +1,4 @@
 import { JWPlayerManager, VastResponseData, VastTaglessRequest } from '@wikia/ad-products';
-import { Optimizely } from '@wikia/ad-services';
 import { communicationService, eventsRepository } from '@wikia/communication';
 import { context, displayAndVideoAdsSyncContext, InstantConfigService } from '@wikia/core';
 import { PlayerSetup } from '@wikia/platforms/shared';
@@ -22,7 +21,6 @@ describe('PlayerSetup', () => {
 		subject = new PlayerSetup(
 			instantConfigStub,
 			null,
-			new Optimizely(),
 			jwpManagerStub,
 			vastTaglessRequestStub as VastTaglessRequest,
 		);
@@ -101,7 +99,7 @@ describe('PlayerSetup', () => {
 	});
 
 	it('should dispatch video setup action when Connatix is enabled', async () => {
-		instantConfigStub.get.withArgs('icConnatixInstream').returns(true);
+		instantConfigStub.get.withArgs('icFeaturedVideoPlayer').returns('connatix');
 		context.set('slots.featured.videoAdUnit', MOCKED_VAST_AD_UNIT);
 		context.set('vast.adUnitId', MOCKED_VAST_AD_UNIT);
 		const slotName = 'featured';
@@ -109,7 +107,7 @@ describe('PlayerSetup', () => {
 			showAds: true,
 			autoplayDisabled: false,
 			videoAdUnitPath: MOCKED_VAST_AD_UNIT,
-			targetingParams: 'experiment_groups=strategy_rules_undefined&pos=featured&rv=1',
+			targetingParams: 'pos=featured&rv=1',
 			vastXml: undefined,
 			type: '[Video] Setup done',
 			__global: true,
