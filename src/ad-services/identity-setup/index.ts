@@ -53,7 +53,7 @@ export class IdentitySetup implements DiProcess {
 					targetingService.set('monetization', utils.isCoppaSubject() ? 'restricted' : 'regular');
 				}
 
-				const topicsApiAvailable =
+				const topicsApiAvailable: boolean =
 					'browsingTopics' in document &&
 					'featurePolicy' in document &&
 					// @ts-expect-error document.featurePolicy is not available in TS dom lib
