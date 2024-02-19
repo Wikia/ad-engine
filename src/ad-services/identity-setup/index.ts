@@ -53,6 +53,21 @@ export class IdentitySetup implements DiProcess {
 					targetingService.set('monetization', utils.isCoppaSubject() ? 'restricted' : 'regular');
 				}
 
+				const topicsApiAvailable =
+					'browsingTopics' in document &&
+					'featurePolicy' in document &&
+					// @ts-expect-error document.featurePolicy is not available in TS dom lib
+					document.featurePolicy.allowsFeature('browsing-topics');
+				targetingService.set('topics_available', topicsApiAvailable.toString());
+
+				const protectedAudienceApiAvailable: boolean =
+					'joinAdInterestGroup' in navigator &&
+					// @ts-expect-error document.featurePolicy is not available in TS dom lib
+					document.featurePolicy.allowsFeature('join-ad-interest-group') &&
+					// @ts-expect-error document.featurePolicy is not available in TS dom lib
+					document.featurePolicy.allowsFeature('run-ad-auction');
+				targetingService.set('pa_available', protectedAudienceApiAvailable.toString());
+
 				utils.logger(this.logGroup, 'ready');
 				resolve();
 			});

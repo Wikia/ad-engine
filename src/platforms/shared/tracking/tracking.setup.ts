@@ -204,13 +204,7 @@ export class TrackingSetup {
 	}
 
 	private async googleTopicsTracker(): Promise<void> {
-		const topicsApiSupported =
-			'browsingTopics' in document &&
-			'featurePolicy' in document &&
-			// @ts-expect-error document.featurePolicy is not available in TS dom lib
-			document.featurePolicy.allowsFeature('browsing-topics');
-
-		if (!topicsApiSupported) {
+		if (targetingService.get('topics_available') !== 'true') {
 			return;
 		}
 
