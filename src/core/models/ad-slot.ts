@@ -182,7 +182,12 @@ export class AdSlot {
 		return this.adUnit;
 	}
 
-	getVideoAdUnit(): string {
+	getVideoAdUnit(player?: string): string {
+		if (player === 'connatix' && !this.config.videoAdUnit.includes('cnx_')) {
+			const index = this.config.videoAdUnit.indexOf('{slotConfig.adProduct}');
+			this.config.videoAdUnit =
+				this.config.videoAdUnit.slice(0, index) + 'cnx_' + this.config.videoAdUnit.slice(index);
+		}
 		return stringBuilder.build(this.config.videoAdUnit || context.get('vast.adUnitId'), {
 			slotConfig: this.config,
 		});
