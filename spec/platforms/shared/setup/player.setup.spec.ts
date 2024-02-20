@@ -106,6 +106,7 @@ describe('PlayerSetup', () => {
 		const expectedDispatchArg = {
 			showAds: true,
 			autoplayDisabled: false,
+			player: 'cnx',
 			videoAdUnitPath: MOCKED_VAST_AD_UNIT,
 			targetingParams: 'pos=featured&rv=1',
 			vastXml: undefined,
