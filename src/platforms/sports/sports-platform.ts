@@ -38,6 +38,8 @@ import { SportsDynamicSlotsSetup } from './setup/dynamic-slots/sports-dynamic-sl
 import { SportsTemplatesSetup } from './templates/sports-templates.setup';
 import { selectApplication } from './utils/application-helper';
 
+import './styles.scss';
+
 @Injectable()
 export class SportsPlatform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}

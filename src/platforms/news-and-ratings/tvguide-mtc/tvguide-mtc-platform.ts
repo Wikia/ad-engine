@@ -9,7 +9,7 @@ import {
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
-import { context, IdentitySetup, parallel, ProcessPipeline } from '@wikia/ad-engine';
+import { context, DiProcess, IdentitySetup, parallel, ProcessPipeline } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
 import { MtcAdsMode } from './setup/MtcAdsMode';
@@ -17,8 +17,10 @@ import { TvGuideMtcSlotsContextSetup } from './setup/slots/tvguide-mtc-slots-con
 import { TvGuideMTCContextSetup } from './setup/wiki-context.setup';
 import { TvGuideMtcTemplatesSetup } from './templates/tvguide-mtc-templates.setup';
 
+import './styles.scss';
+
 @Injectable()
-export class TvGuideMTCPlatform {
+export class TvGuideMTCPlatform implements DiProcess {
 	constructor(private pipeline: ProcessPipeline) {}
 
 	execute(): void {

@@ -12,6 +12,7 @@ import {
 } from '@platforms/shared';
 import {
 	context,
+	DiProcess,
 	IdentitySetup,
 	logVersion,
 	parallel,
@@ -37,7 +38,7 @@ import { ComicvineTargetingSetup } from './setup/context/targeting/comicvine-tar
 import { ComicvineTemplatesSetup } from './templates/comicvine-templates.setup';
 
 @Injectable()
-export class ComicvinePlatform {
+export class ComicvinePlatform implements DiProcess {
 	constructor(private pipeline: ProcessPipeline) {}
 
 	execute(): void {

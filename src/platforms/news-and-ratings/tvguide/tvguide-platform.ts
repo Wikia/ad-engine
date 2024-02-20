@@ -12,6 +12,7 @@ import {
 } from '@platforms/shared';
 import {
 	context,
+	DiProcess,
 	IdentitySetup,
 	logVersion,
 	parallel,
@@ -38,14 +39,17 @@ import { TvGuideSlotsContextSetup } from './setup/context/slots/tvguide-slots-co
 import { TvGuideTargetingSetup } from './setup/context/targeting/tvguide-targeting.setup';
 import { TvGuideTemplatesSetup } from './templates/tvguide-templates.setup';
 
+import './styles.scss';
+
 @Injectable()
-export class TvGuidePlatform {
+export class TvGuidePlatform implements DiProcess {
 	constructor(
+		private container: Container,
 		private pipeline: ProcessPipeline,
 		private spaWatchers: NewsAndRatingsNeutronHelper,
 	) {}
 
-	execute(container: Container): void {
+	execute(): void {
 		logVersion();
 		context.extend(basicContext);
 		context.set('state.isMobile', !utils.client.isDesktop());
@@ -78,12 +82,12 @@ export class TvGuidePlatform {
 		);
 
 		this.pipeline.execute();
-		this.setupSinglePageAppWatchers(container);
+		this.setupSinglePageAppWatchers();
 	}
 
-	private setupSinglePageAppWatchers(container: Container) {
+	private setupSinglePageAppWatchers() {
 		this.spaWatchers.setupPageChangedWatcher(
-			container,
+			this.container,
 			NewsAndRatingsBaseContextSetup,
 			TvGuideTargetingSetup,
 			NewsAndRatingsTargetingSetup,
@@ -93,7 +97,7 @@ export class TvGuidePlatform {
 		);
 
 		this.spaWatchers.setupPageExtendedWatcher(
-			container,
+			this.container,
 			NewsAndRatingsBaseContextSetup,
 			TvGuideTargetingSetup,
 			NewsAndRatingsTargetingSetup,

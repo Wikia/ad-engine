@@ -17,17 +17,18 @@ import {
 	communicationService,
 	conditional,
 	context,
+	DiProcess,
 	eventsRepository,
 	IdentitySetup,
 	logVersion,
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { Inject, Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
 import { F2IocSetup } from './f2-ioc.setup';
 import { F2AdsMode } from './modes/f2-ads.mode';
-import { F2Environment } from './setup-f2';
+import { F2Environment, F2_ENV } from './setup-f2';
 import { F2BaseContextSetup } from './setup/context/base/f2-base-context.setup';
 import { F2SlotsContextSetup } from './setup/context/slots/f2-slots-context.setup';
 import { F2TargetingSetup } from './setup/context/targeting/f2-targeting.setup';
@@ -35,14 +36,20 @@ import { F2DynamicSlotsSetup } from './setup/dynamic-slots/f2-dynamic-slots.setu
 import { F2ExperimentsSetup } from './setup/experiments/f2-experiments.setup';
 import { F2TemplatesSetup } from './templates/f2-templates.setup';
 
-@Injectable()
-export class F2Platform {
-	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
+import './styles.scss';
 
-	execute(f2env: F2Environment): void {
+@Injectable()
+export class F2Platform implements DiProcess {
+	constructor(
+		@Inject(F2_ENV) private f2env: F2Environment,
+		private pipeline: ProcessPipeline,
+		private noAdsDetector: NoAdsDetector,
+	) {}
+
+	execute(): void {
 		logVersion();
 		context.extend(basicContext);
-		context.set('state.isMobile', f2env.isPageMobile);
+		context.set('state.isMobile', this.f2env.isPageMobile);
 
 		// Config
 		this.pipeline.add(

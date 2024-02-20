@@ -14,6 +14,7 @@ import {
 } from '@platforms/shared';
 import {
 	context,
+	DiProcess,
 	IdentitySetup,
 	logVersion,
 	parallel,
@@ -38,8 +39,10 @@ import { MetacriticDynamicSlotsSetup } from './setup/dynamic-slots/metacritic-dy
 import { MetacriticPageChangeGalleryObserver } from './setup/page-observers/metacritic-page-change-gallery-observer.setup';
 import { MetacriticTemplatesSetup } from './templates/metacritic-templates.setup';
 
+import './styles.scss';
+
 @Injectable()
-export class MetacriticPlatform {
+export class MetacriticPlatform implements DiProcess {
 	constructor(private pipeline: ProcessPipeline) {}
 
 	execute(): void {

@@ -12,6 +12,7 @@ import {
 } from '@platforms/shared';
 import {
 	context,
+	DiProcess,
 	IdentitySetup,
 	logVersion,
 	parallel,
@@ -38,8 +39,10 @@ import { GamespotInfiniteScrollObserverSetup } from './setup/page-change-observe
 import { GamespotSeamlessContentObserverSetup } from './setup/page-change-observers/gamespot-seamless-content-observer.setup';
 import { GamespotTemplatesSetup } from './templates/gamespot-templates.setup';
 
+import './styles.scss';
+
 @Injectable()
-export class GameSpotPlatform {
+export class GameSpotPlatform implements DiProcess {
 	constructor(private pipeline: ProcessPipeline) {}
 
 	execute(): void {

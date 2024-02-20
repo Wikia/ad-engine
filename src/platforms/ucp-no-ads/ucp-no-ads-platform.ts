@@ -9,12 +9,14 @@ import {
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
-import { IdentitySetup, logVersion, parallel, ProcessPipeline } from '@wikia/ad-engine';
+import { DiProcess, IdentitySetup, logVersion, parallel, ProcessPipeline } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { UcpNoAdsWikiContextSetup } from './setup/wiki-context.setup';
 
+import './styles.scss';
+
 @Injectable()
-export class UcpNoAdsPlatform {
+export class UcpNoAdsPlatform implements DiProcess {
 	constructor(private pipeline: ProcessPipeline) {}
 
 	execute(): void {

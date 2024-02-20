@@ -12,6 +12,7 @@ import {
 } from '@platforms/shared';
 import {
 	context,
+	DiProcess,
 	IdentitySetup,
 	logVersion,
 	parallel,
@@ -36,8 +37,9 @@ import { GiantbombSlotsContextSetup } from './setup/context/slots/giantbomb-slot
 import { GiantbombTargetingSetup } from './setup/context/targeting/giantbomb-targeting.setup';
 import { GiantbombTemplatesSetup } from './templates/giantbomb-templates.setup';
 
+import './styles.scss';
 @Injectable()
-export class GiantbombPlatform {
+export class GiantbombPlatform implements DiProcess {
 	constructor(private pipeline: ProcessPipeline) {}
 
 	execute(): void {

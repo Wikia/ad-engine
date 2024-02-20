@@ -12,6 +12,7 @@ import {
 } from '@platforms/shared';
 import {
 	context,
+	DiProcess,
 	IdentitySetup,
 	logVersion,
 	parallel,
@@ -37,7 +38,7 @@ import { GamefaqsTargetingSetup } from './setup/context/targeting/gamefaqs-targe
 import { GamefaqsTemplatesSetup } from './templates/gamefaqs-templates.setup';
 
 @Injectable()
-export class GamefaqsPlatform {
+export class GamefaqsPlatform implements DiProcess {
 	constructor(private pipeline: ProcessPipeline) {}
 
 	execute(): void {

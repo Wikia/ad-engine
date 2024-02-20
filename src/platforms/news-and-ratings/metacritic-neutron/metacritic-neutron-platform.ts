@@ -14,6 +14,7 @@ import {
 } from '@platforms/shared';
 import {
 	context,
+	DiProcess,
 	IdentitySetup,
 	logVersion,
 	parallel,
@@ -39,14 +40,17 @@ import { MetacriticNeutronTargetingSetup } from './setup/context/targeting/metac
 import { MetacriticNeutronSeeMoreButtonClickListenerSetup } from './setup/page-change-observers/metacritic-neutron-see-more-button-click-listener.setup';
 import { MetacriticNeutronTemplatesSetup } from './templates/metacritic-neutron-templates.setup';
 
+import './styles.scss';
+
 @Injectable()
-export class MetacriticNeutronPlatform {
+export class MetacriticNeutronPlatform implements DiProcess {
 	constructor(
+		private container: Container,
 		private pipeline: ProcessPipeline,
 		private spaWatchers: NewsAndRatingsNeutronHelper,
 	) {}
 
-	execute(container: Container): void {
+	execute(): void {
 		logVersion();
 		context.extend(basicContext);
 		context.set('state.isMobile', !utils.client.isDesktop());
@@ -80,12 +84,12 @@ export class MetacriticNeutronPlatform {
 		);
 
 		this.pipeline.execute();
-		this.setupSinglePageAppWatchers(container);
+		this.setupSinglePageAppWatchers();
 	}
 
-	private setupSinglePageAppWatchers(container: Container) {
+	private setupSinglePageAppWatchers() {
 		this.spaWatchers.setupPageChangedWatcher(
-			container,
+			this.container,
 			NewsAndRatingsBaseContextSetup,
 			MetacriticNeutronTargetingSetup,
 			NewsAndRatingsTargetingSetup,

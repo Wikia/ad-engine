@@ -21,6 +21,7 @@ import {
 	communicationService,
 	conditional,
 	context,
+	DiProcess,
 	eventsRepository,
 	IdentitySetup,
 	logVersion,
@@ -39,8 +40,10 @@ import { UcpDesktopDynamicSlotsSetup } from './setup/dynamic-slots/ucp-desktop-d
 import { UcpDesktopExperimentsSetup } from './setup/experiments/ucp-desktop-experiments.setup';
 import { UcpDesktopTemplatesSetup } from './templates/ucp-desktop-templates.setup';
 
+import './styles.scss';
+
 @Injectable()
-export class UcpDesktopPlatform {
+export class UcpDesktopPlatform implements DiProcess {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
 	execute(): void {

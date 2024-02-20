@@ -21,6 +21,7 @@ import {
 	communicationService,
 	conditional,
 	context,
+	DiProcess,
 	eventsRepository,
 	IdentitySetup,
 	logVersion,
@@ -38,8 +39,10 @@ import { UcpMobileSlotsContextSetup } from './setup/context/slots/ucp-mobile-slo
 import { UcpMobileDynamicSlotsSetup } from './setup/dynamic-slots/ucp-mobile-dynamic-slots.setup';
 import { UcpMobileTemplatesSetup } from './templates/ucp-mobile-templates.setup';
 
+import './styles.scss';
+
 @Injectable()
-export class UcpMobilePlatform {
+export class UcpMobilePlatform implements DiProcess {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
 	execute(): void {

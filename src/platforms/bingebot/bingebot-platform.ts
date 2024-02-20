@@ -10,6 +10,7 @@ import {
 	communicationService,
 	conditional,
 	context,
+	DiProcess,
 	eventsRepository,
 	logVersion,
 	parallel,
@@ -25,8 +26,10 @@ import { BingeBotDynamicSlotsSetup } from './setup/dynamic-slots/bingebot-dynami
 import { BingeBotBeforeViewChangeSetup } from './setup/hooks/bingebot-before-view-change.setup';
 import { BingeBotTemplatesSetup } from './templates/bingebot-templates.setup';
 
+import './styles.scss';
+
 @Injectable()
-export class BingeBotPlatform {
+export class BingeBotPlatform implements DiProcess {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
 	execute(): void {
