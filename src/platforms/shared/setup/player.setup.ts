@@ -150,8 +150,9 @@ export class PlayerSetup extends BaseServiceSetup {
 		communicationService.emit(eventsRepository.VIDEO_SETUP, {
 			showAds,
 			autoplayDisabled: false,
-			videoAdUnitPath: adSlot.getVideoAdUnit(),
+			videoAdUnitPath: adSlot.getVideoAdUnit('connatix'),
 			targetingParams: utils.getCustomParameters(adSlot, {}, false),
+			player: 'cnx',
 			vastXml: vastResponse?.xml,
 		});
 	}
