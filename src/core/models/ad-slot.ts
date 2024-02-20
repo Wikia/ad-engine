@@ -183,7 +183,11 @@ export class AdSlot {
 	}
 
 	getVideoAdUnit(player?: string): string {
-		if (player === 'connatix' && !this.config.videoAdUnit.includes('cnx_')) {
+		if (
+			player === 'connatix' &&
+			!this.config.videoAdUnit.includes('cnx_') &&
+			this.config.videoAdUnit.includes('{slotConfig.adProduct}')
+		) {
 			const index = this.config.videoAdUnit.indexOf('{slotConfig.adProduct}');
 			this.config.videoAdUnit =
 				this.config.videoAdUnit.slice(0, index) + 'cnx_' + this.config.videoAdUnit.slice(index);
