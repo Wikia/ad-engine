@@ -204,7 +204,7 @@ export class TrackingSetup {
 	}
 
 	private async googleTopicsTracker(): Promise<void> {
-		if (targetingService.get('topics_available') !== 'true') {
+		if (targetingService.get('topics_available') !== '1') {
 			return;
 		}
 

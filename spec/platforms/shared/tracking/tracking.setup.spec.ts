@@ -53,7 +53,7 @@ describe('TrackingSetup', () => {
 		// given
 		targetingService.clear();
 		targetingService.set('ppid', 'ppid');
-		targetingService.set('topics_available', 'true');
+		targetingService.set('topics_available', '1');
 		// @ts-expect-error Feature Policy API is not available in TS
 		global.window.document.featurePolicy = {
 			allowsFeature: (feature: string) => feature === 'browsing-topics',
