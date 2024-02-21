@@ -151,8 +151,13 @@ export class PlayerSetup extends BaseServiceSetup {
 			showAds,
 			autoplayDisabled: false,
 			videoAdUnitPath: this.modifyAdUnitPath(adSlot),
-			targetingParams: utils.getCustomParameters(adSlot, {}, false),
-			player: 'cnx',
+			targetingParams: utils.getCustomParameters(
+				adSlot,
+				{
+					player: 'cnx',
+				},
+				false,
+			),
 			vastXml: vastResponse?.xml,
 		});
 	}
@@ -165,6 +170,7 @@ export class PlayerSetup extends BaseServiceSetup {
 			ad =
 				ad.slice(0, index + searchString.length) + 'cnx_' + ad.slice(index + searchString.length);
 		}
+
 		return ad;
 	}
 }
