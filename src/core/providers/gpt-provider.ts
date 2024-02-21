@@ -323,7 +323,9 @@ export class GptProvider implements Provider {
 
 		const sizeMapping = window.googletag.sizeMapping();
 		adSlot.getDefaultSizes().forEach((adSize) => {
-			sizeMapping.addSize(AllViewportSizes, adSize);
+			if (adSize[1] <= adSlot.getElement().clientHeight) {
+				sizeMapping.addSize(AllViewportSizes, adSize);
+			}
 		});
 
 		gptSlot.defineSizeMapping(sizeMapping.build());
@@ -331,6 +333,7 @@ export class GptProvider implements Provider {
 
 		gptSlot.updateTargetingFromMap(targeting);
 		gptSlot.setTargeting('rv', castedRV);
+
 		window.googletag.pubads().refresh([gptSlot]);
 	}
 }
