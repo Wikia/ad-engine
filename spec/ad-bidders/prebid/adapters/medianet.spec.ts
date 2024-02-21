@@ -1,4 +1,8 @@
 import { Medianet } from '@wikia/ad-bidders/prebid/adapters/medianet';
+import {
+	PrebidPlcmtVideoSubtypes,
+	PrebidVideoPlacements,
+} from '@wikia/ad-bidders/prebid/prebid-models';
 import { context } from '@wikia/core';
 import { expect } from 'chai';
 
@@ -68,17 +72,17 @@ describe('Medianet bidder adapter', () => {
 		const medianet = new Medianet({
 			enabled: true,
 			slots: {
-				featured: {
+				testvideoadslot: {
 					cid: '1234',
 					crid: '5678',
 				},
 			},
 		});
-		context.set('slots.featured.isVideo', true);
+		context.set('slots.testvideoadslot.isVideo', true);
 
 		expect(medianet.prepareAdUnits()).to.deep.equal([
 			{
-				code: 'featured',
+				code: 'testvideoadslot',
 				mediaTypes: {
 					video: {
 						playerSize: [640, 480],
@@ -89,11 +93,13 @@ describe('Medianet bidder adapter', () => {
 						maxduration: 30,
 						protocols: [2, 3, 5, 6],
 						playbackmethod: [2, 3],
+						placement: PrebidVideoPlacements.IN_ARTICLE,
+						plcmt: PrebidPlcmtVideoSubtypes.ACCOMPANYING_CONTENT,
 					},
 				},
 				ortb2Imp: {
 					ext: {
-						gpid: '/5441/something/_PB/featured',
+						gpid: '/5441/something/_PB/testvideoadslot',
 					},
 				},
 				bids: [

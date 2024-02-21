@@ -8,7 +8,6 @@ import {
 	DiProcess,
 	eventsRepository,
 	Experian,
-	Eyeota,
 	GdprConsentPayload,
 	jwpSetup,
 	LiveConnect,
@@ -25,7 +24,6 @@ export class NoAdsMode implements DiProcess {
 		private noAdsDetector: NoAdsDetector,
 		private ats: Ats,
 		private audigent: Audigent,
-		private eyeota: Eyeota,
 		private liveConnect: LiveConnect,
 		private experian: Experian,
 		private liveRampPixel: LiveRampPixel,
@@ -33,8 +31,9 @@ export class NoAdsMode implements DiProcess {
 
 	execute(): void {
 		this.removeAdSlotsPlaceholders();
-		this.noAdsDetector.addReasons(window.ads.context.opts.noAdsReasons);
+		this.noAdsDetector.addReasons(window.ads.context?.opts?.noAdsReasons ?? []);
 		this.dispatchJWPlayerSetupAction();
+		this.dispatchVideoSetupAction();
 		if (context.get('state.isLogged')) {
 			const apstag = Apstag.make();
 			apstag
@@ -50,14 +49,7 @@ export class NoAdsMode implements DiProcess {
 		}
 
 		this.pipeline
-			.add(
-				this.liveRampPixel,
-				this.ats,
-				this.audigent,
-				this.eyeota,
-				this.liveConnect,
-				this.experian,
-			)
+			.add(this.liveRampPixel, this.ats, this.audigent, this.liveConnect, this.experian)
 			.execute()
 			.then(() => {
 				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);
@@ -76,5 +68,12 @@ export class NoAdsMode implements DiProcess {
 
 	private dispatchJWPlayerSetupAction(): void {
 		communicationService.dispatch(jwpSetup({ showAds: false, autoplayDisabled: false }));
+	}
+
+	private dispatchVideoSetupAction(): void {
+		communicationService.emit(eventsRepository.VIDEO_SETUP, {
+			showAds: false,
+			autoplayDisabled: false,
+		});
 	}
 }

@@ -3,15 +3,33 @@ interface MediaWikiAds {
 	adContext: any;
 	adTargeting: any;
 	consentQueue: any;
-	context: MediaWikiAdsContext;
+	context: AdsContext;
 	debug: (groups: string | null) => void;
 	pushToConsentQueue: (callback: any) => void;
 	runtime: Runtime;
 }
 
-interface MediaWikiAdsContext {
-	opts: MediaWikiAdsOpts;
-	targeting: MediaWikiAdsTargeting;
+interface AdsContext {
+	// context set by loader, is available on all platforms
+	/**
+	 * appName as defined in AeLoader
+	 */
+	app: string;
+	/**
+	 * undefined means prod env
+	 */
+	env?: 'dev' | undefined;
+	/**
+	 * undefined means platform === app
+	 */
+	platform?: string;
+	/**
+	 * undefined means skin === app
+	 */
+	skin?: string;
+	// context set only on MediaWiki
+	opts?: MediaWikiAdsOpts;
+	targeting?: MediaWikiAdsTargeting;
 }
 
 interface MediaWikiAdsOpts {
@@ -21,6 +39,7 @@ interface MediaWikiAdsOpts {
 	isSubjectToCcpa?: boolean;
 	platformName?: string;
 	showAds: boolean;
+	userEmailHashes: string[];
 }
 
 interface MediaWikiAdsTargeting {

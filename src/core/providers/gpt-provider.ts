@@ -90,27 +90,11 @@ function configure(): void {
 		function (event: googletag.events.SlotVisibilityChangedEvent) {
 			const adSlot = getAdSlotFromEvent(event);
 
-			return adSlot?.emit(AdSlotEvent.SLOT_VISIBILITY_CHANGED, event);
-		},
-	);
-
-	tag.addEventListener(
-		'slotVisibilityChanged',
-		function (event: googletag.events.SlotVisibilityChangedEvent) {
-			const adSlot = getAdSlotFromEvent(event);
+			adSlot?.emit(AdSlotEvent.SLOT_VISIBILITY_CHANGED, event);
 
 			if (event.inViewPercentage > 50) {
 				return adSlot?.emit(AdSlotEvent.SLOT_BACK_TO_VIEWPORT, event);
-			}
-		},
-	);
-
-	tag.addEventListener(
-		'slotVisibilityChanged',
-		function (event: googletag.events.SlotVisibilityChangedEvent) {
-			const adSlot = getAdSlotFromEvent(event);
-
-			if (event.inViewPercentage < 50) {
+			} else if (event.inViewPercentage < 50) {
 				return adSlot?.emit(AdSlotEvent.SLOT_LEFT_VIEWPORT, event);
 			}
 		},
@@ -218,17 +202,7 @@ export class GptProvider implements Provider {
 	}
 
 	setPPID() {
-		const intentIqPpid = targetingService.get('intent_iq_ppid', 'intent_iq');
-
-		if (!intentIqPpid && targetingService.get('intent_iq_ppid', 'intent_iq') !== null) {
-			communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
-				status: 'intentiq_ppid_not_set_on_time',
-			});
-		}
-
-		const ppid = context.get('services.intentIq.ppid.enabled')
-			? intentIqPpid
-			: targetingService.get('ppid');
+		const ppid = targetingService.get('ppid');
 
 		if (ppid) {
 			const tag = window.googletag.pubads();

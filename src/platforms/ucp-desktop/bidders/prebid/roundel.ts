@@ -31,9 +31,6 @@ export function getRoundelContext(): object {
 				],
 				siteId: '824040',
 			},
-			featured: {
-				siteId: '820935',
-			},
 			incontent_player: {
 				siteId: '820935',
 			},

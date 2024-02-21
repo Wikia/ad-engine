@@ -14,18 +14,13 @@ export const basicContext = {
 			videoEnabled: false,
 			amazonId: '3115',
 			bidsRefreshing: {
-				slots: ['featured', 'gallery_leaderboard', 'incontent_boxad_1', 'incontent_leaderboard'],
+				slots: ['featured', 'gallery_leaderboard', 'incontent_leaderboard'],
 			},
 		},
 		prebid: {
 			enabled: false,
 			bidsRefreshing: {
-				slots: [
-					'gallery_leaderboard',
-					'incontent_boxad_1',
-					'incontent_leaderboard',
-					'incontent_player',
-				],
+				slots: ['gallery_leaderboard', 'incontent_leaderboard', 'incontent_player'],
 			},
 		},
 	},
@@ -107,12 +102,6 @@ export const basicContext = {
 		},
 		externalLogger: {
 			endpoint: '/wikia.php?controller=AdEngine&method=postLog',
-		},
-		instantConfig: {
-			endpoint: 'https://services.fandom.com',
-			appName: 'fandomdesktop',
-			fallback:
-				'https://script.wikia.nocookie.net/fandom-ae-assets/icbm/prod/icbm_state_fandomdesktop.json',
 		},
 		openWeb: {
 			placementSelector: '#WikiaAdInContentPlaceHolder',

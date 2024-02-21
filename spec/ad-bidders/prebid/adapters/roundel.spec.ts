@@ -1,4 +1,8 @@
 import { Roundel } from '@wikia/ad-bidders/prebid/adapters/roundel';
+import {
+	PrebidPlcmtVideoSubtypes,
+	PrebidVideoPlacements,
+} from '@wikia/ad-bidders/prebid/prebid-models';
 import { context } from '@wikia/core';
 import { expect } from 'chai';
 
@@ -74,25 +78,27 @@ describe('Roundel bidder adapter', () => {
 		const roundel = new Roundel({
 			enabled: true,
 			slots: {
-				featured: {
+				incontent_player: {
 					siteId: '820935',
 				},
 			},
 		});
-		context.set('slots.featured.isVideo', true);
+		context.set('slots.incontent_player.isVideo', true);
 
 		expect(roundel.prepareAdUnits()).to.deep.equal([
 			{
-				code: 'featured',
+				code: 'incontent_player',
 				mediaTypes: {
 					video: {
 						context: 'instream',
+						placement: PrebidVideoPlacements.IN_ARTICLE,
 						playerSize: [640, 480],
+						plcmt: PrebidPlcmtVideoSubtypes.ACCOMPANYING_CONTENT,
 					},
 				},
 				ortb2Imp: {
 					ext: {
-						gpid: '/5441/something/_PB/featured',
+						gpid: '/5441/something/_PB/incontent_player',
 					},
 				},
 				bids: [

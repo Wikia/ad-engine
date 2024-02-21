@@ -5,6 +5,7 @@ import { slotService } from '@wikia/core/services/slot-service';
 import {
 	buildTaglessRequestUrl,
 	buildVastUrl,
+	getCustomParameters,
 } from '@wikia/core/utils/tagless-request-url-builder';
 import { expect } from 'chai';
 import { SinonStubbedInstance } from 'sinon';
@@ -255,5 +256,21 @@ describe('tagless-request-url-builder', () => {
 			/&t=s0%3D000%26uno%3Dfoo%26due%3D15%26tre%3Dbar%2Czero%26src%3Dtest%26pos%3Dlayout_initializer%26extra%3Dyes/;
 
 		expect(taglessUrl.match(custParams)).to.be.ok;
+	});
+
+	it('builds and returns custom params as encoded string', () => {
+		const adSlot = slotService.get('top_leaderboard');
+		const customParams = getCustomParameters(adSlot, null);
+		expect(customParams).to.eq(
+			's0%3D000%26uno%3Dfoo%26due%3D15%26tre%3Dbar%2Czero%26src%3Dtest%26pos%3Dtop_leaderboard%26rv%3D1',
+		);
+	});
+
+	it('builds and returns custom params as a string', () => {
+		const adSlot = slotService.get('top_leaderboard');
+		const customParams = getCustomParameters(adSlot, null, false);
+		expect(customParams).to.eq(
+			's0=000&uno=foo&due=15&tre=bar,zero&src=test&pos=top_leaderboard&rv=1',
+		);
 	});
 });

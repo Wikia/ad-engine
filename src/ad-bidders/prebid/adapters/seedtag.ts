@@ -1,6 +1,10 @@
 import { context } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
-import { PrebidAdSlotConfig } from '../prebid-models';
+import {
+	PrebidAdSlotConfig,
+	PrebidPlcmtVideoSubtypes,
+	PrebidVideoPlacements,
+} from '../prebid-models';
 
 export class Seedtag extends PrebidAdapter {
 	static bidderName = 'seedtag';
@@ -18,7 +22,7 @@ export class Seedtag extends PrebidAdapter {
 		{ sizes, publisherId, adUnitId, placement = 'inBanner' }: PrebidAdSlotConfig,
 	): PrebidAdUnit {
 		if (context.get(`slots.${code}.isVideo`)) {
-			return this.getVideoConfig(code, publisherId, adUnitId, sizes);
+			return this.getVideoConfig(code, publisherId, adUnitId);
 		}
 
 		return {
@@ -41,12 +45,12 @@ export class Seedtag extends PrebidAdapter {
 		};
 	}
 
-	getVideoConfig(code, publisherId, adUnitId, sizes): PrebidAdUnit {
+	getVideoConfig(code, publisherId, adUnitId): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
 				video: {
-					playerSize: sizes.length > 0 ? sizes[0] : [640, 480],
+					playerSize: [640, 480],
 					context: 'instream',
 					mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
 					skip: 1,
@@ -55,7 +59,8 @@ export class Seedtag extends PrebidAdapter {
 					startdelay: 0,
 					playbackmethod: [2, 3],
 					linearity: 1,
-					placement: 1,
+					placement: PrebidVideoPlacements.IN_ARTICLE,
+					plcmt: PrebidPlcmtVideoSubtypes.ACCOMPANYING_CONTENT,
 				},
 			},
 			bids: [

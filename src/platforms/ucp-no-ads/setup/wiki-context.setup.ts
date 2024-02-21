@@ -1,4 +1,4 @@
-import { context, DiProcess, targetingService } from '@wikia/ad-engine';
+import { DiProcess, targetingService } from '@wikia/ad-engine';
 
 export class UcpNoAdsWikiContextSetup implements DiProcess {
 	execute(): void {
@@ -6,8 +6,6 @@ export class UcpNoAdsWikiContextSetup implements DiProcess {
 			window.ads.context && window.ads.context.opts.platformName
 				? window.ads.context.opts.platformName
 				: '';
-		context.set('services.instantConfig.endpoint', 'https://services.fandom.com');
-		context.set('services.instantConfig.appName', platformName);
 
 		if (platformName === 'fandomdesktop') targetingService.set('skin', 'ucp_desktop');
 		else if (platformName === 'fandommobile') targetingService.set('skin', 'ucp_mobile');

@@ -77,6 +77,12 @@ export interface IdentityDataPayload {
 	partnerIdentityId: string | null;
 }
 
+export interface VideoAdsOptions {
+	showAds: boolean;
+	targetingParams?: string;
+	videoAdUnitPath?: string;
+}
+
 export const eventsRepository = {
 	// AdEngine life cycle events //
 	AD_ENGINE_BAB_DETECTION: {
@@ -222,6 +228,9 @@ export const eventsRepository = {
 	LIVE_CONNECT_RESPONDED_UUID: {
 		name: 'LiveConnect responded with UUID',
 	},
+	YAHOO_STARTED: {
+		name: 'Yahoo started',
+	},
 	IDENTITY_ENGINE_READY: {
 		category: '[IdentityEngine]',
 		name: 'Identity ready',
@@ -332,6 +341,16 @@ export const eventsRepository = {
 		payload: props<{ group: string; callback: () => void }>(),
 	},
 	// Video events //
+	VIDEO_SETUP: {
+		category: '[Video]',
+		name: 'Setup done',
+		payload: props<{
+			autoplayDisabled: boolean;
+			showAds: boolean;
+			videoAdUnitPath: string;
+			targetingParams: string;
+		}>(),
+	},
 	VIDEO_EVENT: {
 		category: '[Video]',
 		name: 'Video event',
@@ -341,6 +360,11 @@ export const eventsRepository = {
 		category: '[Video]',
 		name: 'Video player tracking',
 		payload: props<{ eventInfo: object }>(),
+	},
+	VIDEO_PLAYER_RENDERED: {
+		category: '[Video]',
+		name: 'Player rendered',
+		payload: props<{ renderId: string; videoAdsOptions: VideoAdsOptions }>(),
 	},
 	// Events emitted by Google Ad Manager creatives //
 	GAM_AD_INTERVENTION: {
