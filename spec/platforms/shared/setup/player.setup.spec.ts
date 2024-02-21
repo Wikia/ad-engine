@@ -6,7 +6,7 @@ import { expect } from 'chai';
 import { SinonSpy, SinonStubbedInstance } from 'sinon';
 
 describe('PlayerSetup', () => {
-	const MOCKED_VAST_AD_UNIT = '/5441/test/vast/ad/unit';
+	const MOCKED_VAST_AD_UNIT = '/5441/cnx-test/vast/ad/unit';
 
 	let dispatchSpy: SinonSpy;
 	let instantConfigStub: SinonStubbedInstance<InstantConfigService>;

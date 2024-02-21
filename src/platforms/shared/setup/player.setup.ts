@@ -168,7 +168,7 @@ export class PlayerSetup extends BaseServiceSetup {
 		const index = ad.indexOf(searchString);
 		if (index != -1) {
 			ad =
-				ad.slice(0, index + searchString.length) + 'cnx_' + ad.slice(index + searchString.length);
+				ad.slice(0, index + searchString.length) + 'cnx-' + ad.slice(index + searchString.length);
 		}
 
 		return ad;
