@@ -14,13 +14,18 @@ export const basicContext = {
 			videoEnabled: false,
 			amazonId: '3115',
 			bidsRefreshing: {
-				slots: ['featured', 'gallery_leaderboard', 'incontent_leaderboard'],
+				slots: ['featured', 'gallery_leaderboard', 'incontent_leaderboard', 'bottom_leaderboard'],
 			},
 		},
 		prebid: {
 			enabled: false,
 			bidsRefreshing: {
-				slots: ['gallery_leaderboard', 'incontent_leaderboard', 'incontent_player'],
+				slots: [
+					'gallery_leaderboard',
+					'incontent_leaderboard',
+					'incontent_player',
+					'bottom_leaderboard',
+				],
 			},
 		},
 	},

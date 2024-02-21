@@ -109,6 +109,8 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'footer',
 				},
+				bidGroup: 'mobile_prefooter',
+				bidBeforePush: true,
 			},
 			interstitial: {
 				adProduct: 'interstitial',
