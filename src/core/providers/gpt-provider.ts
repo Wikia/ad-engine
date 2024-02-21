@@ -333,6 +333,7 @@ export class GptProvider implements Provider {
 
 		gptSlot.updateTargetingFromMap(targeting);
 		gptSlot.setTargeting('rv', castedRV);
+		targetingService.set('rv', castedRV, adSlot.getSlotName());
 
 		window.googletag.pubads().refresh([gptSlot]);
 	}
