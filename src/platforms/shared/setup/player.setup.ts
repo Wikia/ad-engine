@@ -150,10 +150,18 @@ export class PlayerSetup extends BaseServiceSetup {
 		communicationService.emit(eventsRepository.VIDEO_SETUP, {
 			showAds,
 			autoplayDisabled: false,
-			videoAdUnitPath: adSlot.getVideoAdUnit('connatix'),
+			videoAdUnitPath: this.modifyAdUnitPath(adSlot),
 			targetingParams: utils.getCustomParameters(adSlot, {}, false),
 			player: 'cnx',
 			vastXml: vastResponse?.xml,
 		});
+	}
+
+	private static modifyAdUnitPath(adSlot: AdSlot): string {
+		let ad = adSlot.getVideoAdUnit();
+		const searchString = 'VIDEO/';
+		const index = ad.indexOf(searchString);
+		ad = ad.slice(0, index + searchString.length) + 'cnx_' + ad.slice(index + searchString.length);
+		return ad;
 	}
 }
