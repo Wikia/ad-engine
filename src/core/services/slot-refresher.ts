@@ -75,7 +75,7 @@ export class SlotRefresher {
 
 				if (this.slotsInTheViewport.includes(adSlot.getSlotName())) {
 					this.log(`refreshing ${adSlot.getSlotName()}`);
-
+					adSlot.updtatePushTimeAfterBid();
 					callBidders(adSlot.getSlotName(), () => {
 						setTimeout(() => {
 							GptProvider.refreshSlot(adSlot);

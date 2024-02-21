@@ -338,6 +338,10 @@ export class AdSlot {
 		return this.pushTime;
 	}
 
+	updtatePushTimeAfterBid() {
+		this.pushTime = new Date().getTime() + 2000;
+	}
+
 	setStatus(status: null | string = null): void {
 		this.status = status;
 		if (status !== null) {
