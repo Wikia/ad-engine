@@ -6,7 +6,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const platformsConfig = require('./src/platforms/platforms.json');
 const common = require('./webpack.common.js');
 
-const platforms = ({ entry }) => ({
+const platforms = ({ entry }, bundleAnalyzer = false) => ({
 	entry,
 
 	output: {
@@ -25,19 +25,21 @@ const platforms = ({ entry }) => ({
 		new webpack.ProvidePlugin({
 			process: 'process/browser',
 		}),
-		new BundleAnalyzerPlugin({
-			// generate the stats.json file
-			analyzerMode: 'disabled',
-			generateStatsFile: true,
-			statsOptions: {
-				preset: 'normal',
-				assets: true,
-				assetsSort: 'name',
-				chunks: true,
-				chunkModules: false,
-				modules: false,
-			},
-		}),
+		bundleAnalyzer
+			? new BundleAnalyzerPlugin({})
+			: new BundleAnalyzerPlugin({
+					// generate the stats.json file
+					analyzerMode: 'disabled',
+					generateStatsFile: true,
+					statsOptions: {
+						preset: 'normal',
+						assets: true,
+						assetsSort: 'name',
+						chunks: true,
+						chunkModules: false,
+						modules: false,
+					},
+			  }),
 	],
 
 	performance: {
@@ -64,24 +66,30 @@ module.exports = (env, argv) => {
 	if (env && env.platform && argv.mode === 'production') {
 		return merge(
 			common(),
-			platforms({
-				entry: {
-					[env.platform]: path.resolve(__dirname, `src/platforms/${env.platform}/index.ts`),
+			platforms(
+				{
+					entry: {
+						[env.platform]: path.resolve(__dirname, `src/platforms/${env.platform}/index.ts`),
+					},
 				},
-			}),
+				env && env.bundleAnalyzer,
+			),
 		);
 	}
 
 	return merge(
 		common(),
-		platforms({
-			entry: platformsConfig.list.reduce(
-				(result, platform) => ({
-					...result,
-					[platform]: path.resolve(__dirname, `src/platforms/${platform}/index.ts`),
-				}),
-				{},
-			),
-		}),
+		platforms(
+			{
+				entry: platformsConfig.list.reduce(
+					(result, platform) => ({
+						...result,
+						[platform]: path.resolve(__dirname, `src/platforms/${platform}/index.ts`),
+					}),
+					{},
+				),
+			},
+			env && env.bundleAnalyzer,
+		),
 	);
 };
