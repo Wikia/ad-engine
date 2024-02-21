@@ -567,17 +567,26 @@ export class PrebidProvider extends BidderProvider {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
 		const trackBid = (response) => {
+			setTimeout(() => {
+				pbjs.offEvent('bidResponse', trackBid);
+			}, 2000);
 			communicationService.emit(eventsRepository.BIDDERS_BIDS_RESPONSE, {
 				bidResponse: this.mapResponseToTrackingBidDefinition(response),
 			});
 		};
 
 		pbjs.onEvent('bidResponse', trackBid);
-		pbjs.onEvent(
-			'adRenderSucceeded',
-			(response: { adId: string; bid: PrebidBidResponse; doc: Document | null }) =>
-				intentIQ.reportPrebidWin(response.bid),
-		);
+
+		const adRenderSucceededHandler = (response: {
+			adId: string;
+			bid: PrebidBidResponse;
+			doc: Document | null;
+		}) => {
+			pbjs.offEvent('adRenderSucceeded', adRenderSucceededHandler);
+			intentIQ.reportPrebidWin(response.bid);
+		};
+
+		pbjs.onEvent('adRenderSucceeded', adRenderSucceededHandler);
 	}
 
 	private mapResponseToTrackingBidDefinition(response: PrebidBidResponse): TrackingBidDefinition {
