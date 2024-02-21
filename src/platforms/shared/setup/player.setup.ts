@@ -161,7 +161,10 @@ export class PlayerSetup extends BaseServiceSetup {
 		let ad = adSlot.getVideoAdUnit();
 		const searchString = 'VIDEO/';
 		const index = ad.indexOf(searchString);
-		ad = ad.slice(0, index + searchString.length) + 'cnx_' + ad.slice(index + searchString.length);
+		if (index != -1) {
+			ad =
+				ad.slice(0, index + searchString.length) + 'cnx_' + ad.slice(index + searchString.length);
+		}
 		return ad;
 	}
 }
