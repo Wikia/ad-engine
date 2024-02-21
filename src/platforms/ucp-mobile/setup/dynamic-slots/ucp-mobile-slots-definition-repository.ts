@@ -1,4 +1,4 @@
-import { activateFloorAdhesionOnUAP, SlotSetupDefinition } from '@platforms/shared';
+import { activateFloorAdhesionOnUAP, bidBeforePush, SlotSetupDefinition } from '@platforms/shared';
 import {
 	AdSlot,
 	communicationService,
@@ -373,7 +373,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			if (action.isLoaded) {
 				context.push('events.pushOnScroll.ids', slotName);
 			} else {
-				context.push('state.adStack', { id: slotName });
+				bidBeforePush(slotName, () => context.push('state.adStack', { id: slotName }));
 			}
 		});
 	}

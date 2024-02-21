@@ -59,6 +59,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'middle',
 				},
+				bidGroup: 'btf',
 			},
 			incontent_boxad_1: {
 				adProduct: 'incontent_boxad_1',
@@ -74,6 +75,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'hivi',
 				},
+				bidGroup: 'btf',
 			},
 			bottom_leaderboard: {
 				adProduct: 'bottom_leaderboard',
@@ -104,6 +106,8 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 					createLabel: false,
 					adLabelParent: '.bottom-ads-container',
 				},
+				bidGroup: 'bottom_leaderboard',
+				bidBeforePush: true,
 			},
 			incontent_player: {
 				adProduct: 'incontent_player',
