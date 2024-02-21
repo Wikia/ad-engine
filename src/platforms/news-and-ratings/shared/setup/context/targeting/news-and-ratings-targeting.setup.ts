@@ -9,8 +9,31 @@ import {
 	targetingService,
 	utils,
 } from '@wikia/ad-engine';
-import isMatch from 'lodash/isMatch.js';
 import { CookieBasedTargetingParams, TargetingParams } from './interfaces/targeting-params';
+
+type BrowserSessionData = Pick<CookieBasedTargetingParams, 'session' | 'subses'>;
+type DailySessionData = Pick<CookieBasedTargetingParams, 'ttag' | 'ftag' | 'pv'>;
+
+function browserSessionDataMatch(
+	browserSessionData: BrowserSessionData,
+	bbBrowserSession: BrowserSessionData,
+): boolean {
+	return (
+		browserSessionData.session === bbBrowserSession.session &&
+		browserSessionData.subses === bbBrowserSession.subses
+	);
+}
+
+function dailySessionDataMatch(
+	dailySessionData: DailySessionData,
+	bbDailySession: DailySessionData,
+): boolean {
+	return (
+		dailySessionData.ttag === bbDailySession.ttag &&
+		dailySessionData.ftag === bbDailySession.ftag &&
+		dailySessionData.pv === bbDailySession.pv
+	);
+}
 
 export class NewsAndRatingsTargetingSetup implements DiProcess {
 	execute(): void {
@@ -210,8 +233,12 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 			}
 		}
 
-		const browserSessionData = this.isJsonString(bbCookies[0]) ? JSON.parse(bbCookies[0]) : {};
-		const dailySessionData = this.isJsonString(bbCookies[1]) ? JSON.parse(bbCookies[1]) : {};
+		const browserSessionData: BrowserSessionData = this.isJsonString(bbCookies[0])
+			? JSON.parse(bbCookies[0])
+			: {};
+		const dailySessionData: DailySessionData = this.isJsonString(bbCookies[1])
+			? JSON.parse(bbCookies[1])
+			: {};
 
 		const result: CookieBasedTargetingParams = {
 			ttag: dailySessionData.ttag || existingCookies.ttag || '',
@@ -235,13 +262,20 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 		}
 
 		if (consolidate) {
-			const bbBrowserSession = { session: result.session, subses: result.subses };
-			const bbDailySession = { ttag: result.ttag, ftag: result.ftag, pv: result.pv };
+			const bbBrowserSession: BrowserSessionData = {
+				session: result.session,
+				subses: result.subses,
+			};
+			const bbDailySession: DailySessionData = {
+				ttag: result.ttag,
+				ftag: result.ftag,
+				pv: result.pv,
+			};
 
-			if (!isMatch(bbCookies[0], bbBrowserSession)) {
+			if (!browserSessionDataMatch(browserSessionData, bbBrowserSession)) {
 				cookieAdapter.setItem(browserSessionCookie, JSON.stringify(bbBrowserSession));
 			}
-			if (!isMatch(bbCookies[1], bbDailySession)) {
+			if (!dailySessionDataMatch(dailySessionData, bbDailySession)) {
 				cookieAdapter.setItem(dailySessionCookie, JSON.stringify(bbDailySession));
 			}
 		} else {
