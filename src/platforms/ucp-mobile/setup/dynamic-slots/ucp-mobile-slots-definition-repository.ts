@@ -1,4 +1,8 @@
-import { activateFloorAdhesionOnUAP, bidBeforePush, SlotSetupDefinition } from '@platforms/shared';
+import {
+	activateFloorAdhesionOnUAP,
+	bidBeforeRunIfNecessary,
+	SlotSetupDefinition,
+} from '@platforms/shared';
 import {
 	AdSlot,
 	communicationService,
@@ -268,7 +272,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			},
 			slotCreatorWrapperConfig: null,
 			activator: () => {
-				this.pushWaitingSlot(slotName);
+				context.push('events.pushOnScroll.ids', slotName);
 			},
 		};
 	}
@@ -322,7 +326,9 @@ export class UcpMobileSlotsDefinitionRepository {
 				this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
 
 			if (numberOfViewportsFromTopToPush === -1) {
-				context.push('state.adStack', { id: slotName });
+				bidBeforeRunIfNecessary(slotName, () => {
+					context.push('state.adStack', { id: slotName });
+				});
 			} else {
 				const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
 				scrollListener.addSlot(slotName, { distanceFromTop: distance });
@@ -373,7 +379,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			if (action.isLoaded) {
 				context.push('events.pushOnScroll.ids', slotName);
 			} else {
-				bidBeforePush(slotName, () => context.push('state.adStack', { id: slotName }));
+				bidBeforeRunIfNecessary(slotName, () => context.push('state.adStack', { id: slotName }));
 			}
 		});
 	}

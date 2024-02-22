@@ -1,5 +1,5 @@
 import { Dictionary } from '../';
-import { bidBeforePush } from '../../platforms/shared';
+import { bidBeforeRunIfNecessary } from '../../platforms/shared';
 import { slotService } from '../services';
 import { getTopOffset, getViewportHeight, logger } from '../utils';
 
@@ -72,12 +72,12 @@ export class ScrollListener {
 
 				if (scrollPosition + viewPortHeight > slotPosition - threshold) {
 					this.removeCallback(callbackId);
-					bidBeforePush(id, () => slotService.pushSlot(node));
+					bidBeforeRunIfNecessary(id, () => slotService.pushSlot(node));
 				}
 			} else {
 				if (scrollPosition > distanceFromTop) {
 					this.removeCallback(callbackId);
-					bidBeforePush(id, () => slotService.pushSlot(node));
+					bidBeforeRunIfNecessary(id, () => slotService.pushSlot(node));
 				}
 			}
 		});

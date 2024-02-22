@@ -9,6 +9,9 @@ export const basicContext = {
 	bidders: {
 		enabled: false,
 		timeout: 2000,
+		timeoutByGroup: {
+			'not-defined': 1000,
+		},
 		a9: {
 			enabled: false,
 			videoEnabled: false,

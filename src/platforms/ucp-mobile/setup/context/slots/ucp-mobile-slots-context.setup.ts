@@ -82,7 +82,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					pos: ['incontent_boxad'],
 				},
 				bidGroup: 'incontent_boxad_1',
-				bidBeforePush: true,
+				bidBeforeRun: true,
 			},
 			incontent_player: {
 				adProduct: 'incontent_player',
@@ -110,7 +110,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					loc: 'footer',
 				},
 				bidGroup: 'mobile_prefooter',
-				bidBeforePush: true,
+				bidBeforeRun: true,
 			},
 			interstitial: {
 				adProduct: 'interstitial',
@@ -134,6 +134,8 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					[320, 50],
 					[320, 100],
 				],
+				bidGroup: 'floor_adhesion',
+				bidBeforeRun: true,
 			},
 			bottom_leaderboard: {
 				adProduct: 'bottom_leaderboard',
@@ -159,7 +161,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					pos: ['bottom_leaderboard', 'mobile_prefooter'],
 				},
 				bidGroup: 'bottom_leaderboard',
-				bidBeforePush: true,
+				bidBeforeRun: true,
 			},
 			featured: {
 				adProduct: 'featured',

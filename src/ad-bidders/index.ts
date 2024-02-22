@@ -127,19 +127,16 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 	callByBidGroup(group: string): Promise<void> {
 		const config = context.get('bidders') || {};
 		const promise = utils.createExtendedPromise();
+		const timeout = this.getBidderTimeout(config, group);
 
 		this.biddersProviders[group] = this.biddersProviders[group] || {};
 
 		if (config.prebid && config.prebid.enabled) {
-			this.biddersProviders[group].prebid = new PrebidProvider(
-				config.prebid,
-				config.timeout,
-				group,
-			);
+			this.biddersProviders[group].prebid = new PrebidProvider(config.prebid, timeout, group);
 		}
 
 		if (A9Provider.isEnabled()) {
-			this.biddersProviders[group].a9 = new A9Provider(config.a9, config.timeout, group);
+			this.biddersProviders[group].a9 = new A9Provider(config.a9, timeout, group);
 		} else {
 			utils.logger(logGroup, `Group: ${group} - A9 has been disabled`);
 		}
@@ -213,6 +210,10 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 
 	private getBidderProviders(bidGroup: string): BiddersProviders {
 		return this.biddersProviders[bidGroup] || {};
+	}
+
+	private getBidderTimeout(config: any, bidGroup: string) {
+		return config?.timeoutByGroup?.[bidGroup] || config.timeout;
 	}
 }
 

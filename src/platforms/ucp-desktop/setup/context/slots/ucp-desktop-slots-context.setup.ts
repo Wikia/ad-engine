@@ -107,7 +107,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 					adLabelParent: '.bottom-ads-container',
 				},
 				bidGroup: 'bottom_leaderboard',
-				bidBeforePush: true,
+				bidBeforeRun: true,
 			},
 			incontent_player: {
 				adProduct: 'incontent_player',

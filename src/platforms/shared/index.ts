@@ -1,4 +1,4 @@
-export * from './bidders/bid-before-push';
+export * from './bidders/bid-before-run-if-necessary';
 export * from './bidders/bidders-state.setup';
 export * from './bidders/filter-video-bids';
 export * from './bidders/wikia-adapter';
