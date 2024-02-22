@@ -8,12 +8,13 @@ import {
 	utils,
 } from '@ad-engine/core';
 
+export enum CmpType {
+	ONE_TRUST = '1t',
+	TRACKING_OPT_IN = 'toi',
+}
+
 export class IdentitySetup implements DiProcess {
 	private logGroup = 'identity-setup';
-	private CMP_TYPE = {
-		ONE_TRUST: '1t',
-		TRACKING_OPT_IN: 'toi',
-	};
 
 	async execute(): Promise<void> {
 		utils.logger(this.logGroup, 'initialized');
@@ -80,7 +81,7 @@ export class IdentitySetup implements DiProcess {
 		});
 	}
 
-	private getCmp(): string {
-		return window.OneTrust !== undefined ? this.CMP_TYPE.ONE_TRUST : this.CMP_TYPE.TRACKING_OPT_IN;
+	private getCmp(): CmpType {
+		return window.OneTrust !== undefined ? CmpType.ONE_TRUST : CmpType.TRACKING_OPT_IN;
 	}
 }
