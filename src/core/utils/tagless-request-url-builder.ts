@@ -19,6 +19,7 @@ export interface VastOptions {
 	videoId: string;
 	numberOfAds: number;
 	vpos: string;
+	isTagless: boolean;
 }
 
 const availableVideoPositions: string[] = ['preroll', 'midroll', 'postroll'];
@@ -137,6 +138,10 @@ export function buildVastUrl(
 	}
 
 	params.push(`rdp=${trackingOptIn.isOptOutSale() ? 1 : 0}`);
+
+	if (options.isTagless) {
+		params.push('tagless=1');
+	}
 
 	return vastBaseUrl + params.join('&');
 }

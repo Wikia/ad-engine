@@ -39,6 +39,7 @@ export class VastTaglessRequest {
 		return utils.buildVastUrl(aspectRatio, slotName, {
 			vpos: position,
 			targeting: biddersTargeting,
+			isTagless: true,
 		});
 	}
 
