@@ -160,6 +160,9 @@ export class PlayerSetup extends BaseServiceSetup {
 		});
 	}
 
+	// This a temporary solution for the time of Connatix vs JwPlayer experiment
+	// Should be removed after the test is completed
+	// Ticket: https://fandom.atlassian.net/browse/COTECH-1073
 	private static modifyAdUnitPath(adSlot: AdSlot): string {
 		let ad = adSlot.getVideoAdUnit();
 		const searchString = 'VIDEO/';
