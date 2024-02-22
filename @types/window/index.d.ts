@@ -68,4 +68,5 @@ interface Window {
 		};
 	};
 	OneTrust?: any;
+	pathfinderModulesReady?: bool;
 }
