@@ -135,8 +135,9 @@ export class TrackingSetup {
 			return;
 		}
 
-		bidderTracker.register(({ data }: Dictionary) => {
-			this.dwTracker.track(data, trackingUrls.AD_ENG_BIDDERS);
+		bidderTracker.register((data: Dictionary) => {
+			console.log('DJ: Sending bidder event', data);
+			this.dwTracker.track(data.data, trackingUrls.AD_ENG_BIDDERS);
 		});
 	}
 
