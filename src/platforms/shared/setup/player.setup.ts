@@ -63,8 +63,6 @@ export class PlayerSetup extends BaseServiceSetup {
 			utils.logger(logGroup, 'display and video sync response available');
 		}
 
-		this.jwpManager.manage();
-
 		if (showAds && !strategyRulesEnabled) {
 			communicationService.dispatch(
 				jwpSetup({
@@ -73,12 +71,12 @@ export class PlayerSetup extends BaseServiceSetup {
 					vastXml: vastResponse?.xml,
 				}),
 			);
+			this.jwpManager.manage();
 		} else if (strategyRulesEnabled) {
 			utils.logger(
 				logGroup,
 				'JWP Strategy Rules enabled - AdEngine does not control ads in JWP anymore',
 			);
-			this.jwpManager.manage();
 			communicationService.dispatch(
 				jwpSetup({
 					showAds,
