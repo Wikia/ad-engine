@@ -5,6 +5,7 @@ import {
 	targetingService,
 	utils,
 } from '@ad-engine/core';
+import { CmpType } from '../../ad-services';
 import { CompilerPartial } from '../base-tracker';
 
 function checkOptIn(): string {
@@ -23,7 +24,7 @@ function checkOptOutSale(): string {
 	return '';
 }
 
-function getCmp(): '1t' | 'toi' {
+function getCmp(): CmpType {
 	return window.OneTrust !== undefined ? '1t' : 'toi';
 }
 

@@ -8,9 +8,11 @@ import {
 	utils,
 } from '@ad-engine/core';
 
+export type CmpType = '1t' | 'toi';
+
 export class IdentitySetup implements DiProcess {
 	private logGroup = 'identity-setup';
-	private CMP_TYPE = {
+	private CMP_TYPE: { [key: string]: CmpType } = {
 		ONE_TRUST: '1t',
 		TRACKING_OPT_IN: 'toi',
 	};
@@ -80,7 +82,7 @@ export class IdentitySetup implements DiProcess {
 		});
 	}
 
-	private getCmp(): string {
+	private getCmp(): CmpType {
 		return window.OneTrust !== undefined ? this.CMP_TYPE.ONE_TRUST : this.CMP_TYPE.TRACKING_OPT_IN;
 	}
 }
