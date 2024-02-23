@@ -181,6 +181,7 @@ export class A9Provider extends BidderProvider {
 
 		if (!slots || slots.length === 0) {
 			utils.logger(logGroup, 'there is no slots to fetch bids');
+			this.onNoSlotsError();
 			return;
 		}
 

@@ -489,6 +489,8 @@ export class PrebidProvider extends BidderProvider {
 		}
 
 		if (this.adUnits.length === 0) {
+			utils.logger(logGroup, 'there is no slots to fetch bids');
+			this.onNoSlotsError();
 			return;
 		}
 

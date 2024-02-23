@@ -140,6 +140,7 @@ export class UcpMobileSlotsDefinitionRepository {
 						adProduct: '{slotConfig.slotName}',
 						'targeting.rv': '{slotConfig.repeat.index}',
 						'targeting.pos': ['incontent_boxad'],
+						bidBeforeRun: false,
 					},
 					updateCreator: {
 						anchorPosition: 'belowScrollPosition',

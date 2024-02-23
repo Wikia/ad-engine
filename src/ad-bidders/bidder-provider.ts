@@ -54,6 +54,14 @@ export abstract class BidderProvider {
 		utils.logger(this.logGroup, 'respond');
 	}
 
+	protected onNoSlotsError(): void {
+		this.response = true;
+
+		this.onResponseCallbacks.flush();
+
+		utils.logger(this.logGroup, 'no slots');
+	}
+
 	getSlotBestPrice(slotName: string): Promise<Dictionary<number | string>> {
 		return this.getBestPrice(slotName);
 	}
