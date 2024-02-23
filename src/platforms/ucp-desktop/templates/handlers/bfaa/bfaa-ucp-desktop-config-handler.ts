@@ -50,13 +50,8 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 	}
 
 	private configureFloorAdhesionExperiment() {
-		if (context.get('options.ntc.floorEnabled')) {
-			this.enabledSlots = [
-				'top_boxad',
-				'incontent_boxad_1',
-				'bottom_leaderboard',
-				'floor_adhesion',
-			];
+		if (context.get('options.floorAdhesion')) {
+			this.enabledSlots.push('floor_adhesion');
 
 			document.body.classList.add('floor-adhesion-experiment');
 		}
