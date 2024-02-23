@@ -117,6 +117,10 @@ export class PlayerSetup extends BaseServiceSetup {
 			displayAndVideoAdsSyncContext.setVastRequestedBeforePlayer();
 			utils.logger(logGroup, 'display and video sync response available');
 		}
+		let firstVideoAdImpressionEmitted = false;
+		const wasPlayEmittedBeforeAd = (eventName: string) => {
+			return eventName === 'play' && !firstVideoAdImpressionEmitted;
+		};
 
 		communicationService.on(
 			eventsRepository.VIDEO_EVENT,
@@ -124,12 +128,17 @@ export class PlayerSetup extends BaseServiceSetup {
 				const { name, state } = payload.videoEvent;
 
 				if (name === 'adImpression') {
+					firstVideoAdImpressionEmitted = true;
 					videoDisplayTakeoverSynchronizer.resolve(
 						state.vastParams.lineItemId,
 						state.vastParams.creativeId,
 					);
 					adSlot.setStatus(AdSlotStatus.STATUS_SUCCESS);
 					adSlot.emit(AdSlotEvent.VIDEO_AD_IMPRESSION);
+				} else if (wasPlayEmittedBeforeAd(name)) {
+					PlayerSetup.registerTimeoutForVideoDisplayTakeoverSync(
+						() => firstVideoAdImpressionEmitted === true,
+					);
 				} else if (['adError', 'playError'].includes(name)) {
 					videoDisplayTakeoverSynchronizer.resolve();
 				}
@@ -142,6 +151,14 @@ export class PlayerSetup extends BaseServiceSetup {
 				PlayerSetup.emitVideoSetupEvent(showAds, adSlot, vastResponse);
 			}
 		});
+	}
+
+	private static registerTimeoutForVideoDisplayTakeoverSync(condition: () => boolean): void {
+		new utils.WaitFor(condition, 1, displayAndVideoAdsSyncContext.getSyncTimeout())
+			.until()
+			.then(() => {
+				videoDisplayTakeoverSynchronizer.resolve();
+			});
 	}
 
 	private static emitVideoSetupEvent(
