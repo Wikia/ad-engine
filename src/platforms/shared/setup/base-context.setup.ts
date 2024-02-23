@@ -104,9 +104,11 @@ export class BaseContextSetup implements DiProcess {
 		context.set('options.jwpMaxDelayTimeout', this.instantConfig.get('icUAPJWPlayerDelay', 0));
 		context.set('options.video.iasTracking.enabled', this.instantConfig.get('icIASVideoTracking'));
 		context.set('options.video.syncWithDisplay', this.instantConfig.get('icUAPJWPlayer'));
+		// TODO: once Connatix supports VAST XML we can simplify the condition in line 110
 		context.set(
 			'options.video.displayAndVideoAdsSyncEnabled',
-			this.instantConfig.get('icDisplayAndVideoAdsSyncEnabled'),
+			this.instantConfig.get('icDisplayAndVideoAdsSyncEnabled') &&
+				this.instantConfig.get('icFeaturedVideoPlayer') !== 'connatix',
 		);
 		context.set(
 			'options.video.uapJWPLineItemIds',
