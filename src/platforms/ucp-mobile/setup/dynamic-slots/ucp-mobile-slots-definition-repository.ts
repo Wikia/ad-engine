@@ -1,8 +1,4 @@
-import {
-	activateFloorAdhesionOnUAP,
-	bidBeforeRunIfNecessary,
-	SlotSetupDefinition,
-} from '@platforms/shared';
+import { activateFloorAdhesionOnUAP, SlotSetupDefinition } from '@platforms/shared';
 import {
 	AdSlot,
 	communicationService,
@@ -15,6 +11,7 @@ import {
 	scrollListener,
 	SlotPlaceholderConfig,
 	slotPlaceholderInjector,
+	slotService,
 	UapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
@@ -326,9 +323,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
 
 			if (numberOfViewportsFromTopToPush === -1) {
-				bidBeforeRunIfNecessary(slotName, () => {
-					context.push('state.adStack', { id: slotName });
-				});
+				slotService.pushSlotById(slotName);
 			} else {
 				const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
 				scrollListener.addSlot(slotName, { distanceFromTop: distance });
@@ -379,7 +374,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			if (action.isLoaded) {
 				context.push('events.pushOnScroll.ids', slotName);
 			} else {
-				bidBeforeRunIfNecessary(slotName, () => context.push('state.adStack', { id: slotName }));
+				slotService.pushSlotById(slotName);
 			}
 		});
 	}
