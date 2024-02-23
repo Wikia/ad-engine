@@ -118,20 +118,24 @@ export class PlayerSetup extends BaseServiceSetup {
 			utils.logger(logGroup, 'display and video sync response available');
 		}
 
-		communicationService.on(eventsRepository.VIDEO_EVENT, (payload) => {
-			const { name, state } = payload.videoEvent;
+		communicationService.on(
+			eventsRepository.VIDEO_EVENT,
+			(payload) => {
+				const { name, state } = payload.videoEvent;
 
-			if (name === 'adImpression') {
-				videoDisplayTakeoverSynchronizer.resolve(
-					state.vastParams.lineItemId,
-					state.vastParams.creativeId,
-				);
-				adSlot.setStatus(AdSlotStatus.STATUS_SUCCESS);
-				adSlot.emit(AdSlotEvent.VIDEO_AD_IMPRESSION);
-			} else if (['adError', 'play', 'playError'].includes(name)) {
-				videoDisplayTakeoverSynchronizer.resolve();
-			}
-		});
+				if (name === 'adImpression') {
+					videoDisplayTakeoverSynchronizer.resolve(
+						state.vastParams.lineItemId,
+						state.vastParams.creativeId,
+					);
+					adSlot.setStatus(AdSlotStatus.STATUS_SUCCESS);
+					adSlot.emit(AdSlotEvent.VIDEO_AD_IMPRESSION);
+				} else if (['adError', 'play', 'playError'].includes(name)) {
+					videoDisplayTakeoverSynchronizer.resolve();
+				}
+			},
+			false,
+		);
 
 		communicationService.on(eventsRepository.BIDDERS_BIDDING_DONE, ({ slotName }) => {
 			if (slotName === videoAdSlotName) {
