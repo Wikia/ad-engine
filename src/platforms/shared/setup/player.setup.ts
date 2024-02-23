@@ -130,7 +130,7 @@ export class PlayerSetup extends BaseServiceSetup {
 					);
 					adSlot.setStatus(AdSlotStatus.STATUS_SUCCESS);
 					adSlot.emit(AdSlotEvent.VIDEO_AD_IMPRESSION);
-				} else if (['adError', 'play', 'playError'].includes(name)) {
+				} else if (['adError', 'playError'].includes(name)) {
 					videoDisplayTakeoverSynchronizer.resolve();
 				}
 			},
