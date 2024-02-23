@@ -9,7 +9,6 @@ import {
 	NoAdsDetector,
 	NoAdsMode,
 	PlatformContextSetup,
-	SequentialMessagingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
@@ -59,7 +58,6 @@ export class F2Platform {
 			F2SlotsContextSetup,
 			F2DynamicSlotsSetup,
 			F2TemplatesSetup,
-			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM might break
 			LabradorSetup,
 			F2ExperimentsSetup,
 			TrackingSetup,
