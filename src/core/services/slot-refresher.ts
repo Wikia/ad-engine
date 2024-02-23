@@ -67,7 +67,7 @@ export class SlotRefresher {
 	}
 
 	refreshSlot(adSlot: AdSlot) {
-		if (!this.isSlotRefreshable(adSlot.getSlotName())) return;
+		if (!this.isSlotRefreshable(adSlot.getSlotName()) && !adSlot.refreshable) return;
 
 		setTimeout(() => {
 			if (adSlot.isEnabled()) {

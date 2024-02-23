@@ -90,8 +90,10 @@ function configure(): void {
 		'slotVisibilityChanged',
 		function (event: googletag.events.SlotVisibilityChangedEvent) {
 			const adSlot = getAdSlotFromEvent(event);
+			const isSlotRefreshable = event.inViewPercentage > 0;
 
 			adSlot?.emit(AdSlotEvent.SLOT_VISIBILITY_CHANGED, event);
+			adSlot?.emit(AdSlotEvent.SLOT_REFRESHABLE, { isSlotRefreshable });
 
 			if (event.inViewPercentage > 50) {
 				return adSlot?.emit(AdSlotEvent.SLOT_BACK_TO_VIEWPORT, event);
