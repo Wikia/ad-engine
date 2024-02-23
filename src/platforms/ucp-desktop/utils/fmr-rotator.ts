@@ -183,7 +183,7 @@ export class FmrRotator {
 	}
 
 	private pushNextSlot(): void {
-		context.push('state.adStack', { id: this.nextSlotName });
+		slotService.pushSlotById(this.nextSlotName);
 		this.refreshInfo.repeatIndex++;
 	}
 
