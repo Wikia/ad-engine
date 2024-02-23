@@ -146,11 +146,15 @@ export class PlayerSetup extends BaseServiceSetup {
 			false,
 		);
 
-		communicationService.on(eventsRepository.BIDDERS_BIDDING_DONE, ({ slotName }) => {
-			if (slotName === videoAdSlotName) {
-				PlayerSetup.emitVideoSetupEvent(showAds, adSlot, vastResponse);
-			}
-		});
+		communicationService.on(
+			eventsRepository.BIDDERS_BIDDING_DONE,
+			({ slotName }) => {
+				if (slotName === videoAdSlotName) {
+					PlayerSetup.emitVideoSetupEvent(showAds, adSlot, vastResponse);
+				}
+			},
+			false,
+		);
 	}
 
 	private static registerTimeoutForVideoDisplayTakeoverSync(condition: () => boolean): void {

@@ -119,4 +119,32 @@ describe('PlayerSetup', () => {
 		expect(dispatchSpy.called).to.be.true;
 		expect(dispatchSpy.lastCall.args[0]).to.deep.equal(expectedDispatchArg);
 	});
+
+	it('should dispatch video setup action with VAST XML when tagless request is enabled', async () => {
+		global.sandbox.stub(displayAndVideoAdsSyncContext, 'isSyncEnabled').returns(true);
+		global.sandbox.stub(displayAndVideoAdsSyncContext, 'isTaglessRequestEnabled').returns(true);
+		instantConfigStub.get.withArgs('icFeaturedVideoPlayer').returns('connatix');
+		context.set('slots.featured.videoAdUnit', MOCKED_VAST_AD_UNIT);
+		context.set('vast.adUnitId', MOCKED_VAST_AD_UNIT);
+		const mockedVastXML =
+			'<?xml version="1.0" encoding="UTF-8"?><VAST xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="vast.xsd" version="4.0"></VAST>';
+		const response: VastResponseData = { xml: mockedVastXML, lineItemId: '', creativeId: '' };
+		const slotName = 'featured';
+		const expectedDispatchArg = {
+			showAds: true,
+			autoplayDisabled: false,
+			videoAdUnitPath: MOCKED_VAST_AD_UNIT,
+			targetingParams: 'pos=featured&rv=1',
+			vastXml: mockedVastXML,
+			type: '[Video] Setup done',
+			__global: true,
+		};
+		vastTaglessRequestStub.getVast = () => Promise.resolve(response);
+
+		await subject.call();
+		communicationService.emit(eventsRepository.BIDDERS_BIDDING_DONE, { slotName });
+
+		expect(dispatchSpy.called).to.be.true;
+		expect(dispatchSpy.lastCall.args[0]).to.deep.equal(expectedDispatchArg);
+	});
 });
