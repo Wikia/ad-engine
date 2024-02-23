@@ -1,4 +1,9 @@
-import { JWPlayerManager, VastResponseData, VastTaglessRequest } from '@wikia/ad-products';
+import {
+	JWPlayerManager,
+	VastResponseData,
+	VastTaglessRequest,
+	videoDisplayTakeoverSynchronizer,
+} from '@wikia/ad-products';
 import { communicationService, eventsRepository } from '@wikia/communication';
 import { context, displayAndVideoAdsSyncContext, InstantConfigService } from '@wikia/core';
 import { PlayerSetup } from '@wikia/platforms/shared';
@@ -9,6 +14,8 @@ describe('PlayerSetup', () => {
 	const MOCKED_VAST_AD_UNIT = '/5441/test/vast/ad/unit';
 
 	let dispatchSpy: SinonSpy;
+	let displayVideoSyncSpy: SinonSpy;
+	let getSyncTimeoutSpy: SinonSpy;
 	let instantConfigStub: SinonStubbedInstance<InstantConfigService>;
 	let jwpManagerStub: SinonStubbedInstance<JWPlayerManager>;
 	let vastTaglessRequestStub;
@@ -32,6 +39,8 @@ describe('PlayerSetup', () => {
 
 	beforeEach(() => {
 		dispatchSpy = global.sandbox.spy(communicationService, 'dispatch');
+		displayVideoSyncSpy = global.sandbox.spy(videoDisplayTakeoverSynchronizer, 'resolve');
+		getSyncTimeoutSpy = global.sandbox.spy(displayAndVideoAdsSyncContext, 'getSyncTimeout');
 	});
 
 	afterEach(() => {
@@ -146,5 +155,40 @@ describe('PlayerSetup', () => {
 
 		expect(dispatchSpy.called).to.be.true;
 		expect(dispatchSpy.lastCall.args[0]).to.deep.equal(expectedDispatchArg);
+	});
+
+	it('should get video+display sync timeout on play event when no adImpression event happened', async () => {
+		PlayerSetup.resolveVideoDisplaySyncBasedOnPlayerEvent('play', undefined, undefined);
+
+		expect(getSyncTimeoutSpy.called).to.be.true;
+	});
+
+	it('should resolve video+display sync on adError event', () => {
+		PlayerSetup.resolveVideoDisplaySyncBasedOnPlayerEvent('adError', undefined, undefined);
+
+		expect(getSyncTimeoutSpy.called).to.be.false;
+		expect(displayVideoSyncSpy.called).to.be.true;
+	});
+
+	it('should resolve video+display sync on adImpression event', () => {
+		const mockedAdImpressionState = {
+			vastParams: {
+				lineItemId: '123',
+				creativeId: '456',
+			},
+		};
+		const mockedAdSlot = {
+			setStatus: () => {},
+			emit: () => {},
+		};
+
+		PlayerSetup.resolveVideoDisplaySyncBasedOnPlayerEvent(
+			'adImpression',
+			mockedAdImpressionState,
+			mockedAdSlot,
+		);
+
+		expect(getSyncTimeoutSpy.called).to.be.false;
+		expect(displayVideoSyncSpy.called).to.be.true;
 	});
 });
