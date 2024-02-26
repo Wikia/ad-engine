@@ -5,7 +5,6 @@ export * from './index-exchange';
 export * from './kargo';
 export * from './magniteS2s';
 export * from './nobid';
-export * from './ozone';
 export * from './pubmatic';
 export * from './roundel';
 export * from './rubicon';
