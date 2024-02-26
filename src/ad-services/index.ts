@@ -6,7 +6,6 @@ export * from './bt-rec';
 export * from './captify';
 export * from './confiant';
 export * from './connatix';
-export * from './double-verify';
 export * from './duration-media';
 export * from './experian';
 export * from './ias-publisher-optimization';

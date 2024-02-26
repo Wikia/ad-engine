@@ -13,7 +13,6 @@ import {
 	Confiant,
 	Connatix,
 	DiProcess,
-	DoubleVerify,
 	DurationMedia,
 	eventsRepository,
 	IasPublisherOptimization,
@@ -37,7 +36,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 		private bidders: Bidders,
 		private confiant: Confiant,
 		private connatix: Connatix,
-		private doubleVerify: DoubleVerify,
 		private durationMedia: DurationMedia,
 		private gptSetup: GptSetup,
 		private iasPublisherOptimization: IasPublisherOptimization,
@@ -71,7 +69,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
 				}),
 				this.gptSetup,
-				this.doubleVerify,
 				this.adEngineStackSetup.setOptions({
 					dependencies: [
 						this.bidders.initialized,

@@ -3,7 +3,6 @@ import {
 	Captify,
 	communicationService,
 	DiProcess,
-	DoubleVerify,
 	eventsRepository,
 	Experian,
 	IasPublisherOptimization,
@@ -21,7 +20,6 @@ export class F2AdsMode implements DiProcess {
 	constructor(
 		private adEngineStackSetup: AdEngineStackSetup,
 		private captify: Captify,
-		private doubleVerify: DoubleVerify,
 		private experian: Experian,
 		private gptSetup: GptSetup,
 		private iasPublisherOptimization: IasPublisherOptimization,
@@ -49,7 +47,6 @@ export class F2AdsMode implements DiProcess {
 					dependencies: [this.wadRunner.initialized],
 				}),
 				this.gptSetup,
-				this.doubleVerify,
 				this.adEngineStackSetup.setOptions({
 					dependencies: [
 						this.wadRunner.initialized,
