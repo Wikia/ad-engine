@@ -7,7 +7,6 @@ import { getIndexExchangeContext } from '../../../bidders/prebid/index-exchange'
 import { getKargoContext } from '../../../bidders/prebid/kargo';
 import { getMagniteS2sContext } from '../../../bidders/prebid/magniteS2s';
 import { getNobidContext } from '../../../bidders/prebid/nobid';
-import { getOzoneContext } from '../../../bidders/prebid/ozone';
 import { getPubmaticContext } from '../../../bidders/prebid/pubmatic';
 import { getRoundelContext } from '../../../bidders/prebid/roundel';
 import { getRubiconContext } from '../../../bidders/prebid/rubicon';
@@ -32,7 +31,6 @@ export class UcpDesktopPrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.kargo', filterVideoBids(getKargoContext()));
 		context.set('bidders.prebid.mgnipbs', filterVideoBids(getMagniteS2sContext(icMagniteS2sVideo)));
 		context.set('bidders.prebid.nobid', filterVideoBids(getNobidContext()));
-		context.set('bidders.prebid.ozone', filterVideoBids(getOzoneContext()));
 		context.set('bidders.prebid.pubmatic', filterVideoBids(getPubmaticContext()));
 		context.set('bidders.prebid.roundel', filterVideoBids(getRoundelContext()));
 		context.set('bidders.prebid.rubicon', filterVideoBids(getRubiconContext()));

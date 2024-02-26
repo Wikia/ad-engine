@@ -134,10 +134,6 @@ export class PrebidProvider extends BidderProvider {
 				video: videoGranularity,
 				'video-outstream': videoGranularity,
 			},
-			ozone: {
-				enhancedAdserverTargeting: false,
-				oz_whitelist_adserver_keys: [],
-			},
 			rubicon: {
 				singleRequest: true,
 			},

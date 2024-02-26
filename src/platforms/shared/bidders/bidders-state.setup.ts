@@ -13,7 +13,6 @@ export class BiddersStateSetup implements DiProcess {
 		kargo: 'icPrebidKargo',
 		mgnipbs: 'icPrebidMagniteS2s',
 		nobid: 'icPrebidNobid',
-		ozone: 'icPrebidOzone',
 		pubmatic: 'icPrebidPubmatic',
 		relevantdigital: 'icPrebidWebAds',
 		rubicon_display: 'icPrebidRubiconDisplay',
