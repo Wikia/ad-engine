@@ -145,11 +145,19 @@ export class PlayerSetup extends BaseServiceSetup {
 		adSlot: AdSlot,
 		vastResponse?: VastResponseData,
 	) {
+		const mediaId = window?.mw?.config?.get('wgArticleFeaturedVideo')?.mapping?.connatixMediaId;
+
 		communicationService.emit(eventsRepository.VIDEO_SETUP, {
 			showAds,
 			autoplayDisabled: false,
 			videoAdUnitPath: adSlot.getVideoAdUnit(),
-			targetingParams: utils.getCustomParameters(adSlot, {}, false),
+			targetingParams: utils.getCustomParameters(
+				adSlot,
+				{
+					v1: mediaId,
+				},
+				false,
+			),
 			vastXml: vastResponse?.xml,
 		});
 	}

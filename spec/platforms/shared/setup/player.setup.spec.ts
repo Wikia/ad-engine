@@ -102,12 +102,23 @@ describe('PlayerSetup', () => {
 		instantConfigStub.get.withArgs('icFeaturedVideoPlayer').returns('connatix');
 		context.set('slots.featured.videoAdUnit', MOCKED_VAST_AD_UNIT);
 		context.set('vast.adUnitId', MOCKED_VAST_AD_UNIT);
+		window.mw = {
+			// @ts-ignore mocking mw.config.get only for the tests
+			config: {
+				get: () => ({
+					mapping: {
+						connatixMediaId: 'testVideoId',
+					},
+				}),
+			},
+		};
+
 		const slotName = 'featured';
 		const expectedDispatchArg = {
 			showAds: true,
 			autoplayDisabled: false,
 			videoAdUnitPath: MOCKED_VAST_AD_UNIT,
-			targetingParams: 'pos=featured&rv=1',
+			targetingParams: 'pos=featured&rv=1&v1=testVideoId',
 			vastXml: undefined,
 			type: '[Video] Setup done',
 			__global: true,
