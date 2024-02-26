@@ -21,10 +21,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { iasVideoTracker } from '../../../ad-products/video/porvata/plugins/ias/ias-video-tracker';
 
 const logGroup = 'player-setup';
-let firstVideoAdImpressionEmitted = false;
-const wasPlayEmittedBeforeAd = (eventName: string) => {
-	return eventName === 'play' && !firstVideoAdImpressionEmitted;
-};
+let videoAdImpressionEmitted = false;
 
 @Injectable()
 export class PlayerSetup extends BaseServiceSetup {
@@ -144,8 +141,12 @@ export class PlayerSetup extends BaseServiceSetup {
 	}
 
 	public static resolveVideoDisplaySyncBasedOnPlayerEvent(eventName: string, state, adSlot): void {
+		const wasPlayEmittedBeforeAd = (eventName: string) => {
+			return eventName === 'play' && !videoAdImpressionEmitted;
+		};
+
 		if (eventName === 'adImpression') {
-			firstVideoAdImpressionEmitted = true;
+			videoAdImpressionEmitted = true;
 			videoDisplayTakeoverSynchronizer.resolve(
 				state.vastParams.lineItemId,
 				state.vastParams.creativeId,
@@ -154,10 +155,15 @@ export class PlayerSetup extends BaseServiceSetup {
 			adSlot.emit(AdSlotEvent.VIDEO_AD_IMPRESSION);
 		} else if (wasPlayEmittedBeforeAd(eventName)) {
 			PlayerSetup.registerTimeoutForVideoDisplayTakeoverSync(
-				() => firstVideoAdImpressionEmitted === true,
+				() => videoAdImpressionEmitted === true,
 			);
 		} else if (['adError', 'playError'].includes(eventName)) {
 			videoDisplayTakeoverSynchronizer.resolve();
+		} else {
+			console.warn(
+				'resolveVideoDisplaySyncBasedOnPlayerEvent() called with not handled event: ',
+				eventName,
+			);
 		}
 	}
 
