@@ -63,7 +63,6 @@ describe('BiddersStateSetup', () => {
 	it('sets up Prebid with enabled bidders', () => {
 		instantConfigStub.get.withArgs('icPrebid').returns(true);
 		instantConfigStub.get.withArgs('icPrebidNobid').returns(true);
-		instantConfigStub.get.withArgs('icPrebidYahooSsp').returns(true);
 
 		const biddersSetup = new BiddersStateSetup(instantConfigStub);
 		biddersSetup.execute();
@@ -71,7 +70,6 @@ describe('BiddersStateSetup', () => {
 		expect(context.get('bidders.prebid.enabled')).to.be.true;
 		expect(context.get('bidders.prebid.appnexus.enabled')).to.be.false;
 		expect(context.get('bidders.prebid.nobid.enabled')).to.be.true;
-		expect(context.get('bidders.prebid.yahoossp.enabled')).to.be.true;
 	});
 
 	it('sets up Prebid with test bidder', () => {
@@ -98,14 +96,12 @@ describe('BiddersStateSetup', () => {
 		global.sandbox.stub(window, 'location').value({ search: '?select_bidder=appnexus' });
 		instantConfigStub.get.withArgs('icPrebid').returns(true);
 		instantConfigStub.get.withArgs('icPrebidAppNexus').returns(true);
-		instantConfigStub.get.withArgs('icPrebidYahooSsp').returns(true);
 
 		const biddersSetup = new BiddersStateSetup(instantConfigStub);
 		biddersSetup.execute();
 
 		expect(context.get('bidders.prebid.enabled')).to.be.true;
 		expect(context.get('bidders.prebid.appnexus.enabled')).to.be.true;
-		expect(context.get('bidders.prebid.yahoossp.enabled')).to.be.false;
 	});
 
 	it('Kargo (not COPPA compliant bidder) is disabled on kid wikis', () => {

@@ -18,7 +18,6 @@ export class BiddersStateSetup implements DiProcess {
 		rubicon_display: 'icPrebidRubiconDisplay',
 		rubicon: 'icPrebidRubicon',
 		triplelift: 'icPrebidTriplelift',
-		yahoossp: 'icPrebidYahooSsp',
 		yahooConnectId: 'icPrebidYahooConnectId',
 	};
 	private notCoppaCompliantBidders: Array<keyof typeof this.prebidBidders> = ['kargo'];
