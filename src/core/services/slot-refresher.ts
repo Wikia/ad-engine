@@ -54,6 +54,23 @@ function refreshWhenBackInViewport(adSlot: AdSlot) {
 	window.googletag.pubads().addEventListener('slotVisibilityChanged', refresh);
 }
 
+const PREBID_BIDDER_KEYS = [
+	'appnexus',
+	'indexExchange',
+	'medianet',
+	'mgnipbs',
+	'nobid',
+	'ozone',
+	'pubmatic',
+	'roundel',
+	'rubicon_display',
+	'seedtag',
+	'triplelift',
+	'verizon',
+	'relevantdigital',
+	'wikia',
+];
+
 export class SlotRefresher {
 	config: Config;
 	slotsInTheViewport: Array<string> = [];
@@ -66,8 +83,45 @@ export class SlotRefresher {
 		return this.config.slots.includes(slotName);
 	}
 
+	filterSlotSizes(adSlot: AdSlot) {
+		const slotName = adSlot.getSlotName();
+		const slotRefresherConfig = context.get('slotConfig.slotRefresher.sizes');
+		const slotHeightLimit = slotRefresherConfig[slotName][1];
+
+		if (!slotHeightLimit) return;
+
+		context.set(
+			`bidders.a9.slots.${slotName}.sizes`,
+			context
+				.get(`bidders.a9.slots.${slotName}.sizes`)
+				.filter((size: [number, number]) => size[1] <= slotHeightLimit),
+		);
+
+		PREBID_BIDDER_KEYS.forEach((bidder) => {
+			context.set(
+				`bidders.prebid.${bidder}.slots.${slotName}.sizes`,
+				context
+					.get(`bidders.prebid.${bidder}.slots.${slotName}.sizes`)
+					.filter((size: [number, number]) => size[1] <= slotHeightLimit),
+			);
+		});
+	}
+
+	addSlotSizeToContext(adSlot: AdSlot) {
+		const slotHeight = adSlot.getElement().clientHeight;
+		const slotWidth = adSlot.getElement().clientWidth;
+
+		context.set(`slotConfig.slotRefresher.sizes.${adSlot.getSlotName()}`, [slotWidth, slotHeight]);
+	}
+
 	refreshSlot(adSlot: AdSlot) {
 		if (!this.isSlotRefreshable(adSlot.getSlotName())) return;
+		const slotSizes = context.get('slotConfig.slotRefresher.sizes') || {};
+
+		if (!(adSlot.getSlotName() in slotSizes)) {
+			this.addSlotSizeToContext(adSlot);
+		}
+		this.filterSlotSizes(adSlot);
 
 		setTimeout(() => {
 			if (adSlot.isEnabled()) {
