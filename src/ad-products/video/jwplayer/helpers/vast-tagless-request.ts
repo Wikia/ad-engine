@@ -30,6 +30,7 @@ export class VastTaglessRequest {
 		const aspectRatio = 16 / 9;
 		const slotName = 'featured';
 		const position = 'preroll';
+		const mediaId = window.mw.config.get('wgArticleFeaturedVideo')?.mediaId;
 
 		const adSlot = slotService.get(slotName) || new AdSlot({ id: slotName });
 		if (!slotService.get(slotName)) {
@@ -38,7 +39,10 @@ export class VastTaglessRequest {
 		const biddersTargeting = await this.bidders.getBidParameters(slotName);
 		return utils.buildVastUrl(aspectRatio, slotName, {
 			vpos: position,
-			targeting: biddersTargeting,
+			targeting: {
+				...biddersTargeting,
+				v1: mediaId,
+			},
 			isTagless: true,
 		});
 	}
