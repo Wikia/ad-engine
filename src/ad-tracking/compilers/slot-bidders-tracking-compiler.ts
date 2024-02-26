@@ -36,7 +36,6 @@ async function getBiddersPrices(
 		bidder_21: transformBidderPrice('triplelift'),
 		bidder_25: transformBidderPrice('nobid'),
 		bidder_28: transformBidderPrice('verizon'),
-		bidder_30: transformBidderPrice('medianet'),
 		bidder_31: transformBidderPrice('roundel'),
 		bidder_32: transformBidderPrice('ogury'),
 		bidder_34: transformBidderPrice('yahoossp'),

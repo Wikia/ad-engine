@@ -6,7 +6,6 @@ import { getAppnexusAstContext } from '../../../bidders/prebid/appnexus-ast';
 import { getIndexExchangeContext } from '../../../bidders/prebid/index-exchange';
 import { getKargoContext } from '../../../bidders/prebid/kargo';
 import { getMagniteS2sContext } from '../../../bidders/prebid/magniteS2s';
-import { getMedianetContext } from '../../../bidders/prebid/medianet';
 import { getNobidContext } from '../../../bidders/prebid/nobid';
 import { getOpenXContext } from '../../../bidders/prebid/openx';
 import { getOzoneContext } from '../../../bidders/prebid/ozone';
@@ -32,7 +31,6 @@ export class UcpDesktopPrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.appnexusAst', filterVideoBids(getAppnexusAstContext()));
 		context.set('bidders.prebid.indexExchange', filterVideoBids(getIndexExchangeContext()));
 		context.set('bidders.prebid.kargo', filterVideoBids(getKargoContext()));
-		context.set('bidders.prebid.medianet', filterVideoBids(getMedianetContext()));
 		context.set('bidders.prebid.mgnipbs', filterVideoBids(getMagniteS2sContext(icMagniteS2sVideo)));
 		context.set('bidders.prebid.nobid', filterVideoBids(getNobidContext()));
 		context.set('bidders.prebid.openx', filterVideoBids(getOpenXContext()));

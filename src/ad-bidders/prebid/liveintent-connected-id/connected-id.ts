@@ -44,7 +44,6 @@ export class ConnectedId {
 				requestedAttributesOverrides: {
 					uid2: true,
 					bidswitch: false,
-					medianet: true,
 					magnite: true,
 					pubmatic: true,
 					index: true,
