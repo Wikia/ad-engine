@@ -52,7 +52,7 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 		if (context.get('options.floorAdhesion')) {
 			this.enabledSlots = [...this.defaultEnabledSlots, 'floor_adhesion'];
 
-			document.body.classList.add('floor-adhesion-experiment');
+			document.body.classList.add('floor-adhesion-container');
 		}
 	}
 }
