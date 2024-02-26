@@ -18,11 +18,10 @@ export class BiddersStateSetup implements DiProcess {
 		rubicon_display: 'icPrebidRubiconDisplay',
 		rubicon: 'icPrebidRubicon',
 		triplelift: 'icPrebidTriplelift',
-		verizon: 'icPrebidVerizon',
 		yahoossp: 'icPrebidYahooSsp',
 		yahooConnectId: 'icPrebidYahooConnectId',
 	};
-	private notCoppaCompliantBidders: Array<keyof typeof this.prebidBidders> = ['kargo', 'verizon'];
+	private notCoppaCompliantBidders: Array<keyof typeof this.prebidBidders> = ['kargo'];
 
 	constructor(private instantConfig: InstantConfigService) {
 		this.selectedBidder = utils.queryString.get('select_bidder') || '';
