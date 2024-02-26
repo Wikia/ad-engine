@@ -57,7 +57,11 @@ describe('AdaptersRegistry', () => {
 				},
 			},
 		];
-
+		context.set('slotConfig.slotRefresher', {
+			sizes: {
+				gallery: [0, 0],
+			},
+		});
 		const result = adaptersRegistry.setupAdUnits('gallery');
 		expect(expected).to.deep.equal(result);
 	});

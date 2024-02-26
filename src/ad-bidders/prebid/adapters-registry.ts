@@ -116,6 +116,8 @@ class AdaptersRegistry {
 			const availableSlots = Object.keys(slotRefresherConfig.sizes);
 			const biddersConfig: PrebidConfig = context.get('bidders.prebid');
 
+			if (!availableSlots.includes(bidGroup)) return;
+
 			this.availableAdapters.forEach((AdapterType) => {
 				const adapterConfig = biddersConfig[AdapterType.bidderName];
 				if (!adapterConfig || !adapterConfig.enabled) return;
@@ -138,7 +140,7 @@ class AdaptersRegistry {
 
 			adUnits.forEach((adUnit) => {
 				const adUnitSizeLimit = slotRefresherConfig.sizes[adUnit.code];
-				if (!adUnitSizeLimit) return;
+				if (!adUnitSizeLimit || !availableSlots.includes(adUnit.code)) return;
 
 				adUnit.mediaTypes.banner.sizes = adUnit.mediaTypes.banner.sizes.filter(
 					(size) => size[1] <= adUnitSizeLimit[1],
