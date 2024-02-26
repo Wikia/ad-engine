@@ -39,7 +39,6 @@ async function getBiddersPrices(
 		bidder_30: transformBidderPrice('medianet'),
 		bidder_31: transformBidderPrice('roundel'),
 		bidder_32: transformBidderPrice('ogury'),
-		bidder_33: transformBidderPrice('criteo'),
 		bidder_34: transformBidderPrice('yahoossp'),
 		bidder_37: transformBidderPrice('webAds'),
 		bidder_38: transformBidderPrice('seedtag'),

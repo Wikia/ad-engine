@@ -70,7 +70,6 @@ describe('BiddersStateSetup', () => {
 
 		expect(context.get('bidders.prebid.enabled')).to.be.true;
 		expect(context.get('bidders.prebid.appnexus.enabled')).to.be.false;
-		expect(context.get('bidders.prebid.criteo.enabled')).to.be.false;
 		expect(context.get('bidders.prebid.nobid.enabled')).to.be.true;
 		expect(context.get('bidders.prebid.yahoossp.enabled')).to.be.true;
 	});
@@ -93,7 +92,6 @@ describe('BiddersStateSetup', () => {
 			'bottom_leaderboard',
 		]);
 		expect(context.get('bidders.prebid.appnexus.enabled')).to.be.false;
-		expect(context.get('bidders.prebid.criteo.enabled')).to.be.false;
 	});
 
 	it('sets up Prebid with selected bidder', () => {
