@@ -16,7 +16,6 @@ import {
 	WebAds,
 	Wikia,
 	WikiaVideo,
-	YahooSsp,
 } from './adapters';
 import { PrebidAdapter } from './prebid-adapter';
 import { isPrebidAdapterConfig, isSlotApplicable } from './prebid-helper';
@@ -40,7 +39,6 @@ class AdaptersRegistry {
 		WebAds,
 		Wikia,
 		WikiaVideo,
-		YahooSsp,
 	];
 
 	getAdapter(bidderName: string): PrebidAdapter | undefined {
