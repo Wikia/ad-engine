@@ -1,4 +1,5 @@
 import {
+	BidAuctionSplitSetup,
 	BiddersStateSetup,
 	BiddersTargetingUpdater,
 	ConsentManagementPlatformSetup,
@@ -55,6 +56,7 @@ export class UcpDesktopPlatform {
 				sequential(InstantConfigSetup, PreloadedLibrariesSetup),
 				ConsentManagementPlatformSetup,
 			),
+			BidAuctionSplitSetup,
 			TrackingParametersSetup,
 			MetricReporterSetup,
 			UcpDesktopBaseContextSetup,
