@@ -3,7 +3,6 @@ import { hasCorrectBidGroup } from '../bidder-helper';
 import {
 	Appnexus,
 	AppnexusAst,
-	Criteo,
 	Gumgum,
 	IndexExchange,
 	Kargo,
@@ -35,7 +34,6 @@ class AdaptersRegistry {
 	private availableAdapters = [
 		Appnexus,
 		AppnexusAst,
-		Criteo,
 		Gumgum,
 		IndexExchange,
 		Kargo,
