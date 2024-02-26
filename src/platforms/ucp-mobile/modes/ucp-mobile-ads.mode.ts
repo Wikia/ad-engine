@@ -25,7 +25,6 @@ import {
 	System1,
 	utils,
 	videoDisplayTakeoverSynchronizer,
-	Wunderkind,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -51,7 +50,6 @@ export class UcpMobileAdsMode implements DiProcess {
 		private stroer: Stroer,
 		private system1: System1,
 		private wadRunner: WadRunner,
-		private wunderkind: Wunderkind,
 	) {}
 
 	execute(): void {
@@ -71,7 +69,6 @@ export class UcpMobileAdsMode implements DiProcess {
 				this.stroer,
 				this.system1,
 				this.prebidNativeProvider,
-				this.wunderkind,
 				this.openWeb,
 				this.playerSetup.setOptions({
 					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
