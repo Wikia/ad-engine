@@ -22,6 +22,7 @@ describe('slot-refresher', () => {
 		isEnabled: () => true,
 		getSlotName: () => 'test_slot',
 		getCreativeSizeAsArray: () => [0, 0],
+		updtatePushTimeAfterBid: () => {},
 		targeting: {
 			rv: 1,
 		},
