@@ -23,13 +23,17 @@ export class IdentitySetup implements DiProcess {
 		return new Promise<void>((resolve) => {
 			communicationService.on(eventsRepository.IDENTITY_ENGINE_READY, () => {
 				const ppid = globalContextService.getValue('tracking', 'ppid');
-				if (ppid && !context.get('services.intentIq.ppid.enabled')) {
+				if (ppid) {
 					targetingService.set('ppid', ppid);
 				}
 
 				targetingService.set(
 					'browser',
 					globalContextService.getValue(GlobalContextCategories.targeting, 'browser'),
+				);
+				targetingService.set(
+					'cl',
+					globalContextService.getValue(GlobalContextCategories.tracking, 'chromeLabel'),
 				);
 				const adGroups = globalContextService.getValue(
 					GlobalContextCategories.targeting,

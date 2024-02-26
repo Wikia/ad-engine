@@ -18,7 +18,6 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { BasicRotator } from '../../utils/basic-rotator';
 import { FmrRotator } from '../../utils/fmr-rotator';
 
 const OPTIMIZELY_ANYCLIP_PLACEMENT_EXPERIMENT = {
@@ -220,11 +219,7 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 						});
 						rotator.rotateSlot();
 					} else {
-						const rotator = new BasicRotator(slotName, slotNamePrefix, {
-							topPositionToRun: 65,
-						});
-
-						rotator.rotateSlot();
+						utils.logger('ad-engine', 'ICB disabled');
 					}
 				});
 			},

@@ -32,11 +32,6 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
 		context.set('services.ppidRepository', this.instantConfig.get('icPpidRepository'));
 		context.set('services.identityTtl', this.instantConfig.get('icIdentityTtl'));
-		context.set('services.intentIq.ppid.enabled', this.instantConfig.get('icIntentIqPpid', false));
-		context.set(
-			'services.intentIq.ppid.tracking.enabled',
-			this.instantConfig.get('icIntentIqPpidTracking', false),
-		);
 	}
 
 	private setupServicesOptions() {
@@ -47,6 +42,10 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		);
 		context.set('services.captify.propertyId', 13061);
 		context.set('services.confiant.propertyId', 'IOegabOoWb7FyEI1AmEa9Ki-5AY');
+		context.set(
+			'bidders.liveIntentConnectedId.enabled',
+			this.instantConfig.get('icLiveIntentConnectedId'),
+		);
 	}
 
 	private setupVideo() {
