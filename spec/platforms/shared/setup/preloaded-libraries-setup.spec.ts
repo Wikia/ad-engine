@@ -1,5 +1,4 @@
 import { A9Provider } from '@wikia/ad-bidders';
-import { Audigent } from '@wikia/ad-services';
 import {
 	context,
 	InstantConfigService,
@@ -19,7 +18,7 @@ describe('PreloadedLibrariesSetup', () => {
 		global.sandbox
 			.stub(context, 'get')
 			.withArgs('options.preload')
-			.returns({ gpt: true, apstag: true, prebid: true, intentIq: true, audigent: true });
+			.returns({ gpt: true, apstag: true, prebid: true, intentIq: true });
 	});
 
 	it('should preloadLibraries', async () => {
@@ -28,8 +27,6 @@ describe('PreloadedLibrariesSetup', () => {
 				.stub()
 				.withArgs('icPrebid')
 				.returns(true)
-				.withArgs('icAudigent')
-				.returns(true)
 				.withArgs('icA9Bidder')
 				.returns(true)
 				.withArgs('icPrebidVersion', 'latest/min.js')
@@ -37,7 +34,6 @@ describe('PreloadedLibrariesSetup', () => {
 		};
 		const contextSetStub = global.sandbox.stub(context, 'set');
 		const pbjsFactoryInitStub = global.sandbox.stub(pbjsFactory, 'init').resolves();
-		const audigentLoadSegmentLibraryStub = global.sandbox.stub(Audigent, 'loadSegmentLibrary');
 		const A9ProviderInitStub = global.sandbox.stub(A9Provider, 'initApstag');
 
 		await new PreloadedLibrariesSetup(
@@ -58,7 +54,6 @@ describe('PreloadedLibrariesSetup', () => {
 			'gpt load',
 		).to.be.true;
 		expect(pbjsFactoryInitStub.calledOnce, 'pbjs init').to.be.true;
-		expect(audigentLoadSegmentLibraryStub.calledOnce, 'audigent load').to.be.true;
 	});
 
 	it('should load prebid from proper location', async () => {
@@ -67,8 +62,6 @@ describe('PreloadedLibrariesSetup', () => {
 				.stub()
 				.withArgs('icPrebid')
 				.returns(true)
-				.withArgs('icAudigent')
-				.returns(false)
 				.withArgs('icPrebidVersion', 'latest/min.js')
 				.returns('//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v127.0.1/20342-min.js'),
 		};
@@ -93,8 +86,6 @@ describe('PreloadedLibrariesSetup', () => {
 				.stub()
 				.withArgs('icPrebid')
 				.returns(true)
-				.withArgs('icAudigent')
-				.returns(false)
 				.withArgs('icPrebidVersion', 'latest/min.js')
 				.returns('https://prebid.org/../../../../../attacker/script.js'),
 		};

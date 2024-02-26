@@ -1,6 +1,5 @@
 import { AdEngineStackSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
-	Audigent,
 	Captify,
 	communicationService,
 	DiProcess,
@@ -21,7 +20,6 @@ import { Injectable } from '@wikia/dependency-injection';
 export class F2AdsMode implements DiProcess {
 	constructor(
 		private adEngineStackSetup: AdEngineStackSetup,
-		private audigent: Audigent,
 		private captify: Captify,
 		private doubleVerify: DoubleVerify,
 		private experian: Experian,
@@ -41,7 +39,6 @@ export class F2AdsMode implements DiProcess {
 			.add(
 				this.lotame,
 				this.liveRampPixel,
-				this.audigent,
 				this.captify,
 				this.liveConnect,
 				this.experian,

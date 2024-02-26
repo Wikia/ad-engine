@@ -1,6 +1,5 @@
 import {
 	A9Provider,
-	Audigent,
 	context,
 	DiProcess,
 	InstantConfigService,
@@ -17,7 +16,6 @@ const prebidLibraryUrlPattern = new RegExp(
 
 export interface PreloadOptions {
 	gpt?: boolean;
-	audigent?: boolean;
 	prebid?: boolean;
 	apstag?: boolean;
 	intentIq?: boolean;
@@ -48,10 +46,6 @@ export class PreloadedLibrariesSetup implements DiProcess {
 
 		if (this.options?.apstag && this.instantConfig.get('icA9Bidder')) {
 			A9Provider.initApstag();
-		}
-
-		if (this.options?.audigent && this.instantConfig.get('icAudigent')) {
-			Audigent.loadSegmentLibrary();
 		}
 	}
 

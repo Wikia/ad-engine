@@ -1,7 +1,6 @@
 import {
 	Apstag,
 	Ats,
-	Audigent,
 	CcpaSignalPayload,
 	communicationService,
 	context,
@@ -23,7 +22,6 @@ export class NoAdsMode implements DiProcess {
 		private pipeline: PartnerPipeline,
 		private noAdsDetector: NoAdsDetector,
 		private ats: Ats,
-		private audigent: Audigent,
 		private liveConnect: LiveConnect,
 		private experian: Experian,
 		private liveRampPixel: LiveRampPixel,
@@ -49,7 +47,7 @@ export class NoAdsMode implements DiProcess {
 		}
 
 		this.pipeline
-			.add(this.liveRampPixel, this.ats, this.audigent, this.liveConnect, this.experian)
+			.add(this.liveRampPixel, this.ats, this.liveConnect, this.experian)
 			.execute()
 			.then(() => {
 				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);

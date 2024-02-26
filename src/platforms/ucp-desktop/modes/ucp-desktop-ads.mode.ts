@@ -8,7 +8,6 @@ import {
 import {
 	Anyclip,
 	Ats,
-	Audigent,
 	Bidders,
 	communicationService,
 	Confiant,
@@ -35,7 +34,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 		private adEngineStackSetup: AdEngineStackSetup,
 		private anyclip: Anyclip,
 		private ats: Ats,
-		private audigent: Audigent,
 		private bidders: Bidders,
 		private confiant: Confiant,
 		private connatix: Connatix,
@@ -59,7 +57,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 				this.jwpStrategyRules,
 				this.anyclip,
 				this.ats,
-				this.audigent,
 				this.bidders,
 				this.connatix,
 				this.wadRunner,
