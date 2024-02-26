@@ -45,22 +45,22 @@ export class BidAuctionSplitSetup extends BaseServiceSetup {
 			this.experimentVariants = [
 				defineExperiment({
 					name: this.experimentVariantNames.mobileActive,
-					buckets: ['a'],
+					buckets: ['c', 'd'],
 				}),
 				defineExperiment({
 					name: this.experimentVariantNames.mobileControl,
-					buckets: ['c'],
+					buckets: ['e', 'f', 'g', 'h'],
 				}),
 			];
 		} else {
 			this.experimentVariants = [
 				defineExperiment({
 					name: this.experimentVariantNames.desktopActive,
-					buckets: ['A'],
+					buckets: ['A', 'B'],
 				}),
 				defineExperiment({
 					name: this.experimentVariantNames.desktopControl,
-					buckets: ['C'],
+					buckets: ['C', 'D', 'E', 'F'],
 				}),
 			];
 		}
