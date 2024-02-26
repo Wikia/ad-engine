@@ -23,6 +23,13 @@ describe('slot-refresher', () => {
 		getSlotName: () => 'test_slot',
 		getCreativeSizeAsArray: () => [0, 0],
 		updtatePushTimeAfterBid: () => {},
+		getElement: () => {
+			return {
+				style: {},
+				clientWidth: 0,
+				clientHeight: 0,
+			};
+		},
 		targeting: {
 			rv: 1,
 		},
