@@ -37,7 +37,6 @@ async function getBiddersPrices(
 		bidder_28: transformBidderPrice('verizon'),
 		bidder_34: transformBidderPrice('yahoossp'),
 		bidder_37: transformBidderPrice('webAds'),
-		bidder_38: transformBidderPrice('seedtag'),
 	};
 }
 

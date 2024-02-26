@@ -17,7 +17,6 @@ export class BiddersStateSetup implements DiProcess {
 		relevantdigital: 'icPrebidWebAds',
 		rubicon_display: 'icPrebidRubiconDisplay',
 		rubicon: 'icPrebidRubicon',
-		seedtag: 'icPrebidSeedtag',
 		triplelift: 'icPrebidTriplelift',
 		verizon: 'icPrebidVerizon',
 		yahoossp: 'icPrebidYahooSsp',
