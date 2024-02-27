@@ -16,6 +16,10 @@ describe('PrebidProvider bidder', () => {
 		targetingServiceStub = global.sandbox.stub(targetingService);
 	});
 
+	afterEach(() => {
+		targetingService.clear();
+	});
+
 	it('can be initialized', () => {
 		new PrebidProvider(bidderConfig);
 	});
