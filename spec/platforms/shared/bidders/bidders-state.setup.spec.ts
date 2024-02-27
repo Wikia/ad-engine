@@ -62,14 +62,12 @@ describe('BiddersStateSetup', () => {
 
 	it('sets up Prebid with enabled bidders', () => {
 		instantConfigStub.get.withArgs('icPrebid').returns(true);
-		instantConfigStub.get.withArgs('icPrebidNobid').returns(true);
 
 		const biddersSetup = new BiddersStateSetup(instantConfigStub);
 		biddersSetup.execute();
 
 		expect(context.get('bidders.prebid.enabled')).to.be.true;
 		expect(context.get('bidders.prebid.appnexus.enabled')).to.be.false;
-		expect(context.get('bidders.prebid.nobid.enabled')).to.be.true;
 	});
 
 	it('sets up Prebid with test bidder', () => {

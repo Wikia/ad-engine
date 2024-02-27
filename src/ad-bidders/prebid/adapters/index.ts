@@ -4,7 +4,6 @@ export * from './gumgum';
 export * from './index-exchange';
 export * from './kargo';
 export * from './magniteS2s';
-export * from './nobid';
 export * from './pubmatic';
 export * from './rubicon';
 export * from './rubicon-display';
