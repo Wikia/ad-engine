@@ -63,8 +63,6 @@ export class PlayerSetup extends BaseServiceSetup {
 			utils.logger(logGroup, 'display and video sync response available');
 		}
 
-		this.jwpManager.manage();
-
 		if (showAds && !strategyRulesEnabled) {
 			communicationService.dispatch(
 				jwpSetup({
@@ -73,12 +71,12 @@ export class PlayerSetup extends BaseServiceSetup {
 					vastXml: vastResponse?.xml,
 				}),
 			);
+			this.jwpManager.manage();
 		} else if (strategyRulesEnabled) {
 			utils.logger(
 				logGroup,
 				'JWP Strategy Rules enabled - AdEngine does not control ads in JWP anymore',
 			);
-			this.jwpManager.manage();
 			communicationService.dispatch(
 				jwpSetup({
 					showAds,
@@ -150,9 +148,30 @@ export class PlayerSetup extends BaseServiceSetup {
 		communicationService.emit(eventsRepository.VIDEO_SETUP, {
 			showAds,
 			autoplayDisabled: false,
-			videoAdUnitPath: adSlot.getVideoAdUnit(),
-			targetingParams: utils.getCustomParameters(adSlot, {}, false),
+			videoAdUnitPath: this.modifyAdUnitPath(adSlot),
+			targetingParams: utils.getCustomParameters(
+				adSlot,
+				{
+					player: 'cnx',
+				},
+				false,
+			),
 			vastXml: vastResponse?.xml,
 		});
+	}
+
+	// This a temporary solution for the time of Connatix vs JwPlayer experiment
+	// Should be removed after the test is completed
+	// Ticket: https://fandom.atlassian.net/browse/COTECH-1073
+	private static modifyAdUnitPath(adSlot: AdSlot): string {
+		let ad = adSlot.getVideoAdUnit();
+		const searchString = 'VIDEO/';
+		const index = ad.indexOf(searchString);
+		if (index !== -1) {
+			ad =
+				ad.slice(0, index + searchString.length) + 'cnx-' + ad.slice(index + searchString.length);
+		}
+
+		return ad;
 	}
 }
