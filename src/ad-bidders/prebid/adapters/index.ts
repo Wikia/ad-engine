@@ -9,4 +9,3 @@ export * from './rubicon';
 export * from './rubicon-display';
 export * from './test-bidder';
 export * from './triplelift';
-export * from './wikia-video';
