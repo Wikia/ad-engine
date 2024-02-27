@@ -15,7 +15,6 @@ import {
 	DiProcess,
 	DurationMedia,
 	eventsRepository,
-	OpenWeb,
 	PartnerPipeline,
 	PrebidNativeProvider,
 	Stroer,
@@ -38,7 +37,6 @@ export class UcpMobileAdsMode implements DiProcess {
 		private durationMedia: DurationMedia,
 		private gptSetup: GptSetup,
 		private jwpStrategyRules: JwpStrategyRulesSetup,
-		private openWeb: OpenWeb,
 		private playerSetup: PlayerSetup,
 		private prebidNativeProvider: PrebidNativeProvider,
 		private stroer: Stroer,
@@ -61,7 +59,6 @@ export class UcpMobileAdsMode implements DiProcess {
 				this.stroer,
 				this.system1,
 				this.prebidNativeProvider,
-				this.openWeb,
 				this.playerSetup.setOptions({
 					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
 				}),

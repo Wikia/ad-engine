@@ -308,16 +308,3 @@ body.mw-special-Search {
 		}
 	}
 }
-.openweb-slot {
-	display: flex;
-	flex-direction: column;
-	position: relative;
-	padding-bottom: 20px;
-
-	@include translatable-label();
-
-	#spotim-specific#spotim-specific div[class^='ads__AdChoiceContainer__wrapping'] {
-		color: #858585;
-		color: var(--theme-page-text-color);
-	}
-}

@@ -91,9 +91,6 @@ export const basicContext = {
 		externalLogger: {
 			endpoint: '/wikia.php?controller=AdEngine&method=postLog',
 		},
-		openWeb: {
-			placementSelector: '#WikiaAdInContentPlaceHolder',
-		},
 	},
 	slotGroups: {
 		VIDEO: ['FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],

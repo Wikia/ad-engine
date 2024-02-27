@@ -59,10 +59,6 @@ $out-of-page-z-index: 402;
 
 	@include expanded-slot();
 
-	.open-web-wrapper {
-		margin-top: 24px;
-	}
-
 	.replaced-rail-modules-wrapper {
 		display: contents;
 
@@ -327,14 +323,6 @@ body.is-content-expanded {
 	width: 20px;
 	height: 20px;
 	margin: 0 10px 10px 0 !important;
-}
-
-.openweb-ad-unit {
-	margin: 0 -1em 1em;
-	#spotim-specific#spotim-specific div[class^='ads__AdChoiceContainer__wrapping'] {
-		color: #858585;
-		color: var(--theme-page-text-color);
-	}
 }
 
 .anyclip-experiment .ac-widget-placeholder {
