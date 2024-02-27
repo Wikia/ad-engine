@@ -142,7 +142,8 @@ export function buildVastUrl(
 		params.push('tagless=1');
 
 		const { type, consentString } = trackingOptIn.getConsentData();
-		type === 'gdpr' ? params.push(`gdpr_consent=${consentString}`) : undefined;
+		type === 'gdpr' && consentString ? params.push(`gdpr_consent=${consentString}`) : undefined;
+		type === 'ccpa' && consentString ? params.push(`us_privacy=${consentString}`) : undefined;
 	}
 
 	return vastBaseUrl + params.join('&');

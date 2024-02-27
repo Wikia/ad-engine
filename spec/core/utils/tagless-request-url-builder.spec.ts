@@ -46,6 +46,16 @@ describe('tagless-request-url-builder', () => {
 			cb(mockedConsentData);
 		});
 
+		global.window.__uspapi =
+			global.window.__uspapi || (function () {} as typeof global.window.__uspapi);
+		global.sandbox.stub(window, '__uspapi').callsFake((cmd, param, cb) => {
+			const mockedConsentData = {
+				uspString: 'fakeConsentString',
+			} as SignalData;
+
+			cb(mockedConsentData, true);
+		});
+
 		targetingServiceStub = global.sandbox.stub(targetingService);
 		targetingServiceStub.dump.returns(targetingData);
 		targetingServiceStub.extend.callsFake((newTargeting: TargetingObject) => {
@@ -220,6 +230,17 @@ describe('tagless-request-url-builder', () => {
 		const gdprConsentPattern = /&gdpr_consent=/;
 
 		expect(vastUrl.match(gdprConsentPattern)).to.be.ok;
+	});
+
+	it('build VAST URL with  query-string parameter when "tagless" in CCPA country', () => {
+		context.set('options.geoRequiresConsent', false);
+		const vastUrl = buildVastUrl(1, 'top_leaderboard', {
+			isTagless: true,
+		});
+
+		const ccpaConsentPattern = /&us_privacy=/;
+
+		expect(vastUrl.match(ccpaConsentPattern)).to.be.ok;
 	});
 
 	it('builds and returns custom params as encoded string', () => {
