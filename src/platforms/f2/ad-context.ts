@@ -51,7 +51,6 @@ export const basicContext = {
 	},
 	preload: {
 		gpt: true,
-		audigent: true,
 		prebid: false,
 		apstag: false,
 		intentIq: false,
