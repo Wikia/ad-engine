@@ -6,7 +6,7 @@ import { expect } from 'chai';
 import { SinonSpy, SinonStubbedInstance } from 'sinon';
 
 describe('PlayerSetup', () => {
-	const MOCKED_VAST_AD_UNIT = '/5441/test/vast/ad/unit';
+	const MOCKED_VAST_AD_UNIT = '/5441/cnx-test/vast/ad/unit';
 
 	let dispatchSpy: SinonSpy;
 	let instantConfigStub: SinonStubbedInstance<InstantConfigService>;
@@ -107,7 +107,7 @@ describe('PlayerSetup', () => {
 			showAds: true,
 			autoplayDisabled: false,
 			videoAdUnitPath: MOCKED_VAST_AD_UNIT,
-			targetingParams: 'pos=featured&rv=1',
+			targetingParams: 'pos=featured&rv=1&player=cnx',
 			vastXml: undefined,
 			type: '[Video] Setup done',
 			__global: true,
