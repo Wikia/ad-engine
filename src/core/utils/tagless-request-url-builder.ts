@@ -23,7 +23,6 @@ export interface VastOptions {
 }
 
 const availableVideoPositions: string[] = ['preroll', 'midroll', 'postroll'];
-const displayBaseUrl = 'https://securepubads.g.doubleclick.net/gampad/adx?';
 const vastBaseUrl = 'https://pubads.g.doubleclick.net/gampad/ads?';
 
 export function getCustomParameters(
@@ -144,40 +143,4 @@ export function buildVastUrl(
 	}
 
 	return vastBaseUrl + params.join('&');
-}
-
-export function buildTaglessRequestUrl(options: Partial<TaglessSlotOptions> = {}): string {
-	const ppid = targetingService.get('ppid');
-	const over18 = targetingService.get('over18');
-	const params: string[] = [`c=${generateCorrelator()}`, 'tile=1', 'd_imp=1'];
-
-	params.push(`iu=${options.adUnit}`);
-	params.push(`sz=${options.size}`);
-
-	if (over18) {
-		params.push(`over_18=${over18}`);
-	}
-
-	if (ppid) {
-		params.push(`ppid=${ppid}`);
-	}
-
-	if (isCoppaSubject()) {
-		params.push('tfcd=1');
-	}
-
-	if (options.targeting) {
-		params.push(
-			`t=${encodeURIComponent(
-				Object.keys(options.targeting)
-					.filter((key: string) => options.targeting[key])
-					.map((key: string) => `${key}=${options.targeting[key]}`)
-					.join('&'),
-			)}`,
-		);
-	}
-
-	params.push(`rdp=${trackingOptIn.isOptOutSale() ? 1 : 0}`);
-
-	return displayBaseUrl + params.join('&');
 }

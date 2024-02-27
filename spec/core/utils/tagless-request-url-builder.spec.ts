@@ -2,11 +2,7 @@ import { TargetingObject, TargetingService, targetingService } from '@wikia/core
 import { AdSlot } from '@wikia/core/models/ad-slot';
 import { context } from '@wikia/core/services/context-service';
 import { slotService } from '@wikia/core/services/slot-service';
-import {
-	buildTaglessRequestUrl,
-	buildVastUrl,
-	getCustomParameters,
-} from '@wikia/core/utils/tagless-request-url-builder';
+import { buildVastUrl, getCustomParameters } from '@wikia/core/utils/tagless-request-url-builder';
 import { expect } from 'chai';
 import { SinonStubbedInstance } from 'sinon';
 
@@ -197,65 +193,6 @@ describe('tagless-request-url-builder', () => {
 		const custParams = /&vpos=/;
 
 		expect(vastUrl.match(custParams)).to.not.be.ok;
-	});
-
-	it('build tagless URL with DFP domain', () => {
-		const taglessUrl = buildTaglessRequestUrl();
-
-		expect(taglessUrl.match(/^https:\/\/securepubads\.g\.doubleclick\.net\/gampad\/adx/g)).to.be.ok;
-	});
-
-	it('build tagless URL with numeric correlator', () => {
-		const taglessUrl = buildTaglessRequestUrl();
-
-		expect(taglessUrl.match(/c=\d+&/g)).to.be.ok;
-	});
-
-	it('build tagless URL with required DFP parameters', () => {
-		const taglessUrl = buildTaglessRequestUrl();
-
-		expect(taglessUrl.match(/&tile=1&/g)).to.be.ok;
-		expect(taglessUrl.match(/&d_imp=1&/g)).to.be.ok;
-		expect(taglessUrl.match(/&rdp=0/g)).to.be.ok;
-	});
-
-	it('build tagless URL with configured ad unit', () => {
-		const taglessUrl = buildTaglessRequestUrl({
-			adUnit: '/5441/wka.fandom/test/layout_initializer/_not_a_top1k_wiki-000',
-		});
-
-		expect(
-			taglessUrl.match(
-				/&iu=\/5441\/wka\.fandom\/test\/layout_initializer\/_not_a_top1k_wiki-000&/g,
-			),
-		).to.be.ok;
-	});
-
-	it('build tagless URL with horizontal ad size', () => {
-		const taglessUrl = buildTaglessRequestUrl({
-			size: '32x32',
-		});
-
-		expect(taglessUrl.match(/&sz=32x32&/g)).to.be.ok;
-	});
-
-	it('build tagless URL with page and slotName level targeting', () => {
-		const taglessUrl = buildTaglessRequestUrl({
-			targeting: {
-				s0: '000',
-				uno: 'foo',
-				due: 15,
-				tre: ['bar', 'zero'],
-				quattro: null,
-				src: 'test',
-				pos: 'layout_initializer',
-				extra: 'yes',
-			},
-		});
-		const custParams =
-			/&t=s0%3D000%26uno%3Dfoo%26due%3D15%26tre%3Dbar%2Czero%26src%3Dtest%26pos%3Dlayout_initializer%26extra%3Dyes/;
-
-		expect(taglessUrl.match(custParams)).to.be.ok;
 	});
 
 	it('builds and returns custom params as encoded string', () => {
