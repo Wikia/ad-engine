@@ -29,12 +29,12 @@ export class BidAuctionSplitExperimentSetup extends BaseServiceSetup {
 		this.activeExperimentVariant = getExperiment(this.experimentVariants);
 
 		if (this.isExperimentEnabled()) {
+			addExperimentGroupToTargeting(this.activeExperimentVariant.name);
+
 			if (this.isControlVariant()) {
 				utils.logger(logGroup, 'Experiment but control group', this.activeExperimentVariant.name);
-				addExperimentGroupToTargeting(this.activeExperimentVariant.name);
 			} else {
 				utils.logger(logGroup, 'Experiment - active group', this.activeExperimentVariant.name);
-				addExperimentGroupToTargeting(this.activeExperimentVariant.name);
 				context.set('custom.bidAuctionSplitEnabled', true);
 			}
 		}
