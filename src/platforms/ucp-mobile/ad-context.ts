@@ -73,16 +73,6 @@ export const basicContext = {
 			renderId: '6904d585951f416c9bab403a6c60c5af',
 			latePageInject: true,
 		},
-		doubleVerify: {
-			slots: [
-				'top_leaderboard',
-				'top_boxad',
-				'incontent_boxad_1',
-				'bottom_leaderboard',
-				'featured',
-				'incontent_player',
-			],
-		},
 		durationMedia: {
 			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',
 		},

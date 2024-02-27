@@ -36,9 +36,6 @@ export const basicContext = {
 		ignoreNavbarHeight: true,
 	},
 	services: {
-		doubleVerify: {
-			slots: ['top_leaderboard', 'top_boxad', 'incontent_boxad', 'bottom_leaderboard', 'featured'],
-		},
 		nielsen: {
 			customSection: 'news_and_stories',
 		},

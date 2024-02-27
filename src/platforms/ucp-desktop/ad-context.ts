@@ -68,18 +68,6 @@ export const basicContext = {
 			},
 			libraryUrl: 'https://player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/lre.js',
 		},
-		doubleVerify: {
-			slots: [
-				'top_leaderboard',
-				'top_boxad',
-				'incontent_boxad_1',
-				'incontent_leaderboard',
-				'gallery_leaderboard',
-				'bottom_leaderboard',
-				'featured',
-				'incontent_player',
-			],
-		},
 		durationMedia: {
 			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',
 		},
