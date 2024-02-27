@@ -10,8 +10,6 @@ import { getPubmaticContext } from '../../../bidders/prebid/pubmatic';
 import { getRubiconContext } from '../../../bidders/prebid/rubicon';
 import { getRubiconDisplayContext } from '../../../bidders/prebid/rubicon-display';
 import { getTripleliftContext } from '../../../bidders/prebid/triplelift';
-import { getWebadsContext } from '../../../bidders/prebid/webads';
-import { getWikiaContext } from '../../../bidders/prebid/wikia';
 import { getWikiaVideoContext } from '../../../bidders/prebid/wikia-video';
 
 @Injectable()
@@ -30,8 +28,6 @@ export class UcpDesktopPrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.rubicon', filterVideoBids(getRubiconContext()));
 		context.set('bidders.prebid.rubicon_display', filterVideoBids(getRubiconDisplayContext()));
 		context.set('bidders.prebid.triplelift', filterVideoBids(getTripleliftContext()));
-		context.set('bidders.prebid.relevantdigital', filterVideoBids(getWebadsContext()));
-		context.set('bidders.prebid.wikia', filterVideoBids(getWikiaContext()));
 		context.set('bidders.prebid.wikiaVideo', filterVideoBids(getWikiaVideoContext()));
 	}
 }

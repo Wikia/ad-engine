@@ -12,8 +12,6 @@ import {
 	RubiconDisplay,
 	TestBidder,
 	Triplelift,
-	WebAds,
-	Wikia,
 	WikiaVideo,
 } from './adapters';
 import { PrebidAdapter } from './prebid-adapter';
@@ -34,8 +32,6 @@ class AdaptersRegistry {
 		RubiconDisplay,
 		TestBidder,
 		Triplelift,
-		WebAds,
-		Wikia,
 		WikiaVideo,
 	];
 
