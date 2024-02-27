@@ -17,7 +17,6 @@ import {
 	eventsRepository,
 	PartnerPipeline,
 	PrebidNativeProvider,
-	System1,
 	utils,
 	videoDisplayTakeoverSynchronizer,
 } from '@wikia/ad-engine';
@@ -38,7 +37,6 @@ export class UcpMobileAdsMode implements DiProcess {
 		private jwpStrategyRules: JwpStrategyRulesSetup,
 		private playerSetup: PlayerSetup,
 		private prebidNativeProvider: PrebidNativeProvider,
-		private system1: System1,
 		private wadRunner: WadRunner,
 	) {}
 
@@ -54,7 +52,6 @@ export class UcpMobileAdsMode implements DiProcess {
 				this.confiant,
 				this.connatix,
 				this.durationMedia,
-				this.system1,
 				this.prebidNativeProvider,
 				this.playerSetup.setOptions({
 					dependencies: [this.bidders.initialized, this.wadRunner.initialized],
