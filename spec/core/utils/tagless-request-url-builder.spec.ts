@@ -7,7 +7,6 @@ import { expect } from 'chai';
 import { SinonStubbedInstance } from 'sinon';
 
 describe('tagless-request-url-builder', () => {
-	let lisAdSlot;
 	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 	const targetingData = {
 		s0: '000',
@@ -37,6 +36,15 @@ describe('tagless-request-url-builder', () => {
 				trackingOptIn: false,
 			},
 		});
+		global.window.__tcfapi =
+			global.window.__tcfapi || (function () {} as typeof global.window.__tcfapi);
+		global.sandbox.stub(window, '__tcfapi').callsFake((cmd, version, cb) => {
+			const mockedConsentData = {
+				tcString: 'fakeConsentString',
+			} as TCData;
+
+			cb(mockedConsentData);
+		});
 
 		targetingServiceStub = global.sandbox.stub(targetingService);
 		targetingServiceStub.dump.returns(targetingData);
@@ -44,9 +52,12 @@ describe('tagless-request-url-builder', () => {
 			Object.assign(targetingData, newTargeting);
 		});
 
-		lisAdSlot = new AdSlot({ id: 'layout_initializer' });
 		slotService.add(new AdSlot({ id: 'top_leaderboard' }));
-		slotService.add(lisAdSlot);
+	});
+
+	afterEach(() => {
+		context.remove('options.geoRequiresConsent');
+		global.sandbox.restore();
 	});
 
 	it('build VAST URL with DFP domain', () => {
@@ -200,7 +211,8 @@ describe('tagless-request-url-builder', () => {
 		expect(vastUrl.match(taglessPattern)).to.be.ok;
 	});
 
-	it('build VAST URL with gdpr_consent query-string parameter when "tagless"', () => {
+	it('build VAST URL with gdpr_consent query-string parameter when "tagless" in GDPR country', () => {
+		context.set('options.geoRequiresConsent', true);
 		const vastUrl = buildVastUrl(1, 'top_leaderboard', {
 			isTagless: true,
 		});

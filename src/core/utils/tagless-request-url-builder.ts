@@ -140,6 +140,9 @@ export function buildVastUrl(
 
 	if (options.isTagless) {
 		params.push('tagless=1');
+
+		const { type, consentString } = trackingOptIn.getConsentData();
+		type === 'gdpr' ? params.push(`gdpr_consent=${consentString}`) : undefined;
 	}
 
 	return vastBaseUrl + params.join('&');

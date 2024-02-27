@@ -18,7 +18,22 @@ function isOptOutSale(optOutSale?: boolean): boolean {
 	return isOptOutSaleByQueryParam || !!(optOutSale ?? context.get('options.optOutSale'));
 }
 
+function getConsentData() {
+	const type = context.get('options.geoRequiresConsent') ? 'gdpr' : 'ccpa';
+
+	let consentString = '';
+	window.__tcfapi('getTCData', 2, (data) => {
+		consentString = data.tcString;
+	});
+
+	return {
+		type,
+		consentString,
+	};
+}
+
 export const trackingOptIn = {
 	isOptedIn,
 	isOptOutSale,
+	getConsentData,
 };
