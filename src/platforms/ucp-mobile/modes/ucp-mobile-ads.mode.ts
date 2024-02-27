@@ -17,7 +17,6 @@ import {
 	eventsRepository,
 	PartnerPipeline,
 	PrebidNativeProvider,
-	Stroer,
 	System1,
 	utils,
 	videoDisplayTakeoverSynchronizer,
@@ -39,7 +38,6 @@ export class UcpMobileAdsMode implements DiProcess {
 		private jwpStrategyRules: JwpStrategyRulesSetup,
 		private playerSetup: PlayerSetup,
 		private prebidNativeProvider: PrebidNativeProvider,
-		private stroer: Stroer,
 		private system1: System1,
 		private wadRunner: WadRunner,
 	) {}
@@ -56,7 +54,6 @@ export class UcpMobileAdsMode implements DiProcess {
 				this.confiant,
 				this.connatix,
 				this.durationMedia,
-				this.stroer,
 				this.system1,
 				this.prebidNativeProvider,
 				this.playerSetup.setOptions({

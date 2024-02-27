@@ -14,5 +14,4 @@ export * from './liveramp-pixel';
 export * from './lotame';
 export * from './nielsen';
 export * from './optimizely';
-export * from './stroer';
 export * from './system1';
