@@ -62,4 +62,5 @@ interface Window {
 	trackingOptIn?: any;
 	wgCookiePath?: string;
 	XMLHttpRequest?: any;
+	pathfinderModulesReady?: bool;
 }
