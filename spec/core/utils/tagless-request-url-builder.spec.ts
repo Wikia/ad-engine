@@ -200,6 +200,16 @@ describe('tagless-request-url-builder', () => {
 		expect(vastUrl.match(taglessPattern)).to.be.ok;
 	});
 
+	it('build VAST URL with gdpr_consent query-string parameter when "tagless"', () => {
+		const vastUrl = buildVastUrl(1, 'top_leaderboard', {
+			isTagless: true,
+		});
+
+		const gdprConsentPattern = /&gdpr_consent=/;
+
+		expect(vastUrl.match(gdprConsentPattern)).to.be.ok;
+	});
+
 	it('builds and returns custom params as encoded string', () => {
 		const adSlot = slotService.get('top_leaderboard');
 		const customParams = getCustomParameters(adSlot, null);
