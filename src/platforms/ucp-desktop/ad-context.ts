@@ -88,18 +88,6 @@ export const basicContext = {
 			playerId: '96b46997-3bf8-4c9d-9761-c06758f44607',
 			renderId: '858c22ce64e241d5acc77c4f6ed56d2d',
 		},
-		iasPublisherOptimization: {
-			slots: [
-				'top_leaderboard',
-				'top_boxad',
-				'incontent_boxad_1',
-				'incontent_leaderboard',
-				'gallery_leaderboard',
-				'bottom_leaderboard',
-				'featured',
-				'incontent_player',
-			],
-		},
 		externalLogger: {
 			endpoint: '/wikia.php?controller=AdEngine&method=postLog',
 		},

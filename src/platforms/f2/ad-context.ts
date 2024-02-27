@@ -39,9 +39,6 @@ export const basicContext = {
 		doubleVerify: {
 			slots: ['top_leaderboard', 'top_boxad', 'incontent_boxad', 'bottom_leaderboard', 'featured'],
 		},
-		iasPublisherOptimization: {
-			slots: ['top_leaderboard', 'top_boxad', 'incontent_boxad', 'bottom_leaderboard', 'featured'],
-		},
 		nielsen: {
 			customSection: 'news_and_stories',
 		},

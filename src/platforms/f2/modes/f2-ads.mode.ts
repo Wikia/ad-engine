@@ -5,7 +5,6 @@ import {
 	DiProcess,
 	eventsRepository,
 	Experian,
-	IasPublisherOptimization,
 	LiveConnect,
 	LiveRampPixel,
 	Lotame,
@@ -22,7 +21,6 @@ export class F2AdsMode implements DiProcess {
 		private captify: Captify,
 		private experian: Experian,
 		private gptSetup: GptSetup,
-		private iasPublisherOptimization: IasPublisherOptimization,
 		private liveConnect: LiveConnect,
 		private liveRampPixel: LiveRampPixel,
 		private nielsen: Nielsen,
@@ -40,7 +38,6 @@ export class F2AdsMode implements DiProcess {
 				this.captify,
 				this.liveConnect,
 				this.experian,
-				this.iasPublisherOptimization,
 				this.nielsen,
 				this.wadRunner,
 				this.playerSetup.setOptions({
