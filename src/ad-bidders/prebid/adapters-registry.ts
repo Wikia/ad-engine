@@ -10,7 +10,6 @@ import {
 	Pubmatic,
 	Rubicon,
 	RubiconDisplay,
-	TestBidder,
 	Triplelift,
 } from './adapters';
 import { PrebidAdapter } from './prebid-adapter';
@@ -29,7 +28,6 @@ class AdaptersRegistry {
 		Pubmatic,
 		Rubicon,
 		RubiconDisplay,
-		TestBidder,
 		Triplelift,
 	];
 

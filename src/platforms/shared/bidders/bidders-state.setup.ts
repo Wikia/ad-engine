@@ -46,15 +46,6 @@ export class BiddersStateSetup implements DiProcess {
 				this.enableIfApplicable(bidderName, icVariable);
 			}
 
-			const testBidderConfig: object = this.instantConfig.get('icPrebidTestBidder');
-			if (testBidderConfig) {
-				context.set('bidders.prebid.testBidder', {
-					name: testBidderConfig['name'],
-					slots: testBidderConfig['slots'],
-				});
-				this.enableIfApplicable('testBidder', 'icPrebidTestBidder');
-			}
-
 			context.set(
 				'bidders.prebid.auctionDelay',
 				this.instantConfig.get('icPrebidAuctionDelay', 50),

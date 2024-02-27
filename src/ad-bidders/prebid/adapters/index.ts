@@ -7,5 +7,4 @@ export * from './magniteS2s';
 export * from './pubmatic';
 export * from './rubicon';
 export * from './rubicon-display';
-export * from './test-bidder';
 export * from './triplelift';

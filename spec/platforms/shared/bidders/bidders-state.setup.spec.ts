@@ -70,26 +70,6 @@ describe('BiddersStateSetup', () => {
 		expect(context.get('bidders.prebid.appnexus.enabled')).to.be.false;
 	});
 
-	it('sets up Prebid with test bidder', () => {
-		instantConfigStub.get.withArgs('icPrebid').returns(true);
-		instantConfigStub.get.withArgs('icPrebidTestBidder').returns({
-			name: 'testBidder',
-			slots: ['top_leaderboard', 'bottom_leaderboard'],
-		});
-
-		const biddersSetup = new BiddersStateSetup(instantConfigStub);
-		biddersSetup.execute();
-
-		expect(context.get('bidders.prebid.enabled')).to.be.true;
-		expect(context.get('bidders.prebid.testBidder.enabled')).to.be.true;
-		expect(context.get('bidders.prebid.testBidder.name')).to.be.equal('testBidder');
-		expect(context.get('bidders.prebid.testBidder.slots')).to.deep.equal([
-			'top_leaderboard',
-			'bottom_leaderboard',
-		]);
-		expect(context.get('bidders.prebid.appnexus.enabled')).to.be.false;
-	});
-
 	it('sets up Prebid with selected bidder', () => {
 		global.sandbox.stub(window, 'location').value({ search: '?select_bidder=appnexus' });
 		instantConfigStub.get.withArgs('icPrebid').returns(true);
@@ -110,14 +90,12 @@ describe('BiddersStateSetup', () => {
 
 		instantConfigStub.get.withArgs('icPrebid').returns(true);
 		instantConfigStub.get.withArgs('icPrebidKargo').returns(true);
-		instantConfigStub.get.withArgs('icPrebidTestBidder').returns(true);
 
 		const biddersSetup = new BiddersStateSetup(instantConfigStub);
 		biddersSetup.execute();
 
 		expect(context.get('bidders.prebid.enabled')).to.be.true;
 		expect(context.get('bidders.prebid.kargo.enabled')).to.be.false;
-		expect(context.get('bidders.prebid.testBidder.enabled')).to.be.true;
 
 		context.remove('wiki.targeting.directedAtChildren');
 		delete window.fandomContext;
