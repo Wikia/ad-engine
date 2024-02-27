@@ -8,10 +8,10 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 
-const logGroup = 'BidAuctionSplitSetup';
+const logGroup = 'BidAuctionSplitExperimentSetup';
 type RunningExperimentType = Experiment | null | undefined;
 
-export class BidAuctionSplitSetup extends BaseServiceSetup {
+export class BidAuctionSplitExperimentSetup extends BaseServiceSetup {
 	private isMobile = context.get('state.isMobile');
 	private experimentVariants;
 

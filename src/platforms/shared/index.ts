@@ -19,7 +19,7 @@ export * from './services/no-ads-detector';
 export * from './services/wad-runner';
 export * from './setup/ad-engine-stack.setup';
 export * from './setup/base-context.setup';
-export * from './setup/bid-auction-split-setup';
+export * from './setup/bid-auction-split-experiment-setup';
 export * from './setup/bidders-targeting-updater.service';
 export * from './setup/gpt.setup';
 export * from './setup/jwp-strategy-rules.setup';
