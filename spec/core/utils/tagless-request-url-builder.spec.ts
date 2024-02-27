@@ -31,11 +31,6 @@ describe('tagless-request-url-builder', () => {
 				adUnitId: '/{custom.dfpId}/{custom.serverPrefix}/{src}/{slotConfig.slotName}',
 			},
 			slots: {
-				layout_initializer: {
-					adProduct: 'layout_initializer',
-					group: 'LIS',
-					defaultSizes: [[32, 32]],
-				},
 				top_leaderboard: {},
 			},
 			options: {
@@ -193,6 +188,16 @@ describe('tagless-request-url-builder', () => {
 		const custParams = /&vpos=/;
 
 		expect(vastUrl.match(custParams)).to.not.be.ok;
+	});
+
+	it('build VAST URL with tagless query-string parameter', () => {
+		const vastUrl = buildVastUrl(1, 'top_leaderboard', {
+			isTagless: true,
+		});
+
+		const taglessPattern = /&tagless=1/;
+
+		expect(vastUrl.match(taglessPattern)).to.be.ok;
 	});
 
 	it('builds and returns custom params as encoded string', () => {
