@@ -9,11 +9,16 @@ export class TrackingParametersSetup implements DiProcess {
 	constructor(private instantConfig: InstantConfigService) {}
 
 	private getPvUniqueId() {
-		return (
+		const pvUID =
 			getMediaWikiVariable('pvUID') || // UCP
 			window.pvUID || // F2
-			window.fandomContext.tracking.pvUID // N+R
-		);
+			window.fandomContext?.tracking?.pvUID; // N+R
+
+		if (!pvUID) {
+			console.error('pvUID is not set');
+		}
+
+		return pvUID;
 	}
 
 	private getLegacyTrackingParameters(): ITrackingParameters {
