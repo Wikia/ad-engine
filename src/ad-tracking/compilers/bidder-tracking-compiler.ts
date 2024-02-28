@@ -21,6 +21,10 @@ export const bidderTrackingCompiler = ({ bid, data }: CompilerPartial): Compiler
 		additionalFlags.push(`buyer_id=${bid.buyerId}`);
 	}
 
+	if (bid.additinonalInfo?.dsa) {
+		additionalFlags.push(`dsa=${JSON.stringify(bid.additinonalInfo.dsa)}`);
+	}
+
 	return {
 		bid,
 		data: {

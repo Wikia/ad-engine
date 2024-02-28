@@ -581,6 +581,7 @@ export class PrebidProvider extends BidderProvider {
 	}
 
 	private mapResponseToTrackingBidDefinition(response: PrebidBidResponse): TrackingBidDefinition {
+		utils.logger(logGroup, 'Response: ', response);
 		return {
 			bidderName: response.bidderCode,
 			price: response.cpm.toString(),
@@ -588,6 +589,7 @@ export class PrebidProvider extends BidderProvider {
 			slotName: getSlotNameByBidderAlias(response.adUnitCode),
 			size: response.size,
 			timeToRespond: response.timeToRespond,
+			additinonalInfo: response?.meta?.dsa ? { dsa: response.meta.dsa } : undefined,
 		};
 	}
 

@@ -114,6 +114,9 @@ interface PrebidBidResponse {
 	getStatusCode: () => number;
 	getSize: () => string;
 	mediaType: string;
+	meta?: {
+		dsa?: object;
+	};
 	originalCpm?: number;
 	originalCurrency?: string;
 	status: string;
