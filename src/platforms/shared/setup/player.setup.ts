@@ -21,6 +21,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { iasVideoTracker } from '../../../ad-products/video/porvata/plugins/ias/ias-video-tracker';
 
 const logGroup = 'player-setup';
+let videoAdImpressionEmitted = false;
 
 @Injectable()
 export class PlayerSetup extends BaseServiceSetup {
@@ -118,26 +119,60 @@ export class PlayerSetup extends BaseServiceSetup {
 			utils.logger(logGroup, 'display and video sync response available');
 		}
 
-		communicationService.on(eventsRepository.VIDEO_EVENT, (payload) => {
-			const { name, state } = payload.videoEvent;
+		communicationService.on(
+			eventsRepository.VIDEO_EVENT,
+			(payload) => {
+				const { name, state } = payload.videoEvent;
 
-			if (name === 'adImpression') {
-				videoDisplayTakeoverSynchronizer.resolve(
-					state.vastParams.lineItemId,
-					state.vastParams.creativeId,
-				);
-				adSlot.setStatus(AdSlotStatus.STATUS_SUCCESS);
-				adSlot.emit(AdSlotEvent.VIDEO_AD_IMPRESSION);
-			} else if (['adError', 'play', 'playError'].includes(name)) {
+				PlayerSetup.resolveVideoDisplaySyncBasedOnPlayerEvent(name, state, adSlot);
+			},
+			false,
+		);
+
+		communicationService.on(
+			eventsRepository.BIDDERS_BIDDING_DONE,
+			({ slotName }) => {
+				if (slotName === videoAdSlotName) {
+					PlayerSetup.emitVideoSetupEvent(showAds, adSlot, vastResponse);
+				}
+			},
+			false,
+		);
+	}
+
+	public static resolveVideoDisplaySyncBasedOnPlayerEvent(eventName: string, state, adSlot): void {
+		const wasPlayEmittedBeforeAd = (eventName: string) => {
+			return eventName === 'play' && !videoAdImpressionEmitted;
+		};
+
+		if (eventName === 'adImpression') {
+			videoAdImpressionEmitted = true;
+			videoDisplayTakeoverSynchronizer.resolve(
+				state.vastParams.lineItemId,
+				state.vastParams.creativeId,
+			);
+			adSlot.setStatus(AdSlotStatus.STATUS_SUCCESS);
+			adSlot.emit(AdSlotEvent.VIDEO_AD_IMPRESSION);
+		} else if (wasPlayEmittedBeforeAd(eventName)) {
+			PlayerSetup.registerTimeoutForVideoDisplayTakeoverSync(
+				() => videoAdImpressionEmitted === true,
+			);
+		} else if (['adError', 'playError'].includes(eventName)) {
+			videoDisplayTakeoverSynchronizer.resolve();
+		} else {
+			console.warn(
+				'resolveVideoDisplaySyncBasedOnPlayerEvent() called with not handled event: ',
+				eventName,
+			);
+		}
+	}
+
+	private static registerTimeoutForVideoDisplayTakeoverSync(condition: () => boolean): void {
+		new utils.WaitFor(condition, 1, displayAndVideoAdsSyncContext.getSyncTimeout())
+			.until()
+			.then(() => {
 				videoDisplayTakeoverSynchronizer.resolve();
-			}
-		});
-
-		communicationService.on(eventsRepository.BIDDERS_BIDDING_DONE, ({ slotName }) => {
-			if (slotName === videoAdSlotName) {
-				PlayerSetup.emitVideoSetupEvent(showAds, adSlot, vastResponse);
-			}
-		});
+			});
 	}
 
 	private static emitVideoSetupEvent(
