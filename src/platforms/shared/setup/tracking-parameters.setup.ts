@@ -12,7 +12,8 @@ export class TrackingParametersSetup implements DiProcess {
 		const pvUID =
 			getMediaWikiVariable('pvUID') || // UCP
 			window.pvUID || // F2
-			window.fandomContext?.tracking?.pvUID; // N+R
+			window.fandomContext?.tracking?.pvUID || // N+R
+			0;
 
 		if (!pvUID) {
 			console.error('pvUID is not set');
