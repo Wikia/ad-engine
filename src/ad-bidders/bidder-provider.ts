@@ -58,8 +58,6 @@ export abstract class BidderProvider {
 		this.response = true;
 
 		this.onResponseCallbacks.flush();
-
-		utils.logger(this.logGroup, 'no slots');
 	}
 
 	getSlotBestPrice(slotName: string): Promise<Dictionary<number | string>> {

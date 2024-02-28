@@ -1,4 +1,3 @@
-import { addExperimentGroupToTargeting } from '@platforms/shared';
 import {
 	BaseServiceSetup,
 	context,
@@ -7,6 +6,7 @@ import {
 	getExperiment,
 	utils,
 } from '@wikia/ad-engine';
+import { addExperimentGroupToTargeting } from '../utils/experiment-targeting';
 
 const logGroup = 'BidAuctionSplitExperimentSetup';
 type RunningExperimentType = Experiment | null | undefined;

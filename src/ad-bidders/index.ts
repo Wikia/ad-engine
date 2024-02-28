@@ -212,7 +212,10 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 		return this.biddersProviders[bidGroup] || {};
 	}
 
-	private getBidderTimeout(config: any, bidGroup: string) {
+	private getBidderTimeout(
+		config: { timeout: number; timeoutByGroup: { [key: number]: number } },
+		bidGroup: string,
+	) {
 		return config?.timeoutByGroup?.[bidGroup] || config.timeout;
 	}
 }
