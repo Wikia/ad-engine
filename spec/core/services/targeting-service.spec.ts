@@ -37,6 +37,10 @@ describe('slot-service', () => {
 		targetingService = new TargetingService();
 	});
 
+	afterEach(() => {
+		targetingService.clear();
+	});
+
 	describe('getter', () => {
 		beforeEach(() => {
 			targetingService = new TargetingService();

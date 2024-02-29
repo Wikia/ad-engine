@@ -19,7 +19,6 @@ export * from './nielsen';
 export * from './open-web';
 export * from './open-web/utils/placements-builder';
 export * from './open-web/utils/placements-handler';
-export * from './optimizely';
 export * from './stroer';
 export * from './system1';
 export * from './wunderkind';
