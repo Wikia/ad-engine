@@ -22,6 +22,10 @@ describe('TrackingSetup', () => {
 		trackSpy = global.sandbox.spy(dwTracker, 'track');
 	});
 
+	afterEach(() => {
+		targetingService.clear();
+	});
+
 	it('should track keyvals', (done) => {
 		// given
 		targetingService.clear();

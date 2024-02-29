@@ -14,6 +14,7 @@ describe('Anyclip setup', () => {
 
 	afterEach(() => {
 		context.remove('state.isMobile');
+		targetingService.clear();
 	});
 
 	describe('isApplicable()', () => {
@@ -108,7 +109,7 @@ describe('Anyclip setup', () => {
 			context.remove('services.anyclip.playerElementId');
 			context.remove('services.anyclip.loadWithoutAnchor');
 			context.remove('services.anyclip.loadOnPageLoad');
-			targetingService.clear('pname');
+			targetingService.clear();
 			global.sandbox.restore();
 		});
 
