@@ -14,8 +14,6 @@ const REPORTABLE_SLOTS = {
 
 export class MetricReporter {
 	private readonly isActive: boolean;
-	private initTimeDuration: number;
-	private clockTicks: number;
 
 	constructor(private readonly sender: MetricReporterSender) {
 		this.isActive = utils.outboundTrafficRestrict.isOutboundTrafficAllowed('monitoring-default');
@@ -26,10 +24,6 @@ export class MetricReporter {
 			return;
 		}
 
-		this.initTimeDuration = utils.getTimeDelta();
-		this.clockTicks = 0;
-		this.initClock();
-
 		this.trackLibInitialization();
 		this.trackGptLibReady();
 
@@ -37,16 +31,10 @@ export class MetricReporter {
 		this.trackGamSlotRendered();
 	}
 
-	private initClock(): void {
-		setInterval(() => {
-			this.clockTicks++;
-		}, 100);
-	}
-
 	private trackLibInitialization(): void {
 		this.sender.sendToMeteringSystem({
 			action: 'init',
-			duration: this.initTimeDuration,
+			duration: utils.getTimeDelta(),
 		});
 	}
 
@@ -78,11 +66,7 @@ export class MetricReporter {
 
 		this.sender.sendToMeteringSystem({
 			action: `${state}_${slot.getSlotName()}`,
-			duration: this.getOwnTimeDelta(),
+			duration: utils.getTimeDelta(),
 		});
-	}
-
-	private getOwnTimeDelta(): number {
-		return this.initTimeDuration + this.clockTicks * 100;
 	}
 }
