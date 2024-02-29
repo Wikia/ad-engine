@@ -12,19 +12,16 @@ import { requestBids } from './prebid-helper';
 
 const logGroup = 'prebid-data-refresher';
 
-class PrebidDataRefresher {
+class PrebidDataTracking {
 	private bidsRefreshing: BidsRefreshing;
 	private isConfiguredBidsRefreshing = false;
 	private isConfiguredBidsTracking = false;
 	private isConfiguredATSAnalytics = false;
 	private adUnits: PrebidAdUnit[] = [];
-	private slotTimeouts: { [key: number]: number } = {};
 
-	async registerBidsRefreshing(adUnits: PrebidAdUnit[], timeout: number): Promise<void> {
+	async registerBidsRefreshing(adUnits: PrebidAdUnit[]): Promise<void> {
 		if (adUnits && adUnits.length > 0) {
 			this.adUnits = [...this.adUnits, ...adUnits];
-
-			this.addSlotsTimeouts(adUnits, timeout);
 		}
 
 		if (this.isConfiguredBidsRefreshing) return;
@@ -49,11 +46,7 @@ class PrebidDataRefresher {
 						adUnit.bids[0].bidder === winningBid.bidderCode,
 				);
 
-				requestBids(
-					adUnitsToRefresh,
-					this.bidsRefreshing.bidsBackHandler,
-					this.getSlotTimeout(winningBid.adUnitCode),
-				);
+				requestBids(adUnitsToRefresh, this.bidsRefreshing.bidsBackHandler, DEFAULT_MAX_DELAY);
 			}
 		};
 
@@ -121,16 +114,6 @@ class PrebidDataRefresher {
 			timeToRespond: response.timeToRespond,
 		};
 	}
-
-	private addSlotsTimeouts(adUnits: PrebidAdUnit[], timeout: number) {
-		adUnits.forEach((adUnit) => {
-			this.slotTimeouts[adUnit.code] = timeout;
-		});
-	}
-
-	private getSlotTimeout(code: string) {
-		return this.slotTimeouts?.[code] || DEFAULT_MAX_DELAY;
-	}
 }
 
-export const prebidDataRefresher = new PrebidDataRefresher();
+export const prebidDataTracking = new PrebidDataTracking();

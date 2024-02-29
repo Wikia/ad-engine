@@ -17,7 +17,7 @@ import { adaptersRegistry } from './adapters-registry';
 import { id5 } from './id5';
 import { connectedId } from './liveintent-connected-id';
 import { liveRampId } from './liveramp-id';
-import { prebidDataRefresher } from './prebid-data-refresher';
+import { prebidDataTracking } from './prebid-data-tracking';
 import { requestBids } from './prebid-helper';
 import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice, roundBucketCpm } from './price-helper';
@@ -171,9 +171,9 @@ export class PrebidProvider extends BidderProvider {
 
 		this.applyConfig(this.prebidConfig);
 		this.configureAdUnits();
-		prebidDataRefresher.registerBidsRefreshing(this.adUnits, this.timeout);
-		prebidDataRefresher.registerBidsTracking();
-		prebidDataRefresher.enableATSAnalytics();
+		prebidDataTracking.registerBidsRefreshing(this.adUnits);
+		prebidDataTracking.registerBidsTracking();
+		prebidDataTracking.enableATSAnalytics();
 
 		utils.logger(logGroup, 'prebid created', this.prebidConfig);
 	}
