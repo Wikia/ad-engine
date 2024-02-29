@@ -137,7 +137,7 @@ export function isPrebidAdapterConfig(
 export async function requestBids(
 	adUnits: PrebidAdUnit[],
 	bidsBackHandler: (...args: any[]) => void,
-	timeout: number = this.timeout,
+	timeout: number,
 ): Promise<void> {
 	const pbjs: Pbjs = await pbjsFactory.init();
 

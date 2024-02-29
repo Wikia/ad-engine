@@ -3,7 +3,7 @@ import {
 	eventsRepository,
 	TrackingBidDefinition,
 } from '@ad-engine/communication';
-import { context, pbjsFactory, utils } from '@ad-engine/core';
+import { context, DEFAULT_MAX_DELAY, pbjsFactory, utils } from '@ad-engine/core';
 import { getSlotNameByBidderAlias } from '../bidder-helper';
 import { BidsRefreshing } from '../bidder-provider';
 import { intentIQ } from './intent-iq';
@@ -18,9 +18,14 @@ class PrebidDataRefresher {
 	private isConfiguredBidsTracking = false;
 	private isConfiguredATSAnalytics = false;
 	private adUnits: PrebidAdUnit[] = [];
+	private slotTimeouts: { [key: number]: number } = {};
 
-	async registerBidsRefreshing(adUnits: PrebidAdUnit[]): Promise<void> {
-		this.adUnits = [...this.adUnits, ...adUnits];
+	async registerBidsRefreshing(adUnits: PrebidAdUnit[], timeout: number): Promise<void> {
+		if (this.adUnits.length > 0) {
+			this.adUnits = [...this.adUnits, ...adUnits];
+
+			this.addSlotsTimeouts(adUnits, timeout);
+		}
 
 		if (this.isConfiguredBidsRefreshing) return;
 
@@ -44,7 +49,11 @@ class PrebidDataRefresher {
 						adUnit.bids[0].bidder === winningBid.bidderCode,
 				);
 
-				requestBids(adUnitsToRefresh, this.bidsRefreshing.bidsBackHandler);
+				requestBids(
+					adUnitsToRefresh,
+					this.bidsRefreshing.bidsBackHandler,
+					this.getSlotTimeout(winningBid.adUnitCode),
+				);
 			}
 		};
 
@@ -111,6 +120,16 @@ class PrebidDataRefresher {
 			size: response.size,
 			timeToRespond: response.timeToRespond,
 		};
+	}
+
+	private addSlotsTimeouts(adUnits: PrebidAdUnit[], timeout: number) {
+		adUnits.forEach((adUnit) => {
+			this.slotTimeouts[adUnit.code] = timeout;
+		});
+	}
+
+	private getSlotTimeout(code: string) {
+		return this.slotTimeouts?.[code] || DEFAULT_MAX_DELAY;
 	}
 }
 

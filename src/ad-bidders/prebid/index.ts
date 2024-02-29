@@ -171,7 +171,7 @@ export class PrebidProvider extends BidderProvider {
 
 		this.applyConfig(this.prebidConfig);
 		this.configureAdUnits();
-		prebidDataRefresher.registerBidsRefreshing(this.adUnits);
+		prebidDataRefresher.registerBidsRefreshing(this.adUnits, this.timeout);
 		prebidDataRefresher.registerBidsTracking();
 		prebidDataRefresher.enableATSAnalytics();
 
@@ -468,10 +468,14 @@ export class PrebidProvider extends BidderProvider {
 		this.applySettings();
 		this.removeAdUnits();
 		this.saveBidIds();
-		requestBids(this.adUnits, () => {
-			bidsBackHandler();
-			communicationService.emit(eventsRepository.BIDDERS_AUCTION_DONE);
-		});
+		requestBids(
+			this.adUnits,
+			() => {
+				bidsBackHandler();
+				communicationService.emit(eventsRepository.BIDDERS_AUCTION_DONE);
+			},
+			this.timeout,
+		);
 
 		communicationService.emit(eventsRepository.BIDDERS_BIDS_CALLED);
 	}
