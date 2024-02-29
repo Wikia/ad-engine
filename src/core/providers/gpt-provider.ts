@@ -155,6 +155,14 @@ function SmLogger(targeting: SlotTargeting) {
 	}
 }
 
+function updateGptSlotTargeting(gptSlot: googletag.Slot, adSlot: AdSlot, targeting: SlotTargeting) {
+	const castedRV = targeting.rv ? String(Number(targeting.rv) + 1) : '1';
+
+	gptSlot.updateTargetingFromMap(targeting);
+	gptSlot.setTargeting('rv', castedRV);
+	targetingService.set('rv', castedRV, adSlot.getSlotName());
+}
+
 export class GptProvider implements Provider {
 	constructor() {
 		window.googletag = window.googletag || ({} as googletag.Googletag);
@@ -329,11 +337,7 @@ export class GptProvider implements Provider {
 		});
 
 		gptSlot.defineSizeMapping(sizeMapping.build());
-		const castedRV = targeting.rv ? String(Number(targeting.rv) + 1) : '1';
-
-		gptSlot.updateTargetingFromMap(targeting);
-		gptSlot.setTargeting('rv', castedRV);
-		targetingService.set('rv', castedRV, adSlot.getSlotName());
+		updateGptSlotTargeting(gptSlot, adSlot, targeting);
 
 		window.googletag.pubads().refresh([gptSlot]);
 	}

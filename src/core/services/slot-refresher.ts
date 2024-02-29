@@ -12,10 +12,13 @@ interface Config {
 	slots?: string[];
 }
 
-type EventPayload = Partial<{ adSlotName: string; slot: AdSlot }>;
+interface EventPayload {
+	adSlotName?: string;
+	slot?: AdSlot;
+}
 
 const defaultConfig: Config = {
-	timeoutMS: 30_000,
+	timeoutMS: 28_000,
 	slots: [],
 };
 
@@ -29,7 +32,11 @@ async function isUAP(): Promise<boolean> {
 }
 
 function callBidders(slotName: string, callback: () => void) {
-	context.set(`slots.${slotName}.bidGroup`, slotName);
+	const bidGroup = context.get(`slots.${slotName}.bidGroup`);
+
+	if (!bidGroup) {
+		context.set(`slots.${slotName}.bidGroup`, slotName);
+	}
 
 	communicationService.emit(eventsRepository.BIDDERS_CALL_PER_GROUP, {
 		group: slotName,
@@ -43,9 +50,7 @@ function refreshWhenBackInViewport(adSlot: AdSlot) {
 			logger(logGroup, `${adSlot.getSlotName()} back in the viewport, refreshing.`, event);
 
 			callBidders(adSlot.getSlotName(), () => {
-				setTimeout(() => {
-					GptProvider.refreshSlot(adSlot);
-				}, 2000);
+				GptProvider.refreshSlot(adSlot);
 			});
 
 			window.googletag.pubads().removeEventListener('slotVisibilityChanged', refresh);
@@ -53,23 +58,6 @@ function refreshWhenBackInViewport(adSlot: AdSlot) {
 	}
 	window.googletag.pubads().addEventListener('slotVisibilityChanged', refresh);
 }
-
-const PREBID_BIDDER_KEYS = [
-	'appnexus',
-	'indexExchange',
-	'medianet',
-	'mgnipbs',
-	'nobid',
-	'ozone',
-	'pubmatic',
-	'roundel',
-	'rubicon_display',
-	'seedtag',
-	'triplelift',
-	'verizon',
-	'relevantdigital',
-	'wikia',
-];
 
 export class SlotRefresher {
 	config: Config;
@@ -83,27 +71,23 @@ export class SlotRefresher {
 		return this.config.slots.includes(slotName);
 	}
 
-	filterSlotSizes(adSlot: AdSlot) {
+	/**
+	 * Removes adSlot sizes taller than the first rendered adSlot with the same slotName.
+	 * @param {AdSlot} adSlot - The ad slot to adjust.
+	 */
+	removeHigherSlotSizes(adSlot: AdSlot) {
 		const slotName = adSlot.getSlotName();
 		const slotRefresherConfig = context.get('slotConfig.slotRefresher.sizes');
-		const slotHeightLimit = slotRefresherConfig[slotName][1];
+		if (!slotRefresherConfig) return;
 
+		const slotHeightLimit = slotRefresherConfig[slotName][1];
 		if (!slotHeightLimit) return;
 
-		context.set(
-			`bidders.a9.slots.${slotName}.sizes`,
-			context
-				.get(`bidders.a9.slots.${slotName}.sizes`)
-				.filter((size: [number, number]) => size[1] <= slotHeightLimit),
-		);
+		const filterCallback = (size: [number, number]) => size[1] <= slotHeightLimit;
 
-		PREBID_BIDDER_KEYS.forEach((bidder) => {
-			context.set(
-				`bidders.prebid.${bidder}.slots.${slotName}.sizes`,
-				context
-					.get(`bidders.prebid.${bidder}.slots.${slotName}.sizes`)
-					.filter((size: [number, number]) => size[1] <= slotHeightLimit),
-			);
+		communicationService.emit(eventsRepository.SLOT_REFRESHER_SET_MAXIMUM_SLOT_HEIGHT, {
+			adSlot,
+			filterCallback,
 		});
 	}
 
@@ -120,8 +104,8 @@ export class SlotRefresher {
 
 		if (!(adSlot.getSlotName() in slotSizes)) {
 			this.addSlotSizeToContext(adSlot);
+			this.removeHigherSlotSizes(adSlot);
 		}
-		this.filterSlotSizes(adSlot);
 
 		setTimeout(() => {
 			if (adSlot.isEnabled()) {
@@ -129,11 +113,9 @@ export class SlotRefresher {
 
 				if (this.slotsInTheViewport.includes(adSlot.getSlotName())) {
 					this.log(`refreshing ${adSlot.getSlotName()}`);
-					adSlot.updtatePushTimeAfterBid();
+					adSlot.updatePushTimeAfterBid();
 					callBidders(adSlot.getSlotName(), () => {
-						setTimeout(() => {
-							GptProvider.refreshSlot(adSlot);
-						}, 2000);
+						GptProvider.refreshSlot(adSlot);
 					});
 
 					return;
@@ -142,7 +124,7 @@ export class SlotRefresher {
 				this.log(`${adSlot.getSlotName()} waiting for being in viewport.`);
 				refreshWhenBackInViewport(adSlot);
 			}
-		}, this.config.timeoutMS - 2000);
+		}, this.config.timeoutMS);
 	}
 
 	private addSlotsConfiguredToRefreshing() {

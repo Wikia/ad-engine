@@ -20,6 +20,17 @@ export class Pubmatic extends PrebidAdapter {
 		return Pubmatic.bidderName;
 	}
 
+	setMaximumAdSlotHeight(slotName: string, slotHeightLimit: number) {
+		const ids = context.get(`bidders.prebid.${this.bidderName}.slots.${slotName}.ids`);
+
+		const filteredIDs = ids.filter((code) => {
+			const size = this.extractSizeFromString(code, 'pubmatic');
+			return !(size && size[1] > slotHeightLimit);
+		});
+
+		context.set(`bidders.prebid.${this.bidderName}.slots.${slotName}.inventoryCodes`, filteredIDs);
+	}
+
 	prepareConfigForAdUnit(code, { sizes, ids }: PrebidAdSlotConfig): PrebidAdUnit {
 		if (context.get(`slots.${code}.isVideo`)) {
 			return this.getVideoConfig(code, ids);

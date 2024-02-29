@@ -84,6 +84,16 @@ export class A9Provider extends BidderProvider {
 		this.slots = this.bidderConfig.slots;
 		this.slotsNames = Object.keys(this.slots);
 		this.bidsRefreshing = context.get('bidders.a9.bidsRefreshing') || {};
+
+		communicationService.on(
+			eventsRepository.SLOT_REFRESHER_SET_MAXIMUM_SLOT_HEIGHT,
+			({ adSlot }) => {
+				const slotName = adSlot.getSlotName();
+
+				this.setMaximumAdSlotHeight(slotName);
+			},
+			false,
+		);
 	}
 
 	getTargetingKeys(): string[] {
@@ -295,6 +305,7 @@ export class A9Provider extends BidderProvider {
 	 */
 	createSlotDefinition(slotName: string): A9SlotDefinition | null {
 		const config: A9SlotConfig = this.slots[slotName];
+
 		const definition: A9SlotDefinition = {
 			slotName,
 			slotID: slotName,
@@ -402,5 +413,22 @@ export class A9Provider extends BidderProvider {
 		return slotConfig && Object.keys(slotConfig).length > 0
 			? slotService.getState(slotID)
 			: someEnabledByAlias;
+	}
+
+	setMaximumAdSlotHeight(slotName: string): void {
+		const slotRefresherConfig = context.get('slotConfig.slotRefresher.sizes');
+
+		if (!slotRefresherConfig) return;
+
+		const slotHeightLimit = slotRefresherConfig[slotName][1];
+
+		if (!slotHeightLimit) return;
+
+		context.set(
+			`bidders.a9.slots.${slotName}.sizes`,
+			context
+				.get(`bidders.a9.slots.${slotName}.sizes`)
+				.filter((size: [number, number]) => size[1] <= slotHeightLimit),
+		);
 	}
 }

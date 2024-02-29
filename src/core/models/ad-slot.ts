@@ -338,7 +338,7 @@ export class AdSlot {
 		return this.pushTime;
 	}
 
-	updtatePushTimeAfterBid() {
+	updatePushTimeAfterBid() {
 		this.pushTime = new Date().getTime() + 2000;
 	}
 

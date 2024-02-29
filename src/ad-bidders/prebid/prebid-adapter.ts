@@ -65,4 +65,39 @@ export abstract class PrebidAdapter {
 			},
 		});
 	}
+
+	setMaximumAdSlotHeight(slotName: string, slotHeightLimit: number) {
+		const sizeKey = context.get(`bidders.prebid.${this.bidderName}.slots.${slotName}`);
+		const filterCallback = (size: [number, number]) => size[1] <= slotHeightLimit;
+		if (!sizeKey || !('sizes' in sizeKey)) return;
+
+		context.set(
+			`bidders.prebid.${this.bidderName}.slots.${slotName}.sizes`,
+			context
+				.get(`bidders.prebid.${this.bidderName}.slots.${slotName}.sizes`)
+				.filter(filterCallback),
+		);
+	}
+
+	extractSizeFromString(input: string, type: 'pubmatic' | 'triplelift'): number[] | null {
+		let regex: RegExp;
+
+		if (type === 'pubmatic') {
+			regex = /@(\d+)x(\d+)/;
+		} else if (type === 'triplelift') {
+			regex = /_(\d+)x(\d+)_/;
+		} else {
+			throw new Error('Invalid type specified');
+		}
+
+		const match = input.match(regex);
+
+		if (match) {
+			const width = parseInt(match[1], 10);
+			const height = parseInt(match[2], 10);
+			return [width, height];
+		}
+
+		return null;
+	}
 }
