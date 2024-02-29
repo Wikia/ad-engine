@@ -15,10 +15,10 @@ import { defaultSlotBidGroup, getSlotAliasOrName } from '../bidder-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
 import { id5 } from './id5';
-import { intentIQ } from './intent-iq';
 import { connectedId } from './liveintent-connected-id';
 import { liveRampId } from './liveramp-id';
 import { prebidDataRefresher } from './prebid-data-refresher';
+import { requestBids } from './prebid-helper';
 import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice, roundBucketCpm } from './price-helper';
 import { prebidIdRetriever } from './utils/id-retriever';
@@ -171,17 +171,7 @@ export class PrebidProvider extends BidderProvider {
 
 		this.applyConfig(this.prebidConfig);
 		this.configureAdUnits();
-		prebidDataRefresher.registerBidsRefreshing((winningBid: any) => {
-			const adUnitsToRefresh = this.adUnits.filter(
-				(adUnit) =>
-					adUnit.code === winningBid.adUnitCode &&
-					adUnit.bids &&
-					adUnit.bids[0] &&
-					adUnit.bids[0].bidder === winningBid.bidderCode,
-			);
-
-			this.requestBids(adUnitsToRefresh, this.bidsRefreshing.bidsBackHandler);
-		});
+		prebidDataRefresher.registerBidsRefreshing(this.adUnits);
 		prebidDataRefresher.registerBidsTracking();
 		prebidDataRefresher.enableATSAnalytics();
 
@@ -478,7 +468,7 @@ export class PrebidProvider extends BidderProvider {
 		this.applySettings();
 		this.removeAdUnits();
 		this.saveBidIds();
-		this.requestBids(this.adUnits, () => {
+		requestBids(this.adUnits, () => {
 			bidsBackHandler();
 			communicationService.emit(eventsRepository.BIDDERS_AUCTION_DONE);
 		});
@@ -525,22 +515,6 @@ export class PrebidProvider extends BidderProvider {
 		const slotAlias: string = getSlotAliasOrName(slotName);
 
 		return this.adUnits && this.adUnits.some((adUnit) => adUnit.code === slotAlias);
-	}
-
-	async requestBids(
-		adUnits: PrebidAdUnit[],
-		bidsBackHandler: (...args: any[]) => void,
-		timeout: number = this.timeout,
-	): Promise<void> {
-		const pbjs: Pbjs = await pbjsFactory.init();
-
-		await intentIQ.initialize(pbjs);
-
-		pbjs.requestBids({
-			adUnits,
-			bidsBackHandler,
-			timeout,
-		});
 	}
 
 	/**

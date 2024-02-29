@@ -1,5 +1,6 @@
 import { context, Dictionary, pbjsFactory, slotService } from '@ad-engine/core';
 import { isUsedAsAlias } from '../bidder-helper';
+import { intentIQ } from './intent-iq';
 import { PrebidAdapterConfig } from './prebid-models';
 
 const uuidKey = 'hb_uuid';
@@ -131,4 +132,20 @@ export function isPrebidAdapterConfig(
 	const hasSlotsDictionary = typeof config.slots === 'object';
 
 	return hasEnabledField && hasSlotsDictionary;
+}
+
+export async function requestBids(
+	adUnits: PrebidAdUnit[],
+	bidsBackHandler: (...args: any[]) => void,
+	timeout: number = this.timeout,
+): Promise<void> {
+	const pbjs: Pbjs = await pbjsFactory.init();
+
+	await intentIQ.initialize(pbjs);
+
+	pbjs.requestBids({
+		adUnits,
+		bidsBackHandler,
+		timeout,
+	});
 }

@@ -8,17 +8,20 @@ import { getSlotNameByBidderAlias } from '../bidder-helper';
 import { BidsRefreshing } from '../bidder-provider';
 import { intentIQ } from './intent-iq';
 import { LiveRampIdTypes } from './liveramp-id';
+import { requestBids } from './prebid-helper';
 
 const logGroup = 'prebid-data-refresher';
 
 class PrebidDataRefresher {
-	bidsRefreshing: BidsRefreshing;
-
+	private bidsRefreshing: BidsRefreshing;
 	private isConfiguredBidsRefreshing = false;
 	private isConfiguredBidsTracking = false;
 	private isConfiguredATSAnalytics = false;
+	private adUnits: PrebidAdUnit[] = [];
 
-	async registerBidsRefreshing(callback: (params: any) => void): Promise<void> {
+	async registerBidsRefreshing(adUnits: PrebidAdUnit[]): Promise<void> {
+		this.adUnits = [...this.adUnits, ...adUnits];
+
 		if (this.isConfiguredBidsRefreshing) return;
 
 		this.isConfiguredBidsRefreshing = true;
@@ -33,7 +36,15 @@ class PrebidDataRefresher {
 					refreshedSlotNames: [winningBid.adUnitCode],
 				});
 
-				callback(winningBid);
+				const adUnitsToRefresh = this.adUnits.filter(
+					(adUnit) =>
+						adUnit.code === winningBid.adUnitCode &&
+						adUnit.bids &&
+						adUnit.bids[0] &&
+						adUnit.bids[0].bidder === winningBid.bidderCode,
+				);
+
+				requestBids(adUnitsToRefresh, this.bidsRefreshing.bidsBackHandler);
 			}
 		};
 
