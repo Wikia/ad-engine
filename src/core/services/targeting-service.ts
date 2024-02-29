@@ -47,6 +47,7 @@ export interface TargetingData {
 	npa?: string;
 	off?: string;
 	original_host?: string;
+	pa_available?: string;
 	post_id?: string;
 	ppid?: string;
 	pv?: string;
@@ -61,6 +62,7 @@ export interface TargetingData {
 	skin?: string;
 	theme?: string[];
 	top?: string;
+	topics_available?: string;
 	tv?: string[];
 	uap?: string;
 	uap_c?: string;
