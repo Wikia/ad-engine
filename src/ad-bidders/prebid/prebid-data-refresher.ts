@@ -21,7 +21,7 @@ class PrebidDataRefresher {
 	private slotTimeouts: { [key: number]: number } = {};
 
 	async registerBidsRefreshing(adUnits: PrebidAdUnit[], timeout: number): Promise<void> {
-		if (this.adUnits.length > 0) {
+		if (adUnits && adUnits.length > 0) {
 			this.adUnits = [...this.adUnits, ...adUnits];
 
 			this.addSlotsTimeouts(adUnits, timeout);
