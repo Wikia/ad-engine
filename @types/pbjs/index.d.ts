@@ -115,6 +115,7 @@ interface PrebidBidResponse {
 	getSize: () => string;
 	mediaType: string;
 	meta?: {
+		// TODO: Create proper typing based on the responses from Prebid
 		dsa?: object;
 	};
 	originalCpm?: number;
