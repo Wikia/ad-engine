@@ -49,6 +49,7 @@ export class A9Provider extends BidderProvider {
 			price: bid.amznbid,
 			size: bid.amznsz,
 			slotName: getSlotNameByBidderAlias(slotName, true),
+			// TODO: Add integration with DSA when Amazon adds support for it
 			additinonalInfo: undefined,
 		};
 	}
