@@ -225,6 +225,7 @@ describe('tagless-request-url-builder', () => {
 		context.set('options.geoRequiresConsent', true);
 		const vastUrl = buildVastUrl(1, 'top_leaderboard', {
 			isTagless: true,
+			gdpr_consent: 'GDPR_123_XYZ',
 		});
 
 		const gdprPattern = /&gdpr=1/;
@@ -238,6 +239,7 @@ describe('tagless-request-url-builder', () => {
 		context.set('options.geoRequiresConsent', false);
 		const vastUrl = buildVastUrl(1, 'top_leaderboard', {
 			isTagless: true,
+			us_privacy: '!!!!',
 		});
 
 		const gdprPattern = /&gdpr=0/;
