@@ -1,6 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { BaseServiceSetup, context, utils } from '@ad-engine/core';
-import Cookies from 'js-cookie';
+import { BaseServiceSetup, context, tcf, usp, utils } from '@ad-engine/core';
 
 const logGroup = 'ATS';
 
@@ -37,19 +36,34 @@ export class Ats extends BaseServiceSetup {
 		const launchpadScript = utils.scriptLoader.loadScript(this.launchpadScriptUrl);
 		const launchpadBundleScript = utils.scriptLoader.loadScript(this.launchpadBundleScriptUrl);
 
-		return Promise.all([launchpadScript, launchpadBundleScript]).then(() => {
-			const consentType = context.get('options.geoRequiresConsent') ? 'gdpr' : 'ccpa';
-			const consentString =
-				consentType === 'gdpr' ? Cookies.get('euconsent-v2') : Cookies.get('usprivacy');
+		return Promise.all([launchpadScript, launchpadBundleScript]).then(async () => {
+			let consentType, tcData, signalData;
+			const consentRequired = context.get('options.geoRequiresConsent');
 
-			window.ats.setAdditionalData({
-				consentType,
-				consentString,
-				type: 'emailHashes',
-				id: [sha1, sha256, md5],
-			});
+			if (tcf.exists && consentRequired) {
+				consentType = 'gdpr';
+				tcData = await tcf.getTCData();
+			}
 
-			utils.logger(logGroup, 'additional data set');
+			if (usp.exists && !consentRequired) {
+				consentType = 'ccpa';
+				signalData = await usp.getSignalData();
+			}
+
+			const consentString = consentRequired ? tcData.tcString : signalData.uspString;
+
+			if (window?.ats?.setAdditionalData) {
+				window.ats.setAdditionalData({
+					consentType,
+					consentString,
+					type: 'emailHashes',
+					id: [sha1, sha256, md5],
+				});
+
+				utils.logger(logGroup, 'additional data set');
+			} else {
+				utils.logger(logGroup, 'no window.ats.setAdditionalData');
+			}
 
 			this.isLoaded = true;
 			communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
