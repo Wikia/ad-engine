@@ -1,4 +1,4 @@
-import { AdSlot, InstantConfigService, slotService, utils } from '@ad-engine/core';
+import { AdSlot, InstantConfigService, slotService, Tcf, Usp, utils } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
 import { Bidders } from '../../../../ad-bidders';
 import { videoDisplayTakeoverSynchronizer } from './video-display-takeover-synchronizer';
@@ -22,6 +22,8 @@ export class VastTaglessRequest {
 		private fetchTimeout: utils.FetchTimeout,
 		instantConfig: InstantConfigService,
 		private bidders: Bidders,
+		private tcf: Tcf,
+		private usp: Usp,
 	) {
 		this.timeout = instantConfig.get('icVastRequestTimeout', 500);
 	}
@@ -35,12 +37,31 @@ export class VastTaglessRequest {
 		if (!slotService.get(slotName)) {
 			slotService.add(adSlot);
 		}
+
 		const biddersTargeting = await this.bidders.getBidParameters(slotName);
-		return utils.buildVastUrl(aspectRatio, slotName, {
+		let vastOptions: Partial<utils.VastOptions> = {
 			vpos: position,
 			targeting: biddersTargeting,
 			isTagless: true,
-		});
+		};
+
+		if (this.tcf.exists) {
+			const signalData = await this.tcf.getTCData();
+			vastOptions = {
+				...vastOptions,
+				gdpr_consent: signalData.tcString,
+			};
+		}
+
+		if (this.usp.exists) {
+			const signalData = await this.usp.getSignalData();
+			vastOptions = {
+				...vastOptions,
+				us_privacy: signalData.uspString,
+			};
+		}
+
+		return utils.buildVastUrl(aspectRatio, slotName, vastOptions);
 	}
 
 	public async getVast(): Promise<VastResponseData | undefined> {

@@ -1,6 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { AdSlot, Dictionary } from '../models';
-import { slotService, SlotTargeting, targetingService, trackingOptIn } from '../services';
+import { context, slotService, SlotTargeting, targetingService, trackingOptIn } from '../services';
 import { isCoppaSubject } from './is-coppa-subject';
 
 export interface TaglessSlotOptions {
@@ -20,6 +20,8 @@ export interface VastOptions {
 	numberOfAds: number;
 	vpos: string;
 	isTagless: boolean;
+	us_privacy: string;
+	gdpr_consent: string;
 }
 
 const availableVideoPositions: string[] = ['preroll', 'midroll', 'postroll'];
@@ -140,18 +142,17 @@ export function buildVastUrl(
 	params.push(`npa=${trackingOptIn.isOptedIn() ? 0 : 1}`);
 
 	if (options.isTagless) {
+		const consentRequired = context.get('options.geoRequiresConsent');
 		params.push('tagless=1');
 
-		const { type, consentString } = trackingOptIn.getConsentData();
-
-		if (type == 'gdpr' && consentString) {
+		if (consentRequired && options.gdpr_consent) {
 			params.push(`gdpr=1`);
-			params.push(`gdpr_consent=${consentString}`);
+			params.push(`gdpr_consent=${options.gdpr_consent}`);
 		}
 
-		if (type == 'ccpa' && consentString) {
+		if (!consentRequired && options.us_privacy) {
 			params.push(`gdpr=0`);
-			params.push(`us_privacy=${consentString}`);
+			params.push(`us_privacy=${options.us_privacy}`);
 		}
 	}
 

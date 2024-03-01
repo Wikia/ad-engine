@@ -18,28 +18,7 @@ function isOptOutSale(optOutSale?: boolean): boolean {
 	return isOptOutSaleByQueryParam || !!(optOutSale ?? context.get('options.optOutSale'));
 }
 
-function getConsentData() {
-	const type = context.get('options.geoRequiresConsent') ? 'gdpr' : 'ccpa';
-	let consentString;
-
-	if (type === 'gdpr') {
-		window.__tcfapi('getTCData', 2, (data) => {
-			consentString = data?.tcString ?? '';
-		});
-	} else if (type === 'ccpa') {
-		window.__uspapi('getUSPData', 1, (uspData, success) => {
-			consentString = success ? uspData.uspString : '';
-		});
-	}
-
-	return {
-		type,
-		consentString,
-	};
-}
-
 export const trackingOptIn = {
 	isOptedIn,
 	isOptOutSale,
-	getConsentData,
 };
