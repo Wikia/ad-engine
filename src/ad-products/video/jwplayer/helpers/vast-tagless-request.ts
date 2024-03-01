@@ -48,11 +48,11 @@ export class VastTaglessRequest {
 		return utils.buildVastUrl(
 			aspectRatio,
 			slotName,
-			await this.buildOptionsBasedOnPrivacyData(defaultVastOptions),
+			await this.extendOptionsBasedOnPrivacyData(defaultVastOptions),
 		);
 	}
 
-	private async buildOptionsBasedOnPrivacyData(vastOptions: Partial<utils.VastOptions>) {
+	private async extendOptionsBasedOnPrivacyData(vastOptions: Partial<utils.VastOptions>) {
 		if (this.tcf.exists) {
 			const signalData = await this.tcf.getTCData();
 			vastOptions = {
