@@ -171,9 +171,7 @@ export class PrebidProvider extends BidderProvider {
 
 		this.applyConfig(this.prebidConfig);
 		this.configureAdUnits();
-		prebidDataTracking.registerBidsRefreshing(this.adUnits);
-		prebidDataTracking.registerBidsTracking();
-		prebidDataTracking.enableATSAnalytics();
+		prebidDataTracking.configure(this.adUnits);
 
 		utils.logger(logGroup, 'prebid created', this.prebidConfig);
 	}

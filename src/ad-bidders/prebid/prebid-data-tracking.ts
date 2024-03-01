@@ -10,24 +10,27 @@ import { intentIQ } from './intent-iq';
 import { LiveRampIdTypes } from './liveramp-id';
 import { requestBids } from './prebid-helper';
 
-const logGroup = 'prebid-data-refresher';
+const logGroup = 'prebid-data-tracking';
 
 class PrebidDataTracking {
 	private bidsRefreshing: BidsRefreshing;
-	private isConfiguredBidsRefreshing = false;
-	private isConfiguredBidsTracking = false;
-	private isConfiguredATSAnalytics = false;
+	private isConfigured = false;
 	private adUnits: PrebidAdUnit[] = [];
 
-	async registerBidsRefreshing(adUnits: PrebidAdUnit[]): Promise<void> {
+	configure(adUnits: PrebidAdUnit[]) {
 		if (adUnits && adUnits.length > 0) {
 			this.adUnits = [...this.adUnits, ...adUnits];
 		}
 
-		if (this.isConfiguredBidsRefreshing) return;
+		if (this.isConfigured) return;
+		this.isConfigured = true;
 
-		this.isConfiguredBidsRefreshing = true;
+		this.registerBidsRefreshing();
+		this.registerBidsTracking();
+		this.enableATSAnalytics();
+	}
 
+	private async registerBidsRefreshing(): Promise<void> {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
 		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
@@ -55,11 +58,7 @@ class PrebidDataTracking {
 		utils.logger(logGroup, 'Bids refreshing configured');
 	}
 
-	async registerBidsTracking(): Promise<void> {
-		if (this.isConfiguredBidsTracking) return;
-
-		this.isConfiguredBidsTracking = true;
-
+	private async registerBidsTracking(): Promise<void> {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
 		const trackBid = (response) => {
@@ -78,11 +77,7 @@ class PrebidDataTracking {
 		utils.logger(logGroup, 'Bids tracking configured');
 	}
 
-	enableATSAnalytics(): void {
-		if (this.isConfiguredATSAnalytics) return;
-
-		this.isConfiguredATSAnalytics = true;
-
+	private enableATSAnalytics(): void {
 		if (
 			context.get('bidders.liveRampATSAnalytics.enabled') &&
 			context.get('bidders.liveRampId.enabled')
