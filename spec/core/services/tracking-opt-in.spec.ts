@@ -6,6 +6,7 @@ describe('tracking-opt-in', () => {
 		context.remove('options.isSubjectToCcpa');
 		context.remove('options.trackingOptIn');
 		context.remove('options.optOutSale');
+		context.remove('options.geoRequiresConsent');
 	}
 	beforeEach(clearContext);
 
@@ -50,6 +51,32 @@ describe('tracking-opt-in', () => {
 
 				expect(trackingOptIn.isOptOutSale()).to.equal(result);
 			});
+		});
+	});
+
+	describe('getConsentData', () => {
+		it('should call __tcfapi from IAB for the GDPR consent string', () => {
+			global.window.__tcfapi =
+				global.window.__tcfapi || (function () {} as typeof global.window.__tcfapi);
+			const tcfApiSpy = global.sandbox.spy(window, '__tcfapi');
+			context.set('options.geoRequiresConsent', true);
+
+			const consetData = trackingOptIn.getConsentData();
+
+			expect(tcfApiSpy.calledOnce).to.be.true;
+			expect(consetData.type).to.eq('gdpr');
+		});
+
+		it('should call __uspapi from IAB for the US consent string', () => {
+			global.window.__uspapi =
+				global.window.__uspapi || (function () {} as typeof global.window.__uspapi);
+			const uspApiSpy = global.sandbox.spy(window, '__uspapi');
+			context.set('options.geoRequiresConsent', false);
+
+			const consetData = trackingOptIn.getConsentData();
+
+			expect(uspApiSpy.calledOnce).to.be.true;
+			expect(consetData.type).to.eq('ccpa');
 		});
 	});
 });
