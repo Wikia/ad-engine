@@ -1,3 +1,4 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { AdSlot, Dictionary } from '../models';
 import { slotService } from './slot-service';
 import { templateService } from './template-service';
@@ -7,6 +8,8 @@ export function registerCustomAdLoader(methodName: string | undefined): void {
 		window[methodName] = (params: Dictionary) => {
 			const slot: AdSlot | null = params?.slotName ? slotService.get(params.slotName) : null;
 			templateService.init(params?.type ?? 'bfaa', slot, params);
+
+			communicationService.emit(eventsRepository.AD_ENGINE_CUSTOM_AD_LOADER_CALLED, params);
 		};
 	}
 }

@@ -63,4 +63,5 @@ interface Window {
 	wgCookiePath?: string;
 	XMLHttpRequest?: any;
 	pathfinderModulesReady?: bool;
+	loadCustomAdFandom?: any;
 }

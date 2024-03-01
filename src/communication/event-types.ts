@@ -1,4 +1,5 @@
 import { AdSlot, Dictionary } from '@ad-engine/core';
+import { UapParams } from '@ad-engine/products';
 import { Action } from '@wikia/post-quecast';
 import { payload, props } from 'ts-action';
 
@@ -145,6 +146,10 @@ export const eventsRepository = {
 	},
 	AD_ENGINE_UAP_NTC_LOADED: {
 		name: 'UAP NTC loaded',
+	},
+	AD_ENGINE_CUSTOM_AD_LOADER_CALLED: {
+		name: 'Custom Ad Loader',
+		payload: props<UapParams>(),
 	},
 	// Ad slot events //
 	AD_ENGINE_INVALIDATE_SLOT_TARGETING: {
