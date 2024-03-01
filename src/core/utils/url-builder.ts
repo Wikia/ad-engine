@@ -137,7 +137,7 @@ export function buildVastUrl(
 	}
 
 	params.push(`rdp=${trackingOptIn.isOptOutSale() ? 1 : 0}`);
-	params.push(`npa=${trackingOptIn.isOptedIn() ? 1 : 0}`);
+	params.push(`npa=${trackingOptIn.isOptedIn() ? 0 : 1}`);
 
 	if (options.isTagless) {
 		params.push('tagless=1');
