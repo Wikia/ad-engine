@@ -144,12 +144,12 @@ export function buildVastUrl(
 
 		const { type, consentString } = trackingOptIn.getConsentData();
 
-		if (type == 'gdpr') {
+		if (type == 'gdpr' && consentString) {
 			params.push(`gdpr=1`);
 			params.push(`gdpr_consent=${consentString}`);
 		}
 
-		if (type == 'ccpa') {
+		if (type == 'ccpa' && consentString) {
 			params.push(`gdpr=0`);
 			params.push(`us_privacy=${consentString}`);
 		}
