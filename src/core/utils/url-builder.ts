@@ -137,13 +137,22 @@ export function buildVastUrl(
 	}
 
 	params.push(`rdp=${trackingOptIn.isOptOutSale() ? 1 : 0}`);
+	params.push(`npa=${trackingOptIn.isOptedIn() ? 1 : 0}`);
 
 	if (options.isTagless) {
 		params.push('tagless=1');
 
 		const { type, consentString } = trackingOptIn.getConsentData();
-		type === 'gdpr' && consentString ? params.push(`gdpr_consent=${consentString}`) : undefined;
-		type === 'ccpa' && consentString ? params.push(`us_privacy=${consentString}`) : undefined;
+
+		if (type == 'gdpr') {
+			params.push(`gdpr=1`);
+			params.push(`gdpr_consent=${consentString}`);
+		}
+
+		if (type == 'ccpa') {
+			params.push(`gdpr=0`);
+			params.push(`us_privacy=${consentString}`);
+		}
 	}
 
 	return vastBaseUrl + params.join('&');
