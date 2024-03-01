@@ -36,6 +36,9 @@ class PrebidDataTracking {
 		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
 
 		const refreshUsedBid = (winningBid) => {
+			const isS2sBid = (adUnit: PrebidAdUnit) =>
+				adUnit.bids[0].bidder === 'mgnipbs' && winningBid?.source === 's2s';
+
 			if (this.bidsRefreshing.slots.indexOf(winningBid.adUnitCode) !== -1) {
 				communicationService.emit(eventsRepository.BIDDERS_BIDS_REFRESH, {
 					refreshedSlotNames: [winningBid.adUnitCode],
@@ -46,7 +49,7 @@ class PrebidDataTracking {
 						adUnit.code === winningBid.adUnitCode &&
 						adUnit.bids &&
 						adUnit.bids[0] &&
-						adUnit.bids[0].bidder === winningBid.bidderCode,
+						(adUnit.bids[0].bidder === winningBid.bidderCode || isS2sBid(adUnit)),
 				);
 
 				requestBids(adUnitsToRefresh, this.bidsRefreshing.bidsBackHandler, DEFAULT_MAX_DELAY);
