@@ -221,25 +221,29 @@ describe('tagless-request-url-builder', () => {
 		expect(vastUrl.match(taglessPattern)).to.be.ok;
 	});
 
-	it('build VAST URL with gdpr_consent query-string parameter when "tagless" in GDPR country', () => {
+	it('build VAST URL with gdpr_consent query-string parameter when tagless is set in GDPR country', () => {
 		context.set('options.geoRequiresConsent', true);
 		const vastUrl = buildVastUrl(1, 'top_leaderboard', {
 			isTagless: true,
 		});
 
+		const gdprPattern = /&gdpr=1/;
 		const gdprConsentPattern = /&gdpr_consent=/;
 
-		expect(vastUrl.match(gdprConsentPattern)).to.be.ok;
+		expect(vastUrl.match(gdprPattern), 'VAST URL does not contain gdpr flag set to 1').to.be.ok;
+		expect(vastUrl.match(gdprConsentPattern), 'VAST URL does not contain gdpr_consent').to.be.ok;
 	});
 
-	it('build VAST URL with  query-string parameter when "tagless" in CCPA country', () => {
+	it('build VAST URL with  query-string parameter when tagless is set in CCPA country', () => {
 		context.set('options.geoRequiresConsent', false);
 		const vastUrl = buildVastUrl(1, 'top_leaderboard', {
 			isTagless: true,
 		});
 
+		const gdprPattern = /&gdpr=0/;
 		const ccpaConsentPattern = /&us_privacy=/;
 
+		expect(vastUrl.match(gdprPattern), 'VAST URL does not contain gdpr flag set to 0').to.be.ok;
 		expect(vastUrl.match(ccpaConsentPattern)).to.be.ok;
 	});
 
