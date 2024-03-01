@@ -2,7 +2,7 @@ import { TargetingObject, TargetingService, targetingService } from '@wikia/core
 import { AdSlot } from '@wikia/core/models/ad-slot';
 import { context } from '@wikia/core/services/context-service';
 import { slotService } from '@wikia/core/services/slot-service';
-import { buildVastUrl, getCustomParameters } from '@wikia/core/utils/tagless-request-url-builder';
+import { buildVastUrl, getCustomParameters } from '@wikia/core/utils/url-builder';
 import { expect } from 'chai';
 import { SinonStubbedInstance } from 'sinon';
 
