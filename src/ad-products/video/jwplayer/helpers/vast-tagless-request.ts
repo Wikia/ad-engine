@@ -39,12 +39,20 @@ export class VastTaglessRequest {
 		}
 
 		const biddersTargeting = await this.bidders.getBidParameters(slotName);
-		let vastOptions: Partial<utils.VastOptions> = {
+		const defaultVastOptions: Partial<utils.VastOptions> = {
 			vpos: position,
 			targeting: biddersTargeting,
 			isTagless: true,
 		};
 
+		return utils.buildVastUrl(
+			aspectRatio,
+			slotName,
+			await this.buildVastOptionsBasedOnDataPrivacyGeo(defaultVastOptions),
+		);
+	}
+
+	private async buildVastOptionsBasedOnDataPrivacyGeo(vastOptions: Partial<utils.VastOptions>) {
 		if (this.tcf.exists) {
 			const signalData = await this.tcf.getTCData();
 			vastOptions = {
@@ -61,7 +69,7 @@ export class VastTaglessRequest {
 			};
 		}
 
-		return utils.buildVastUrl(aspectRatio, slotName, vastOptions);
+		return vastOptions;
 	}
 
 	public async getVast(): Promise<VastResponseData | undefined> {
