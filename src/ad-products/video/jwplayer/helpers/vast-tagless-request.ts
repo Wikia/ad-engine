@@ -48,11 +48,11 @@ export class VastTaglessRequest {
 		return utils.buildVastUrl(
 			aspectRatio,
 			slotName,
-			await this.buildVastOptionsBasedOnDataPrivacyGeo(defaultVastOptions),
+			await this.buildOptionsBasedOnPrivacyData(defaultVastOptions),
 		);
 	}
 
-	private async buildVastOptionsBasedOnDataPrivacyGeo(vastOptions: Partial<utils.VastOptions>) {
+	private async buildOptionsBasedOnPrivacyData(vastOptions: Partial<utils.VastOptions>) {
 		if (this.tcf.exists) {
 			const signalData = await this.tcf.getTCData();
 			vastOptions = {
