@@ -4,22 +4,12 @@ import {
 	eventsRepository,
 	ofType,
 } from '@ad-engine/communication';
-import {
-	AdSlot,
-	AdSlotEvent,
-	AdSlotStatus,
-	btfBlockerService,
-	context,
-	slotService,
-	targetingService,
-	utils,
-} from '@ad-engine/core';
+import { AdSlotEvent, AdSlotStatus, context, targetingService } from '@ad-engine/core';
 import { filter, take } from 'rxjs/operators';
 import * as constants from './constants';
 
-let uapCreativeId = constants.DEFAULT_UAP_ID;
-let uapId = constants.DEFAULT_UAP_ID;
-let uapType = constants.DEFAULT_UAP_TYPE;
+const uapId = constants.DEFAULT_UAP_ID;
+const uapType = constants.DEFAULT_UAP_TYPE;
 
 export interface UapState<T> {
 	default: T;
@@ -76,20 +66,9 @@ export function getUapId(): string {
 	return uapId;
 }
 
-function setIds(lineItemId, creativeId): void {
-	uapId = lineItemId || constants.DEFAULT_UAP_ID;
-	uapCreativeId = creativeId || constants.DEFAULT_UAP_ID;
-
-	updateSlotsTargeting(uapId, uapCreativeId);
-}
-
 export const getType = (): string => {
 	return uapType;
 };
-
-export function setType(type): void {
-	uapType = type;
-}
 
 export function updateSlotsTargeting(lineItemId, creativeId): void {
 	const slots = context.get('slots') || {};
@@ -98,45 +77,6 @@ export function updateSlotsTargeting(lineItemId, creativeId): void {
 		targetingService.set('uap', lineItemId, slotId);
 		targetingService.set('uap_c', creativeId, slotId);
 	});
-}
-
-export function enableSlots(slotsToEnable): void {
-	slotsToEnable.forEach((slotName) => {
-		btfBlockerService.unblock(slotName);
-	});
-}
-
-export function disableSlots(slotsToDisable): void {
-	slotsToDisable.forEach((slotName) => {
-		slotService.disable(slotName);
-	});
-}
-
-export function initSlot(params: UapParams): void {
-	const adSlot: AdSlot = slotService.get(params.slotName);
-
-	params.container = adSlot.getElement();
-
-	if (params.isDarkTheme) {
-		params.container.classList.add('is-dark');
-	}
-
-	if (params.isMobile) {
-		params.container.classList.add('is-mobile-layout');
-	}
-
-	if (utils.client.isSmartphone() || utils.client.isTablet()) {
-		params.container.classList.add('is-mobile-device');
-	}
-
-	if (params.useVideoSpecialAdUnit) {
-		adSlot.setConfigProperty('videoAdUnit', constants.SPECIAL_VIDEO_AD_UNIT);
-	}
-}
-
-export function reset(): void {
-	setType(constants.DEFAULT_UAP_TYPE);
-	setIds(constants.DEFAULT_UAP_ID, constants.DEFAULT_UAP_ID);
 }
 
 export const isFanTakeoverLoaded = (): boolean => {
@@ -150,7 +90,9 @@ export function isVideoEnabled(params): boolean {
 	return params.thumbnail;
 }
 
-export function registerUapListener(): void {
+// Let's leave this, since there's a lot of spaghetti logic which prevent incontent ads from being started
+// Let's remove the function export, since this function is only invoked in this file
+function registerUapListener(): void {
 	communicationService.action$
 		.pipe(
 			ofType(communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
@@ -172,7 +114,7 @@ export function registerUapListener(): void {
 		)
 		.subscribe(() => {
 			communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
-				isLoaded: isFanTakeoverLoaded(),
+				isLoaded: false,
 				adProduct: getType(),
 			});
 		});
@@ -184,12 +126,6 @@ export function registerUapListener(): void {
 // a chain of index.ts files
 export const uapConsts = {
 	...constants,
-};
-
-export const universalFuncs = {
-	isFanTakeoverLoaded,
-	reset,
-	updateSlotsTargeting,
 };
 
 // Side effect
