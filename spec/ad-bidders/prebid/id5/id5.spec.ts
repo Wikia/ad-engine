@@ -25,7 +25,6 @@ describe('Id5', () => {
 
 	beforeEach(() => {
 		context.set('bidders.prebid.id5', true);
-		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);
 		window.fandomContext.partners.directedAtChildren = false;
 
@@ -51,13 +50,7 @@ describe('Id5', () => {
 		expect(id5.getConfig()).to.eql(undefined);
 	});
 
-	it('Id5 is disabled if user has opted out sale in GDPR', () => {
-		context.set('options.trackingOptIn', false);
-
-		expect(id5.getConfig()).to.eql(undefined);
-	});
-
-	it('Id5 is disabled if user has opted out sale in US', () => {
+	it('Id5 is disabled if user has opted out sale', () => {
 		context.set('options.optOutSale', true);
 
 		expect(id5.getConfig()).to.eql(undefined);
