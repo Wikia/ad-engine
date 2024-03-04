@@ -1,4 +1,4 @@
-import { context, targetingService, UniversalStorage, utils } from '@ad-engine/core';
+import { context, targetingService, utils } from '@ad-engine/core';
 import { UserIdConfig } from '../index';
 
 interface Id5Config extends UserIdConfig {
@@ -15,17 +15,11 @@ const logGroup = 'Id5';
 
 class Id5 {
 	private partnerId = 1139;
-	private storage;
 	private id5GroupKey = 'id5_group';
-
-	constructor() {
-		this.storage = new UniversalStorage();
-	}
 
 	private isEnabled(): boolean {
 		return (
 			context.get('bidders.prebid.id5') &&
-			context.get('options.trackingOptIn') &&
 			!context.get('options.optOutSale') &&
 			!utils.isCoppaSubject()
 		);
@@ -73,15 +67,11 @@ class Id5 {
 	}
 
 	async trackControlGroup(pbjs: Pbjs): Promise<void> {
-		const controlGroup = this.getControlGroupFromStorage() || (await this.getControlGroup(pbjs));
+		const controlGroup = await this.getControlGroup(pbjs);
 
 		utils.logger(logGroup, 'Control group', controlGroup);
 
 		this.setTargeting(this.id5GroupKey, controlGroup);
-
-		if (controlGroup && controlGroup !== 'U') {
-			this.saveInStorage(this.id5GroupKey, controlGroup);
-		}
 	}
 
 	public async getControlGroup(pbjs: Pbjs): Promise<id5GroupValue> {
@@ -97,24 +87,6 @@ class Id5 {
 		}
 
 		return isUserInControlGroup === true ? 'B' : 'A';
-	}
-
-	private getControlGroupFromStorage(): id5GroupValue {
-		const storageValue = this.storage.getItem(this.id5GroupKey);
-
-		if (storageValue !== null) {
-			utils.logger(logGroup, 'Control group found in the storage', storageValue);
-			return storageValue;
-		}
-	}
-
-	private saveInStorage(key: string, value: string) {
-		if (this.storage.getItem(key) !== null) {
-			return;
-		}
-
-		this.storage.setItem(this.id5GroupKey, value);
-		utils.logger(logGroup, key, 'saved in storage', value);
 	}
 
 	private setTargeting(key: string, value: string): void {
