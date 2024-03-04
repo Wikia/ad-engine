@@ -1,9 +1,8 @@
 import { communicationService, ofType } from '@ad-engine/communication';
-import { AdSlot, context, slotService, tapOnce } from '@ad-engine/core';
+import { AdSlot, slotService } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge, Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
-import { iasVideoTracker } from '../porvata/plugins/ias/ias-video-tracker';
 import { JWPlayer } from './external-types/jwplayer';
 import { JwplayerComscoreHandler } from './handlers/jwplayer-comscore-handler';
 import { JWPlayerHandler } from './handlers/jwplayer-handler';
@@ -31,9 +30,6 @@ export class JWPlayerManager {
 	private onPlayerReady(): Observable<PlayerReadyResult> {
 		return communicationService.action$.pipe(
 			ofType(jwpReady),
-			tapOnce(() => {
-				this.loadIasTrackerIfEnabled();
-			}),
 			map(({ options, targeting, playerKey }) => {
 				const jwplayer: JWPlayer = window[playerKey] as any;
 				const adSlot = this.createAdSlot(options, jwplayer);
@@ -58,11 +54,5 @@ export class JWPlayerManager {
 		}
 
 		return adSlot;
-	}
-
-	private loadIasTrackerIfEnabled(): void {
-		if (context.get('options.video.iasTracking.enabled')) {
-			iasVideoTracker.load();
-		}
 	}
 }

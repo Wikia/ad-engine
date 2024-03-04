@@ -3,9 +3,9 @@ import {
 	communicationService,
 	context,
 	eventsRepository,
-	getAdProductInfo,
+	/*getAdProductInfo,*/
 	getAdUnitString,
-	PorvataParams,
+	/* PorvataParams, */
 	runtimeVariableSetter,
 	slotService,
 } from '@wikia/ad-engine';
@@ -17,7 +17,7 @@ export interface SlotsContextInterface {
 
 	setupSlotVideoContext(): void;
 
-	setupSlotVideoAdUnit(adSlot: AdSlot, params: PorvataParams): void;
+	/*setupSlotVideoAdUnit(adSlot: AdSlot, params: PorvataParams): void;*/
 
 	setState(slotName: string, state: boolean, status?: string): void;
 }
@@ -91,7 +91,7 @@ class SlotsContext implements SlotsContextInterface {
 		});
 	}
 
-	setupSlotVideoAdUnit(adSlot: AdSlot, params: PorvataParams): void {
+	/*setupSlotVideoAdUnit(adSlot: AdSlot, params: PorvataParams): void {
 		const adProductInfo = getAdProductInfo(adSlot.getSlotName(), params.type, params.adProduct);
 		const slotConfig = {
 			group: adProductInfo.adGroup,
@@ -100,7 +100,7 @@ class SlotsContext implements SlotsContextInterface {
 		const adUnit = getAdUnitString(adSlot.getSlotName(), slotConfig);
 
 		context.set(`slots.${adSlot.getSlotName()}.videoAdUnit`, adUnit);
-	}
+	}*/
 
 	setState(slotName: string, state: boolean, status?: string): void {
 		const element = document.getElementById(slotName);

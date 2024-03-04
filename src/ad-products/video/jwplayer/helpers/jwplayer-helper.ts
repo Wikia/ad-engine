@@ -8,7 +8,6 @@ import {
 	vastDebugger,
 	VastParams,
 } from '@ad-engine/core';
-import { iasVideoTracker } from '../../porvata/plugins/ias/ias-video-tracker';
 import { JWPlayer, JWPlayerEventParams } from '../external-types/jwplayer';
 import { VideoTargeting } from '../jwplayer-actions';
 import { JwpState } from '../streams/jwplayer-stream-state';
@@ -30,16 +29,6 @@ export class JWPlayerHelper {
 	private calledOnce = false;
 
 	async awaitIasTracking<T>(payload: T): Promise<T> {
-		if (!this.isIasTrackingEnabled()) {
-			return payload;
-		}
-
-		try {
-			await iasVideoTracker.load();
-		} catch (e) {
-			console.error(e);
-		}
-
 		return payload;
 	}
 
