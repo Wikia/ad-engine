@@ -3,7 +3,7 @@ import {
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
-	universalAdPackage,
+	uapConsts,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Observable, Subject, timer } from 'rxjs';
@@ -37,8 +37,8 @@ export class SlotTransitionIhiHandler implements TemplateStateHandler {
 			.element(this.adSlot.getElement())
 			.setProperty(
 				'transition',
-				`bottom ${slideOutTime}ms ${universalAdPackage.CSS_TIMING_EASE_IN_CUBIC}, ` +
-					`opacity ${fadeInTime}ms ${universalAdPackage.CSS_TIMING_EASE_IN_CUBIC}`,
+				`bottom ${slideOutTime}ms ${uapConsts.CSS_TIMING_EASE_IN_CUBIC}, ` +
+					`opacity ${fadeInTime}ms ${uapConsts.CSS_TIMING_EASE_IN_CUBIC}`,
 			)
 			.setProperty('opacity', '0')
 			.setProperty('bottom', `-${height}px`);

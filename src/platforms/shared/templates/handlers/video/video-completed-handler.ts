@@ -3,7 +3,7 @@ import {
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
-	universalAdPackage,
+	uapConsts,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { fromEvent, Subject } from 'rxjs';
@@ -27,7 +27,7 @@ export class VideoCompletedHandler implements TemplateStateHandler {
 			.pipe(
 				switchMap(({ player }) => fromEvent(player, 'wikiaAdCompleted')),
 				tap(() => {
-					this.adSlot.emitEvent(universalAdPackage.SLOT_VIDEO_DONE);
+					this.adSlot.emitEvent(uapConsts.SLOT_VIDEO_DONE);
 					transition('resolved');
 				}),
 				takeUntil(this.unsubscribe$),

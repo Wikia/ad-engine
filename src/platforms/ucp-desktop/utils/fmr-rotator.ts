@@ -5,9 +5,9 @@ import {
 	communicationService,
 	context,
 	eventsRepository,
+	isFanTakeoverLoaded,
 	scrollListener,
 	slotService,
-	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
 
@@ -61,10 +61,7 @@ export class FmrRotator {
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
 			({ slot }) => {
 				if (slot.getSlotName().substring(0, this.fmrPrefix.length) === this.fmrPrefix) {
-					if (
-						universalAdPackage.isFanTakeoverLoaded() ||
-						context.get('state.provider') === 'prebidium'
-					) {
+					if (isFanTakeoverLoaded() || context.get('state.provider') === 'prebidium') {
 						communicationService.onSlotEvent(
 							AdSlotStatus.STATUS_SUCCESS,
 							() => {

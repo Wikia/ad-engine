@@ -1,5 +1,5 @@
 import { displayAndVideoAdsSyncContext, utils } from '@ad-engine/core';
-import { universalAdPackage } from '../../../templates';
+import { updateSlotsTargeting } from '../../../templates/uap/universal-ad-package';
 
 /*
  * Supports Video and Display Takeover synchronisation by resolving a promise when either
@@ -48,7 +48,7 @@ export class VideoDisplayTakeoverSynchronizer {
 			creativeId &&
 			displayAndVideoAdsSyncContext.getVideoSyncedWithDisplayLines().includes(lineItemId)
 		) {
-			universalAdPackage.updateSlotsTargeting(lineItemId, creativeId);
+			updateSlotsTargeting(lineItemId, creativeId);
 			utils.logger(this.logGroup, 'video ad is from UAP:JWP campaign - updating key-vals');
 		} else {
 			utils.logger(this.logGroup, 'video ad is not from UAP:JWP campaign');

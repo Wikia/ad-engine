@@ -1,4 +1,4 @@
-import { resolvedState } from '@wikia/ad-products';
+import { resolvedState } from '@wikia/ad-products/templates/uap/resolved-state';
 import { resolvedStateSwitch } from '@wikia/ad-products/templates/uap/resolved-state-switch';
 import { utils } from '@wikia/core';
 import { expect } from 'chai';

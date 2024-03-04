@@ -1,12 +1,12 @@
 import { localCache } from '@ad-engine/core';
-import { universalAdPackage } from './universal-ad-package';
+import { getUapId } from './universal-ad-package';
 
 const cacheKey = 'adEngine_resolvedStateCounter';
 const cacheTtl = 24 * 3600;
 const now = new Date();
 
 function createCacheKey(): string {
-	return `${cacheKey}_${universalAdPackage.getUapId()}`;
+	return `${cacheKey}_${getUapId()}`;
 }
 
 function findRecordInCache(): any {
@@ -25,7 +25,7 @@ function updateInformationAboutSeenDefaultStateAd(): void {
 	localCache.setItem(
 		createCacheKey(),
 		{
-			adId: universalAdPackage.getUapId(),
+			adId: getUapId(),
 			lastSeenDate: now.getTime(),
 		},
 		cacheTtl,

@@ -3,7 +3,7 @@ import {
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
-	universalAdPackage,
+	uapConsts,
 	utils,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
@@ -39,11 +39,11 @@ export class SlotTransitionHandler implements TemplateStateHandler {
 	}
 
 	private animate(): Observable<unknown> {
-		const duration = universalAdPackage.SLIDE_OUT_TIME;
+		const duration = uapConsts.SLIDE_OUT_TIME;
 
 		this.manipulator
 			.element(this.adSlot.getElement())
-			.setProperty('transition', `top ${duration}ms ${universalAdPackage.CSS_TIMING_EASE_IN_CUBIC}`)
+			.setProperty('transition', `top ${duration}ms ${uapConsts.CSS_TIMING_EASE_IN_CUBIC}`)
 			.setProperty('top', `${this.reader.getSlotOffsetResolvedToNone()}px`);
 
 		return from(utils.wait(duration));

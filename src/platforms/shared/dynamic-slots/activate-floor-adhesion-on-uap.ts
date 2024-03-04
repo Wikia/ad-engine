@@ -3,8 +3,8 @@ import {
 	communicationService,
 	context,
 	eventsRepository,
+	uapConsts,
 	UapLoadStatus,
-	universalAdPackage,
 } from '@wikia/ad-engine';
 
 export function activateFloorAdhesionOnUAP(callback: () => void, withLoadedOnly = true) {
@@ -17,13 +17,13 @@ export function activateFloorAdhesionOnUAP(callback: () => void, withLoadedOnly 
 				({ payload }) => {
 					if (
 						[
-							universalAdPackage.SLOT_UNSTICKED_STATE,
-							universalAdPackage.SLOT_FORCE_UNSTICK,
-							universalAdPackage.SLOT_STICKY_STATE_SKIPPED,
-							universalAdPackage.SLOT_VIDEO_DONE,
+							uapConsts.SLOT_UNSTICKED_STATE,
+							uapConsts.SLOT_FORCE_UNSTICK,
+							uapConsts.SLOT_STICKY_STATE_SKIPPED,
+							uapConsts.SLOT_VIDEO_DONE,
 						].includes(payload.status)
 					) {
-						setTimeout(() => callback(), universalAdPackage.SLIDE_OUT_TIME);
+						setTimeout(() => callback(), uapConsts.SLIDE_OUT_TIME);
 					}
 				},
 				firstCallSlotName,
@@ -40,18 +40,15 @@ export function activateFloorAdhesionOnUAP(callback: () => void, withLoadedOnly 
 			communicationService.onSlotEvent(
 				AdSlotEvent.CUSTOM_EVENT,
 				({ payload }) => {
-					if (payload.status === universalAdPackage.SLOT_STICKINESS_DISABLED) {
+					if (payload.status === uapConsts.SLOT_STICKINESS_DISABLED) {
 						callback();
 						return;
 					}
 
 					if (
-						[
-							universalAdPackage.SLOT_UNSTICKED_STATE,
-							universalAdPackage.SLOT_FORCE_UNSTICK,
-						].includes(payload.status)
+						[uapConsts.SLOT_UNSTICKED_STATE, uapConsts.SLOT_FORCE_UNSTICK].includes(payload.status)
 					) {
-						setTimeout(() => callback(), universalAdPackage.SLIDE_OUT_TIME);
+						setTimeout(() => callback(), uapConsts.SLIDE_OUT_TIME);
 					}
 				},
 				firstCallSlotName,

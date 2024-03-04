@@ -4,7 +4,7 @@ import {
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
-	universalAdPackage,
+	uapConsts,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
@@ -21,7 +21,7 @@ export class CloseToTransitionButtonHandler implements TemplateStateHandler {
 	async onEnter(transition: TemplateTransition<'transition'>): Promise<void> {
 		this.button = new CloseButton({
 			onClick: () => {
-				this.adSlot.emitEvent(universalAdPackage.SLOT_FORCE_UNSTICK);
+				this.adSlot.emitEvent(uapConsts.SLOT_FORCE_UNSTICK);
 				transition('transition');
 			},
 		}).render();

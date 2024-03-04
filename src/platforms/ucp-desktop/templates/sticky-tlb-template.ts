@@ -19,7 +19,7 @@ import {
 	UapDomManager,
 	UapDomReader,
 } from '@platforms/shared';
-import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
+import { TemplateAction, TemplateRegistry, uapConsts } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
 import { registerUcpDesktopUapDomElements } from './configs/register-ucp-desktop-uap-dom-elements';
 
@@ -61,7 +61,7 @@ export function registerStickyTlbTemplate(registry: TemplateRegistry): Observabl
 			UapDomReader,
 			ScrollCorrector,
 			CloseButtonHelper,
-			StickinessTimeout.provide(universalAdPackage.TLB_UNSTICK_DELAY),
+			StickinessTimeout.provide(uapConsts.TLB_UNSTICK_DELAY),
 			registerUcpDesktopUapDomElements(),
 		],
 	);

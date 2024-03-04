@@ -1,7 +1,7 @@
 import { utils } from '@ad-engine/core';
 import { resolvedStateSwitch } from './resolved-state-switch';
 
-let resolveStateForcedExternally = false;
+const resolveStateForcedExternally = false;
 
 function getQueryParam(): string {
 	return utils.queryString.get('resolved_state');
@@ -9,10 +9,6 @@ function getQueryParam(): string {
 
 function isForcedByURLParam(): boolean {
 	return [true, 'true', '1'].indexOf(getQueryParam()) > -1;
-}
-
-function forceUapResolveState(): void {
-	resolveStateForcedExternally = true;
 }
 
 function isBlockedByURLParam(): boolean {
@@ -45,8 +41,10 @@ function isResolvedState(params): boolean {
 
 export const resolvedState = {
 	isResolvedState,
+	/*
 	updateInformationAboutSeenDefaultStateAd: () => {
 		resolvedStateSwitch.updateInformationAboutSeenDefaultStateAd();
 	},
 	forceUapResolveState,
+	*/
 };

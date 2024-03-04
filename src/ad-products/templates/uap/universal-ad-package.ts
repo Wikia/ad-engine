@@ -10,7 +10,6 @@ import {
 	AdSlotStatus,
 	btfBlockerService,
 	context,
-	runtimeVariableSetter,
 	slotService,
 	targetingService,
 	utils,
@@ -73,7 +72,7 @@ export interface UapParams {
 	useVideoSpecialAdUnit: boolean;
 }
 
-function getUapId(): string {
+export function getUapId(): string {
 	return uapId;
 }
 
@@ -84,15 +83,15 @@ function setIds(lineItemId, creativeId): void {
 	updateSlotsTargeting(uapId, uapCreativeId);
 }
 
-function getType(): string {
+export const getType = (): string => {
 	return uapType;
-}
+};
 
-function setType(type): void {
+export function setType(type): void {
 	uapType = type;
 }
 
-function updateSlotsTargeting(lineItemId, creativeId): void {
+export function updateSlotsTargeting(lineItemId, creativeId): void {
 	const slots = context.get('slots') || {};
 
 	Object.keys(slots).forEach((slotId) => {
@@ -101,19 +100,19 @@ function updateSlotsTargeting(lineItemId, creativeId): void {
 	});
 }
 
-function enableSlots(slotsToEnable): void {
+export function enableSlots(slotsToEnable): void {
 	slotsToEnable.forEach((slotName) => {
 		btfBlockerService.unblock(slotName);
 	});
 }
 
-function disableSlots(slotsToDisable): void {
+export function disableSlots(slotsToDisable): void {
 	slotsToDisable.forEach((slotName) => {
 		slotService.disable(slotName);
 	});
 }
 
-function initSlot(params: UapParams): void {
+export function initSlot(params: UapParams): void {
 	const adSlot: AdSlot = slotService.get(params.slotName);
 
 	params.container = adSlot.getElement();
@@ -135,49 +134,21 @@ function initSlot(params: UapParams): void {
 	}
 }
 
-function reset(): void {
+export function reset(): void {
 	setType(constants.DEFAULT_UAP_TYPE);
 	setIds(constants.DEFAULT_UAP_ID, constants.DEFAULT_UAP_ID);
 }
 
-function isFanTakeoverLoaded(): boolean {
+export const isFanTakeoverLoaded = (): boolean => {
 	return (
 		getUapId() !== constants.DEFAULT_UAP_ID &&
 		constants.FAN_TAKEOVER_TYPES.indexOf(getType()) !== -1
 	);
-}
-
-export const universalAdPackage = {
-	...constants,
-	init(params: UapParams, slotsToEnable: string[] = [], slotsToDisable: string[] = []): void {
-		runtimeVariableSetter.addVariable('disableBtf', true);
-
-		let adProduct = 'uap';
-
-		if (this.isVideoEnabled(params)) {
-			adProduct = 'vuap';
-		}
-
-		params.adProduct = params.adProduct || adProduct;
-
-		setIds(params.lineItemId || params.uap, params.creativeId);
-		disableSlots(slotsToDisable);
-		enableSlots(slotsToEnable);
-		setType(params.adProduct);
-
-		if (params.slotName) {
-			initSlot(params);
-		}
-	},
-	isFanTakeoverLoaded,
-	getType,
-	getUapId,
-	isVideoEnabled(params): boolean {
-		return params.thumbnail;
-	},
-	reset,
-	updateSlotsTargeting,
 };
+
+export function isVideoEnabled(params): boolean {
+	return params.thumbnail;
+}
 
 export function registerUapListener(): void {
 	communicationService.action$
@@ -201,11 +172,25 @@ export function registerUapListener(): void {
 		)
 		.subscribe(() => {
 			communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
-				isLoaded: universalAdPackage.isFanTakeoverLoaded(),
-				adProduct: universalAdPackage.getType(),
+				isLoaded: isFanTakeoverLoaded(),
+				adProduct: getType(),
 			});
 		});
 }
+
+// Constants are still being referenced in multiple places
+// Due to linting rules setup in AdEng, constants cannot be imported by themselves
+// through direct paths. They must all be stored in a variable, and resurfaced up through
+// a chain of index.ts files
+export const uapConsts = {
+	...constants,
+};
+
+export const universalFuncs = {
+	isFanTakeoverLoaded,
+	reset,
+	updateSlotsTargeting,
+};
 
 // Side effect
 registerUapListener();

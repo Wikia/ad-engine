@@ -5,6 +5,7 @@ import {
 	communicationService,
 	createBottomPanel,
 	eventsRepository,
+	isVideoEnabled,
 	LearnMore,
 	ofType,
 	PlayerOverlay,
@@ -16,8 +17,8 @@ import {
 	ToggleThumbnail,
 	ToggleUI,
 	ToggleVideo,
+	uapConsts,
 	UapParams,
-	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { fromEvent, merge, Observable, Subject } from 'rxjs';
@@ -37,7 +38,7 @@ export class VideoBootstrapHandler implements TemplateStateHandler {
 	) {}
 
 	async onEnter(): Promise<void> {
-		if (!universalAdPackage.isVideoEnabled(this.params)) {
+		if (isVideoEnabled(this.params)) {
 			return this.playerRegistry.discard();
 		}
 
@@ -74,7 +75,7 @@ export class VideoBootstrapHandler implements TemplateStateHandler {
 					(action: AdSlotEventPayload) =>
 						action.event === AdSlotEvent.CUSTOM_EVENT &&
 						action.adSlotName === this.adSlot.getSlotName() &&
-						action.payload?.status === universalAdPackage.SLOT_FORCE_UNSTICK,
+						action.payload?.status === uapConsts.SLOT_FORCE_UNSTICK,
 				),
 				tap(() => player.stop()),
 			),
