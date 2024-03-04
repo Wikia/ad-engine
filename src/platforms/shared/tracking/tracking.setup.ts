@@ -183,6 +183,9 @@ export class TrackingSetup {
 		if (experimentsGroups) {
 			this.labradorTracker.track(experimentsGroups);
 		}
+		communicationService.on(eventsRepository.INTENT_IQ_GROUP_OBTAINED, ({ abTestGroup }) => {
+			this.labradorTracker.track(`intentIQ_${abTestGroup}`);
+		});
 	}
 
 	private interventionTracker(): void {
