@@ -67,6 +67,7 @@ describe('tagless-request-url-builder', () => {
 
 	afterEach(() => {
 		context.remove('options.geoRequiresConsent');
+		context.remove('options.geoRequiresSignal');
 		global.sandbox.restore();
 	});
 
@@ -235,8 +236,9 @@ describe('tagless-request-url-builder', () => {
 		expect(vastUrl.match(gdprConsentPattern), 'VAST URL does not contain gdpr_consent').to.be.ok;
 	});
 
-	it('build VAST URL with  query-string parameter when tagless is set in CCPA country', () => {
+	it('build VAST URL with us_privacy query-string parameter when tagless is set in CCPA country', () => {
 		context.set('options.geoRequiresConsent', false);
+		context.set('options.geoRequiresSignal', true);
 		const vastUrl = buildVastUrl(1, 'top_leaderboard', {
 			isTagless: true,
 			us_privacy: '!!!!',
@@ -247,6 +249,22 @@ describe('tagless-request-url-builder', () => {
 
 		expect(vastUrl.match(gdprPattern), 'VAST URL does not contain gdpr flag set to 0').to.be.ok;
 		expect(vastUrl.match(ccpaConsentPattern)).to.be.ok;
+	});
+
+	it('build VAST URL with gdpr query-string parameter when tagless is set in other country than CCPA or GDPR', () => {
+		context.set('options.geoRequiresConsent', false);
+		context.set('options.geoRequiresSignal', false);
+		const vastUrl = buildVastUrl(1, 'top_leaderboard', {
+			isTagless: true,
+		});
+
+		const gdprPattern = /&gdpr=0/;
+		const gdprConsentPattern = /&gdpr_consent=/;
+		const ccpaConsentPattern = /&us_privacy=/;
+
+		expect(vastUrl.match(gdprPattern), 'VAST URL does not contain gdpr flag set to 0').to.be.ok;
+		expect(vastUrl.match(gdprConsentPattern)).not.to.be.ok;
+		expect(vastUrl.match(ccpaConsentPattern)).not.to.be.ok;
 	});
 
 	it('builds and returns custom params as encoded string', () => {

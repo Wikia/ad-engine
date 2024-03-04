@@ -143,15 +143,20 @@ export function buildVastUrl(
 
 	if (options.isTagless) {
 		const consentRequired = context.get('options.geoRequiresConsent');
+		const signalRequired = context.get('options.geoRequiresSignal');
 		params.push('tagless=1');
 
-		if (consentRequired && options.gdpr_consent) {
+		if (consentRequired) {
 			params.push(`gdpr=1`);
+		} else {
+			params.push(`gdpr=0`);
+		}
+
+		if (consentRequired && options.gdpr_consent) {
 			params.push(`gdpr_consent=${options.gdpr_consent}`);
 		}
 
-		if (!consentRequired && options.us_privacy) {
-			params.push(`gdpr=0`);
+		if (signalRequired && options.us_privacy) {
 			params.push(`us_privacy=${options.us_privacy}`);
 		}
 	}
