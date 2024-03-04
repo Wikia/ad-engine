@@ -41,7 +41,7 @@ import { selectApplication } from './utils/application-helper';
 import './styles.scss';
 
 @Injectable()
-export class SportsPlatform {
+export default class SportsPlatform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
 	execute(): void {

@@ -42,7 +42,7 @@ import { UcpDesktopTemplatesSetup } from './templates/ucp-desktop-templates.setu
 import './styles.scss';
 
 @Injectable()
-export class UcpDesktopPlatform implements DiProcess {
+export default class UcpDesktopPlatform implements DiProcess {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
 	execute(): void {

@@ -20,7 +20,7 @@ import { TvGuideMtcTemplatesSetup } from './templates/tvguide-mtc-templates.setu
 import './styles.scss';
 
 @Injectable()
-export class TvGuideMTCPlatform implements DiProcess {
+export default class TvGuideMTCPlatform implements DiProcess {
 	constructor(private pipeline: ProcessPipeline) {}
 
 	execute(): void {

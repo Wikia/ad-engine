@@ -16,7 +16,7 @@ import { UcpNoAdsWikiContextSetup } from './setup/wiki-context.setup';
 import './styles.scss';
 
 @Injectable()
-export class UcpNoAdsPlatform implements DiProcess {
+export default class UcpNoAdsPlatform implements DiProcess {
 	constructor(private pipeline: ProcessPipeline) {}
 
 	execute(): void {

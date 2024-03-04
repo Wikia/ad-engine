@@ -38,7 +38,7 @@ import { ComicvineTargetingSetup } from './setup/context/targeting/comicvine-tar
 import { ComicvineTemplatesSetup } from './templates/comicvine-templates.setup';
 
 @Injectable()
-export class ComicvinePlatform implements DiProcess {
+export default class ComicvinePlatform implements DiProcess {
 	constructor(private pipeline: ProcessPipeline) {}
 
 	execute(): void {

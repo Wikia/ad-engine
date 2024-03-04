@@ -42,7 +42,7 @@ import { MetacriticTemplatesSetup } from './templates/metacritic-templates.setup
 import './styles.scss';
 
 @Injectable()
-export class MetacriticPlatform implements DiProcess {
+export default class MetacriticPlatform implements DiProcess {
 	constructor(private pipeline: ProcessPipeline) {}
 
 	execute(): void {

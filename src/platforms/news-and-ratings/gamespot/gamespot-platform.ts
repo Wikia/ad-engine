@@ -42,7 +42,7 @@ import { GamespotTemplatesSetup } from './templates/gamespot-templates.setup';
 import './styles.scss';
 
 @Injectable()
-export class GameSpotPlatform implements DiProcess {
+export default class GameSpotPlatform implements DiProcess {
 	constructor(private pipeline: ProcessPipeline) {}
 
 	execute(): void {

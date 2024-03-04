@@ -38,7 +38,7 @@ import { F2TemplatesSetup } from './templates/f2-templates.setup';
 import './styles.scss';
 
 @Injectable()
-export class F2Platform implements DiProcess {
+export default class F2Platform implements DiProcess {
 	constructor(
 		@Inject(F2_ENV) private f2env: F2Environment,
 		private pipeline: ProcessPipeline,

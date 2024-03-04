@@ -43,7 +43,7 @@ import { MetacriticNeutronTemplatesSetup } from './templates/metacritic-neutron-
 import './styles.scss';
 
 @Injectable()
-export class MetacriticNeutronPlatform implements DiProcess {
+export default class MetacriticNeutronPlatform implements DiProcess {
 	constructor(
 		private container: Container,
 		private pipeline: ProcessPipeline,

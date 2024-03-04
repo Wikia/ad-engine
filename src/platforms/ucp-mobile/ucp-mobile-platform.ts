@@ -42,7 +42,7 @@ import { UcpMobileTemplatesSetup } from './templates/ucp-mobile-templates.setup'
 import './styles.scss';
 
 @Injectable()
-export class UcpMobilePlatform implements DiProcess {
+export default class UcpMobilePlatform implements DiProcess {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
 	execute(): void {

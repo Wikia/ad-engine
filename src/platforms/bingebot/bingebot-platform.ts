@@ -29,7 +29,7 @@ import { BingeBotTemplatesSetup } from './templates/bingebot-templates.setup';
 import './styles.scss';
 
 @Injectable()
-export class BingeBotPlatform implements DiProcess {
+export default class BingeBotPlatform implements DiProcess {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
 	execute(): void {

@@ -38,7 +38,7 @@ import { GamefaqsTargetingSetup } from './setup/context/targeting/gamefaqs-targe
 import { GamefaqsTemplatesSetup } from './templates/gamefaqs-templates.setup';
 
 @Injectable()
-export class GamefaqsPlatform implements DiProcess {
+export default class GamefaqsPlatform implements DiProcess {
 	constructor(private pipeline: ProcessPipeline) {}
 
 	execute(): void {

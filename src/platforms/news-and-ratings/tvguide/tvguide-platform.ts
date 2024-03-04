@@ -42,7 +42,7 @@ import { TvGuideTemplatesSetup } from './templates/tvguide-templates.setup';
 import './styles.scss';
 
 @Injectable()
-export class TvGuidePlatform implements DiProcess {
+export default class TvGuidePlatform implements DiProcess {
 	constructor(
 		private container: Container,
 		private pipeline: ProcessPipeline,

@@ -39,7 +39,7 @@ import { GiantbombTemplatesSetup } from './templates/giantbomb-templates.setup';
 
 import './styles.scss';
 @Injectable()
-export class GiantbombPlatform implements DiProcess {
+export default class GiantbombPlatform implements DiProcess {
 	constructor(private pipeline: ProcessPipeline) {}
 
 	execute(): void {
