@@ -13,7 +13,7 @@ export function getTimeOrigin() {
 }
 
 export function getTimeDelta(): number {
-	return Date.now() - getTimeOrigin();
+	return window.performance?.now() ?? 0;
 }
 
 export function getTimeDeltaFixed(): string {
