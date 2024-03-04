@@ -55,6 +55,7 @@ export class AppnexusAst extends PrebidAdapter {
 					},
 				},
 			],
+			debugInfo: placementId?.toString(),
 		};
 	}
 }

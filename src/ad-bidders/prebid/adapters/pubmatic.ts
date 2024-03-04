@@ -55,6 +55,7 @@ export class Pubmatic extends PrebidAdapter {
 				},
 			},
 			bids: this.getBids(ids, videoParams),
+			debugInfo: ids?.join(';'),
 		};
 	}
 
@@ -67,6 +68,7 @@ export class Pubmatic extends PrebidAdapter {
 				},
 			},
 			bids: this.getBids(ids),
+			debugInfo: ids?.join(';'),
 		};
 	}
 

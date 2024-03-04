@@ -42,6 +42,7 @@ export class Seedtag extends PrebidAdapter {
 					},
 				},
 			],
+			debugInfo: adUnitId,
 		};
 	}
 
@@ -73,6 +74,7 @@ export class Seedtag extends PrebidAdapter {
 					},
 				},
 			],
+			debugInfo: adUnitId,
 		};
 	}
 }

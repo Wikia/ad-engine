@@ -69,6 +69,7 @@ export class IndexExchange extends PrebidAdapter {
 					},
 				},
 			],
+			debugInfo: siteId,
 		};
 	}
 
@@ -82,6 +83,7 @@ export class IndexExchange extends PrebidAdapter {
 			},
 			ortb2Imp: this.getOrtb2Imp(code),
 			bids: this.getBids(sizes, siteId),
+			debugInfo: siteId,
 		};
 	}
 

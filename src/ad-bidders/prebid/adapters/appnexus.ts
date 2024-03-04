@@ -46,6 +46,7 @@ export class Appnexus extends PrebidAdapter {
 				},
 			},
 			bids: this.getBids(code, { sizes, placementId, position }),
+			debugInfo: this.getPlacement(position),
 		};
 	}
 

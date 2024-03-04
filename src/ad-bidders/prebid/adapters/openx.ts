@@ -50,6 +50,7 @@ export class Openx extends PrebidAdapter {
 					},
 				},
 			],
+			debugInfo: unit,
 		};
 	}
 
@@ -71,6 +72,7 @@ export class Openx extends PrebidAdapter {
 					},
 				},
 			],
+			debugInfo: unit,
 		};
 	}
 }

@@ -35,6 +35,7 @@ export class WebAds extends PrebidAdapter {
 					},
 				},
 			],
+			debugInfo: placementId?.toString(),
 		};
 	}
 }

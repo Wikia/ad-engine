@@ -61,6 +61,7 @@ export class Medianet extends PrebidAdapter {
 					},
 				},
 			],
+			debugInfo: crid,
 		};
 	}
 
@@ -82,6 +83,7 @@ export class Medianet extends PrebidAdapter {
 					},
 				},
 			],
+			debugInfo: crid,
 		};
 	}
 }

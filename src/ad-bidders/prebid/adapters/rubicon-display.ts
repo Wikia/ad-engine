@@ -41,6 +41,7 @@ export class RubiconDisplay extends PrebidAdapter {
 			},
 			ortb2Imp: this.getOrtb2Imp(code),
 			bids: this.getBids(code, position, siteId, zoneId, targeting),
+			debugInfo: siteId?.toString(),
 		};
 	}
 

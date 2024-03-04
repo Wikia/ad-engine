@@ -74,6 +74,7 @@ export class Rubicon extends PrebidAdapter {
 					},
 				},
 			],
+			debugInfo: siteId?.toString(),
 		};
 	}
 }

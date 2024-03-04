@@ -65,6 +65,7 @@ export class Roundel extends PrebidAdapter {
 					},
 				},
 			],
+			debugInfo: siteId,
 		};
 	}
 
@@ -84,6 +85,7 @@ export class Roundel extends PrebidAdapter {
 					size,
 				},
 			})),
+			debugInfo: siteId,
 		};
 	}
 }

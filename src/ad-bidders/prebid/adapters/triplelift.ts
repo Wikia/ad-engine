@@ -33,6 +33,7 @@ export class Triplelift extends PrebidAdapter {
 					inventoryCode,
 				},
 			})),
+			debugInfo: inventoryCodes?.join(';'),
 		};
 	}
 }

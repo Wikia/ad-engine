@@ -31,6 +31,7 @@ export class Nobid extends PrebidAdapter {
 					},
 				},
 			],
+			debugInfo: siteId?.toString(),
 		};
 	}
 }

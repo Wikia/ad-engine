@@ -1,4 +1,4 @@
-import { Aliases, context, pbjsFactory } from '@ad-engine/core';
+import { Aliases, context, pbjsFactory, utils } from '@ad-engine/core';
 import { hasCorrectBidGroup } from '../bidder-helper';
 import {
 	Appnexus,
@@ -95,6 +95,7 @@ class AdaptersRegistry {
 
 	setupAdUnits(bidGroup: string): PrebidAdUnit[] {
 		const adUnits: PrebidAdUnit[] = [];
+		const unitsLog = [];
 
 		adaptersRegistry.getAdapters().forEach((adapter) => {
 			if (adapter && adapter.enabled) {
@@ -107,10 +108,17 @@ class AdaptersRegistry {
 						hasCorrectBidGroup(adUnit.code, bidGroup)
 					) {
 						adUnits.push(adUnit);
+						unitsLog.push(
+							`${adapter.bidderName},${adUnit.code},${adUnit.mediaTypes.banner?.sizes
+								?.map((a) => a.join('x'))
+								?.join(';')},${adUnit.debugInfo}`,
+						);
 					}
 				});
 			}
 		});
+
+		utils.logger('prebid', 'units setup', unitsLog);
 
 		return adUnits;
 	}

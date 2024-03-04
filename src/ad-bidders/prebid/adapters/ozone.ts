@@ -79,6 +79,7 @@ export class Ozone extends PrebidAdapter {
 					},
 				},
 			],
+			debugInfo: placementId?.toString(),
 		};
 	}
 }

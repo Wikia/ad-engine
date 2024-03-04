@@ -31,6 +31,7 @@ interface PrebidAdUnit {
 			};
 		};
 	};
+	debugInfo?: string;
 }
 
 interface PrebidNativeMediaType {

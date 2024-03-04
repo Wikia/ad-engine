@@ -24,6 +24,7 @@ export class Kargo extends PrebidAdapter {
 				},
 			},
 			bids: this.getBids(placementId),
+			debugInfo: placementId?.toString(),
 		};
 	}
 
