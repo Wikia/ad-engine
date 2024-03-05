@@ -16,7 +16,7 @@ export class MtcAdsMode implements DiProcess {
 	execute(): void {
 		this.pipeline.add(this.adEngineStackSetup).execute();
 		this.prepareFakeGptEvents();
-		this.prepareCallingExternalFunctionOnUap();
+		this.prepareCallToExternalFunctionOnUap();
 	}
 
 	private prepareFakeGptEvents() {
@@ -46,7 +46,7 @@ export class MtcAdsMode implements DiProcess {
 			true,
 		);
 	}
-	private prepareCallingExternalFunctionOnUap() {
+	private prepareCallToExternalFunctionOnUap() {
 		communicationService.on(eventsRepository.AD_ENGINE_CUSTOM_AD_LOADER_CALLED, (payload) => {
 			if (typeof window.loadCustomAdFandom === 'function') {
 				window.loadCustomAdFandom(payload);

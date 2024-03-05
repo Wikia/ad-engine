@@ -148,7 +148,7 @@ export const eventsRepository = {
 		name: 'UAP NTC loaded',
 	},
 	AD_ENGINE_CUSTOM_AD_LOADER_CALLED: {
-		name: 'Custom Ad Loader',
+		name: 'Custom Ad Loader called',
 		payload: props<UapParams>(),
 	},
 	// Ad slot events //

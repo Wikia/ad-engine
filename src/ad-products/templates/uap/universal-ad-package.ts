@@ -17,7 +17,7 @@ import {
 } from '@ad-engine/core';
 import { filter, take } from 'rxjs/operators';
 import * as constants from './constants';
-import { UapParams } from './interface/uap-params';
+import { UapParams } from './types/uap-params';
 
 let uapCreativeId = constants.DEFAULT_UAP_ID;
 let uapId = constants.DEFAULT_UAP_ID;
