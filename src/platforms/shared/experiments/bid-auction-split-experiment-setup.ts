@@ -28,42 +28,50 @@ export class BidAuctionSplitExperimentSetup extends BaseServiceSetup {
 		this.setupExperimentVariants();
 		this.activeExperimentVariant = getExperiment(this.experimentVariants);
 
-		if (this.isExperimentEnabled()) {
-			addExperimentGroupToTargeting(this.activeExperimentVariant.name);
+		if (!this.isExperimentEnabled()) return;
 
-			if (this.isControlVariant()) {
-				utils.logger(logGroup, 'Experiment but control group', this.activeExperimentVariant.name);
-			} else {
-				utils.logger(logGroup, 'Experiment - active group', this.activeExperimentVariant.name);
-				context.set('custom.bidAuctionSplitEnabled', true);
-			}
+		addExperimentGroupToTargeting(this.activeExperimentVariant.name);
+
+		if (this.isControlVariant()) {
+			utils.logger(logGroup, 'Experiment but control group', this.activeExperimentVariant.name);
+		} else {
+			utils.logger(logGroup, 'Experiment - active group', this.activeExperimentVariant.name);
+			context.set('custom.bidAuctionSplitEnabled', true);
 		}
 	}
 
 	private setupExperimentVariants() {
 		if (this.isMobile) {
-			this.experimentVariants = [
-				defineExperiment({
-					name: this.experimentVariantNames.mobileActive,
-					buckets: ['c', 'd'],
-				}),
-				defineExperiment({
-					name: this.experimentVariantNames.mobileControl,
-					buckets: ['e', 'f', 'g', 'h'],
-				}),
-			];
+			this.setupMobileExperimentVariants();
 		} else {
-			this.experimentVariants = [
-				defineExperiment({
-					name: this.experimentVariantNames.desktopActive,
-					buckets: ['A', 'B'],
-				}),
-				defineExperiment({
-					name: this.experimentVariantNames.desktopControl,
-					buckets: ['C', 'D', 'E', 'F'],
-				}),
-			];
+			this.setupDesktopExperimentVariants();
 		}
+	}
+
+	private setupDesktopExperimentVariants() {
+		this.experimentVariants = [
+			defineExperiment({
+				name: this.experimentVariantNames.desktopActive,
+				buckets: ['A', 'B'],
+			}),
+			defineExperiment({
+				name: this.experimentVariantNames.desktopControl,
+				buckets: ['C', 'D', 'E', 'F'],
+			}),
+		];
+	}
+
+	private setupMobileExperimentVariants() {
+		this.experimentVariants = [
+			defineExperiment({
+				name: this.experimentVariantNames.mobileActive,
+				buckets: ['c', 'd'],
+			}),
+			defineExperiment({
+				name: this.experimentVariantNames.mobileControl,
+				buckets: ['e', 'f', 'g', 'h'],
+			}),
+		];
 	}
 
 	private isExperimentEnabled() {

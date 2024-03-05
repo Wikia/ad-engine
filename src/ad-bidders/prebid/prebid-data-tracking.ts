@@ -81,25 +81,27 @@ class PrebidDataTracking {
 	}
 
 	private enableATSAnalytics(): void {
-		if (
+		if (!this.isLiveRampEnabled()) return;
+
+		utils.logger(logGroup, 'prebid enabling ATS Analytics');
+
+		(window as any).pbjs.que.push(() => {
+			(window as any).pbjs.enableAnalytics([
+				{
+					provider: 'atsAnalytics',
+					options: {
+						pid: LiveRampIdTypes.PLACEMENT_ID,
+					},
+				},
+			]);
+		});
+	}
+
+	private isLiveRampEnabled() {
+		return (
 			context.get('bidders.liveRampATSAnalytics.enabled') &&
 			context.get('bidders.liveRampId.enabled')
-		) {
-			utils.logger(logGroup, 'prebid enabling ATS Analytics');
-
-			(window as any).pbjs.que.push(() => {
-				(window as any).pbjs.enableAnalytics([
-					{
-						provider: 'atsAnalytics',
-						options: {
-							pid: LiveRampIdTypes.PLACEMENT_ID,
-						},
-					},
-				]);
-			});
-		}
-
-		utils.logger(logGroup, 'ATS enabled');
+		);
 	}
 
 	private mapResponseToTrackingBidDefinition(response: PrebidBidResponse): TrackingBidDefinition {
