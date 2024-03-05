@@ -8,6 +8,12 @@ import { AdSlotEvent, AdSlotStatus, context, targetingService } from '@ad-engine
 import { filter, take } from 'rxjs/operators';
 import * as constants from './constants';
 
+/* These are all leftovers from the UAP package that are referenced in multiple places outside of UAP.
+ * Removing these interfaces, variables and functions breaks certain Ad functionality.
+ *
+ * One notable feature that broke if the registerUapListener() function was not invoked at the bottom of this file,
+ * was the inability to load incontent ads when a Top Leaderboard ad loaded, specifically when scrolling down the page. */
+
 const uapId = constants.DEFAULT_UAP_ID;
 const uapType = constants.DEFAULT_UAP_TYPE;
 
@@ -85,10 +91,6 @@ export const isFanTakeoverLoaded = (): boolean => {
 		constants.FAN_TAKEOVER_TYPES.indexOf(getType()) !== -1
 	);
 };
-
-export function isVideoEnabled(params): boolean {
-	return params.thumbnail;
-}
 
 // Let's leave this, since there's a lot of spaghetti logic which prevent incontent ads from being started
 // Let's remove the function export, since this function is only invoked in this file
