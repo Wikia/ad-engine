@@ -92,13 +92,6 @@ export class PlayerSetup extends BaseServiceSetup {
 		}
 	}
 
-	/*	private loadIasTrackerIfEnabled(): void {
-		if (context.get('options.video.iasTracking.enabled')) {
-			utils.logger(logGroup, 'Loading IAS tracker for video player');
-			iasVideoTracker.load();
-		}
-	}*/
-
 	private static initConnatixPlayer(showAds: boolean, vastResponse?: VastResponseData) {
 		utils.logger(logGroup, 'Connatix with ads not controlled by AdEngine enabled');
 
