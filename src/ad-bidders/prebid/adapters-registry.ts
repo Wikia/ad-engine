@@ -1,5 +1,5 @@
 import { Aliases, context, pbjsFactory } from '@ad-engine/core';
-import { defaultSlotBidGroup, hasCorrectBidGroup } from '../bidder-helper';
+import { hasCorrectBidGroup } from '../bidder-helper';
 import {
 	Appnexus,
 	AppnexusAst,
@@ -93,52 +93,6 @@ class AdaptersRegistry {
 		});
 	}
 
-	filterSlotHeightsFromAdapters(
-		availableSlots: string[],
-		biddersConfig: PrebidConfig,
-		slotRefresherConfig,
-	) {
-		this.availableAdapters.forEach((AdapterType) => {
-			const adapterConfig = biddersConfig[AdapterType.bidderName];
-			if (!adapterConfig || !adapterConfig.enabled) return;
-
-			availableSlots.forEach((slot) => {
-				const adUnitSizeLimit = slotRefresherConfig.sizes[slot];
-				const slotConfig = adapterConfig.slots[slot];
-
-				if (slotConfig) {
-					slotConfig.sizes = slotConfig.sizes.filter(
-						(size: [number, number]) => size[1] <= adUnitSizeLimit[1],
-					);
-				}
-			});
-
-			if (isPrebidAdapterConfig(adapterConfig)) {
-				this.adapters.set(AdapterType.bidderName, new AdapterType(adapterConfig));
-			}
-		});
-	}
-
-	filterSlotHeightsFromAdUnits(
-		adUnits: PrebidAdUnit[],
-		availableSlots: string[],
-		slotRefresherConfig,
-	) {
-		adUnits.forEach((adUnit) => {
-			const adUnitSizeLimit = slotRefresherConfig.sizes[adUnit.code];
-			if (!adUnitSizeLimit || !availableSlots.includes(adUnit.code)) return;
-
-			adUnit.mediaTypes.banner.sizes = adUnit.mediaTypes.banner.sizes.filter(
-				(size) => size[1] <= adUnitSizeLimit[1],
-			);
-
-			adUnit.bids = adUnit.bids.filter((bid) => {
-				const size = bid.params?.size;
-				return !size || size[1] <= adUnitSizeLimit[1];
-			});
-		});
-	}
-
 	setupAdUnits(bidGroup: string): PrebidAdUnit[] {
 		const adUnits: PrebidAdUnit[] = [];
 		adaptersRegistry.getAdapters().forEach((adapter) => {
@@ -156,21 +110,6 @@ class AdaptersRegistry {
 				});
 			}
 		});
-
-		if (bidGroup && bidGroup !== defaultSlotBidGroup) {
-			const slotRefresherConfig = context.get('slotConfig.slotRefresher');
-
-			if (!slotRefresherConfig) return;
-
-			const availableSlots = Object.keys(slotRefresherConfig.sizes);
-			const biddersConfig: PrebidConfig = context.get('bidders.prebid');
-
-			if (!availableSlots.includes(bidGroup)) return;
-
-			this.filterSlotHeightsFromAdapters(availableSlots, biddersConfig, slotRefresherConfig);
-
-			this.filterSlotHeightsFromAdUnits(adUnits, availableSlots, slotRefresherConfig);
-		}
 
 		return adUnits;
 	}
