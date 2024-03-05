@@ -10,6 +10,7 @@ import { googleTopicsTracker } from '../../../../shared/tracking/trackers/google
 import { identityDwTracker } from '../../../../shared/tracking/trackers/identity-tracker';
 import { porvataDwTracker } from '../../../../shared/tracking/trackers/porvata-tracker';
 import { postmessageTrackingDwTracker } from '../../../../shared/tracking/trackers/postmessage-tracker';
+import { viewabilityDwTracker } from '../../../../shared/tracking/trackers/viewability-tracker';
 
 @Injectable()
 export class TrackingSetup {
@@ -22,6 +23,7 @@ export class TrackingSetup {
 
 	execute(): void {
 		porvataDwTracker(this.dwTracker);
+		viewabilityDwTracker(this.dwTracker);
 		postmessageTrackingDwTracker(this.dwTracker);
 		experimentGroupsTracker(this.labradorTracker);
 		this.interventionTracker();

@@ -14,6 +14,7 @@ import { keyValsDwTracker } from './trackers/keyvals-tracker';
 import { porvataDwTracker } from './trackers/porvata-tracker';
 import { postmessageTrackingDwTracker } from './trackers/postmessage-tracker';
 import { slotDwTracker } from './trackers/slot-tracker';
+import { viewabilityDwTracker } from './trackers/viewability-tracker';
 
 @Injectable()
 export class TrackingSetup {
@@ -28,6 +29,7 @@ export class TrackingSetup {
 	execute(): void {
 		porvataDwTracker(this.dwTracker);
 		slotDwTracker(this.dwTracker, this.bidders);
+		viewabilityDwTracker(this.dwTracker);
 		bidderDwTracker(this.dwTracker);
 		postmessageTrackingDwTracker(this.dwTracker);
 		experimentGroupsTracker(this.labradorTracker);
