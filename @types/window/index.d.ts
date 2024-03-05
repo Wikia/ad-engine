@@ -62,6 +62,7 @@ interface Window {
 	trackingOptIn?: any;
 	wgCookiePath?: string;
 	XMLHttpRequest?: any;
+	OneTrust?: any;
 	pathfinderModulesReady?: bool;
 	loadCustomAdFandom?: any;
 }
