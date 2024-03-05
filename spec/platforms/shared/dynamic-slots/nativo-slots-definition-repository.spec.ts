@@ -12,16 +12,24 @@ describe('Nativo slots definition repository', () => {
 		nativoSlotDefinitionRepository = new NativoSlotsDefinitionRepository(domListener);
 
 		context.set('services.nativo.enabled', true);
-		context.set('wiki.opts.enableNativeAds', true);
 		context.set('slots.ntv_ad.disabled', false);
 		context.set('slots.ntv_feed_ad.disabled', false);
+		window.ads = {
+			...window.ads,
+			context: {
+				// @ts-expect-error provide only partial context
+				opts: {
+					enableNativeAds: true,
+				},
+			},
+		};
 	});
 
-	after(() => {
+	afterEach(() => {
 		context.set('services.nativo.enabled', undefined);
-		context.set('wiki.opts.enableNativeAds', undefined);
 		context.set('slots.ntv_ad.disabled', undefined);
 		context.set('slots.ntv_feed_ad.disabled', undefined);
+		delete window.ads;
 	});
 
 	it('does not return slots definition when Nativo is disabled', () => {
@@ -32,7 +40,15 @@ describe('Nativo slots definition repository', () => {
 	});
 
 	it('does not return slots definition when Nativo is disabled per community', () => {
-		context.set('wiki.opts.enableNativeAds', false);
+		window.ads = {
+			...window.ads,
+			context: {
+				// @ts-expect-error provide only partial context
+				opts: {
+					enableNativeAds: false,
+				},
+			},
+		};
 
 		expect(nativoSlotDefinitionRepository.getNativoIncontentAdConfig(1)).to.equal(undefined);
 		expect(nativoSlotDefinitionRepository.getNativoFeedAdConfig(null)).to.equal(undefined);

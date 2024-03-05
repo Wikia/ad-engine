@@ -39,7 +39,8 @@ interface MediaWikiAdsOpts {
 	isSubjectToCcpa?: boolean;
 	platformName?: string;
 	showAds: boolean;
-	userEmailHashes: string[];
+	enableNativeAds?: boolean;
+	userEmailHashes: [string, string, string];
 }
 
 interface MediaWikiAdsTargeting {

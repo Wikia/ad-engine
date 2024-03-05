@@ -10,7 +10,6 @@ import {
 	MetricReporterSetup,
 	NoAdsDetector,
 	NoAdsMode,
-	PlatformContextSetup,
 	PreloadedLibrariesSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
@@ -50,7 +49,6 @@ export class SportsPlatform {
 
 		// Config
 		this.pipeline.add(
-			PlatformContextSetup,
 			async () => await ensureGeoCookie(),
 			parallel(
 				sequential(InstantConfigSetup, PreloadedLibrariesSetup),

@@ -6,6 +6,7 @@ import {
 	localCache,
 	utils,
 } from '@ad-engine/core';
+import { getMediaWikiVariable } from '../../platforms/shared';
 
 const logGroup = 'system1';
 const scriptUrl = '//s.flocdn.com/@s1/embedded-search/embedded-search.js';
@@ -94,7 +95,7 @@ export class System1 extends BaseServiceSetup {
 	}
 
 	private getCategory(): string {
-		const searchFilter = context.get('wiki.search_filter') || '';
+		const searchFilter = getMediaWikiVariable('search_filter') || '';
 
 		switch (searchFilter) {
 			case 'videoOnly':
@@ -126,20 +127,20 @@ export class System1 extends BaseServiceSetup {
 	}
 
 	private getSearchQuery(): string {
-		return context.get('wiki.search_term_for_html') || '';
+		return getMediaWikiVariable('search_term_for_html') || '';
 	}
 
 	private getSearchSignature(): string {
-		return context.get('wiki.search_system1_signature') || '';
+		return getMediaWikiVariable('search_system1_signature') || '';
 	}
 
 	private isSearchPage(): boolean {
-		const pageType = context.get('wiki.opts.pageType') || '';
+		const pageType = window.ads?.context?.targeting?.pageType || '';
 		return pageType == 'search';
 	}
 
 	private getTheme(): string {
-		return (window.mw as any)?.config?.get('isDarkTheme') ? themes.dark : themes.light;
+		return getMediaWikiVariable('isDarkTheme') ? themes.dark : themes.light;
 	}
 
 	private isThemeChanged() {

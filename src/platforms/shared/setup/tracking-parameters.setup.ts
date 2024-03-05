@@ -59,7 +59,7 @@ export class TrackingParametersSetup implements DiProcess {
 		const legacyEnabled = !this.instantConfig.get('icDisableLegacyTrackingParameters', false);
 		const trackingParameters = await this.getTrackingParameters(legacyEnabled);
 
-		context.set('wiki', { ...context.get('wiki'), ...trackingParameters });
+		context.set('tracking', trackingParameters);
 	}
 
 	async execute() {

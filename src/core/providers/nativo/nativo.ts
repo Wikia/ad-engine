@@ -23,7 +23,7 @@ export class Nativo {
 
 	isEnabled() {
 		const isEnabled =
-			this.context.get('services.nativo.enabled') && this.context.get('wiki.opts.enableNativeAds');
+			this.context.get('services.nativo.enabled') && !!window.ads.context?.opts?.enableNativeAds;
 
 		Nativo.log('Is Nativo enabled?', isEnabled);
 

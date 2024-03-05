@@ -22,16 +22,30 @@ describe('ATS', () => {
 		context.set('options.optOutSale', false);
 		context.set('options.trackingOptIn', true);
 		context.set('options.options.geoRequiresConsent', false);
-		context.set('wiki.targeting.directedAtChildren', false);
-		context.set('wiki.opts.userEmailHashes', ['md5', 'sha1', 'sha256']);
 		context.set('state.isLogged', true);
 
-		window.fandomContext.partners.directedAtChildren = undefined;
+		window.ads = {
+			...window.ads,
+			context: {
+				// @ts-expect-error provide only partial context
+				opts: {
+					userEmailHashes: ['md5', 'sha1', 'sha256'],
+				},
+			},
+		};
+		window.fandomContext = {
+			...window.fandomContext,
+			partners: {
+				directedAtChildren: false,
+			},
+		};
 
 		ats = new Ats();
 	});
 
 	afterEach(() => {
+		delete window.ads;
+		window.fandomContext.partners = {};
 		global.sandbox.restore();
 	});
 
@@ -75,7 +89,11 @@ describe('ATS', () => {
 	});
 
 	it('ATS is not loaded when there is no user email in context', async () => {
-		context.remove('wiki.opts.userEmailHashes');
+		window.ads = {
+			...window.ads,
+			// @ts-expect-error provide only partial context
+			context: {},
+		};
 
 		await ats.call();
 

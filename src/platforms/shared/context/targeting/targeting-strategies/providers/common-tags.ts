@@ -1,4 +1,4 @@
-import { context, SlotTargeting, utils } from '@wikia/ad-engine';
+import { context, globalContextService, SlotTargeting, utils } from '@wikia/ad-engine';
 import { getDomain } from '../../../../utils/get-domain';
 import { getMediaWikiVariable } from '../../../../utils/get-media-wiki-variable';
 import { CommonTargetingParams } from '../interfaces/common-targeting-params';
@@ -15,7 +15,7 @@ export class CommonTags implements TargetingProvider<Partial<SlotTargeting>> {
 
 	public getCommonParams(): Partial<SlotTargeting> {
 		const domain = getDomain();
-		const wiki: AdsContext = context.get('wiki');
+		const wiki: AdsContext = window.ads.context;
 		const isMobile = context.get('state.isMobile');
 
 		const commonParams: Partial<SlotTargeting> = {
@@ -23,7 +23,7 @@ export class CommonTags implements TargetingProvider<Partial<SlotTargeting>> {
 			dmn: domain.base,
 			geo: utils.geoService.getCountryCode() || 'none',
 			hostpre: utils.targeting.getHostnamePrefix(),
-			original_host: wiki.opts?.isGamepedia ? 'gamepedia' : 'fandom',
+			original_host: wiki?.opts?.isGamepedia ? 'gamepedia' : 'fandom',
 			// Make more general after rolling out strategies outside UCP
 			skin: isMobile ? 'ucp_mobile' : 'ucp_desktop',
 			uap: 'none',
@@ -37,8 +37,7 @@ export class CommonTags implements TargetingProvider<Partial<SlotTargeting>> {
 			lang: this.fandomContext.page.lang || 'unknown',
 			s0: this.fandomContext.site.taxonomy?.[0],
 			s0c: this.fandomContext.site.categories,
-			// Remove 'wiki.targeting.wikiVertical' after ADEN-12118 is done
-			s0v: this.fandomContext.site.taxonomy?.[1] || wiki.targeting.wikiVertical,
+			s0v: this.fandomContext.site.taxonomy?.[1],
 			s1: utils.targeting.getRawDbName(this.fandomContext.site.siteName),
 			s2: this.getAdLayout(this.fandomContext.page.pageType || 'article'),
 			wpage: this.fandomContext.page.pageName?.toLowerCase(),
@@ -103,8 +102,8 @@ export class CommonTags implements TargetingProvider<Partial<SlotTargeting>> {
 
 		const keyValsMap = {
 			cid: utils.queryString.get('cid'),
-			pv: context.get('wiki.pvNumber'),
-			pvg: context.get('wiki.pvNumberGlobal'),
+			pv: globalContextService.getValue('tracking', 'pvNumber'),
+			pvg: globalContextService.getValue('tracking', 'pvNumberGlobal'),
 		};
 
 		Object.keys(keyValsMap).forEach((key) => {

@@ -5,6 +5,7 @@ import {
 	InstantConfigSetup,
 	NoAdsDetector,
 	NoAdsMode,
+	TrackingSetup,
 } from '@platforms/shared';
 import {
 	communicationService,
@@ -20,7 +21,6 @@ import { basicContext } from './ad-context';
 import { BingeBotAdsMode } from './modes/bingebot-ads.mode';
 import { BingeBotSlotsContextSetup } from './setup/context/slots/bingebot-slots-context.setup';
 import { BingeBotTargetingSetup } from './setup/context/targeting/bingebot-targeting.setup';
-import { BingeBotTrackingSetup } from './setup/context/tracking/bingebot-tracking.setup';
 import { BingeBotDynamicSlotsSetup } from './setup/dynamic-slots/bingebot-dynamic-slots.setup';
 import { BingeBotBeforeViewChangeSetup } from './setup/hooks/bingebot-before-view-change.setup';
 import { BingeBotTemplatesSetup } from './templates/bingebot-templates.setup';
@@ -41,7 +41,7 @@ export class BingeBotPlatform {
 			BingeBotTargetingSetup,
 			BingeBotDynamicSlotsSetup,
 			BingeBotTemplatesSetup,
-			BingeBotTrackingSetup,
+			TrackingSetup,
 			BingeBotBeforeViewChangeSetup,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 		);

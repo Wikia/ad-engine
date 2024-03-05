@@ -13,13 +13,18 @@ describe('Video event data provider', () => {
 		context.set('geo.country', 'PL');
 		targetingServiceStub = global.sandbox.stub(targetingService);
 		targetingServiceStub.get.withArgs('skin').returns('ae3');
-		context.set('wiki.pvNumber', 5);
+		window.fandomContext = {
+			...window.fandomContext,
+			tracking: {
+				pvNumber: 5,
+			},
+		};
 		slotService.add(new AdSlot({ id: 'incontent_player' }));
 	});
 
 	afterEach(() => {
 		context.remove('geo.country');
-		context.remove('wiki.pvNumber');
+		delete window.fandomContext;
 	});
 
 	it('returns list of values to track', () => {

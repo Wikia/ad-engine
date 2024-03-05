@@ -1,5 +1,6 @@
 import {
 	context,
+	globalContextService,
 	InstantConfigCacheStorage,
 	TargetingData,
 	targetingService,
@@ -59,8 +60,8 @@ export const slotTrackingCompiler = ({ data, slot }: CompilerPartial): CompilerP
 				(window.document.body.scrollWidth && window.document.body.scrollWidth.toString()) || '',
 			ppid: targetingData.ppid,
 			pa_available: targetingService.get('pa_available'),
-			pv: context.get('wiki.pvNumber') || window.pvNumber || '',
-			pv_unique_id: context.get('wiki.pvUID') || window.pvUID || '',
+			pv: globalContextService.getValue('tracking', 'pvNumber') || window.pvNumber || '',
+			pv_unique_id: globalContextService.getValue('tracking', 'pvUID') || window.pvUID || '',
 			scroll_y: window.scrollY || window.pageYOffset,
 			topics_available: targetingService.get('topics_available'),
 			tz_offset: now.getTimezoneOffset(),

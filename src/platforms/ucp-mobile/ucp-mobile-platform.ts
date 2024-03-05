@@ -9,7 +9,6 @@ import {
 	MetricReporterSetup,
 	NoAdsDetector,
 	NoAdsMode,
-	PlatformContextSetup,
 	PostAdStackPartnersSetup,
 	PreloadedLibrariesSetup,
 	SequentialMessagingSetup,
@@ -49,7 +48,6 @@ export class UcpMobilePlatform {
 
 		// Config
 		this.pipeline.add(
-			PlatformContextSetup,
 			async () => await ensureGeoCookie(),
 			parallel(
 				sequential(InstantConfigSetup, PreloadedLibrariesSetup),

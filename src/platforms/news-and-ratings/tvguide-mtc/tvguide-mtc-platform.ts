@@ -5,7 +5,6 @@ import {
 	InstantConfigSetup,
 	MetricReporterSetup,
 	NoAdsMode,
-	PlatformContextSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
@@ -26,7 +25,6 @@ export class TvGuideMTCPlatform {
 		this.pipeline.add(
 			parallel(InstantConfigSetup, ConsentManagementPlatformSetup),
 			BaseContextSetup,
-			PlatformContextSetup,
 			async () => await ensureGeoCookie(),
 			TrackingParametersSetup,
 			MetricReporterSetup,

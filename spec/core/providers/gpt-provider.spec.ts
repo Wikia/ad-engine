@@ -13,6 +13,11 @@ describe('gpt-provider', () => {
 
 	before(() => {
 		isInitializedCb = stub(GptProvider.prototype, 'isInitialized');
+		window.fandomContext = {
+			partners: {
+				directedAtChildren: false,
+			},
+		} as any;
 	});
 
 	after(() => {
@@ -66,11 +71,26 @@ describe('gpt-provider', () => {
 
 	it('initialise with restrict data processing when user opt-out from data sale', () => {
 		context.set('options.optOutSale', true);
-		context.set('wiki.targeting.directedAtChildren', false);
+		window.fandomContext.partners.directedAtChildren = false;
 
 		provider = new GptProvider();
 		provider.setupRestrictDataProcessing();
 
 		expect(pubads.setPrivacySettings.calledWith({ restrictDataProcessing: true })).to.be.true;
+	});
+
+	it('initialise with child directed treatment when wiki is directed at children', () => {
+		context.set('options.optOutSale', false);
+		window.fandomContext.partners.directedAtChildren = true;
+
+		provider = new GptProvider();
+		provider.setupRestrictDataProcessing();
+
+		expect(
+			pubads.setPrivacySettings.calledWith({
+				restrictDataProcessing: false,
+				childDirectedTreatment: true,
+			}),
+		).to.be.true;
 	});
 });

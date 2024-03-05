@@ -26,11 +26,11 @@ describe('LiveConnect', () => {
 			.returns(Promise.resolve({} as any));
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);
-		context.set('wiki.targeting.directedAtChildren', false);
-		liveConnect = new LiveConnect(instantConfigStub);
 		window.fandomContext = {
-			partners: { directedAtChildren: false },
+			partners: { directedAtChildren: true },
 		} as any;
+		liveConnect = new LiveConnect(instantConfigStub);
+		window.fandomContext.partners.directedAtChildren = false;
 	});
 
 	after(() => {
@@ -76,7 +76,6 @@ describe('LiveConnect', () => {
 	});
 
 	it('Live Connect not called on kid wikis', async () => {
-		context.set('wiki.targeting.directedAtChildren', true);
 		window.fandomContext.partners.directedAtChildren = true;
 
 		await liveConnect.call();

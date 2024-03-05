@@ -3,17 +3,29 @@ import { spy } from 'sinon';
 
 import { Context, context, Nativo, UapLoadStatus } from '@wikia/index';
 
+function setNativeAdsEnabled(enableNativeAds: boolean) {
+	window.ads = {
+		...window.ads,
+		context: {
+			// @ts-expect-error provide only partial context
+			opts: {
+				enableNativeAds,
+			},
+		},
+	};
+}
+
 describe('Nativo', () => {
 	describe('module', () => {
-		after(() => {
+		afterEach(() => {
 			context.remove('services.nativo.enabled');
-			context.remove('wiki.opts.enableNativeAds');
+			delete window.ads;
 		});
 
 		it('is enabled in instant-config and (by default) per wiki', () => {
 			const contextMock = new Context();
 			contextMock.set('services.nativo.enabled', true);
-			contextMock.set('wiki.opts.enableNativeAds', true);
+			setNativeAdsEnabled(true);
 
 			const nativo = new Nativo(contextMock);
 			expect(nativo.isEnabled()).to.equal(true);
@@ -22,7 +34,7 @@ describe('Nativo', () => {
 		it('is disabled at fandom community level', () => {
 			const contextMock = new Context();
 			contextMock.set('services.nativo.enabled', true);
-			contextMock.set('wiki.opts.enableNativeAds', false);
+			setNativeAdsEnabled(false);
 
 			const nativo = new Nativo(contextMock);
 			expect(nativo.isEnabled()).to.equal(false);
@@ -31,7 +43,7 @@ describe('Nativo', () => {
 		it('is disabled at instant-config level', () => {
 			const contextMock = new Context();
 			contextMock.set('services.nativo.enabled', false);
-			contextMock.set('wiki.opts.enableNativeAds', true);
+			setNativeAdsEnabled(true);
 
 			const nativo = new Nativo(contextMock);
 			expect(nativo.isEnabled()).to.equal(false);

@@ -13,7 +13,6 @@ describe('System1', () => {
 		instantConfigStub,
 		contextStub,
 		system1Config,
-		system1: System1,
 		localCacheStub,
 		globalContextServiceStub;
 	const globalOriginalMW: any = window.mw;
@@ -26,9 +25,6 @@ describe('System1', () => {
 		contextStub = global.sandbox.stub(context);
 		localCacheStub = global.sandbox.stub(localCache);
 		globalContextServiceStub = global.sandbox.stub(globalContextService);
-
-		system1 = new System1(instantConfigStub);
-
 		system1Config = {};
 		window.s1search = (...args: any) => (system1Config = args[1]);
 	});
@@ -36,10 +32,12 @@ describe('System1', () => {
 	afterEach(() => {
 		loadScriptStub.resetHistory();
 		window.mw = globalOriginalMW;
+		delete window.ads;
 	});
 
 	it('System1 is disabled if the page is not search page', async () => {
 		instantConfigStub.get.withArgs('icSystem1').returns(true);
+		const system1 = new System1(instantConfigStub);
 
 		await system1.call();
 
@@ -48,6 +46,7 @@ describe('System1', () => {
 
 	it('System1 is enabled if the page is search page', async () => {
 		configureStubs(true, 'search');
+		const system1 = new System1(instantConfigStub);
 
 		await system1.call();
 
@@ -56,6 +55,7 @@ describe('System1', () => {
 
 	it('System1 is disabled', async () => {
 		configureStubs(false, 'search');
+		const system1 = new System1(instantConfigStub);
 
 		await system1.call();
 
@@ -65,6 +65,7 @@ describe('System1', () => {
 	it('System1 is disabled if wiki has excluded bundle', async () => {
 		configureStubs(true, 'search');
 		globalContextServiceStub.hasBundle.withArgs('disabled_search_ads').returns(true);
+		const system1 = new System1(instantConfigStub);
 
 		await system1.call();
 
@@ -74,6 +75,7 @@ describe('System1', () => {
 	it('System1 is disabled if COPPA', async () => {
 		configureStubs(true, 'search');
 		globalContextServiceStub.getValue.returns(true);
+		const system1 = new System1(instantConfigStub);
 
 		await system1.call();
 
@@ -82,6 +84,7 @@ describe('System1', () => {
 
 	it('System1 has fandomDark segment', async () => {
 		configureStubs(true, 'search', true, true);
+		const system1 = new System1(instantConfigStub);
 
 		await system1.call();
 
@@ -90,10 +93,10 @@ describe('System1', () => {
 
 	it('System1 has fanmob00 segment', async () => {
 		configureStubs(true, 'search', true, false);
-
 		global.sandbox.stub(window, 'mw').value({
 			config: new Map([['isDarkTheme', false]]),
 		});
+		const system1 = new System1(instantConfigStub);
 
 		await system1.call();
 		expect(system1Config['segment']).to.equal('fanmob00');
@@ -101,6 +104,7 @@ describe('System1', () => {
 
 	it('System1 has fan00 segment', async () => {
 		configureStubs(true, 'search', false, false);
+		const system1 = new System1(instantConfigStub);
 
 		await system1.call();
 		expect(system1Config['segment']).to.equal('fan00');
@@ -108,6 +112,7 @@ describe('System1', () => {
 
 	it('System1 does not have newSession flag', async () => {
 		configureStubs(true, 'search', false, true);
+		const system1 = new System1(instantConfigStub);
 
 		localCacheStub.getItem.withArgs('adEngine_system1').returns('dark');
 
@@ -119,21 +124,24 @@ describe('System1', () => {
 		configureStubs(true, 'search', false, true);
 
 		localCacheStub.getItem.withArgs('adEngine_system1').returns('light');
+		const system1 = new System1(instantConfigStub);
 
 		await system1.call();
 		expect(system1Config['newSession']).to.equal(true);
 	});
 
 	it('System1 has valid config', async () => {
-		configureStubs(true, 'search', false, true);
-		contextStub.get.withArgs('wiki.search_system1_signature').returns('123456');
-		contextStub.get.withArgs('wiki.search_term_for_html').returns('test');
-		contextStub.get.withArgs('wiki.search_filter').returns('imageOnly');
+		configureStubs(true, 'search', false, true, [
+			['search_system1_signature', '123456'],
+			['search_term_for_html', 'test'],
+			['search_filter', 'imageOnly'],
+		]);
 
 		global.sandbox.stub(window, 'location').value({
 			hostname: 'project43.preview.fandom.com',
 			protocol: 'https',
 		});
+		const system1 = new System1(instantConfigStub);
 
 		await system1.call();
 
@@ -155,13 +163,22 @@ describe('System1', () => {
 		pageType: string,
 		isMobile = false,
 		isDarkTheme = false,
+		mwConfigEntries: [string, any][] = [],
 	) {
 		instantConfigStub.get.withArgs('icSystem1').returns(isEnabled);
-		contextStub.get.withArgs('wiki.opts.pageType').returns(pageType);
+		window.ads = {
+			...window.ads,
+			context: {
+				// @ts-expect-error provide only partial context
+				targeting: {
+					pageType,
+				},
+			},
+		};
 		contextStub.get.withArgs('state.isMobile').returns(isMobile);
 
 		global.sandbox.stub(window, 'mw').value({
-			config: new Map([['isDarkTheme', isDarkTheme]]),
+			config: new Map([['isDarkTheme', isDarkTheme], ...mwConfigEntries]),
 		});
 	}
 });

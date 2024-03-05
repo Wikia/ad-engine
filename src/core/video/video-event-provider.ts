@@ -1,7 +1,7 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { utils } from '../index';
+import { globalContextService, utils } from '../index';
 import { VideoData, VideoEventData } from '../listeners';
-import { context, targetingService } from '../services';
+import { targetingService } from '../services';
 
 export class VideoEventProvider {
 	static getEventData(videoData: VideoData): VideoEventData {
@@ -20,7 +20,7 @@ export class VideoEventProvider {
 			line_item_id: videoData.line_item_id || '',
 			player: videoData.player,
 			position: videoData.position || '',
-			pv_number: context.get('wiki.pvNumber'),
+			pv_number: globalContextService.getValue('tracking', 'pvNumber'),
 			rv: targetingService.get('rv', videoData.position) || '',
 			skin: targetingService.get('skin') || '',
 			timestamp: now.getTime(),

@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { context, pbjsFactory, targetingService, UniversalStorage, utils } from '@ad-engine/core';
+import { pbjsFactory, targetingService, UniversalStorage, utils } from '@ad-engine/core';
 
 export class IdRetriever {
 	private static _instance: IdRetriever;
@@ -86,7 +86,7 @@ export class IdRetriever {
 		switch (true) {
 			case !!storage.getItem('liveConnect'):
 				return 'L';
-			case !!context.get('wiki.opts.userEmailHashes'):
+			case !!window.ads.context?.opts?.userEmailHashes:
 				return 'M';
 			default:
 				return 'A';

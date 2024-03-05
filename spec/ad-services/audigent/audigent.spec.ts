@@ -38,7 +38,6 @@ describe('Audigent', () => {
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);
 
-		context.set('wiki.targeting.directedAtChildren', false);
 		window.fandomContext.partners.directedAtChildren = false;
 	});
 
@@ -55,8 +54,6 @@ describe('Audigent', () => {
 
 		context.set('options.trackingOptIn', undefined);
 		context.set('options.optOutSale', undefined);
-
-		context.set('wiki.targeting.directedAtChildren', undefined);
 	});
 
 	it('Audigent is called', async () => {
@@ -90,7 +87,6 @@ describe('Audigent', () => {
 	});
 
 	it('Audigent not called on kid wikis', async () => {
-		context.set('wiki.targeting.directedAtChildren', true);
 		window.fandomContext.partners.directedAtChildren = true;
 
 		await audigent.call();

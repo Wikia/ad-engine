@@ -71,7 +71,7 @@ export class Apstag {
 	}
 
 	public sendMediaWikiHEM(): void {
-		const userEmailHashes: [string, string, string] = context.get('wiki.opts.userEmailHashes');
+		const userEmailHashes: [string, string, string] = window.ads?.context?.opts?.userEmailHashes;
 		if (!Array.isArray(userEmailHashes) || userEmailHashes?.length !== 3) {
 			return;
 		}

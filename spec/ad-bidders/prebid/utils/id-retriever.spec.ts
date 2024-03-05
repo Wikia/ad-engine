@@ -1,6 +1,6 @@
 import { IdRetriever } from '@wikia/ad-bidders/prebid/utils/id-retriever';
 import { communicationService, eventsRepository } from '@wikia/communication';
-import { Context, UniversalStorage } from '@wikia/core';
+import { UniversalStorage } from '@wikia/core';
 import { expect } from 'chai';
 import { SinonSpy, SinonStub } from 'sinon';
 import { PbjsStub, stubPbjs } from '../../../core/services/pbjs.stub';
@@ -8,18 +8,18 @@ import { PbjsStub, stubPbjs } from '../../../core/services/pbjs.stub';
 describe('Prebid Id Retriever', () => {
 	let pbjsStub: PbjsStub;
 	let dispatchSpy: SinonSpy;
-	let getItemStub, contextGetStub: SinonStub;
+	let getItemStub: SinonStub;
 	beforeEach(() => {
 		pbjsStub = stubPbjs(global.sandbox).pbjsStub;
 		dispatchSpy = global.sandbox.spy(communicationService, 'dispatch');
 		getItemStub = global.sandbox.stub(UniversalStorage.prototype, 'getItem');
-		contextGetStub = global.sandbox.stub(Context.prototype, 'get');
 	});
 
 	afterEach(() => {
 		global.sandbox.restore();
 		getItemStub.resetHistory();
 	});
+
 	it('can be initialized', () => {
 		const retriever = IdRetriever.get();
 		expect(retriever).to.be.instanceOf(IdRetriever);
@@ -82,10 +82,20 @@ describe('Prebid Id Retriever', () => {
 	});
 
 	it('can generate proper status for MediaWiki HEM', async () => {
-		contextGetStub.withArgs('wiki.opts.userEmailHashes').returns(['md5', 'sha1', 'sha256']);
+		window.ads = {
+			...window.ads,
+			context: {
+				// @ts-expect-error provide only partial context
+				opts: {
+					userEmailHashes: ['md5', 'sha1', 'sha256'],
+				},
+			},
+		};
 
 		const retriever = IdRetriever.get();
 		const idString = await retriever.generateBoiString();
 		expect(idString).to.equal('AAMAxxxxxxxxxxxx');
+
+		delete window.ads;
 	});
 });

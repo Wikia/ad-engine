@@ -50,7 +50,7 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	private isTopLeaderboardApplicable(): boolean {
-		const pageType = context.get('wiki.targeting.pageType');
+		const pageType = window.ads.context?.targeting?.pageType;
 		const hasFeaturedVideo = context.get('custom.hasFeaturedVideo');
 		const hasPageHeader = !!document.querySelector('.wiki-page-header');
 		const hasPortableInfobox = !!document.querySelector('.portable-infobox');
@@ -152,7 +152,7 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	private isInContentApplicable(): boolean {
-		const pageType = context.get('wiki.targeting.pageType');
+		const pageType = window.ads.context?.targeting?.pageType;
 
 		if (pageType === 'home') {
 			return !!document.querySelector('.curated-content');
@@ -236,7 +236,7 @@ export class UcpMobileSlotsDefinitionRepository {
 	private isMobilePrefooterApplicable(): boolean {
 		const MIN_NUMBER_OF_SECTIONS = 4;
 
-		if (context.get('wiki.targeting.pageType') === 'home') {
+		if (window.ads.context?.targeting?.pageType === 'home') {
 			return !!document.querySelector('.trending-articles');
 		}
 
@@ -276,7 +276,7 @@ export class UcpMobileSlotsDefinitionRepository {
 	private isBottomLeaderboardApplicable(): boolean {
 		return (
 			!!document.querySelector('.global-footer') &&
-			context.get('wiki.targeting.pageType') !== 'search'
+			window.ads.context?.targeting?.pageType !== 'search'
 		);
 	}
 
@@ -306,7 +306,7 @@ export class UcpMobileSlotsDefinitionRepository {
 
 	private isIncontentPlayerApplicable(): boolean {
 		return (
-			context.get('custom.hasIncontentPlayer') && context.get('wiki.targeting.pageType') !== 'home'
+			context.get('custom.hasIncontentPlayer') && window.ads.context?.targeting?.pageType !== 'home'
 		);
 	}
 

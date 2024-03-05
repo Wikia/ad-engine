@@ -24,7 +24,6 @@ export * from './setup/jwp-strategy-rules.setup';
 export * from './setup/labrador.setup';
 export * from './setup/load-times.setup';
 export * from './setup/metric-reporter.setup';
-export * from './setup/platform-context.setup';
 export * from './setup/player.setup';
 export * from './setup/post-ad-stack-partners.setup';
 export * from './setup/preloaded-libraries-setup';

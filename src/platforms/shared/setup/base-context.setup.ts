@@ -13,6 +13,7 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { NoAdsDetector } from '../services/no-ads-detector';
+import { getMediaWikiVariable } from '../utils/get-media-wiki-variable';
 
 @Injectable()
 export class BaseContextSetup implements DiProcess {
@@ -55,7 +56,7 @@ export class BaseContextSetup implements DiProcess {
 
 		context.set('state.showAds', this.noAdsDetector.isAdsMode());
 		context.set('state.deviceType', utils.client.getDeviceType());
-		context.set('state.isLogged', !!context.get('wiki.wgUserId'));
+		context.set('state.isLogged', !!getMediaWikiVariable('wgUserId'));
 
 		if (this.instantConfig.get('icPrebidium')) {
 			context.set('state.provider', 'prebidium');

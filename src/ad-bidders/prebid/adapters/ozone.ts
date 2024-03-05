@@ -14,7 +14,7 @@ export class Ozone extends PrebidAdapter {
 		this.testGroup = Math.floor(Math.random() * 100).toString();
 		this.customTargeting = {
 			s1: [
-				context.get('wiki.targeting.wikiIsTop1000')
+				window.ads.context?.targeting?.wikiIsTop1000
 					? targetingService.get('s1') || ''
 					: 'not a top1k wiki',
 			],

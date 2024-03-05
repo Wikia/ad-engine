@@ -164,7 +164,7 @@ export class UcpMobileTopBoxadExperiment {
 	}
 
 	private isHome() {
-		return context.get('wiki.targeting.pageType') === 'home';
+		return window.ads.context?.targeting?.pageType === 'home';
 	}
 
 	private isBeforeFirstH2(element: Element) {

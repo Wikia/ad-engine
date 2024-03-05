@@ -158,17 +158,24 @@ describe('Apstag', () => {
 
 		it('should update optOut HEM to Amazon when user consent changes', async () => {
 			// given
-			const apstag = Apstag.reset();
+			window.ads = {
+				...window.ads,
+				context: {
+					// @ts-expect-error provide only partial context
+					opts: {
+						userEmailHashes: ['md5', 'sha1', 'sha256'],
+					},
+				},
+			};
 			global.sandbox
 				.stub(context, 'get')
-				.withArgs('wiki.opts.userEmailHashes')
-				.returns(['hash1', 'hash2', 'hash3'])
 				.withArgs('bidders.a9.hem.enabled')
 				.returns(true)
 				.withArgs('options.trackingOptIn')
 				.returns(true)
 				.withArgs('options.optOutSale')
 				.returns(false);
+			const apstag = Apstag.reset();
 
 			// when
 			await apstag.init();
@@ -178,26 +185,35 @@ describe('Apstag', () => {
 			expect(apstagRpaStub.calledOnce, 'apstag.rpa not called once').to.be.true;
 			expect(
 				apstagRpaStub.calledWithExactly({
-					hashedRecords: [{ type: 'email', record: 'hash3' }],
+					hashedRecords: [{ type: 'email', record: 'sha256' }],
 					optOut: false,
 				}),
 				'apstag.rpa not called with expected args',
 			).to.be.true;
+			// @ts-expect-error reset ads context
+			window.ads.context = {};
 		});
 
 		it('should send HEM to Amazon when user is logged in', async () => {
 			// given
-			const apstag = Apstag.reset();
+			window.ads = {
+				...window.ads,
+				context: {
+					// @ts-expect-error provide only partial context
+					opts: {
+						userEmailHashes: ['md5', 'sha1', 'sha256'],
+					},
+				},
+			};
 			global.sandbox
 				.stub(context, 'get')
-				.withArgs('wiki.opts.userEmailHashes')
-				.returns(['hash1', 'hash2', 'hash3'])
 				.withArgs('bidders.a9.hem.enabled')
 				.returns(true)
 				.withArgs('options.trackingOptIn')
 				.returns(true)
 				.withArgs('options.optOutSale')
 				.returns(false);
+			const apstag = Apstag.reset();
 
 			// when
 			await apstag.init();
@@ -207,11 +223,13 @@ describe('Apstag', () => {
 			expect(apstagRpaStub.calledOnce, 'apstag.rpa not called once').to.be.true;
 			expect(
 				apstagRpaStub.calledWithExactly({
-					hashedRecords: [{ type: 'email', record: 'hash3' }],
+					hashedRecords: [{ type: 'email', record: 'sha256' }],
 					optOut: false,
 				}),
 				'apstag.rpa not called with expected args',
 			).to.be.true;
+			// @ts-expect-error reset ads context
+			window.ads.context = {};
 		});
 	});
 

@@ -8,7 +8,6 @@ import {
 	MetricReporterSetup,
 	NoAdsDetector,
 	NoAdsMode,
-	PlatformContextSetup,
 	SequentialMessagingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
@@ -45,7 +44,6 @@ export class F2Platform {
 
 		// Config
 		this.pipeline.add(
-			PlatformContextSetup,
 			async () => await ensureGeoCookie(),
 			parallel(InstantConfigSetup, ConsentManagementPlatformSetup),
 			F2IocSetup,

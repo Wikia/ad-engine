@@ -100,7 +100,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	private configureTopLeaderboardAndCompanions(): void {
 		if (
 			!context.get('custom.hasFeaturedVideo') &&
-			context.get('wiki.targeting.pageType') !== 'search'
+			window.ads.context?.targeting?.pageType !== 'search'
 		) {
 			slotsContext.addSlotSize(
 				'top_leaderboard',

@@ -27,9 +27,9 @@ export class UcpTargetingSetup implements DiProcess {
 			...this.getPageLevelTargeting(fandomContext),
 		});
 
-		if (context.get('wiki.opts.isAdTestWiki') && context.get('wiki.targeting.testSrc')) {
-			context.set('src', [context.get('wiki.targeting.testSrc')]);
-		} else if (context.get('wiki.opts.isAdTestWiki')) {
+		if (context.get('ads.opts.isAdTestWiki') && context.get('ads.targeting.testSrc')) {
+			context.set('src', [context.get('ads.targeting.testSrc')]);
+		} else if (context.get('ads.opts.isAdTestWiki')) {
 			context.set('src', ['test']);
 		}
 
@@ -44,7 +44,7 @@ export class UcpTargetingSetup implements DiProcess {
 			);
 		}
 
-		if (context.get('wiki.targeting.wikiIsTop1000')) {
+		if (window.ads.context?.targeting?.wikiIsTop1000) {
 			context.set('custom.wikiIdentifier', '_top1k_wiki');
 			context.set('custom.dbNameForAdUnit', targetingService.get('s1'));
 		}

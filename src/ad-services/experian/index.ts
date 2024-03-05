@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { BaseServiceSetup, context, targetingService, utils } from '@ad-engine/core';
+import { BaseServiceSetup, globalContextService, targetingService, utils } from '@ad-engine/core';
 
 const partnerName = 'experian';
 const logGroup = partnerName;
@@ -20,7 +20,7 @@ export class Experian extends BaseServiceSetup {
 
 	private getExperianPixelUrl(): string {
 		const ppid = targetingService.get('ppid');
-		const pv_unique_id = context.get('wiki.pvUID');
+		const pv_unique_id = globalContextService.getValue('tracking', 'pvUID');
 		const partner_url = `${this.PARTNER_URL_CORE}/${pv_unique_id}?id=\${TA_DEVICE_ID}
 			&partner=TAPAD`;
 

@@ -27,7 +27,7 @@ export class Ats extends BaseServiceSetup {
 			return;
 		}
 
-		const userEmailHashes: [string, string, string] = context.get('wiki.opts.userEmailHashes');
+		const userEmailHashes: [string, string, string] = window.ads.context?.opts?.userEmailHashes;
 		if (!Array.isArray(userEmailHashes) || userEmailHashes?.length !== 3) {
 			utils.logger(logGroup, 'no hashes');
 			return;

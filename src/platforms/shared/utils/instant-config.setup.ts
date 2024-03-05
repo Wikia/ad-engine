@@ -30,7 +30,6 @@ export class InstantConfigSetup implements DiProcess {
 			appName,
 			instantConfigEndpoint,
 			instantConfigFallbackEndpoint,
-			instantConfigVariant: context.get('wiki.services_instantConfig_variant'),
 		}).init();
 
 		context.set('services.instantConfig.appName', appName);

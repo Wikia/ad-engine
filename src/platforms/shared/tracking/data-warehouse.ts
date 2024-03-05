@@ -1,7 +1,14 @@
-import { context, targetingService, trackingOptIn, utils } from '@wikia/ad-engine';
+import {
+	context,
+	globalContextService,
+	targetingService,
+	trackingOptIn,
+	utils,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { AdEngineStageSetup } from '../setup/ad-engine-stage.setup';
 import { TrackingUrl, trackingUrls } from '../setup/tracking-urls';
+import { getMediaWikiVariable } from '../utils/get-media-wiki-variable';
 import { BatchProcessor } from './batch-processor';
 import { dwTrafficAggregator } from './data-warehouse-utils/dw-traffic-aggregator';
 import { TrackingParams } from './models/tracking-params';
@@ -70,20 +77,20 @@ export class DataWarehouseTracker {
 	 */
 	private getDataWarehouseParams(): TrackingParams {
 		return {
-			session_id: context.get('wiki.sessionId') || 'unknown',
-			pv_number: context.get('wiki.pvNumber'),
-			pv_number_global: context.get('wiki.pvNumberGlobal'),
-			pv_unique_id: context.get('wiki.pvUID'),
-			beacon: context.get('wiki.beaconId') || 'unknown',
-			c: context.get('wiki.wgCityId') || 'unknown',
-			ck: context.get('wiki.dsSiteKey') || 'unknown',
-			lc: context.get('wiki.wgUserLanguage') || 'unknown',
+			session_id: globalContextService.getValue('tracking', 'sessionId') || 'unknown',
+			pv_number: globalContextService.getValue('tracking', 'pvNumber'),
+			pv_number_global: globalContextService.getValue('tracking', 'pvNumberGlobal'),
+			pv_unique_id: globalContextService.getValue('tracking', 'pvUID'),
+			beacon: globalContextService.getValue('tracking', 'beaconId') || 'unknown',
+			c: getMediaWikiVariable('wgCityId') || 'unknown',
+			ck: getMediaWikiVariable('dsSiteKey') || 'unknown',
+			lc: getMediaWikiVariable('wgUserLanguage') || 'unknown',
 			s: targetingService.get('skin') || 'unknown',
 			ua: window.navigator.userAgent,
 			u: trackingOptIn.isOptedIn() ? context.get('options.userId') || 0 : -1,
 			a: parseInt(targetingService.get('artid') || -1),
-			x: context.get('wiki.wgDBname') || 'unknown',
-			n: context.get('wiki.wgNamespaceNumber') || -1,
+			x: getMediaWikiVariable('wgDBname') || 'unknown',
+			n: getMediaWikiVariable('wgNamespaceNumber') || -1,
 		};
 	}
 

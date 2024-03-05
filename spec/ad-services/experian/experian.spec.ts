@@ -51,7 +51,6 @@ describe('Experian', () => {
 	});
 
 	it('Experian not called on kid wikis', async () => {
-		context.set('wiki.targeting.directedAtChildren', true);
 		window.fandomContext.partners.directedAtChildren = true;
 
 		await experian.call();
