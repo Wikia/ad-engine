@@ -34,11 +34,6 @@ export class PlayerSetup extends BaseServiceSetup {
 	}
 
 	async call() {
-		/*
-		communicationService.on(eventsRepository.VIDEO_PLAYER_RENDERED, () => {
-			this.loadIasTrackerIfEnabled();
-		});
-		*/
 		const showAds = !context.get('options.wad.blocking');
 		const vastResponse: VastResponseData | undefined =
 			showAds &&
