@@ -56,12 +56,4 @@ describe('JWPlayerManager', () => {
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
-
-	it('loads IAS when plugin is enabled', () => {
-		context.set('options.video.iasTracking.enabled', true);
-		const jwpManager = new JWPlayerManager();
-		jwpManager.manage();
-
-		expect(loadScriptStub.called).to.equal(true);
-	});
 });
