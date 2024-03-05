@@ -77,7 +77,7 @@ export class SlotRefresher {
 	 */
 	removeHigherSlotSizes(adSlot: AdSlot) {
 		const slotName = adSlot.getSlotName();
-		const slotHeight = adSlot.getAdContainer().clientHeight;
+		const slotHeight = adSlot.getElement().clientHeight;
 
 		const slotRefresherConfig = context.get('slotConfig.slotRefresher.sizes');
 		if (!slotRefresherConfig) return;
@@ -121,8 +121,8 @@ export class SlotRefresher {
 	}
 
 	addSlotSizeToContext(adSlot: AdSlot) {
-		const slotWidth = adSlot.getAdContainer().clientWidth;
-		const slotHeight = adSlot.getAdContainer().clientHeight;
+		const slotWidth = adSlot.getElement().clientWidth;
+		const slotHeight = adSlot.getElement().clientHeight;
 
 		context.set(`slotConfig.slotRefresher.sizes.${adSlot.getSlotName()}`, [slotWidth, slotHeight]);
 	}
