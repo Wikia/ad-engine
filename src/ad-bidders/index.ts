@@ -40,7 +40,6 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 			eventsRepository.BIDDERS_BIDS_REFRESH,
 			({ refreshedSlotNames }) => {
 				refreshedSlotNames.forEach((slotName) => this.updateSlotTargeting(slotName));
-				// TODO ZŁAP EVENTA
 			},
 			false,
 		);

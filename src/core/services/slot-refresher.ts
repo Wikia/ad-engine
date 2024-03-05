@@ -77,11 +77,40 @@ export class SlotRefresher {
 	 */
 	removeHigherSlotSizes(adSlot: AdSlot) {
 		const slotName = adSlot.getSlotName();
+		const slotHeight = adSlot.getAdContainer().clientHeight;
+
 		const slotRefresherConfig = context.get('slotConfig.slotRefresher.sizes');
 		if (!slotRefresherConfig) return;
 
 		const slotHeightLimit = slotRefresherConfig[slotName][1];
 		if (!slotHeightLimit) return;
+
+		const sizeKey = context.get(`slots.${adSlot.getSlotName()}.sizes`);
+
+		if (sizeKey) {
+			context.set(
+				`slots.${adSlot.getSlotName()}.sizes`,
+				sizeKey[0].sizes.filter((size) => size[1] <= slotHeight && size[1] > 3),
+			);
+		}
+		const defaultSizeKey = context.get(`slots.${adSlot.getSlotName()}.defaultSizes`);
+
+		if (defaultSizeKey) {
+			context.set(
+				`slots.${adSlot.getSlotName()}.defaultSizes`,
+				defaultSizeKey.filter((size) => size[1] <= slotHeight && size[1] > 3),
+			);
+		}
+
+		if (adSlot.config.sizes) {
+			adSlot.config.sizes = adSlot.config.sizes.filter((size) => size[1] <= slotHeightLimit);
+		}
+
+		if (adSlot.config.defaultSizes) {
+			adSlot.config.defaultSizes = adSlot.config.defaultSizes.filter(
+				(size) => size[1] <= slotHeightLimit,
+			);
+		}
 
 		const filterCallback = (size: [number, number]) => size[1] <= slotHeightLimit;
 
@@ -92,8 +121,8 @@ export class SlotRefresher {
 	}
 
 	addSlotSizeToContext(adSlot: AdSlot) {
-		const slotHeight = adSlot.getElement().clientHeight;
-		const slotWidth = adSlot.getElement().clientWidth;
+		const slotWidth = adSlot.getAdContainer().clientWidth;
+		const slotHeight = adSlot.getAdContainer().clientHeight;
 
 		context.set(`slotConfig.slotRefresher.sizes.${adSlot.getSlotName()}`, [slotWidth, slotHeight]);
 	}
@@ -103,10 +132,11 @@ export class SlotRefresher {
 		const slotSizes = context.get('slotConfig.slotRefresher.sizes') || {};
 
 		if (!(adSlot.getSlotName() in slotSizes)) {
-			this.addSlotSizeToContext(adSlot);
-			this.removeHigherSlotSizes(adSlot);
+			setTimeout(() => {
+				this.addSlotSizeToContext(adSlot);
+				this.removeHigherSlotSizes(adSlot);
+			}, 1000);
 		}
-
 		setTimeout(() => {
 			if (adSlot.isEnabled()) {
 				this.log(`${adSlot.getSlotName()} will be refreshed.`);

@@ -39,6 +39,27 @@ export abstract class PrebidAdapter {
 		);
 	}
 
+	filterSizesForRefreshing(code: string, sizes: [number, number][]) {
+		if (!sizes) {
+			return sizes;
+		}
+
+		const slotRefresherConfig = context.get('slotConfig.slotRefresher');
+
+		if (!slotRefresherConfig || !slotRefresherConfig.sizes) {
+			return sizes;
+		}
+
+		const slotsAvailableForRefreshing = Object.keys(slotRefresherConfig.sizes);
+		const adUnitSizeLimit = slotRefresherConfig.sizes[code];
+
+		const filteredSizes = slotsAvailableForRefreshing.includes(code)
+			? sizes.filter((size) => size[1] <= adUnitSizeLimit[1])
+			: sizes;
+
+		return filteredSizes;
+	}
+
 	protected getTargeting(placementName: string, customTargeting = {}): Dictionary {
 		return {
 			...this.pageTargeting,
@@ -79,12 +100,12 @@ export abstract class PrebidAdapter {
 		);
 	}
 
-	extractSizeFromString(input: string, type: 'pubmatic' | 'triplelift'): number[] | null {
+	extractSizeFromString(input: string, bidderName: string): number[] | null {
 		let regex: RegExp;
 
-		if (type === 'pubmatic') {
+		if (bidderName === 'pubmatic') {
 			regex = /@(\d+)x(\d+)/;
-		} else if (type === 'triplelift') {
+		} else if (bidderName === 'triplelift') {
 			regex = /_(\d+)x(\d+)_/;
 		} else {
 			throw new Error('Invalid type specified');

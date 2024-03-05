@@ -15,11 +15,12 @@ export class Verizon extends PrebidAdapter {
 	}
 
 	prepareConfigForAdUnit(code, { sizes, pos }): PrebidAdUnit {
+		const newSizes = this.filterSizesForRefreshing(code, sizes);
 		return {
 			code,
 			mediaTypes: {
 				banner: {
-					sizes,
+					sizes: newSizes,
 				},
 			},
 			bids: [

@@ -21,14 +21,15 @@ export class Pubmatic extends PrebidAdapter {
 	}
 
 	setMaximumAdSlotHeight(slotName: string, slotHeightLimit: number) {
+		super.setMaximumAdSlotHeight(slotName, slotHeightLimit);
 		const ids = context.get(`bidders.prebid.${this.bidderName}.slots.${slotName}.ids`);
 
 		const filteredIDs = ids.filter((code) => {
-			const size = this.extractSizeFromString(code, 'pubmatic');
+			const size = this.extractSizeFromString(code, this.bidderName);
 			return !(size && size[1] > slotHeightLimit);
 		});
 
-		context.set(`bidders.prebid.${this.bidderName}.slots.${slotName}.inventoryCodes`, filteredIDs);
+		context.set(`bidders.prebid.${this.bidderName}.slots.${slotName}.ids`, filteredIDs);
 	}
 
 	prepareConfigForAdUnit(code, { sizes, ids }: PrebidAdSlotConfig): PrebidAdUnit {
@@ -36,7 +37,9 @@ export class Pubmatic extends PrebidAdapter {
 			return this.getVideoConfig(code, ids);
 		}
 
-		return this.getStandardConfig(code, sizes, ids);
+		const newSizes = this.filterSizesForRefreshing(code, sizes);
+
+		return this.getStandardConfig(code, newSizes, ids);
 	}
 
 	getVideoConfig(code, ids): PrebidAdUnit {

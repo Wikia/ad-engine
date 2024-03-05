@@ -27,8 +27,8 @@ export class IndexExchange extends PrebidAdapter {
 		if (context.get(`slots.${code}.isVideo`)) {
 			return this.getVideoConfig(code, siteId);
 		}
-
-		return this.getStandardConfig(code, { sizes, siteId });
+		const newSizes = this.filterSizesForRefreshing(code, sizes);
+		return this.getStandardConfig(code, { sizes: newSizes, siteId });
 	}
 
 	private getVideoConfig(code, siteId): PrebidAdUnit {
