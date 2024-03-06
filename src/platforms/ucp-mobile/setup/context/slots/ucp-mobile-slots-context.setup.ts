@@ -81,8 +81,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					loc: 'middle',
 					pos: ['incontent_boxad'],
 				},
-				bidGroup: 'incontent_boxad_1',
-				bidBeforeRun: true,
 			},
 			incontent_player: {
 				adProduct: 'incontent_player',
@@ -109,8 +107,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'footer',
 				},
-				bidGroup: 'mobile_prefooter',
-				bidBeforeRun: true,
 			},
 			interstitial: {
 				adProduct: 'interstitial',
@@ -134,8 +130,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					[320, 50],
 					[320, 100],
 				],
-				bidGroup: 'floor_adhesion',
-				bidBeforeRun: true,
 			},
 			bottom_leaderboard: {
 				adProduct: 'bottom_leaderboard',
@@ -160,8 +154,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					loc: 'footer',
 					pos: ['bottom_leaderboard', 'mobile_prefooter'],
 				},
-				bidGroup: 'bottom_leaderboard',
-				bidBeforeRun: true,
 			},
 			featured: {
 				adProduct: 'featured',
@@ -225,5 +217,22 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 		context.set('slots', slots);
 		context.set('slots.featured.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
 		context.set('slots.incontent_player.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
+		this.configureBidAuctionSplitExperiment();
+	}
+
+	private configureBidAuctionSplitExperiment() {
+		if (context.get('custom.bidAuctionSplitEnabled')) {
+			context.set('slots.bottom_leaderboard.bidGroup', 'bottom_leaderboard');
+			context.set('slots.bottom_leaderboard.bidBeforeRun', true);
+
+			context.set('slots.incontent_boxad_1.bidGroup', 'incontent_boxad_1');
+			context.set('slots.incontent_boxad_1.bidBeforeRun', true);
+
+			context.set('slots.mobile_prefooter.bidGroup', 'mobile_prefooter');
+			context.set('slots.mobile_prefooter.bidBeforeRun', true);
+
+			context.set('slots.floor_adhesion.bidGroup', 'floor_adhesion');
+			context.set('slots.floor_adhesion.bidBeforeRun', true);
+		}
 	}
 }

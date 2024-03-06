@@ -59,8 +59,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'middle',
 				},
-				bidGroup: 'incontent_leaderboard',
-				bidBeforeRun: true,
 			},
 			incontent_boxad_1: {
 				adProduct: 'incontent_boxad_1',
@@ -76,8 +74,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'hivi',
 				},
-				bidGroup: 'incontent_boxad_1',
-				bidBeforeRun: true,
 			},
 			bottom_leaderboard: {
 				adProduct: 'bottom_leaderboard',
@@ -108,8 +104,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 					createLabel: false,
 					adLabelParent: '.bottom-ads-container',
 				},
-				bidGroup: 'bottom_leaderboard',
-				bidBeforeRun: true,
 			},
 			incontent_player: {
 				adProduct: 'incontent_player',
@@ -198,5 +192,19 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 		context.set('slots', slots);
 		context.set('slots.featured.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
 		context.set('slots.incontent_player.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
+		this.configureBidAuctionSplitExperiment();
+	}
+
+	private configureBidAuctionSplitExperiment() {
+		if (context.get('custom.bidAuctionSplitEnabled')) {
+			context.set('slots.incontent_leaderboard.bidGroup', 'incontent_leaderboard');
+			context.set('slots.incontent_leaderboard.bidBeforeRun', true);
+
+			context.set('slots.incontent_boxad_1.bidGroup', 'incontent_boxad_1');
+			context.set('slots.incontent_boxad_1.bidBeforeRun', true);
+
+			context.set('slots.bottom_leaderboard.bidGroup', 'bottom_leaderboard');
+			context.set('slots.bottom_leaderboard.bidBeforeRun', true);
+		}
 	}
 }
