@@ -31,6 +31,10 @@ export class IdentitySetup implements DiProcess {
 				if (ppid) {
 					targetingService.set('ppid', ppid);
 				}
+				const pvUID = globalContextService.getValue('tracking', 'pvUID');
+				if (pvUID) {
+					targetingService.set('pvuid', pvUID);
+				}
 
 				targetingService.set(
 					'browser',
