@@ -9,9 +9,9 @@
 @import '../../../shared/styles/uap-porvata/uap-porvata';
 @import '../../../shared/styles/uap-porvata/porvata';
 
-@mixin uap-styles() {
+@mixin uap-styles($topLeaderBoardSelect: '#top_leaderboard') {
 	&.has-uap {
-		#top_leaderboard {
+		#{$topLeaderBoardSelect} {
 			line-height: unset;
 			margin: unset;
 

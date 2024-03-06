@@ -10,7 +10,6 @@ import {
 	context,
 	eventsRepository,
 	InstantConfigService,
-	Optimizely,
 	RepeatableSlotPlaceholderConfig,
 	scrollListener,
 	slotPlaceholderInjector,
@@ -20,20 +19,9 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 import { FmrRotator } from '../../utils/fmr-rotator';
 
-const OPTIMIZELY_ANYCLIP_PLACEMENT_EXPERIMENT = {
-	EXPERIMENT_ENABLED: 'anyclip_placement',
-	EXPERIMENT_VARIANT: 'anyclip_placement_variant',
-};
-
-const OPTIMIZELY_ANYCLIP_PLACEMENT_EXPERIMENT_VARIANTS = {
-	FEATURED_VIDEO: 'anyclip_placement_featured_video',
-	ORIGINAL: 'anyclip_placement_original',
-	UNDEFINED: 'anyclip_placement_undefined',
-};
-
 @Injectable()
 export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepository {
-	constructor(protected instantConfig: InstantConfigService, protected optimizely: Optimizely) {}
+	constructor(protected instantConfig: InstantConfigService) {}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
 		const slotName = 'top_leaderboard';
@@ -186,6 +174,7 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 
 		const slotNamePrefix = 'incontent_boxad_';
 		const slotName = `${slotNamePrefix}1`;
+		const bidGroup = 'incontent_boxad';
 
 		return {
 			slotCreatorConfig: {
@@ -206,15 +195,34 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 				},
 			},
 			activator: () => {
-				const rotator = new FmrRotator(slotName, slotNamePrefix, btRec, {
-					topPositionToRun: 65,
-				});
-
 				communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
-					rotator.rotateSlot();
+					if (this.isFmrApplicable(slotName)) {
+						const rotator = new FmrRotator(slotName, slotNamePrefix, btRec, {
+							topPositionToRun: 65,
+							bidders: {
+								bidGroup: bidGroup,
+								a9Alias: slotName,
+								bidderAlias: slotName,
+							},
+						});
+						rotator.rotateSlot();
+					} else {
+						utils.logger('ad-engine', 'ICB disabled');
+					}
 				});
 			},
 		};
+	}
+
+	private isFmrApplicable(slotName: string): boolean {
+		const fmrRecirculationElement = document.querySelector(
+			context.get(`slots.${slotName}.recirculationElementSelector`),
+		);
+		if (fmrRecirculationElement === null) {
+			return false;
+		}
+		const displayValue = window.getComputedStyle(fmrRecirculationElement, null).display;
+		return displayValue !== 'none';
 	}
 
 	private isRightRailApplicable(rightRailBreakingPoint = 1024): boolean {
@@ -246,35 +254,14 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 			return;
 		}
 
-		this.optimizely.addVariantToTargeting(
-			OPTIMIZELY_ANYCLIP_PLACEMENT_EXPERIMENT,
-			OPTIMIZELY_ANYCLIP_PLACEMENT_EXPERIMENT_VARIANTS.UNDEFINED,
-		);
-		const variant = this.optimizely.getVariant(OPTIMIZELY_ANYCLIP_PLACEMENT_EXPERIMENT);
-
-		if (variant) {
-			this.optimizely.addVariantToTargeting(OPTIMIZELY_ANYCLIP_PLACEMENT_EXPERIMENT, variant);
-		}
-
-		const isAnyclipInFeaturedVideoPlacement =
-			variant === OPTIMIZELY_ANYCLIP_PLACEMENT_EXPERIMENT_VARIANTS.FEATURED_VIDEO;
-
 		return {
-			slotCreatorConfig: isAnyclipInFeaturedVideoPlacement
-				? {
-						slotName,
-						anchorSelector: '.page-content',
-						avoidConflictWith: ['.incontent-leaderboard'],
-						insertMethod: 'before',
-						classList: ['anyclip-experiment'],
-				  }
-				: {
-						slotName,
-						anchorSelector: context.get('templates.incontentAnchorSelector'),
-						anchorPosition: 'belowFirstViewport',
-						avoidConflictWith: ['.incontent-leaderboard'],
-						insertMethod: 'before',
-				  },
+			slotCreatorConfig: {
+				slotName,
+				anchorSelector: context.get('templates.incontentAnchorSelector'),
+				anchorPosition: 'belowFirstViewport',
+				avoidConflictWith: ['.incontent-leaderboard'],
+				insertMethod: 'before',
+			},
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
 			},

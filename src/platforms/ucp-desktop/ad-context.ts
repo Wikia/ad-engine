@@ -14,18 +14,13 @@ export const basicContext = {
 			videoEnabled: false,
 			amazonId: '3115',
 			bidsRefreshing: {
-				slots: ['featured', 'gallery_leaderboard', 'incontent_boxad_1', 'incontent_leaderboard'],
+				slots: ['featured', 'gallery_leaderboard', 'incontent_leaderboard'],
 			},
 		},
 		prebid: {
 			enabled: false,
 			bidsRefreshing: {
-				slots: [
-					'gallery_leaderboard',
-					'incontent_boxad_1',
-					'incontent_leaderboard',
-					'incontent_player',
-				],
+				slots: ['gallery_leaderboard', 'incontent_leaderboard', 'incontent_player'],
 			},
 		},
 	},
@@ -90,7 +85,7 @@ export const basicContext = {
 		},
 		connatix: {
 			cid: '016551d5-7095-47c0-a46b-fd0cb9bf4c72',
-			playerId: '039a9ead-fb3b-4afc-bcfb-ed241bbaa8d1',
+			playerId: '96b46997-3bf8-4c9d-9761-c06758f44607',
 			renderId: '858c22ce64e241d5acc77c4f6ed56d2d',
 		},
 		iasPublisherOptimization: {
@@ -107,12 +102,6 @@ export const basicContext = {
 		},
 		externalLogger: {
 			endpoint: '/wikia.php?controller=AdEngine&method=postLog',
-		},
-		instantConfig: {
-			endpoint: 'https://services.fandom.com',
-			appName: 'fandomdesktop',
-			fallback:
-				'https://script.wikia.nocookie.net/fandom-ae-assets/icbm/prod/icbm_state_fandomdesktop.json',
 		},
 		openWeb: {
 			placementSelector: '#WikiaAdInContentPlaceHolder',

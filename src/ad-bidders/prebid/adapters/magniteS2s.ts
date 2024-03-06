@@ -1,5 +1,9 @@
 import { PrebidAdapter } from '../prebid-adapter';
-import { PrebidAdSlotConfig } from '../prebid-models';
+import {
+	PrebidAdSlotConfig,
+	PrebidPlcmtVideoSubtypes,
+	PrebidVideoPlacements,
+} from '../prebid-models';
 
 export class MagniteS2s extends PrebidAdapter {
 	static bidderName = 'mgnipbs';
@@ -16,13 +20,32 @@ export class MagniteS2s extends PrebidAdapter {
 	}
 
 	prepareConfigForAdUnit(code, { sizes }: PrebidAdSlotConfig): PrebidAdUnit {
+		let mediaTypes: object = {
+			banner: {
+				sizes,
+			},
+		};
+
+		if (code === 'featured') {
+			mediaTypes = {
+				video: {
+					playerSize: sizes[0],
+					context: 'instream',
+					api: [2],
+					linearity: 1,
+					mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
+					maxduration: 30,
+					minduration: 1,
+					protocols: [2, 3, 5, 6],
+					placement: PrebidVideoPlacements.IN_ARTICLE,
+					plcmt: PrebidPlcmtVideoSubtypes.ACCOMPANYING_CONTENT,
+				},
+			};
+		}
+
 		return {
 			code,
-			mediaTypes: {
-				banner: {
-					sizes,
-				},
-			},
+			mediaTypes,
 			ortb2Imp: this.getOrtb2Imp(code),
 			bids: [
 				{

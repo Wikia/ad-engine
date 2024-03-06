@@ -12,7 +12,7 @@ import {
 } from '../services';
 import { decorate, defer, isCoppaSubject, logger } from '../utils';
 import { GptSizeMap } from './gpt-size-map';
-import { setupGptTargeting } from './gpt-targeting';
+import { initGptTargeting } from './gpt-targeting';
 import { Provider } from './provider';
 
 const logGroup = 'gpt-provider';
@@ -90,27 +90,11 @@ function configure(): void {
 		function (event: googletag.events.SlotVisibilityChangedEvent) {
 			const adSlot = getAdSlotFromEvent(event);
 
-			return adSlot?.emit(AdSlotEvent.SLOT_VISIBILITY_CHANGED, event);
-		},
-	);
-
-	tag.addEventListener(
-		'slotVisibilityChanged',
-		function (event: googletag.events.SlotVisibilityChangedEvent) {
-			const adSlot = getAdSlotFromEvent(event);
+			adSlot?.emit(AdSlotEvent.SLOT_VISIBILITY_CHANGED, event);
 
 			if (event.inViewPercentage > 50) {
 				return adSlot?.emit(AdSlotEvent.SLOT_BACK_TO_VIEWPORT, event);
-			}
-		},
-	);
-
-	tag.addEventListener(
-		'slotVisibilityChanged',
-		function (event: googletag.events.SlotVisibilityChangedEvent) {
-			const adSlot = getAdSlotFromEvent(event);
-
-			if (event.inViewPercentage < 50) {
+			} else if (event.inViewPercentage < 50) {
 				return adSlot?.emit(AdSlotEvent.SLOT_LEFT_VIEWPORT, event);
 			}
 		},
@@ -188,7 +172,7 @@ export class GptProvider implements Provider {
 			return;
 		}
 
-		setupGptTargeting();
+		initGptTargeting();
 		configure();
 		this.setupRestrictDataProcessing();
 		this.setPPID();
@@ -218,15 +202,7 @@ export class GptProvider implements Provider {
 	}
 
 	setPPID() {
-		const intentIqPpid = targetingService.get('intent_iq_ppid', 'intent_iq');
-
-		if (!intentIqPpid && targetingService.get('intent_iq_ppid', 'intent_iq') !== null) {
-			communicationService.emit(eventsRepository.INTENTIQ_PPID_NOT_SET_ON_TIME);
-		}
-
-		const ppid = context.get('services.intentIq.ppid.enabled')
-			? intentIqPpid
-			: targetingService.get('ppid');
+		const ppid = targetingService.get('ppid');
 
 		if (ppid) {
 			const tag = window.googletag.pubads();

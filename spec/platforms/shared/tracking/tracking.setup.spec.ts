@@ -11,13 +11,19 @@ describe('TrackingSetup', () => {
 	const dwTracker = new DataWarehouseTracker();
 	const labradorTracker = new LabradorTracker(dwTracker);
 	const adSizeTracker = new AdSizeTracker(dwTracker);
-	const instantConfig = new InstantConfigService();
+	const instantConfig = new InstantConfigService({
+		appName: 'testapp',
+	});
 	const globalTimeout = new GlobalTimeout();
 	const bidders = new Bidders(instantConfig, globalTimeout);
 	let trackSpy: SinonSpy;
 
 	beforeEach(() => {
 		trackSpy = global.sandbox.spy(dwTracker, 'track');
+	});
+
+	afterEach(() => {
+		targetingService.clear();
 	});
 
 	it('should track keyvals', (done) => {
@@ -51,6 +57,7 @@ describe('TrackingSetup', () => {
 		// given
 		targetingService.clear();
 		targetingService.set('ppid', 'ppid');
+		targetingService.set('topics_available', '1');
 		// @ts-expect-error Feature Policy API is not available in TS
 		global.window.document.featurePolicy = {
 			allowsFeature: (feature: string) => feature === 'browsing-topics',

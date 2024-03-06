@@ -1,4 +1,8 @@
 import { Openx } from '@wikia/ad-bidders/prebid/adapters/openx';
+import {
+	PrebidPlcmtVideoSubtypes,
+	PrebidVideoPlacements,
+} from '@wikia/ad-bidders/prebid/prebid-models';
 import { context } from '@wikia/core';
 import { expect } from 'chai';
 
@@ -84,6 +88,8 @@ describe('Openx bidder adapter', () => {
 						context: 'instream',
 						mimes: ['video/mp4', 'video/x-flv'],
 						playerSize: [640, 480],
+						placement: PrebidVideoPlacements.IN_ARTICLE,
+						plcmt: PrebidPlcmtVideoSubtypes.ACCOMPANYING_CONTENT,
 					},
 				},
 				ortb2Imp: {

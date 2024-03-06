@@ -38,7 +38,6 @@ import { UcpDesktopBaseContextSetup } from './setup/context/base/ucp-desktop-bas
 import { UcpDesktopPrebidConfigSetup } from './setup/context/prebid/ucp-desktop-prebid-config.setup';
 import { UcpDesktopSlotsContextSetup } from './setup/context/slots/ucp-desktop-slots-context.setup';
 import { UcpDesktopDynamicSlotsSetup } from './setup/dynamic-slots/ucp-desktop-dynamic-slots.setup';
-import { UcpDesktopExperimentsSetup } from './setup/experiments/ucp-desktop-experiments.setup';
 import { UcpDesktopTemplatesSetup } from './templates/ucp-desktop-templates.setup';
 
 @Injectable()
@@ -69,7 +68,6 @@ export class UcpDesktopPlatform {
 			LoadTimesSetup,
 			UcpDesktopPrebidConfigSetup,
 			UcpDesktopA9ConfigSetup,
-			UcpDesktopExperimentsSetup,
 			UcpDesktopDynamicSlotsSetup,
 			UcpDesktopTemplatesSetup,
 			SequentialMessagingSetup,

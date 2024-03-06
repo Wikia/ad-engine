@@ -1,6 +1,10 @@
 import { context } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
-import { PrebidAdSlotConfig } from '../prebid-models';
+import {
+	PrebidAdSlotConfig,
+	PrebidPlcmtVideoSubtypes,
+	PrebidVideoPlacements,
+} from '../prebid-models';
 
 export class IndexExchange extends PrebidAdapter {
 	static bidderName = 'indexExchange';
@@ -33,11 +37,12 @@ export class IndexExchange extends PrebidAdapter {
 			mediaTypes: {
 				video: {
 					context: 'instream',
+					placement: PrebidVideoPlacements.IN_ARTICLE,
 					playerSize: [640, 480],
-					plcmt: [2],
+					plcmt: PrebidPlcmtVideoSubtypes.ACCOMPANYING_CONTENT,
 				},
 			},
-			ortb2Imp: this.getOrtb2Imp(code),
+			ortb2Imp: this.extendOrtbWithJwpRtdDataWhenStrategyRulesEnabled(this.getOrtb2Imp(code)),
 			bids: [
 				{
 					bidder: this.bidderName,
@@ -102,5 +107,25 @@ export class IndexExchange extends PrebidAdapter {
 				siteId: id,
 			},
 		}));
+	}
+
+	private extendOrtbWithJwpRtdDataWhenStrategyRulesEnabled(ortbData) {
+		const strategyRulesEnabled = context.get('options.video.enableStrategyRules');
+		const initialMediaId = context.get('options.video.jwplayer.initialMediaId');
+
+		if (!strategyRulesEnabled) {
+			return ortbData;
+		}
+
+		return {
+			ext: {
+				...ortbData.ext,
+				data: {
+					jwTargeting: {
+						mediaID: initialMediaId,
+					},
+				},
+			},
+		};
 	}
 }

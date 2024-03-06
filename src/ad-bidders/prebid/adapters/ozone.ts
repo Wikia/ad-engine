@@ -1,3 +1,4 @@
+import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
 import { context, Dictionary, targetingService } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
@@ -23,12 +24,32 @@ export class Ozone extends PrebidAdapter {
 		this.dcn = options.dcn;
 
 		if (this.enabled) {
-			targetingService.set('testgroup', this.testGroup);
+			this.setTargeting();
 		}
 	}
 
 	get bidderName(): string {
 		return Ozone.bidderName;
+	}
+
+	private setTargeting() {
+		const ozoneContext = context.get('bidders.prebid.ozone');
+		if (ozoneContext && ozoneContext.slots) {
+			Object.keys(ozoneContext.slots).forEach((slotName) => {
+				targetingService.set('testgroup', this.testGroup, slotName);
+			});
+
+			communicationService.on(
+				eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+				(action: UapLoadStatus) => {
+					if (action.adProduct && action.adProduct !== 'none') {
+						Object.keys(ozoneContext.slots).forEach((slotName) => {
+							targetingService.remove('testgroup', slotName);
+						});
+					}
+				},
+			);
+		}
 	}
 
 	prepareConfigForAdUnit(code, { sizes, pos, placementId }: PrebidAdSlotConfig): PrebidAdUnit {

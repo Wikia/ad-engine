@@ -5,11 +5,12 @@ import {
 	DomainMatcher,
 	InstantConfigInterpreter,
 	InstantConfigLoader,
+	InstantConfigLoaderParams,
 	InstantConfigOverrider,
 	InstantConfigValue,
 	RegionMatcher,
 } from '@wikia/instant-config-loader';
-import { context, InstantConfigCacheStorage, utils } from '../../index';
+import { InstantConfigCacheStorage, utils } from '../../index';
 import { Dictionary } from '../../models';
 
 const logGroup = 'instant-config-service';
@@ -22,14 +23,10 @@ export class InstantConfigService implements InstantConfigServiceInterface {
 	private interpreter: InstantConfigInterpreter;
 	private repository: Dictionary<InstantConfigValue>;
 
+	constructor(private readonly params: InstantConfigLoaderParams) {}
+
 	async init(globals: Dictionary = {}): Promise<InstantConfigService> {
-		const instantConfigLoader = new InstantConfigLoader({
-			appName: context.get('services.instantConfig.appName'),
-			instantConfigEndpoint: context.get('services.instantConfig.endpoint'),
-			instantConfigVariant: context.get('wiki.services_instantConfig_variant'),
-			instantConfigFallbackEndpoint: context.get('services.instantConfig.fallback'),
-			lockDelay: 0,
-		});
+		const instantConfigLoader = new InstantConfigLoader(this.params);
 		const instantConfigInterpreter = new InstantConfigInterpreter(
 			new BrowserMatcher(utils.client.getBrowser()),
 			new DeviceMatcher(utils.client.getDeviceType() as unknown as string),

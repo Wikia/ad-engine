@@ -23,8 +23,9 @@ export class NoAdsMode implements DiProcess {
 
 	execute(): void {
 		this.removeAdSlotsPlaceholders();
-		this.noAdsDetector.addReasons(window.ads.context.opts.noAdsReasons);
+		this.noAdsDetector.addReasons(window.ads.context?.opts?.noAdsReasons ?? []);
 		this.dispatchJWPlayerSetupAction();
+		this.dispatchVideoSetupAction();
 		if (context.get('state.isLogged')) {
 			const apstag = Apstag.make();
 			apstag
@@ -59,5 +60,12 @@ export class NoAdsMode implements DiProcess {
 
 	private dispatchJWPlayerSetupAction(): void {
 		communicationService.dispatch(jwpSetup({ showAds: false, autoplayDisabled: false }));
+	}
+
+	private dispatchVideoSetupAction(): void {
+		communicationService.emit(eventsRepository.VIDEO_SETUP, {
+			showAds: false,
+			autoplayDisabled: false,
+		});
 	}
 }

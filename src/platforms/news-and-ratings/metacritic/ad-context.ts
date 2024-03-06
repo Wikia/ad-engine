@@ -35,9 +35,6 @@ export const basicContext = {
 		iasPublisherOptimization: {
 			slots: ['mpu_plus_top'],
 		},
-		instantConfig: {
-			appName: 'metacritic',
-		},
 	},
 	slots: {},
 	src: ['metacritic'],

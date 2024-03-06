@@ -19,6 +19,7 @@ interface Window {
 	canPlayVideo?: any;
 	cnx?: any;
 	confiant?: Confiant;
+	dataLayer: any;
 	DOMParser: DOMParser;
 	fandomContext: WindowFandomContext;
 	ga?: (
@@ -31,6 +32,7 @@ interface Window {
 	googletag: googletag.Googletag;
 	headertag?: any;
 	IntentIqObject?: IntentIqObject;
+	jwplayer?: function;
 	liQ?: LiQ;
 	mw?: MediaWiki;
 	ntv?: NativoApi;
@@ -58,12 +60,8 @@ interface Window {
 	// Fandom JWPlayer sets the sponsored videos list
 	sponsoredVideos?: string[];
 	trackingOptIn?: any;
-	utag_data?: any;
 	wgCookiePath?: string;
 	XMLHttpRequest?: any;
-	optimizely?: {
-		get?: (type: string) => {
-			getVariationMap: () => Record<string, { id: string; name: string }>;
-		};
-	};
+	OneTrust?: any;
+	pathfinderModulesReady?: bool;
 }

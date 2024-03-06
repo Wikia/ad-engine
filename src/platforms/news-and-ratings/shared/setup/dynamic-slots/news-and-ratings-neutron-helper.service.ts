@@ -4,6 +4,7 @@ import {
 	eventsRepository,
 	ProcessPipeline,
 	targetingService,
+	updateGptTargeting,
 	utils,
 } from '@wikia/ad-engine';
 import { Container, Injectable } from '@wikia/dependency-injection';
@@ -42,7 +43,11 @@ export class NewsAndRatingsNeutronHelper {
 
 				const refreshPipeline = new ProcessPipeline(container);
 				refreshPipeline
-					.add(() => utils.logger(logGroup, 'starting pipeline refresh'), ...steps)
+					.add(
+						() => utils.logger(logGroup, 'starting pipeline refresh'),
+						...steps,
+						() => updateGptTargeting(),
+					)
 					.execute();
 			},
 			false,

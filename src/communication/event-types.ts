@@ -77,6 +77,12 @@ export interface IdentityDataPayload {
 	partnerIdentityId: string | null;
 }
 
+export interface VideoAdsOptions {
+	showAds: boolean;
+	targetingParams?: string;
+	videoAdUnitPath?: string;
+}
+
 export const eventsRepository = {
 	// AdEngine life cycle events //
 	AD_ENGINE_BAB_DETECTION: {
@@ -178,23 +184,30 @@ export const eventsRepository = {
 		payload: props<Dictionary>(),
 	},
 	// Integrated partners events //
+	IDENTITY_PARTNER_DATA_OBTAINED: {
+		name: 'Identity partner data obtained',
+		payload: payload<IdentityDataPayload>(),
+	},
+	PARTNER_LOAD_STATUS: {
+		name: 'Partner load status',
+		payload: props<{ status: string }>(),
+	},
+	// Integrated partners events //
 	ANYCLIP_READY: {
 		name: 'Anyclip ready',
+	},
+	ANYCLIP_START: {
+		name: 'Anyclip start',
 	},
 	ANYCLIP_LATE_INJECT: {
 		name: 'Anyclip late inject',
 	},
-	AUDIGENT_SEGMENT_LIBRARY_LOADED: {
-		name: 'Audigent segment library loaded',
+	SYSTEM1_STARTED: {
+		name: 'System1 started',
 	},
-	AUDIGENT_MATCHES_LIBRARY_LOADED: {
-		name: 'Audigent matches library loaded',
-	},
-	AUDIGENT_SEGMENTS_READY: {
-		name: 'Audigent segments ready',
-	},
-	CAPTIFY_LOADED: {
-		name: 'Captify loaded',
+	NO_NATIVE_PREBID_AD: {
+		name: 'No native prebid ad',
+		payload: props<{ slotName: string }>(),
 	},
 	CONNATIX_LATE_INJECT: {
 		name: 'Connatix late inject',
@@ -202,31 +215,9 @@ export const eventsRepository = {
 	CONNATIX_READY: {
 		name: 'Connatix ready',
 	},
-	EXPERIAN_STARTED: {
-		name: 'Experian started',
-	},
-	EYEOTA_STARTED: {
-		name: 'Eyeota started',
-	},
-	EYEOTA_FAILED: {
-		name: 'Eyeota loading failed',
-	},
-	IDENTITY_ENGINE_READY: {
-		category: '[IdentityEngine]',
-		name: 'Identity ready',
-	},
-	IDENTITY_PARTNER_DATA_OBTAINED: {
-		name: 'Identity partner data obtained',
-		payload: payload<IdentityDataPayload>(),
-	},
-	INTENTIQ_PPID_NOT_SET_ON_TIME: {
-		name: 'IntentIQ PPID not set on time',
-	},
-	INTENTIQ_START: {
-		name: 'IntentIQ start',
-	},
-	INTENTIQ_DONE: {
-		name: 'IntentIQ done',
+	NO_NATIVO_AD: {
+		name: 'No nativo ad',
+		payload: props<{ slotName: string }>(),
 	},
 	LIVE_CONNECT_STARTED: {
 		name: 'LiveConnect started',
@@ -237,40 +228,14 @@ export const eventsRepository = {
 	LIVE_CONNECT_RESPONDED_UUID: {
 		name: 'LiveConnect responded with UUID',
 	},
-	NATIVO_LOADED: {
-		name: 'Nativo loaded',
-		payload: props<{ isLoaded: boolean }>(),
+	YAHOO_STARTED: {
+		name: 'Yahoo started',
 	},
-	NO_NATIVE_PREBID_AD: {
-		name: 'No native prebid ad',
-		payload: props<{ slotName: string }>(),
+	IDENTITY_ENGINE_READY: {
+		category: '[IdentityEngine]',
+		name: 'Identity ready',
 	},
-	NO_NATIVO_AD: {
-		name: 'No nativo ad',
-		payload: props<{ slotName: string }>(),
-	},
-	SYSTEM1_STARTED: {
-		name: 'System1 started',
-	},
-	SYSTEM1_FAILED: {
-		name: 'System1 loading failed',
-	},
-	TIMESTAMP_EVENT: {
-		name: 'Timestamp event',
-		payload: props<{ eventName: string; timestamp: number }>(),
-	},
-	LOTAME_LOADED: {
-		name: 'Lotame loaded',
-	},
-	LOTAME_READY: {
-		name: 'Lotame ready',
-	},
-	ID5_START: {
-		name: 'Id5 start',
-	},
-	ID5_DONE: {
-		name: 'Id5 done',
-	},
+
 	// Platforms events //
 	BINGEBOT_AD_SLOT_INJECTED: {
 		category: '[BingeBot]',
@@ -376,6 +341,16 @@ export const eventsRepository = {
 		payload: props<{ group: string; callback: () => void }>(),
 	},
 	// Video events //
+	VIDEO_SETUP: {
+		category: '[Video]',
+		name: 'Setup done',
+		payload: props<{
+			autoplayDisabled: boolean;
+			showAds: boolean;
+			videoAdUnitPath: string;
+			targetingParams: string;
+		}>(),
+	},
 	VIDEO_EVENT: {
 		category: '[Video]',
 		name: 'Video event',
@@ -385,6 +360,11 @@ export const eventsRepository = {
 		category: '[Video]',
 		name: 'Video player tracking',
 		payload: props<{ eventInfo: object }>(),
+	},
+	VIDEO_PLAYER_RENDERED: {
+		category: '[Video]',
+		name: 'Player rendered',
+		payload: props<{ renderId: string; videoAdsOptions: VideoAdsOptions }>(),
 	},
 	// Events emitted by Google Ad Manager creatives //
 	GAM_AD_INTERVENTION: {

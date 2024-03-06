@@ -19,13 +19,18 @@ export interface VastOptions {
 	videoId: string;
 	numberOfAds: number;
 	vpos: string;
+	isTagless: boolean;
 }
 
 const availableVideoPositions: string[] = ['preroll', 'midroll', 'postroll'];
 const displayBaseUrl = 'https://securepubads.g.doubleclick.net/gampad/adx?';
 const vastBaseUrl = 'https://pubads.g.doubleclick.net/gampad/ads?';
 
-function getCustomParameters(slot: AdSlot, extraTargeting: Dictionary = {}): string {
+export function getCustomParameters(
+	slot: AdSlot,
+	extraTargeting: Dictionary = {},
+	encode = true,
+): string {
 	const targetingData = targetingService.dump() || {};
 	const targeting = {};
 
@@ -52,12 +57,12 @@ function getCustomParameters(slot: AdSlot, extraTargeting: Dictionary = {}): str
 		...extraTargeting,
 	};
 
-	return encodeURIComponent(
-		Object.keys(params)
-			.filter((key: string) => params[key])
-			.map((key: string) => `${key}=${params[key]}`)
-			.join('&'),
-	);
+	const paramsInString = Object.keys(params)
+		.filter((key: string) => params[key])
+		.map((key: string) => `${key}=${params[key]}`)
+		.join('&');
+
+	return encode ? encodeURIComponent(paramsInString) : paramsInString;
 }
 
 function getVideoSizes(slot: AdSlot): string {
@@ -80,7 +85,7 @@ export function buildVastUrl(
 	options: Partial<VastOptions> = {},
 ): string {
 	const params: string[] = [
-		'output=vast',
+		'output=xml_vast4',
 		'env=vp',
 		'gdfp_req=1',
 		'impl=s',
@@ -133,6 +138,10 @@ export function buildVastUrl(
 	}
 
 	params.push(`rdp=${trackingOptIn.isOptOutSale() ? 1 : 0}`);
+
+	if (options.isTagless) {
+		params.push('tagless=1');
+	}
 
 	return vastBaseUrl + params.join('&');
 }

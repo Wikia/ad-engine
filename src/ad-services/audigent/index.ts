@@ -26,7 +26,9 @@ export class Audigent extends BaseServiceSetup {
 		Audigent.segmentsScriptLoader = utils.scriptLoader
 			.loadScript(DEFAULT_SEGMENTS_SCRIPT_URL, true, 'first')
 			.then(() => {
-				communicationService.emit(eventsRepository.AUDIGENT_SEGMENT_LIBRARY_LOADED);
+				communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+					status: 'audigent_segment_library_loaded',
+				});
 			});
 	}
 
@@ -34,7 +36,9 @@ export class Audigent extends BaseServiceSetup {
 		this.matchesTagScriptLoader = utils.scriptLoader
 			.loadScript(DEFAULT_MATCHES_SCRIPT_URL, true, 'first')
 			.then(() => {
-				communicationService.emit(eventsRepository.AUDIGENT_MATCHES_LIBRARY_LOADED);
+				communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+					status: 'audigent_matches_library_loaded',
+				});
 			});
 	}
 
@@ -82,7 +86,9 @@ export class Audigent extends BaseServiceSetup {
 
 		document.addEventListener('auSegReady', function (e) {
 			utils.logger(logGroup, 'auSegReady event received', e);
-			communicationService.emit(eventsRepository.AUDIGENT_SEGMENTS_READY);
+			communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
+				status: 'audigent_segments_ready',
+			});
 			Audigent.sliceAndSetSegmentsInTargeting();
 		});
 	}
