@@ -1,7 +1,6 @@
 import { Ats } from '@wikia/ad-services/ats';
 import { context, utils } from '@wikia/core';
 import { expect } from 'chai';
-import Cookies from 'js-cookie';
 
 describe('ATS', () => {
 	let ats;
@@ -36,7 +35,15 @@ describe('ATS', () => {
 	});
 
 	it('ATS.js is called', async () => {
-		global.sandbox.stub(Cookies, 'get').returns('1YNN');
+		global.window.__uspapi =
+			global.window.__uspapi || (function () {} as typeof global.window.__uspapi);
+		global.sandbox.stub(window, '__uspapi').callsFake((cmd, param, cb) => {
+			const mockedConsentData = {
+				uspString: 'fakeConsentString',
+			} as SignalData;
+
+			cb(mockedConsentData, true);
+		});
 
 		await ats.call();
 
@@ -44,7 +51,7 @@ describe('ATS', () => {
 		expect(setAdditionalDataSpy.called).to.equal(true);
 		expect(setAdditionalDataSpy.args[0][0]).to.deep.equal({
 			consentType: 'ccpa',
-			consentString: '1YNN',
+			consentString: 'fakeConsentString',
 			type: 'emailHashes',
 			id: ['sha1', 'sha256', 'md5'],
 		});
