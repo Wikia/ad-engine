@@ -44,6 +44,7 @@ describe('IntentIQ', () => {
 
 	afterEach(() => {
 		global.sandbox.restore();
+		targetingService.clear();
 	});
 
 	describe('initialize', () => {
