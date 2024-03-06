@@ -139,16 +139,11 @@ export const basicContext = {
 			intentIq: true,
 		},
 		phases: {
-			initialTts: 700,
-
-			configurationTimeout: 700,
-			configurationDelay: 100,
-
-			partnersTimeout: 1000,
-			partnersDelay: 200,
-
-			adStackStartTimeout: 1500,
-			firstAdCallTimeout: 5000,
+			configurationTimeout: 500,
+			configurationDelay: 50,
+			partnersTimeout: 600,
+			partnersDelay: 100,
+			firstAdCallTimeout: 2000,
 		},
 	},
 };

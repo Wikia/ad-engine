@@ -1,14 +1,13 @@
-import { getTimeDelta, logger } from '../utils';
+import { logger } from '../utils';
 
 function browserPhasePromise(
 	check: () => boolean,
-	timeoutProvider: () => number,
+	timeout: number,
 	container: any,
 	event: string,
 	delayOnEvent?: number,
 ): Promise<void> {
 	return new Promise((resolve) => {
-		const timeout = timeoutProvider();
 		let resolved = false;
 
 		function setResolvedState(msg: string, onEvent = false) {
@@ -47,19 +46,20 @@ function browserPhasePromise(
 	});
 }
 
-export function domContentLoadedPromise(tts: number) {
+export function domContentLoadedPromise(timeout: number, delayOnEvent?: number) {
 	return browserPhasePromise(
 		() => document.readyState !== 'loading',
-		() => tts - getTimeDelta(),
+		timeout,
 		document,
 		'DOMContentLoaded',
+		delayOnEvent,
 	);
 }
 
 export function documentLoadedPromise(timeout: number, delayOnEvent?: number) {
 	return browserPhasePromise(
 		() => document.readyState === 'complete',
-		() => timeout,
+		timeout,
 		window,
 		'load',
 		delayOnEvent,
