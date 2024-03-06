@@ -28,7 +28,7 @@ export class VastTaglessRequest {
 		this.timeout = instantConfig.get('icVastRequestTimeout', 500);
 	}
 
-	public async buildTaglessVideoRequest(): Promise<string> {
+	public async buildTaglessVideoRequest(isTagless = true): Promise<string> {
 		const aspectRatio = 16 / 9;
 		const slotName = 'featured';
 		const position = 'preroll';
@@ -42,7 +42,7 @@ export class VastTaglessRequest {
 		const defaultVastOptions: Partial<utils.VastOptions> = {
 			vpos: position,
 			targeting: biddersTargeting,
-			isTagless: true,
+			isTagless: isTagless,
 		};
 
 		return utils.buildVastUrl(
