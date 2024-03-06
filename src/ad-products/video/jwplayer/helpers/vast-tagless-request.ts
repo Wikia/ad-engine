@@ -42,7 +42,7 @@ export class VastTaglessRequest {
 		const defaultVastOptions: Partial<utils.VastOptions> = {
 			vpos: position,
 			targeting: biddersTargeting,
-			isTagless: isTagless,
+			isTagless,
 		};
 
 		return utils.buildVastUrl(
