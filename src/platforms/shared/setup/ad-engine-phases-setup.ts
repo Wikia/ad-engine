@@ -14,7 +14,7 @@ const DEFAULT_CONFIGURATION_PHASE_DELAY = 100;
 const DEFAULT_PARTNERS_PHASE_WAIT_TIMEOUT = 700;
 const DEFAULT_PARTNERS_PHASE_DELAY = 100;
 
-const DEFAULT_AD_CALL_WAIT_TIMEOUT = 5000;
+const DEFAULT_AD_CALL_WAIT_TIMEOUT = 2000;
 
 export class AdEnginePhasesSetup implements DiProcess {
 	execute(): void {
