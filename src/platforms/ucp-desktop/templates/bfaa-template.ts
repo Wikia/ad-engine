@@ -28,15 +28,18 @@ import {
 	VideoSizeImpactToResolvedHandler,
 	VideoSizeResolvedHandler,
 } from '@platforms/shared';
-import { context, TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
+import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
 import { registerUcpDesktopUapDomElements } from './configs/register-ucp-desktop-uap-dom-elements';
 import { BfaaUcpDesktopConfigHandler } from './handlers/bfaa/bfaa-ucp-desktop-config-handler';
 
-export function registerBfaaTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
+export function registerBfaaTemplate(
+	registry: TemplateRegistry,
+	isSticyExperimentActive = false,
+): Observable<TemplateAction> {
 	// Use the correct class based on the sticky leaderboard context
 	const slotDecisionResolvedHandler = () =>
-		context.get('options.stickyTopLeaderboard')
+		isSticyExperimentActive
 			? SlotDecisionStickyToResolvedHandler
 			: SlotDecisionImpactToResolvedHandler;
 
@@ -52,7 +55,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 
 	// Remove 'SlotDecisionTimeoutHandler' to prevent top leaderboard from disappearing
 	// when sticky leaderboard is active
-	if (context.get('options.stickyTopLeaderboard')) {
+	if (isSticyExperimentActive) {
 		stickyHandlers = stickyHandlers.filter((handler) => handler !== SlotDecisionTimeoutHandler);
 	}
 
