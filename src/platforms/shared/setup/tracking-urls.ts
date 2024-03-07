@@ -24,24 +24,6 @@ export const trackingUrls = {
 			aggregationLimit: 5,
 		},
 	},
-	AD_ENG_BIDDERS: {
-		name: 'AdEngBidders',
-		icbmName: 'bidders',
-		url: 'https://beacon.wikia-services.com/__track/special/adengbidders',
-		allowed: {
-			sampling: false,
-			aggregation: false,
-		},
-	},
-	AD_ENG_VIEWABILITY: {
-		name: 'AdEngViewability',
-		icbmName: 'viewability',
-		url: 'https://beacon.wikia-services.com/__track/special/adengviewability',
-		allowed: {
-			sampling: false,
-			aggregation: false,
-		},
-	},
 	AD_ENG_PLAYER_INFO: {
 		name: 'AdEngPlayerInfo',
 		icbmName: 'playerInfo',
@@ -60,37 +42,10 @@ export const trackingUrls = {
 			aggregation: false,
 		},
 	},
-	TOPICS: {
-		name: 'GoogleTopics',
-		icbmName: 'topics',
-		url: 'https://beacon.wikia-services.com/__track/special/topics',
-		allowed: {
-			sampling: false,
-			aggregation: false,
-		},
-	},
-	AD_ENG_AD_SIZE_INFO: {
-		name: 'AdEngAdSizeInfo',
-		icbmName: 'adSizeInfo',
-		url: 'https://beacon.wikia-services.com/__track/special/adengadsizeinfo',
-		allowed: {
-			sampling: false,
-			aggregation: false,
-		},
-	},
 	AD_ENG_LABRADOR_INFO: {
 		name: 'AdEngLabradorInfo',
 		icbmName: 'labrador',
 		url: 'https://beacon.wikia-services.com/__track/special/adenglabradorinfo',
-		allowed: {
-			sampling: false,
-			aggregation: false,
-		},
-	},
-	AD_ENG_AD_INFO: {
-		name: 'AdEngAdInfo',
-		icbmName: 'adInfo',
-		url: 'https://beacon.wikia-services.com/__track/special/adengadinfo',
 		allowed: {
 			sampling: false,
 			aggregation: false,
