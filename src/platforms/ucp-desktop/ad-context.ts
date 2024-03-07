@@ -9,6 +9,9 @@ export const basicContext = {
 	bidders: {
 		enabled: false,
 		timeout: 2000,
+		timeoutByGroup: {
+			'not-defined': 1000,
+		},
 		a9: {
 			enabled: false,
 			videoEnabled: false,
@@ -21,6 +24,7 @@ export const basicContext = {
 					'bottom_leaderboard',
 					'gallery_leaderboard',
 					'incontent_leaderboard',
+					'incontent_boxad_1',
 				],
 			},
 		},
@@ -35,6 +39,7 @@ export const basicContext = {
 					'gallery_leaderboard',
 					'incontent_leaderboard',
 					'incontent_player',
+					'incontent_boxad_1',
 				],
 			},
 		},

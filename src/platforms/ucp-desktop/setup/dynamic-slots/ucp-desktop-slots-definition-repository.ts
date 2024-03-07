@@ -126,6 +126,7 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 					adProduct: '{slotConfig.slotName}',
 					'targeting.rv': '{slotConfig.repeat.index}',
 					'targeting.pos': [slotName],
+					bidBeforeRun: false,
 				},
 				updateCreator: {
 					anchorSelector: '.incontent-leaderboard',
@@ -190,6 +191,7 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 						adProduct: '{slotConfig.slotName}',
 						'targeting.rv': '{slotConfig.repeat.index}',
 						'targeting.pos': ['incontent_boxad'],
+						bidBeforeRun: false,
 					},
 					disablePushOnScroll: true,
 				},

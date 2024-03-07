@@ -11,6 +11,7 @@ import {
 	scrollListener,
 	SlotPlaceholderConfig,
 	slotPlaceholderInjector,
+	slotService,
 	UapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
@@ -139,6 +140,7 @@ export class UcpMobileSlotsDefinitionRepository {
 						adProduct: '{slotConfig.slotName}',
 						'targeting.rv': '{slotConfig.repeat.index}',
 						'targeting.pos': ['incontent_boxad'],
+						bidBeforeRun: false,
 					},
 					updateCreator: {
 						anchorPosition: 'belowScrollPosition',
@@ -268,7 +270,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			},
 			slotCreatorWrapperConfig: null,
 			activator: () => {
-				this.pushWaitingSlot(slotName);
+				context.push('events.pushOnScroll.ids', slotName);
 			},
 		};
 	}
@@ -322,7 +324,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
 
 			if (numberOfViewportsFromTopToPush === -1) {
-				context.push('state.adStack', { id: slotName });
+				slotService.pushSlotById(slotName);
 			} else {
 				const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
 				scrollListener.addSlot(slotName, { distanceFromTop: distance });
@@ -373,7 +375,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			if (action.isLoaded) {
 				context.push('events.pushOnScroll.ids', slotName);
 			} else {
-				context.push('state.adStack', { id: slotName });
+				slotService.pushSlotById(slotName);
 			}
 		});
 	}
