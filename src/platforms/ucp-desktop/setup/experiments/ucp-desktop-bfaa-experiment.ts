@@ -15,7 +15,6 @@ const logGroup = 'UcpDesktopBfaaExperiment';
 @Injectable()
 export class UcpDesktopBfaaExperiment {
 	private pathfinderExperimentVariantNames = {
-		// @TODO: Need to figure out sampling size issue
 		control: 'bfaa-desktop-experiment-control',
 		active: 'bfaa-desktop-experiment-active',
 	};

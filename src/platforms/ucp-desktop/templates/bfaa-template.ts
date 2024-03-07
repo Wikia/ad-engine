@@ -35,11 +35,11 @@ import { BfaaUcpDesktopConfigHandler } from './handlers/bfaa/bfaa-ucp-desktop-co
 
 export function registerBfaaTemplate(
 	registry: TemplateRegistry,
-	isSticyExperimentActive = false,
+	isStickyExperimentActive = false,
 ): Observable<TemplateAction> {
 	// Use the correct class based on the sticky leaderboard context
 	const slotDecisionResolvedHandler = () =>
-		isSticyExperimentActive
+		isStickyExperimentActive
 			? SlotDecisionStickyToResolvedHandler
 			: SlotDecisionImpactToResolvedHandler;
 
@@ -55,7 +55,7 @@ export function registerBfaaTemplate(
 
 	// Remove 'SlotDecisionTimeoutHandler' to prevent top leaderboard from disappearing
 	// when sticky leaderboard is active
-	if (isSticyExperimentActive) {
+	if (isStickyExperimentActive) {
 		stickyHandlers = stickyHandlers.filter((handler) => handler !== SlotDecisionTimeoutHandler);
 	}
 
