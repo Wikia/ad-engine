@@ -1,4 +1,4 @@
-import { activateFloorAdhesionOnUAP, SlotSetupDefinition } from '@platforms/shared';
+import { SlotSetupDefinition } from '@platforms/shared';
 import {
 	AdSlot,
 	communicationService,
@@ -7,10 +7,8 @@ import {
 	eventsRepository,
 	InstantConfigService,
 	RepeatableSlotPlaceholderConfig,
-	scrollListener,
 	slotPlaceholderInjector,
 	UapLoadStatus,
-	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { UcpMobileTopBoxadExperiment } from '../experiments/ucp-mobile-top-boxad-experiment';
@@ -292,25 +290,7 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	getFloorAdhesionConfig(): SlotSetupDefinition {
-		let slotPushed = false;
 		const slotName = 'floor_adhesion';
-		const activateFloorAdhesion = () => {
-			if (slotPushed) {
-				return;
-			}
-
-			const numberOfViewportsFromTopToPush: number =
-				this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
-
-			if (numberOfViewportsFromTopToPush === -1) {
-				context.push('state.adStack', { id: slotName });
-			} else {
-				const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
-				scrollListener.addSlot(slotName, { distanceFromTop: distance });
-			}
-
-			slotPushed = true;
-		};
 
 		return {
 			slotCreatorConfig: {
@@ -319,7 +299,6 @@ export class UcpMobileSlotsDefinitionRepository {
 				insertMethod: 'append',
 				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
-			activator: () => activateFloorAdhesionOnUAP(activateFloorAdhesion, false),
 		};
 	}
 
