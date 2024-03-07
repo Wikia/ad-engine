@@ -64,12 +64,13 @@ export class IntentIQ {
 						resolve();
 					},
 				});
-				targetingService.set(
-					'intent_iq_group',
-					this.intentIqObject.intentIqConfig.abTesting.currentTestGroup || 'U',
-				);
+				const abTestGroup = this.intentIqObject.intentIqConfig.abTesting.currentTestGroup || 'U';
+				targetingService.set('intent_iq_group', abTestGroup);
 				communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
 					status: 'intentiq_done',
+				});
+				communicationService.emit(eventsRepository.INTENT_IQ_GROUP_OBTAINED, {
+					abTestGroup,
 				});
 			});
 		}

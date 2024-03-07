@@ -215,6 +215,10 @@ export const eventsRepository = {
 	CONNATIX_READY: {
 		name: 'Connatix ready',
 	},
+	INTENT_IQ_GROUP_OBTAINED: {
+		name: 'IntentIQ A/B test group obtained',
+		payload: props<{ abTestGroup: string }>(),
+	},
 	NO_NATIVO_AD: {
 		name: 'No nativo ad',
 		payload: props<{ slotName: string }>(),
