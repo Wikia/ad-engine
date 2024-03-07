@@ -63,16 +63,55 @@ export class UapDomManager {
 	}
 
 	setPlaceholderHeightResolved(): void {
+		if (this.adSlot.getSlotName() === 'top_leaderboard') {
+			const iframe = this.adSlot.getIframe();
+
+			if (!iframe) {
+				this.setPlaceholderHeight(`${this.reader.getSlotHeightImpact()}px`);
+			}
+
+			const placeholderHeight = Number(iframe.height) > 90 ? '289px' : '129px';
+			const el3: HTMLElement = document.getElementById('top-leaderboard');
+
+			if (el3) {
+				el3.setAttribute('style', `height: ${placeholderHeight}!important; clip: unset`);
+				console.log('Resolved adjusting adjustPlaceholderSize el3', el3);
+			}
+
+			this.setPlaceholderHeight(placeholderHeight);
+			return;
+		}
 		this.setPlaceholderHeight(`${this.reader.getSlotHeightResolved()}px`);
 	}
 
 	setPlaceholderHeightImpact(): void {
+		if (this.adSlot.getSlotName() === 'top_leaderboard') {
+			const iframe = this.adSlot.getIframe();
+
+			if (!iframe) {
+				alert('lolo');
+				this.setPlaceholderHeight(`${this.reader.getSlotHeightImpact()}px`);
+			}
+
+			const placeholderHeight = Number(iframe.height) > 90 ? '289px' : '129px';
+
+			const el3: HTMLElement = document.getElementById('top-leaderboard');
+
+			if (el3) {
+				el3.style.height = placeholderHeight;
+				el3.setAttribute('style', `height: ${placeholderHeight}!important; clip: unset`);
+				console.log('Impact adjusting adjustPlaceholderSize el3', el3);
+			}
+
+			this.setPlaceholderHeight(placeholderHeight);
+			return;
+		}
 		this.setPlaceholderHeight(`${this.reader.getSlotHeightImpact()}px`);
 	}
 
 	private setPlaceholderHeight(height: string): void {
 		let placeholder = this.adSlot.getElement().parentElement;
-
+		console.log('adjusting setPlaceholderHeight', height);
 		if (placeholder.classList.contains('ad-slot-placeholder')) {
 			placeholder = placeholder.parentElement;
 		}
