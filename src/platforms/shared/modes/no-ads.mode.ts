@@ -5,7 +5,6 @@ import {
 	DiProcess,
 	eventsRepository,
 	Experian,
-	jwpSetup,
 	LiveConnect,
 	LiveRampPixel,
 	PartnerPipeline,
@@ -28,7 +27,6 @@ export class NoAdsMode implements DiProcess {
 	execute(): void {
 		this.removeAdSlotsPlaceholders();
 		this.noAdsDetector.addReasons(window.ads.context?.opts?.noAdsReasons ?? []);
-		this.dispatchJWPlayerSetupAction();
 		this.dispatchVideoSetupAction();
 
 		this.pipeline
@@ -47,10 +45,6 @@ export class NoAdsMode implements DiProcess {
 		placeholders.forEach((placeholder) => {
 			placeholder.remove();
 		});
-	}
-
-	private dispatchJWPlayerSetupAction(): void {
-		communicationService.dispatch(jwpSetup({ showAds: false, autoplayDisabled: false }));
 	}
 
 	private dispatchVideoSetupAction(): void {

@@ -1,11 +1,4 @@
-import {
-	context,
-	DiProcess,
-	InstantConfigService,
-	setupNpaContext,
-	setupRdpContext,
-	utils,
-} from '@wikia/ad-engine';
+import { context, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { NoAdsDetector } from '../services/no-ads-detector';
 
@@ -19,8 +12,6 @@ export class BaseContextSetup implements DiProcess {
 	execute(): void {
 		this.setBaseState();
 		this.setServicesContext();
-		setupNpaContext();
-		setupRdpContext();
 	}
 
 	private setBaseState(): void {
