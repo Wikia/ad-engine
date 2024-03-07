@@ -6,6 +6,7 @@ import {
 	createBottomPanel,
 	eventsRepository,
 	LearnMore,
+	observableCommunicationService,
 	ofType,
 	PlayerOverlay,
 	PorvataPlayer,
@@ -68,7 +69,7 @@ export class VideoBootstrapHandler implements TemplateStateHandler {
 				tap(() => player.reload()),
 			),
 
-			communicationService.action$.pipe(
+			observableCommunicationService.action$.pipe(
 				ofType(communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
 				filter(
 					(action: AdSlotEventPayload) =>

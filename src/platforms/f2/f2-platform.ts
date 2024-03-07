@@ -25,7 +25,6 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
-import { F2IocSetup } from './f2-ioc.setup';
 import { F2AdsMode } from './modes/f2-ads.mode';
 import { F2Environment } from './setup-f2';
 import { F2BaseContextSetup } from './setup/context/base/f2-base-context.setup';
@@ -48,7 +47,6 @@ export class F2Platform {
 			PlatformContextSetup,
 			async () => await ensureGeoCookie(),
 			parallel(InstantConfigSetup, ConsentManagementPlatformSetup),
-			F2IocSetup,
 			TrackingParametersSetup,
 			MetricReporterSetup,
 			IdentitySetup,

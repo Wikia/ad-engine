@@ -1,10 +1,6 @@
 import { Action, Communicator, setupPostQuecast } from '@wikia/post-quecast';
-import { fromEventPattern, merge, Observable, Subject } from 'rxjs';
-import { filter, shareReplay, skip, take } from 'rxjs/operators';
 import { EventOptions, eventsRepository } from './event-types';
-import { globalAction, isGlobalAction } from './global-action';
-import { ofType } from './of-type';
-import { ReduxDevtoolsFactory } from './redux-devtools';
+import { globalAction } from './global-action';
 
 interface PostQuecastSettings {
 	channelId?: string;
@@ -15,40 +11,35 @@ interface PostQuecastSettings {
 const SETTINGS_KEY = '@wikia/post-quecast-settings';
 
 export class CommunicationService {
-	action$: Observable<Action>;
-	private communicator: Communicator;
-	private subject: Subject<Action>;
+	private readonly history = new Map<string, boolean>();
+	public readonly communicator: Communicator;
 
 	constructor() {
-		const { channelId, coordinatorName, reduxDevtoolsName } = this.getSettings();
+		const { channelId, coordinatorName } = this.getSettings();
 
 		setupPostQuecast();
 		this.communicator = new Communicator({
 			channelId: channelId || 'default',
 			coordinatorHost: window[coordinatorName] || top,
 		});
-
-		const actions$: Observable<Action> = fromEventPattern(
-			(handler) => this.communicator.addListener(handler),
-			(handler) => this.communicator.removeListener(handler),
-		).pipe(shareReplay({ refCount: true }));
-		this.subject = new Subject<Action>();
-
-		this.action$ = merge(
-			actions$.pipe(filter((action: Action<string>) => isGlobalAction(action))),
-			this.subject.asObservable().pipe(filter((action: Action<string>) => !isGlobalAction(action))),
-		);
-		this.connectReduxDevtools(reduxDevtoolsName);
 	}
 
 	emit(event: EventOptions, payload?: object): void {
 		this.dispatch(this.getGlobalAction(event)(payload));
 	}
 
-	on(event: EventOptions, callback: (payload?: any) => void, once = true): void {
-		this.action$
-			.pipe(ofType(this.getGlobalAction(event)), once ? take(1) : skip(0))
-			.subscribe(callback);
+	dispatch(action: Action): void {
+		this.communicator.dispatch(action);
+	}
+
+	on(action: Action, callback: (payload?: any) => void, once = false): void {
+		this.communicator.addListener((a: Action) =>
+			once ? this.runOnce(a, action, callback) : this.run(a, action, callback),
+		);
+	}
+
+	once(action: Action, callback: (payload?: any) => void): void {
+		this.communicator.addListener((a: Action) => this.runOnce(a, action, callback));
 	}
 
 	onSlotEvent(
@@ -57,24 +48,11 @@ export class CommunicationService {
 		slotName = '',
 		once = false,
 	): void {
-		this.action$
-			.pipe(
-				ofType(this.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
-				filter(
-					(action: Action) =>
-						action.event === eventName.toString() && (!slotName || action.adSlotName === slotName),
-				),
-				once ? take(1) : skip(0),
-			)
-			.subscribe(callback);
-	}
-
-	dispatch(action: Action): void {
-		if (isGlobalAction(action)) {
-			this.communicator.dispatch(action);
-		} else {
-			this.subject.next(action);
-		}
+		this.communicator.addListener((a: Action) =>
+			once
+				? this.runSlotEventOnce(a, eventName, slotName, callback)
+				: this.runSlotEvent(a, eventName, slotName, callback),
+		);
 	}
 
 	getGlobalAction(event: EventOptions): Action {
@@ -91,30 +69,74 @@ export class CommunicationService {
 		return window[SETTINGS_KEY] || {};
 	}
 
-	private connectReduxDevtools(name?: string): void {
-		const devtools = ReduxDevtoolsFactory.connect(name);
+	private run(action: Action, actionToListen: Action, callback: (payload?: any) => void): void {
+		if (this.ofType(action, actionToListen)) {
+			callback(action);
+		}
+	}
 
-		if (!devtools) {
+	private runOnce(action: Action, actionToListen: Action, callback: (payload?: any) => void): void {
+		const key = actionToListen.category + ' ' + actionToListen.name;
+
+		if (!this.ofType(action, actionToListen)) {
 			return;
 		}
 
-		devtools.subscribe((message) => {
-			try {
-				if (message.source === '@devtools-extension' && message.type === 'ACTION') {
-					// According to:
-					// * https://medium.com/@zalmoxis/redux-devtools-without-redux-or-how-to-have-a-predictable-state-with-any-architecture-61c5f5a7716f
-					// * https://github.com/zalmoxisus/mobx-remotedev/blob/master/src/monitorActions.js
-					// * https://github.com/zalmoxisus/remotedev-utils/blob/98ca5b35d8dd042d35dbcdd2653e5e168a2022f5/src/index.js#L75-L78
-					const action = new Function(`return ${message.payload}`)();
+		if (this.history.has(key)) {
+			return;
+		}
 
-					this.dispatch(action);
-				}
-			} catch (e) {
-				devtools.error(e.message);
-			}
-		});
+		this.history.set(key, true);
 
-		this.action$.subscribe((action) => devtools.send(action, {}));
+		callback(action);
+	}
+
+	private runSlotEvent(
+		action: Action,
+		eventName: string | symbol,
+		slotName: string,
+		callback: (payload?: any) => void,
+	) {
+		if (
+			this.ofType(action, eventsRepository.AD_ENGINE_SLOT_EVENT) &&
+			action.event === eventName.toString() &&
+			(!slotName || action.adSlotName === slotName)
+		) {
+			callback(action);
+		}
+	}
+
+	private runSlotEventOnce(
+		action: Action,
+		eventName: string | symbol,
+		slotName: string,
+		callback: (payload?: any) => void,
+	) {
+		const key = 'adSlotEvent ' + eventName.toString() + ' ' + slotName;
+		if (
+			!(
+				this.ofType(action, eventsRepository.AD_ENGINE_SLOT_EVENT) &&
+				action.event === eventName.toString() &&
+				(!slotName || action.adSlotName === slotName)
+			)
+		) {
+			return;
+		}
+
+		if (this.history.has(key)) {
+			return;
+		}
+
+		this.history.set(key, true);
+
+		callback(action);
+	}
+
+	private ofType(action: Action, actionToListen: Action): boolean {
+		return (
+			(action.category === actionToListen.category && action.name === actionToListen.name) ||
+			action.type === actionToListen.category + ' ' + actionToListen.name
+		);
 	}
 }
 

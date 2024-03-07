@@ -2,7 +2,6 @@ import {
 	AdSlotEventPayload,
 	communicationService,
 	eventsRepository,
-	ofType,
 } from '@ad-engine/communication';
 import {
 	AdSlot,
@@ -15,7 +14,6 @@ import {
 	targetingService,
 	utils,
 } from '@ad-engine/core';
-import { filter, take } from 'rxjs/operators';
 import * as constants from './constants';
 
 let uapCreativeId = constants.DEFAULT_UAP_ID;
@@ -180,31 +178,29 @@ export const universalAdPackage = {
 };
 
 export function registerUapListener(): void {
-	communicationService.action$
-		.pipe(
-			ofType(communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
-			filter((action: AdSlotEventPayload) => {
-				const isFirstCallAdSlot = !!context.get(`slots.${action.adSlotName}.firstCall`);
+	communicationService.on(
+		communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT),
+		(action: AdSlotEventPayload) => {
+			const isFirstCallAdSlot = !!context.get(`slots.${action.adSlotName}.firstCall`);
 
-				return (
-					isFirstCallAdSlot &&
-					[
-						AdSlotEvent.TEMPLATES_LOADED,
-						AdSlotStatus.STATUS_COLLAPSE,
-						AdSlotStatus.STATUS_FORCED_COLLAPSE,
-					]
-						.map((status) => action.event === status)
-						.some((x) => !!x)
-				);
-			}),
-			take(1),
-		)
-		.subscribe(() => {
-			communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
-				isLoaded: universalAdPackage.isFanTakeoverLoaded(),
-				adProduct: universalAdPackage.getType(),
-			});
-		});
+			const isFirstCall =
+				isFirstCallAdSlot &&
+				[
+					AdSlotEvent.TEMPLATES_LOADED,
+					AdSlotStatus.STATUS_COLLAPSE,
+					AdSlotStatus.STATUS_FORCED_COLLAPSE,
+				]
+					.map((status) => action.event === status)
+					.some((x) => !!x);
+
+			if (isFirstCall) {
+				communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
+					isLoaded: universalAdPackage.isFanTakeoverLoaded(),
+					adProduct: universalAdPackage.getType(),
+				});
+			}
+		},
+	);
 }
 
 // Side effect

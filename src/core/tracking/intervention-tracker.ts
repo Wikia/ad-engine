@@ -1,10 +1,4 @@
-import {
-	AdIntervention,
-	communicationService,
-	eventsRepository,
-	ofType,
-} from '@ad-engine/communication';
-import { tap } from 'rxjs/operators';
+import { AdIntervention, communicationService, eventsRepository } from '@ad-engine/communication';
 import { AdSlot, AdSlotStatus } from '../models';
 import { context, externalLogger, slotService } from '../services';
 import { logger } from '../utils';
@@ -19,12 +13,11 @@ class InterventionTracker {
 			return;
 		}
 
-		communicationService.action$
-			.pipe(
-				ofType(communicationService.getGlobalAction(eventsRepository.GAM_AD_INTERVENTION)),
-				tap((intervention: AdIntervention) => this.handleIntervention(intervention)),
-			)
-			.subscribe();
+		// FIXME: like this?
+		communicationService.on(
+			communicationService.getGlobalAction(eventsRepository.GAM_AD_INTERVENTION),
+			({ payload }: { payload: AdIntervention }) => this.handleIntervention(payload),
+		);
 	}
 
 	private handleIntervention(intervention: AdIntervention): void {

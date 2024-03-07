@@ -2,9 +2,7 @@ import {
 	BiddersEventPayload,
 	communicationService,
 	eventsRepository,
-	ofType,
 } from '@ad-engine/communication';
-import { filter, take } from 'rxjs/operators';
 import { AdSlot } from '../models';
 import { pbjsFactory, targetingService } from '../services';
 import { IframeBuilder, logger } from '../utils';
@@ -18,26 +16,22 @@ export class PrebidiumProvider implements Provider {
 	async fillIn(adSlot: AdSlot): Promise<void> {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
-		communicationService.action$
-			.pipe(
-				ofType(communicationService.getGlobalAction(eventsRepository.BIDDERS_BIDDING_DONE)),
-				filter(
-					(action: BiddersEventPayload) =>
-						action.provider === 'prebid' && action.slotName === adSlot.getSlotName(),
-				),
-				take(1),
-			)
-			.subscribe(() => {
-				const doc = this.getIframeDoc(adSlot);
-				const adId = this.getAdId(adSlot);
+		communicationService.on(
+			communicationService.getGlobalAction(eventsRepository.BIDDERS_BIDDING_DONE),
+			(action: BiddersEventPayload) => {
+				if (action.provider === 'prebid' && action.slotName === adSlot.getSlotName()) {
+					const doc = this.getIframeDoc(adSlot);
+					const adId = this.getAdId(adSlot);
 
-				if (doc && adId) {
-					pbjs.renderAd(doc, adId);
-					adSlot.getElement()?.classList?.remove(AdSlot.HIDDEN_AD_CLASS);
-					adSlot.success();
-					logger(logGroup, adSlot.getSlotName(), 'slot added');
+					if (doc && adId) {
+						pbjs.renderAd(doc, adId);
+						adSlot.getElement()?.classList?.remove(AdSlot.HIDDEN_AD_CLASS);
+						adSlot.success();
+						logger(logGroup, adSlot.getSlotName(), 'slot added');
+					}
 				}
-			});
+			},
+		);
 	}
 
 	private getIframeDoc(adSlot: AdSlot): Document {
