@@ -1,5 +1,4 @@
 import {
-	Apstag,
 	communicationService,
 	eventsRepository,
 	InstantConfigService,
@@ -35,11 +34,6 @@ export class TrackingSetup {
 						},
 						trackingUrls.IDENTITY_INFO,
 					);
-
-					if (['liveConnect', 'MediaWiki-sha256'].includes(partnerName)) {
-						const apstag = Apstag.make();
-						apstag.init().then(() => apstag.sendHEM(partnerIdentityId));
-					}
 				},
 				false,
 			);

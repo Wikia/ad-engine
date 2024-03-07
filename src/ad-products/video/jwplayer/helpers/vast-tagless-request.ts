@@ -1,6 +1,5 @@
 import { AdSlot, InstantConfigService, slotService, utils } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
-import { Bidders } from '../../../../ad-bidders';
 import { videoDisplayTakeoverSynchronizer } from './video-display-takeover-synchronizer';
 
 export interface VastResponseData {
@@ -18,11 +17,7 @@ export class VastTaglessRequest {
 	private readonly logGroup = 'display-and-video-ads-sync';
 	private readonly timeout: number;
 
-	constructor(
-		private fetchTimeout: utils.FetchTimeout,
-		instantConfig: InstantConfigService,
-		private bidders: Bidders,
-	) {
+	constructor(private fetchTimeout: utils.FetchTimeout, instantConfig: InstantConfigService) {
 		this.timeout = instantConfig.get('icVastRequestTimeout', 500);
 	}
 
@@ -35,10 +30,8 @@ export class VastTaglessRequest {
 		if (!slotService.get(slotName)) {
 			slotService.add(adSlot);
 		}
-		const biddersTargeting = await this.bidders.getBidParameters(slotName);
 		return utils.buildVastUrl(aspectRatio, slotName, {
 			vpos: position,
-			targeting: biddersTargeting,
 			isTagless: true,
 		});
 	}
