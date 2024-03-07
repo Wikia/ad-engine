@@ -11,6 +11,10 @@ describe('Bidders', () => {
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 	});
 
+	after(() => {
+		targetingService.clear();
+	});
+
 	describe('getName', () => {
 		it('should return name', () => {
 			const bidders = new Bidders(instantConfigStub, null);

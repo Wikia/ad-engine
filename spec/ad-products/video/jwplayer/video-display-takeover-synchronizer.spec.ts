@@ -24,6 +24,7 @@ describe('VideoDisplayTakeoverSynchronizer', () => {
 		context.remove('custom.hasFeaturedVideo');
 		context.remove('options.video.syncWithDisplay');
 		context.remove('options.video.displayAndVideoAdsSyncSetupEnabled');
+		targetingService.clear();
 	});
 
 	it('disables sync on non FV page', () => {
