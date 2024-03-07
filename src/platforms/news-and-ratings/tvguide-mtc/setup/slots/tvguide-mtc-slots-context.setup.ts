@@ -21,21 +21,12 @@ export class TvGuideMtcSlotsContextSetup implements DiProcess {
 				defaultSizes: [],
 				providers: ['nothing'],
 			},
-			'mobile-omni-skybox-plus-sticky': {
-				adProduct: 'top_leaderboard',
-				group: 'LB',
-				sizes: [],
-				defaultTemplates: ['stickyTlb'],
-				defaultSizes: [],
-				providers: ['nothing'],
-			},
 		};
 
 		context.set('slots', slots);
 		context.set('vast.adUnitId', this.buildVastAdUnit());
 		context.push('state.adStack', { id: 'top-leaderboard' });
 		context.push('state.adStack', { id: 'mtop-leaderboard' });
-		context.push('state.adStack', { id: 'mobile-omni-skybox-plus-sticky' });
 	}
 
 	private buildVastAdUnit(): string {
