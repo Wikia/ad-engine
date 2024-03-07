@@ -186,7 +186,6 @@ export class PrebidProvider extends BidderProvider {
 			eventsRepository.SLOT_REFRESHER_SET_MAXIMUM_SLOT_HEIGHT,
 			({ adSlot }) => {
 				const slotName = adSlot.getSlotName();
-
 				this.setMaximumAdSlotHeight(slotName);
 			},
 			false,

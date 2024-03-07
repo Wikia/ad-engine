@@ -53,11 +53,9 @@ export abstract class PrebidAdapter {
 		const slotsAvailableForRefreshing = Object.keys(slotRefresherConfig.sizes);
 		const adUnitSizeLimit = slotRefresherConfig.sizes[code];
 
-		const filteredSizes = slotsAvailableForRefreshing.includes(code)
+		return slotsAvailableForRefreshing.includes(code)
 			? sizes.filter((size) => size[1] <= adUnitSizeLimit[1])
 			: sizes;
-
-		return filteredSizes;
 	}
 
 	protected getTargeting(placementName: string, customTargeting = {}): Dictionary {
@@ -108,14 +106,12 @@ export abstract class PrebidAdapter {
 		} else if (bidderName === 'triplelift') {
 			regex = /_(\d+)x(\d+)_/;
 		} else {
-			throw new Error('Invalid type specified');
+			console.error('extractSizeFromString', 'Invalid type specified');
 		}
 
-		const match = input.match(regex);
-
-		if (match) {
-			const width = parseInt(match[1], 10);
-			const height = parseInt(match[2], 10);
+		if (input.match(regex)) {
+			const width = parseInt(input.match(regex)[1], 10);
+			const height = parseInt(input.match(regex)[2], 10);
 			return [width, height];
 		}
 

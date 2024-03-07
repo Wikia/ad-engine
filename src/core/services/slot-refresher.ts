@@ -46,16 +46,17 @@ function callBidders(slotName: string, callback: () => void) {
 
 function refreshWhenBackInViewport(adSlot: AdSlot) {
 	function refresh(event) {
-		if (event.slot.getSlotElementId() === adSlot.getSlotName()) {
-			logger(logGroup, `${adSlot.getSlotName()} back in the viewport, refreshing.`, event);
+		if (event.slot.getSlotElementId() !== adSlot.getSlotName()) return;
 
-			callBidders(adSlot.getSlotName(), () => {
-				GptProvider.refreshSlot(adSlot);
-			});
+		logger(logGroup, `${adSlot.getSlotName()} back in the viewport, refreshing.`, event);
 
-			window.googletag.pubads().removeEventListener('slotVisibilityChanged', refresh);
-		}
+		callBidders(adSlot.getSlotName(), () => {
+			GptProvider.refreshSlot(adSlot);
+		});
+
+		window.googletag.pubads().removeEventListener('slotVisibilityChanged', refresh);
 	}
+
 	window.googletag.pubads().addEventListener('slotVisibilityChanged', refresh);
 }
 
@@ -75,9 +76,8 @@ export class SlotRefresher {
 	 * Removes adSlot sizes taller than the first rendered adSlot with the same slotName.
 	 * @param {AdSlot} adSlot - The ad slot to adjust.
 	 */
-	removeHigherSlotSizes(adSlot: AdSlot) {
+	private removeHigherSlotSizes(adSlot: AdSlot) {
 		const slotName = adSlot.getSlotName();
-		const slotHeight = adSlot.getElement().clientHeight;
 
 		const slotRefresherConfig = context.get('slotConfig.slotRefresher.sizes');
 		if (!slotRefresherConfig) return;
@@ -85,34 +85,28 @@ export class SlotRefresher {
 		const slotHeightLimit = slotRefresherConfig[slotName][1];
 		if (!slotHeightLimit) return;
 
-		const sizeKey = context.get(`slots.${adSlot.getSlotName()}.sizes`);
+		const filterCallback = (size) => size[1] <= slotHeightLimit && size[1] > 3;
 
+		const sizeKey = context.get(`slots.${adSlot.getSlotName()}.sizes`);
 		if (sizeKey) {
-			context.set(
-				`slots.${adSlot.getSlotName()}.sizes`,
-				sizeKey[0].sizes.filter((size) => size[1] <= slotHeight && size[1] > 3),
-			);
+			context.set(`slots.${adSlot.getSlotName()}.sizes`, sizeKey[0].sizes.filter(filterCallback));
 		}
 		const defaultSizeKey = context.get(`slots.${adSlot.getSlotName()}.defaultSizes`);
 
 		if (defaultSizeKey) {
 			context.set(
 				`slots.${adSlot.getSlotName()}.defaultSizes`,
-				defaultSizeKey.filter((size) => size[1] <= slotHeight && size[1] > 3),
+				defaultSizeKey.filter(filterCallback),
 			);
 		}
 
 		if (adSlot.config.sizes) {
-			adSlot.config.sizes = adSlot.config.sizes.filter((size) => size[1] <= slotHeightLimit);
+			adSlot.config.sizes = adSlot.config.sizes.filter(filterCallback);
 		}
 
 		if (adSlot.config.defaultSizes) {
-			adSlot.config.defaultSizes = adSlot.config.defaultSizes.filter(
-				(size) => size[1] <= slotHeightLimit,
-			);
+			adSlot.config.defaultSizes = adSlot.config.defaultSizes.filter(filterCallback);
 		}
-
-		const filterCallback = (size: [number, number]) => size[1] <= slotHeightLimit;
 
 		communicationService.emit(eventsRepository.SLOT_REFRESHER_SET_MAXIMUM_SLOT_HEIGHT, {
 			adSlot,
@@ -121,10 +115,10 @@ export class SlotRefresher {
 	}
 
 	addSlotSizeToContext(adSlot: AdSlot) {
-		const slotWidth = adSlot.getElement().clientWidth;
-		const slotHeight = adSlot.getElement().clientHeight;
-
-		context.set(`slotConfig.slotRefresher.sizes.${adSlot.getSlotName()}`, [slotWidth, slotHeight]);
+		context.set(`slotConfig.slotRefresher.sizes.${adSlot.getSlotName()}`, [
+			adSlot.getElement().clientWidth,
+			adSlot.getElement().clientHeight,
+		]);
 	}
 
 	refreshSlot(adSlot: AdSlot) {
@@ -137,32 +131,31 @@ export class SlotRefresher {
 				this.removeHigherSlotSizes(adSlot);
 			}, 1000);
 		}
+
 		setTimeout(() => {
-			if (adSlot.isEnabled()) {
-				this.log(`${adSlot.getSlotName()} will be refreshed.`);
+			if (!adSlot.isEnabled()) return;
+			this.log(`${adSlot.getSlotName()} will be refreshed.`);
 
-				if (this.slotsInTheViewport.includes(adSlot.getSlotName())) {
-					this.log(`refreshing ${adSlot.getSlotName()}`);
-					adSlot.updatePushTimeAfterBid();
-					callBidders(adSlot.getSlotName(), () => {
-						GptProvider.refreshSlot(adSlot);
-					});
+			if (this.slotsInTheViewport.includes(adSlot.getSlotName())) {
+				this.log(`refreshing ${adSlot.getSlotName()}`);
+				adSlot.updatePushTimeAfterBid();
+				callBidders(adSlot.getSlotName(), () => {
+					GptProvider.refreshSlot(adSlot);
+				});
 
-					return;
-				}
-
-				this.log(`${adSlot.getSlotName()} waiting for being in viewport.`);
-				refreshWhenBackInViewport(adSlot);
+				return;
 			}
+
+			this.log(`${adSlot.getSlotName()} waiting for being in viewport.`);
+			refreshWhenBackInViewport(adSlot);
 		}, this.config.timeoutMS);
 	}
 
 	private addSlotsConfiguredToRefreshing() {
 		const allSlots = slotService.slotConfigsMap;
 		Object.entries(allSlots).forEach(([, slotConfiguration]) => {
-			if (slotConfiguration.slotRefreshing) {
-				this.config.slots.push(slotConfiguration.slotName);
-			}
+			if (!slotConfiguration.slotRefreshing) return;
+			this.config.slots.push(slotConfiguration.slotName);
 		});
 	}
 
@@ -175,7 +168,7 @@ export class SlotRefresher {
 		this.addSlotsConfiguredToRefreshing();
 
 		const disabled =
-			this.config.slots.length < 1 || Boolean(context.get('services.durationMedia.enabled'));
+			this.config.slots.length < 1 || !!context.get('services.durationMedia.enabled');
 		if (disabled || isUap) {
 			logger('disabled');
 			return;

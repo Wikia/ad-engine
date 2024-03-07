@@ -339,7 +339,8 @@ export class AdSlot {
 	}
 
 	updatePushTimeAfterBid() {
-		this.pushTime = new Date().getTime() + 2000;
+		const timeout = context.get('bidders.timeout') || 2000;
+		this.pushTime = new Date().getTime() + timeout;
 	}
 
 	setStatus(status: null | string = null): void {
