@@ -64,5 +64,4 @@ interface Window {
 	XMLHttpRequest?: any;
 	OneTrust?: any;
 	pathfinderModulesReady?: bool;
-	loadCustomAdFandom?: any;
 }
