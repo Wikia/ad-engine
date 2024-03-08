@@ -3,7 +3,7 @@ class QueryString {
 
 	getValues(input?: string): Record<string, string> {
 		return [...this.getURLSearchParams(input).entries()].reduce((acc, [key, value]) => {
-			acc[key] = decodeURIComponent(value.replace(/\+/g, ' '));
+			acc[key] = value;
 			return acc;
 		}, {});
 	}

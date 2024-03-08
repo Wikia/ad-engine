@@ -89,10 +89,7 @@ class VastParser {
 		const vastParams: Dictionary<string> = queryString.getValues(
 			vastTag ? vastTag.substr(1 + vastTag.indexOf('?')) : '?',
 		);
-
-		const customParams: Dictionary<string> = queryString.getValues(
-			encodeURI(vastParams.cust_params),
-		);
+		const customParams: Dictionary<string> = queryString.getValues(vastParams.cust_params);
 
 		if (extra.imaAd) {
 			const currentAd = this.getAdInfo(extra.imaAd);
