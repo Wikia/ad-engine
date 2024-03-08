@@ -1,7 +1,8 @@
 import { Bidders } from '@wikia/ad-bidders';
+import { trackingUrls } from '@wikia/ad-tracking';
 import { InstantConfigService, targetingService } from '@wikia/core';
 import { GlobalTimeout } from '@wikia/core/utils';
-import { DataWarehouseTracker, TrackingSetup, trackingUrls } from '@wikia/platforms/shared';
+import { DataWarehouseTracker, TrackingSetup } from '@wikia/platforms/shared';
 import { AdSizeTracker } from '@wikia/platforms/shared/tracking/ad-size-tracker';
 import { LabradorTracker } from '@wikia/platforms/shared/tracking/labrador-tracker';
 import { expect } from 'chai';
