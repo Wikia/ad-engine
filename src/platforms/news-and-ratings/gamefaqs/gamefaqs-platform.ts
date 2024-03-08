@@ -6,6 +6,7 @@ import {
 	LoadTimesSetup,
 	MetricReporterSetup,
 	PreloadedLibrariesSetup,
+	SentryLoader,
 	SlotsConfigurationExtender,
 	TrackingParametersSetup,
 	TrackingSetup,
@@ -38,7 +39,7 @@ import { GamefaqsTemplatesSetup } from './templates/gamefaqs-templates.setup';
 
 @Injectable()
 export class GamefaqsPlatform {
-	constructor(private pipeline: ProcessPipeline) {}
+	constructor(private pipeline: ProcessPipeline, private sentry: SentryLoader) {}
 
 	execute(): void {
 		logVersion();
@@ -72,6 +73,6 @@ export class GamefaqsPlatform {
 			TrackingSetup,
 		);
 
-		this.pipeline.execute();
+		this.pipeline.execute().catch((e) => this.sentry.captureException(e));
 	}
 }

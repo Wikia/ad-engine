@@ -1,8 +1,10 @@
+import { withSentry } from '@platforms/shared';
 import { Container } from '@wikia/dependency-injection';
 import './styles.scss';
 import { TvGuidePlatform } from './tvguide-platform';
 
-const container = new Container();
-const platform = container.get(TvGuidePlatform);
+withSentry((container: Container) => {
+	const platform = container.get(TvGuidePlatform);
 
-platform.execute(container);
+	platform.execute(container);
+});

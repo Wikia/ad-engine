@@ -6,6 +6,7 @@ import {
 	MetricReporterSetup,
 	NoAdsMode,
 	PlatformContextSetup,
+	SentryLoader,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
@@ -15,7 +16,7 @@ import { UcpNoAdsWikiContextSetup } from './setup/wiki-context.setup';
 
 @Injectable()
 export class UcpNoAdsPlatform {
-	constructor(private pipeline: ProcessPipeline) {}
+	constructor(private pipeline: ProcessPipeline, private sentry: SentryLoader) {}
 
 	execute(): void {
 		logVersion();
@@ -32,6 +33,6 @@ export class UcpNoAdsPlatform {
 			TrackingSetup,
 			NoAdsMode,
 		);
-		this.pipeline.execute();
+		this.pipeline.execute().catch((e) => this.sentry.captureException(e));
 	}
 }

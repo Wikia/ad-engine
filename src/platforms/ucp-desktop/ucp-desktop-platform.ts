@@ -12,6 +12,7 @@ import {
 	PlatformContextSetup,
 	PostAdStackPartnersSetup,
 	PreloadedLibrariesSetup,
+	SentryLoader,
 	SequentialMessagingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
@@ -40,7 +41,11 @@ import { UcpDesktopTemplatesSetup } from './templates/ucp-desktop-templates.setu
 
 @Injectable()
 export class UcpDesktopPlatform {
-	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
+	constructor(
+		private pipeline: ProcessPipeline,
+		private noAdsDetector: NoAdsDetector,
+		private sentry: SentryLoader,
+	) {}
 
 	execute(): void {
 		logVersion();
@@ -78,6 +83,6 @@ export class UcpDesktopPlatform {
 			PostAdStackPartnersSetup,
 		);
 
-		this.pipeline.execute();
+		this.pipeline.execute().catch((e) => this.sentry.captureException(e));
 	}
 }

@@ -5,10 +5,6 @@ import { ensureGeoCookie } from '../ensure-geo-cookie';
 import { SentryLoader } from './sentry-loader';
 
 function getSampleRate() {
-	if (process.env.NODE_ENV === 'development') {
-		return 1.0;
-	}
-
 	return utils.geoService.getCountryCode() === 'US' ? 0.01 : 0.1;
 }
 
@@ -27,7 +23,6 @@ export async function withSentry(wrapped: (container: Container) => void): Promi
 		'geo.continent': utils.geoService.getContinentCode(),
 		'geo.region': utils.geoService.getRegionCode(),
 	});
-	sentry.captureException(new Error('Sentry initialized test!!!'));
 	container.bind(SentryLoader).value(sentry);
 	try {
 		wrapped(container);

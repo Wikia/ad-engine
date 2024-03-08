@@ -6,6 +6,7 @@ import {
 	LoadTimesSetup,
 	MetricReporterSetup,
 	PreloadedLibrariesSetup,
+	SentryLoader,
 	SlotsConfigurationExtender,
 	TrackingParametersSetup,
 	TrackingSetup,
@@ -38,7 +39,7 @@ import { ComicvineTemplatesSetup } from './templates/comicvine-templates.setup';
 
 @Injectable()
 export class ComicvinePlatform {
-	constructor(private pipeline: ProcessPipeline) {}
+	constructor(private pipeline: ProcessPipeline, private sentry: SentryLoader) {}
 
 	execute(): void {
 		logVersion();
@@ -72,6 +73,6 @@ export class ComicvinePlatform {
 			TrackingSetup,
 		);
 
-		this.pipeline.execute();
+		this.pipeline.execute().catch((e) => this.sentry.captureException(e));
 	}
 }

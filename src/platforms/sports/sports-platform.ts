@@ -12,6 +12,7 @@ import {
 	NoAdsMode,
 	PlatformContextSetup,
 	PreloadedLibrariesSetup,
+	SentryLoader,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
@@ -40,7 +41,11 @@ import { selectApplication } from './utils/application-helper';
 
 @Injectable()
 export class SportsPlatform {
-	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
+	constructor(
+		private pipeline: ProcessPipeline,
+		private noAdsDetector: NoAdsDetector,
+		private sentry: SentryLoader,
+	) {}
 
 	execute(): void {
 		logVersion();
@@ -82,6 +87,6 @@ export class SportsPlatform {
 			}),
 		);
 
-		this.pipeline.execute();
+		this.pipeline.execute().catch((e) => this.sentry.captureException(e));
 	}
 }

@@ -70,9 +70,9 @@ export class SentryLoader {
 			error,
 		);
 
-		// if (this.options.environment === 'development') {
-		// 	return;
-		// }
+		if (this.options.environment === 'development') {
+			return;
+		}
 
 		if (!this.shouldLoad) {
 			return;

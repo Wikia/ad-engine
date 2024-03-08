@@ -12,6 +12,7 @@ import {
 	PlatformContextSetup,
 	PostAdStackPartnersSetup,
 	PreloadedLibrariesSetup,
+	SentryLoader,
 	SequentialMessagingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
@@ -40,7 +41,11 @@ import { UcpMobileTemplatesSetup } from './templates/ucp-mobile-templates.setup'
 
 @Injectable()
 export class UcpMobilePlatform {
-	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
+	constructor(
+		private pipeline: ProcessPipeline,
+		private noAdsDetector: NoAdsDetector,
+		private sentry: SentryLoader,
+	) {}
 
 	execute(): void {
 		logVersion();
@@ -79,6 +84,6 @@ export class UcpMobilePlatform {
 			PostAdStackPartnersSetup,
 		);
 
-		this.pipeline.execute();
+		this.pipeline.execute().catch((e) => this.sentry.captureException(e));
 	}
 }
