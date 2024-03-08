@@ -6,6 +6,7 @@ describe('tracking-opt-in', () => {
 		context.remove('options.isSubjectToCcpa');
 		context.remove('options.trackingOptIn');
 		context.remove('options.optOutSale');
+		context.remove('options.geoRequiresConsent');
 	}
 	beforeEach(clearContext);
 
