@@ -2,19 +2,15 @@ import {
 	context,
 	targetingService,
 	trackingOptIn,
+	TrackingParams,
 	TrackingUrl,
 	trackingUrls,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { AdEngineStageSetup } from '../setup/ad-engine-stage.setup';
-import { BatchProcessor } from './batch-processor';
-import { dwTrafficAggregator } from './data-warehouse-utils/dw-traffic-aggregator';
-import { TrackingParams } from './models/tracking-params';
 
 const logGroup = 'data-warehouse-trackingParams';
 const eventUrl = trackingUrls.TRACKING_EVENT.url;
-const videoEventUrl = trackingUrls.VIDEO_PLAYER_EVENT.url;
 
 export interface TimeBasedParams {
 	cb: number;
@@ -25,24 +21,6 @@ export type DataWarehouseParams = TrackingParams & TimeBasedParams;
 
 @Injectable()
 export class DataWarehouseTracker {
-	private adEngineStageSetup: AdEngineStageSetup;
-	private eventsArray = [];
-
-	constructor() {
-		this.adEngineStageSetup = new AdEngineStageSetup();
-		this.init();
-	}
-
-	init() {
-		if (context.get('options.delayEvents.enabled')) {
-			document.addEventListener('readystatechange', () => {
-				if (document.readyState === 'complete') {
-					this.dispatchAndEmptyEventArray();
-				}
-			});
-		}
-	}
-
 	/**
 	 * Call all of the setup trackers
 	 */
@@ -102,18 +80,9 @@ export class DataWarehouseTracker {
 			...this.getTimeBasedParams(),
 		};
 
-		if (
-			context.get(`services.dw-tracker-${trackingURL.name.toLowerCase()}.aggregate`) &&
-			dwTrafficAggregator.isAggregatorActive()
-		) {
-			dwTrafficAggregator.push(trackingURL, params);
-
-			// return; // TODO: uncomment in task: ADEN-13038
-		}
-
 		const url = this.buildDataWarehouseUrl(params, trackingURL.url);
 
-		this.handleDwEvent(url, params);
+		this.sendRequest({ url, params });
 	}
 
 	/**
@@ -135,22 +104,8 @@ export class DataWarehouseTracker {
 		delete params.action;
 		delete params.value;
 
-		let url = this.buildDataWarehouseUrl(params, eventUrl);
-		this.handleDwEvent(url, params, type);
-
-		// For video player events, send same data to additional endpoint
-		if (params.eventName === 'videoplayerevent') {
-			url = this.buildDataWarehouseUrl(params, videoEventUrl);
-			this.handleDwEvent(url, params, type);
-		}
-	}
-
-	private dispatchAndEmptyEventArray(): void {
-		const { batchSize, delay } = context.get('options.delayEvents');
-		const batchProcessor = new BatchProcessor(this.eventsArray, batchSize, delay);
-
-		batchProcessor.dispatchEventsWithTimeout(this.sendRequest);
-		this.eventsArray = [];
+		const url = this.buildDataWarehouseUrl(params, eventUrl);
+		this.sendRequest({ url, params, type });
 	}
 
 	private getTimeBasedParams(): TimeBasedParams {
@@ -175,23 +130,6 @@ export class DataWarehouseTracker {
 	/**
 	 * Send the get request
 	 */
-
-	private handleDwEvent(url: string, params: DataWarehouseParams, type = 'Event'): void {
-		const event = { url, params, type };
-		if (context.get('options.delayEvents.enabled')) {
-			this.adEngineStageSetup
-				.afterDocumentCompleted()
-				.then(() => {
-					this.sendRequest(event);
-				})
-				.catch(() => {
-					this.eventsArray.push(event);
-				});
-		} else {
-			this.sendRequest(event);
-		}
-	}
-
 	private sendRequest({ url, params, type = 'Event' }): void {
 		const request = new XMLHttpRequest();
 

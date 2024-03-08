@@ -1,5 +1,4 @@
-import { Dictionary } from '@wikia/ad-engine';
-import { TrackingUrl } from '../../setup/tracking-urls';
+import { Dictionary, TrackingUrl } from '@wikia/ad-engine';
 import { DataWarehouseParams } from '../data-warehouse';
 import { DwAggregatedDataSender } from './dw-aggregated-data-sender';
 

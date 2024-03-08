@@ -1,8 +1,7 @@
-import { context, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
+import { context, DiProcess, InstantConfigService, trackingUrls, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import Cookies from 'js-cookie';
 import { getMediaWikiVariable } from '../utils/get-media-wiki-variable';
-import { trackingUrls } from './tracking-urls';
 
 @Injectable()
 export class TrackingParametersSetup implements DiProcess {

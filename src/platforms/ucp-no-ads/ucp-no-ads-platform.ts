@@ -1,16 +1,15 @@
 import {
-	ConsentManagementPlatformSetup,
 	ensureGeoCookie,
 	InstantConfigSetup,
 	MetricReporterSetup,
 	PlatformContextSetup,
 	TrackingParametersSetup,
-	TrackingSetup,
 } from '@platforms/shared';
 import { IdentitySetup, logVersion, parallel, ProcessPipeline } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { UcpNoAdsBaseContextSetup } from './setup/context/base/ucp-mobile-base-context.setup';
 import { UcpNoAdsWikiContextSetup } from './setup/wiki-context.setup';
+import { UcpNoAdsTrackingSetup } from './tracking/tracking.setup';
 
 @Injectable()
 export class UcpNoAdsPlatform {
@@ -23,12 +22,12 @@ export class UcpNoAdsPlatform {
 			UcpNoAdsWikiContextSetup,
 			PlatformContextSetup,
 			async () => await ensureGeoCookie(),
-			parallel(InstantConfigSetup, ConsentManagementPlatformSetup),
+			parallel(InstantConfigSetup),
 			TrackingParametersSetup,
 			MetricReporterSetup,
 			UcpNoAdsBaseContextSetup,
 			IdentitySetup,
-			TrackingSetup,
+			UcpNoAdsTrackingSetup,
 		);
 		this.pipeline.execute();
 	}

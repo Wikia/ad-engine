@@ -19,11 +19,11 @@ import {
 	targetingService,
 	TrackingMessage,
 	TrackingTarget,
+	trackingUrls,
 	viewabilityTracker,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { props } from 'ts-action';
-import { trackingUrls } from '../setup/tracking-urls';
 import { AdSizeTracker } from './ad-size-tracker';
 import { DataWarehouseTracker } from './data-warehouse';
 import { LabradorTracker } from './labrador-tracker';
