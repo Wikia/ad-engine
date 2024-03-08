@@ -52,7 +52,7 @@ export interface TrackingBidDefinition {
 	slotName: string;
 	size: string;
 	timeToRespond: number;
-	additinonalInfo?: {
+	additionalInfo?: {
 		dsa?: object;
 	};
 }

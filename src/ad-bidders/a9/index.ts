@@ -50,7 +50,7 @@ export class A9Provider extends BidderProvider {
 			size: bid.amznsz,
 			slotName: getSlotNameByBidderAlias(slotName, true),
 			// TODO: Add integration with DSA when Amazon adds support for it (TACO-477)
-			additinonalInfo: undefined,
+			additionalInfo: undefined,
 		};
 	}
 

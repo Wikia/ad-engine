@@ -596,7 +596,7 @@ export class PrebidProvider extends BidderProvider {
 			slotName: getSlotNameByBidderAlias(response.adUnitCode),
 			size: response.size,
 			timeToRespond: response.timeToRespond,
-			additinonalInfo: response?.meta?.dsa ? { dsa: response.meta.dsa } : undefined,
+			additionalInfo: response?.meta?.dsa ? { dsa: response.meta.dsa } : undefined,
 		};
 	}
 
