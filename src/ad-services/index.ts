@@ -8,6 +8,7 @@ export * from './confiant';
 export * from './connatix';
 export * from './duration-media';
 export * from './experian';
+export * from './ias-publisher-optimization';
 export * from './identity-setup';
 export * from './live-connect';
 export * from './liveramp-pixel';

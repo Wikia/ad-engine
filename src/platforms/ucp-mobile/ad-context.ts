@@ -79,6 +79,16 @@ export const basicContext = {
 		externalLogger: {
 			endpoint: '/wikia.php?controller=AdEngine&method=postLog',
 		},
+		iasPublisherOptimization: {
+			slots: [
+				'top_leaderboard',
+				'top_boxad',
+				'incontent_boxad_1',
+				'bottom_leaderboard',
+				'featured',
+				'incontent_player',
+			],
+		},
 	},
 	slotGroups: {
 		VIDEO: ['FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
