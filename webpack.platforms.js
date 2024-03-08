@@ -9,8 +9,8 @@ const platforms = ({ entry }, bundleAnalyzer = false) => ({
 	entry,
 
 	output: {
-		filename: '[name].js',
-		chunkFilename: '[name].js',
+		filename: '[name].bundle.js',
+		chunkFilename: '[name].bundle.js',
 		path: path.resolve(__dirname, 'dist/platforms'),
 	},
 
@@ -72,7 +72,7 @@ module.exports = (env, argv) => {
 		platforms(
 			{
 				entry: {
-					index: ['./src/platforms/index.ts'],
+					main: ['./src/platforms/index.ts'],
 				},
 			},
 			env && env.bundleAnalyzer && argv.mode === 'production',
