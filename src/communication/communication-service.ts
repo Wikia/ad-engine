@@ -1,10 +1,11 @@
 import { Action, Communicator, setupPostQuecast } from '@wikia/post-quecast';
 import { fromEventPattern, merge, Observable, Subject } from 'rxjs';
 import { filter, shareReplay, skip, take } from 'rxjs/operators';
-import { EventOptions, eventsRepository } from './event-types';
 import { globalAction, isGlobalAction } from './global-action';
 import { ofType } from './of-type';
 import { ReduxDevtoolsFactory } from './redux-devtools';
+import { AD_ENGINE_SLOT_EVENT } from "./events/events-ad-engine-slot";
+import { EventOptions } from "./events/event-options";
 
 interface PostQuecastSettings {
 	channelId?: string;
@@ -59,7 +60,7 @@ export class CommunicationService {
 	): void {
 		this.action$
 			.pipe(
-				ofType(this.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
+				ofType(this.getGlobalAction(AD_ENGINE_SLOT_EVENT)),
 				filter(
 					(action: Action) =>
 						action.event === eventName.toString() && (!slotName || action.adSlotName === slotName),

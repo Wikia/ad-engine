@@ -1,7 +1,6 @@
 import {
 	BiddersEventPayload,
 	communicationService,
-	eventsRepository,
 	ofType,
 } from '@ad-engine/communication';
 import { filter, take } from 'rxjs/operators';
@@ -9,6 +8,7 @@ import { AdSlot } from '../models';
 import { pbjsFactory, targetingService } from '../services';
 import { IframeBuilder, logger } from '../utils';
 import { Provider } from './provider';
+import { BIDDERS_BIDDING_DONE } from "../../communication/events/events-bidders";
 
 const logGroup = 'prebidium-provider';
 
@@ -20,7 +20,7 @@ export class PrebidiumProvider implements Provider {
 
 		communicationService.action$
 			.pipe(
-				ofType(communicationService.getGlobalAction(eventsRepository.BIDDERS_BIDDING_DONE)),
+				ofType(communicationService.getGlobalAction(BIDDERS_BIDDING_DONE)),
 				filter(
 					(action: BiddersEventPayload) =>
 						action.provider === 'prebid' && action.slotName === adSlot.getSlotName(),

@@ -2,13 +2,13 @@ import {
 	communicationService,
 	context,
 	DiProcess,
-	eventsRepository,
 	setupNpaContext,
 	setupRdpContext,
 	targetingService,
 	utils,
 } from '@wikia/ad-engine';
 import { TargetingParams } from './interfaces/targeting-params';
+import { AD_ENGINE_SLOT_ADDED } from "../../../../../../communication/events/events-ad-engine-slot";
 
 export class NewsAndRatingsTargetingSetup implements DiProcess {
 	execute(): void {
@@ -149,7 +149,7 @@ export class NewsAndRatingsTargetingSetup implements DiProcess {
 	// Transfered from: https://github.com/Wikia/player1-ads-adlibrary/blob/0df200c535adf3599c7de9e99b719953af2784e1/configs/global-config.js
 	setSlotLevelTargeting(targeting, customConfig) {
 		communicationService.on(
-			eventsRepository.AD_ENGINE_SLOT_ADDED,
+			AD_ENGINE_SLOT_ADDED,
 			({ slot: adSlot }) => {
 				adSlot.setTargetingConfigProperty('sl', this.getSlValue(adSlot, customConfig));
 				adSlot.setTargetingConfigProperty('iid', this.getIidValue(adSlot, targeting));

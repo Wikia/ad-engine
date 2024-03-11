@@ -3,7 +3,6 @@ import {
 	babDetection,
 	communicationService,
 	context,
-	eventsRepository,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
@@ -12,6 +11,7 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
+import { AD_ENGINE_UAP_LOAD_STATUS } from "../../../../../communication/events/events-ad-engine-uap";
 
 @Injectable({ autobind: false })
 export class StickyTlbBlockingHandler implements TemplateStateHandler {
@@ -67,7 +67,7 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 	private async isUAP(): Promise<boolean> {
 		return new Promise((resolve) => {
 			communicationService.on(
-				eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+				AD_ENGINE_UAP_LOAD_STATUS,
 				(action: UapLoadStatus) => {
 					resolve(action.isLoaded);
 				},

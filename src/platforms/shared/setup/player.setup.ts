@@ -6,7 +6,6 @@ import {
 	communicationService,
 	context,
 	displayAndVideoAdsSyncContext,
-	eventsRepository,
 	InstantConfigService,
 	JWPlayerManager,
 	jwpSetup,
@@ -19,6 +18,8 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 // eslint-disable-next-line no-restricted-imports
 import { iasVideoTracker } from '../../../ad-products/video/porvata/plugins/ias/ias-video-tracker';
+import { BIDDERS_BIDDING_DONE } from "../../../communication/events/events-bidders";
+import { VIDEO_EVENT, VIDEO_PLAYER_RENDERED, VIDEO_SETUP } from "../../../communication/events/events-video";
 
 const logGroup = 'player-setup';
 let videoAdImpressionEmitted = false;
@@ -36,7 +37,7 @@ export class PlayerSetup extends BaseServiceSetup {
 	}
 
 	async call() {
-		communicationService.on(eventsRepository.VIDEO_PLAYER_RENDERED, () => {
+		communicationService.on(VIDEO_PLAYER_RENDERED, () => {
 			this.loadIasTrackerIfEnabled();
 		});
 		const showAds = !context.get('options.wad.blocking');
@@ -120,7 +121,7 @@ export class PlayerSetup extends BaseServiceSetup {
 		}
 
 		communicationService.on(
-			eventsRepository.VIDEO_EVENT,
+			VIDEO_EVENT,
 			(payload) => {
 				const { name, state } = payload.videoEvent;
 
@@ -130,7 +131,7 @@ export class PlayerSetup extends BaseServiceSetup {
 		);
 
 		communicationService.on(
-			eventsRepository.BIDDERS_BIDDING_DONE,
+			BIDDERS_BIDDING_DONE,
 			({ slotName }) => {
 				if (slotName === videoAdSlotName) {
 					PlayerSetup.emitVideoSetupEvent(showAds, adSlot, vastResponse);
@@ -180,7 +181,7 @@ export class PlayerSetup extends BaseServiceSetup {
 		adSlot: AdSlot,
 		vastResponse?: VastResponseData,
 	) {
-		communicationService.emit(eventsRepository.VIDEO_SETUP, {
+		communicationService.emit(VIDEO_SETUP, {
 			showAds,
 			autoplayDisabled: false,
 			videoAdUnitPath: this.modifyAdUnitPath(adSlot),

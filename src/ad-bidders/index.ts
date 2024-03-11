@@ -1,4 +1,4 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { communicationService } from '@ad-engine/communication';
 import {
 	AdSlotEvent,
 	BaseServiceSetup,
@@ -12,6 +12,11 @@ import {
 import { A9Provider } from './a9';
 import { defaultSlotBidGroup, getSlotBidGroupByName } from './bidder-helper';
 import { PrebidProvider } from './prebid';
+import {
+	BIDDERS_BIDDING_DONE,
+	BIDDERS_BIDS_REFRESH,
+	BIDDERS_CALL_PER_GROUP
+} from "../communication/events/events-bidders";
 
 interface BiddersProviders {
 	a9?: A9Provider;
@@ -37,7 +42,7 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 			this.updateSlotTargeting(slot.getSlotName());
 		});
 		communicationService.on(
-			eventsRepository.BIDDERS_BIDS_REFRESH,
+			BIDDERS_BIDS_REFRESH,
 			({ refreshedSlotNames }) => {
 				refreshedSlotNames.forEach((slotName) => this.updateSlotTargeting(slotName));
 			},
@@ -45,7 +50,7 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 		);
 
 		communicationService.on(
-			eventsRepository.BIDDERS_CALL_PER_GROUP,
+			BIDDERS_CALL_PER_GROUP,
 			({ group, callback }) => {
 				this.callByBidGroup(group).then(() => {
 					utils.logger(logGroup, `${group} - callback`);
@@ -183,7 +188,7 @@ export class Bidders extends BaseServiceSetup implements SlotPriceProvider {
 		this.applyTargetingParams(slotName, bidderTargeting);
 
 		utils.logger(logGroup, 'updateSlotTargeting', slotName, bidderTargeting);
-		communicationService.emit(eventsRepository.BIDDERS_BIDDING_DONE, {
+		communicationService.emit(BIDDERS_BIDDING_DONE, {
 			slotName,
 			provider: 'prebid',
 		});

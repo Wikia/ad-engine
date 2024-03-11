@@ -2,13 +2,13 @@ import { slotsContext } from '@platforms/shared';
 import {
 	communicationService,
 	context,
-	eventsRepository,
 	TEMPLATE,
 	TemplateStateHandler,
 	UapParams,
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
+import { AD_ENGINE_UAP_DOM_CHANGED } from "../../../../../communication/events/events-ad-engine-uap";
 
 @Injectable({ autobind: false })
 export class BfaaSportsConfigHandler implements TemplateStateHandler {
@@ -20,7 +20,7 @@ export class BfaaSportsConfigHandler implements TemplateStateHandler {
 
 			if (header) {
 				communicationService.on(
-					eventsRepository.AD_ENGINE_UAP_DOM_CHANGED,
+					AD_ENGINE_UAP_DOM_CHANGED,
 					({ element, size }) => {
 						if (element === 'placeholder') {
 							header.style.paddingTop = size;

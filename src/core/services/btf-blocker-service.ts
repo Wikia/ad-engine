@@ -1,9 +1,10 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { communicationService } from '@ad-engine/communication';
 import { AdSlot, AdSlotStatus, Dictionary, SlotConfig } from '../models';
 import { AdSlotEvent } from '../models/ad-slot-event';
 import { LazyQueue, logger } from '../utils';
 import { context } from './context-service';
 import { slotService } from './slot-service';
+import { AD_ENGINE_UAP_LOAD_STATUS } from "../../communication/events/events-ad-engine-uap";
 
 type FillInCallback = (adSlot: AdSlot) => void;
 
@@ -65,7 +66,7 @@ class BtfBlockerService {
 			this.disableSecondCall([...this.unblockedSlotNames]);
 		}
 
-		communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, () => {
+		communicationService.on(AD_ENGINE_UAP_LOAD_STATUS, () => {
 			this.slotsQueue.flush();
 		});
 	}

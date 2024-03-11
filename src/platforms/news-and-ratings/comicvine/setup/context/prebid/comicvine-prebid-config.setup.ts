@@ -3,7 +3,6 @@ import {
 	communicationService,
 	context,
 	DiProcess,
-	eventsRepository,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -17,6 +16,7 @@ import { getPubmaticContext } from '../../../bidders/pubmatic';
 import { getRubiconDisplayContext } from '../../../bidders/rubicon-display';
 import { getWikiaContext } from '../../../bidders/wikia';
 import { getYahooSspContext } from '../../../bidders/yahoossp';
+import { AD_ENGINE_SLOT_ADDED } from "../../../../../../communication/events/events-ad-engine-slot";
 
 @Injectable()
 export class ComicvinePrebidConfigSetup implements DiProcess {
@@ -42,7 +42,7 @@ export class ComicvinePrebidConfigSetup implements DiProcess {
 
 	private registerListeners() {
 		communicationService.on(
-			eventsRepository.AD_ENGINE_SLOT_ADDED,
+			AD_ENGINE_SLOT_ADDED,
 			({ slot }) => {
 				this.bidders.updateSlotTargeting(slot.getSlotName());
 			},

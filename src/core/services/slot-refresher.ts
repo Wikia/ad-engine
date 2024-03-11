@@ -1,8 +1,9 @@
-import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
+import { communicationService, UapLoadStatus } from '@ad-engine/communication';
 import { AdSlot, AdSlotEvent } from '../models';
 import { GptProvider } from '../providers';
 import { logger } from '../utils';
 import { context } from './context-service';
+import { AD_ENGINE_UAP_LOAD_STATUS } from "../../communication/events/events-ad-engine-uap";
 
 const logGroup = 'slot-refresher';
 
@@ -17,7 +18,7 @@ const defaultConfig: Config = {
 
 async function isUAP(): Promise<boolean> {
 	return new Promise((resolve) => {
-		communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
+		communicationService.on(AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
 			const isUAP = action.isLoaded || action.adProduct === 'ruap';
 			resolve(isUAP);
 		});

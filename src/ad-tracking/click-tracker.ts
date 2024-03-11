@@ -1,15 +1,21 @@
-import { communicationService, EventOptions, eventsRepository } from '@ad-engine/communication';
+import { communicationService } from '@ad-engine/communication';
 import { AdSlot, AdSlotEvent, AdSlotStatus, Dictionary, slotService, utils } from '@ad-engine/core';
 import { BaseTracker, BaseTrackerInterface } from './base-tracker';
 import { slotPropertiesTrackingCompiler, slotTrackingCompiler } from './compilers';
+import {
+	AD_ENGINE_VIDEO_LEARN_MORE_CLICKED,
+	AD_ENGINE_VIDEO_OVERLAY_CLICKED,
+	AD_ENGINE_VIDEO_TOGGLE_UI_OVERLAY_CLICKED
+} from "../communication/events/events-ad-engine-video";
+import { EventOptions } from "../communication/events/event-options";
 
 const logGroup = 'ad-click-tracker';
 
 class AdClickTracker extends BaseTracker implements BaseTrackerInterface {
 	private eventsToRegister = [
-		eventsRepository.AD_ENGINE_VIDEO_LEARN_MORE_CLICKED,
-		eventsRepository.AD_ENGINE_VIDEO_OVERLAY_CLICKED,
-		eventsRepository.AD_ENGINE_VIDEO_TOGGLE_UI_OVERLAY_CLICKED,
+		AD_ENGINE_VIDEO_LEARN_MORE_CLICKED,
+		AD_ENGINE_VIDEO_OVERLAY_CLICKED,
+		AD_ENGINE_VIDEO_TOGGLE_UI_OVERLAY_CLICKED,
 	];
 	compilers = [slotTrackingCompiler, slotPropertiesTrackingCompiler];
 

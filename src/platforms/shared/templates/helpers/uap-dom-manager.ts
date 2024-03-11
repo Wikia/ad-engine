@@ -1,7 +1,6 @@
 import {
 	AdSlot,
 	communicationService,
-	eventsRepository,
 	TEMPLATE,
 	UapParams,
 } from '@wikia/ad-engine';
@@ -9,6 +8,7 @@ import { Inject, Injectable } from '@wikia/dependency-injection';
 import { PAGE } from '../configs/uap-dom-elements';
 import { DomManipulator } from './manipulators/dom-manipulator';
 import { UapDomReader } from './uap-dom-reader';
+import { AD_ENGINE_UAP_DOM_CHANGED } from "../../../../communication/events/events-ad-engine-uap";
 
 @Injectable({ autobind: false })
 export class UapDomManager {
@@ -78,7 +78,7 @@ export class UapDomManager {
 		}
 
 		this.manipulator.element(placeholder).setProperty('height', height);
-		communicationService.emit(eventsRepository.AD_ENGINE_UAP_DOM_CHANGED, {
+		communicationService.emit(AD_ENGINE_UAP_DOM_CHANGED, {
 			element: 'placeholder',
 			size: height,
 		});

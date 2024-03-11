@@ -1,5 +1,6 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { communicationService } from '@ad-engine/communication';
 import { BaseServiceSetup, utils } from '@ad-engine/core';
+import { AD_ENGINE_SLOT_LOADED } from "../../communication/events/events-ad-engine-slot";
 
 const logGroup = 'brand-metrics';
 
@@ -10,7 +11,7 @@ export class BrandMetrics extends BaseServiceSetup {
 			return;
 		}
 
-		communicationService.on(eventsRepository.AD_ENGINE_SLOT_LOADED, this.loadScript, true);
+		communicationService.on(AD_ENGINE_SLOT_LOADED, this.loadScript, true);
 	}
 
 	private loadScript(): void {

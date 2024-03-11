@@ -1,5 +1,6 @@
-import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
+import { communicationService, UapLoadStatus } from '@ad-engine/communication';
 import { BaseServiceSetup, context, utils } from '@ad-engine/core';
+import { AD_ENGINE_UAP_LOAD_STATUS } from "../../communication/events/events-ad-engine-uap";
 
 const logGroup = 'wunderkind';
 
@@ -15,7 +16,7 @@ export class Wunderkind extends BaseServiceSetup {
 			return;
 		}
 
-		communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
+		communicationService.on(AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
 			if (action.isLoaded) {
 				utils.logger(logGroup, 'disabled - UAP is loaded');
 				return;

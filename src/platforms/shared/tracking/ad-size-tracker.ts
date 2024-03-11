@@ -1,7 +1,8 @@
-import { AdSlot, communicationService, eventsRepository } from '@wikia/ad-engine';
+import { AdSlot, communicationService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { trackingUrls } from '../setup/tracking-urls';
 import { DataWarehouseTracker } from './data-warehouse';
+import { AD_ENGINE_AD_RESIZED } from "../../../communication/events/events-ad-engine-slot";
 
 /**
  * Wrapper for ad size tracking
@@ -12,7 +13,7 @@ export class AdSizeTracker {
 
 	init(): void {
 		communicationService.on(
-			eventsRepository.AD_ENGINE_AD_RESIZED,
+			AD_ENGINE_AD_RESIZED,
 			({ slot, sizes }) => {
 				this.track(slot, sizes.width, sizes.height);
 			},

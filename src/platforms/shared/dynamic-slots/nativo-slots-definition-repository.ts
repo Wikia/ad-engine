@@ -4,7 +4,6 @@ import {
 	communicationService,
 	context,
 	DomListener,
-	eventsRepository,
 	Nativo,
 	nativoLazyLoader,
 	SlotCreatorConfig,
@@ -13,6 +12,7 @@ import {
 
 import { SlotSetupDefinition } from '../utils/insert-slots';
 import { fanFeedNativeAdListener } from './fan-feed-native-ad-listener';
+import { AD_ENGINE_UAP_LOAD_STATUS } from "../../../communication/events/events-ad-engine-uap";
 
 @Injectable()
 export class NativoSlotsDefinitionRepository {
@@ -43,7 +43,7 @@ export class NativoSlotsDefinitionRepository {
 			activator: () => {
 				const scrollThreshold = context.get('events.pushOnScroll.nativoThreshold');
 				communicationService.on(
-					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+					AD_ENGINE_UAP_LOAD_STATUS,
 					(action: UapLoadStatus) =>
 						this.onAdEngineUapLoaded(action, Nativo.INCONTENT_AD_SLOT_NAME, scrollThreshold),
 				);

@@ -1,12 +1,18 @@
 import {
 	AdSlotStatus,
 	communicationService,
-	eventsRepository,
 	slotService,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { insertSlots, SlotsDefinitionRepository } from '../utils/insert-slots';
+import { AD_ENGINE_STACK_START } from "../../../communication/events/events-ad-engine";
+import {
+	PLATFORM_LIGHTBOX_CLOSED,
+	PLATFORM_LIGHTBOX_IMAGE_CHANGE,
+	PLATFORM_LIGHTBOX_READY
+} from "../../../communication/events/events-platform-gallery";
+import { BIDDERS_CALL_PER_GROUP } from "../../../communication/events/events-bidders";
 
 export interface GalleryLightboxAds {
 	handler: GalleryLightboxAdsHandler;
@@ -25,7 +31,7 @@ export class GalleryLightboxAdsHandler {
 		this.isActive = true;
 	}
 	handle() {
-		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+		communicationService.on(AD_ENGINE_STACK_START, () => {
 			this.handleOnLoadNoAd();
 			this.handleOnLoad();
 			this.handleOnChange();
@@ -45,7 +51,7 @@ export class GalleryLightboxAdsHandler {
 
 	private handleOnLoad(): void {
 		communicationService.on(
-			eventsRepository.PLATFORM_LIGHTBOX_READY,
+			PLATFORM_LIGHTBOX_READY,
 			({ placementId }) => {
 				if (placementId !== this.slotName) {
 					return;
@@ -66,7 +72,7 @@ export class GalleryLightboxAdsHandler {
 
 	private handleOnChange(): void {
 		communicationService.on(
-			eventsRepository.PLATFORM_LIGHTBOX_IMAGE_CHANGE,
+			PLATFORM_LIGHTBOX_IMAGE_CHANGE,
 			({ placementId }) => {
 				utils.logger(
 					this.logGroup,
@@ -104,7 +110,7 @@ export class GalleryLightboxAdsHandler {
 
 	private handleOnClose(): void {
 		communicationService.on(
-			eventsRepository.PLATFORM_LIGHTBOX_CLOSED,
+			PLATFORM_LIGHTBOX_CLOSED,
 			({ placementId }) => {
 				if (placementId !== this.slotName) {
 					return;
@@ -151,7 +157,7 @@ export class GalleryLightboxAdsHandler {
 	}
 
 	private callPrebidBidders(callback: () => void) {
-		communicationService.emit(eventsRepository.BIDDERS_CALL_PER_GROUP, {
+		communicationService.emit(BIDDERS_CALL_PER_GROUP, {
 			group: 'gallery',
 			callback: callback,
 		});

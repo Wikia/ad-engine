@@ -21,7 +21,6 @@ import {
 	communicationService,
 	conditional,
 	context,
-	eventsRepository,
 	IdentitySetup,
 	logVersion,
 	parallel,
@@ -37,6 +36,7 @@ import { UcpMobilePrebidConfigSetup } from './setup/context/prebid/ucp-mobile-pr
 import { UcpMobileSlotsContextSetup } from './setup/context/slots/ucp-mobile-slots-context.setup';
 import { UcpMobileDynamicSlotsSetup } from './setup/dynamic-slots/ucp-mobile-dynamic-slots.setup';
 import { UcpMobileTemplatesSetup } from './templates/ucp-mobile-templates.setup';
+import { AD_ENGINE_CONFIGURED } from "../../communication/events/events-ad-engine";
 
 @Injectable()
 export class UcpMobilePlatform {
@@ -75,7 +75,7 @@ export class UcpMobilePlatform {
 				no: NoAdsMode,
 			}),
 			TrackingSetup,
-			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
+			() => communicationService.emit(AD_ENGINE_CONFIGURED),
 			PostAdStackPartnersSetup,
 		);
 

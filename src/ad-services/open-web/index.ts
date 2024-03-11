@@ -1,4 +1,4 @@
-import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
+import { communicationService, UapLoadStatus } from '@ad-engine/communication';
 import {
 	BaseServiceSetup,
 	context,
@@ -8,6 +8,7 @@ import {
 } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
 import { PlacementsHandler } from './utils/placements-handler';
+import {AD_ENGINE_UAP_LOAD_STATUS} from "../../communication/events/events-ad-engine-uap";
 
 const logGroup = 'open-web';
 
@@ -44,7 +45,7 @@ export class OpenWeb extends BaseServiceSetup {
 		const articleId = targetingService.get('post_id') || targetingService.get('artid');
 		const siteId = targetingService.get('s1');
 
-		communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
+		communicationService.on(AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
 			if (action.isLoaded) {
 				utils.logger(logGroup, 'disabled - UAP is loaded');
 				return;

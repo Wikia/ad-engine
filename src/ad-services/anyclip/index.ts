@@ -14,6 +14,7 @@ import {
 import { DataWarehouseTracker } from '../../platforms/shared';
 import { AnyclipBidsRefresher } from './anyclip-bids-refresher';
 import { AnyclipTracker } from './anyclip-tracker';
+import { AD_ENGINE_UAP_LOAD_STATUS } from "../../communication/events/events-ad-engine-uap";
 
 const logGroup = 'Anyclip';
 const DEFAULT_WIDGET_NAME = '001w000001Y8ud2_19593';
@@ -100,7 +101,7 @@ export class Anyclip extends BaseServiceSetup {
 
 		if (context.get('services.anyclip.loadWithoutAnchor')) {
 			communicationService.on(
-				eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+				AD_ENGINE_UAP_LOAD_STATUS,
 				(action: UapLoadStatus) => {
 					if (!action.isLoaded) {
 						this.loadPlayerAsset();
@@ -113,7 +114,7 @@ export class Anyclip extends BaseServiceSetup {
 
 		if (context.get('custom.hasIncontentPlayer')) {
 			communicationService.on(
-				eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+				AD_ENGINE_UAP_LOAD_STATUS,
 				this.loadOnUapStatus.bind(this),
 			);
 		}

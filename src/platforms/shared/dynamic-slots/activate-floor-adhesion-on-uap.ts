@@ -2,15 +2,15 @@ import {
 	AdSlotEvent,
 	communicationService,
 	context,
-	eventsRepository,
 	UapLoadStatus,
 	universalAdPackage,
 } from '@wikia/ad-engine';
+import { AD_ENGINE_UAP_LOAD_STATUS } from "../../../communication/events/events-ad-engine-uap";
 
 export function activateFloorAdhesionOnUAP(callback: () => void, withLoadedOnly = true) {
 	const firstCallSlotName = 'top_leaderboard';
 
-	communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
+	communicationService.on(AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
 		if (action.isLoaded) {
 			communicationService.onSlotEvent(
 				AdSlotEvent.CUSTOM_EVENT,

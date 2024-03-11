@@ -4,7 +4,6 @@ import {
 	AdSlotEventPayload,
 	communicationService,
 	createBottomPanel,
-	eventsRepository,
 	LearnMore,
 	ofType,
 	PlayerOverlay,
@@ -24,6 +23,7 @@ import { fromEvent, merge, Observable, Subject } from 'rxjs';
 import { debounceTime, filter, mergeMap, take, takeUntil, tap } from 'rxjs/operators';
 import { slotsContext } from '../../../slots/slots-context';
 import { PlayerRegistry } from '../../helpers/player-registry';
+import { AD_ENGINE_SLOT_EVENT } from "../../../../../communication/events/events-ad-engine-slot";
 
 @Injectable({ autobind: false })
 export class VideoBootstrapHandler implements TemplateStateHandler {
@@ -69,7 +69,7 @@ export class VideoBootstrapHandler implements TemplateStateHandler {
 			),
 
 			communicationService.action$.pipe(
-				ofType(communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
+				ofType(communicationService.getGlobalAction(AD_ENGINE_SLOT_EVENT)),
 				filter(
 					(action: AdSlotEventPayload) =>
 						action.event === AdSlotEvent.CUSTOM_EVENT &&

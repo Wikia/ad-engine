@@ -1,7 +1,8 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { communicationService } from '@ad-engine/communication';
 import { AdSlot, Dictionary } from '../models';
 import { slotService, SlotTargeting, targetingService, trackingOptIn } from '../services';
 import { isCoppaSubject } from './is-coppa-subject';
+import { AD_ENGINE_INVALIDATE_SLOT_TARGETING } from "../../communication/events/events-ad-engine-slot";
 
 export interface TaglessSlotOptions {
 	correlator: number;
@@ -49,7 +50,7 @@ export function getCustomParameters(
 		setTargetingValue(key, targetingData[key]);
 	});
 
-	communicationService.emit(eventsRepository.AD_ENGINE_INVALIDATE_SLOT_TARGETING, { slot });
+	communicationService.emit(AD_ENGINE_INVALIDATE_SLOT_TARGETING, { slot });
 
 	const params: Dictionary = {
 		...targeting,

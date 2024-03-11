@@ -3,11 +3,11 @@ import {
 	communicationService,
 	context,
 	DiProcess,
-	eventsRepository,
 	GdprConsentPayload,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { AD_ENGINE_CONSENT_READY } from "../../../communication/events/events-ad-engine";
 
 const logGroup = 'tracking-opt-in-wrapper';
 
@@ -26,7 +26,7 @@ export class ConsentManagementPlatformSetup implements DiProcess {
 		return new Promise((resolve) => {
 			utils.logger(logGroup, 'Waiting for consents');
 
-			communicationService.on(eventsRepository.AD_ENGINE_CONSENT_READY, (payload) => {
+			communicationService.on(AD_ENGINE_CONSENT_READY, (payload) => {
 				this.setConsents(payload);
 				resolve();
 			});
@@ -55,7 +55,7 @@ export class ConsentManagementPlatformSetup implements DiProcess {
 				window.ads.consentQueue.push(callback);
 			});
 
-		communicationService.on(eventsRepository.AD_ENGINE_CONSENT_READY, (consents) => {
+		communicationService.on(AD_ENGINE_CONSENT_READY, (consents) => {
 			window.ads.consentQueue.onItemFlush((callback) => {
 				console.warn(
 					`[AdEngine] You are using deprecated API to get consent.\nPlease use PostQuecast action "[AdEngine OptIn] set opt in" instead.`,

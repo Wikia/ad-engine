@@ -4,11 +4,15 @@ import {
 	communicationService,
 	context,
 	DiProcess,
-	eventsRepository,
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { F2SlotsDefinitionRepository } from './f2-slots-definition-repository';
+import {
+	AD_ENGINE_UAP_LOAD_STATUS,
+	AD_ENGINE_UAP_NTC_LOADED
+} from "../../../../communication/events/events-ad-engine-uap";
+import { AD_ENGINE_STACK_START } from "../../../../communication/events/events-ad-engine";
 
 @Injectable()
 export class F2DynamicSlotsSetup implements DiProcess {
@@ -30,14 +34,14 @@ export class F2DynamicSlotsSetup implements DiProcess {
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
 		]);
 
-		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () =>
+		communicationService.on(AD_ENGINE_UAP_NTC_LOADED, () =>
 			insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]),
 		);
 
 		if (!topLeaderboardDefinition) {
-			communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+			communicationService.on(AD_ENGINE_STACK_START, () => {
 				btfBlockerService.finishFirstCall();
-				communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
+				communicationService.emit(AD_ENGINE_UAP_LOAD_STATUS, {
 					isLoaded: universalAdPackage.isFanTakeoverLoaded(),
 					adProduct: universalAdPackage.getType(),
 				});

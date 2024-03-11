@@ -3,7 +3,6 @@ import {
 	context,
 	Dictionary,
 	DiProcess,
-	eventsRepository,
 	globalContextService,
 	InstantConfigService,
 	setupNpaContext,
@@ -13,6 +12,7 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { NoAdsDetector } from '../services/no-ads-detector';
+import { AD_ENGINE_UAP_LOAD_STATUS } from "../../../communication/events/events-ad-engine-uap";
 
 @Injectable()
 export class BaseContextSetup implements DiProcess {
@@ -59,7 +59,7 @@ export class BaseContextSetup implements DiProcess {
 
 		if (this.instantConfig.get('icPrebidium')) {
 			context.set('state.provider', 'prebidium');
-			communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
+			communicationService.emit(AD_ENGINE_UAP_LOAD_STATUS, {
 				isLoaded: false,
 				adProduct: universalAdPackage.DEFAULT_UAP_TYPE,
 			});

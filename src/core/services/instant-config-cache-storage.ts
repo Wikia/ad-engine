@@ -1,9 +1,13 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { communicationService } from '@ad-engine/communication';
 import { InstantConfigCacheStorageService } from '@wikia/instant-config-loader';
 import { utils } from '../index';
 import { CookieStorageAdapter } from './cookie-storage-adapter';
 import { deserializeCache } from './instant-config-cache-storage-serializer';
 import { UniversalStorage } from './universal-storage';
+import {
+	AD_ENGINE_INSTANT_CONFIG_CACHE_READY,
+	AD_ENGINE_INSTANT_CONFIG_CACHE_RESET
+} from "../../communication/events/events-ad-engine";
 
 export interface CacheDictionary {
 	[key: string]: CacheData;
@@ -36,14 +40,14 @@ export class InstantConfigCacheStorage implements InstantConfigCacheStorageServi
 
 	private constructor() {
 		this.initCacheFromCookie();
-		communicationService.on(eventsRepository.AD_ENGINE_INSTANT_CONFIG_CACHE_READY, () => {
+		communicationService.on(AD_ENGINE_INSTANT_CONFIG_CACHE_READY, () => {
 			this.resetCache();
 		});
 	}
 
 	resetCache(): void {
 		this.initCacheFromCookie();
-		communicationService.emit(eventsRepository.AD_ENGINE_INSTANT_CONFIG_CACHE_RESET);
+		communicationService.emit(AD_ENGINE_INSTANT_CONFIG_CACHE_RESET);
 	}
 
 	get(id: string): CacheData {

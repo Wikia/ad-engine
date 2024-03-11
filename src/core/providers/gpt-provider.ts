@@ -1,4 +1,4 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { communicationService } from '@ad-engine/communication';
 import { getAdStack } from '../ad-engine';
 import { AdSlotEvent, AdSlotStatus, Dictionary, type AdSlot } from '../models';
 import {
@@ -14,6 +14,7 @@ import { decorate, defer, isCoppaSubject, logger } from '../utils';
 import { GptSizeMap } from './gpt-size-map';
 import { initGptTargeting } from './gpt-targeting';
 import { Provider } from './provider';
+import { PLATFORM_BEFORE_PAGE_CHANGE } from "../../communication/events/events-platform-nar";
 
 const logGroup = 'gpt-provider';
 
@@ -177,7 +178,7 @@ export class GptProvider implements Provider {
 		this.setupRestrictDataProcessing();
 		this.setPPID();
 		communicationService.on(
-			eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE,
+			PLATFORM_BEFORE_PAGE_CHANGE,
 			() => this.updateCorrelator(),
 			false,
 		);

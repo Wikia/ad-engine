@@ -1,9 +1,10 @@
 // blockadblock doesn't export anything meaningful
-import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { communicationService } from '@ad-engine/communication';
 // it sets blockAdBlock and BlockAdBlock properties on window
 import 'blockadblock';
 import { utils } from '../';
 import { context } from '../services';
+import { AD_ENGINE_BAB_DETECTION } from "../../communication/events/events-ad-engine";
 
 const logGroup = 'bab-detection';
 
@@ -134,7 +135,7 @@ export class BabDetection {
 		document.dispatchEvent(event);
 
 		// Post-QueCast
-		communicationService.emit(eventsRepository.AD_ENGINE_BAB_DETECTION, {
+		communicationService.emit(AD_ENGINE_BAB_DETECTION, {
 			detected: isBabDetected,
 		});
 	}

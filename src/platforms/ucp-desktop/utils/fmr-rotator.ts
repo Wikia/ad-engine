@@ -4,12 +4,13 @@ import {
 	AdSlotStatus,
 	communicationService,
 	context,
-	eventsRepository,
 	scrollListener,
 	slotService,
 	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
+import { AD_ENGINE_SLOT_ADDED } from "../../../communication/events/events-ad-engine-slot";
+import { BIDDERS_CALL_PER_GROUP } from "../../../communication/events/events-bidders";
 
 interface FmrRotatorBiddersConfig {
 	bidGroup: string;
@@ -58,7 +59,7 @@ export class FmrRotator {
 
 	private initializeStandardRotation(): void {
 		communicationService.on(
-			eventsRepository.AD_ENGINE_SLOT_ADDED,
+			AD_ENGINE_SLOT_ADDED,
 			({ slot }) => {
 				if (slot.getSlotName().substring(0, this.fmrPrefix.length) === this.fmrPrefix) {
 					if (
@@ -241,7 +242,7 @@ export class FmrRotator {
 		context.set(`slots.${this.nextSlotName}.bidderAlias`, biddersConfig.bidderAlias);
 		context.set(`slots.${this.nextSlotName}.bidGroup`, biddersConfig.bidGroup);
 
-		communicationService.emit(eventsRepository.BIDDERS_CALL_PER_GROUP, {
+		communicationService.emit(BIDDERS_CALL_PER_GROUP, {
 			group: biddersConfig.bidGroup,
 			callback: callback,
 		});

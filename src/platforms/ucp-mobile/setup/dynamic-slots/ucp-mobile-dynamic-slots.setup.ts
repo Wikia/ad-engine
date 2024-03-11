@@ -31,6 +31,14 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { UcpMobileSlotsDefinitionRepository } from './ucp-mobile-slots-definition-repository';
+import {
+	AD_ENGINE_INTERSTITIAL_DISPLAYED,
+	AD_ENGINE_STACK_START
+} from "../../../../communication/events/events-ad-engine";
+import { GAM_INTERSTITIAL_LOADED } from "../../../../communication/events/events-gam";
+import { CONNATIX_LATE_INJECT, CONNATIX_READY } from "../../../../communication/events/events-connatix";
+import { AD_ENGINE_UAP_LOAD_STATUS } from "../../../../communication/events/events-ad-engine-uap";
+import { AD_ENGINE_SLOT_ADDED } from "../../../../communication/events/events-ad-engine-slot";
 
 @Injectable()
 export class UcpMobileDynamicSlotsSetup implements DiProcess {
@@ -79,9 +87,9 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		}
 
 		if (!topLeaderboardDefinition) {
-			communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+			communicationService.on(AD_ENGINE_STACK_START, () => {
 				btfBlockerService.finishFirstCall();
-				communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
+				communicationService.emit(AD_ENGINE_UAP_LOAD_STATUS, {
 					isLoaded: universalAdPackage.isFanTakeoverLoaded(),
 					adProduct: universalAdPackage.getType(),
 				});
@@ -129,7 +137,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	}
 
 	private configureIncontents(): void {
-		communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
+		communicationService.on(AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
 			if (!action.isLoaded) {
 				insertSlots([this.slotsDefinitionRepository.getIncontentPlayerConfig()]);
 			}
@@ -140,11 +148,11 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		const icpSlotName = 'incontent_player';
 
 		communicationService.on(
-			eventsRepository.AD_ENGINE_SLOT_ADDED,
+			AD_ENGINE_SLOT_ADDED,
 			({ slot }) => {
 				if (slot.getSlotName() === icpSlotName) {
 					communicationService.emit(eventsRepository.ANYCLIP_LATE_INJECT);
-					communicationService.emit(eventsRepository.CONNATIX_LATE_INJECT);
+					communicationService.emit(CONNATIX_LATE_INJECT);
 					slot.getPlaceholder()?.classList.remove('is-loading');
 				}
 			},
@@ -161,13 +169,13 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		communicationService.onSlotEvent(
 			AdSlotEvent.SLOT_VIEWED_EVENT,
 			() => {
-				communicationService.emit(eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED);
+				communicationService.emit(AD_ENGINE_INTERSTITIAL_DISPLAYED);
 				setInterstitialCapping();
 			},
 			'interstitial',
 		);
 
-		communicationService.on(eventsRepository.GAM_INTERSTITIAL_LOADED, () => {
+		communicationService.on(GAM_INTERSTITIAL_LOADED, () => {
 			setInterstitialCapping();
 		});
 	}
@@ -260,7 +268,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			}
 		});
 
-		communicationService.on(eventsRepository.CONNATIX_READY, () => {
+		communicationService.on(CONNATIX_READY, () => {
 			connatixLoaded = true;
 
 			if (codePriorityActive) {
@@ -296,7 +304,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				disableConnatixFloating();
 
 				communicationService.on(
-					eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED,
+					AD_ENGINE_INTERSTITIAL_DISPLAYED,
 					() => {
 						if (!codePriorityActive) {
 							return;

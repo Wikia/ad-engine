@@ -1,4 +1,4 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { communicationService } from '@ad-engine/communication';
 import type { AdStackPayload } from '../';
 import {
 	AdSlotStatus,
@@ -13,6 +13,12 @@ import { context, slotDataParamsUpdater, templateService } from '../services';
 import { AD_LABEL_CLASS, getTopOffset, logger, stringBuilder } from '../utils';
 import { AdSlotEvent } from './ad-slot-event';
 import { Dictionary } from './dictionary';
+import {
+	AD_ENGINE_AD_RESIZED,
+	AD_ENGINE_SLOT_EVENT,
+	AD_ENGINE_SLOT_LOADED
+} from "../../communication/events/events-ad-engine-slot";
+import { GAM_AD_DELAYED_COLLAPSE } from "../../communication/events/events-gam";
 
 export interface RepeatConfig {
 	index: number;
@@ -429,7 +435,7 @@ export class AdSlot {
 
 		this.emit(AdSlotEvent.TEMPLATES_LOADED, templateNames);
 
-		communicationService.emit(eventsRepository.AD_ENGINE_SLOT_LOADED, {
+		communicationService.emit(AD_ENGINE_SLOT_LOADED, {
 			name: this.getSlotName(),
 			state: AdSlotStatus.STATUS_SUCCESS,
 		});
@@ -439,7 +445,7 @@ export class AdSlot {
 
 	private setupDelayedCollapse() {
 		communicationService.on(
-			eventsRepository.GAM_AD_DELAYED_COLLAPSE,
+			GAM_AD_DELAYED_COLLAPSE,
 			(payload) => {
 				if (payload.source.includes(this.getSlotName())) {
 					this.collapse();
@@ -450,7 +456,7 @@ export class AdSlot {
 	}
 
 	collapse(status: string = AdSlotStatus.STATUS_COLLAPSE): void {
-		communicationService.emit(eventsRepository.AD_ENGINE_SLOT_LOADED, {
+		communicationService.emit(AD_ENGINE_SLOT_LOADED, {
 			name: this.getSlotName(),
 			state: AdSlotStatus.STATUS_COLLAPSE,
 		});
@@ -591,7 +597,7 @@ export class AdSlot {
 	 * Pass all events to Post-QueCast
 	 */
 	emit(event: string | symbol, data: any = {}, serialize = true): void {
-		communicationService.emit(eventsRepository.AD_ENGINE_SLOT_EVENT, {
+		communicationService.emit(AD_ENGINE_SLOT_EVENT, {
 			event: event.toString(),
 			slot: this,
 			adSlotName: this.getSlotName(),
@@ -620,7 +626,7 @@ export class AdSlot {
 					const height = Math.floor(entry.target.clientHeight);
 					// excludes empty slots (0x0) and collapsinator (1x1)
 					if (width > 0 && height > 0 && (width != 1 || height != 1)) {
-						communicationService.emit(eventsRepository.AD_ENGINE_AD_RESIZED, {
+						communicationService.emit(AD_ENGINE_AD_RESIZED, {
 							slot: this,
 							sizes: { width, height },
 						});

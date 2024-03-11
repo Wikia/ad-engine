@@ -1,4 +1,4 @@
-import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
+import { communicationService, UapLoadStatus } from '@ad-engine/communication';
 import {
 	BaseServiceSetup,
 	context,
@@ -13,6 +13,8 @@ import { ConnatixPlayer, ConnatixPlayerApi } from './connatix-player';
 import { ConnatixTracker } from './connatix-tracker';
 import { initConnatixHeadScript } from './head-script';
 import { PlayerInjector, PlayerInjectorInterface } from './player-injector';
+import { AD_ENGINE_UAP_LOAD_STATUS } from "../../communication/events/events-ad-engine-uap";
+import { CONNATIX_LATE_INJECT, CONNATIX_READY } from "../../communication/events/events-connatix";
 
 export const logGroup = 'connatix';
 
@@ -81,7 +83,7 @@ export class Connatix extends BaseServiceSetup {
 
 		if (context.get('custom.hasIncontentPlayer')) {
 			communicationService.on(
-				eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+				AD_ENGINE_UAP_LOAD_STATUS,
 				this.loadOnUapStatus.bind(this),
 			);
 		}
@@ -99,7 +101,7 @@ export class Connatix extends BaseServiceSetup {
 				return;
 			}
 
-			communicationService.on(eventsRepository.CONNATIX_LATE_INJECT, () => {
+			communicationService.on(CONNATIX_LATE_INJECT, () => {
 				utils.logger(logGroup, 'CONNATIX_LATE_INJECT emitted');
 				this.loadInitScript();
 				this.playerInjector.insertPlayerContainer(this.cid, this.renderCallback.bind(this));
@@ -123,7 +125,7 @@ export class Connatix extends BaseServiceSetup {
 
 		context.set('services.connatix.playerInstance', playerApi);
 		utils.logger(logGroup, 'ready');
-		communicationService.emit(eventsRepository.CONNATIX_READY);
+		communicationService.emit(CONNATIX_READY);
 
 		this.tracker.setPlayerApi(playerApi);
 		this.tracker.trackReady();

@@ -1,4 +1,4 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { communicationService } from '@ad-engine/communication';
 import { Container, Injectable } from '@wikia/dependency-injection';
 import { Observable, Subject } from 'rxjs';
 import { AdSlot, Dictionary, Type } from '../../models';
@@ -7,6 +7,7 @@ import { TemplateDependenciesManager, TemplateDependency } from './template-depe
 import { TemplateMachine } from './template-machine';
 import { TemplateState } from './template-state';
 import { TemplateStateHandler } from './template-state-handler';
+import { AD_ENGINE_TEMPLATE_LOADED } from "../../../communication/events/events-ad-engine";
 
 interface TemplateMachinePayload<
 	T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]> = any,
@@ -75,7 +76,7 @@ export class TemplateRegistry {
 			throw new Error(`Template ${templateName} was not registered`);
 		}
 
-		communicationService.emit(eventsRepository.AD_ENGINE_TEMPLATE_LOADED, {
+		communicationService.emit(AD_ENGINE_TEMPLATE_LOADED, {
 			name: templateName,
 			state: templateSlot ? templateSlot.getSlotName() : '',
 		});

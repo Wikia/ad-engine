@@ -27,6 +27,7 @@ import { trackingUrls } from '../setup/tracking-urls';
 import { AdSizeTracker } from './ad-size-tracker';
 import { DataWarehouseTracker } from './data-warehouse';
 import { LabradorTracker } from './labrador-tracker';
+import { VIDEO_PLAYER_TRACKING } from "../../../communication/events/events-video";
 
 const adClickedAction = globalAction('[AdEngine] Ad clicked', props<Dictionary>());
 
@@ -82,7 +83,7 @@ export class TrackingSetup {
 
 	private porvataTracker(): void {
 		communicationService.on(
-			eventsRepository.VIDEO_PLAYER_TRACKING,
+			VIDEO_PLAYER_TRACKING,
 			({ eventInfo }) => {
 				this.dwTracker.track(eventInfo, trackingUrls.AD_ENG_PLAYER_INFO);
 			},

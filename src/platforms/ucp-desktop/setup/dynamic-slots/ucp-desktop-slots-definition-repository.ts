@@ -8,7 +8,6 @@ import {
 	btRec,
 	communicationService,
 	context,
-	eventsRepository,
 	InstantConfigService,
 	RepeatableSlotPlaceholderConfig,
 	scrollListener,
@@ -18,6 +17,8 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { FmrRotator } from '../../utils/fmr-rotator';
+import { AD_ENGINE_UAP_LOAD_STATUS } from "../../../../communication/events/events-ad-engine-uap";
+import { AD_ENGINE_STACK_START } from "../../../../communication/events/events-ad-engine";
 
 @Injectable()
 export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepository {
@@ -111,7 +112,7 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 				classList: ['ad-slot-placeholder', 'incontent-leaderboard', 'is-loading'],
 			},
 			activator: () => {
-				communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, () => {
+				communicationService.on(AD_ENGINE_UAP_LOAD_STATUS, () => {
 					context.push('events.pushOnScroll.ids', slotName);
 				});
 			},
@@ -138,7 +139,7 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 			};
 			slotConfig.activator = () => {
 				communicationService.on(
-					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+					AD_ENGINE_UAP_LOAD_STATUS,
 					(action: UapLoadStatus) => {
 						context.push('events.pushOnScroll.ids', slotName);
 						if (!action.isLoaded) {
@@ -195,7 +196,7 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 				},
 			},
 			activator: () => {
-				communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+				communicationService.on(AD_ENGINE_STACK_START, () => {
 					if (this.isFmrApplicable(slotName)) {
 						const rotator = new FmrRotator(slotName, slotNamePrefix, btRec, {
 							topPositionToRun: 65,

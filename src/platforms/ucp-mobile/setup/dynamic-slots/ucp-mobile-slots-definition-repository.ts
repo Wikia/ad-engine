@@ -4,7 +4,6 @@ import {
 	communicationService,
 	context,
 	CookieStorageAdapter,
-	eventsRepository,
 	InstantConfigService,
 	OpenWeb,
 	RepeatableSlotPlaceholderConfig,
@@ -16,6 +15,7 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { UcpMobileTopBoxadExperiment } from '../experiments/ucp-mobile-top-boxad-experiment';
+import { AD_ENGINE_UAP_LOAD_STATUS } from "../../../../communication/events/events-ad-engine-uap";
 
 @Injectable()
 export class UcpMobileSlotsDefinitionRepository {
@@ -102,7 +102,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			activator: () => {
 				this.pushWaitingSlot(slotName);
 				communicationService.on(
-					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+					AD_ENGINE_UAP_LOAD_STATUS,
 					(action: UapLoadStatus) => {
 						if (action.isLoaded) {
 							this.injectIncontentAdsPlaceholders(1);
@@ -219,7 +219,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			},
 			activator: () => {
 				communicationService.on(
-					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+					AD_ENGINE_UAP_LOAD_STATUS,
 					(action: UapLoadStatus) => {
 						if (action.isLoaded) {
 							this.pushWaitingSlot(slotName);
@@ -369,7 +369,7 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	private pushWaitingSlot(slotName: string): void {
-		communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
+		communicationService.on(AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
 			if (action.isLoaded) {
 				context.push('events.pushOnScroll.ids', slotName);
 			} else {

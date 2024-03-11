@@ -30,6 +30,12 @@ import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice, roundBucketCpm } from './price-helper';
 import { prebidIdRetriever } from './utils/id-retriever';
 import { yahooConnectId } from './yahoo-connect-id';
+import {
+	BIDDERS_AUCTION_DONE,
+	BIDDERS_BIDS_CALLED,
+	BIDDERS_BIDS_REFRESH,
+	BIDDERS_BIDS_RESPONSE
+} from "../../communication/events/events-bidders";
 
 const logGroup = 'prebid';
 
@@ -497,10 +503,10 @@ export class PrebidProvider extends BidderProvider {
 		this.saveBidIds();
 		this.requestBids(this.adUnits, () => {
 			bidsBackHandler();
-			communicationService.emit(eventsRepository.BIDDERS_AUCTION_DONE);
+			communicationService.emit(BIDDERS_AUCTION_DONE);
 		});
 
-		communicationService.emit(eventsRepository.BIDDERS_BIDS_CALLED);
+		communicationService.emit(BIDDERS_BIDS_CALLED);
 	}
 
 	private saveBidIds(): void {
@@ -551,7 +557,7 @@ export class PrebidProvider extends BidderProvider {
 
 		const refreshUsedBid = (winningBid) => {
 			if (this.bidsRefreshing.slots.indexOf(winningBid.adUnitCode) !== -1) {
-				communicationService.emit(eventsRepository.BIDDERS_BIDS_REFRESH, {
+				communicationService.emit(BIDDERS_BIDS_REFRESH, {
 					refreshedSlotNames: [winningBid.adUnitCode],
 				});
 
@@ -574,7 +580,7 @@ export class PrebidProvider extends BidderProvider {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
 		const trackBid = (response) => {
-			communicationService.emit(eventsRepository.BIDDERS_BIDS_RESPONSE, {
+			communicationService.emit(BIDDERS_BIDS_RESPONSE, {
 				bidResponse: this.mapResponseToTrackingBidDefinition(response),
 			});
 		};

@@ -1,7 +1,6 @@
 import {
 	CcpaSignalPayload,
 	communicationService,
-	eventsRepository,
 	GdprConsentPayload,
 } from '@ad-engine/communication';
 import {
@@ -16,6 +15,7 @@ import {
 } from '@ad-engine/core';
 import Cookies from 'js-cookie';
 import { A9Bid, A9BidConfig, A9CCPA, ApstagConfig, ApstagTokenConfig } from '../a9/types';
+import { A9_APSTAG_HEM_SENT } from "../../communication/events/events-bidders";
 
 const logGroup = 'a9-apstag';
 
@@ -122,7 +122,7 @@ export class Apstag {
 			this.storage.setItem('apstagRecord', record);
 			this.storage.setItem('apstagHEMsent', (Date.now() + Apstag.AMAZON_TOKEN_TTL).toString());
 			this.storage.setItem('apstagHEMoptOut', optOutString);
-			communicationService.emit(eventsRepository.A9_APSTAG_HEM_SENT);
+			communicationService.emit(A9_APSTAG_HEM_SENT);
 		} catch (e) {
 			utils.logger(logGroup, 'Error sending HEM to apstag', e);
 		}

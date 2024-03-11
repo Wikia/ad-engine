@@ -2,10 +2,10 @@ import {
 	Bidders,
 	communicationService,
 	DiProcess,
-	eventsRepository,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { AD_ENGINE_SLOT_ADDED } from "../../../communication/events/events-ad-engine-slot";
 
 const logGroup = 'ad-engine';
 
@@ -15,7 +15,7 @@ export class BiddersTargetingUpdater implements DiProcess {
 
 	execute(): void {
 		communicationService.on(
-			eventsRepository.AD_ENGINE_SLOT_ADDED,
+			AD_ENGINE_SLOT_ADDED,
 			({ slot }) => {
 				utils.logger(logGroup, `Added ad slot ${slot.getSlotName()}`);
 				this.bidders.updateSlotTargeting(slot.getSlotName());

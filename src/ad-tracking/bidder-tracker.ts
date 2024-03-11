@@ -1,6 +1,7 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { communicationService } from '@ad-engine/communication';
 import { BaseTracker, BaseTrackerInterface } from './base-tracker';
 import { bidderTrackingCompiler } from './compilers';
+import { BIDDERS_BIDS_RESPONSE } from "../communication/events/events-bidders";
 
 class BidderTracker extends BaseTracker implements BaseTrackerInterface {
 	compilers = [bidderTrackingCompiler];
@@ -15,7 +16,7 @@ class BidderTracker extends BaseTracker implements BaseTrackerInterface {
 		}
 
 		communicationService.on(
-			eventsRepository.BIDDERS_BIDS_RESPONSE,
+			BIDDERS_BIDS_RESPONSE,
 			({ bidResponse }) => {
 				callback(this.compileData(null, bidResponse));
 			},
