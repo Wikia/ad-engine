@@ -5,6 +5,7 @@ import {
 	targetingService,
 	utils,
 } from '@ad-engine/core';
+import { CmpType } from '../../ad-services';
 import { CompilerPartial } from '../base-tracker';
 
 function checkOptIn(): string {
@@ -21,6 +22,10 @@ function checkOptOutSale(): string {
 	}
 
 	return '';
+}
+
+function getCmp(): CmpType {
+	return window.OneTrust !== undefined ? CmpType.ONE_TRUST : CmpType.TRACKING_OPT_IN;
 }
 
 export const slotTrackingCompiler = ({ data, slot }: CompilerPartial): CompilerPartial => {
@@ -53,11 +58,14 @@ export const slotTrackingCompiler = ({ data, slot }: CompilerPartial): CompilerP
 			page_width:
 				(window.document.body.scrollWidth && window.document.body.scrollWidth.toString()) || '',
 			ppid: targetingData.ppid,
+			pa_available: targetingService.get('pa_available') || '',
 			pv: context.get('wiki.pvNumber') || window.pvNumber || '',
 			pv_unique_id: context.get('wiki.pvUID') || window.pvUID || '',
 			scroll_y: window.scrollY || window.pageYOffset,
+			topics_available: targetingService.get('topics_available') || '',
 			tz_offset: now.getTimezoneOffset(),
 			viewport_height: window.innerHeight || 0,
+			rollout_tracking: getCmp(), // TODO: Remove once OneTrust replaces Tracking Opt In
 		},
 	};
 };
