@@ -3,7 +3,6 @@ import { ConnatixTracker } from '@wikia/ad-services/connatix/connatix-tracker';
 import { communicationService, EventOptions } from '@wikia/communication';
 import { CommunicationService } from '@wikia/communication/communication-service';
 import { context } from '@wikia/core';
-import { DataWarehouseTracker } from '@wikia/platforms/shared';
 import sinon, { SinonStubbedInstance } from 'sinon';
 import { makePlayerTrackerSpy } from './test-doubles/connatix-tracker-spy';
 import { makePlayerApiSpy } from './test-doubles/player-api-spy';
@@ -40,7 +39,6 @@ describe('Connatix', () => {
 			null,
 			playerInjectorSpy,
 			playerTrackerSpy as unknown as ConnatixTracker,
-			new DataWarehouseTracker(),
 		);
 		await connatix.call();
 
@@ -59,7 +57,6 @@ describe('Connatix', () => {
 			null,
 			playerInjectorSpy,
 			playerTrackerSpy as unknown as ConnatixTracker,
-			new DataWarehouseTracker(),
 		);
 		await connatix.call();
 		communicationServiceStub.on.callsFake(
@@ -84,7 +81,6 @@ describe('Connatix', () => {
 			null,
 			playerInjectorSpy,
 			playerTrackerSpy as unknown as ConnatixTracker,
-			new DataWarehouseTracker(),
 		);
 		await connatix.call();
 		communicationServiceStub.on.callsFake(
@@ -109,7 +105,6 @@ describe('Connatix', () => {
 			null,
 			playerInjectorSpy,
 			playerTrackerSpy as unknown as ConnatixTracker,
-			new DataWarehouseTracker(),
 		);
 		await connatix.call();
 
@@ -128,7 +123,6 @@ describe('Connatix', () => {
 			null,
 			playerInjectorSpy,
 			playerTrackerSpy as unknown as ConnatixTracker,
-			new DataWarehouseTracker(),
 		);
 		await connatix.call();
 
@@ -146,7 +140,6 @@ describe('Connatix', () => {
 			null,
 			playerInjectorSpy,
 			playerTrackerSpy as unknown as ConnatixTracker,
-			new DataWarehouseTracker(),
 		);
 		await connatix.call();
 
@@ -168,7 +161,6 @@ describe('Connatix', () => {
 			null,
 			playerInjectorSpy,
 			playerTrackerSpy as unknown as ConnatixTracker,
-			new DataWarehouseTracker(),
 		);
 		await connatix.call();
 
@@ -191,7 +183,6 @@ describe('Connatix', () => {
 			null,
 			playerInjectorSpy,
 			playerTrackerSpy as unknown as ConnatixTracker,
-			new DataWarehouseTracker(),
 		);
 		await connatix.call();
 
