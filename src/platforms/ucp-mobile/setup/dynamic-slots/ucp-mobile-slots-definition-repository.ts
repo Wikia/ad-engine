@@ -268,7 +268,9 @@ export class UcpMobileSlotsDefinitionRepository {
 			},
 			slotCreatorWrapperConfig: null,
 			activator: () => {
-				this.pushWaitingSlot(slotName);
+				communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, () => {
+					context.push('events.pushOnScroll.ids', slotName);
+				});
 			},
 		};
 	}
