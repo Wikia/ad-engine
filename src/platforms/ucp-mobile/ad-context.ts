@@ -33,6 +33,7 @@ export const basicContext = {
 	events: {
 		pushOnScroll: {
 			ids: [],
+			threshold: 100,
 		},
 	},
 	slots: {},
