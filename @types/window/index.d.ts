@@ -62,9 +62,6 @@ interface Window {
 	trackingOptIn?: any;
 	wgCookiePath?: string;
 	XMLHttpRequest?: any;
-	optimizely?: {
-		get?: (type: string) => {
-			getVariationMap: () => Record<string, { id: string; name: string }>;
-		};
-	};
+	OneTrust?: any;
+	pathfinderModulesReady?: bool;
 }
