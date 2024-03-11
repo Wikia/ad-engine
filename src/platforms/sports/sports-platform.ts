@@ -12,6 +12,7 @@ import {
 	NoAdsMode,
 	PlatformContextSetup,
 	PreloadedLibrariesSetup,
+	SlotTrackingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
@@ -70,6 +71,7 @@ export class SportsPlatform {
 			SportsTemplatesSetup,
 			LabradorSetup,
 			TrackingSetup,
+			SlotTrackingSetup,
 			BiddersTargetingUpdater,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 		);

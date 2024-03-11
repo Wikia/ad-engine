@@ -5,6 +5,7 @@ import {
 	InstantConfigSetup,
 	NoAdsDetector,
 	NoAdsMode,
+	SlotTrackingSetup,
 } from '@platforms/shared';
 import {
 	communicationService,
@@ -42,6 +43,7 @@ export class BingeBotPlatform {
 			BingeBotDynamicSlotsSetup,
 			BingeBotTemplatesSetup,
 			BingeBotTrackingSetup,
+			SlotTrackingSetup,
 			BingeBotBeforeViewChangeSetup,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 		);

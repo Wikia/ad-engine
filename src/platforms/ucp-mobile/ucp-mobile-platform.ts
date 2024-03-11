@@ -13,6 +13,7 @@ import {
 	PostAdStackPartnersSetup,
 	PreloadedLibrariesSetup,
 	SequentialMessagingSetup,
+	SlotTrackingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 	UcpTargetingSetup,
@@ -75,6 +76,7 @@ export class UcpMobilePlatform {
 				no: NoAdsMode,
 			}),
 			TrackingSetup,
+			SlotTrackingSetup,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 			PostAdStackPartnersSetup,
 		);

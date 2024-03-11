@@ -10,6 +10,7 @@ import {
 	NoAdsMode,
 	PlatformContextSetup,
 	SequentialMessagingSetup,
+	SlotTrackingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
@@ -61,6 +62,7 @@ export class F2Platform {
 			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM might break
 			LabradorSetup,
 			TrackingSetup,
+			SlotTrackingSetup,
 			BiddersTargetingUpdater,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 		);

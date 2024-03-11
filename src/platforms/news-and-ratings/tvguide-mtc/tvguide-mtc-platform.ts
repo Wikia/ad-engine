@@ -6,6 +6,7 @@ import {
 	MetricReporterSetup,
 	NoAdsMode,
 	PlatformContextSetup,
+	SlotTrackingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
@@ -32,6 +33,7 @@ export class TvGuideMTCPlatform {
 			MetricReporterSetup,
 			IdentitySetup,
 			TrackingSetup,
+			SlotTrackingSetup,
 			TvGuideMTCContextSetup,
 			TvGuideMtcTemplatesSetup,
 			TvGuideMtcSlotsContextSetup,
