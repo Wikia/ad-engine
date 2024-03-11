@@ -1,4 +1,10 @@
-import { context, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
+import {
+	context,
+	DiProcess,
+	InstantConfigService,
+	targetingService,
+	utils,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import Cookies from 'js-cookie';
 import { getMediaWikiVariable } from '../utils/get-media-wiki-variable';
@@ -85,5 +91,9 @@ export class TrackingParametersSetup implements DiProcess {
 					: false,
 			);
 		});
+
+		if (window.ads.ver) {
+			targetingService.set('aeVer', window.ads.ver);
+		}
 	}
 }
