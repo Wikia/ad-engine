@@ -122,7 +122,7 @@ export class SlotRefresher {
 	}
 
 	refreshSlot(adSlot: AdSlot) {
-		if (!this.isSlotRefreshable(adSlot.getSlotName())) return;
+		if (!this.isSlotRefreshable(adSlot.getSlotName()) && !adSlot.refreshable) return;
 		const slotSizes = context.get('slotConfig.slotRefresher.sizes') || {};
 
 		if (!(adSlot.getSlotName() in slotSizes)) {
