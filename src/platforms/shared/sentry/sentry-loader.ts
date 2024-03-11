@@ -1,6 +1,5 @@
 import type * as Sentry from '@sentry/browser';
 import type { BrowserClientOptions } from '@sentry/browser/types/client';
-import { utils } from '@wikia/ad-engine';
 
 declare global {
 	interface Window {
@@ -33,6 +32,7 @@ export class SentryLoader {
 	private tags: Record<string, string> = {};
 	private readonly errorQueue: Error[] = [];
 	private scope: Sentry.Scope | undefined;
+	private loadPromise: Promise<void>;
 
 	constructor(private readonly options: SentryOptions) {}
 
@@ -86,10 +86,7 @@ export class SentryLoader {
 
 		if (!this.loaded) {
 			this.errorQueue.push(error);
-			new utils.WaitFor(() => this.loaded, 10, 100).until().then(() => {
-				this.createSentryInstance();
-				this.flushErrorQueue();
-			});
+			this.loadSentry();
 			return;
 		}
 
@@ -101,22 +98,26 @@ export class SentryLoader {
 	}
 
 	private loadSentry(): Promise<void> {
-		return new Promise((resolve) => {
-			const script: HTMLScriptElement = document.createElement('script');
-			script.defer = true;
-			script.src = SentryLoader.SENTRY_SCRIPT_CDN_URL;
-			script.crossOrigin = 'anonymous';
-			script.integrity = SentryLoader.SENTRY_SCRIPT_INTEGRITY;
-			script.onload = () => {
-				this.createSentryInstance();
-				this.flushErrorQueue();
-				resolve();
-			};
+		if (this.loadPromise === undefined) {
+			this.loadPromise = new Promise((resolve) => {
+				const script: HTMLScriptElement = document.createElement('script');
+				script.defer = true;
+				script.src = SentryLoader.SENTRY_SCRIPT_CDN_URL;
+				script.crossOrigin = 'anonymous';
+				script.integrity = SentryLoader.SENTRY_SCRIPT_INTEGRITY;
+				script.onload = () => {
+					this.createSentryInstance();
+					this.flushErrorQueue();
+					resolve();
+				};
 
-			const temp = document.getElementsByTagName('script')[0];
+				const temp = document.getElementsByTagName('script')[0];
 
-			temp.parentNode.append(script);
-		});
+				temp.parentNode.append(script);
+			});
+		}
+
+		return this.loadPromise;
 	}
 
 	private createSentryInstance(): void {
