@@ -4,11 +4,12 @@ import {
 	VastTaglessRequest,
 	videoDisplayTakeoverSynchronizer,
 } from '@wikia/ad-products';
-import { communicationService, eventsRepository } from '@wikia/communication';
+import { communicationService } from '@wikia/communication';
 import { context, displayAndVideoAdsSyncContext, InstantConfigService } from '@wikia/core';
 import { PlayerSetup } from '@wikia/platforms/shared';
 import { expect } from 'chai';
 import { SinonSpy, SinonStubbedInstance } from 'sinon';
+import { BIDDERS_BIDDING_DONE } from "@wikia/communication/events/events-bidders";
 
 describe('PlayerSetup', () => {
 	const MOCKED_VAST_AD_UNIT = '/5441/cnx-test/vast/ad/unit';
@@ -126,7 +127,7 @@ describe('PlayerSetup', () => {
 			};
 
 			await subject.call();
-			communicationService.emit(eventsRepository.BIDDERS_BIDDING_DONE, { slotName });
+			communicationService.emit(BIDDERS_BIDDING_DONE, { slotName });
 
 			expect(dispatchSpy.called).to.be.true;
 			expect(dispatchSpy.lastCall.args[0]).to.deep.equal(expectedDispatchArg);
@@ -154,7 +155,7 @@ describe('PlayerSetup', () => {
 			vastTaglessRequestStub.getVast = () => Promise.resolve(response);
 
 			await subject.call();
-			communicationService.emit(eventsRepository.BIDDERS_BIDDING_DONE, { slotName });
+			communicationService.emit(BIDDERS_BIDDING_DONE, { slotName });
 
 			expect(dispatchSpy.called).to.be.true;
 			expect(dispatchSpy.lastCall.args[0]).to.deep.equal(expectedDispatchArg);

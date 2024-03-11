@@ -1,4 +1,4 @@
-import { communicationService, eventsRepository } from '@wikia/communication';
+import { communicationService } from '@wikia/communication';
 import { utils } from '@wikia/core';
 import { InstantConfigService } from '@wikia/core/services/instant-config/instant-config.service';
 import {
@@ -8,6 +8,7 @@ import {
 } from '@wikia/instant-config-loader';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
+import { AD_ENGINE_INSTANT_CONFIG_CACHE_RESET } from "@wikia/communication/events/events-ad-engine";
 
 describe('Instant Config Service', () => {
 	let initInterpreterStub: sinon.SinonStub;
@@ -87,7 +88,7 @@ describe('Instant Config Service', () => {
 			}).init();
 			const numberOfCalls = getValuesStub.getCalls().length;
 
-			communicationService.emit(eventsRepository.AD_ENGINE_INSTANT_CONFIG_CACHE_RESET);
+			communicationService.emit(AD_ENGINE_INSTANT_CONFIG_CACHE_RESET);
 
 			expect(getValuesStub.getCalls().length).to.be.greaterThan(numberOfCalls);
 		});

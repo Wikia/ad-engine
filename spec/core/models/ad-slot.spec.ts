@@ -1,4 +1,4 @@
-import { communicationService, eventsRepository } from '@wikia/communication';
+import { communicationService } from '@wikia/communication';
 import {
 	AdSlot,
 	AdSlotEvent,
@@ -10,6 +10,7 @@ import {
 import { expect } from 'chai';
 import { SinonSpy, SinonStubbedInstance } from 'sinon';
 import { configMock } from '../config-mock';
+import { AD_ENGINE_SLOT_EVENT } from "@wikia/communication/events/events-ad-engine-slot";
 
 /**
  * Create empty slot with given id.
@@ -206,7 +207,7 @@ describe('ad-slot', () => {
 			adSlot.emit(AdSlotEvent.TEMPLATES_LOADED, ['foo', 'bar']);
 
 			expect(dispatchSpy.firstCall.args[0]).to.deep.equal(
-				communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
+				communicationService.getGlobalAction(AD_ENGINE_SLOT_EVENT)({
 					payload: ['foo', 'bar'],
 					event: AdSlotEvent.TEMPLATES_LOADED,
 					adSlotName: slotName,
@@ -219,7 +220,7 @@ describe('ad-slot', () => {
 			adSlot.emit(symbol, ['foo', 'bar']);
 
 			expect(dispatchSpy.firstCall.args[0]).to.deep.equal(
-				communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
+				communicationService.getGlobalAction(AD_ENGINE_SLOT_EVENT)({
 					payload: ['foo', 'bar'],
 					event: 'Symbol(My Symbol)',
 					adSlotName: slotName,

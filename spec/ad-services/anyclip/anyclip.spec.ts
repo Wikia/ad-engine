@@ -1,5 +1,4 @@
 import { Anyclip } from '@wikia/ad-services';
-import { EventOptions, eventsRepository } from '@wikia/communication';
 import {
 	communicationService,
 	CommunicationService,
@@ -8,6 +7,8 @@ import { context, targetingService, TargetingService, utils } from '@wikia/core'
 import { WaitFor } from '@wikia/core/utils';
 import { expect } from 'chai';
 import sinon, { SinonStubbedInstance } from 'sinon';
+import { VIDEO_PLAYER_TRACKING } from "@wikia/communication/events/events-video";
+import { EventOptions } from "@wikia/communication/events/event-options";
 
 describe('Anyclip', () => {
 	let anyclip: Anyclip;
@@ -96,7 +97,7 @@ describe('Anyclip', () => {
 
 		expect(
 			communicationServiceStub.emit.calledWithMatch(
-				eventsRepository.VIDEO_PLAYER_TRACKING,
+				VIDEO_PLAYER_TRACKING,
 				sinon.match({ eventInfo: sinon.match({ event_name: 'eligible' }) }),
 			),
 		).to.equal(true);
