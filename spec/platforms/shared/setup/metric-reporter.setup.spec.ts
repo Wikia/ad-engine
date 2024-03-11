@@ -5,7 +5,7 @@ import { expect } from 'chai';
 describe('MetricReporterSetup', () => {
 	it('should set values to the context (number threshold)', async () => {
 		const instantConfig = {
-			get: () => 100,
+			get: () => 1,
 		} as any;
 		const metricSetup = new MetricReporterSetup(instantConfig);
 
@@ -15,7 +15,8 @@ describe('MetricReporterSetup', () => {
 		expect(contextSetSpy.callCount).to.be.eq(4);
 		expect(context.get('services.monitoring.endpoint')).to.not.be.empty;
 		expect(context.get('services.monitoring.service')).to.not.be.empty;
-		expect(context.get('services.monitoring-default.threshold')).to.be.eq(100);
+		expect(context.get('services.monitoring-default.threshold')).to.be.eq(1);
+		expect(context.get('services.monitoring-default.allowed')).to.be.false;
 	});
 
 	it('should set values to the context (object threshold)', async () => {

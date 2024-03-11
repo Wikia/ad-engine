@@ -22,3 +22,4 @@ tests/screenshots/*
 !tests/screenshots/reference
 allure-report
 .webpack-bundle-analyzer-stats.json
+graph.svg

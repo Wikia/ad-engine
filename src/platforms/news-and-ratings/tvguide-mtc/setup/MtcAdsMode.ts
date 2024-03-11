@@ -3,7 +3,6 @@ import {
 	AdSlotEvent,
 	communicationService,
 	DiProcess,
-	eventsRepository,
 	PartnerPipeline,
 	slotService,
 } from '@wikia/ad-engine';
@@ -16,7 +15,6 @@ export class MtcAdsMode implements DiProcess {
 	execute(): void {
 		this.pipeline.add(this.adEngineStackSetup).execute();
 		this.prepareFakeGptEvents();
-		this.prepareCallToExternalFunctionOnUap();
 	}
 
 	private prepareFakeGptEvents() {
@@ -45,12 +43,5 @@ export class MtcAdsMode implements DiProcess {
 			'mtop-leaderboard',
 			true,
 		);
-	}
-	private prepareCallToExternalFunctionOnUap() {
-		communicationService.on(eventsRepository.AD_ENGINE_CUSTOM_AD_LOADER_CALLED, (payload) => {
-			if (typeof window.loadCustomAdFandom === 'function') {
-				window.loadCustomAdFandom(payload);
-			}
-		});
 	}
 }
