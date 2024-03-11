@@ -1,6 +1,6 @@
 import { Connatix } from '@wikia/ad-services';
 import { ConnatixTracker } from '@wikia/ad-services/connatix/connatix-tracker';
-import { communicationService, EventOptions } from '@wikia/communication';
+import { communicationService } from '@wikia/communication';
 import { CommunicationService } from '@wikia/communication/communication-service';
 import { context } from '@wikia/core';
 import { DataWarehouseTracker } from '@wikia/platforms/shared';
@@ -8,6 +8,7 @@ import sinon, { SinonStubbedInstance } from 'sinon';
 import { makePlayerTrackerSpy } from './test-doubles/connatix-tracker-spy';
 import { makePlayerApiSpy } from './test-doubles/player-api-spy';
 import { makePlayerInjectorSpy } from './test-doubles/player-injector-spy';
+import { EventOptions } from "@wikia/communication/events/event-options";
 
 describe('Connatix', () => {
 	let communicationServiceStub: SinonStubbedInstance<CommunicationService>;
