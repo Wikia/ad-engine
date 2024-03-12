@@ -222,9 +222,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 
 	private configureBidAuctionSplitExperiment() {
 		if (context.get('custom.bidAuctionSplitEnabled')) {
-			context.set('slots.bottom_leaderboard.bidGroup', 'bottom_leaderboard');
-			context.set('slots.bottom_leaderboard.bidBeforeRun', true);
-
 			context.set('slots.incontent_boxad_1.bidGroup', 'incontent_boxad_1');
 			context.set('slots.incontent_boxad_1.bidBeforeRun', true);
 
