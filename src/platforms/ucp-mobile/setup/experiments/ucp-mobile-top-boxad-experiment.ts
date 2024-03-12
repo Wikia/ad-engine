@@ -44,7 +44,7 @@ export class UcpMobileTopBoxadExperiment {
 		}),
 		defineExperiment({
 			name: this.pathfinderExperimentVariantNames.control,
-			buckets: ['i', 'j'],
+			buckets: ['i', 'j', 'u', 'v'],
 		}),
 	];
 

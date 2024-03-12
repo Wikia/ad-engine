@@ -20,6 +20,7 @@ interface ITrackingParameters {
 	pvUID: string;
 	ppid?: string;
 	over_18?: string;
+	chromeLabel?: string;
 }
 
 interface ISiteParameters {
@@ -51,7 +52,9 @@ interface IPartnersParameters {
 }
 
 interface ITargetingParameters {
-	[key: string]: string | number;
+	browser?: string;
+	adGroup?: string;
+	AU_SEG?: string[] | string;
 }
 
 interface IVideoParameters {

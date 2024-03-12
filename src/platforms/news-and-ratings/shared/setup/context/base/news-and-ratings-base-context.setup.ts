@@ -44,6 +44,10 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		);
 		context.set('services.captify.propertyId', 13061);
 		context.set('services.confiant.propertyId', 'IOegabOoWb7FyEI1AmEa9Ki-5AY');
+		context.set(
+			'bidders.liveIntentConnectedId.enabled',
+			this.instantConfig.get('icLiveIntentConnectedId'),
+		);
 	}
 
 	private setupVideo() {

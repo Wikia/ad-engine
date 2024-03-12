@@ -16,7 +16,7 @@ import {
 	trackingOptIn,
 	type AdSlot,
 } from '@ad-engine/core';
-import { isCoppaSubject, logger } from '@ad-engine/utils';
+import { isCoppaSubject, logger, withDebounce } from '@ad-engine/utils';
 import {
 	defaultSlotBidGroup,
 	getSlotAlias,
@@ -49,6 +49,8 @@ export class A9Provider extends BidderProvider {
 			price: bid.amznbid,
 			size: bid.amznsz,
 			slotName: getSlotNameByBidderAlias(slotName, true),
+			// TODO: Add integration with DSA when Amazon adds support for it (TACO-477)
+			additionalInfo: undefined,
 		};
 	}
 
@@ -108,23 +110,14 @@ export class A9Provider extends BidderProvider {
 
 			await this.apstag.init();
 
-			communicationService.on(
-				eventsRepository.AD_ENGINE_CONSENT_UPDATE,
-				(consents: GdprConsentPayload & CcpaSignalPayload) =>
-					this.apstag.sendHEM(this.apstag.getRecord(), consents),
-				false,
-			);
-
-			communicationService.on(
-				eventsRepository.AD_ENGINE_CONSENT_READY,
-				(consents: GdprConsentPayload & CcpaSignalPayload) => {
-					const record = this.apstag.getRecord();
-					if (record) {
-						this.apstag.sendHEM(record, consents);
-					}
-				},
-				false,
-			);
+			const listener = withDebounce((consents: GdprConsentPayload & CcpaSignalPayload) => {
+				const record = this.apstag.getRecord();
+				if (record) {
+					this.apstag.sendHEM(record, consents);
+				}
+			}, 500);
+			communicationService.on(eventsRepository.AD_ENGINE_CONSENT_UPDATE, listener, false);
+			communicationService.on(eventsRepository.AD_ENGINE_CONSENT_READY, listener, true);
 
 			if (!trackingOptIn.isOptedIn() || trackingOptIn.isOptOutSale()) {
 				logger(logGroup, 'A9 was initialized without consents');

@@ -80,6 +80,9 @@ describe('Apstag', () => {
 					pubID: amazonId,
 					videoAdServer: 'DFP',
 					deals: true,
+					gdpr: {
+						cmpTimeout: 2000,
+					},
 					signals: { ortb2: {} },
 				}),
 				'apstag.init not called with expected args',
@@ -103,6 +106,9 @@ describe('Apstag', () => {
 					pubID: amazonId,
 					videoAdServer: 'DFP',
 					deals: true,
+					gdpr: {
+						cmpTimeout: 2000,
+					},
 					params: {
 						us_privacy: uspString,
 					},
@@ -133,6 +139,9 @@ describe('Apstag', () => {
 					pubID: amazonId,
 					videoAdServer: 'DFP',
 					deals: true,
+					gdpr: {
+						cmpTimeout: 2000,
+					},
 					signals: { ortb2 },
 				}),
 				'apstag.init not called with expected args',

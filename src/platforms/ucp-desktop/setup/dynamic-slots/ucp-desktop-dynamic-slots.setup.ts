@@ -9,6 +9,7 @@ import {
 	PlaceholderService,
 	QuizSlotsDefinitionRepository,
 	slotsContext,
+	waitForPathFinder,
 } from '@platforms/shared';
 import { universalAdPackage } from '@wikia/ad-products';
 import { Injectable } from '@wikia/dependency-injection';
@@ -51,7 +52,9 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		}
 
 		communicationService.on(eventsRepository.RAIL_READY, () => {
-			insertSlots([this.slotsDefinitionRepository.getIncontentBoxadConfig()]);
+			waitForPathFinder(() => {
+				insertSlots([this.slotsDefinitionRepository.getIncontentBoxadConfig()]);
+			});
 		});
 		communicationService.on(
 			eventsRepository.QUIZ_AD_INJECTED,

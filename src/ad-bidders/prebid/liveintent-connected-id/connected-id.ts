@@ -6,23 +6,23 @@ const logGroup = 'LiveIntentConnectedId';
 
 export class ConnectedId {
 	private publisherIds = {
+		gamefaqs: '79973',
 		gamespot: '79973',
-		fandom: '79968',
+		comicvine: '79973',
+		f2: '79968',
+		'ucp-desktop': '79968',
+		'ucp-mobile': '79968',
 		tvguide: '79974',
+		giantbomb: '85122',
+		metacritic: '85123',
+		'metacritic-neutron': '85123',
+		fanatical: '85124',
+		sports: '85125',
 	};
 
 	private getPublisherId() {
-		const url = window.location.href;
-		switch (true) {
-			case url.includes('gamespot'):
-				return this.publisherIds['gamespot'];
-			case url.includes('tvguide'):
-				return this.publisherIds['tvguide'];
-			case url.includes('fandom'):
-				return this.publisherIds['fandom'];
-			default:
-				return;
-		}
+		const appName = window.ads.context.app;
+		return this.publisherIds[appName];
 	}
 
 	getConfig(): Partial<UserIdConfig> {
@@ -31,7 +31,13 @@ export class ConnectedId {
 			return;
 		}
 		const publisherId = this.getPublisherId();
+		if (!publisherId) {
+			logger(logGroup, 'Invalid app id');
+			return;
+		}
+
 		logger(logGroup, 'enabled');
+
 		return {
 			name: 'liveIntentId',
 			params: {

@@ -79,10 +79,12 @@ export class Connatix extends BaseServiceSetup {
 
 		logger(logGroup, 'initialized', this.cid);
 
-		communicationService.on(
-			eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
-			this.loadOnUapStatus.bind(this),
-		);
+		if (context.get('custom.hasIncontentPlayer')) {
+			communicationService.on(
+				eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+				this.loadOnUapStatus.bind(this),
+			);
+		}
 	}
 
 	private loadOnUapStatus({ isLoaded, adProduct }: UapLoadStatus) {

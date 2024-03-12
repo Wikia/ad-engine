@@ -1,6 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import type { AdSlot, Dictionary } from '../models';
-import { slotService, SlotTargeting, targetingService, trackingOptIn } from '../services';
+import { context, slotService, SlotTargeting, targetingService, trackingOptIn } from '../services';
 import { isCoppaSubject } from './is-coppa-subject';
 
 export interface TaglessSlotOptions {
@@ -19,10 +19,12 @@ export interface VastOptions {
 	videoId: string;
 	numberOfAds: number;
 	vpos: string;
+	isTagless: boolean;
+	us_privacy: string;
+	gdpr_consent: string;
 }
 
 const availableVideoPositions: string[] = ['preroll', 'midroll', 'postroll'];
-const displayBaseUrl = 'https://securepubads.g.doubleclick.net/gampad/adx?';
 const vastBaseUrl = 'https://pubads.g.doubleclick.net/gampad/ads?';
 
 export function getCustomParameters(
@@ -137,42 +139,27 @@ export function buildVastUrl(
 	}
 
 	params.push(`rdp=${trackingOptIn.isOptOutSale() ? 1 : 0}`);
+	params.push(`npa=${trackingOptIn.isOptedIn() ? 0 : 1}`);
+
+	if (options.isTagless) {
+		const consentRequired = context.get('options.geoRequiresConsent');
+		const signalRequired = context.get('options.geoRequiresSignal');
+		params.push('tagless=1');
+
+		if (consentRequired) {
+			params.push(`gdpr=1`);
+		} else {
+			params.push(`gdpr=0`);
+		}
+
+		if (consentRequired && options.gdpr_consent) {
+			params.push(`gdpr_consent=${options.gdpr_consent}`);
+		}
+
+		if (signalRequired && options.us_privacy) {
+			params.push(`us_privacy=${options.us_privacy}`);
+		}
+	}
 
 	return vastBaseUrl + params.join('&');
-}
-
-export function buildTaglessRequestUrl(options: Partial<TaglessSlotOptions> = {}): string {
-	const ppid = targetingService.get('ppid');
-	const over18 = targetingService.get('over18');
-	const params: string[] = [`c=${generateCorrelator()}`, 'tile=1', 'd_imp=1'];
-
-	params.push(`iu=${options.adUnit}`);
-	params.push(`sz=${options.size}`);
-
-	if (over18) {
-		params.push(`over_18=${over18}`);
-	}
-
-	if (ppid) {
-		params.push(`ppid=${ppid}`);
-	}
-
-	if (isCoppaSubject()) {
-		params.push('tfcd=1');
-	}
-
-	if (options.targeting) {
-		params.push(
-			`t=${encodeURIComponent(
-				Object.keys(options.targeting)
-					.filter((key: string) => options.targeting[key])
-					.map((key: string) => `${key}=${options.targeting[key]}`)
-					.join('&'),
-			)}`,
-		);
-	}
-
-	params.push(`rdp=${trackingOptIn.isOptOutSale() ? 1 : 0}`);
-
-	return displayBaseUrl + params.join('&');
 }

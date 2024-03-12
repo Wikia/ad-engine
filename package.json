@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "146.9.11",
+	"version": "146.13.1",
 	"description": "Wikia AdEngine",
 	"license": "Apache-2.0",
 	"repository": {
@@ -43,6 +43,7 @@
 		"istanbul-instrumenter-loader": "3.0.1",
 		"jsdom-global": "3.0.2",
 		"lint-staged": "13.1.4",
+		"madge": "6.1.0",
 		"mini-css-extract-plugin": "2.7.3",
 		"mocha": "10.2.0",
 		"mocha-jsdom": "2.0.0",
@@ -73,6 +74,7 @@
 		"ci-check": "npm run test && npm run lint",
 		"lint": "npx eslint . --ext .ts --max-warnings 0",
 		"format": "npm run prettier",
+		"graph": "madge --image graph.svg --extensions ts --webpack-config webpack.platforms.js --ts-config tsconfig.json src/",
 		"prettier": "prettier --write '**/*.{ts,js,json,css,scss,html}'",
 		"prepare": "husky install",
 		"prebuild": "rm -rf dist",

@@ -26,10 +26,18 @@ export class IdentitySetup implements DiProcess {
 				if (ppid) {
 					targetingService.set('ppid', ppid);
 				}
+				const pvUID = globalContextService.getValue('tracking', 'pvUID');
+				if (pvUID) {
+					targetingService.set('pvuid', pvUID);
+				}
 
 				targetingService.set(
 					'browser',
 					globalContextService.getValue(GlobalContextCategories.targeting, 'browser'),
+				);
+				targetingService.set(
+					'cl',
+					globalContextService.getValue(GlobalContextCategories.tracking, 'chromeLabel'),
 				);
 				const adGroups = globalContextService.getValue(
 					GlobalContextCategories.targeting,
@@ -52,6 +60,25 @@ export class IdentitySetup implements DiProcess {
 				if (isDirectedAtChildren) {
 					targetingService.set('monetization', isCoppaSubject() ? 'restricted' : 'regular');
 				}
+
+				const topicsApiAvailable: number =
+					'browsingTopics' in document &&
+					'featurePolicy' in document &&
+					// @ts-expect-error document.featurePolicy is not available in TS dom lib
+					document.featurePolicy.allowsFeature('browsing-topics')
+						? 1
+						: 0;
+				targetingService.set('topics_available', topicsApiAvailable.toString());
+
+				const protectedAudienceApiAvailable: number =
+					'joinAdInterestGroup' in navigator &&
+					// @ts-expect-error document.featurePolicy is not available in TS dom lib
+					document.featurePolicy.allowsFeature('join-ad-interest-group') &&
+					// @ts-expect-error document.featurePolicy is not available in TS dom lib
+					document.featurePolicy.allowsFeature('run-ad-auction')
+						? 1
+						: 0;
+				targetingService.set('pa_available', protectedAudienceApiAvailable.toString());
 
 				logger(this.logGroup, 'ready');
 				resolve();

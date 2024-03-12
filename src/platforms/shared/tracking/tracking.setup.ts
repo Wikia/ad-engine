@@ -23,7 +23,6 @@ export class TrackingSetup {
 	execute(): void {
 		this.postmessageTrackingTracker();
 		this.experimentGroupsTracker();
-
 		this.identityTracker();
 		this.keyValsTracker();
 		this.googleTopicsTracker();
@@ -96,6 +95,9 @@ export class TrackingSetup {
 		if (experimentsGroups) {
 			this.labradorTracker.track(experimentsGroups);
 		}
+		communicationService.on(eventsRepository.INTENT_IQ_GROUP_OBTAINED, ({ abTestGroup }) => {
+			this.labradorTracker.track(`intentIQ_${abTestGroup}`);
+		});
 	}
 
 	private keyValsTracker(): void {
@@ -113,13 +115,7 @@ export class TrackingSetup {
 	}
 
 	private async googleTopicsTracker(): Promise<void> {
-		const topicsApiSupported =
-			'browsingTopics' in document &&
-			'featurePolicy' in document &&
-			// @ts-expect-error document.featurePolicy is not available in TS dom lib
-			document.featurePolicy.allowsFeature('browsing-topics');
-
-		if (!topicsApiSupported) {
+		if (targetingService.get('topics_available') !== '1') {
 			return;
 		}
 

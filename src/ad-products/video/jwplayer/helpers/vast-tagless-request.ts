@@ -1,5 +1,5 @@
-import { AdSlot, InstantConfigService, slotService } from '@ad-engine/core';
-import { buildVastUrl, FetchTimeout, logger } from '@ad-engine/utils';
+import { AdSlot, InstantConfigService, slotService, Tcf, Usp } from '@ad-engine/core';
+import { buildVastUrl, FetchTimeout, logger, VastOptions } from '@ad-engine/utils';
 import { Injectable } from '@wikia/dependency-injection';
 import { Bidders } from '../../../../ad-bidders';
 import { videoDisplayTakeoverSynchronizer } from './video-display-takeover-synchronizer';
@@ -23,11 +23,13 @@ export class VastTaglessRequest {
 		private fetchTimeout: FetchTimeout,
 		instantConfig: InstantConfigService,
 		private bidders: Bidders,
+		private tcf: Tcf,
+		private usp: Usp,
 	) {
 		this.timeout = instantConfig.get('icVastRequestTimeout', 500);
 	}
 
-	public async buildTaglessVideoRequest(): Promise<string> {
+	public async buildTaglessVideoRequest(isTagless = true): Promise<string> {
 		const aspectRatio = 16 / 9;
 		const slotName = 'featured';
 		const position = 'preroll';
@@ -36,11 +38,39 @@ export class VastTaglessRequest {
 		if (!slotService.get(slotName)) {
 			slotService.add(adSlot);
 		}
+
 		const biddersTargeting = await this.bidders.getBidParameters(slotName);
-		return buildVastUrl(aspectRatio, slotName, {
+		const defaultVastOptions: Partial<VastOptions> = {
 			vpos: position,
 			targeting: biddersTargeting,
-		});
+			isTagless,
+		};
+
+		return buildVastUrl(
+			aspectRatio,
+			slotName,
+			await this.extendOptionsBasedOnPrivacyData(defaultVastOptions),
+		);
+	}
+
+	private async extendOptionsBasedOnPrivacyData(vastOptions: Partial<VastOptions>) {
+		if (this.tcf.exists) {
+			const signalData = await this.tcf.getTCData();
+			vastOptions = {
+				...vastOptions,
+				gdpr_consent: signalData.tcString,
+			};
+		}
+
+		if (this.usp.exists) {
+			const signalData = await this.usp.getSignalData();
+			vastOptions = {
+				...vastOptions,
+				us_privacy: signalData.uspString,
+			};
+		}
+
+		return vastOptions;
 	}
 
 	public async getVast(): Promise<VastResponseData | undefined> {
