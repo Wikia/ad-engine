@@ -24,10 +24,6 @@ function checkOptOutSale(): string {
 	return '';
 }
 
-function getCmp(): CmpType {
-	return window.OneTrust !== undefined ? CmpType.ONE_TRUST : CmpType.TRACKING_OPT_IN;
-}
-
 export const slotTrackingCompiler = ({ data, slot }: CompilerPartial): CompilerPartial => {
 	const cacheStorage = InstantConfigCacheStorage.make();
 	const now = new Date();
@@ -65,7 +61,6 @@ export const slotTrackingCompiler = ({ data, slot }: CompilerPartial): CompilerP
 			topics_available: targetingService.get('topics_available') || '',
 			tz_offset: now.getTimezoneOffset(),
 			viewport_height: window.innerHeight || 0,
-			rollout_tracking: getCmp(), // TODO: Remove once OneTrust replaces Tracking Opt In
 		},
 	};
 };
