@@ -1,3 +1,4 @@
+import { TemplateAction, TemplateRegistry } from '@ad-engine/core';
 import {
 	DebugTransitionHandler,
 	DomCleanupHandler,
@@ -6,7 +7,6 @@ import {
 	SlotHiddenHandler,
 	SlotTransitionIhiHandler,
 } from '@platforms/shared';
-import { TemplateAction, TemplateRegistry } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
 import { FloorAdhesionAnchorHiddenHandler } from './handlers/floor-adhesion/floor-adhesion-anchor-hidden-handler';
 import { FloorAdhesionBootstrapHandler } from './handlers/floor-adhesion/floor-adhesion-bootstrap-handler';

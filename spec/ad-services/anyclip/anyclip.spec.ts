@@ -4,8 +4,8 @@ import {
 	communicationService,
 	CommunicationService,
 } from '@wikia/communication/communication-service';
-import { context, targetingService, TargetingService, utils } from '@wikia/core';
-import { WaitFor } from '@wikia/core/utils';
+import { context, targetingService, TargetingService } from '@wikia/core';
+import { scriptLoader, WaitFor } from '@wikia/core/utils';
 import { expect } from 'chai';
 import sinon, { SinonStubbedInstance } from 'sinon';
 
@@ -21,7 +21,7 @@ describe('Anyclip', () => {
 
 	beforeEach(() => {
 		global.sandbox.stub(WaitFor.prototype, 'until').returns(Promise.resolve());
-		loadScriptStub = global.sandbox.spy(utils.scriptLoader, 'loadScript');
+		loadScriptStub = global.sandbox.spy(scriptLoader, 'loadScript');
 		mockedIsApplicable = global.sandbox.spy();
 		anyclip = new Anyclip();
 

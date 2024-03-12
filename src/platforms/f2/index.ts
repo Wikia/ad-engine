@@ -1,4 +1,4 @@
-import { communicationService, ofType } from '@wikia/ad-engine';
+import { communicationService, ofType } from '@ad-engine/communication';
 import { Container } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
 import { F2Platform } from './f2-platform';

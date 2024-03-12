@@ -1,7 +1,6 @@
 import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
 import {
-	AdSlot,
-	BaseServiceSetup,
+	AdSlotClass,
 	context,
 	incontentVideoRemovalExperimentName,
 	incontentVideoRemovalVariationName,
@@ -9,8 +8,9 @@ import {
 	slotDataParamsUpdater,
 	slotService,
 	targetingService,
-	utils,
 } from '@ad-engine/core';
+import { BaseServiceSetup } from '@ad-engine/pipeline';
+import { logger, scriptLoader, WaitFor } from '@ad-engine/utils';
 import { DataWarehouseTracker } from '../../platforms/shared';
 import { AnyclipBidsRefresher } from './anyclip-bids-refresher';
 import { AnyclipTracker } from './anyclip-tracker';
@@ -23,7 +23,7 @@ const isPlayerAdSlotReady = (slotName = 'incontent_player') => {
 	const adSlot = slotService.get(slotName);
 	const domReady = !!document.getElementById(slotName);
 
-	utils.logger(logGroup, `Waiting for player ad slot (${slotName}) ready`, domReady, adSlot);
+	logger(logGroup, `Waiting for player ad slot (${slotName}) ready`, domReady, adSlot);
 
 	return domReady && adSlot !== null;
 };
@@ -67,7 +67,7 @@ export class Anyclip extends BaseServiceSetup {
 
 	call() {
 		if (!this.isEnabled('services.anyclip.enabled', false)) {
-			utils.logger(logGroup, 'disabled');
+			logger(logGroup, 'disabled');
 			return;
 		}
 
@@ -92,7 +92,7 @@ export class Anyclip extends BaseServiceSetup {
 			return;
 		}
 
-		utils.logger(logGroup, 'initialized', this.pubname, this.widgetname, this.libraryUrl);
+		logger(logGroup, 'initialized', this.pubname, this.widgetname, this.libraryUrl);
 		communicationService.emit(eventsRepository.ANYCLIP_START);
 
 		this.tracker = new AnyclipTracker(SUBSCRIBE_FUNC_NAME);
@@ -120,17 +120,17 @@ export class Anyclip extends BaseServiceSetup {
 	}
 
 	reset() {
-		utils.logger(logGroup, 'Destroying Anyclip widgets');
+		logger(logGroup, 'Destroying Anyclip widgets');
 		window?.anyclip?.widgets?.forEach((w) => w?.destroy());
 	}
 
 	enableFloating() {
-		utils.logger(logGroup, 'enabling Anyclip floating feature ');
+		logger(logGroup, 'enabling Anyclip floating feature ');
 		window?.anyclip?.getWidget()?.floatingModeToggle(true);
 	}
 
 	disableFloating() {
-		utils.logger(logGroup, 'disabling Anyclip floating feature ');
+		logger(logGroup, 'disabling Anyclip floating feature ');
 		window?.anyclip?.getWidget()?.floatingModeToggle(false);
 	}
 
@@ -143,37 +143,35 @@ export class Anyclip extends BaseServiceSetup {
 
 	private loadPlayerAsset(playerContainer: HTMLElement = null) {
 		if (!Anyclip.isApplicable()) {
-			utils.logger(logGroup, 'not applicable - aborting');
+			logger(logGroup, 'not applicable - aborting');
 			return;
 		}
 
-		utils.logger(logGroup, 'loading Anyclip asset', this.libraryUrl);
+		logger(logGroup, 'loading Anyclip asset', this.libraryUrl);
 
-		return utils.scriptLoader
-			.loadScript(this.libraryUrl, true, playerContainer, this.params)
-			.then(() => {
-				playerContainer?.classList.remove(AdSlot.HIDDEN_AD_CLASS);
-				utils.logger(logGroup, 'ready');
+		return scriptLoader.loadScript(this.libraryUrl, true, playerContainer, this.params).then(() => {
+			playerContainer?.classList.remove(AdSlotClass.HIDDEN_AD_CLASS);
+			logger(logGroup, 'ready');
 
-				this.waitForSubscribeReady().then((isSubscribeReady) => {
-					communicationService.emit(eventsRepository.ANYCLIP_READY);
-					utils.logger(
-						logGroup,
-						'Anyclip global subscribe function set',
-						isSubscribeReady,
-						window[SUBSCRIBE_FUNC_NAME],
-					);
+			this.waitForSubscribeReady().then((isSubscribeReady) => {
+				communicationService.emit(eventsRepository.ANYCLIP_READY);
+				logger(
+					logGroup,
+					'Anyclip global subscribe function set',
+					isSubscribeReady,
+					window[SUBSCRIBE_FUNC_NAME],
+				);
 
-					this.waitForPlayerAdSlot().then(() => {
-						this.tracker.trackInit();
-						this.bidRefresher.trySubscribingBidRefreshing();
-					});
-
-					isSubscribeReady
-						? this.tracker.register()
-						: utils.logger(logGroup, 'Anyclip global subscribe function not set');
+				this.waitForPlayerAdSlot().then(() => {
+					this.tracker.trackInit();
+					this.bidRefresher.trySubscribingBidRefreshing();
 				});
+
+				isSubscribeReady
+					? this.tracker.register()
+					: logger(logGroup, 'Anyclip global subscribe function not set');
 			});
+		});
 	}
 
 	private loadOnUapStatus({ isLoaded, adProduct }: UapLoadStatus) {
@@ -181,17 +179,17 @@ export class Anyclip extends BaseServiceSetup {
 
 		if (!isLoaded && adProduct !== 'ruap') {
 			if (!context.get('services.anyclip.latePageInject')) {
-				utils.logger(logGroup, 'No need to wait for ANYCLIP_LATE_INJECT');
+				logger(logGroup, 'No need to wait for ANYCLIP_LATE_INJECT');
 				this.initIncontentPlayer();
 				return;
 			}
 
 			communicationService.on(eventsRepository.ANYCLIP_LATE_INJECT, () => {
-				utils.logger(logGroup, 'ANYCLIP_LATE_INJECT emitted');
+				logger(logGroup, 'ANYCLIP_LATE_INJECT emitted');
 				this.initIncontentPlayer();
 			});
 		} else {
-			utils.logger(logGroup, 'Anyclip blocked because of Fan Takeover');
+			logger(logGroup, 'Anyclip blocked because of Fan Takeover');
 		}
 	}
 
@@ -201,14 +199,14 @@ export class Anyclip extends BaseServiceSetup {
 		const playerElementId = context.get('services.anyclip.playerElementId');
 
 		if (!playerAdSlot && !playerElementId) {
-			utils.logger(logGroup, 'No incontent player - aborting');
+			logger(logGroup, 'No incontent player - aborting');
 			return;
 		}
 
 		if (playerElementId) {
 			this.waitForPlayerAdSlot(playerElementId).then(() => {
 				if (!isPlayerAdSlotReady()) {
-					utils.logger(logGroup, 'No incontent player - aborting');
+					logger(logGroup, 'No incontent player - aborting');
 					return;
 				}
 
@@ -224,10 +222,10 @@ export class Anyclip extends BaseServiceSetup {
 	}
 
 	private waitForSubscribeReady(): Promise<boolean> {
-		return new utils.WaitFor(isSubscribeReady, 4, 250).until();
+		return new WaitFor(isSubscribeReady, 4, 250).until();
 	}
 
 	private waitForPlayerAdSlot(playerAdSlotName = 'incontent_player'): Promise<boolean> {
-		return new utils.WaitFor(() => isPlayerAdSlotReady(playerAdSlotName), 4, 250).until();
+		return new WaitFor(() => isPlayerAdSlotReady(playerAdSlotName), 4, 250).until();
 	}
 }

@@ -1,5 +1,5 @@
-import { AdSlot, RepeatConfig, SlotConfig } from '../models';
-import { generateUniqueId, logger, stringBuilder } from '../utils';
+import { RepeatConfig, SlotConfig, type AdSlot } from '../models';
+import { logger, stringBuilder, uuid } from '../utils';
 import { context } from './context-service';
 import { targetingService } from './targeting-service';
 
@@ -28,7 +28,7 @@ export class SlotRepeater {
 		}
 
 		context.set(`slots.${slotName}`, newSlotDefinition);
-		context.set(`slots.${slotName}.uid`, generateUniqueId());
+		context.set(`slots.${slotName}.uid`, uuid.v4());
 
 		this.updateProperties(repeatConfig, newSlotDefinition);
 

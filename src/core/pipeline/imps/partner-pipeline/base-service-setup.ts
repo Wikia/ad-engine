@@ -1,7 +1,6 @@
 import { Injectable } from '@wikia/dependency-injection';
 import { context, InstantConfigService } from '../../../services';
-import { isCoppaSubject, logger, WaitFor } from '../../../utils';
-import { GlobalTimeout } from '../../../utils/global-timeout';
+import { GlobalTimeout, isCoppaSubject, logger, WaitFor } from '../../../utils';
 import {
 	PartnerInitializationProcess,
 	PartnerInitializationProcessOptions,

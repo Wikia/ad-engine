@@ -1,12 +1,12 @@
 import {
 	AdSlot,
-	CloseButton,
 	InstantConfigService,
 	SlotTweaker,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
-} from '@wikia/ad-engine';
+} from '@ad-engine/core';
+import { CloseButton } from '@wikia/ad-products';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })

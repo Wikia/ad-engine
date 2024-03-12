@@ -5,8 +5,8 @@ import {
 	InstantConfigService,
 	InstantConfigServiceInterface,
 	pbjsFactory,
-	utils,
 } from '@wikia/core';
+import { scriptLoader } from '@wikia/core/utils';
 import { GptSetup } from '@wikia/platforms/shared';
 import { PreloadedLibrariesSetup } from '@wikia/platforms/shared/setup/preloaded-libraries-setup';
 import { expect } from 'chai';
@@ -15,7 +15,7 @@ describe('PreloadedLibrariesSetup', () => {
 	let scriptLoaderStub;
 
 	beforeEach(() => {
-		scriptLoaderStub = global.sandbox.stub(utils.scriptLoader, 'loadScript').resolvesThis();
+		scriptLoaderStub = global.sandbox.stub(scriptLoader, 'loadScript').resolvesThis();
 		global.sandbox
 			.stub(context, 'get')
 			.withArgs('options.preload')

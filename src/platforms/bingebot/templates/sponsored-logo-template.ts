@@ -1,4 +1,4 @@
-import { TemplateAction, TemplateRegistry } from '@wikia/ad-engine';
+import { TemplateAction, TemplateRegistry } from '@ad-engine/core';
 import { Observable } from 'rxjs';
 import { SponsoredLogoHandler } from './handlers/sponsored-logo/sponsored-logo-handler';
 

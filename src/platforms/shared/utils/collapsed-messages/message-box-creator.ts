@@ -1,4 +1,4 @@
-import { AdSlot } from '@wikia/ad-engine';
+import { AdSlot } from '@ad-engine/core';
 import { FanLabBox } from './fanlab-box';
 import type { MessageBox } from './message-box';
 import type { MessageBoxType } from './message-box-type';

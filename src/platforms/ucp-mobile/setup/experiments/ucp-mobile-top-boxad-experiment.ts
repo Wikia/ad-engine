@@ -6,8 +6,8 @@ import {
 	InsertMethodType,
 	InstantConfigService,
 	targetingService,
-	utils,
-} from '@wikia/ad-engine';
+} from '@ad-engine/core';
+import { logger } from '@ad-engine/utils';
 import { Injectable } from '@wikia/dependency-injection';
 import { UcpMobileTopBoxadParagraphHelper } from './utils/ucp-mobile-top-boxad-paragraph-helper';
 
@@ -59,17 +59,17 @@ export class UcpMobileTopBoxadExperiment {
 
 	public getConfig(): TopBoxadConfigExperiment {
 		if (this.isExperimentEnabled()) {
-			utils.logger(logGroup, 'New topbox_ad config');
+			logger(logGroup, 'New topbox_ad config');
 			return this.getExperimentConfig();
 		}
 
-		utils.logger(logGroup, this.isHome() ? 'Home page' : 'Default config');
+		logger(logGroup, this.isHome() ? 'Home page' : 'Default config');
 		return this.isHome() ? this.defaultHomeConfig : this.defaultNonHomeConfig;
 	}
 
 	private getExperimentConfig(): TopBoxadConfigExperiment {
 		if (this.isPathfinderControlVariant()) {
-			utils.logger(logGroup, 'Experiment but control group');
+			logger(logGroup, 'Experiment but control group');
 			this.addToTargeting(this.pathfinderExperimentVariantNames.control);
 			return this.defaultNonHomeConfig;
 		}
@@ -81,7 +81,7 @@ export class UcpMobileTopBoxadExperiment {
 		const firstParagraph = this.paragraphHelper.getFirstParagraph(paragraphs);
 
 		if (!this.paragraphHelper.existParagraph(firstParagraph)) {
-			utils.logger(logGroup, 'First paragraph does not exist');
+			logger(logGroup, 'First paragraph does not exist');
 			return this.defaultNonHomeConfig;
 		}
 
@@ -106,7 +106,7 @@ export class UcpMobileTopBoxadExperiment {
 	}
 
 	private getSecondParagraphConfig(secondParagraph: { element: Element; nthOfType: number }) {
-		utils.logger(logGroup, 'Short first <p>, ad after second <p>');
+		logger(logGroup, 'Short first <p>, ad after second <p>');
 
 		return this.prepareConfig(
 			`${this.paragraphHelper.getNthParagraphSelector(secondParagraph.nthOfType)}, ${
@@ -117,7 +117,7 @@ export class UcpMobileTopBoxadExperiment {
 	}
 
 	private getLargeParagraphConfig(firstParagraph: { element: Element; nthOfType: number }) {
-		utils.logger(logGroup, 'Large first <p>');
+		logger(logGroup, 'Large first <p>');
 
 		return this.prepareConfig(
 			`${this.paragraphHelper.getNthParagraphSelector(firstParagraph.nthOfType)}, ${
@@ -128,7 +128,7 @@ export class UcpMobileTopBoxadExperiment {
 	}
 
 	private getBeforeFirstH2Config(firstParagraph: { element: Element; nthOfType: number }) {
-		utils.logger(logGroup, 'One <p> before <h2>');
+		logger(logGroup, 'One <p> before <h2>');
 
 		return this.prepareConfig(
 			`${this.paragraphHelper.getNthParagraphSelector(firstParagraph.nthOfType)}, ${

@@ -1,14 +1,6 @@
-import {
-	AdSlot,
-	communicationService,
-	context,
-	eventsRepository,
-	getAdProductInfo,
-	getAdUnitString,
-	PorvataParams,
-	runtimeVariableSetter,
-	slotService,
-} from '@wikia/ad-engine';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { context, runtimeVariableSetter, slotService, type AdSlot } from '@ad-engine/core';
+import { getAdProductInfo, getAdUnitString, PorvataParams } from '@wikia/ad-products';
 
 export interface SlotsContextInterface {
 	addSlotSize(slotName: string, size: [number, number]): void;

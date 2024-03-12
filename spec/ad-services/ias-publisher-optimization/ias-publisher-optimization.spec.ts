@@ -1,11 +1,6 @@
 import { IasPublisherOptimization } from '@wikia/ad-services';
-import {
-	context,
-	InstantConfigService,
-	TargetingService,
-	targetingService,
-	utils,
-} from '@wikia/core';
+import { context, InstantConfigService, TargetingService, targetingService } from '@wikia/core';
+import { scriptLoader } from '@wikia/core/utils';
 import { expect } from 'chai';
 import { SinonStubbedInstance, spy } from 'sinon';
 
@@ -31,7 +26,7 @@ describe('IAS Publisher Optimization', () => {
 
 	beforeEach(() => {
 		loadScriptStub = global.sandbox
-			.stub(utils.scriptLoader, 'loadScript')
+			.stub(scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		instantConfigStub.get.withArgs('icIASPublisherOptimization').returns(true);

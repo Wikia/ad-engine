@@ -1,12 +1,8 @@
-import {
-	Bidders,
-	communicationService,
-	context,
-	DiProcess,
-	eventsRepository,
-} from '@wikia/ad-engine';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { context } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
+import { Bidders } from '@wikia/ad-bidders';
 import { Injectable } from '@wikia/dependency-injection';
-
 import { getAppnexusContext } from '../../../bidders/appnexus';
 import { getAppnexusAstContext } from '../../../bidders/appnexus-ast';
 import { getCriteoContext } from '../../../bidders/criteo';

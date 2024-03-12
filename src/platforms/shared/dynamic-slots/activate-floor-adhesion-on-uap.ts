@@ -1,11 +1,6 @@
-import {
-	AdSlotEvent,
-	communicationService,
-	context,
-	eventsRepository,
-	UapLoadStatus,
-	universalAdPackage,
-} from '@wikia/ad-engine';
+import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
+import { AdSlotEvent, context } from '@ad-engine/core';
+import { universalAdPackage } from '@wikia/ad-products';
 
 export function activateFloorAdhesionOnUAP(callback: () => void, withLoadedOnly = true) {
 	const firstCallSlotName = 'top_leaderboard';

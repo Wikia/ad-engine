@@ -1,4 +1,4 @@
-import { TEMPLATE, TemplateStateHandler, TemplateTransition } from '@wikia/ad-engine';
+import { TEMPLATE, TemplateStateHandler, TemplateTransition } from '@ad-engine/core';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })

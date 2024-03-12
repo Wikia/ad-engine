@@ -1,3 +1,5 @@
+import { parallel, ProcessPipeline } from '@ad-engine/pipeline';
+import { logVersion } from '@ad-engine/utils';
 import {
 	BaseContextSetup,
 	ConsentManagementPlatformSetup,
@@ -9,7 +11,7 @@ import {
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
-import { IdentitySetup, logVersion, parallel, ProcessPipeline } from '@wikia/ad-engine';
+import { IdentitySetup } from '@wikia/ad-services';
 import { Injectable } from '@wikia/dependency-injection';
 import { UcpNoAdsWikiContextSetup } from './setup/wiki-context.setup';
 

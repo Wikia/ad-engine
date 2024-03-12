@@ -1,4 +1,6 @@
-import { BaseServiceSetup, context, slotService, utils } from '@ad-engine/core';
+import { context, slotService } from '@ad-engine/core';
+import { BaseServiceSetup } from '@ad-engine/pipeline';
+import { logger, timedPartnerScriptLoader } from '@ad-engine/utils';
 
 const logGroup = 'confiant';
 
@@ -29,20 +31,20 @@ export class Confiant extends BaseServiceSetup {
 	 */
 	call(): Promise<void> {
 		if (!this.isEnabled('icConfiant', false)) {
-			utils.logger(logGroup, 'disabled');
+			logger(logGroup, 'disabled');
 
 			return Promise.resolve();
 		}
 
 		this.overwritePropertyIdIfPresent();
 
-		utils.logger(logGroup, 'loading');
+		logger(logGroup, 'loading');
 
 		window.confiant = window.confiant || {};
 		window.confiant.callback = trackBlock;
 
 		return this.loadScript().then(() => {
-			utils.logger(logGroup, 'ready');
+			logger(logGroup, 'ready');
 		});
 	}
 
@@ -55,7 +57,7 @@ export class Confiant extends BaseServiceSetup {
 	private loadScript(): Promise<Event> {
 		const confiantLibraryUrl = `//${this.scriptDomain}/${this.propertyId}/gpt_and_prebid/config.js`;
 
-		return utils.timedPartnerScriptLoader.loadScriptWithStatus(
+		return timedPartnerScriptLoader.loadScriptWithStatus(
 			confiantLibraryUrl,
 			logGroup,
 			true,

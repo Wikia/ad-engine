@@ -1,4 +1,5 @@
-import { AdSlot, InstantConfigService, slotService, Tcf, Usp, utils } from '@ad-engine/core';
+import { AdSlot, InstantConfigService, slotService, Tcf, Usp } from '@ad-engine/core';
+import { buildVastUrl, FetchTimeout, logger, VastOptions } from '@ad-engine/utils';
 import { Injectable } from '@wikia/dependency-injection';
 import { Bidders } from '../../../../ad-bidders';
 import { videoDisplayTakeoverSynchronizer } from './video-display-takeover-synchronizer';
@@ -19,7 +20,7 @@ export class VastTaglessRequest {
 	private readonly timeout: number;
 
 	constructor(
-		private fetchTimeout: utils.FetchTimeout,
+		private fetchTimeout: FetchTimeout,
 		instantConfig: InstantConfigService,
 		private bidders: Bidders,
 		private tcf: Tcf,
@@ -39,20 +40,20 @@ export class VastTaglessRequest {
 		}
 
 		const biddersTargeting = await this.bidders.getBidParameters(slotName);
-		const defaultVastOptions: Partial<utils.VastOptions> = {
+		const defaultVastOptions: Partial<VastOptions> = {
 			vpos: position,
 			targeting: biddersTargeting,
 			isTagless,
 		};
 
-		return utils.buildVastUrl(
+		return buildVastUrl(
 			aspectRatio,
 			slotName,
 			await this.extendOptionsBasedOnPrivacyData(defaultVastOptions),
 		);
 	}
 
-	private async extendOptionsBasedOnPrivacyData(vastOptions: Partial<utils.VastOptions>) {
+	private async extendOptionsBasedOnPrivacyData(vastOptions: Partial<VastOptions>) {
 		if (this.tcf.exists) {
 			const signalData = await this.tcf.getTCData();
 			vastOptions = {
@@ -74,14 +75,14 @@ export class VastTaglessRequest {
 
 	public async getVast(): Promise<VastResponseData | undefined> {
 		const vastUrl = await this.buildTaglessVideoRequest();
-		utils.logger(this.logGroup, 'Sending a tagless request: ', vastUrl);
+		logger(this.logGroup, 'Sending a tagless request: ', vastUrl);
 
 		return this.fetchTimeout
 			.fetch(vastUrl, this.timeout)
 			.then((res) => res.text())
 			.then((text) => this.handleTaglessResponse(text))
 			.catch(() => {
-				utils.logger(this.logGroup, 'Fetching error occurred');
+				logger(this.logGroup, 'Fetching error occurred');
 				return undefined;
 			});
 	}
@@ -90,12 +91,12 @@ export class VastTaglessRequest {
 		try {
 			const vastData = this.getFirstAdFromTaglessResponse(text);
 
-			utils.logger(this.logGroup, 'Ad received: ', vastData?.lineItemId);
+			logger(this.logGroup, 'Ad received: ', vastData?.lineItemId);
 
 			videoDisplayTakeoverSynchronizer.resolve(vastData?.lineItemId, vastData?.creativeId);
 			return vastData;
 		} catch {
-			utils.logger(this.logGroup, 'No XML available - not a VAST response from the ad server?');
+			logger(this.logGroup, 'No XML available - not a VAST response from the ad server?');
 		}
 	}
 

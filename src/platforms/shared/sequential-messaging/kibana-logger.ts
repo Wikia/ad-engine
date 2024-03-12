@@ -1,4 +1,4 @@
-import { AdSlot, externalLogger } from '@wikia/ad-engine';
+import { externalLogger, type AdSlot } from '@ad-engine/core';
 import Cookies from 'js-cookie';
 import { getMediaWikiVariable } from '../utils/get-media-wiki-variable';
 

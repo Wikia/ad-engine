@@ -1,11 +1,6 @@
-import {
-	babDetection,
-	BaseServiceSetup,
-	btfBlockerService,
-	btForce,
-	btRec,
-	context,
-} from '@wikia/ad-engine';
+import { babDetection, btfBlockerService, context } from '@ad-engine/core';
+import { BaseServiceSetup } from '@ad-engine/pipeline';
+import { btForce, btRec } from '@wikia/ad-services';
 import { trackBab } from '../tracking/bab-tracker';
 
 const defaultOnDetect = () => {

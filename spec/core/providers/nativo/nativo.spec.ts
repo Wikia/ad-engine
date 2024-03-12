@@ -1,7 +1,8 @@
 import { expect } from 'chai';
 import { spy } from 'sinon';
 
-import { Context, context, Nativo, UapLoadStatus } from '@wikia/index';
+import { UapLoadStatus } from '@wikia/communication';
+import { Context, context, Nativo } from '@wikia/core';
 
 describe('Nativo', () => {
 	describe('module', () => {

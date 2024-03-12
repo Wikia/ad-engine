@@ -1,11 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import {
-	context,
-	DEFAULT_MAX_DELAY,
-	externalLogger,
-	targetingService,
-	utils,
-} from '@ad-engine/core';
+import { context, DEFAULT_MAX_DELAY, externalLogger, targetingService } from '@ad-engine/core';
+import { isCoppaSubject, logger, scriptLoader, WaitFor } from '@ad-engine/utils';
 
 const logGroup = 'IntentIQ';
 
@@ -25,23 +20,21 @@ export class IntentIQ {
 			return this.loadPromise;
 		}
 
-		this.loadPromise = utils.scriptLoader
-			.loadScript(this.intentIQScriptUrl, true, 'first')
-			.then(() => {
-				this.loaded = true;
-				utils.logger(logGroup, 'loaded');
-			});
+		this.loadPromise = scriptLoader.loadScript(this.intentIQScriptUrl, true, 'first').then(() => {
+			this.loaded = true;
+			logger(logGroup, 'loaded');
+		});
 	}
 
 	async initialize(pbjs: Pbjs): Promise<void> {
 		if (!this.isEnabled()) {
-			utils.logger(logGroup, 'disabled');
+			logger(logGroup, 'disabled');
 			return;
 		}
 
 		if (!this.loaded) {
 			await this.preloadScript();
-			await new utils.WaitFor(() => window.IntentIqObject !== undefined, 10, 10).until();
+			await new WaitFor(() => window.IntentIqObject !== undefined, 10, 10).until();
 		}
 
 		if (!this.intentIqObject) {
@@ -60,7 +53,7 @@ export class IntentIQ {
 					browserBlackList: 'Chrome',
 					domainName,
 					callback: (data) => {
-						utils.logger(logGroup, 'got data', data);
+						logger(logGroup, 'got data', data);
 						resolve();
 					},
 				});
@@ -93,7 +86,7 @@ export class IntentIQ {
 			placementId: bid.adUnitCode,
 		};
 
-		utils.logger(logGroup, 'reporting prebid win', data);
+		logger(logGroup, 'reporting prebid win', data);
 
 		this.intentIqObject.reportExternalWin(data);
 
@@ -105,7 +98,7 @@ export class IntentIQ {
 			context.get('bidders.prebid.intentIQ') &&
 			context.get('options.trackingOptIn') &&
 			!context.get('options.optOutSale') &&
-			!utils.isCoppaSubject()
+			!isCoppaSubject()
 		);
 	}
 }

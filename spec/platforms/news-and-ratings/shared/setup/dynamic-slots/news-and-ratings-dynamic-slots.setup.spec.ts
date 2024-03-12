@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 
-import { context, utils } from '@wikia/core';
+import { context } from '@wikia/core';
+import { Document } from '@wikia/core/utils';
 import { NewsAndRatingsDynamicSlotsSetup } from '@wikia/platforms/news-and-ratings/shared/setup/dynamic-slots/news-and-ratings-dynamic-slots.setup';
 
 import { NewsAndRatingsSlotsDefinitionRepository } from '@wikia/platforms/news-and-ratings/shared';
@@ -51,7 +52,7 @@ describe('Inserting dynamic slots on NnR', () => {
 		const slotElementStub = createHtmlElementStub(global.sandbox, 'div');
 		slotElementStub.getAttribute.returns('test-ad-slot');
 		global.sandbox
-			.stub(utils.Document, 'getFirstElementChild')
+			.stub(Document, 'getFirstElementChild')
 			.returns(createHtmlElementStub(global.sandbox, 'div'));
 		querySelectorAllStub.returns([slotElementStub] as any);
 

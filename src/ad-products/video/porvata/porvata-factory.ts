@@ -1,5 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, AdSlotStatus, slotService, utils } from '@ad-engine/core';
+import { AdSlot, AdSlotStatus, slotService } from '@ad-engine/core';
+import { scriptLoader } from '@ad-engine/utils';
 import { GoogleImaWrapper } from './google-ima-wrapper';
 import { iasVideoTracker } from './plugins/ias/ias-video-tracker';
 import { PorvataPlugin } from './plugins/porvata-plugin';
@@ -72,7 +73,7 @@ export class PorvataFactory {
 	private static async load(): Promise<Event | void> {
 		if (!PorvataFactory.loadSdkPromise) {
 			PorvataFactory.loadSdkPromise = !(window.google && window.google.ima)
-				? utils.scriptLoader.loadScript('//imasdk.googleapis.com/js/sdkloader/ima3.js')
+				? scriptLoader.loadScript('//imasdk.googleapis.com/js/sdkloader/ima3.js')
 				: new Promise<void>((resolve) => resolve());
 		}
 

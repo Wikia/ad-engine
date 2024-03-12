@@ -1,4 +1,4 @@
-import { AdSlot } from '@wikia/ad-engine';
+import { AdSlot } from '@ad-engine/core';
 import { MessageBox } from './message-box';
 
 export class RegisterBox extends MessageBox {

@@ -4,10 +4,9 @@ import {
 	eventsRepository,
 	ofType,
 } from '@ad-engine/communication';
+import { AdSlotStatus, context, externalLogger, slotService } from '@ad-engine/core';
+import { logger } from '@ad-engine/utils';
 import { tap } from 'rxjs/operators';
-import { AdSlot, AdSlotStatus } from '../models';
-import { context, externalLogger, slotService } from '../services';
-import { logger } from '../utils';
 
 const heavyAdIntervention = 'HeavyAdIntervention';
 const logGroup = 'intervention-tracker';
@@ -28,7 +27,7 @@ class InterventionTracker {
 	}
 
 	private handleIntervention(intervention: AdIntervention): void {
-		const adSlot: AdSlot = slotService.get(intervention.slotName);
+		const adSlot = slotService.get(intervention.slotName);
 
 		logger(logGroup, intervention);
 

@@ -1,5 +1,6 @@
-import { AdSlot, context, externalLogger, utils } from '@ad-engine/core';
+import { AdSlot, context, externalLogger } from '@ad-engine/core';
 
+import { getServicesBaseURL, logger, queryString, scriptLoader } from '@ad-engine/utils';
 import { JWPlayer } from '../external-types/jwplayer';
 import { VideoTargeting } from '../jwplayer-actions';
 import { JWPlayerHelper } from './jwplayer-helper';
@@ -39,14 +40,9 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 	}
 
 	protected shouldPlayAdOnNextVideo(videoPlaysCounter: number, currentMediaId: string): boolean {
-		utils.logger(
-			JWPlayerHelper.LOG_GROUP_NAME,
-			videoPlaysCounter,
-			currentMediaId,
-			this.sponsoredVideos,
-		);
+		logger(JWPlayerHelper.LOG_GROUP_NAME, videoPlaysCounter, currentMediaId, this.sponsoredVideos);
 
-		const forcedVideoId = utils.queryString.get('force_sponsored_video');
+		const forcedVideoId = queryString.get('force_sponsored_video');
 		if (forcedVideoId) {
 			this.sponsoredVideos = [forcedVideoId];
 			this.log('Overwritting window.sponsoredVideo!', this.sponsoredVideos);
@@ -58,8 +54,8 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 				this.sponsoredVideos,
 			);
 
-			const url = utils.getServicesBaseURL() + 'article-video/jw-platform-api/get-sponsored-videos';
-			this.sponsoredVideos = JSON.parse(<string>utils.scriptLoader.loadSync(url));
+			const url = getServicesBaseURL() + 'article-video/jw-platform-api/get-sponsored-videos';
+			this.sponsoredVideos = JSON.parse(<string>scriptLoader.loadSync(url));
 		}
 
 		if (!this.sponsoredVideos) {
@@ -78,6 +74,6 @@ export class JwplayerHelperSkippingSponsoredVideo extends JWPlayerHelper {
 	}
 
 	private log(message: string, additionalData: any) {
-		utils.logger(JWPlayerHelper.LOG_GROUP_NAME, message, additionalData);
+		logger(JWPlayerHelper.LOG_GROUP_NAME, message, additionalData);
 	}
 }

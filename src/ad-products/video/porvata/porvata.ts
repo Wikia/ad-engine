@@ -1,4 +1,5 @@
-import { AdSlotEvent, slotService, SlotTargeting, utils } from '@ad-engine/core';
+import { AdSlotEvent, slotService, SlotTargeting } from '@ad-engine/core';
+import { viewportObserver } from '@ad-engine/utils';
 import { PorvataFactory } from './porvata-factory';
 import { PorvataListener } from './porvata-listener';
 import { PorvataPlayer } from './porvata-player';
@@ -31,14 +32,10 @@ export class Porvata {
 		params: PorvataTemplateParams,
 		listener: (isVisible: boolean) => void,
 	): string {
-		return utils.viewportObserver.addListener(
-			params.viewportHookElement || params.container,
-			listener,
-			{
-				offsetTop: params.viewportOffsetTop || 0,
-				offsetBottom: params.viewportOffsetBottom || 0,
-			},
-		);
+		return viewportObserver.addListener(params.viewportHookElement || params.container, listener, {
+			offsetTop: params.viewportOffsetTop || 0,
+			offsetBottom: params.viewportOffsetBottom || 0,
+		});
 	}
 
 	static createVideoContainer(parent: HTMLElement): HTMLDivElement {
@@ -115,7 +112,7 @@ export class Porvata {
 				player.setAutoPlay(false);
 				player.dispatchEvent('wikiaAdCompleted');
 				if (viewportListenerId) {
-					utils.viewportObserver.removeListener(viewportListenerId);
+					viewportObserver.removeListener(viewportListenerId);
 					viewportListenerId = null;
 				}
 				isFirstPlay = false;
@@ -139,7 +136,7 @@ export class Porvata {
 			});
 			player.addOnDestroyCallback(() => {
 				if (viewportListenerId) {
-					utils.viewportObserver.removeListener(viewportListenerId);
+					viewportObserver.removeListener(viewportListenerId);
 					viewportListenerId = null;
 				}
 			});
@@ -158,7 +155,7 @@ export class Porvata {
 			player.addEventListener('wikiaEmptyAd', () => {
 				viewportListenerId = Porvata.addOnViewportChangeListener(params, () => {
 					player.dispatchEvent('wikiaFirstTimeInViewport');
-					utils.viewportObserver.removeListener(viewportListenerId);
+					viewportObserver.removeListener(viewportListenerId);
 				});
 			});
 

@@ -1,14 +1,8 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { AdSlotClass, context, InstantConfigService, scrollListener } from '@ad-engine/core';
+import { getViewportHeight, logger } from '@ad-engine/utils';
 import { activateFloorAdhesionOnUAP, SlotSetupDefinition } from '@platforms/shared';
-import {
-	AdSlot,
-	Anyclip,
-	communicationService,
-	context,
-	eventsRepository,
-	InstantConfigService,
-	scrollListener,
-	utils,
-} from '@wikia/ad-engine';
+import { Anyclip } from '@wikia/ad-services';
 import { Injectable } from '@wikia/dependency-injection';
 
 const logGroup = 'dynamic-slots';
@@ -28,7 +22,7 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: 'body',
 				insertMethod: 'prepend',
-				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
+				classList: [AdSlotClass.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
@@ -47,7 +41,7 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 				context.push('state.adStack', { id: slotName });
 			} else {
 				communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
-					const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
+					const distance = numberOfViewportsFromTopToPush * getViewportHeight();
 					scrollListener.addSlot(slotName, { distanceFromTop: distance });
 				});
 			}
@@ -58,7 +52,7 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: 'body',
 				insertMethod: 'append',
-				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
+				classList: [AdSlotClass.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			activator: () =>
 				activateFloorAdhesionOnUAP(activateFloorAdhesion, !this.isFloorAdhesionNonUapApplicable()),
@@ -77,7 +71,7 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 	}
 	getIncontentPlayerConfig(): SlotSetupDefinition | undefined {
 		if (!Anyclip.isApplicable()) {
-			utils.logger(logGroup, 'Aborting insertion of incontent_player');
+			logger(logGroup, 'Aborting insertion of incontent_player');
 			return;
 		}
 
@@ -88,7 +82,7 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: 'body',
 				insertMethod: 'append',
-				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
+				classList: [AdSlotClass.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			activator: () => {
 				const { dataset } = document.getElementById(slotName);

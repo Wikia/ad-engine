@@ -1,4 +1,4 @@
-import { globalAction } from '@wikia/ad-engine';
+import { globalAction } from '@ad-engine/communication';
 import { props } from 'ts-action';
 
 export const F2_ENV = Symbol('f2 Environment');

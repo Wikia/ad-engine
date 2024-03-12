@@ -1,4 +1,5 @@
-import { context, utils } from '@ad-engine/core';
+import { context } from '@ad-engine/core';
+import { isCoppaSubject, logger } from '@ad-engine/utils';
 import { UserIdConfig } from '../index';
 
 const logGroup = 'LiveIntentConnectedId';
@@ -26,16 +27,16 @@ export class ConnectedId {
 
 	getConfig(): Partial<UserIdConfig> {
 		if (!this.isEnabled()) {
-			utils.logger(logGroup, 'disabled');
+			logger(logGroup, 'disabled');
 			return;
 		}
 		const publisherId = this.getPublisherId();
 		if (!publisherId) {
-			utils.logger(logGroup, 'Invalid app id');
+			logger(logGroup, 'Invalid app id');
 			return;
 		}
 
-		utils.logger(logGroup, 'enabled');
+		logger(logGroup, 'enabled');
 
 		return {
 			name: 'liveIntentId',
@@ -62,7 +63,7 @@ export class ConnectedId {
 		return (
 			context.get('bidders.liveIntentConnectedId.enabled') &&
 			!context.get('options.optOutSale') &&
-			!utils.isCoppaSubject()
+			!isCoppaSubject()
 		);
 	}
 }

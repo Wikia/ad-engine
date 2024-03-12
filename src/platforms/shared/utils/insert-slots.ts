@@ -1,4 +1,5 @@
-import { SlotCreator, SlotCreatorConfig, SlotCreatorWrapperConfig, utils } from '@wikia/ad-engine';
+import { SlotCreator, SlotCreatorConfig, SlotCreatorWrapperConfig } from '@ad-engine/core';
+import { logger } from '@ad-engine/utils';
 import { slotsContext } from '../slots/slots-context';
 
 export interface SlotSetupDefinition {
@@ -24,7 +25,7 @@ export function insertSlots(slotsToInsert: SlotSetupDefinition[]): void {
 					activator();
 				}
 			} catch (e) {
-				utils.logger(logGroup, e.message);
+				logger(logGroup, e.message);
 
 				if (slotCreatorConfig?.slotName) {
 					slotsContext.setState(slotCreatorConfig.slotName, false);

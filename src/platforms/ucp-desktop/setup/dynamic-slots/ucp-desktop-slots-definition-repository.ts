@@ -1,21 +1,19 @@
+import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
+import {
+	AdSlotClass,
+	context,
+	InstantConfigService,
+	RepeatableSlotPlaceholderConfig,
+	scrollListener,
+	slotPlaceholderInjector,
+} from '@ad-engine/core';
+import { getViewportHeight, getViewportWidth, getWidth, logger } from '@ad-engine/utils';
 import {
 	activateFloorAdhesionOnUAP,
 	SlotsDefinitionRepository,
 	SlotSetupDefinition,
 } from '@platforms/shared';
-import {
-	AdSlot,
-	btRec,
-	communicationService,
-	context,
-	eventsRepository,
-	InstantConfigService,
-	RepeatableSlotPlaceholderConfig,
-	scrollListener,
-	slotPlaceholderInjector,
-	UapLoadStatus,
-	utils,
-} from '@wikia/ad-engine';
+import { btRec } from '@wikia/ad-services';
 import { Injectable } from '@wikia/dependency-injection';
 import { FmrRotator } from '../../utils/fmr-rotator';
 
@@ -33,7 +31,7 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 				placeholderConfig,
 				anchorSelector: '.top-leaderboard',
 				insertMethod: 'prepend',
-				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
+				classList: [AdSlotClass.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
@@ -71,7 +69,7 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 				slotName,
 				anchorSelector: '.main-page-tag-rcs, #rail-boxad-wrapper',
 				insertMethod: 'prepend',
-				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
+				classList: [AdSlotClass.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
@@ -83,7 +81,7 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 		const icLbMaxWidth = 768;
 		const pageContentSelector = 'main.page__main #content';
 
-		return utils.getWidth(document.querySelector(pageContentSelector)) >= icLbMaxWidth;
+		return getWidth(document.querySelector(pageContentSelector)) >= icLbMaxWidth;
 	}
 
 	getIncontentLeaderboardConfig(): SlotSetupDefinition {
@@ -105,7 +103,7 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 				anchorPosition: 'belowFirstViewport',
 				avoidConflictWith: ['.ad-slot-icl'],
 				insertMethod: 'before',
-				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot', 'ad-slot-icl'],
+				classList: [AdSlotClass.HIDDEN_AD_CLASS, 'ad-slot', 'ad-slot-icl'],
 			},
 			slotCreatorWrapperConfig: {
 				classList: ['ad-slot-placeholder', 'incontent-leaderboard', 'is-loading'],
@@ -181,7 +179,7 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 				slotName,
 				anchorSelector: '#WikiaAdInContentPlaceHolder',
 				insertMethod: 'append',
-				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
+				classList: [AdSlotClass.HIDDEN_AD_CLASS, 'ad-slot'],
 				repeat: {
 					index: 1,
 					limit: 20,
@@ -207,7 +205,7 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 						});
 						rotator.rotateSlot();
 					} else {
-						utils.logger('ad-engine', 'ICB disabled');
+						logger('ad-engine', 'ICB disabled');
 					}
 				});
 			},
@@ -226,7 +224,7 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 	}
 
 	private isRightRailApplicable(rightRailBreakingPoint = 1024): boolean {
-		return utils.getViewportWidth() >= rightRailBreakingPoint;
+		return getViewportWidth() >= rightRailBreakingPoint;
 	}
 
 	getBottomLeaderboardConfig(): SlotSetupDefinition {
@@ -286,7 +284,7 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 			if (numberOfViewportsFromTopToPush === -1) {
 				context.push('state.adStack', { id: slotName });
 			} else {
-				const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
+				const distance = numberOfViewportsFromTopToPush * getViewportHeight();
 				scrollListener.addSlot(slotName, { distanceFromTop: distance });
 			}
 		};
@@ -296,7 +294,7 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 				slotName,
 				anchorSelector: '.page',
 				insertMethod: 'before',
-				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
+				classList: [AdSlotClass.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			activator: () =>
 				activateFloorAdhesionOnUAP(

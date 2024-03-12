@@ -1,4 +1,4 @@
-import { AdSlot, TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
+import { TEMPLATE, TemplateStateHandler, type AdSlot } from '@ad-engine/core';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { sponsoredTextLogoComponent } from './sponsored-text-logo-component';
 import { SponsoredTextLogoParams } from './sponsored-text-logo-params';

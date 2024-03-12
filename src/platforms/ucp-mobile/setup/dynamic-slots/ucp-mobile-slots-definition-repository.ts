@@ -1,19 +1,17 @@
-import { activateFloorAdhesionOnUAP, SlotSetupDefinition } from '@platforms/shared';
+import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
 import {
-	AdSlot,
-	communicationService,
+	AdSlotClass,
 	context,
 	CookieStorageAdapter,
-	eventsRepository,
 	InstantConfigService,
-	OpenWeb,
 	RepeatableSlotPlaceholderConfig,
 	scrollListener,
 	SlotPlaceholderConfig,
 	slotPlaceholderInjector,
-	UapLoadStatus,
-	utils,
-} from '@wikia/ad-engine';
+} from '@ad-engine/core';
+import { getViewportHeight } from '@ad-engine/utils';
+import { activateFloorAdhesionOnUAP, SlotSetupDefinition } from '@platforms/shared';
+import { OpenWeb } from '@wikia/ad-services';
 import { Injectable } from '@wikia/dependency-injection';
 import { UcpMobileTopBoxadExperiment } from '../experiments/ucp-mobile-top-boxad-experiment';
 
@@ -44,7 +42,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				placeholderConfig,
 				anchorSelector: '.top-leaderboard',
 				insertMethod: 'prepend',
-				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
+				classList: [AdSlotClass.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 		};
 	}
@@ -93,7 +91,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				},
 				anchorSelector: config.anchorSelector,
 				insertMethod: config.insertMethod,
-				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
+				classList: [AdSlotClass.HIDDEN_AD_CLASS, 'ad-slot'],
 				avoidConflictWith: ['.ntv-ad'],
 			},
 			slotCreatorWrapperConfig: {
@@ -130,7 +128,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				anchorSelector: '.incontent-boxad',
 				avoidConflictWith: ['.ad-slot'],
 				insertMethod: 'append',
-				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
+				classList: [AdSlotClass.HIDDEN_AD_CLASS, 'ad-slot'],
 				repeat: {
 					index: 1,
 					limit: 20,
@@ -207,14 +205,14 @@ export class UcpMobileSlotsDefinitionRepository {
 				},
 				anchorSelector: '.global-footer',
 				insertMethod: 'before',
-				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
+				classList: [AdSlotClass.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			slotCreatorWrapperConfig: {
 				classList: [
 					'ad-slot-placeholder',
 					'mobile-prefooter',
 					'is-loading',
-					AdSlot.HIDDEN_AD_CLASS,
+					AdSlotClass.HIDDEN_AD_CLASS,
 				],
 			},
 			activator: () => {
@@ -225,7 +223,7 @@ export class UcpMobileSlotsDefinitionRepository {
 							this.pushWaitingSlot(slotName);
 
 							const mobilePrefooter = document.querySelector('.mobile-prefooter');
-							mobilePrefooter.classList.remove(AdSlot.HIDDEN_AD_CLASS);
+							mobilePrefooter.classList.remove(AdSlotClass.HIDDEN_AD_CLASS);
 						}
 					},
 				);
@@ -264,7 +262,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				},
 				anchorSelector: '.bottom-leaderboard',
 				insertMethod: 'prepend',
-				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
+				classList: [AdSlotClass.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			slotCreatorWrapperConfig: null,
 			activator: () => {
@@ -324,7 +322,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			if (numberOfViewportsFromTopToPush === -1) {
 				context.push('state.adStack', { id: slotName });
 			} else {
-				const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
+				const distance = numberOfViewportsFromTopToPush * getViewportHeight();
 				scrollListener.addSlot(slotName, { distanceFromTop: distance });
 			}
 
@@ -336,7 +334,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: '#floor_adhesion_anchor',
 				insertMethod: 'append',
-				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
+				classList: [AdSlotClass.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			activator: () => activateFloorAdhesionOnUAP(activateFloorAdhesion, false),
 		};
@@ -354,7 +352,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: '#fandom-mobile-wrapper',
 				insertMethod: 'after',
-				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
+				classList: [AdSlotClass.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			activator: () => {
 				this.pushWaitingSlot(slotName);

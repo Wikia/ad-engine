@@ -1,4 +1,4 @@
-import { AdSlot } from '@wikia/core';
+import { AdSlot, AdSlotClass } from '@wikia/core';
 import { MessageBoxService } from '@wikia/platforms/shared';
 import { expect } from 'chai';
 
@@ -89,7 +89,7 @@ describe('Message Box Service', () => {
 
 	describe('Test if message box indexes are changed correctly', () => {
 		const parentElementMock: HTMLElement = document.createElement('div');
-		parentElementMock.classList.add(AdSlot.AD_SLOT_PLACEHOLDER_CLASS);
+		parentElementMock.classList.add(AdSlotClass.AD_SLOT_PLACEHOLDER_CLASS);
 		const elementMock: HTMLElement = document.createElement('div');
 		parentElementMock.append(elementMock);
 

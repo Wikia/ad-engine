@@ -1,3 +1,5 @@
+import { DiProcess, PartnerPipeline } from '@ad-engine/pipeline';
+import { logger } from '@ad-engine/utils';
 import {
 	AdEngineStackSetup,
 	GptSetup,
@@ -5,28 +7,23 @@ import {
 	PlayerSetup,
 	WadRunner,
 } from '@platforms/shared';
+import { Bidders, PrebidNativeProvider } from '@wikia/ad-bidders';
+import { videoDisplayTakeoverSynchronizer } from '@wikia/ad-products';
 import {
 	Anyclip,
 	Ats,
 	Audigent,
-	Bidders,
-	communicationService,
 	Confiant,
 	Connatix,
-	DiProcess,
 	DoubleVerify,
 	DurationMedia,
-	eventsRepository,
 	IasPublisherOptimization,
 	OpenWeb,
-	PartnerPipeline,
-	PrebidNativeProvider,
 	Stroer,
 	System1,
-	utils,
-	videoDisplayTakeoverSynchronizer,
 	Wunderkind,
-} from '@wikia/ad-engine';
+} from '@wikia/ad-services';
+import { communicationService, eventsRepository } from '@wikia/communication';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -55,7 +52,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 	) {}
 
 	execute(): void {
-		utils.logger('partners-pipeline', 'starting');
+		logger('partners-pipeline', 'starting');
 		this.pipeline
 			.add(
 				this.jwpStrategyRules,
@@ -95,7 +92,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 			.execute()
 			.then(() => {
 				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);
-				utils.logger('partners-pipeline', 'finished');
+				logger('partners-pipeline', 'finished');
 			});
 	}
 }

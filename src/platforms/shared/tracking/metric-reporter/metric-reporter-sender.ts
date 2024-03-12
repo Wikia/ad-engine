@@ -1,4 +1,5 @@
-import { context, utils } from '@wikia/ad-engine';
+import { context } from '@ad-engine/core';
+import { FetchTimeout } from '@ad-engine/utils';
 
 interface EndpointInfo {
 	baseUrl: string;
@@ -36,7 +37,7 @@ export class MetricReporterSenderService implements MetricReporterSender {
 			queryParams.push(`${k}=${encodeURIComponent(v)}`);
 		});
 
-		const fetchTimeout = new utils.FetchTimeout();
+		const fetchTimeout = new FetchTimeout();
 		fetchTimeout.fetch(
 			`${endpointUrl}?app=${endpointInfo.appName}&${queryParams.join('&')}`,
 			2000,

@@ -1,4 +1,6 @@
-import { context, DiProcess, targetingService, utils } from '@wikia/ad-engine';
+import { context, targetingService } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
+import { logger } from '@ad-engine/utils';
 
 export class GamespotSeamlessContentObserverSetup implements DiProcess {
 	protected notRequestedSlotWrapperSelector = '.mapped-ad > .ad-wrap:not(.gpt-ad)';
@@ -26,7 +28,7 @@ export class GamespotSeamlessContentObserverSetup implements DiProcess {
 	}
 
 	private handleMutation() {
-		utils.logger(
+		logger(
 			'pageChangeWatcher',
 			'observer init',
 			this.currentPath,
@@ -35,11 +37,11 @@ export class GamespotSeamlessContentObserverSetup implements DiProcess {
 		);
 
 		if (this.currentPath !== location.pathname) {
-			utils.logger('pageChangeWatcher', 'url changed', location.pathname);
+			logger('pageChangeWatcher', 'url changed', location.pathname);
 			this.currentPath = location.pathname;
 
 			if (this.seamlessContentLoaded[location.pathname]) {
-				utils.logger(
+				logger(
 					'pageChangeWatcher',
 					'ads already loaded for this content',
 					location.href,
@@ -55,7 +57,7 @@ export class GamespotSeamlessContentObserverSetup implements DiProcess {
 
 	private requestAdForUnfilledSlots() {
 		const adSlotsToFill = document.querySelectorAll(this.notRequestedSlotWrapperSelector);
-		utils.logger('pageChangeWatcher', 'adSlotsToFill: ', adSlotsToFill);
+		logger('pageChangeWatcher', 'adSlotsToFill: ', adSlotsToFill);
 		adSlotsToFill.forEach((adWrapper: Element) => {
 			const placeholder = this.useParentAsAdPlaceholder ? adWrapper.parentElement : adWrapper;
 			const baseSlotName = placeholder?.getAttribute(this.dataAdAttribute);
@@ -65,7 +67,7 @@ export class GamespotSeamlessContentObserverSetup implements DiProcess {
 			}
 
 			if (!this.isSlotDefinedInContext(baseSlotName)) {
-				utils.logger(
+				logger(
 					'pageChangeWatcher',
 					'slot not defined in the context:',
 					baseSlotName,
@@ -76,7 +78,7 @@ export class GamespotSeamlessContentObserverSetup implements DiProcess {
 			}
 
 			const slotName = this.calculateSeamlessSlotName(baseSlotName);
-			utils.logger('pageChangeWatcher', 'slot to copy: ', baseSlotName, slotName);
+			logger('pageChangeWatcher', 'slot to copy: ', baseSlotName, slotName);
 
 			placeholder.id = slotName;
 
@@ -100,7 +102,7 @@ export class GamespotSeamlessContentObserverSetup implements DiProcess {
 		targetingService.set('pos', slotName, slotName);
 		targetingService.set('pos_nr', targetingService.get('pos_nr', baseSlotName), slotName);
 
-		utils.logger(
+		logger(
 			'pageChangeWatcher',
 			'new slot config: ',
 			context.get(`slots.${slotName}`),

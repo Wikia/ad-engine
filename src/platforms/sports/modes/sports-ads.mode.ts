@@ -1,21 +1,19 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { DiProcess, PartnerPipeline } from '@ad-engine/pipeline';
 import { AdEngineStackSetup, GptSetup, WadRunner } from '@platforms/shared';
+import { Bidders } from '@wikia/ad-bidders';
 import {
 	Audigent,
-	Bidders,
 	Captify,
-	communicationService,
 	Confiant,
-	DiProcess,
 	DoubleVerify,
 	DurationMedia,
-	eventsRepository,
 	Experian,
 	IasPublisherOptimization,
 	LiveConnect,
 	LiveRampPixel,
 	Lotame,
-	PartnerPipeline,
-} from '@wikia/ad-engine';
+} from '@wikia/ad-services';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()

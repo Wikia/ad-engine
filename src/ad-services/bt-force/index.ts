@@ -1,4 +1,5 @@
-import { context, utils } from '@ad-engine/core';
+import { context } from '@ad-engine/core';
+import { logger, timedPartnerScriptLoader } from '@ad-engine/utils';
 import { trackBab } from '../../platforms/shared';
 
 const logGroup = 'bt-force-loader';
@@ -12,14 +13,14 @@ class BTForce {
 	 */
 	async run(): Promise<void> {
 		if (!this.isEnabled()) {
-			utils.logger(logGroup, 'disabled');
+			logger(logGroup, 'disabled');
 			return Promise.resolve();
 		}
 
 		this.btDetectionEvents();
 		this.insertSideUnits();
 
-		utils.logger(logGroup, 'loading');
+		logger(logGroup, 'loading');
 		await this.loadScript();
 	}
 
@@ -28,7 +29,7 @@ class BTForce {
 		// detail.ab : boolean - ad block detected
 		const handleDetectionEvent = (e: BTDetail & CustomEvent) => {
 			if (e.detail.ab) {
-				utils.logger(logGroup, 'BTAADetection - AdBlock detected');
+				logger(logGroup, 'BTAADetection - AdBlock detected');
 				trackBab(true, 'bt');
 			} else {
 				trackBab(false, 'bt');
@@ -40,7 +41,7 @@ class BTForce {
 		// AcceptableAdsInit event - tells us that BT is trying to recover ads now
 		const handleRecoveryEvent = (e: CustomEvent) => {
 			if (e.detail) {
-				utils.logger(logGroup, 'AcceptableAdsInit');
+				logger(logGroup, 'AcceptableAdsInit');
 			}
 			window.removeEventListener('AcceptableAdsInit', handleRecoveryEvent);
 		};
@@ -59,12 +60,7 @@ class BTForce {
 	 */
 	private loadScript(): Promise<Event> {
 		const btLibraryUrl = 'https://btloader.com/tag?o=5199505043488768&upapi=true';
-		return utils.timedPartnerScriptLoader.loadScriptWithStatus(
-			btLibraryUrl,
-			logGroup,
-			true,
-			'first',
-		);
+		return timedPartnerScriptLoader.loadScriptWithStatus(btLibraryUrl, logGroup, true, 'first');
 	}
 
 	private insertSideUnits(): void {

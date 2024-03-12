@@ -1,4 +1,4 @@
-import { DomListener, startAndRespondTo, TemplateStateHandler } from '@wikia/ad-engine';
+import { DomListener, startAndRespondTo, TemplateStateHandler } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';

@@ -1,8 +1,5 @@
-import { Bidders } from '@wikia/ad-bidders';
 import { InstantConfigService, targetingService } from '@wikia/core';
-import { GlobalTimeout } from '@wikia/core/utils';
 import { DataWarehouseTracker, TrackingSetup, trackingUrls } from '@wikia/platforms/shared';
-import { AdSizeTracker } from '@wikia/platforms/shared/tracking/ad-size-tracker';
 import { LabradorTracker } from '@wikia/platforms/shared/tracking/labrador-tracker';
 import { expect } from 'chai';
 import { SinonSpy } from 'sinon';
@@ -10,12 +7,9 @@ import { SinonSpy } from 'sinon';
 describe('TrackingSetup', () => {
 	const dwTracker = new DataWarehouseTracker();
 	const labradorTracker = new LabradorTracker(dwTracker);
-	const adSizeTracker = new AdSizeTracker(dwTracker);
 	const instantConfig = new InstantConfigService({
 		appName: 'testapp',
 	});
-	const globalTimeout = new GlobalTimeout();
-	const bidders = new Bidders(instantConfig, globalTimeout);
 	let trackSpy: SinonSpy;
 
 	beforeEach(() => {
@@ -30,13 +24,7 @@ describe('TrackingSetup', () => {
 		// given
 		targetingService.clear();
 		targetingService.set('key1', 'value1');
-		const trackingSetup = new TrackingSetup(
-			labradorTracker,
-			adSizeTracker,
-			dwTracker,
-			bidders,
-			instantConfig,
-		);
+		const trackingSetup = new TrackingSetup(labradorTracker, dwTracker, instantConfig);
 
 		// when
 		trackingSetup.execute();
@@ -64,13 +52,7 @@ describe('TrackingSetup', () => {
 		};
 		// @ts-expect-error Google Topics API is not available in TS
 		global.window.document.browsingTopics = () => Promise.resolve(['topic1', 'topic2']);
-		const trackingSetup = new TrackingSetup(
-			labradorTracker,
-			adSizeTracker,
-			dwTracker,
-			bidders,
-			instantConfig,
-		);
+		const trackingSetup = new TrackingSetup(labradorTracker, dwTracker, instantConfig);
 
 		// when
 		trackingSetup.execute();

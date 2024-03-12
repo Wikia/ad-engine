@@ -1,15 +1,8 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { AdSlotClass, AdSlotEvent, context, Dictionary, targetingService } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
+import { logger } from '@ad-engine/utils';
 import { insertSlots, SlotSetupDefinition } from '@platforms/shared';
-import {
-	AdSlot,
-	AdSlotEvent,
-	communicationService,
-	context,
-	Dictionary,
-	DiProcess,
-	eventsRepository,
-	targetingService,
-	utils,
-} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { NewsAndRatingsSlotsDefinitionRepository } from '../../../shared';
 
@@ -42,7 +35,7 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 						placementId = 'top_leaderboard';
 					}
 
-					utils.logger(logGroup, 'Ad placement rendered', placementId);
+					logger(logGroup, 'Ad placement rendered', placementId);
 
 					if (this.repeatedSlotsCounter[placementId]) {
 						this.scheduleRepeatedSlotInjection(placementId);
@@ -66,19 +59,19 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 				}
 			});
 			insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
-			utils.logger(logGroup, 'Inserting slots without DOM elements');
+			logger(logGroup, 'Inserting slots without DOM elements');
 			insertSlots([this.slotsDefinitionRepository.getInterstitialConfig()]);
 		});
 
 		communicationService.on(
 			eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE,
 			() => {
-				utils.logger(logGroup, 'Cleaning slots repositories');
+				logger(logGroup, 'Cleaning slots repositories');
 				this.repeatedSlotsCounter = {};
 				this.repeatedSlotsRendered = [];
 				this.repeatedSlotsQueue = {};
 
-				utils.logger(logGroup, 'Removing slots without DOM elements');
+				logger(logGroup, 'Removing slots without DOM elements');
 				document.getElementById('floor_adhesion')?.remove();
 				document.getElementById('incontent_player')?.remove();
 			},
@@ -105,10 +98,10 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 
 		if (this.repeatedSlotsRendered.includes(currentSlotName)) {
 			insertSlots([this.getSlotConfig(nextSlotName, placementId)]);
-			utils.logger(logGroup, 'Injecting repeated slot', nextSlotName);
+			logger(logGroup, 'Injecting repeated slot', nextSlotName);
 		} else {
 			this.repeatedSlotsQueue[currentSlotName] = [nextSlotName, placementId];
-			utils.logger(logGroup, 'Scheduling repeated slot injection', nextSlotName);
+			logger(logGroup, 'Scheduling repeated slot injection', nextSlotName);
 		}
 	}
 
@@ -116,12 +109,12 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 		const domSlotsElements = document.querySelectorAll('div[data-slot-loaded="true"].gpt-ad');
 
 		domSlotsElements.forEach((slot) => {
-			utils.logger(logGroup, 'Reinjecting stale slot', slot.getAttribute('data-ad'));
+			logger(logGroup, 'Reinjecting stale slot', slot.getAttribute('data-ad'));
 			communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
 				placementId: slot.getAttribute('data-ad'),
 			});
 		});
-		utils.logger(logGroup, 'Reinjecting floor_adhesion');
+		logger(logGroup, 'Reinjecting floor_adhesion');
 		insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
 	}
 
@@ -135,7 +128,7 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 			document.querySelector(`div[data-ad="${baseSlotName || slotName}"]:not(.gpt-ad)`);
 
 		if (!domSlotElement || !this.isSlotApplicable(slotName)) {
-			utils.logger(logGroup, 'Slot is not applicable or placement not exists', slotName);
+			logger(logGroup, 'Slot is not applicable or placement not exists', slotName);
 			return null;
 		}
 
@@ -145,7 +138,7 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 				insertMethod: 'alter',
 				anchorSelector: '',
 				anchorElement: domSlotElement,
-				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
+				classList: [AdSlotClass.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
 			activator: () => {
 				context.push('state.adStack', { id: slotName });

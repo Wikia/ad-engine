@@ -1,4 +1,6 @@
-import { BaseServiceSetup, context, SlotConfig, targetingService, utils } from '@ad-engine/core';
+import { context, SlotConfig, targetingService } from '@ad-engine/core';
+import { BaseServiceSetup } from '@ad-engine/pipeline';
+import { logger, stringBuilder } from '@ad-engine/utils';
 
 const logGroup = 'double-verify';
 const scriptUrl = 'https://pub.doubleverify.com/signals/pub.json';
@@ -22,14 +24,14 @@ export class DoubleVerify extends BaseServiceSetup {
 		}
 
 		if (!this.isEnabled('icDoubleVerify')) {
-			utils.logger(logGroup, 'disabled');
+			logger(logGroup, 'disabled');
 			return;
 		}
 
 		this.slots = context.get('services.doubleVerify.slots');
 
 		if (!this.slots) {
-			utils.logger(logGroup, 'Empty slots configuration');
+			logger(logGroup, 'Empty slots configuration');
 			return;
 		}
 
@@ -48,7 +50,7 @@ export class DoubleVerify extends BaseServiceSetup {
 			this.isLoaded = true;
 			this.setTargeting(signals);
 		} catch (error) {
-			utils.logger(logGroup, 'Error fetching signals', error);
+			logger(logGroup, 'Error fetching signals', error);
 		}
 
 		return;
@@ -66,7 +68,7 @@ export class DoubleVerify extends BaseServiceSetup {
 	}
 
 	private setTargeting(data: any): void {
-		utils.logger(logGroup, 'Setting targeting', data);
+		logger(logGroup, 'Setting targeting', data);
 		targetingService.set('ids', data['IDS']?.toString());
 		targetingService.set('bsc', data['BSC']);
 		targetingService.set('abs', data['ABS']?.toString());
@@ -119,7 +121,7 @@ export class DoubleVerify extends BaseServiceSetup {
 			const slotConfig: SlotConfig = { ...context.get(`slots.${slotName}`) };
 			slotConfig.slotNameSuffix = slotConfig.slotNameSuffix || '';
 
-			const adUnitPath = utils.stringBuilder.build(slotConfig.adUnit || context.get('adUnitId'), {
+			const adUnitPath = stringBuilder.build(slotConfig.adUnit || context.get('adUnitId'), {
 				slotConfig,
 			});
 

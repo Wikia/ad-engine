@@ -1,5 +1,7 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { BaseServiceSetup, context, targetingService, utils } from '@ad-engine/core';
+import { context, targetingService } from '@ad-engine/core';
+import { BaseServiceSetup } from '@ad-engine/pipeline';
+import { assetLoader, logger } from '@ad-engine/utils';
 
 const partnerName = 'experian';
 const logGroup = partnerName;
@@ -12,7 +14,7 @@ export class Experian extends BaseServiceSetup {
 
 	call(): void {
 		if (!this.isEnabled('icExperian')) {
-			utils.logger(logGroup, 'disabled');
+			logger(logGroup, 'disabled');
 			return;
 		}
 		this.insertExperianPixel();
@@ -32,6 +34,6 @@ export class Experian extends BaseServiceSetup {
 		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
 			status: 'experian_started',
 		});
-		utils.assetLoader.loadPixel(this.getExperianPixelUrl());
+		assetLoader.loadPixel(this.getExperianPixelUrl());
 	}
 }

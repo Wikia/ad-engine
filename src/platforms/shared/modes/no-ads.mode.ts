@@ -1,19 +1,14 @@
 import {
-	Apstag,
-	Ats,
-	Audigent,
 	CcpaSignalPayload,
 	communicationService,
-	context,
-	DiProcess,
 	eventsRepository,
-	Experian,
 	GdprConsentPayload,
-	jwpSetup,
-	LiveConnect,
-	LiveRampPixel,
-	PartnerPipeline,
-} from '@wikia/ad-engine';
+} from '@ad-engine/communication';
+import { context } from '@ad-engine/core';
+import { DiProcess, PartnerPipeline } from '@ad-engine/pipeline';
+import { Apstag } from '@wikia/ad-bidders';
+import { jwpSetup } from '@wikia/ad-products';
+import { Ats, Audigent, Experian, LiveConnect, LiveRampPixel } from '@wikia/ad-services';
 import { Injectable } from '@wikia/dependency-injection';
 import { NoAdsDetector } from '../services/no-ads-detector';
 

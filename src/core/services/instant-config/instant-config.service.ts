@@ -10,8 +10,9 @@ import {
 	InstantConfigValue,
 	RegionMatcher,
 } from '@wikia/instant-config-loader';
-import { InstantConfigCacheStorage, utils } from '../../index';
+import { InstantConfigCacheStorage } from '../../index';
 import { Dictionary } from '../../models';
+import { client, geoService, logger, queryString } from '../../utils';
 
 const logGroup = 'instant-config-service';
 
@@ -28,8 +29,8 @@ export class InstantConfigService implements InstantConfigServiceInterface {
 	async init(globals: Dictionary = {}): Promise<InstantConfigService> {
 		const instantConfigLoader = new InstantConfigLoader(this.params);
 		const instantConfigInterpreter = new InstantConfigInterpreter(
-			new BrowserMatcher(utils.client.getBrowser()),
-			new DeviceMatcher(utils.client.getDeviceType() as unknown as string),
+			new BrowserMatcher(client.getBrowser()),
+			new DeviceMatcher(client.getDeviceType() as unknown as string),
 			new DomainMatcher(),
 			new RegionMatcher(),
 			InstantConfigCacheStorage.make(),
@@ -38,14 +39,12 @@ export class InstantConfigService implements InstantConfigServiceInterface {
 		this.interpreter = await instantConfigLoader
 			.getConfig()
 			.then((config) =>
-				new InstantConfigOverrider().override(utils.queryString.getURLSearchParams(), config),
+				new InstantConfigOverrider().override(queryString.getURLSearchParams(), config),
 			)
-			.then((config) =>
-				instantConfigInterpreter.init(config, globals, utils.geoService.isProperGeo),
-			);
+			.then((config) => instantConfigInterpreter.init(config, globals, geoService.isProperGeo));
 		this.repository = this.interpreter.getValues();
 
-		utils.logger(logGroup, 'instantiated with', this.repository);
+		logger(logGroup, 'instantiated with', this.repository);
 
 		communicationService.on(
 			eventsRepository.AD_ENGINE_INSTANT_CONFIG_CACHE_RESET,

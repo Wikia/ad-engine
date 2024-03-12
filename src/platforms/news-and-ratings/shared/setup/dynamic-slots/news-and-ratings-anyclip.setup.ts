@@ -1,7 +1,8 @@
+import { context, targetingService } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
+import { logger } from '@ad-engine/utils';
 import { insertSlots } from '@platforms/shared';
-import { context, DiProcess, targetingService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-
 import { NewsAndRatingsSlotsDefinitionRepository } from '../../index';
 
 @Injectable()
@@ -32,17 +33,17 @@ export class NewsAndRatingsAnyclipSetup implements DiProcess {
 			const isApplicable =
 				doesAnyclipTagExist || this.isApplicable(pname) || this.isApplicable(pathname);
 
-			utils.logger(this.logGroup, 'isApplicable: ', isApplicable, pname, pathname);
+			logger(this.logGroup, 'isApplicable: ', isApplicable, pname, pathname);
 
 			return isApplicable;
 		});
 
 		if (this.shouldPlayerBeIncontent(pname)) {
-			utils.logger(this.logGroup, 'player should be in-content');
+			logger(this.logGroup, 'player should be in-content');
 			this.updateContextForIncontentAnyclip();
 		} else {
 			this.updateContextForMiniplayerAnyclip();
-			utils.logger(this.logGroup, 'inserting slots without DOM elements');
+			logger(this.logGroup, 'inserting slots without DOM elements');
 			insertSlots([this.slotsDefinitionRepository.getIncontentPlayerConfig()]);
 		}
 	}

@@ -1,4 +1,10 @@
-import { conditional, DiProcess, parallel, ProcessPipeline, sequential } from '@wikia/core';
+import {
+	conditional,
+	DiProcess,
+	parallel,
+	ProcessPipeline,
+	sequential,
+} from '@wikia/core/pipeline';
 import { wait } from '@wikia/core/utils';
 import { Container } from '@wikia/dependency-injection';
 import { expect } from 'chai';

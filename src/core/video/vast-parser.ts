@@ -1,6 +1,5 @@
 import { Dictionary } from '../models';
 import { ADX } from '../providers';
-import { queryString } from '../utils';
 
 export interface VideoAdInfo {
 	lineItemId: string;
@@ -27,6 +26,22 @@ const eventAdPositionMap = {
 	mid: 'midroll',
 	post: 'postroll',
 };
+
+function getUrlValues(input?: string) {
+	const path: string = input || window.location.search.substring(1);
+	const queryStringParameters: string[] = path.split('&');
+	const queryParameters: Dictionary<string> = {};
+
+	queryStringParameters.forEach((pair) => {
+		const [id, value] = pair.split('=');
+
+		if (value) {
+			queryParameters[id] = decodeURIComponent(value.replace(/\+/g, ' '));
+		}
+	});
+
+	return queryParameters;
+}
 
 class VastParser {
 	/**
@@ -86,13 +101,11 @@ class VastParser {
 		let creativeId: string;
 		let lineItemId: string;
 		let position: string;
-		const vastParams: Dictionary<string> = queryString.getValues(
+		// TODO: consider using queryString.getURLSearchParams instead of getValues
+		const vastParams: Dictionary<string> = getUrlValues(
 			vastTag ? vastTag.substr(1 + vastTag.indexOf('?')) : '?',
 		);
-
-		const customParams: Dictionary<string> = queryString.getValues(
-			encodeURI(vastParams.cust_params),
-		);
+		const customParams: Dictionary<string> = getUrlValues(encodeURI(vastParams.cust_params));
 
 		if (extra.imaAd) {
 			const currentAd = this.getAdInfo(extra.imaAd);

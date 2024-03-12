@@ -1,5 +1,6 @@
 import { IntentIQ } from '@wikia/ad-bidders/prebid/intent-iq';
-import { context, DEFAULT_MAX_DELAY, targetingService, utils } from '@wikia/core';
+import { context, DEFAULT_MAX_DELAY, targetingService } from '@wikia/core';
+import { scriptLoader } from '@wikia/core/utils';
 import { expect } from 'chai';
 import { SinonSpy, SinonStub } from 'sinon';
 import { PbjsStub, stubPbjs } from '../../../core/services/pbjs.stub';
@@ -14,7 +15,7 @@ describe('IntentIQ', () => {
 
 	beforeEach(() => {
 		pbjsStub = stubPbjs(global.sandbox).pbjsStub;
-		loadScriptStub = global.sandbox.stub(utils.scriptLoader, 'loadScript').resolvesThis();
+		loadScriptStub = global.sandbox.stub(scriptLoader, 'loadScript').resolvesThis();
 		intentIqNewSpy = global.sandbox.spy();
 		intentIqReportSpy = global.sandbox.spy();
 		contextStub = global.sandbox

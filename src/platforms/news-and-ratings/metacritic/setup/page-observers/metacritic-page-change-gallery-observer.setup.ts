@@ -1,12 +1,6 @@
-import {
-	AdSlot,
-	AdSlotEvent,
-	communicationService,
-	context,
-	DiProcess,
-	eventsRepository,
-	slotService,
-} from '@wikia/ad-engine';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { AdSlot, AdSlotEvent, context, slotService } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()

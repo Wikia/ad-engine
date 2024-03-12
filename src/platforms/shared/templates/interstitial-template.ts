@@ -1,4 +1,4 @@
-import { TemplateAction, TemplateRegistry } from '@wikia/ad-engine';
+import { TemplateAction, TemplateRegistry } from '@ad-engine/core';
 import { Observable } from 'rxjs';
 import { AdvertisementLabelHandler } from './handlers/advertisement-label-handler';
 import { CloseToHiddenIhiButtonHandler } from './handlers/close-to-hidden-ihi-button-handler';

@@ -1,24 +1,23 @@
 import {
-	AdSlot,
-	AdSlotEvent,
 	AdSlotEventPayload,
 	communicationService,
-	createBottomPanel,
 	eventsRepository,
-	LearnMore,
 	ofType,
+} from '@ad-engine/communication';
+import { AdSlot, AdSlotClass, AdSlotEvent, TEMPLATE, TemplateStateHandler } from '@ad-engine/core';
+import {
+	createBottomPanel,
+	LearnMore,
 	PlayerOverlay,
 	PorvataPlayer,
 	PorvataTemplateParams,
 	ProgressBar,
-	TEMPLATE,
-	TemplateStateHandler,
 	ToggleThumbnail,
 	ToggleUI,
 	ToggleVideo,
 	UapParams,
 	universalAdPackage,
-} from '@wikia/ad-engine';
+} from '@wikia/ad-products';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { fromEvent, merge, Observable, Subject } from 'rxjs';
 import { debounceTime, filter, mergeMap, take, takeUntil, tap } from 'rxjs/operators';
@@ -56,7 +55,7 @@ export class VideoBootstrapHandler implements TemplateStateHandler {
 	private handleEvents(player: PorvataPlayer): Observable<unknown> {
 		return merge(
 			fromEvent(player, 'adCanPlay').pipe(
-				tap(() => player.dom.getVideoContainer().classList.remove(AdSlot.HIDDEN_AD_CLASS)),
+				tap(() => player.dom.getVideoContainer().classList.remove(AdSlotClass.HIDDEN_AD_CLASS)),
 			),
 
 			fromEvent(player, 'wikiaAdStarted').pipe(

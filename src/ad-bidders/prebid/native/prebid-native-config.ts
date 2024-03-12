@@ -1,4 +1,4 @@
-import { utils } from '@ad-engine/core';
+import { getViewportWidth } from '@ad-engine/utils';
 
 export class PrebidNativeConfig {
 	static assetsMap = {
@@ -64,7 +64,7 @@ export class PrebidNativeConfig {
 	private static getMinImageSize(deviceType: string): number {
 		// NOTE: Values are based on Nativo image sizes to keep the consistency
 		if (deviceType == 'mobile') {
-			if (utils.getViewportWidth() <= 320) {
+			if (getViewportWidth() <= 320) {
 				return 90;
 			}
 			return 120;

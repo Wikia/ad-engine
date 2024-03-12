@@ -1,4 +1,5 @@
-import { Aliases, context, Dictionary, targetingService, utils } from '@ad-engine/core';
+import { Aliases, context, Dictionary, targetingService } from '@ad-engine/core';
+import { stringBuilder } from '@ad-engine/utils';
 import { PrebidAdapterConfig, PrebidAdSlotConfig } from './prebid-models';
 
 interface BidderSettings {
@@ -57,7 +58,7 @@ export abstract class PrebidAdapter {
 	}
 
 	private getGPIDValue(code: string): string {
-		return utils.stringBuilder.build(context.get('adUnitId'), {
+		return stringBuilder.build(context.get('adUnitId'), {
 			slotConfig: {
 				adProduct: code,
 				group: 'PB',

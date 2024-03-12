@@ -1,11 +1,6 @@
 import { System1 } from '@wikia/ad-services';
-import {
-	context,
-	globalContextService,
-	InstantConfigService,
-	localCache,
-	utils,
-} from '@wikia/core';
+import { context, globalContextService, InstantConfigService, localCache } from '@wikia/core';
+import { scriptLoader } from '@wikia/core/utils';
 import { expect } from 'chai';
 
 describe('System1', () => {
@@ -20,7 +15,7 @@ describe('System1', () => {
 
 	beforeEach(() => {
 		loadScriptStub = global.sandbox
-			.stub(utils.scriptLoader, 'loadScript')
+			.stub(scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		contextStub = global.sandbox.stub(context);

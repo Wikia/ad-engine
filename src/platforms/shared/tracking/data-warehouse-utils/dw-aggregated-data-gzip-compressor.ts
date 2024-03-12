@@ -1,4 +1,4 @@
-import { utils } from '@wikia/ad-engine';
+import { getGlobalValue, logger } from '@ad-engine/utils';
 import { Compressed, DwAggregatedDataCompressor } from './dw-aggregated-data-sender';
 
 /***
@@ -17,11 +17,11 @@ export class DwAggregatedDataGzipCompressor implements DwAggregatedDataCompresso
 			return this.browserSupportsCompression;
 		}
 		this.browserSupportsCompression =
-			typeof utils.getGlobalValue<CompressionStream>('CompressionStream') === 'function' &&
-			typeof utils.getGlobalValue<TextEncoder>('TextEncoder') === 'function';
+			typeof getGlobalValue<CompressionStream>('CompressionStream') === 'function' &&
+			typeof getGlobalValue<TextEncoder>('TextEncoder') === 'function';
 
 		if (!this.browserSupportsCompression) {
-			utils.logger(
+			logger(
 				'dw_gzip_compressor_debug',
 				'DwAggregatedDataGzipCompressor',
 				'Compression API not supported',
@@ -39,14 +39,14 @@ export class DwAggregatedDataGzipCompressor implements DwAggregatedDataCompresso
 			const compressedStream = this.gzipStream(inputStream);
 			const compressedBytes = await this.readStream(compressedStream);
 
-			utils.logger('dw_gzip_compressor_debug', 'DwAggregatedDataGzipCompressor', {
+			logger('dw_gzip_compressor_debug', 'DwAggregatedDataGzipCompressor', {
 				uncompressedStringLen: input.length,
 				compressedBytesLen: compressedBytes.byteLength,
 			});
 
 			return { compressed: compressedBytes, contentEncoding: this.contentEncoding };
 		} catch (error) {
-			utils.logger(
+			logger(
 				'dw_gzip_compressor_debug',
 				'DwAggregatedDataGzipCompressor',
 				'Error while compressing data, returning uncompressed data instead.',

@@ -1,11 +1,11 @@
 import {
-	AdSlot,
 	AdSlotEvent,
 	slotService,
 	slotTweaker,
 	targetingService,
-	utils,
+	type AdSlot,
 } from '@ad-engine/core';
+import { logger } from '@ad-engine/utils';
 
 const logGroup = 'Anyclip';
 
@@ -18,15 +18,12 @@ export class AnyclipBidsRefresher {
 		if (typeof subscribe === 'function') {
 			subscribe(() => this.onAdImpressionHandler(), 'adImpression');
 		} else {
-			utils.logger(
-				logGroup,
-				'No Anyclip subscribe function available (lreSubscribe does not exist?)...',
-			);
+			logger(logGroup, 'No Anyclip subscribe function available (lreSubscribe does not exist?)...');
 		}
 	}
 
 	private onAdImpressionHandler() {
-		utils.logger(logGroup, 'AnyclipBidsRefresher: ad impression in Anyclip detected - refreshing');
+		logger(logGroup, 'AnyclipBidsRefresher: ad impression in Anyclip detected - refreshing');
 
 		const slotName = 'incontent_player';
 		const playerAdSlot = slotService.get(slotName);

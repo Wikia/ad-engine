@@ -1,5 +1,6 @@
+import { context } from '@ad-engine/core';
 import { TrackingSetup } from '@platforms/shared';
-import { communicationService, context, eventsRepository, ofType } from '@wikia/ad-engine';
+import { communicationService, eventsRepository, ofType } from '@wikia/communication';
 import { Injectable } from '@wikia/dependency-injection';
 import { shareReplay } from 'rxjs/operators';
 

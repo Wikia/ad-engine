@@ -1,3 +1,7 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { context } from '@ad-engine/core';
+import { conditional, parallel, ProcessPipeline } from '@ad-engine/pipeline';
+import { logVersion } from '@ad-engine/utils';
 import {
 	BaseContextSetup,
 	ConsentManagementPlatformSetup,
@@ -5,16 +9,8 @@ import {
 	InstantConfigSetup,
 	NoAdsDetector,
 	NoAdsMode,
+	SlotTrackingSetup,
 } from '@platforms/shared';
-import {
-	communicationService,
-	conditional,
-	context,
-	eventsRepository,
-	logVersion,
-	parallel,
-	ProcessPipeline,
-} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
 import { BingeBotAdsMode } from './modes/bingebot-ads.mode';
@@ -41,6 +37,7 @@ export class BingeBotPlatform {
 			BingeBotTargetingSetup,
 			BingeBotDynamicSlotsSetup,
 			BingeBotTemplatesSetup,
+			SlotTrackingSetup,
 			BingeBotTrackingSetup,
 			BingeBotBeforeViewChangeSetup,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),

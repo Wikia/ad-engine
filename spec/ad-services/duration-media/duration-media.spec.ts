@@ -1,6 +1,7 @@
 import { DurationMedia } from '@wikia/ad-services';
 import { communicationService, eventsRepository } from '@wikia/communication';
-import { context, InstantConfigService, utils } from '@wikia/core';
+import { context, InstantConfigService } from '@wikia/core';
+import { timedPartnerScriptLoader } from '@wikia/core/utils';
 import { expect } from 'chai';
 
 describe('Duration media service', () => {
@@ -9,7 +10,7 @@ describe('Duration media service', () => {
 
 	beforeEach(() => {
 		loadScriptStub = global.sandbox
-			.stub(utils.timedPartnerScriptLoader, 'loadScriptWithStatus')
+			.stub(timedPartnerScriptLoader, 'loadScriptWithStatus')
 			.returns(Promise.resolve({} as any));
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		instantConfigStub.get.withArgs('icDurationMedia').returns(undefined);

@@ -1,5 +1,5 @@
-import { utils } from '../index';
 import { Dictionary } from '../models';
+import { outboundTrafficRestrict } from '../utils';
 import { context } from './context-service';
 
 class ExternalLogger {
@@ -10,7 +10,7 @@ class ExternalLogger {
 			context.set('services.externalLogger.threshold', 1);
 		}
 
-		this.isActive = utils.outboundTrafficRestrict.isOutboundTrafficAllowed('externalLogger');
+		this.isActive = outboundTrafficRestrict.isOutboundTrafficAllowed('externalLogger');
 	}
 
 	log(logMessage: string, data: Dictionary = {}): void {

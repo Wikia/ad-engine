@@ -2,8 +2,8 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 // it sets blockAdBlock and BlockAdBlock properties on window
 import 'blockadblock';
-import { utils } from '../';
 import { context } from '../services';
+import { logger, queryString } from '../utils';
 
 const logGroup = 'bab-detection';
 
@@ -26,11 +26,11 @@ export class BabDetection {
 	async run(): Promise<boolean> {
 		let isBabDetected: boolean = await this.checkBlocking();
 
-		utils.logger(logGroup, 'BAB detection, AB detected:', isBabDetected);
+		logger(logGroup, 'BAB detection, AB detected:', isBabDetected);
 
 		if (!isBabDetected) {
 			isBabDetected = await this.checkDomainBlocking();
-			utils.logger(logGroup, 'GAM domain blocking detection - detected:', isBabDetected);
+			logger(logGroup, 'GAM domain blocking detection - detected:', isBabDetected);
 		}
 
 		this.setBodyClass(isBabDetected);
@@ -105,7 +105,7 @@ export class BabDetection {
 			resetOnEnd: true,
 			loopCheckTime: 50,
 			loopMaxNumber: 5,
-			debug: !!utils.queryString.get('bt_rec_debug') || false,
+			debug: !!queryString.get('bt_rec_debug') || false,
 		});
 	}
 

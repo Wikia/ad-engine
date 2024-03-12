@@ -1,11 +1,7 @@
 import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
-import {
-	BaseServiceSetup,
-	context,
-	InstantConfigService,
-	targetingService,
-	utils,
-} from '@ad-engine/core';
+import { context, InstantConfigService, targetingService } from '@ad-engine/core';
+import { BaseServiceSetup } from '@ad-engine/pipeline';
+import { GlobalTimeout, logger, scriptLoader } from '@ad-engine/utils';
 import { Injectable } from '@wikia/dependency-injection';
 import { PlacementsHandler } from './utils/placements-handler';
 
@@ -23,7 +19,7 @@ export class OpenWeb extends BaseServiceSetup {
 
 	constructor(
 		protected instantConfig: InstantConfigService,
-		protected globalTimeout: utils.GlobalTimeout = null,
+		protected globalTimeout: GlobalTimeout = null,
 		private placementsHandler: PlacementsHandler = null,
 	) {
 		super(instantConfig, globalTimeout);
@@ -32,12 +28,12 @@ export class OpenWeb extends BaseServiceSetup {
 
 	call(): void {
 		if (context.get('state.isLogged')) {
-			utils.logger(logGroup, 'disabled - user is logged');
+			logger(logGroup, 'disabled - user is logged');
 			return;
 		}
 
 		if (!this.isActive()) {
-			utils.logger(logGroup, 'disabled - not activated');
+			logger(logGroup, 'disabled - not activated');
 			return;
 		}
 
@@ -46,7 +42,7 @@ export class OpenWeb extends BaseServiceSetup {
 
 		communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
 			if (action.isLoaded) {
-				utils.logger(logGroup, 'disabled - UAP is loaded');
+				logger(logGroup, 'disabled - UAP is loaded');
 				return;
 			}
 
@@ -59,7 +55,7 @@ export class OpenWeb extends BaseServiceSetup {
 
 				this.loadScript(this.config.spotId, postUniqueId, postUrl, articleTitle);
 			} else {
-				utils.logger(logGroup, 'disabled - builder failed');
+				logger(logGroup, 'disabled - builder failed');
 			}
 		});
 	}
@@ -81,9 +77,9 @@ export class OpenWeb extends BaseServiceSetup {
 
 	private loadScript(spotId: string, postUniqueId: string, postUrl: string, title: string): void {
 		const libraryUrl = `//launcher.spot.im/spot/${spotId}`;
-		utils.logger(logGroup, 'loading', libraryUrl);
+		logger(logGroup, 'loading', libraryUrl);
 
-		utils.scriptLoader
+		scriptLoader
 			.loadScript(
 				libraryUrl,
 				true,
@@ -98,7 +94,7 @@ export class OpenWeb extends BaseServiceSetup {
 				},
 			)
 			.then(() => {
-				utils.logger(logGroup, 'ready');
+				logger(logGroup, 'ready');
 
 				if (!context.get('state.isMobile')) {
 					setTimeout(() => this.moveAfterViewability(), 7000);
@@ -115,6 +111,6 @@ export class OpenWeb extends BaseServiceSetup {
 		stickyWrapper?.classList.add('replaced-rail-modules-wrapper');
 		wikiaAdInContentPlaceHolder?.classList.add(stickyWrapperClassName);
 
-		utils.logger(logGroup, 'move after viewability');
+		logger(logGroup, 'move after viewability');
 	}
 }

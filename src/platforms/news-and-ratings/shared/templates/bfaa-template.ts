@@ -1,3 +1,4 @@
+import { context, TemplateAction, TemplateDependency, TemplateRegistry } from '@ad-engine/core';
 import {
 	AdvertisementLabelHandler,
 	BfaaBootstrapHandler,
@@ -28,13 +29,7 @@ import {
 	VideoSizeImpactToResolvedHandler,
 	VideoSizeResolvedHandler,
 } from '@platforms/shared';
-import {
-	context,
-	TemplateAction,
-	TemplateDependency,
-	TemplateRegistry,
-	universalAdPackage,
-} from '@wikia/ad-engine';
+import { universalAdPackage } from '@wikia/ad-products';
 import { Observable } from 'rxjs';
 import { BfaaNewsAndRatingsConfigHandler } from './handlers/bfaa/bfaa-news-and-ratings-config-handler';
 

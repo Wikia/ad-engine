@@ -1,11 +1,7 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import {
-	BaseServiceSetup,
-	context,
-	externalLogger,
-	targetingService,
-	utils,
-} from '@ad-engine/core';
+import { context, externalLogger, targetingService } from '@ad-engine/core';
+import { BaseServiceSetup } from '@ad-engine/pipeline';
+import { logger, scriptLoader, WaitFor } from '@ad-engine/utils';
 
 const logGroup = 'audigent';
 const DEFAULT_MATCHES_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
@@ -23,7 +19,7 @@ export class Audigent extends BaseServiceSetup {
 	private static segmentLimit;
 
 	static loadSegmentLibrary(): void {
-		Audigent.segmentsScriptLoader = utils.scriptLoader
+		Audigent.segmentsScriptLoader = scriptLoader
 			.loadScript(DEFAULT_SEGMENTS_SCRIPT_URL, true, 'first')
 			.then(() => {
 				communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
@@ -33,7 +29,7 @@ export class Audigent extends BaseServiceSetup {
 	}
 
 	loadMatchesLibrary(): void {
-		this.matchesTagScriptLoader = utils.scriptLoader
+		this.matchesTagScriptLoader = scriptLoader
 			.loadScript(DEFAULT_MATCHES_SCRIPT_URL, true, 'first')
 			.then(() => {
 				communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
@@ -44,7 +40,7 @@ export class Audigent extends BaseServiceSetup {
 
 	async call(): Promise<void> {
 		if (!this.isEnabled('icAudigent')) {
-			utils.logger(logGroup, 'disabled');
+			logger(logGroup, 'disabled');
 			return;
 		}
 
@@ -58,19 +54,19 @@ export class Audigent extends BaseServiceSetup {
 		this.setupSegmentsListener();
 
 		if (!this.isLoaded) {
-			utils.logger(logGroup, 'loading...');
+			logger(logGroup, 'loading...');
 			this.matchesTagScriptLoader.then(() => {
-				utils.logger(logGroup, 'audience tag script loaded');
+				logger(logGroup, 'audience tag script loaded');
 			});
 			Audigent.segmentsScriptLoader.then(() => {
-				utils.logger(logGroup, 'segment tag script loaded');
+				logger(logGroup, 'segment tag script loaded');
 				this.setup();
 			});
 			this.isLoaded = true;
 		}
 
 		await this.waitForAuSegGlobalSet().then((isGlobalSet) => {
-			utils.logger(logGroup, 'Audigent global variable set', isGlobalSet, window['au_seg']);
+			logger(logGroup, 'Audigent global variable set', isGlobalSet, window['au_seg']);
 			this.setup();
 		});
 	}
@@ -82,10 +78,10 @@ export class Audigent extends BaseServiceSetup {
 	}
 
 	setupSegmentsListener(): void {
-		utils.logger(logGroup, 'setting up auSegReady event listener');
+		logger(logGroup, 'setting up auSegReady event listener');
 
 		document.addEventListener('auSegReady', function (e) {
-			utils.logger(logGroup, 'auSegReady event received', e);
+			logger(logGroup, 'auSegReady event received', e);
 			communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
 				status: 'audigent_segments_ready',
 			});
@@ -115,13 +111,13 @@ export class Audigent extends BaseServiceSetup {
 			segments = segments.slice(0, limit);
 		}
 
-		utils.logger(logGroup, 'Sliced segments', segments, limit, au_segments);
+		logger(logGroup, 'Sliced segments', segments, limit, au_segments);
 
 		return segments;
 	}
 
 	private static setSegmentsInTargeting(segments) {
-		utils.logger(logGroup, 'Setting segments in the targeting', segments);
+		logger(logGroup, 'Setting segments in the targeting', segments);
 		targetingService.set('AU_SEG', segments);
 	}
 
@@ -145,6 +141,6 @@ export class Audigent extends BaseServiceSetup {
 		const numberOfTriesWhenWaiting =
 			context.get('services.audigent.numberOfTries') || numberOfTries;
 
-		return new utils.WaitFor(isAuSegGlobalSet, numberOfTriesWhenWaiting, 250).until();
+		return new WaitFor(isAuSegGlobalSet, numberOfTriesWhenWaiting, 250).until();
 	}
 }

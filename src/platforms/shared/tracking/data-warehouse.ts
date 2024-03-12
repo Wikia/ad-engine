@@ -1,4 +1,5 @@
-import { context, targetingService, trackingOptIn, utils } from '@wikia/ad-engine';
+import { context, targetingService, trackingOptIn } from '@ad-engine/core';
+import { logger, outboundTrafficRestrict, queryString } from '@ad-engine/utils';
 import { Injectable } from '@wikia/dependency-injection';
 import { AdEngineStageSetup } from '../setup/ad-engine-stage.setup';
 import { TrackingUrl, trackingUrls } from '../setup/tracking-urls';
@@ -43,7 +44,7 @@ export class DataWarehouseTracker {
 	track(options: TrackingParams, trackingURL?: TrackingUrl): void {
 		if (
 			trackingURL &&
-			!utils.outboundTrafficRestrict.isOutboundTrafficAllowed(
+			!outboundTrafficRestrict.isOutboundTrafficAllowed(
 				`dw-tracker-${trackingURL.name.toLowerCase()}`,
 			)
 		) {
@@ -160,10 +161,10 @@ export class DataWarehouseTracker {
 	private buildDataWarehouseUrl(params: DataWarehouseParams, baseUrl: string): string {
 		if (!baseUrl) {
 			const msg = `Error building DW tracking URL`;
-			utils.logger(logGroup, msg);
+			logger(logGroup, msg);
 			throw new Error(msg);
 		}
-		return `${baseUrl}?${utils.queryString.stringify(params)}`;
+		return `${baseUrl}?${queryString.stringify(params)}`;
 	}
 
 	/**
@@ -192,11 +193,9 @@ export class DataWarehouseTracker {
 		request.open('GET', url, true);
 		request.responseType = 'json';
 
-		request.addEventListener('load', () =>
-			utils.logger(`DW - Track ${type} Success`, { url, params }),
-		);
+		request.addEventListener('load', () => logger(`DW - Track ${type} Success`, { url, params }));
 		request.addEventListener('error', (err) =>
-			utils.logger(`DW - Track ${type} Failed`, { url, params, err }),
+			logger(`DW - Track ${type} Failed`, { url, params, err }),
 		);
 
 		request.send();

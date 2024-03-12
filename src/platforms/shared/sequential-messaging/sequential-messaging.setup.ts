@@ -1,10 +1,7 @@
-import {
-	communicationService,
-	context,
-	resolvedState,
-	targetingService,
-	utils,
-} from '@wikia/ad-engine';
+import { communicationService } from '@ad-engine/communication';
+import { context, targetingService } from '@ad-engine/core';
+import { logger } from '@ad-engine/utils';
+import { resolvedState } from '@wikia/ad-products';
 import Cookies from 'js-cookie';
 import { slotsContext } from '../slots/slots-context';
 import { SequenceContinuationHandler } from './domain/sequence-continuation-handler';
@@ -110,7 +107,7 @@ export class SequentialMessagingSetup {
 			// TODO SM extract the 12 and 14 number to a shared parameters
 			//  to be used here and in GamTargetingManager.generateSizeMapping
 			if (!payload.height || 12 > payload.height || payload.height > 14) {
-				utils.logger('SM', 'Invalid Creative configuration. Creative size ot ouf bounds.');
+				logger('SM', 'Invalid Creative configuration. Creative size ot ouf bounds.');
 				return false;
 			}
 

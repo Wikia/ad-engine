@@ -1,11 +1,7 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { DiProcess, PartnerPipeline } from '@ad-engine/pipeline';
 import { PlayerSetup, WadRunner } from '@platforms/shared';
-import {
-	Bidders,
-	communicationService,
-	DiProcess,
-	eventsRepository,
-	PartnerPipeline,
-} from '@wikia/ad-engine';
+import { Bidders } from '@wikia/ad-bidders';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()

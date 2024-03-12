@@ -1,4 +1,4 @@
-import { utils } from '@wikia/core';
+import { buildPromisedTimeout, PromisedTimeout } from '@wikia/core/utils';
 import { expect } from 'chai';
 import { SinonFakeTimers } from 'sinon';
 
@@ -18,7 +18,7 @@ describe('buildPromisedTimeout', () => {
 
 	it('should resolve after provided time passes', async () => {
 		let resolved = false;
-		const timeout: utils.PromisedTimeout<number> = utils.buildPromisedTimeout(1000);
+		const timeout: PromisedTimeout<number> = buildPromisedTimeout(1000);
 
 		timeout.promise.then(() => {
 			resolved = true;
@@ -38,7 +38,7 @@ describe('buildPromisedTimeout', () => {
 	it('should resolve to timeout time', async () => {
 		let result: number;
 		const time = 1000;
-		const timeout: utils.PromisedTimeout<number> = utils.buildPromisedTimeout(time);
+		const timeout: PromisedTimeout<number> = buildPromisedTimeout(time);
 
 		timeout.promise.then((timeoutTime) => {
 			result = timeoutTime;
@@ -53,7 +53,7 @@ describe('buildPromisedTimeout', () => {
 
 	it('should be cancellable', async () => {
 		let result = 0;
-		const timeout: utils.PromisedTimeout<number> = utils.buildPromisedTimeout(1000);
+		const timeout: PromisedTimeout<number> = buildPromisedTimeout(1000);
 
 		timeout.promise.then((time) => {
 			result = time;
@@ -74,7 +74,7 @@ describe('buildPromisedTimeout', () => {
 
 	it('should be cancellable after it resolves', async () => {
 		const time = 1000;
-		const timeout: utils.PromisedTimeout<number> = utils.buildPromisedTimeout(time);
+		const timeout: PromisedTimeout<number> = buildPromisedTimeout(time);
 
 		clock.tick(time);
 		await Promise.resolve();

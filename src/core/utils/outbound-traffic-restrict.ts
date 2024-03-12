@@ -1,5 +1,5 @@
-import { utils } from '../index';
 import { context } from '../services';
+import { logger } from '../utils';
 
 class OutboundTrafficRestrict {
 	private readonly MAX = 100;
@@ -26,7 +26,7 @@ class OutboundTrafficRestrict {
 			isAllowed = false;
 		}
 
-		utils.logger(
+		logger(
 			'outbound-traffic-restrict',
 			`Outbound traffic for: "${serviceName}" is allowed: ${isAllowed}`,
 			`Threshold: ${threshold}`,

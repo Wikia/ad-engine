@@ -4,7 +4,7 @@ import {
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
-} from '@wikia/ad-engine';
+} from '@ad-engine/core';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { EMPTY, from, merge, NEVER, Observable, Subject, timer } from 'rxjs';
 import { mergeMap, take, takeUntil, tap } from 'rxjs/operators';

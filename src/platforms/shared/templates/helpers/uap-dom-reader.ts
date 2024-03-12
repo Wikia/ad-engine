@@ -1,4 +1,5 @@
-import { AdSlot, context, TEMPLATE, UapParams } from '@wikia/ad-engine';
+import { AdSlot, context, TEMPLATE } from '@ad-engine/core';
+import { type UapParams } from '@wikia/ad-products';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { NAVBAR } from '../configs/uap-dom-elements';
 

@@ -1,4 +1,5 @@
-import { context, utils } from '@wikia/ad-engine';
+import { context } from '@ad-engine/core';
+import { logger } from '@ad-engine/utils';
 import { DwAggregatedDataGzipCompressor } from './dw-aggregated-data-gzip-compressor';
 
 export type Compressed = {
@@ -51,9 +52,9 @@ export class DwAggregatedDataSender {
 			body: payload,
 		}).then((response) => {
 			if (response.status === 200) {
-				utils.logger(LOG_GROUP_NAME, { status: 'success', url });
+				logger(LOG_GROUP_NAME, { status: 'success', url });
 			} else {
-				utils.logger(LOG_GROUP_NAME, { status: 'failed', url });
+				logger(LOG_GROUP_NAME, { status: 'failed', url });
 			}
 		});
 	}

@@ -1,4 +1,4 @@
-import { context } from '../../index';
+import { context } from '../services';
 import defineExperiment from './pathfinder-lite/experiments/defineExperiment';
 import getExperiment from './pathfinder-lite/experiments/getExperiment';
 import { Experiment } from './pathfinder-lite/types';

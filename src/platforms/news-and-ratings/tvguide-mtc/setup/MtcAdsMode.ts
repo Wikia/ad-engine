@@ -1,11 +1,7 @@
+import { communicationService } from '@ad-engine/communication';
+import { AdSlotEvent, slotService } from '@ad-engine/core';
+import { DiProcess, PartnerPipeline } from '@ad-engine/pipeline';
 import { AdEngineStackSetup } from '@platforms/shared';
-import {
-	AdSlotEvent,
-	communicationService,
-	DiProcess,
-	PartnerPipeline,
-	slotService,
-} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()

@@ -1,4 +1,6 @@
-import { context, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
+import { context, InstantConfigService } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
+import { getServicesBaseURL, outboundTrafficRestrict } from '@ad-engine/utils';
 import { Injectable } from '@wikia/dependency-injection';
 import { MetricReporter } from '../tracking/metric-reporter';
 import { metricReporterSender } from '../tracking/metric-reporter/metric-reporter-sender';
@@ -8,7 +10,7 @@ export class MetricReporterSetup implements DiProcess {
 	constructor(private instantConfig: InstantConfigService) {}
 
 	async execute() {
-		const serviceUrl = utils.getServicesBaseURL() || '';
+		const serviceUrl = getServicesBaseURL() || '';
 		context.set('services.monitoring.endpoint', serviceUrl.replace(/\/+$/, ''));
 		context.set('services.monitoring.service', 'adeng');
 		const icMonitorTrafficThreshold = this.instantConfig.get('icMonitorTrafficThreshold', {
@@ -22,7 +24,7 @@ export class MetricReporterSetup implements DiProcess {
 			context.set(`services.monitoring-${key}.threshold`, monitorTrafficThreshold[key]);
 		});
 
-		if (utils.outboundTrafficRestrict.isOutboundTrafficAllowed('monitoring-default')) {
+		if (outboundTrafficRestrict.isOutboundTrafficAllowed('monitoring-default')) {
 			metricReporterSender.activate();
 		}
 		new MetricReporter(metricReporterSender).initialise();

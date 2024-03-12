@@ -1,5 +1,5 @@
+import { TemplateAction, TemplateRegistry } from '@ad-engine/core';
 import { RoadblockHandler } from '@platforms/shared';
-import { TemplateAction, TemplateRegistry } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
 
 export function registerRoadblockTemplate(registry: TemplateRegistry): Observable<TemplateAction> {

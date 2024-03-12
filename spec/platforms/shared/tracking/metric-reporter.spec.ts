@@ -1,4 +1,4 @@
-import { utils } from '@wikia/core';
+import { outboundTrafficRestrict } from '@wikia/core/utils';
 import { MetricReporter, MetricReporterSender } from '@wikia/platforms/shared';
 import { expect } from 'chai';
 import sinon from 'sinon';
@@ -13,7 +13,7 @@ describe('metric-reporter', () => {
 	});
 
 	it('do not execute when it is not allowed', async () => {
-		global.sandbox.stub(utils.outboundTrafficRestrict, 'isOutboundTrafficAllowed').returns(false);
+		global.sandbox.stub(outboundTrafficRestrict, 'isOutboundTrafficAllowed').returns(false);
 		const sendSpy = global.sandbox.spy(metricSender, 'sendToMeteringSystem');
 
 		const metricReporter = new MetricReporter(metricSender);
@@ -23,7 +23,7 @@ describe('metric-reporter', () => {
 	});
 
 	it('do execute when it is allowed, and call send for lib init', async () => {
-		global.sandbox.stub(utils.outboundTrafficRestrict, 'isOutboundTrafficAllowed').returns(true);
+		global.sandbox.stub(outboundTrafficRestrict, 'isOutboundTrafficAllowed').returns(true);
 		global.sandbox.stub(MetricReporter.prototype, 'trackGamSlotRequest');
 		global.sandbox.stub(MetricReporter.prototype, 'trackGamSlotRendered');
 

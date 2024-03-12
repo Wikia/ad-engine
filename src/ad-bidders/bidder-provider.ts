@@ -1,4 +1,5 @@
-import { DEFAULT_MAX_DELAY, Dictionary, utils } from '@ad-engine/core';
+import { DEFAULT_MAX_DELAY, Dictionary } from '@ad-engine/core';
+import { createWithTimeout, LazyQueue, logger } from '@ad-engine/utils';
 
 export interface BidderConfig {
 	enabled: boolean;
@@ -14,7 +15,7 @@ export abstract class BidderProvider {
 	called = false;
 	w;
 	response = false;
-	onResponseCallbacks: utils.LazyQueue;
+	onResponseCallbacks: LazyQueue;
 
 	protected constructor(
 		public name: string,
@@ -23,14 +24,14 @@ export abstract class BidderProvider {
 	) {
 		this.logGroup = `${name}-bidder`;
 		this.resetState();
-		utils.logger(this.logGroup, 'created');
+		logger(this.logGroup, 'created');
 	}
 
 	resetState(): void {
 		this.called = false;
 		this.response = false;
 
-		this.onResponseCallbacks = new utils.LazyQueue();
+		this.onResponseCallbacks = new LazyQueue();
 		this.onResponseCallbacks.onItemFlush((callback) => {
 			callback(this.name);
 		});
@@ -42,7 +43,7 @@ export abstract class BidderProvider {
 
 		this.callBids(() => this.onBidResponse());
 
-		utils.logger(this.logGroup, 'called');
+		logger(this.logGroup, 'called');
 	}
 
 	protected onBidResponse(): void {
@@ -51,7 +52,7 @@ export abstract class BidderProvider {
 		this.calculatePrices();
 		this.onResponseCallbacks.flush();
 
-		utils.logger(this.logGroup, 'respond');
+		logger(this.logGroup, 'respond');
 	}
 
 	getSlotBestPrice(slotName: string): Promise<Dictionary<number | string>> {
@@ -74,7 +75,7 @@ export abstract class BidderProvider {
 	 * Fires the Promise if bidder replied or timeout is reached
 	 */
 	waitForResponse(): Promise<void> {
-		return utils.createWithTimeout((resolve) => {
+		return createWithTimeout((resolve) => {
 			if (this.hasResponse()) {
 				resolve();
 			} else {

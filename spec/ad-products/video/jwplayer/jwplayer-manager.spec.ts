@@ -2,7 +2,8 @@ import { expect } from 'chai';
 
 import { JWPlayerManager, jwpReady } from '@wikia/ad-products';
 import { communicationService } from '@wikia/communication';
-import { context, utils } from '@wikia/core';
+import { context } from '@wikia/core';
+import { scriptLoader } from '@wikia/core/utils';
 
 describe('JWPlayerManager', () => {
 	const jwpReadyPayloadStub = {
@@ -31,7 +32,7 @@ describe('JWPlayerManager', () => {
 	let loadScriptStub;
 
 	beforeEach(() => {
-		loadScriptStub = global.sandbox.stub(utils.scriptLoader, 'loadScript');
+		loadScriptStub = global.sandbox.stub(scriptLoader, 'loadScript');
 		window['fakePlayer'] = fakePlayerStub;
 		context.set('options.video.iasTracking.enabled', false);
 

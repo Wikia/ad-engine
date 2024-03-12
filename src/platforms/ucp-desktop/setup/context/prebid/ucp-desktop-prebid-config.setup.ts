@@ -1,5 +1,6 @@
+import { context, InstantConfigService } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
 import { filterVideoBids } from '@platforms/shared';
-import { context, DiProcess, InstantConfigService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { getAppnexusContext } from '../../../bidders/prebid/appnexus';
 import { getAppnexusAstContext } from '../../../bidders/prebid/appnexus-ast';

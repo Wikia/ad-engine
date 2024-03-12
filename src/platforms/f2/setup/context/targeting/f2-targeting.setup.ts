@@ -1,14 +1,14 @@
 import {
 	context,
-	DiProcess,
 	InstantConfigCacheStorage,
 	InstantConfigService,
 	SlotTargeting,
 	targetingService,
-	utils,
-} from '@wikia/ad-engine';
+} from '@ad-engine/core';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
+import { DiProcess } from '@ad-engine/pipeline';
+import { queryString } from '@ad-engine/utils';
 import { F2Environment, F2_ENV } from '../../../setup-f2';
 import { F2State } from '../../../utils/f2-state';
 import { F2_STATE } from '../../../utils/f2-state-binder';
@@ -93,7 +93,7 @@ export class F2TargetingSetup implements DiProcess {
 	}
 
 	private setCid(targeting: Partial<SlotTargeting>): void {
-		const cid = utils.queryString.get('cid');
+		const cid = queryString.get('cid');
 
 		if (cid !== undefined) {
 			targeting.cid = cid;

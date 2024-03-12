@@ -1,5 +1,5 @@
 import { Container, Injectable } from '@wikia/dependency-injection';
-import { AdSlot, Dictionary } from '../../models/';
+import type { AdSlot, Dictionary } from '../../models/';
 import { TEMPLATE } from './template-symbols';
 
 /*eslint @typescript-eslint/no-unused-vars: "off"*/

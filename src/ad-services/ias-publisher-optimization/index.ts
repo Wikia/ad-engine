@@ -1,11 +1,6 @@
-import {
-	BaseServiceSetup,
-	context,
-	Dictionary,
-	SlotConfig,
-	targetingService,
-	utils,
-} from '@ad-engine/core';
+import { context, Dictionary, SlotConfig, targetingService } from '@ad-engine/core';
+import { BaseServiceSetup } from '@ad-engine/pipeline';
+import { logger, scriptLoader, stringBuilder } from '@ad-engine/utils';
 
 const logGroup = 'ias-publisher-optimization';
 const scriptUrl = '//cdn.adsafeprotected.com/iasPET.1.js';
@@ -45,15 +40,15 @@ export class IasPublisherOptimization extends BaseServiceSetup {
 
 	call(): Promise<void> {
 		if (!this.isEnabled('icIASPublisherOptimization')) {
-			utils.logger(logGroup, 'disabled');
+			logger(logGroup, 'disabled');
 			return Promise.resolve();
 		}
 
 		if (!this.isLoaded) {
-			utils.logger(logGroup, 'loading...');
+			logger(logGroup, 'loading...');
 			this.isLoaded = true;
-			return utils.scriptLoader.loadScript(scriptUrl, true, 'first').then(() => {
-				utils.logger(logGroup, 'asset loaded');
+			return scriptLoader.loadScript(scriptUrl, true, 'first').then(() => {
+				logger(logGroup, 'asset loaded');
 				this.setup();
 			});
 		}
@@ -66,7 +61,7 @@ export class IasPublisherOptimization extends BaseServiceSetup {
 
 		this.slotList.forEach((slotName) => {
 			const slot: SlotConfig = context.get(`slots.${slotName}`);
-			const adUnitPath = utils.stringBuilder.build(slot.adUnit || context.get('adUnitId'), {
+			const adUnitPath = stringBuilder.build(slot.adUnit || context.get('adUnitId'), {
 				slotConfig: slot,
 			});
 			const config: IasSlotConfig = {
@@ -100,7 +95,7 @@ export class IasPublisherOptimization extends BaseServiceSetup {
 	}
 
 	private setInitialTargeting(): void {
-		utils.logger(logGroup, 'setting initial targeting...');
+		logger(logGroup, 'setting initial targeting...');
 
 		targetingService.set('fr', '-1');
 		targetingService.set('b_ias', '-1');
@@ -116,7 +111,7 @@ export class IasPublisherOptimization extends BaseServiceSetup {
 	}
 
 	private iasDataHandler(adSlotData: string): void {
-		utils.logger(logGroup, 'handling IAS response...');
+		logger(logGroup, 'handling IAS response...');
 
 		const iasTargetingData: IasTargetingData = JSON.parse(adSlotData);
 
@@ -128,12 +123,12 @@ export class IasPublisherOptimization extends BaseServiceSetup {
 		for (const [slotName, slotTargeting] of Object.entries(iasTargetingData.slots)) {
 			targetingService.set('vw', slotTargeting.vw || slotTargeting.vw_vv, slotName);
 		}
-		utils.logger(logGroup, 'Done.', this);
+		logger(logGroup, 'Done.', this);
 	}
 
 	private static setBrandSafetyKeyValuesInTargeting(brandSafetyData): void {
 		if (!brandSafetyData) {
-			utils.logger(logGroup, 'no brand safety data');
+			logger(logGroup, 'no brand safety data');
 			return;
 		}
 
@@ -157,7 +152,7 @@ export class IasPublisherOptimization extends BaseServiceSetup {
 
 	private static setCustomKeyValuesInTargeting(customData): void {
 		if (!customData['ias-kw']) {
-			utils.logger(logGroup, 'no custom data');
+			logger(logGroup, 'no custom data');
 			return;
 		}
 

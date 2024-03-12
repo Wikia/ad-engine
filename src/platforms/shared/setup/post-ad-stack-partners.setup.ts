@@ -1,17 +1,16 @@
+import { communicationService } from '@ad-engine/communication';
+import { AdSlotEvent } from '@ad-engine/core';
+import { DiProcess, PartnerPipeline } from '@ad-engine/pipeline';
+import { logger } from '@ad-engine/utils';
 import {
-	AdSlotEvent,
 	BrandMetrics,
 	Captify,
-	communicationService,
-	DiProcess,
 	Experian,
 	LiveConnect,
 	LiveRampPixel,
 	Lotame,
 	Nielsen,
-	PartnerPipeline,
-	utils,
-} from '@wikia/ad-engine';
+} from '@wikia/ad-services';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -33,14 +32,14 @@ export class PostAdStackPartnersSetup implements DiProcess {
 	) {}
 
 	execute(): void {
-		utils.logger(this.logGroup, 'waiting ...');
+		logger(this.logGroup, 'waiting ...');
 		setTimeout(() => {
 			this.pipelineExecute();
 		}, this.safeTimeout);
 		communicationService.onSlotEvent(
 			AdSlotEvent.SLOT_RENDERED_EVENT,
 			() => {
-				utils.logger(this.logGroup, 'starting');
+				logger(this.logGroup, 'starting');
 				this.pipelineExecute();
 			},
 			this.firstCallSlotName,
@@ -65,7 +64,7 @@ export class PostAdStackPartnersSetup implements DiProcess {
 			)
 			.execute()
 			.then(() => {
-				utils.logger(this.logGroup, 'finished');
+				logger(this.logGroup, 'finished');
 			});
 	}
 }

@@ -1,4 +1,5 @@
-import { communicationService, DiProcess, ofType } from '@wikia/ad-engine';
+import { communicationService, ofType } from '@ad-engine/communication';
+import { DiProcess } from '@ad-engine/pipeline';
 import { Container, Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
 import { f2Ready, F2_ENV } from './setup-f2';

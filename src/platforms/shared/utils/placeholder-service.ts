@@ -3,9 +3,9 @@ import {
 	communicationService,
 	eventsRepository,
 	ofType,
-	slotService,
 	UapLoadStatus,
-} from '@wikia/ad-engine';
+} from '@ad-engine/communication';
+import { slotService } from '@ad-engine/core';
 import { filter } from 'rxjs/operators';
 import { MessageBoxService } from './collapsed-messages/message-box-service';
 import { PlaceholderServiceHelper } from './placeholder-service-helper';

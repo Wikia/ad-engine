@@ -1,6 +1,6 @@
 import { resolvedState } from '@wikia/ad-products';
 import { resolvedStateSwitch } from '@wikia/ad-products/templates/uap/resolved-state-switch';
-import { utils } from '@wikia/core';
+import { queryString } from '@wikia/core/utils';
 import { expect } from 'chai';
 
 interface ImageParams {
@@ -48,7 +48,7 @@ function createCorrectParams(): Params {
 describe('ResolvedState', () => {
 	blockingUrlParams.forEach((param) => {
 		it(`Should not be in resolved state when is not blocked by query param ${param}`, () => {
-			global.sandbox.stub(utils.queryString, 'get').returns(param as any);
+			global.sandbox.stub(queryString, 'get').returns(param as any);
 
 			expect(resolvedState.isResolvedState(createCorrectParams())).to.equal(false);
 		});
@@ -56,7 +56,7 @@ describe('ResolvedState', () => {
 
 	forcingUrlParams.forEach((param) => {
 		it(`Should be in resolved state when is forced by query param ${param}`, () => {
-			global.sandbox.stub(utils.queryString, 'get').returns(param as any);
+			global.sandbox.stub(queryString, 'get').returns(param as any);
 
 			expect(resolvedState.isResolvedState(createCorrectParams())).to.equal(true);
 		});

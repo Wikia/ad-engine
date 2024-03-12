@@ -1,11 +1,6 @@
-import {
-	communicationService,
-	context,
-	DiProcess,
-	eventsRepository,
-	slotService,
-	TemplateRegistry,
-} from '@wikia/ad-engine';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { context, slotService, TemplateRegistry } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()

@@ -1,12 +1,12 @@
+import { context } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
+import { LazyQueue, logger } from '@ad-engine/utils';
 import {
 	CcpaSignalPayload,
 	communicationService,
-	context,
-	DiProcess,
 	eventsRepository,
 	GdprConsentPayload,
-	utils,
-} from '@wikia/ad-engine';
+} from '@wikia/communication';
 import { Injectable } from '@wikia/dependency-injection';
 
 const logGroup = 'tracking-opt-in-wrapper';
@@ -24,7 +24,7 @@ export class ConsentManagementPlatformSetup implements DiProcess {
 
 	async execute(): Promise<void> {
 		return new Promise((resolve) => {
-			utils.logger(logGroup, 'Waiting for consents');
+			logger(logGroup, 'Waiting for consents');
 
 			communicationService.on(eventsRepository.AD_ENGINE_CONSENT_READY, (payload) => {
 				this.setConsents(payload);
@@ -34,7 +34,7 @@ export class ConsentManagementPlatformSetup implements DiProcess {
 	}
 
 	private setConsents(consents: GdprConsentPayload & CcpaSignalPayload): void {
-		utils.logger(logGroup, 'TrackingOptIn consents', consents);
+		logger(logGroup, 'TrackingOptIn consents', consents);
 
 		context.set('options.trackingOptIn', consents.gdprConsent);
 		context.set('options.geoRequiresConsent', consents.geoRequiresConsent);
@@ -46,7 +46,7 @@ export class ConsentManagementPlatformSetup implements DiProcess {
 	 * @deprecated
 	 */
 	private installConsentQueue(): void {
-		window.ads.consentQueue = new utils.LazyQueue<
+		window.ads.consentQueue = new LazyQueue<
 			(callback: GdprConsentPayload & CcpaSignalPayload) => void
 		>(...(window.ads.consentQueue || []));
 		window.ads.pushToConsentQueue =

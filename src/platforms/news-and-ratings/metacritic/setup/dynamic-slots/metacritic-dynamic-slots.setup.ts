@@ -1,5 +1,5 @@
+import { DiProcess } from '@ad-engine/pipeline';
 import { insertSlots } from '@platforms/shared';
-import { DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import {
 	NewsAndRatingsDynamicSlotsSetup,

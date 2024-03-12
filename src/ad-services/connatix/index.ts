@@ -1,12 +1,12 @@
 import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
 import {
-	BaseServiceSetup,
 	context,
 	incontentVideoRemovalExperimentName,
 	incontentVideoRemovalVariationName,
 	isIncontentPlayerRemovalVariationActive,
-	utils,
 } from '@ad-engine/core';
+import { BaseServiceSetup } from '@ad-engine/pipeline';
+import { logger } from '@ad-engine/utils';
 import { DataWarehouseTracker } from '../../platforms/shared';
 import { ConnatixBidsRefresher } from './connatix-bids-refresher';
 import { ConnatixPlayer, ConnatixPlayerApi } from './connatix-player';
@@ -30,12 +30,12 @@ export class Connatix extends BaseServiceSetup {
 	}
 
 	enableFloating() {
-		utils.logger(logGroup, 'enabling Connatix floating feature');
+		logger(logGroup, 'enabling Connatix floating feature');
 		this.playerInstance?.enableFloatingMode();
 	}
 
 	disableFloating() {
-		utils.logger(logGroup, 'disabling Connatix floating feature');
+		logger(logGroup, 'disabling Connatix floating feature');
 		this.playerInstance?.disableFloatingMode();
 	}
 
@@ -56,7 +56,7 @@ export class Connatix extends BaseServiceSetup {
 
 	async call(): Promise<void> {
 		if (!this.isEnabled()) {
-			utils.logger(logGroup, 'Connatix player is disabled');
+			logger(logGroup, 'Connatix player is disabled');
 			return;
 		}
 
@@ -77,7 +77,7 @@ export class Connatix extends BaseServiceSetup {
 			return;
 		}
 
-		utils.logger(logGroup, 'initialized', this.cid);
+		logger(logGroup, 'initialized', this.cid);
 
 		if (context.get('custom.hasIncontentPlayer')) {
 			communicationService.on(
@@ -90,39 +90,39 @@ export class Connatix extends BaseServiceSetup {
 	private loadOnUapStatus({ isLoaded, adProduct }: UapLoadStatus) {
 		if (!isLoaded && adProduct !== 'ruap') {
 			const isConnatixLazyLoaded = context.get('services.connatix.latePageInject');
-			utils.logger(logGroup, 'No Fan Takeover loaded - injecting Connatix player');
+			logger(logGroup, 'No Fan Takeover loaded - injecting Connatix player');
 
 			if (!isConnatixLazyLoaded) {
-				utils.logger(logGroup, 'No need to wait for CONNATIX_LATE_INJECT');
+				logger(logGroup, 'No need to wait for CONNATIX_LATE_INJECT');
 				this.loadInitScript();
 				this.playerInjector.insertPlayerContainer(this.cid, this.renderCallback.bind(this));
 				return;
 			}
 
 			communicationService.on(eventsRepository.CONNATIX_LATE_INJECT, () => {
-				utils.logger(logGroup, 'CONNATIX_LATE_INJECT emitted');
+				logger(logGroup, 'CONNATIX_LATE_INJECT emitted');
 				this.loadInitScript();
 				this.playerInjector.insertPlayerContainer(this.cid, this.renderCallback.bind(this));
 			});
 		} else {
-			utils.logger(logGroup, 'Connatix blocked because of Fan Takeover');
+			logger(logGroup, 'Connatix blocked because of Fan Takeover');
 		}
 	}
 
 	private loadInitScript() {
 		initConnatixHeadScript(this.cid);
 		this.tracker.trackInit();
-		utils.logger(logGroup, 'Connatix head script is ready');
+		logger(logGroup, 'Connatix head script is ready');
 	}
 
 	private renderCallback(error, playerApi: ConnatixPlayerApi) {
 		if (error) {
-			utils.logger(logGroup, 'Connatix encountered an error while loading', error);
+			logger(logGroup, 'Connatix encountered an error while loading', error);
 			return;
 		}
 
 		context.set('services.connatix.playerInstance', playerApi);
-		utils.logger(logGroup, 'ready');
+		logger(logGroup, 'ready');
 		communicationService.emit(eventsRepository.CONNATIX_READY);
 
 		this.tracker.setPlayerApi(playerApi);

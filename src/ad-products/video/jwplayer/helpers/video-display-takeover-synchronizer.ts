@@ -1,4 +1,5 @@
-import { displayAndVideoAdsSyncContext, utils } from '@ad-engine/core';
+import { displayAndVideoAdsSyncContext } from '@ad-engine/core';
+import { createExtendedPromise, ExtendedPromise, logger } from '@ad-engine/utils';
 import { universalAdPackage } from '../../../templates';
 
 /*
@@ -11,7 +12,7 @@ import { universalAdPackage } from '../../../templates';
  */
 export class VideoDisplayTakeoverSynchronizer {
 	private logGroup = 'video-display-takeover-sync';
-	initialized: utils.ExtendedPromise<void> = utils.createExtendedPromise();
+	initialized: ExtendedPromise<void> = createExtendedPromise();
 
 	private isEnabled(): boolean {
 		return displayAndVideoAdsSyncContext.isSyncEnabled();
@@ -39,7 +40,7 @@ export class VideoDisplayTakeoverSynchronizer {
 
 	resolve(lineItemId: string | null = null, creativeId: string | null = null): void {
 		if (!this.isEnabled()) {
-			utils.logger(this.logGroup, 'is disabled');
+			logger(this.logGroup, 'is disabled');
 			return;
 		}
 
@@ -49,9 +50,9 @@ export class VideoDisplayTakeoverSynchronizer {
 			displayAndVideoAdsSyncContext.getVideoSyncedWithDisplayLines().includes(lineItemId)
 		) {
 			universalAdPackage.updateSlotsTargeting(lineItemId, creativeId);
-			utils.logger(this.logGroup, 'video ad is from UAP:JWP campaign - updating key-vals');
+			logger(this.logGroup, 'video ad is from UAP:JWP campaign - updating key-vals');
 		} else {
-			utils.logger(this.logGroup, 'video ad is not from UAP:JWP campaign');
+			logger(this.logGroup, 'video ad is not from UAP:JWP campaign');
 		}
 
 		this.initialized.resolve(null);

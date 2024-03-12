@@ -1,5 +1,6 @@
 import { Ats } from '@wikia/ad-services/ats';
-import { context, usp, utils } from '@wikia/core';
+import { context, usp } from '@wikia/core';
+import { scriptLoader } from '@wikia/core/utils';
 import { expect } from 'chai';
 
 describe('ATS', () => {
@@ -9,7 +10,7 @@ describe('ATS', () => {
 
 	beforeEach(() => {
 		loadScriptStub = global.sandbox
-			.stub(utils.scriptLoader, 'loadScript')
+			.stub(scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
 		setAdditionalDataSpy = global.sandbox.spy();
 

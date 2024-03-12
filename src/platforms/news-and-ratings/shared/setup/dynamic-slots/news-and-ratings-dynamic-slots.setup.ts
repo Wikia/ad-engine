@@ -1,13 +1,9 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { btfBlockerService, context } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
+import { Document } from '@ad-engine/utils';
 import { insertSlots } from '@platforms/shared';
-import {
-	btfBlockerService,
-	communicationService,
-	context,
-	DiProcess,
-	eventsRepository,
-	universalAdPackage,
-	utils,
-} from '@wikia/ad-engine';
+import { universalAdPackage } from '@wikia/ad-products';
 import { Injectable } from '@wikia/dependency-injection';
 import { NewsAndRatingsSlotsDefinitionRepository } from './news-and-ratings-slots-definition-repository';
 
@@ -39,7 +35,7 @@ export class NewsAndRatingsDynamicSlotsSetup implements DiProcess {
 
 			if (!adSlotName) {
 				adSlotName = placeholder.getAttribute('data-ad-type');
-				adWrapper = utils.Document.getFirstElementChild(placeholder);
+				adWrapper = Document.getFirstElementChild(placeholder);
 			}
 
 			if (!adSlotName || !adWrapper || adSlotName === 'interstitial') {

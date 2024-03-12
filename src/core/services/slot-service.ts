@@ -1,7 +1,7 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlotEvent, getAdStack, targetingService, utils } from '../';
-import { AdSlot, Dictionary, SlotConfig } from '../models';
-import { getTopOffset, logger } from '../utils';
+import { AdSlotEvent, getAdStack, targetingService } from '../';
+import type { AdSlot, Dictionary, SlotConfig } from '../models';
+import { getTopOffset, logger, uuid } from '../utils';
 import { context } from './context-service';
 import { slotTweaker } from './slot-tweaker';
 
@@ -114,7 +114,7 @@ class SlotService {
 		let uid = context.get(`slots.${slotName}.uid`);
 
 		if (!uid) {
-			uid = utils.generateUniqueId();
+			uid = uuid.v4();
 			context.set(`slots.${slotName}.uid`, uid);
 		}
 
@@ -126,8 +126,8 @@ class SlotService {
 	 * @param {function} callback
 	 */
 	forEach(callback: (adSlot: AdSlot) => void): void {
-		Object.keys(this.slots).forEach((id) => {
-			callback(this.slots[id]);
+		Object.values(this.slots).forEach((slot) => {
+			callback(slot);
 		});
 	}
 

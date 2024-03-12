@@ -1,12 +1,8 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { btfBlockerService, context } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
 import { insertSlots, PlaceholderService, slotsContext } from '@platforms/shared';
-import {
-	btfBlockerService,
-	communicationService,
-	context,
-	DiProcess,
-	eventsRepository,
-	universalAdPackage,
-} from '@wikia/ad-engine';
+import { universalAdPackage } from '@wikia/ad-products';
 import { Injectable } from '@wikia/dependency-injection';
 import { F2SlotsDefinitionRepository } from './f2-slots-definition-repository';
 

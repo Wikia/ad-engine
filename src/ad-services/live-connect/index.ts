@@ -1,5 +1,7 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { BaseServiceSetup, localCache, UniversalStorage, utils } from '@ad-engine/core';
+import { localCache, UniversalStorage } from '@ad-engine/core';
+import { BaseServiceSetup } from '@ad-engine/pipeline';
+import { logger, scriptLoader, warner } from '@ad-engine/utils';
 
 interface IdConfig {
 	id: LiQResolveParams;
@@ -34,29 +36,29 @@ export class LiveConnect extends BaseServiceSetup {
 			!this.isEnabled('icLiveConnectCachingStrategy') ||
 			this.isEnabled('icIdentityPartners', false)
 		) {
-			utils.logger(logGroup, 'disabled');
+			logger(logGroup, 'disabled');
 			return;
 		}
 
 		this.setupStorage();
 
 		if (this.shouldLoadScript()) {
-			utils.logger(logGroup, 'loading');
+			logger(logGroup, 'loading');
 			communicationService.emit(eventsRepository.LIVE_CONNECT_STARTED);
 
-			utils.scriptLoader.loadScript(liveConnectScriptUrl, true, 'first').then(() => {
-				utils.logger(logGroup, 'loaded');
+			scriptLoader.loadScript(liveConnectScriptUrl, true, 'first').then(() => {
+				logger(logGroup, 'loaded');
 				this.resolveAndTrackIds();
 			});
 		} else {
 			communicationService.emit(eventsRepository.LIVE_CONNECT_CACHED);
-			utils.logger(logGroup, `already loaded and available in ${this.storageConfig.type}Storage`);
+			logger(logGroup, `already loaded and available in ${this.storageConfig.type}Storage`);
 		}
 	}
 
 	resolveAndTrackIds(): void {
 		if (!window.liQ) {
-			utils.warner(logGroup, 'window.liQ not available for tracking');
+			warner(logGroup, 'window.liQ not available for tracking');
 			return;
 		}
 		const customQf = this.instantConfig.get<number>('icLiveConnectQf')?.toString();
@@ -72,7 +74,7 @@ export class LiveConnect extends BaseServiceSetup {
 	}
 
 	trackIds(liQResponse: LiQResolveResponse): void {
-		utils.logger(logGroup, 'resolve response:', liQResponse);
+		logger(logGroup, 'resolve response:', liQResponse);
 
 		Object.keys(liQResponse).forEach((key) => {
 			const trackingKeyName = this.getTrackingKeyName(key);
@@ -87,7 +89,7 @@ export class LiveConnect extends BaseServiceSetup {
 
 			const partnerIdentityId = liQResponse[key];
 
-			utils.logger(logGroup, `${key}: ${partnerIdentityId}`);
+			logger(logGroup, `${key}: ${partnerIdentityId}`);
 
 			if (!partnerIdentityId) {
 				return;

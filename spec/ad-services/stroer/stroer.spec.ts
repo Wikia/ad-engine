@@ -1,5 +1,6 @@
 import { Stroer } from '@wikia/ad-services';
-import { InstantConfigService, utils } from '@wikia/core';
+import { InstantConfigService } from '@wikia/core';
+import { scriptLoader } from '@wikia/core/utils';
 import { expect } from 'chai';
 
 describe('Stroer', () => {
@@ -8,7 +9,7 @@ describe('Stroer', () => {
 
 	beforeEach(() => {
 		loadScriptStub = global.sandbox
-			.stub(utils.scriptLoader, 'loadScript')
+			.stub(scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		stroer = new Stroer(instantConfigStub);

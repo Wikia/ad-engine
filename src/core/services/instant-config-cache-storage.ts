@@ -1,6 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { InstantConfigCacheStorageService } from '@wikia/instant-config-loader';
-import { utils } from '../index';
+import { logger } from '../utils';
 import { CookieStorageAdapter } from './cookie-storage-adapter';
 import { deserializeCache } from './instant-config-cache-storage-serializer';
 import { UniversalStorage } from './universal-storage';
@@ -94,6 +94,6 @@ export class InstantConfigCacheStorage implements InstantConfigCacheStorageServi
 	private initCacheFromCookie(): void {
 		const serializedCache = this.cookieStorage.getItem<string>(this.cacheKey) || '';
 		this.cacheStorage = deserializeCache(serializedCache);
-		utils.logger(logGroup, 'initialized cache storage', this.cacheStorage);
+		logger(logGroup, 'initialized cache storage', this.cacheStorage);
 	}
 }

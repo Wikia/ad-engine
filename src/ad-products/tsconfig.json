@@ -3,7 +3,9 @@
 	"compilerOptions": {
 		"paths": {
 			"@ad-engine/core": ["src/core/index.ts"],
-			"@ad-engine/communication": ["src/communication/index.ts"]
+			"@ad-engine/communication": ["src/communication/index.ts"],
+			"@ad-engine/pipeline": ["src/core/pipeline/index.ts"],
+			"@ad-engine/utils": ["src/core/utils/index.ts"]
 		}
 	},
 	"include": ["."]

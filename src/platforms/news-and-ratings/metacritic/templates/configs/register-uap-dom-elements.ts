@@ -1,5 +1,5 @@
+import { context, TemplateDependency } from '@ad-engine/core';
 import { FOOTER, NAVBAR, PAGE } from '@platforms/shared';
-import { context, TemplateDependency } from '@wikia/ad-engine';
 
 export function registerUapDomElements(): TemplateDependency[] {
 	return [

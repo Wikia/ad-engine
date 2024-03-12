@@ -1,10 +1,11 @@
 import {
-	AdSlot,
+	AdSlotClass,
 	slotTweaker,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
-} from '@wikia/ad-engine';
+	type AdSlot,
+} from '@ad-engine/core';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })
@@ -13,7 +14,7 @@ export class FloorAdhesionBootstrapHandler implements TemplateStateHandler {
 
 	async onEnter(transition: TemplateTransition<'display'>): Promise<void> {
 		this.adSlot.setConfigProperty('showManually', true);
-		this.adSlot.addClass(AdSlot.HIDDEN_AD_CLASS);
+		this.adSlot.addClass(AdSlotClass.HIDDEN_AD_CLASS);
 		this.adSlot.addClass('floor-adhesion');
 		this.adSlot.addClass('out-of-page-template');
 

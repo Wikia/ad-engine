@@ -1,4 +1,6 @@
-import { context, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
+import { context, InstantConfigService } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
+import { WaitFor } from '@ad-engine/utils';
 import { Injectable } from '@wikia/dependency-injection';
 import { trackingUrls } from './tracking-urls';
 
@@ -32,7 +34,7 @@ export class TrackingParametersSetup implements DiProcess {
 	}
 
 	private async getTrackingParameters(): Promise<Partial<ITrackingParameters>> {
-		await new utils.WaitFor(() => !!window.fandomContext?.tracking, 10, 100).until();
+		await new WaitFor(() => !!window.fandomContext?.tracking, 10, 100).until();
 
 		return {
 			...window.fandomContext.tracking,

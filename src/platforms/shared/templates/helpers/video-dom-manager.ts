@@ -1,4 +1,5 @@
-import { PorvataPlayer, TEMPLATE, UapParams } from '@wikia/ad-engine';
+import { TEMPLATE } from '@ad-engine/core';
+import { PorvataPlayer, UapParams } from '@wikia/ad-products';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { DomManipulator } from './manipulators/dom-manipulator';
 import { UapVideoSize, VideoDomReader } from './video-dom-reader';

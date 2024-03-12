@@ -1,3 +1,4 @@
+import { TemplateAction, TemplateRegistry } from '@ad-engine/core';
 import {
 	AdvertisementLabelHandler,
 	CloseButtonHelper,
@@ -19,7 +20,7 @@ import {
 	UapDomManager,
 	UapDomReader,
 } from '@platforms/shared';
-import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
+import { universalAdPackage } from '@wikia/ad-products';
 import { Observable } from 'rxjs';
 import { registerUcpMobileUapDomElements } from './configs/register-ucp-mobile-uap-dom-elements';
 

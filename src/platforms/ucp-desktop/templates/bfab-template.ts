@@ -1,3 +1,4 @@
+import { TemplateAction, TemplateRegistry } from '@ad-engine/core';
 import {
 	AdvertisementLabelHandler,
 	BfabBootstrapHandler,
@@ -16,7 +17,6 @@ import {
 	VideoSizeImpactHandler,
 	VideoSizeResolvedHandler,
 } from '@platforms/shared';
-import { TemplateAction, TemplateRegistry } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
 import { registerUcpDesktopUapDomElements } from './configs/register-ucp-desktop-uap-dom-elements';
 

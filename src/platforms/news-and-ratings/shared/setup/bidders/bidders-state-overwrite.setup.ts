@@ -1,6 +1,7 @@
 import { Injectable } from '@wikia/dependency-injection';
 
-import { context, DiProcess, InstantConfigService } from '@wikia/ad-engine';
+import { context, InstantConfigService } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
 
 @Injectable()
 export class BiddersStateOverwriteSetup implements DiProcess {

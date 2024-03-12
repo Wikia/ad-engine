@@ -15,8 +15,8 @@ import {
 	UniversalStorage,
 	Usp,
 	usp,
-	utils,
 } from '@ad-engine/core';
+import { logger, scriptLoader, warner } from '@ad-engine/utils';
 import Cookies from 'js-cookie';
 import { A9Bid, A9BidConfig, A9CCPA, ApstagConfig, ApstagTokenConfig } from '../a9/types';
 
@@ -47,7 +47,6 @@ export class Apstag {
 	private script: Promise<Event>;
 	private renderImpEndCallbacks = [];
 	storage: UniversalStorage;
-	utils = utils;
 	tcf: Tcf = tcf;
 	usp: Usp = usp;
 
@@ -59,11 +58,7 @@ export class Apstag {
 	}
 
 	private insertScript(): void {
-		this.script = utils.scriptLoader.loadScript(
-			'//c.amazon-adsystem.com/aax2/apstag.js',
-			true,
-			'first',
-		);
+		this.script = scriptLoader.loadScript('//c.amazon-adsystem.com/aax2/apstag.js', true, 'first');
 	}
 
 	public hasRecord(): boolean {
@@ -88,7 +83,7 @@ export class Apstag {
 		consents?: GdprConsentPayload & CcpaSignalPayload,
 	): Promise<void> {
 		if (!record) {
-			utils.warner(logGroup, 'Trying to send HEM without source record');
+			warner(logGroup, 'Trying to send HEM without source record');
 			return;
 		}
 
@@ -124,10 +119,10 @@ export class Apstag {
 				...gdprConfig,
 			};
 			if (userConsentHasChanged) {
-				utils.logger(logGroup, 'Updating user consents', tokenConfig, 'optOut', optOut);
+				logger(logGroup, 'Updating user consents', tokenConfig, 'optOut', optOut);
 				window.apstag.upa(tokenConfig);
 			} else if (!amazonTokenCreated || amazonTokenExpired) {
-				utils.logger(logGroup, 'Sending HEM to apstag', tokenConfig, 'optOut', optOut);
+				logger(logGroup, 'Sending HEM to apstag', tokenConfig, 'optOut', optOut);
 				window.apstag.rpa(tokenConfig);
 			}
 			// Necessary for updating optOut status.
@@ -136,7 +131,7 @@ export class Apstag {
 			this.storage.setItem('apstagHEMoptOut', optOutString);
 			communicationService.emit(eventsRepository.A9_APSTAG_HEM_SENT);
 		} catch (e) {
-			utils.logger(logGroup, 'Error sending HEM to apstag', e);
+			logger(logGroup, 'Error sending HEM to apstag', e);
 		}
 	}
 
@@ -185,7 +180,7 @@ export class Apstag {
 
 		if (context.get('bidders.a9.hem.cleanup')) {
 			if (Cookies.get('AMZN-Token') || this.storage.getItem('apstagRecord')) {
-				utils.logger(logGroup, 'Cleaning Amazon Token...');
+				logger(logGroup, 'Cleaning Amazon Token...');
 				window.apstag.dpa();
 				this.storage.removeItem('apstagRecord');
 				this.storage.removeItem('apstagHEMsent');
@@ -195,7 +190,7 @@ export class Apstag {
 				});
 				return;
 			} else {
-				utils.logger(logGroup, 'Amazon Token already cleaned');
+				logger(logGroup, 'Amazon Token already cleaned');
 			}
 		}
 

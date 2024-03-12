@@ -1,11 +1,7 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import {
-	BaseServiceSetup,
-	context,
-	globalContextService,
-	localCache,
-	utils,
-} from '@ad-engine/core';
+import { context, globalContextService, localCache } from '@ad-engine/core';
+import { BaseServiceSetup } from '@ad-engine/pipeline';
+import { isCoppaSubject, logger, scriptLoader } from '@ad-engine/utils';
 
 const logGroup = 'system1';
 const scriptUrl = '//s.flocdn.com/@s1/embedded-search/embedded-search.js';
@@ -36,20 +32,20 @@ export class System1 extends BaseServiceSetup {
 
 	call(): Promise<void> {
 		if (!this.isSearchPage()) {
-			utils.logger(logGroup, 'disabled - it is not search page');
+			logger(logGroup, 'disabled - it is not search page');
 			return Promise.resolve();
 		}
 
 		if (!this.isEnabled()) {
-			utils.logger(logGroup, 'disabled');
+			logger(logGroup, 'disabled');
 			return Promise.resolve();
 		}
 
 		if (!this.isLoaded) {
-			utils.logger(logGroup, 'loading...');
+			logger(logGroup, 'loading...');
 			this.isLoaded = true;
-			return utils.scriptLoader.loadScript(scriptUrl).then(() => {
-				utils.logger(logGroup, 'asset loaded');
+			return scriptLoader.loadScript(scriptUrl).then(() => {
+				logger(logGroup, 'asset loaded');
 				this.setup();
 			});
 		}
@@ -58,7 +54,7 @@ export class System1 extends BaseServiceSetup {
 	isEnabled(): boolean {
 		return (
 			super.isEnabled('icSystem1', false) &&
-			!utils.isCoppaSubject() &&
+			!isCoppaSubject() &&
 			!this.isBot() &&
 			!this.isExcludedByBundleTag()
 		);
@@ -72,7 +68,7 @@ export class System1 extends BaseServiceSetup {
 			});
 
 		const config = this.getConfig();
-		utils.logger(logGroup, 'Config', config);
+		logger(logGroup, 'Config', config);
 
 		window.s1search('config', config);
 	}
@@ -147,7 +143,7 @@ export class System1 extends BaseServiceSetup {
 
 		if (!cacheValue || cacheValue !== this.getTheme()) {
 			localCache.setItem(cacheKey, this.getTheme(), cacheTtl);
-			utils.logger(logGroup, 'Theme changed');
+			logger(logGroup, 'Theme changed');
 			return true;
 		}
 
@@ -155,12 +151,12 @@ export class System1 extends BaseServiceSetup {
 	}
 
 	private onSetupResolve(): void {
-		utils.logger(logGroup, 'completed');
+		logger(logGroup, 'completed');
 		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, { status: 'system1_loaded' });
 	}
 
 	private onSetupRejected(message: string): void {
-		utils.logger(logGroup, 'Error: ' + message);
+		logger(logGroup, 'Error: ' + message);
 		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, { status: 'system1_failed' });
 	}
 
@@ -175,7 +171,7 @@ export class System1 extends BaseServiceSetup {
 			const communityExcludedByTag = globalContextService.hasBundle(excludedBundleTagName);
 
 			if (communityExcludedByTag) {
-				utils.logger(logGroup, `community excluded by tag bundle=${excludedBundleTagName}`);
+				logger(logGroup, `community excluded by tag bundle=${excludedBundleTagName}`);
 				return true;
 			}
 		}

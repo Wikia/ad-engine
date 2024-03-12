@@ -1,11 +1,6 @@
-import {
-	AdSlot,
-	TEMPLATE,
-	TemplateStateHandler,
-	TemplateTransition,
-	universalAdPackage,
-	utils,
-} from '@wikia/ad-engine';
+import { AdSlot, TEMPLATE, TemplateStateHandler, TemplateTransition } from '@ad-engine/core';
+import { wait } from '@ad-engine/utils';
+import { universalAdPackage } from '@wikia/ad-products';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { from, Observable, Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
@@ -46,7 +41,7 @@ export class SlotTransitionHandler implements TemplateStateHandler {
 			.setProperty('transition', `top ${duration}ms ${universalAdPackage.CSS_TIMING_EASE_IN_CUBIC}`)
 			.setProperty('top', `${this.reader.getSlotOffsetResolvedToNone()}px`);
 
-		return from(utils.wait(duration));
+		return from(wait(duration));
 	}
 
 	async onLeave(): Promise<void> {

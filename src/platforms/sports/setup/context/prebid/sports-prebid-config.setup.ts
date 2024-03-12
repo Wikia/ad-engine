@@ -1,5 +1,6 @@
+import { context } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
 import { getWikiaContext } from '@platforms/shared';
-import { context, DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { getRubiconFutheadContext } from '../../../bidders/prebid/rubicon-futhead';
 import { getRubiconMutheadContext } from '../../../bidders/prebid/rubicon-muthead';

@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { utils } from '@ad-engine/core';
+import { client } from '@ad-engine/utils';
 
 const FADE_OUT_TIMEOUT = 3000;
 const FADE_OUT_ANIMATION_TIME = 1000;
@@ -9,7 +9,7 @@ export class ToggleUI {
 		let removeVisibilityTimeout: number;
 		let fadeOutTimeout: number;
 
-		const isMobile = utils.client.isSmartphone() || utils.client.isTablet();
+		const isMobile = client.isSmartphone() || client.isTablet();
 		const overlay = document.createElement('div');
 		const panel = container.querySelector('.dynamic-panel');
 

@@ -1,4 +1,10 @@
-import { AdSlot, AdSlotEvent, TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
+import {
+	AdSlotClass,
+	AdSlotEvent,
+	TEMPLATE,
+	TemplateStateHandler,
+	type AdSlot,
+} from '@ad-engine/core';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { DomManipulator } from '../../helpers/manipulators/dom-manipulator';
 
@@ -7,7 +13,7 @@ export class SlotHiddenHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot, private manipulator: DomManipulator) {}
 
 	async onEnter(): Promise<void> {
-		this.manipulator.element(this.adSlot.element).addClass(AdSlot.HIDDEN_AD_CLASS);
+		this.manipulator.element(this.adSlot.element).addClass(AdSlotClass.HIDDEN_AD_CLASS);
 		document.body.classList.remove('has-sticky-tlb');
 		this.adSlot.emitEvent(AdSlotEvent.HIDDEN_EVENT);
 	}

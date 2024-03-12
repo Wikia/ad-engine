@@ -1,4 +1,5 @@
-import { context, targetingService, utils } from '@ad-engine/core';
+import { context, targetingService } from '@ad-engine/core';
+import { logger } from '@ad-engine/utils';
 
 interface YahooConnectIdConfig {
 	name: string;
@@ -19,11 +20,11 @@ class YahooConnectId {
 
 	getConfig(): YahooConnectIdConfig {
 		if (!context.get('bidders.prebid.yahooConnectId.enabled')) {
-			utils.logger(logGroup, 'disabled');
+			logger(logGroup, 'disabled');
 			return;
 		}
 
-		utils.logger(logGroup, 'enabled');
+		logger(logGroup, 'enabled');
 
 		const config: YahooConnectIdConfig = {
 			name: 'connectId',
@@ -38,7 +39,7 @@ class YahooConnectId {
 			},
 		};
 
-		utils.logger(logGroup, 'config', config);
+		logger(logGroup, 'config', config);
 
 		return config;
 	}

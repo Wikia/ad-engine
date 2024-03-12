@@ -1,6 +1,6 @@
-import { context, SlotTargeting, utils } from '@wikia/ad-engine';
-import { getDomain } from '../../../../utils/get-domain';
-import { getMediaWikiVariable } from '../../../../utils/get-media-wiki-variable';
+import { context, SlotTargeting } from '@ad-engine/core';
+import { geoService, queryString, targeting } from '@ad-engine/utils';
+import { getDomain, getMediaWikiVariable } from '@platforms/shared';
 import { CommonTargetingParams } from '../interfaces/common-targeting-params';
 import { OptionalTargetingParams } from '../interfaces/optional-targeting-params';
 import { TargetingProvider } from '../interfaces/targeting-provider';
@@ -21,8 +21,8 @@ export class CommonTags implements TargetingProvider<Partial<SlotTargeting>> {
 		const commonParams: Partial<SlotTargeting> = {
 			ar: window.innerWidth > window.innerHeight ? '4:3' : '3:4',
 			dmn: domain.base,
-			geo: utils.geoService.getCountryCode() || 'none',
-			hostpre: utils.targeting.getHostnamePrefix(),
+			geo: geoService.getCountryCode() || 'none',
+			hostpre: targeting.getHostnamePrefix(),
 			original_host: wiki.opts?.isGamepedia ? 'gamepedia' : 'fandom',
 			// Make more general after rolling out strategies outside UCP
 			skin: isMobile ? 'ucp_mobile' : 'ucp_desktop',
@@ -39,7 +39,7 @@ export class CommonTags implements TargetingProvider<Partial<SlotTargeting>> {
 			s0c: this.fandomContext.site.categories,
 			// Remove 'wiki.targeting.wikiVertical' after ADEN-12118 is done
 			s0v: this.fandomContext.site.taxonomy?.[1] || wiki.targeting.wikiVertical,
-			s1: utils.targeting.getRawDbName(this.fandomContext.site.siteName),
+			s1: targeting.getRawDbName(this.fandomContext.site.siteName),
 			s2: this.getAdLayout(this.fandomContext.page.pageType || 'article'),
 			wpage: this.fandomContext.page.pageName?.toLowerCase(),
 			word_count: this.fandomContext.page.wordCount?.toString() || '',
@@ -102,7 +102,7 @@ export class CommonTags implements TargetingProvider<Partial<SlotTargeting>> {
 		const keyVals: OptionalTargetingParams = {};
 
 		const keyValsMap = {
-			cid: utils.queryString.get('cid'),
+			cid: queryString.get('cid'),
 			pv: context.get('wiki.pvNumber'),
 			pvg: context.get('wiki.pvNumberGlobal'),
 		};

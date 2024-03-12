@@ -1,11 +1,13 @@
-import { BaseServiceSetup, context, InstantConfigService, utils } from '@wikia/ad-engine';
+import { context, InstantConfigService } from '@ad-engine/core';
+import { BaseServiceSetup } from '@ad-engine/pipeline';
+import { GlobalTimeout } from '@ad-engine/utils';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class JwpStrategyRulesSetup extends BaseServiceSetup {
 	constructor(
 		protected instantConfig: InstantConfigService,
-		protected globalTimeout: utils.GlobalTimeout,
+		protected globalTimeout: GlobalTimeout,
 	) {
 		super(instantConfig, globalTimeout);
 	}

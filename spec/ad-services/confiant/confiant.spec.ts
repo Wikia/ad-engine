@@ -1,5 +1,6 @@
 import { Confiant } from '@wikia/ad-services';
-import { context, InstantConfigService, utils } from '@wikia/core';
+import { context, InstantConfigService } from '@wikia/core';
+import { timedPartnerScriptLoader } from '@wikia/core/utils';
 import { expect } from 'chai';
 
 describe('Confiant', () => {
@@ -14,7 +15,7 @@ describe('Confiant', () => {
 	beforeEach(() => {
 		instantConfigStub = global.sandbox.createStubInstance(InstantConfigService);
 		loadScriptStub = global.sandbox
-			.stub(utils.timedPartnerScriptLoader, 'loadScriptWithStatus')
+			.stub(timedPartnerScriptLoader, 'loadScriptWithStatus')
 			.returns(Promise.resolve({} as any));
 
 		confiant = new Confiant(instantConfigStub);

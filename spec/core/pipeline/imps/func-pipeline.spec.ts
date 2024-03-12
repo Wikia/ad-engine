@@ -1,4 +1,4 @@
-import { FuncPipeline, FuncPipelineStep } from '@wikia/core';
+import { FuncPipeline, FuncPipelineStep } from '@wikia/core/pipeline';
 import { PipelineTestSuite } from './pipeline-test-suite';
 
 describe('FuncPipeline', () => {

@@ -1,5 +1,6 @@
+import { context } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
 import { insertSlots } from '@platforms/shared';
-import { context, DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { GameFAQsSlotsDefinitionRepository } from './gamefaqs-slots-definition-repository';
 

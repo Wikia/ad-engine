@@ -1,4 +1,5 @@
-import { utils, VideoData, VideoEventProvider, VideoTracker } from '@ad-engine/core';
+import { VideoData, VideoEventProvider, VideoTracker } from '@ad-engine/core';
+import { logger } from '@ad-engine/utils';
 
 const logGroup = 'Anyclip';
 
@@ -26,7 +27,7 @@ export class AnyclipTracker implements VideoTracker {
 		const subscribe = window[this.subscribeFuncName];
 
 		if (typeof subscribe !== 'function') {
-			utils.logger(
+			logger(
 				logGroup,
 				'Given subscribe function is not a function',
 				this.subscribeFuncName,
@@ -35,7 +36,7 @@ export class AnyclipTracker implements VideoTracker {
 			return;
 		}
 
-		utils.logger(logGroup, 'Subscribing to Anyclip events...');
+		logger(logGroup, 'Subscribing to Anyclip events...');
 		Object.keys(this.trackingEvents).map((eventName) => {
 			subscribe((data) => this.track(eventName, data), eventName);
 		});
@@ -54,7 +55,7 @@ export class AnyclipTracker implements VideoTracker {
 	private track(eventName: string, eventData) {
 		const dataForDataWarehouse = VideoEventProvider.getEventData(this.getVideoData(eventName));
 
-		utils.logger(
+		logger(
 			logGroup,
 			`Anyclip ${eventName} event data: `,
 			eventData,

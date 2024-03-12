@@ -1,5 +1,6 @@
+import { context, InstantConfigService } from '@ad-engine/core';
+import { geoService } from '@ad-engine/utils';
 import { BaseContextSetup, NoAdsDetector } from '@platforms/shared';
-import { context, InstantConfigService, utils } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { F2SrcAdapter } from '../../../utils/f2-src-adapter';
 import { F2State } from '../../../utils/f2-state';
@@ -28,10 +29,7 @@ export class F2BaseContextSetup extends BaseContextSetup {
 		}
 
 		context.set('src', this.srcAdapter.getSrcBasedOnEnv());
-		context.set(
-			'custom.serverPrefix',
-			utils.geoService.isProperCountry(['AU', 'NZ']) ? 'vm' : 'wka',
-		);
+		context.set('custom.serverPrefix', geoService.isProperCountry(['AU', 'NZ']) ? 'vm' : 'wka');
 		context.set(
 			'custom.adLayout',
 			`${this.f2State.hasFeaturedVideo ? 'fv-' : ''}${this.f2State.pageType}`,

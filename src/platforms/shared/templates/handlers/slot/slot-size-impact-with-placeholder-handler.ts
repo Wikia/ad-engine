@@ -1,11 +1,5 @@
-import {
-	context,
-	DomListener,
-	tapOnce,
-	TEMPLATE,
-	TemplateStateHandler,
-	UapParams,
-} from '@wikia/ad-engine';
+import { context, DomListener, tapOnce, TEMPLATE, TemplateStateHandler } from '@ad-engine/core';
+import { type UapParams } from '@wikia/ad-products';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil, tap } from 'rxjs/operators';

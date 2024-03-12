@@ -1,3 +1,5 @@
+import { context } from '@ad-engine/core';
+import { parallel, ProcessPipeline } from '@ad-engine/pipeline';
 import {
 	BaseContextSetup,
 	ConsentManagementPlatformSetup,
@@ -6,10 +8,11 @@ import {
 	MetricReporterSetup,
 	NoAdsMode,
 	PlatformContextSetup,
+	SlotTrackingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
-import { context, IdentitySetup, parallel, ProcessPipeline } from '@wikia/ad-engine';
+import { IdentitySetup } from '@wikia/ad-services';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
 import { MtcAdsMode } from './setup/MtcAdsMode';
@@ -32,6 +35,7 @@ export class TvGuideMTCPlatform {
 			MetricReporterSetup,
 			IdentitySetup,
 			TrackingSetup,
+			SlotTrackingSetup,
 			TvGuideMTCContextSetup,
 			TvGuideMtcTemplatesSetup,
 			TvGuideMtcSlotsContextSetup,

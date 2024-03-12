@@ -1,4 +1,5 @@
-import { context, DiProcess } from '@wikia/ad-engine';
+import { context } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()

@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, Dictionary } from '../models';
+import type { AdSlot, Dictionary } from '../models';
 import { context, slotService, SlotTargeting, targetingService, trackingOptIn } from '../services';
 import { isCoppaSubject } from './is-coppa-subject';
 
@@ -95,7 +95,7 @@ export function buildVastUrl(
 		`description_url=${encodeURIComponent(window.location.href)}`,
 		`correlator=${generateCorrelator()}`,
 	];
-	const slot: AdSlot = slotService.get(slotName);
+	const slot = slotService.get(slotName);
 	const ppid = targetingService.get('ppid');
 	const over18 = targetingService.get('over18');
 

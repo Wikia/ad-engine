@@ -1,4 +1,5 @@
-import { TEMPLATE, UapParams, UapState } from '@wikia/ad-engine';
+import { TEMPLATE } from '@ad-engine/core';
+import type { UapParams, UapState } from '@wikia/ad-products';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { UapDomReader } from './uap-dom-reader';
 

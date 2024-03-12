@@ -1,11 +1,6 @@
-import {
-	BaseServiceSetup,
-	context,
-	Dictionary,
-	TargetingData,
-	targetingService,
-	utils,
-} from '@ad-engine/core';
+import { context, Dictionary, TargetingData, targetingService } from '@ad-engine/core';
+import { BaseServiceSetup } from '@ad-engine/pipeline';
+import { logger, queryString } from '@ad-engine/utils';
 import { initNielsenStaticQueue } from './static-queue-script';
 
 const logGroup = 'nielsen-dcr';
@@ -16,11 +11,11 @@ const nielsenKey = 'P26086A07-C7FB-4124-A679-8AC404198BA7';
  * Creates Nielsen Static Queue Snippet
  */
 function createInstance(nielsenKey): any {
-	utils.logger(logGroup, 'loading');
+	logger(logGroup, 'loading');
 
 	initNielsenStaticQueue();
 
-	if (utils.queryString.get('nielsen-dcr-debug') === '1') {
+	if (queryString.get('nielsen-dcr-debug') === '1') {
 		nlsnConfig.nol_sdkDebug = 'debug';
 	}
 
@@ -43,7 +38,7 @@ export class Nielsen extends BaseServiceSetup {
 		const articleId = targeting.post_id || targeting.artid;
 
 		if (!this.isEnabled('icNielsen', false) || !nielsenKey) {
-			utils.logger(logGroup, 'disabled');
+			logger(logGroup, 'disabled');
 
 			return null;
 		}
@@ -52,7 +47,7 @@ export class Nielsen extends BaseServiceSetup {
 			this.nlsnInstance = createInstance(nielsenKey);
 		}
 
-		utils.logger(logGroup, 'ready');
+		logger(logGroup, 'ready');
 
 		const metadata = {
 			type: 'static',
@@ -61,7 +56,7 @@ export class Nielsen extends BaseServiceSetup {
 		};
 
 		this.nlsnInstance.ggPM('static', metadata);
-		utils.logger(logGroup, 'called', metadata);
+		logger(logGroup, 'called', metadata);
 
 		return this.nlsnInstance;
 	}

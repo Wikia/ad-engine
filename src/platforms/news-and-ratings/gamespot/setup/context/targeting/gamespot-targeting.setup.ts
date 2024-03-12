@@ -1,4 +1,5 @@
-import { context, DiProcess, targetingService } from '@wikia/ad-engine';
+import { context, targetingService } from '@ad-engine/core';
+import { DiProcess } from '@ad-engine/pipeline';
 
 export class GamespotTargetingSetup implements DiProcess {
 	execute(): void {
