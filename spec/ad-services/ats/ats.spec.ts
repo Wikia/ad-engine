@@ -1,7 +1,6 @@
 import { Ats } from '@wikia/ad-services/ats';
-import { context, utils } from '@wikia/core';
+import { context, usp, utils } from '@wikia/core';
 import { expect } from 'chai';
-import Cookies from 'js-cookie';
 
 describe('ATS', () => {
 	let ats;
@@ -36,7 +35,7 @@ describe('ATS', () => {
 	});
 
 	it('ATS.js is called', async () => {
-		global.sandbox.stub(Cookies, 'get').returns('1YNN');
+		global.sandbox.stub(usp, 'getSignalData').returns({ version: 1, uspString: '1YNN' });
 
 		await ats.call();
 
