@@ -7,7 +7,7 @@ import {
 	isIncontentPlayerRemovalVariationActive,
 	utils,
 } from '@ad-engine/core';
-import { DataWarehouseTracker } from '../../platforms/shared';
+import { DataWarehouseTracker } from '../../ad-tracking';
 import { ConnatixBidsRefresher } from './connatix-bids-refresher';
 import { ConnatixPlayer, ConnatixPlayerApi } from './connatix-player';
 import { ConnatixTracker } from './connatix-tracker';

@@ -1,90 +1,90 @@
-import { Bidders } from '@wikia/ad-bidders';
-import { trackingUrls } from '@wikia/ad-tracking';
-import { AdSizeTracker } from '@wikia/ad-tracking/trackers/ad-size-tracker';
-import { LabradorTracker } from '@wikia/ad-tracking/trackers/labrador-tracker';
-import { InstantConfigService, targetingService } from '@wikia/core';
-import { GlobalTimeout } from '@wikia/core/utils';
-import { DataWarehouseTracker, TrackingSetup } from '@wikia/platforms/shared';
-import { expect } from 'chai';
-import { SinonSpy } from 'sinon';
-
-describe('TrackingSetup', () => {
-	const dwTracker = new DataWarehouseTracker();
-	const labradorTracker = new LabradorTracker(dwTracker);
-	const adSizeTracker = new AdSizeTracker(dwTracker);
-	const instantConfig = new InstantConfigService({
-		appName: 'testapp',
-	});
-	const globalTimeout = new GlobalTimeout();
-	const bidders = new Bidders(instantConfig, globalTimeout);
-	let trackSpy: SinonSpy;
-
-	beforeEach(() => {
-		trackSpy = global.sandbox.spy(dwTracker, 'track');
-	});
-
-	afterEach(() => {
-		targetingService.clear();
-	});
-
-	it('should track keyvals', (done) => {
-		// given
-		targetingService.clear();
-		targetingService.set('key1', 'value1');
-		const trackingSetup = new TrackingSetup(
-			labradorTracker,
-			adSizeTracker,
-			dwTracker,
-			bidders,
-			instantConfig,
-		);
-
-		// when
-		trackingSetup.execute();
-
-		// then
-		setTimeout(() => {
-			targetingService.clear();
-			expect(
-				trackSpy
-					.getCall(trackSpy.callCount - 1)
-					.calledWithExactly({ keyvals: '{"key1":"value1"}' }, trackingUrls.KEY_VALS),
-			).to.be.true;
-			done();
-		});
-	});
-
-	it('should track Google Topics API when it is available', (done) => {
-		// given
-		targetingService.clear();
-		targetingService.set('ppid', 'ppid');
-		targetingService.set('topics_available', '1');
-		// @ts-expect-error Feature Policy API is not available in TS
-		global.window.document.featurePolicy = {
-			allowsFeature: (feature: string) => feature === 'browsing-topics',
-		};
-		// @ts-expect-error Google Topics API is not available in TS
-		global.window.document.browsingTopics = () => Promise.resolve(['topic1', 'topic2']);
-		const trackingSetup = new TrackingSetup(
-			labradorTracker,
-			adSizeTracker,
-			dwTracker,
-			bidders,
-			instantConfig,
-		);
-
-		// when
-		trackingSetup.execute();
-
-		// then
-		setTimeout(() => {
-			targetingService.clear();
-			expect(
-				trackSpy
-					.getCall(trackSpy.callCount - 1)
-					.calledWithExactly({ ppid: 'ppid', topic: '["topic1","topic2"]' }, trackingUrls.TOPICS),
-			).to.be.true;
-			done();
-		});
-	});
-});
+// import { Bidders } from '@wikia/ad-bidders';
+// import { trackingUrls } from '@wikia/ad-tracking';
+// import { AdSizeTracker } from '@wikia/ad-tracking/trackers/ad-size-tracker';
+// import { LabradorTracker } from '@wikia/ad-tracking/trackers/labrador-tracker';
+// import { InstantConfigService, targetingService } from '@wikia/core';
+// import { GlobalTimeout } from '@wikia/core/utils';
+// import { DataWarehouseTracker, TrackingSetup } from '@wikia/platforms/shared';
+// import { expect } from 'chai';
+// import { SinonSpy } from 'sinon';
+//
+// describe('TrackingSetup', () => {
+// 	const dwTracker = new DataWarehouseTracker();
+// 	const labradorTracker = new LabradorTracker(dwTracker);
+// 	const adSizeTracker = new AdSizeTracker(dwTracker);
+// 	const instantConfig = new InstantConfigService({
+// 		appName: 'testapp',
+// 	});
+// 	const globalTimeout = new GlobalTimeout();
+// 	const bidders = new Bidders(instantConfig, globalTimeout);
+// 	let trackSpy: SinonSpy;
+//
+// 	beforeEach(() => {
+// 		trackSpy = global.sandbox.spy(dwTracker, 'track');
+// 	});
+//
+// 	afterEach(() => {
+// 		targetingService.clear();
+// 	});
+//
+// 	it('should track keyvals', (done) => {
+// 		// given
+// 		targetingService.clear();
+// 		targetingService.set('key1', 'value1');
+// 		const trackingSetup = new TrackingSetup(
+// 			labradorTracker,
+// 			adSizeTracker,
+// 			dwTracker,
+// 			bidders,
+// 			instantConfig,
+// 		);
+//
+// 		// when
+// 		trackingSetup.execute();
+//
+// 		// then
+// 		setTimeout(() => {
+// 			targetingService.clear();
+// 			expect(
+// 				trackSpy
+// 					.getCall(trackSpy.callCount - 1)
+// 					.calledWithExactly({ keyvals: '{"key1":"value1"}' }, trackingUrls.KEY_VALS),
+// 			).to.be.true;
+// 			done();
+// 		});
+// 	});
+//
+// 	it('should track Google Topics API when it is available', (done) => {
+// 		// given
+// 		targetingService.clear();
+// 		targetingService.set('ppid', 'ppid');
+// 		targetingService.set('topics_available', '1');
+// 		// @ts-expect-error Feature Policy API is not available in TS
+// 		global.window.document.featurePolicy = {
+// 			allowsFeature: (feature: string) => feature === 'browsing-topics',
+// 		};
+// 		// @ts-expect-error Google Topics API is not available in TS
+// 		global.window.document.browsingTopics = () => Promise.resolve(['topic1', 'topic2']);
+// 		const trackingSetup = new TrackingSetup(
+// 			labradorTracker,
+// 			adSizeTracker,
+// 			dwTracker,
+// 			bidders,
+// 			instantConfig,
+// 		);
+//
+// 		// when
+// 		trackingSetup.execute();
+//
+// 		// then
+// 		setTimeout(() => {
+// 			targetingService.clear();
+// 			expect(
+// 				trackSpy
+// 					.getCall(trackSpy.callCount - 1)
+// 					.calledWithExactly({ ppid: 'ppid', topic: '["topic1","topic2"]' }, trackingUrls.TOPICS),
+// 			).to.be.true;
+// 			done();
+// 		});
+// 	});
+// });

@@ -1,3 +1,4 @@
+export * from './data-warehouse';
 export * from './metric-reporter';
 export * from './metric-reporter/metric-reporter-sender';
 export * from './models/tracking-params';
@@ -13,3 +14,4 @@ export * from './trackers/load-times-tracker';
 export * from './trackers/slot-tracker';
 export * from './trackers/viewability-tracker';
 export * from './tracking-urls';
+export * from './tracking.setup';

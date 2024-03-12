@@ -1,171 +1,23 @@
-import { communicationService, eventsRepository, globalAction } from '@ad-engine/communication';
-import {
-	context,
-	Dictionary,
-	GAMOrigins,
-	InstantConfigCacheStorage,
-	InstantConfigService,
-	interventionTracker,
-	targetingService,
-} from '@ad-engine/core';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { InstantConfigCacheStorage, InstantConfigService, targetingService } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
-import { props } from 'ts-action';
-import { Apstag, Bidders } from '../ad-bidders';
-import { porvataTracker } from '../ad-products';
+
 import { DataWarehouseTracker } from './data-warehouse';
-import { PostmessageTracker, TrackingMessage, TrackingTarget } from './postmessage-tracker';
-import { AdSizeTracker } from './trackers/ad-size-tracker';
-import { bidderTracker } from './trackers/bidder-tracker';
-import { adClickTracker } from './trackers/click-tracker';
-import { ctaTracker } from './trackers/cta-tracker';
 import { LabradorTracker } from './trackers/labrador-tracker';
-import { slotTracker } from './trackers/slot-tracker';
-import { viewabilityTracker } from './trackers/viewability-tracker';
 import { trackingUrls } from './tracking-urls';
 
-const adClickedAction = globalAction('[AdEngine] Ad clicked', props<Dictionary>());
-
 @Injectable()
-export class TrackingSetup {
+export class BaseTrackingSetup {
 	constructor(
-		private labradorTracker: LabradorTracker,
-		private adSizeTracker: AdSizeTracker,
-		private dwTracker: DataWarehouseTracker,
-		private bidders: Bidders,
-		private instantConfig: InstantConfigService = null,
+		protected labradorTracker: LabradorTracker,
+		protected dwTracker: DataWarehouseTracker,
+		protected instantConfig: InstantConfigService = null,
 	) {}
 
 	execute(): void {
-		this.porvataTracker();
-		this.slotTracker();
-		this.viewabilityTracker();
-		this.bidderTracker();
-		this.postmessageTrackingTracker();
 		this.experimentGroupsTracker();
-		this.interventionTracker();
-		this.adClickTracker();
-		this.ctaTracker();
-		this.identityTracker();
 		this.keyValsTracker();
 		this.googleTopicsTracker();
-		this.adSizeTracker.init();
-	}
-
-	private identityTracker(): void {
-		if (!this.instantConfig.get('icIdentityPartners', false)) {
-			communicationService.on(
-				eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED,
-				(eventInfo) => {
-					const { partnerName, partnerIdentityId } = eventInfo.payload;
-					this.dwTracker.track(
-						{
-							partner_name: partnerName,
-							partner_identity_id: partnerIdentityId,
-						},
-						trackingUrls.IDENTITY_INFO,
-					);
-
-					if (['liveConnect', 'MediaWiki-sha256'].includes(partnerName)) {
-						const apstag = Apstag.make();
-						apstag.init().then(() => apstag.sendHEM(partnerIdentityId));
-					}
-				},
-				false,
-			);
-		}
-	}
-
-	private porvataTracker(): void {
-		communicationService.on(
-			eventsRepository.VIDEO_PLAYER_TRACKING,
-			({ eventInfo }) => {
-				this.dwTracker.track(eventInfo, trackingUrls.AD_ENG_PLAYER_INFO);
-			},
-			false,
-		);
-
-		porvataTracker.register();
-	}
-
-	private slotTracker(): void {
-		let withBidders = null;
-
-		if (context.get('bidders.prebid.enabled') || context.get('bidders.a9.enabled')) {
-			withBidders = this.bidders;
-		}
-
-		slotTracker.onChangeStatusToTrack.push('top-conflict');
-		slotTracker.register(
-			({ data }: Dictionary) => {
-				this.dwTracker.track(data, trackingUrls.AD_ENG_AD_INFO);
-			},
-			{ bidders: withBidders },
-		);
-	}
-
-	private viewabilityTracker(): void {
-		viewabilityTracker.register(({ data }: Dictionary) => {
-			this.dwTracker.track(data, trackingUrls.AD_ENG_VIEWABILITY);
-
-			return data;
-		});
-	}
-
-	private ctaTracker(): void {
-		ctaTracker.register(({ data }: Dictionary) => {
-			this.dwTracker.track(data, trackingUrls.AD_ENG_AD_INFO);
-		});
-	}
-
-	private adClickTracker(): void {
-		adClickTracker.register(({ data }: Dictionary) => {
-			// event listeners might be outside of AdEngine, f.e. in the SilverSurfer interactions module
-			communicationService.dispatch(adClickedAction(data));
-			this.dwTracker.track(data, trackingUrls.AD_ENG_AD_INFO);
-		});
-	}
-
-	private bidderTracker(): void {
-		if (!context.get('bidders.prebid.enabled') && !context.get('bidders.a9.enabled')) {
-			return;
-		}
-
-		bidderTracker.register(({ data }: Dictionary) => {
-			this.dwTracker.track(data, trackingUrls.AD_ENG_BIDDERS);
-		});
-	}
-
-	private postmessageTrackingTracker(): void {
-		const postmessageTracker = new PostmessageTracker(['payload', 'target']);
-
-		postmessageTracker.register<TrackingMessage>(
-			async (message) => {
-				const { target, payload } = message;
-
-				switch (target) {
-					case TrackingTarget.GoogleAnalytics: {
-						window.ga(
-							'tracker1.send',
-							'event',
-							payload.category,
-							payload.action,
-							payload.label,
-							typeof payload.value === 'number' ? payload.value.toString() : payload.value,
-						);
-						break;
-					}
-					case TrackingTarget.DataWarehouse: {
-						this.dwTracker.track(payload);
-						break;
-					}
-					default:
-						break;
-				}
-
-				return message;
-			},
-			[window.origin, ...GAMOrigins],
-		);
 	}
 
 	private experimentGroupsTracker(): void {
@@ -181,10 +33,6 @@ export class TrackingSetup {
 		communicationService.on(eventsRepository.INTENT_IQ_GROUP_OBTAINED, ({ abTestGroup }) => {
 			this.labradorTracker.track(`intentIQ_${abTestGroup}`);
 		});
-	}
-
-	private interventionTracker(): void {
-		interventionTracker.register();
 	}
 
 	private keyValsTracker(): void {

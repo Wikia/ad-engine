@@ -79,6 +79,7 @@ export * from './templates/helpers/uap-dom-reader';
 export * from './templates/helpers/video-dom-manager';
 export * from './templates/helpers/video-dom-reader';
 export * from './templates/interstitial-template';
+export * from './tracking/tracking.setup';
 export * from './utils/collapsed-messages/message-box-creator';
 export * from './utils/collapsed-messages/message-box-service';
 export * from './utils/get-domain';

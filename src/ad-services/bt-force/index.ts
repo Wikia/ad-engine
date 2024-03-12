@@ -1,5 +1,5 @@
 import { context, utils } from '@ad-engine/core';
-import { trackBab } from '../../platforms/shared';
+import { trackBab } from '../../ad-tracking';
 
 const logGroup = 'bt-force-loader';
 type BTDetail = { detail: { ab: boolean } };
