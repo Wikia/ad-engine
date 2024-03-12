@@ -5,7 +5,6 @@ import {
 	targetingService,
 	utils,
 } from '@ad-engine/core';
-import { CmpType } from '../../ad-services';
 import { CompilerPartial } from '../trackers/base-tracker';
 
 function checkOptIn(): string {
