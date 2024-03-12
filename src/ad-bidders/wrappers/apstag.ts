@@ -5,8 +5,11 @@ import {
 } from '@ad-engine/communication';
 import {
 	context,
+	DEFAULT_MAX_DELAY,
 	externalLogger,
 	targetingService,
+	Tcf,
+	tcf,
 	trackingOptIn,
 	UniversalStorage,
 	Usp,
@@ -45,6 +48,7 @@ export class Apstag {
 	private renderImpEndCallbacks = [];
 	storage: UniversalStorage;
 	utils = utils;
+	tcf: Tcf = tcf;
 	usp: Usp = usp;
 
 	private constructor() {
@@ -110,7 +114,15 @@ export class Apstag {
 			const userConsentHasChanged =
 				this.storage.getItem('apstagHEMoptOut', true) &&
 				optOutString !== this.storage.getItem('apstagHEMoptOut', true);
-			const tokenConfig: ApstagTokenConfig = { hashedRecords: [{ type: 'email', record }], optOut };
+			// make sure TCF API is available before sending HEM
+			const gdprConfig = trackingOptIn.isGdprConsentRequired()
+				? { gdpr: { enabled: true, consent: (await this.tcf.getTCData()).tcString } }
+				: {};
+			const tokenConfig: ApstagTokenConfig = {
+				hashedRecords: [{ type: 'email', record }],
+				optOut,
+				...gdprConfig,
+			};
 			if (userConsentHasChanged) {
 				utils.logger(logGroup, 'Updating user consents', tokenConfig, 'optOut', optOut);
 				window.apstag.upa(tokenConfig);
@@ -198,6 +210,11 @@ export class Apstag {
 	async fetchBids(bidsConfig: A9BidConfig): Promise<A9Bid[]> {
 		await this.script;
 
+		if (trackingOptIn.isGdprConsentRequired()) {
+			// make sure TCF API is available before fetching bids
+			await this.tcf.getTCData();
+		}
+
 		return new Promise((resolve) => {
 			window.apstag.fetchBids(bidsConfig, (currentBids) => resolve(currentBids));
 		});
@@ -238,6 +255,9 @@ export class Apstag {
 			pubID: amazonId,
 			videoAdServer: 'DFP',
 			deals: true,
+			gdpr: {
+				cmpTimeout: DEFAULT_MAX_DELAY,
+			},
 			...Apstag.getCcpaIfApplicable(signalData),
 			signals: { ortb2 },
 		};
