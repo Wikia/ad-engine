@@ -105,8 +105,12 @@ describe('slot-refresher', () => {
 	});
 
 	it('should refresh', () => {
+		const refreshableSlot = {
+			...fakeAdSlot,
+			refreshable: true,
+		};
 		slotRefresher.setupSlotRefresher(basicConfig, false, loggerSpy);
-		slotRefresher.refreshSlot(fakeAdSlot as AdSlot);
+		slotRefresher.refreshSlot(refreshableSlot as AdSlot);
 		clock.runAll();
 
 		assert.calledOnce(refreshSpy);
@@ -148,9 +152,13 @@ describe('slot-refresher', () => {
 	});
 
 	it('should start listening to GPT event on attempt of refresh slot outside the viewport', () => {
+		const slotOutsideViewport = {
+			...fakeAdSlot,
+			refreshable: false,
+		};
 		slotRefresher.slotsInTheViewport = [];
 		slotRefresher.setupSlotRefresher(basicConfig, false, loggerSpy);
-		slotRefresher.refreshSlot(fakeAdSlot as AdSlot);
+		slotRefresher.refreshSlot(slotOutsideViewport as AdSlot);
 		clock.runAll();
 
 		assert.calledOnce(addEventListenerSpy);
