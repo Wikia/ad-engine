@@ -7,7 +7,9 @@ interface MediaWikiAds {
 	debug: (groups: string | null) => void;
 	pushToConsentQueue: (callback: any) => void;
 	runtime: Runtime;
-	ver: string;
+	version?: {
+		ae?: string;
+	};
 }
 
 interface AdsContext {

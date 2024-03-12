@@ -92,8 +92,8 @@ export class TrackingParametersSetup implements DiProcess {
 			);
 		});
 
-		if (window.ads.ver) {
-			targetingService.set('aeVer', window.ads.ver);
+		if (window.ads?.version?.ae) {
+			targetingService.set('aeVer', window.ads.version.ae);
 		}
 	}
 }
