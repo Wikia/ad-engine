@@ -1,32 +1,27 @@
+import { communicationService, eventsRepository, globalAction } from '@ad-engine/communication';
 import {
-	adClickTracker,
-	Apstag,
-	Bidders,
-	bidderTracker,
-	communicationService,
 	context,
-	ctaTracker,
 	Dictionary,
-	eventsRepository,
 	GAMOrigins,
-	globalAction,
 	InstantConfigCacheStorage,
 	InstantConfigService,
 	interventionTracker,
-	porvataTracker,
-	PostmessageTracker,
-	slotTracker,
 	targetingService,
-	TrackingMessage,
-	TrackingTarget,
-	trackingUrls,
-	viewabilityTracker,
-} from '@wikia/ad-engine';
+} from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
 import { props } from 'ts-action';
-import { AdSizeTracker } from './ad-size-tracker';
+import { Apstag, Bidders } from '../ad-bidders';
+import { porvataTracker } from '../ad-products';
 import { DataWarehouseTracker } from './data-warehouse';
-import { LabradorTracker } from './labrador-tracker';
+import { PostmessageTracker, TrackingMessage, TrackingTarget } from './postmessage-tracker';
+import { AdSizeTracker } from './trackers/ad-size-tracker';
+import { bidderTracker } from './trackers/bidder-tracker';
+import { adClickTracker } from './trackers/click-tracker';
+import { ctaTracker } from './trackers/cta-tracker';
+import { LabradorTracker } from './trackers/labrador-tracker';
+import { slotTracker } from './trackers/slot-tracker';
+import { viewabilityTracker } from './trackers/viewability-tracker';
+import { trackingUrls } from './tracking-urls';
 
 const adClickedAction = globalAction('[AdEngine] Ad clicked', props<Dictionary>());
 

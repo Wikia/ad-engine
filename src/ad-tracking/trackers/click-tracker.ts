@@ -1,7 +1,7 @@
 import { communicationService, EventOptions, eventsRepository } from '@ad-engine/communication';
 import { AdSlot, AdSlotEvent, AdSlotStatus, Dictionary, slotService, utils } from '@ad-engine/core';
+import { slotPropertiesTrackingCompiler, slotTrackingCompiler } from '../compilers';
 import { BaseTracker, BaseTrackerInterface } from './base-tracker';
-import { slotPropertiesTrackingCompiler, slotTrackingCompiler } from './compilers';
 
 const logGroup = 'ad-click-tracker';
 

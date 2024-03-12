@@ -5,8 +5,8 @@ import {
 	btForce,
 	btRec,
 	context,
+	trackBab,
 } from '@wikia/ad-engine';
-import { trackBab } from '../tracking/bab-tracker';
 
 const defaultOnDetect = () => {
 	btfBlockerService.finishFirstCall();

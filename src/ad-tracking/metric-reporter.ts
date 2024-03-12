@@ -1,10 +1,6 @@
-import {
-	AdSlot,
-	AdSlotEvent,
-	communicationService,
-	eventsRepository,
-	utils,
-} from '@wikia/ad-engine';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { AdSlot, AdSlotEvent, utils } from '@ad-engine/core';
+
 import { MetricReporterSender } from './metric-reporter/metric-reporter-sender';
 
 const REPORTABLE_SLOTS = {

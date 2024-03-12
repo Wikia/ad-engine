@@ -1,4 +1,4 @@
-import { CompilerPartial } from '../base-tracker';
+import { CompilerPartial } from '../trackers/base-tracker';
 
 export const viewabilityTrackingCompiler = ({ data, slot }: CompilerPartial): CompilerPartial => {
 	const now = new Date();

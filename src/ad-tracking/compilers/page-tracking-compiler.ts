@@ -1,6 +1,6 @@
 import { context, targetingService } from '@ad-engine/core';
 
-import { CompilerPartial } from '../base-tracker';
+import { CompilerPartial } from '../trackers/base-tracker';
 
 export const pageTrackingCompiler = ({ data, slot }: CompilerPartial): CompilerPartial => {
 	return {

@@ -1,5 +1,5 @@
 import { slotService } from '@ad-engine/core';
-import { CompilerPartial } from '../base-tracker';
+import { CompilerPartial } from '../trackers/base-tracker';
 
 function isBidOnTime(slotName: string, responseTime: number): boolean {
 	const slot = slotService.get(slotName);

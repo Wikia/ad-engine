@@ -1,8 +1,8 @@
-import { context } from '@wikia/core';
 import {
 	DwAggregatedDataCompressor,
 	DwAggregatedDataSender,
-} from '@wikia/platforms/shared/tracking/data-warehouse-utils/dw-aggregated-data-sender';
+} from '@wikia/ad-tracking/data-warehouse-utils/dw-aggregated-data-sender';
+import { context } from '@wikia/core';
 import { expect } from 'chai';
 import sinon from 'sinon';
 

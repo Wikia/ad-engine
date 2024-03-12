@@ -1,5 +1,5 @@
 import { Dictionary, SlotPriceProvider } from '@ad-engine/core';
-import { CompilerPartial } from '../base-tracker';
+import { CompilerPartial } from '../trackers/base-tracker';
 
 async function getBiddersPrices(
 	slotName: string,
