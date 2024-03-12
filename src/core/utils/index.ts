@@ -1,6 +1,7 @@
 export * from './ad-label-helper';
 export * from './asset-loader';
 export * from './client';
+export * from './debounce';
 export * from './decorate';
 export * from './dimensions';
 export * from './document';
