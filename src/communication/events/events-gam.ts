@@ -1,5 +1,5 @@
 import { payload, props } from "ts-action";
-import { AdIntervention, LoadTemplatePayload } from "@ad-engine/communication";
+import { AdIntervention, LoadTemplatePayload } from "../event-types";
 
 export const GAM_AD_INTERVENTION = {
     category: '[GAM iframe]',

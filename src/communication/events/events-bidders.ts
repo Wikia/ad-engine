@@ -1,5 +1,5 @@
 import { props } from "ts-action";
-import { BiddersEventPayload, TrackingBidDefinition } from "@ad-engine/communication";
+import { BiddersEventPayload, TrackingBidDefinition } from "../event-types";
 
 export const A9_WITHOUT_CONSENTS = {
 	name: 'A9 without consents',

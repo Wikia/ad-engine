@@ -1,5 +1,5 @@
 import { props } from "ts-action";
-import { UapLoadStatus } from "@ad-engine/communication";
+import { UapLoadStatus } from "../event-types";
 
 export const AD_ENGINE_UAP_DOM_CHANGED = {
     name: 'UAP DOM changed',

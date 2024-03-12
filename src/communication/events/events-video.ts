@@ -1,5 +1,5 @@
 import { props } from "ts-action";
-import { VideoAdsOptions } from "@ad-engine/communication";
+import { VideoAdsOptions } from "../event-types";
 
 export const VIDEO_SETUP = {
     category: '[Video]',

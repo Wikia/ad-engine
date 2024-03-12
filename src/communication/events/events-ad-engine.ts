@@ -1,5 +1,5 @@
 import { props } from "ts-action";
-import { CcpaSignalPayload, GdprConsentPayload, GeneralPayload } from "@ad-engine/communication";
+import { CcpaSignalPayload, GdprConsentPayload, GeneralPayload } from "../event-types";
 
 export const AD_ENGINE_BAB_DETECTION = {
     category: '[Ad Engine]',

@@ -1,10 +1,10 @@
 import { props } from "ts-action";
-import { AdSlot, Dictionary } from "@ad-engine/core";
-import { GeneralPayload, AdSlotEventPayload } from "@ad-engine/communication";
+import { GeneralPayload, AdSlotEventPayload } from "../event-types";
+import { Dictionary } from "../../core/models/dictionary";
 
 export const AD_ENGINE_SLOT_ADDED = {
     name: 'Ad Slot added',
-        payload: props<{ name: string; slot: AdSlot; state: string }>(),
+        payload: props<{ name: string; slot; state: string }>(),
 } as const;
 export const AD_ENGINE_SLOT_EVENT = {
     name: 'Ad Slot event',
@@ -16,9 +16,9 @@ export const AD_ENGINE_SLOT_LOADED = {
 } as const;
 export const AD_ENGINE_AD_RESIZED = {
     name: 'Ad slot resized',
-        payload: props<{ slot: AdSlot; sizes: Dictionary }>(),
+        payload: props<{ slot; sizes: Dictionary }>(),
 } as const;
 export const AD_ENGINE_INVALIDATE_SLOT_TARGETING = {
     name: 'Invalidate slot targeting',
-        payload: props<{ slot: AdSlot }>(),
+        payload: props<{ slot }>(),
 } as const;

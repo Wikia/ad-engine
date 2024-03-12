@@ -1,4 +1,4 @@
-import { AdSlot, Dictionary } from '@ad-engine/core';
+import { Dictionary } from "../core/models/dictionary";
 import { payload, props } from 'ts-action';
 import { EventOptions } from "./events/event-options";
 
@@ -50,7 +50,7 @@ export interface BiddersEventPayload {
 
 export interface AdSlotEventPayload {
 	event: string;
-	slot: AdSlot;
+	slot: object;
 	adSlotName: string;
 	status: string;
 	payload?: any;

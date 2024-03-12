@@ -1,4 +1,4 @@
-import { Dictionary } from '@ad-engine/core';
+import { Dictionary } from '../../../core/models/dictionary';
 
 export class UiComponent {
 	constructor(protected props: Dictionary = {}) {}

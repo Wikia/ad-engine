@@ -1,10 +1,10 @@
-import { utils } from '@ad-engine/core';
 import { resolvedStateSwitch } from './resolved-state-switch';
+import { queryString } from "../../../core/utils";
 
 let resolveStateForcedExternally = false;
 
 function getQueryParam(): string {
-	return utils.queryString.get('resolved_state');
+	return queryString.get('resolved_state');
 }
 
 function isForcedByURLParam(): boolean {

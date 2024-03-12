@@ -144,7 +144,7 @@ function reset(): void {
 function isFanTakeoverLoaded(): boolean {
 	return (
 		getUapId() !== constants.DEFAULT_UAP_ID &&
-		constants.FAN_TAKEOVER_TYPES.indexOf(getType()) !== -1
+		constants.FAN_TAKEOVER_TYPES.indexOf(<'uap'|'vuap'>getType()) !== -1
 	);
 }
 
