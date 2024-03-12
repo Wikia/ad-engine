@@ -8,11 +8,14 @@ import {
 	communicationService,
 	context,
 	ctaTracker,
+	DataWarehouseTracker,
 	Dictionary,
 	eventsRepository,
 	GAMOrigins,
 	globalAction,
+	InstantConfigService,
 	interventionTracker,
+	LabradorTracker,
 	porvataTracker,
 	PostmessageTracker,
 	slotTracker,
@@ -21,15 +24,17 @@ import {
 	trackingUrls,
 	viewabilityTracker,
 } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
 import { props } from 'ts-action';
 
 const adClickedAction = globalAction('[AdEngine] Ad clicked', props<Dictionary>());
 
+@Injectable()
 export class TrackingSetup extends BaseTrackingSetup {
 	constructor(
-		protected labradorTracker,
-		protected dwTracker,
-		protected instantConfig,
+		protected labradorTracker: LabradorTracker,
+		protected dwTracker: DataWarehouseTracker,
+		protected instantConfig: InstantConfigService,
 		private bidders: Bidders,
 		private adSizeTracker: AdSizeTracker,
 	) {

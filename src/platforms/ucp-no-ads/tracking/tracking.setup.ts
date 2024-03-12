@@ -1,14 +1,21 @@
 import {
 	BaseTrackingSetup,
 	communicationService,
+	DataWarehouseTracker,
 	eventsRepository,
+	InstantConfigService,
+	LabradorTracker,
 	trackingUrls,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpNoAdsTrackingSetup extends BaseTrackingSetup {
-	constructor(protected labradorTracker, protected dwTracker, protected instantConfig) {
+	constructor(
+		protected labradorTracker: LabradorTracker,
+		protected dwTracker: DataWarehouseTracker,
+		protected instantConfig: InstantConfigService,
+	) {
 		super(labradorTracker, dwTracker, instantConfig);
 	}
 
