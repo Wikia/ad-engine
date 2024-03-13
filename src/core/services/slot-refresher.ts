@@ -39,18 +39,18 @@ function callBidders(slotName: string, callback: () => void) {
 
 function refreshWhenBackInViewport(adSlot: AdSlot) {
 	function refresh(event) {
-		if (event.slot.getSlotElementId() === adSlot.getSlotName()) {
-			logger(logGroup, `${adSlot.getSlotName()} back in the viewport, refreshing.`, event);
+		if (event.inViewPercentage === 0) return;
+		logger(logGroup, `${adSlot.getSlotName()} back in the viewport, refreshing.`, event);
 
-			callBidders(adSlot.getSlotName(), () => {
-				setTimeout(() => {
-					GptProvider.refreshSlot(adSlot);
-				}, 2000);
-			});
+		callBidders(adSlot.getSlotName(), () => {
+			setTimeout(() => {
+				GptProvider.refreshSlot(adSlot);
+			}, 2000);
+		});
 
-			window.googletag.pubads().removeEventListener('slotVisibilityChanged', refresh);
-		}
+		window.googletag.pubads().removeEventListener('slotVisibilityChanged', refresh);
 	}
+
 	window.googletag.pubads().addEventListener('slotVisibilityChanged', refresh);
 }
 
@@ -115,7 +115,7 @@ export class SlotRefresher {
 	}
 
 	refreshSlot(adSlot: AdSlot) {
-		if (!this.isSlotRefreshable(adSlot.getSlotName()) && !adSlot.refreshable) return;
+		if (!this.isSlotRefreshable(adSlot.getSlotName())) return;
 		const slotSizes = context.get('slotConfig.slotRefresher.sizes') || {};
 
 		if (!(adSlot.getSlotName() in slotSizes)) {
@@ -127,7 +127,7 @@ export class SlotRefresher {
 			if (adSlot.isEnabled()) {
 				this.log(`${adSlot.getSlotName()} will be refreshed.`);
 
-				if (this.slotsInTheViewport.includes(adSlot.getSlotName())) {
+				if (adSlot.refreshable) {
 					this.log(`refreshing ${adSlot.getSlotName()}`);
 					adSlot.updtatePushTimeAfterBid();
 					callBidders(adSlot.getSlotName(), () => {
