@@ -1,13 +1,5 @@
 import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
-import {
-	BaseServiceSetup,
-	context,
-	incontentVideoRemovalExperimentName,
-	incontentVideoRemovalVariationName,
-	isIncontentPlayerRemovalVariationActive,
-	utils,
-} from '@ad-engine/core';
-import { DataWarehouseTracker } from '../../platforms/shared';
+import { BaseServiceSetup, context, utils } from '@ad-engine/core';
 import { ConnatixBidsRefresher } from './connatix-bids-refresher';
 import { ConnatixPlayer, ConnatixPlayerApi } from './connatix-player';
 import { ConnatixTracker } from './connatix-tracker';
@@ -44,36 +36,17 @@ export class Connatix extends BaseServiceSetup {
 		protected globalTimeout,
 		private playerInjector: PlayerInjectorInterface,
 		private tracker: ConnatixTracker,
-		private dwTracker: DataWarehouseTracker,
 	) {
 		super();
 
 		const connatixPlayer = new ConnatixPlayer();
 		this.playerInjector = playerInjector ? playerInjector : new PlayerInjector(connatixPlayer);
 		this.tracker = tracker ? tracker : new ConnatixTracker();
-		this.dwTracker = dwTracker ? dwTracker : new DataWarehouseTracker();
 	}
 
 	async call(): Promise<void> {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'Connatix player is disabled');
-			return;
-		}
-
-		this.dwTracker.track({
-			value: 'connatix-in-content',
-			action: 'impression',
-			label: incontentVideoRemovalVariationName,
-			category: incontentVideoRemovalExperimentName,
-		});
-
-		if (isIncontentPlayerRemovalVariationActive()) {
-			this.dwTracker.track({
-				value: 'connatix-in-content',
-				action: 'player-removed',
-				label: incontentVideoRemovalVariationName,
-				category: incontentVideoRemovalExperimentName,
-			});
 			return;
 		}
 
