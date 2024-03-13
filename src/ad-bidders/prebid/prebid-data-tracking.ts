@@ -105,6 +105,7 @@ class PrebidDataTracking {
 	}
 
 	private mapResponseToTrackingBidDefinition(response: PrebidBidResponse): TrackingBidDefinition {
+		utils.logger(logGroup, 'Response: ', response);
 		return {
 			bidderName: response.bidderCode,
 			price: response.cpm.toString(),
@@ -112,6 +113,7 @@ class PrebidDataTracking {
 			slotName: getSlotNameByBidderAlias(response.adUnitCode),
 			size: response.size,
 			timeToRespond: response.timeToRespond,
+			additionalInfo: response?.meta?.dsa ? { dsa: response.meta.dsa } : undefined,
 		};
 	}
 }

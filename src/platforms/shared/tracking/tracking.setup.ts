@@ -135,7 +135,7 @@ export class TrackingSetup {
 			return;
 		}
 
-		bidderTracker.register(({ data }: Dictionary) => {
+		bidderTracker.register(({ data }) => {
 			this.dwTracker.track(data, trackingUrls.AD_ENG_BIDDERS);
 		});
 	}

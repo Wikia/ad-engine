@@ -25,6 +25,11 @@ export class BidAuctionSplitExperimentSetup extends BaseServiceSetup {
 	private activeExperimentVariant: RunningExperimentType;
 
 	call(): void {
+		if (this.isExperimentEnabledGlobally()) {
+			this.prepareExperimentEnabledGlobally();
+			return;
+		}
+
 		this.setupExperimentVariants();
 		this.activeExperimentVariant = getExperiment(this.experimentVariants);
 
@@ -36,8 +41,20 @@ export class BidAuctionSplitExperimentSetup extends BaseServiceSetup {
 			utils.logger(logGroup, 'Experiment but control group', this.activeExperimentVariant.name);
 		} else {
 			utils.logger(logGroup, 'Experiment - active group', this.activeExperimentVariant.name);
-			context.set('custom.bidAuctionSplitEnabled', true);
+			this.enableAuctionSplit();
 		}
+	}
+
+	private prepareExperimentEnabledGlobally() {
+		this.enableAuctionSplit();
+		addExperimentGroupToTargeting(
+			`bid-auction-split-${this.isMobile ? 'mobile' : 'desktop'}-globally`,
+		);
+		utils.logger(logGroup, 'Experiment - active globally');
+	}
+
+	private enableAuctionSplit() {
+		context.set('custom.bidAuctionSplitEnabled', true);
 	}
 
 	private setupExperimentVariants() {
@@ -79,6 +96,10 @@ export class BidAuctionSplitExperimentSetup extends BaseServiceSetup {
 			this.instantConfig.get('icExperiments', []).includes('bidAuctionSplit') &&
 			this.activeExperimentVariant
 		);
+	}
+
+	private isExperimentEnabledGlobally() {
+		return this.instantConfig.get('icExperiments', []).includes('bidAuctionSplitGlobally');
 	}
 
 	private isControlVariant() {
