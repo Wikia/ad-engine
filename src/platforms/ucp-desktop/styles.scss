@@ -1,6 +1,5 @@
 @import '../shared/styles/index';
 @import '../shared/styles/mixin';
-@import '../shared/styles/uap-porvata/porvata';
 
 $global-navigation-width: 66px;
 $sticky-navigation-height: 46px;
@@ -39,9 +38,6 @@ $out-of-page-z-index: 402;
 
 		#top_leaderboard,
 		#bottom_leaderboard {
-			@include uap-porvata();
-			@include uap-porvata-right-position();
-
 			@include uap-advertisement-label();
 			@include uap-button-close();
 
