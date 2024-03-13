@@ -4,7 +4,6 @@ import getExperiment from './pathfinder-lite/experiments/getExperiment';
 import isExperimentEnabled from './pathfinder-lite/experiments/isExperimentEnabled';
 
 export * from './display-and-video-ads-sync-context';
-export * from './incontent-player-removal-experiment';
 export * from './pathfinder-lite/types';
 export * from './vast-debugger';
 export * from './vast-parser';

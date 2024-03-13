@@ -82,7 +82,7 @@ export class PlayerSetup extends BaseServiceSetup {
 				jwpSetup({
 					showAds,
 					autoplayDisabled: false,
-					vastUrl: await this.vastTaglessRequest.buildTaglessVideoRequest(),
+					vastUrl: await this.vastTaglessRequest.buildTaglessVideoRequest(false),
 					strategyRulesEnabled,
 				}),
 			);

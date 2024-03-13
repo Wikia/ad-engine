@@ -37,7 +37,7 @@ describe('floor_adhesion on ucp-mobile', () => {
 	const nativoDefinitionRepositoryMock = new NativoSlotsDefinitionRepository(new DomListener());
 	const quizDefinitionRepositoryMock = new QuizSlotsDefinitionRepository();
 	const anyclipMock = new Anyclip();
-	const connatixMock = new Connatix(null, null, null, null, null);
+	const connatixMock = new Connatix(null, null, null, null);
 	const galleryLightboxAdsMock = {
 		handler: new GalleryLightboxAdsHandler(
 			new UcpMobileSlotsDefinitionRepository(instantConfig, openWebService, ucpMobileExperiments),
