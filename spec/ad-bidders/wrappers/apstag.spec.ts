@@ -81,7 +81,7 @@ describe('Apstag', () => {
 					videoAdServer: 'DFP',
 					deals: true,
 					gdpr: {
-						cmpTimeout: 2000,
+						cmpTimeout: 1000,
 					},
 					signals: { ortb2: {} },
 				}),
@@ -107,7 +107,7 @@ describe('Apstag', () => {
 					videoAdServer: 'DFP',
 					deals: true,
 					gdpr: {
-						cmpTimeout: 2000,
+						cmpTimeout: 1000,
 					},
 					params: {
 						us_privacy: uspString,
@@ -140,7 +140,7 @@ describe('Apstag', () => {
 					videoAdServer: 'DFP',
 					deals: true,
 					gdpr: {
-						cmpTimeout: 2000,
+						cmpTimeout: 1000,
 					},
 					signals: { ortb2 },
 				}),
