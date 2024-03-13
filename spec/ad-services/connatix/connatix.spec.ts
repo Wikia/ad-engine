@@ -1,6 +1,5 @@
 import { Connatix } from '@wikia/ad-services';
 import { ConnatixTracker } from '@wikia/ad-services/connatix/connatix-tracker';
-import { DataWarehouseTracker } from '@wikia/ad-tracking/data-warehouse';
 import { communicationService, EventOptions } from '@wikia/communication';
 import { CommunicationService } from '@wikia/communication/communication-service';
 import { context } from '@wikia/core';
@@ -40,7 +39,6 @@ describe('Connatix', () => {
 			null,
 			playerInjectorSpy,
 			playerTrackerSpy as unknown as ConnatixTracker,
-			new DataWarehouseTracker(),
 		);
 		await connatix.call();
 
@@ -59,7 +57,6 @@ describe('Connatix', () => {
 			null,
 			playerInjectorSpy,
 			playerTrackerSpy as unknown as ConnatixTracker,
-			new DataWarehouseTracker(),
 		);
 		await connatix.call();
 		communicationServiceStub.on.callsFake(
@@ -84,7 +81,6 @@ describe('Connatix', () => {
 			null,
 			playerInjectorSpy,
 			playerTrackerSpy as unknown as ConnatixTracker,
-			new DataWarehouseTracker(),
 		);
 		await connatix.call();
 		communicationServiceStub.on.callsFake(
@@ -109,7 +105,6 @@ describe('Connatix', () => {
 			null,
 			playerInjectorSpy,
 			playerTrackerSpy as unknown as ConnatixTracker,
-			new DataWarehouseTracker(),
 		);
 		await connatix.call();
 
@@ -128,7 +123,6 @@ describe('Connatix', () => {
 			null,
 			playerInjectorSpy,
 			playerTrackerSpy as unknown as ConnatixTracker,
-			new DataWarehouseTracker(),
 		);
 		await connatix.call();
 
@@ -146,7 +140,6 @@ describe('Connatix', () => {
 			null,
 			playerInjectorSpy,
 			playerTrackerSpy as unknown as ConnatixTracker,
-			new DataWarehouseTracker(),
 		);
 		await connatix.call();
 
@@ -168,7 +161,6 @@ describe('Connatix', () => {
 			null,
 			playerInjectorSpy,
 			playerTrackerSpy as unknown as ConnatixTracker,
-			new DataWarehouseTracker(),
 		);
 		await connatix.call();
 
@@ -191,7 +183,6 @@ describe('Connatix', () => {
 			null,
 			playerInjectorSpy,
 			playerTrackerSpy as unknown as ConnatixTracker,
-			new DataWarehouseTracker(),
 		);
 		await connatix.call();
 
