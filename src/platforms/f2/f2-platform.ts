@@ -9,6 +9,7 @@ import {
 	NoAdsDetector,
 	NoAdsMode,
 	PlatformContextSetup,
+	SentryLoader,
 	SequentialMessagingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
@@ -36,7 +37,11 @@ import { F2TemplatesSetup } from './templates/f2-templates.setup';
 
 @Injectable()
 export class F2Platform {
-	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
+	constructor(
+		private pipeline: ProcessPipeline,
+		private noAdsDetector: NoAdsDetector,
+		private sentry: SentryLoader,
+	) {}
 
 	execute(f2env: F2Environment): void {
 		logVersion();
@@ -73,6 +78,6 @@ export class F2Platform {
 			}),
 		);
 
-		this.pipeline.execute();
+		this.pipeline.execute().catch((e) => this.sentry.captureException(e));
 	}
 }

@@ -6,6 +6,7 @@ import {
 	MetricReporterSetup,
 	NoAdsMode,
 	PlatformContextSetup,
+	SentryLoader,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
@@ -19,7 +20,7 @@ import { TvGuideMtcTemplatesSetup } from './templates/tvguide-mtc-templates.setu
 
 @Injectable()
 export class TvGuideMTCPlatform {
-	constructor(private pipeline: ProcessPipeline) {}
+	constructor(private pipeline: ProcessPipeline, private sentry: SentryLoader) {}
 
 	execute(): void {
 		context.extend(basicContext);
@@ -38,6 +39,6 @@ export class TvGuideMTCPlatform {
 			MtcAdsMode,
 			NoAdsMode,
 		);
-		this.pipeline.execute();
+		this.pipeline.execute().catch((e) => this.sentry.captureException(e));
 	}
 }

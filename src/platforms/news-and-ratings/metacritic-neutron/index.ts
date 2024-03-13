@@ -1,8 +1,10 @@
+import { withSentry } from '@platforms/shared';
 import { Container } from '@wikia/dependency-injection';
 import { MetacriticNeutronPlatform } from './metacritic-neutron-platform';
 import './styles.scss';
 
-const container = new Container();
-const platform = container.get(MetacriticNeutronPlatform);
+withSentry((container: Container) => {
+	const platform = container.get(MetacriticNeutronPlatform);
 
-platform.execute(container);
+	platform.execute(container);
+});

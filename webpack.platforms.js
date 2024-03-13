@@ -1,10 +1,13 @@
 const path = require('path');
+const pkg = require('./package.json');
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const platformsConfig = require('./src/platforms/platforms.json');
 const common = require('./webpack.common.js');
+
+require('dotenv').config({ path: '.env.production' });
 
 const platforms = ({ entry }, bundleAnalyzer = false) => ({
 	entry,
@@ -24,6 +27,10 @@ const platforms = ({ entry }, bundleAnalyzer = false) => ({
 		}),
 		new webpack.ProvidePlugin({
 			process: 'process/browser',
+		}),
+		new webpack.DefinePlugin({
+			'process.env.APP_VERSION': JSON.stringify(pkg.version),
+			'process.env.SENTRY_DSN': JSON.stringify(process.env.SENTRY_DSN),
 		}),
 		bundleAnalyzer
 			? new BundleAnalyzerPlugin({})

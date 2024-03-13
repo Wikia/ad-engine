@@ -8,6 +8,7 @@ import {
 	LoadTimesSetup,
 	MetricReporterSetup,
 	PreloadedLibrariesSetup,
+	SentryLoader,
 	SlotsConfigurationExtender,
 	TrackingParametersSetup,
 	TrackingSetup,
@@ -40,7 +41,7 @@ import { MetacriticTemplatesSetup } from './templates/metacritic-templates.setup
 
 @Injectable()
 export class MetacriticPlatform {
-	constructor(private pipeline: ProcessPipeline) {}
+	constructor(private pipeline: ProcessPipeline, private sentry: SentryLoader) {}
 
 	execute(): void {
 		logVersion();
@@ -75,6 +76,6 @@ export class MetacriticPlatform {
 			MetacriticPageChangeGalleryObserver,
 		);
 
-		this.pipeline.execute();
+		this.pipeline.execute().catch((e) => this.sentry.captureException(e));
 	}
 }

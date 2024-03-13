@@ -6,6 +6,7 @@ import {
 	LoadTimesSetup,
 	MetricReporterSetup,
 	PreloadedLibrariesSetup,
+	SentryLoader,
 	SlotsConfigurationExtender,
 	TrackingParametersSetup,
 	TrackingSetup,
@@ -43,6 +44,7 @@ export class TvGuidePlatform {
 	constructor(
 		private pipeline: ProcessPipeline,
 		private spaWatchers: NewsAndRatingsNeutronHelper,
+		private sentry: SentryLoader,
 	) {}
 
 	execute(container: Container): void {
@@ -77,7 +79,7 @@ export class TvGuidePlatform {
 			TrackingSetup,
 		);
 
-		this.pipeline.execute();
+		this.pipeline.execute().catch((e) => this.sentry.captureException(e));
 		this.setupSinglePageAppWatchers(container);
 	}
 

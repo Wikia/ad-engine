@@ -5,6 +5,7 @@ import {
 	InstantConfigSetup,
 	NoAdsDetector,
 	NoAdsMode,
+	SentryLoader,
 } from '@platforms/shared';
 import {
 	communicationService,
@@ -27,7 +28,11 @@ import { BingeBotTemplatesSetup } from './templates/bingebot-templates.setup';
 
 @Injectable()
 export class BingeBotPlatform {
-	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
+	constructor(
+		private pipeline: ProcessPipeline,
+		private noAdsDetector: NoAdsDetector,
+		private sentry: SentryLoader,
+	) {}
 
 	execute(): void {
 		logVersion();
@@ -53,6 +58,6 @@ export class BingeBotPlatform {
 			}),
 		);
 
-		this.pipeline.execute();
+		this.pipeline.execute().catch((e) => this.sentry.captureException(e));
 	}
 }

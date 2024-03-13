@@ -17,6 +17,10 @@ interface GeoData {
 }
 
 export async function ensureGeoCookie(): Promise<void> {
+	if (context.get('geo.country') && context.get('geo.continent') && context.get('geo.region')) {
+		return;
+	}
+
 	const cookieAdapter = new CookieStorageAdapter();
 	const geoCookie = cookieAdapter.getItem('Geo');
 
