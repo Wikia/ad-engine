@@ -12,6 +12,7 @@ import {
 	RubiconDisplay,
 	Triplelift,
 	Wikia,
+	WikiaVideo,
 } from './adapters';
 import { PrebidAdapter } from './prebid-adapter';
 import { isPrebidAdapterConfig, isSlotApplicable } from './prebid-helper';
@@ -31,6 +32,7 @@ class AdaptersRegistry {
 		RubiconDisplay,
 		Triplelift,
 		Wikia,
+		WikiaVideo,
 	];
 
 	getAdapter(bidderName: string): PrebidAdapter | undefined {
