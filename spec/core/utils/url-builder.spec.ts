@@ -2,16 +2,11 @@ import { TargetingObject, TargetingService, targetingService } from '@wikia/core
 import { AdSlot } from '@wikia/core/models/ad-slot';
 import { context } from '@wikia/core/services/context-service';
 import { slotService } from '@wikia/core/services/slot-service';
-import {
-	buildTaglessRequestUrl,
-	buildVastUrl,
-	getCustomParameters,
-} from '@wikia/core/utils/tagless-request-url-builder';
+import { buildVastUrl, getCustomParameters } from '@wikia/core/utils/url-builder';
 import { expect } from 'chai';
 import { SinonStubbedInstance } from 'sinon';
 
 describe('tagless-request-url-builder', () => {
-	let lisAdSlot;
 	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 	const targetingData = {
 		s0: '000',
@@ -35,16 +30,30 @@ describe('tagless-request-url-builder', () => {
 				adUnitId: '/{custom.dfpId}/{custom.serverPrefix}/{src}/{slotConfig.slotName}',
 			},
 			slots: {
-				layout_initializer: {
-					adProduct: 'layout_initializer',
-					group: 'LIS',
-					defaultSizes: [[32, 32]],
-				},
 				top_leaderboard: {},
 			},
 			options: {
 				trackingOptIn: false,
 			},
+		});
+		global.window.__tcfapi =
+			global.window.__tcfapi || (function () {} as typeof global.window.__tcfapi);
+		global.sandbox.stub(window, '__tcfapi').callsFake((cmd, version, cb) => {
+			const mockedConsentData = {
+				tcString: 'fakeConsentString',
+			} as TCData;
+
+			cb(mockedConsentData);
+		});
+
+		global.window.__uspapi =
+			global.window.__uspapi || (function () {} as typeof global.window.__uspapi);
+		global.sandbox.stub(window, '__uspapi').callsFake((cmd, param, cb) => {
+			const mockedConsentData = {
+				uspString: 'fakeConsentString',
+			} as SignalData;
+
+			cb(mockedConsentData, true);
 		});
 
 		targetingServiceStub = global.sandbox.stub(targetingService);
@@ -53,9 +62,13 @@ describe('tagless-request-url-builder', () => {
 			Object.assign(targetingData, newTargeting);
 		});
 
-		lisAdSlot = new AdSlot({ id: 'layout_initializer' });
 		slotService.add(new AdSlot({ id: 'top_leaderboard' }));
-		slotService.add(lisAdSlot);
+	});
+
+	afterEach(() => {
+		context.remove('options.geoRequiresConsent');
+		context.remove('options.geoRequiresSignal');
+		global.sandbox.restore();
 	});
 
 	it('build VAST URL with DFP domain', () => {
@@ -199,63 +212,59 @@ describe('tagless-request-url-builder', () => {
 		expect(vastUrl.match(custParams)).to.not.be.ok;
 	});
 
-	it('build tagless URL with DFP domain', () => {
-		const taglessUrl = buildTaglessRequestUrl();
-
-		expect(taglessUrl.match(/^https:\/\/securepubads\.g\.doubleclick\.net\/gampad\/adx/g)).to.be.ok;
-	});
-
-	it('build tagless URL with numeric correlator', () => {
-		const taglessUrl = buildTaglessRequestUrl();
-
-		expect(taglessUrl.match(/c=\d+&/g)).to.be.ok;
-	});
-
-	it('build tagless URL with required DFP parameters', () => {
-		const taglessUrl = buildTaglessRequestUrl();
-
-		expect(taglessUrl.match(/&tile=1&/g)).to.be.ok;
-		expect(taglessUrl.match(/&d_imp=1&/g)).to.be.ok;
-		expect(taglessUrl.match(/&rdp=0/g)).to.be.ok;
-	});
-
-	it('build tagless URL with configured ad unit', () => {
-		const taglessUrl = buildTaglessRequestUrl({
-			adUnit: '/5441/wka.fandom/test/layout_initializer/_not_a_top1k_wiki-000',
+	it('build VAST URL with tagless query-string parameter', () => {
+		const vastUrl = buildVastUrl(1, 'top_leaderboard', {
+			isTagless: true,
 		});
 
-		expect(
-			taglessUrl.match(
-				/&iu=\/5441\/wka\.fandom\/test\/layout_initializer\/_not_a_top1k_wiki-000&/g,
-			),
-		).to.be.ok;
+		const taglessPattern = /&tagless=1/;
+
+		expect(vastUrl.match(taglessPattern)).to.be.ok;
 	});
 
-	it('build tagless URL with horizontal ad size', () => {
-		const taglessUrl = buildTaglessRequestUrl({
-			size: '32x32',
+	it('build VAST URL with gdpr_consent query-string parameter when tagless is set in GDPR country', () => {
+		context.set('options.geoRequiresConsent', true);
+		const vastUrl = buildVastUrl(1, 'top_leaderboard', {
+			isTagless: true,
+			gdpr_consent: 'GDPR_123_XYZ',
 		});
 
-		expect(taglessUrl.match(/&sz=32x32&/g)).to.be.ok;
+		const gdprPattern = /&gdpr=1/;
+		const gdprConsentPattern = /&gdpr_consent=/;
+
+		expect(vastUrl.match(gdprPattern), 'VAST URL does not contain gdpr flag set to 1').to.be.ok;
+		expect(vastUrl.match(gdprConsentPattern), 'VAST URL does not contain gdpr_consent').to.be.ok;
 	});
 
-	it('build tagless URL with page and slotName level targeting', () => {
-		const taglessUrl = buildTaglessRequestUrl({
-			targeting: {
-				s0: '000',
-				uno: 'foo',
-				due: 15,
-				tre: ['bar', 'zero'],
-				quattro: null,
-				src: 'test',
-				pos: 'layout_initializer',
-				extra: 'yes',
-			},
+	it('build VAST URL with us_privacy query-string parameter when tagless is set in CCPA country', () => {
+		context.set('options.geoRequiresConsent', false);
+		context.set('options.geoRequiresSignal', true);
+		const vastUrl = buildVastUrl(1, 'top_leaderboard', {
+			isTagless: true,
+			us_privacy: '!!!!',
 		});
-		const custParams =
-			/&t=s0%3D000%26uno%3Dfoo%26due%3D15%26tre%3Dbar%2Czero%26src%3Dtest%26pos%3Dlayout_initializer%26extra%3Dyes/;
 
-		expect(taglessUrl.match(custParams)).to.be.ok;
+		const gdprPattern = /&gdpr=0/;
+		const ccpaConsentPattern = /&us_privacy=/;
+
+		expect(vastUrl.match(gdprPattern), 'VAST URL does not contain gdpr flag set to 0').to.be.ok;
+		expect(vastUrl.match(ccpaConsentPattern)).to.be.ok;
+	});
+
+	it('build VAST URL with gdpr query-string parameter when tagless is set in other country than CCPA or GDPR', () => {
+		context.set('options.geoRequiresConsent', false);
+		context.set('options.geoRequiresSignal', false);
+		const vastUrl = buildVastUrl(1, 'top_leaderboard', {
+			isTagless: true,
+		});
+
+		const gdprPattern = /&gdpr=0/;
+		const gdprConsentPattern = /&gdpr_consent=/;
+		const ccpaConsentPattern = /&us_privacy=/;
+
+		expect(vastUrl.match(gdprPattern), 'VAST URL does not contain gdpr flag set to 0').to.be.ok;
+		expect(vastUrl.match(gdprConsentPattern)).not.to.be.ok;
+		expect(vastUrl.match(ccpaConsentPattern)).not.to.be.ok;
 	});
 
 	it('builds and returns custom params as encoded string', () => {
