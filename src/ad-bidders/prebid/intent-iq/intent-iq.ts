@@ -14,7 +14,7 @@ export class IntentIQ {
 	private loaded = false;
 	private fandomId = 1187275693;
 	private intentIQScriptUrl =
-		'//script.wikia.nocookie.net/fandom-ae-assets/intentiq/5.4/IIQUniversalID.js';
+		'//script.wikia.nocookie.net/fandom-ae-assets/intentiq/6.02/IIQUniversalID.js';
 	private intentIqObject: IntentIqObject;
 
 	preloadScript(): Promise<void> {
