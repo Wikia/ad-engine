@@ -20,6 +20,7 @@ import {
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { UcpDesktopFloorAdhesionExperiment } from '../experiments/ucp-desktop-floor-adhesion-experiment';
 import { UcpDesktopSlotsDefinitionRepository } from './ucp-desktop-slots-definition-repository';
 
 @Injectable()
@@ -29,6 +30,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		private nativoSlotDefinitionRepository: NativoSlotsDefinitionRepository,
 		private quizSlotsDefinitionRepository: QuizSlotsDefinitionRepository,
 		private galleryLightbox: GalleryLightboxAds,
+		private ucpDesktopFloorAdhesionExperiment: UcpDesktopFloorAdhesionExperiment,
 	) {}
 
 	execute(): void {
@@ -52,10 +54,10 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		if (context.get('options.isFloorAdhesionNonUapApplicable')) {
 			insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
 			slotService.enable('floor_adhesion');
-		} else if (context.get('options.floorAdhesion')) {
-			communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () =>
-				insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]),
-			);
+		} else if (this.ucpDesktopFloorAdhesionExperiment.isFloorAdhesionShowing()) {
+			communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {
+				return insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
+			});
 		}
 
 		communicationService.on(eventsRepository.RAIL_READY, () => {

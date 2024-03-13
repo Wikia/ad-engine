@@ -9,6 +9,7 @@ import {
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
+import { UcpDesktopFloorAdhesionExperiment } from '../../../setup/experiments/ucp-desktop-floor-adhesion-experiment';
 
 @Injectable({ autobind: false })
 export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
@@ -19,7 +20,10 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 		'fandom_dt_galleries',
 	];
 
-	constructor(@Inject(TEMPLATE.PARAMS) private params: UapParams) {}
+	constructor(
+		@Inject(TEMPLATE.PARAMS) private params: UapParams,
+		private ucpDesktopFloorAdhesionExperiment: UcpDesktopFloorAdhesionExperiment,
+	) {}
 
 	async onEnter(): Promise<void> {
 		this.configureFloorAdhesionExperiment();
@@ -49,7 +53,7 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 	}
 
 	private configureFloorAdhesionExperiment() {
-		if (context.get('options.floorAdhesion')) {
+		if (this.ucpDesktopFloorAdhesionExperiment.isFloorAdhesionShowing()) {
 			this.enabledSlots = [...this.defaultEnabledSlots, 'floor_adhesion'];
 
 			document.body.classList.add('floor-adhesion-container');
