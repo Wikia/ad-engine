@@ -52,7 +52,9 @@ interface IPartnersParameters {
 }
 
 interface ITargetingParameters {
-	[key: string]: string | number;
+	browser?: string;
+	adGroup?: string;
+	AU_SEG?: string[] | string;
 }
 
 interface IVideoParameters {
