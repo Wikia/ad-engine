@@ -1,39 +1,35 @@
+import { context } from '@wikia/core';
 import { WaitFor } from '@wikia/core/utils';
 import { TrackingParametersSetup } from '@wikia/platforms/shared';
-import Cookies from 'js-cookie';
-import sinon, { assert } from 'sinon';
+import { expect } from 'chai';
 
 describe('TrackingParametersSetup', () => {
-	let cookiesGetStub: sinon.SinonStub;
-
 	beforeEach(() => {
-		cookiesGetStub = global.sandbox.stub(Cookies, 'get');
 		global.sandbox.stub(WaitFor.prototype, 'until').returns(Promise.resolve());
+		// @ts-expect-error not all properties are defined here
+		window.fandomContext = {
+			tracking: {
+				pvUID: 'some-pv-uuid',
+			},
+		};
 	});
 
 	afterEach(() => {
+		delete window.fandomContext;
 		global.sandbox.restore();
 	});
 
-	it('should set legacy context when flag is set to false', () => {
-		const instantConfig = {
-			get: () => false,
-		} as any;
-		const experimentSetup = new TrackingParametersSetup(instantConfig);
-
-		experimentSetup.execute();
-
-		assert.called(cookiesGetStub);
-	});
-
-	it('should set new context when flag is set to true', () => {
+	it('should set tracking context', async () => {
+		// given
 		const instantConfig = {
 			get: () => true,
 		} as any;
 		const experimentSetup = new TrackingParametersSetup(instantConfig);
 
-		experimentSetup.execute();
+		// when
+		await experimentSetup.execute();
 
-		assert.notCalled(cookiesGetStub);
+		// then
+		expect(context.get('wiki.pvUID')).to.equal('some-pv-uuid');
 	});
 });
