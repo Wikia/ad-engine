@@ -1,10 +1,4 @@
-import {
-	AdSlot,
-	TEMPLATE,
-	TemplateStateHandler,
-	TemplateTransition,
-	uapConsts,
-} from '@wikia/ad-engine';
+import { AdSlot, TEMPLATE, TemplateStateHandler, TemplateTransition } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Observable, Subject, timer } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
@@ -37,8 +31,8 @@ export class SlotTransitionIhiHandler implements TemplateStateHandler {
 			.element(this.adSlot.getElement())
 			.setProperty(
 				'transition',
-				`bottom ${slideOutTime}ms ${uapConsts.CSS_TIMING_EASE_IN_CUBIC}, ` +
-					`opacity ${fadeInTime}ms ${uapConsts.CSS_TIMING_EASE_IN_CUBIC}`,
+				`bottom ${slideOutTime}ms cubic-bezier(0.55, 0.055, 0.675, 0.19), ` +
+					`opacity ${fadeInTime}ms cubic-bezier(0.55, 0.055, 0.675, 0.19)`,
 			)
 			.setProperty('opacity', '0')
 			.setProperty('bottom', `-${height}px`);

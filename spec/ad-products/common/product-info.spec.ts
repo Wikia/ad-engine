@@ -4,7 +4,7 @@ import { expect } from 'chai';
 
 describe('product-info', () => {
 	it('should return ad product info', () => {
-		expect(getAdProductInfo('incontent_player', 'bfaa', 'hivi')).to.deep.equal({
+		expect(getAdProductInfo('incontent_player')).to.deep.equal({
 			adGroup: 'OTHER',
 			adProduct: 'incontent_player',
 		});
@@ -18,9 +18,9 @@ describe('product-info', () => {
 				VIDEO: ['FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
 			});
 
-		expect(getAdProductInfo('video', 'bfaa', 'uap')).to.deep.equal({
+		expect(getAdProductInfo('video')).to.deep.equal({
 			adGroup: 'VIDEO',
-			adProduct: 'uap_bfaa',
+			adProduct: 'video',
 		});
 	});
 
