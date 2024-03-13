@@ -1,7 +1,4 @@
-import {
-	DwAggregatedDataCompressor,
-	DwAggregatedDataSender,
-} from '@wikia/ad-tracking/data-warehouse-utils/dw-aggregated-data-sender';
+import { DwAggregatedDataCompressor, DwAggregatedDataSender } from '@wikia/ad-tracking';
 import { context } from '@wikia/core';
 import { expect } from 'chai';
 import sinon from 'sinon';
