@@ -1,5 +1,4 @@
 interface MediaWikiAds {
-	adEngineVersion: string;
 	adContext: any;
 	adTargeting: any;
 	consentQueue: any;
