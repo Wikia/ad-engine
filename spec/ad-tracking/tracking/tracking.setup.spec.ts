@@ -1,5 +1,9 @@
-import { BaseTrackingSetup, DataWarehouseTracker, trackingUrls } from '@wikia/ad-tracking';
-import { LabradorTracker } from '@wikia/ad-tracking/trackers/labrador-tracker';
+import {
+	BaseTrackingSetup,
+	DataWarehouseTracker,
+	LabradorTracker,
+	trackingUrls,
+} from '@wikia/ad-tracking';
 import { InstantConfigService, targetingService } from '@wikia/core';
 import { expect } from 'chai';
 import { SinonSpy } from 'sinon';

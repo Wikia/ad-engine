@@ -1,5 +1,5 @@
 import '@stardazed/streams-polyfill'; // provides types missing in currently used version of node
-import { DwAggregatedDataGzipCompressor } from '@wikia/ad-tracking/data-warehouse-utils/dw-aggregated-data-gzip-compressor';
+import { DwAggregatedDataGzipCompressor } from '@wikia/ad-tracking';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
