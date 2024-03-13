@@ -22,7 +22,7 @@ export function isDebug(override = false) {
 	}
 
 	// if its server side do a special check
-	if (!isOnBrowser() && process.env['NODE_ENV'] !== 'production') {
+	if (!isOnBrowser() && ENV !== 'production') {
 		return true;
 	}
 
