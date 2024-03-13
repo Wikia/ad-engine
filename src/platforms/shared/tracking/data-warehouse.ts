@@ -163,7 +163,7 @@ export class DataWarehouseTracker {
 			utils.logger(logGroup, msg);
 			throw new Error(msg);
 		}
-		return `${baseUrl}?${utils.queryString.stringify(params)}`;
+		return `${baseUrl}?${utils.queryString.stringify(params as unknown as Record<string, string>)}`;
 	}
 
 	/**

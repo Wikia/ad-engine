@@ -54,7 +54,7 @@ describe('vast-parser', () => {
 
 		expect(adInfo.customParams.foo1).to.equal('bar1');
 		expect(adInfo.customParams.foo2).to.equal('bar2');
-		expect(adInfo.customParams.customTitle).to.equal('100% Orange Juice');
+		expect(adInfo.customParams.customTitle).to.equal('100% Orange Juice=bar2');
 	});
 
 	it('parse size from VAST url', () => {
