@@ -14,4 +14,3 @@ export * from './live-connect';
 export * from './liveramp-pixel';
 export * from './lotame';
 export * from './nielsen';
-export * from './optimizely';

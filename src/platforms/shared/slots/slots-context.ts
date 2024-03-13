@@ -52,6 +52,9 @@ class SlotsContext implements SlotsContextInterface {
 				context.onChange(`slots.${slot.getSlotName()}.videoDepth`, () =>
 					this.setupSlotParameters(slot),
 				);
+				if (context.get('services.connatix.enabled')) {
+					slot.setTargetingConfigProperty('player', 'cnx');
+				}
 			},
 			false,
 		);
@@ -64,6 +67,11 @@ class SlotsContext implements SlotsContextInterface {
 				adProduct: 'incontent_video',
 				slotNameSuffix: '',
 			};
+
+			if (context.get('custom.hasIncontentPlayer') && context.get('services.connatix.enabled')) {
+				params.adProduct = 'cnx-incontent_video';
+			}
+
 			const adUnit = getAdUnitString(slotName, params);
 
 			runtimeVariableSetter.addVariable('video', { adUnit });
