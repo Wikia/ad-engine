@@ -34,7 +34,7 @@ export class MetricReporter {
 	private trackLibInitialization(): void {
 		this.sender.sendToMeteringSystem({
 			action: 'init',
-			duration: Math.round(utils.getTimeDelta()),
+			duration: utils.getTimeDelta(),
 		});
 	}
 
@@ -42,7 +42,7 @@ export class MetricReporter {
 		communicationService.on(eventsRepository.AD_ENGINE_GPT_READY, () => {
 			this.sender.sendToMeteringSystem({
 				action: 'gpt-ready',
-				duration: Math.round(utils.getTimeDelta()),
+				duration: utils.getTimeDelta(),
 			});
 		});
 	}
@@ -66,7 +66,7 @@ export class MetricReporter {
 
 		this.sender.sendToMeteringSystem({
 			action: `${state}_${slot.getSlotName()}`,
-			duration: Math.round(utils.getTimeDelta()),
+			duration: utils.getTimeDelta(),
 		});
 	}
 }
