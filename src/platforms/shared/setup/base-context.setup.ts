@@ -8,6 +8,7 @@ import {
 	InstantConfigService,
 	setupNpaContext,
 	setupRdpContext,
+	uapConsts,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -60,7 +61,7 @@ export class BaseContextSetup implements DiProcess {
 			context.set('state.provider', 'prebidium');
 			communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
 				isLoaded: false,
-				adProduct: 'none',
+				adProduct: uapConsts.DEFAULT_UAP_TYPE,
 			});
 		}
 	}
@@ -187,6 +188,7 @@ export class BaseContextSetup implements DiProcess {
 		);
 		context.set('bidders.prebid.config', this.instantConfig.get('icPrebidConfig', {}));
 		context.set('bidders.prebid.native.enabled', this.instantConfig.get('icPrebidNative'));
+		context.set('templates.sizeOverwritingMap', uapConsts.UAP_ADDITIONAL_SIZES.companionSizes);
 		context.set('bidders.s2s.bidders', this.instantConfig.get('icPrebidS2sBidders', []));
 		context.set('bidders.s2s.enabled', this.instantConfig.get('icPrebidS2sBidders', []).length > 0);
 

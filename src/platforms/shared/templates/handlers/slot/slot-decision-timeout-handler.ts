@@ -4,6 +4,7 @@ import {
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
+	uapConsts,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
@@ -21,8 +22,7 @@ export class SlotDecisionTimeoutHandler implements TemplateStateHandler {
 	) {}
 
 	async onEnter(transition: TemplateTransition<'transition'>): Promise<void> {
-		// This was previously a variable set in the uap package.
-		this.adSlot.emitEvent('sticked');
+		this.adSlot.emitEvent(uapConsts.SLOT_STICKED_STATE);
 
 		this.timeout
 			.isViewedAndDelayed()
@@ -30,8 +30,7 @@ export class SlotDecisionTimeoutHandler implements TemplateStateHandler {
 				filter((viewedAndDelayed: boolean) => viewedAndDelayed),
 				switchMap(() => this.domListener.scroll$.pipe(take(1))),
 				tap(() => {
-					// This was previously a variable set in the uap package.
-					this.adSlot.emitEvent('unsticked');
+					this.adSlot.emitEvent(uapConsts.SLOT_UNSTICKED_STATE);
 					transition('transition');
 				}),
 				takeUntil(this.unsubscribe$),

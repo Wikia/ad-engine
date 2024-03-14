@@ -5,6 +5,7 @@ import {
 	NativoSlotsDefinitionRepository,
 	PlaceholderService,
 	QuizSlotsDefinitionRepository,
+	slotsContext,
 	waitForPathFinder,
 } from '@platforms/shared';
 import {
@@ -15,6 +16,7 @@ import {
 	DiProcess,
 	eventsRepository,
 	slotService,
+	uapConsts,
 	UapLoadStatus,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -31,6 +33,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 	execute(): void {
 		this.injectSlots();
+		this.configureTopLeaderboardAndCompanions();
 		this.configureFloorAdhesionCodePriority();
 		this.registerAdPlaceholderService();
 		this.handleGalleryLightboxAdsSlots();
@@ -67,6 +70,51 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			},
 			false,
 		);
+	}
+
+	private configureTopLeaderboardAndCompanions(): void {
+		const slotName = 'top_leaderboard';
+		const fvPageReducedSizes = [
+			[728, 90],
+			[970, 66],
+			[970, 90],
+			[970, 150],
+			[970, 180],
+			[970, 250],
+		];
+
+		slotsContext.addSlotSize(
+			'top_boxad',
+			uapConsts.UAP_ADDITIONAL_SIZES.companionSizes['5x5'].size,
+		);
+
+		if (!context.get('custom.hasFeaturedVideo') || context.get('templates.stickyTlb.withFV')) {
+			context.push(`slots.${slotName}.defaultTemplates`, 'stickyTlb');
+		}
+
+		if (!context.get('custom.hasFeaturedVideo')) {
+			if (context.get('wiki.targeting.pageType') !== 'special') {
+				slotsContext.addSlotSize(slotName, uapConsts.UAP_ADDITIONAL_SIZES.bfaSize.desktop);
+				slotsContext.addSlotSize(slotName, uapConsts.UAP_ADDITIONAL_SIZES.bfaSize.unified);
+			}
+
+			slotsContext.addSlotSize(
+				'incontent_boxad_1',
+				uapConsts.UAP_ADDITIONAL_SIZES.companionSizes['5x5'].size,
+			);
+		} else {
+			context.set(`slots.${slotName}.sizes`, [
+				{
+					viewportSize: [1024, 0],
+					sizes: fvPageReducedSizes,
+				},
+			]);
+			context.set('slots.incontent_boxad_1.defaultSizes', [[300, 250]]);
+			slotsContext.addSlotSize(
+				'incontent_boxad_1',
+				uapConsts.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
+			);
+		}
 	}
 
 	private configureFloorAdhesionCodePriority(): void {

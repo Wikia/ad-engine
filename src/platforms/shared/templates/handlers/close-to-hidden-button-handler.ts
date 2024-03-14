@@ -4,6 +4,7 @@ import {
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
+	uapConsts,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
@@ -20,8 +21,7 @@ export class CloseToHiddenButtonHandler implements TemplateStateHandler {
 	async onEnter(transition: TemplateTransition<'hidden'>): Promise<void> {
 		this.button = new CloseButton({
 			onClick: () => {
-				// This was previously a variable set in the uap package.
-				this.adSlot.emitEvent('force-unstick');
+				this.adSlot.emitEvent(uapConsts.SLOT_FORCE_UNSTICK);
 				transition('hidden');
 			},
 		}).render();

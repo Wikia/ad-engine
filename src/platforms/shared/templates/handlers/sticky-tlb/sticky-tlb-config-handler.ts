@@ -1,4 +1,4 @@
-import { AdSlot, TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
+import { AdSlot, TEMPLATE, TemplateStateHandler, uapConsts } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })
@@ -12,7 +12,7 @@ export class StickyTlbConfigHandler implements TemplateStateHandler {
 
 		this.adSlot.setConfigProperty('useGptOnloadEvent', true);
 		this.adSlot.loaded.then(() => {
-			this.adSlot.emitEvent('sticky-ready');
+			this.adSlot.emitEvent(uapConsts.SLOT_STICKY_READY_STATE);
 		});
 	}
 

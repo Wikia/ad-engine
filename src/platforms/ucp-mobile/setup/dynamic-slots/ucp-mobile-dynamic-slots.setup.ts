@@ -6,6 +6,7 @@ import {
 	NativoSlotsDefinitionRepository,
 	PlaceholderService,
 	QuizSlotsDefinitionRepository,
+	slotsContext,
 } from '@platforms/shared';
 import {
 	AdSlot,
@@ -19,11 +20,14 @@ import {
 	CookieStorageAdapter,
 	DiProcess,
 	eventsRepository,
+	getType,
 	globalContextService,
 	InstantConfigService,
+	isFanTakeoverLoaded,
 	Nativo,
 	slotImpactWatcher,
 	slotService,
+	uapConsts,
 	UapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
@@ -44,6 +48,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 	execute(): void {
 		this.injectSlots();
+		this.configureTopLeaderboardAndCompanions();
 		this.configureIncontents();
 		this.configureInterstitial();
 		this.registerFloorAdhesionCodePriority();
@@ -79,8 +84,8 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
 				btfBlockerService.finishFirstCall();
 				communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
-					isLoaded: false,
-					adProduct: 'none',
+					isLoaded: isFanTakeoverLoaded(),
+					adProduct: getType(),
 				});
 			});
 		}
@@ -91,6 +96,31 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				insertSlots([this.quizSlotsDefinitionRepository.getQuizAdConfig(payload.slotId)]);
 			},
 			false,
+		);
+	}
+
+	private configureTopLeaderboardAndCompanions(): void {
+		if (
+			!context.get('custom.hasFeaturedVideo') &&
+			context.get('wiki.targeting.pageType') !== 'search'
+		) {
+			slotsContext.addSlotSize('top_leaderboard', uapConsts.UAP_ADDITIONAL_SIZES.bfaSize.mobile);
+			slotsContext.addSlotSize('top_leaderboard', uapConsts.UAP_ADDITIONAL_SIZES.bfaSize.unified);
+
+			context.push('slots.top_leaderboard.defaultTemplates', 'stickyTlb');
+		}
+
+		slotsContext.addSlotSize(
+			'top_boxad',
+			uapConsts.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
+		);
+		slotsContext.addSlotSize(
+			'incontent_boxad_1',
+			uapConsts.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
+		);
+		slotsContext.addSlotSize(
+			'mobile_prefooter',
+			uapConsts.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
 		);
 	}
 

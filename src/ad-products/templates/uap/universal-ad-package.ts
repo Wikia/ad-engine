@@ -6,12 +6,16 @@ import {
 } from '@ad-engine/communication';
 import { AdSlotEvent, AdSlotStatus, context, targetingService } from '@ad-engine/core';
 import { filter, take } from 'rxjs/operators';
+import * as constants from './constants';
 
 /* These are all leftovers from the UAP package that are referenced in multiple places outside of UAP.
  * Removing these interfaces, variables and functions breaks certain Ad functionality.
  *
  * One notable feature that broke if the registerUapListener() function was not invoked at the bottom of this file,
  * was the inability to load incontent ads when a Top Leaderboard ad loaded, specifically when scrolling down the page. */
+
+const uapId = constants.DEFAULT_UAP_ID;
+const uapType = constants.DEFAULT_UAP_TYPE;
 
 export interface UapState<T> {
 	default: T;
@@ -64,6 +68,14 @@ export interface UapParams {
 	useVideoSpecialAdUnit: boolean;
 }
 
+export function getUapId(): string {
+	return uapId;
+}
+
+export const getType = (): string => {
+	return uapType;
+};
+
 export function updateSlotsTargeting(lineItemId, creativeId): void {
 	const slots = context.get('slots') || {};
 
@@ -72,6 +84,13 @@ export function updateSlotsTargeting(lineItemId, creativeId): void {
 		targetingService.set('uap_c', creativeId, slotId);
 	});
 }
+
+export const isFanTakeoverLoaded = (): boolean => {
+	return (
+		getUapId() !== constants.DEFAULT_UAP_ID &&
+		constants.FAN_TAKEOVER_TYPES.indexOf(getType()) !== -1
+	);
+};
 
 // Let's leave this, since there's a lot of spaghetti logic which prevent incontent ads from being started
 // Let's remove the function export, since this function is only invoked in this file
@@ -98,10 +117,18 @@ function registerUapListener(): void {
 		.subscribe(() => {
 			communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
 				isLoaded: false,
-				adProduct: 'none',
+				adProduct: getType(),
 			});
 		});
 }
+
+// Constants are still being referenced in multiple places
+// Due to linting rules setup in AdEng, constants cannot be imported by themselves
+// through direct paths. They must all be stored in a variable, and resurfaced up through
+// a chain of index.ts files
+export const uapConsts = {
+	...constants,
+};
 
 // Side effect
 registerUapListener();

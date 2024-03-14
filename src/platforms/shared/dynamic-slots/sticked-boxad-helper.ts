@@ -4,6 +4,7 @@ import {
 	communicationService,
 	context,
 	eventsRepository,
+	uapConsts,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -65,8 +66,7 @@ export class StickedBoxadHelper {
 		communicationService.onSlotEvent(
 			AdSlotEvent.CUSTOM_EVENT,
 			({ payload }) => {
-				// This was previously a variable set in the uap package.
-				if (payload.status === 'sticked') {
+				if (payload.status === uapConsts.SLOT_STICKED_STATE) {
 					const tlbHeight =
 						document.getElementById(this.configuration.pusherSlotName)?.offsetHeight || PADDING_TOP;
 					this.railElement.style.top = `${tlbHeight}px`;

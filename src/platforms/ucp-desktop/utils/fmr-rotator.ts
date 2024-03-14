@@ -5,6 +5,7 @@ import {
 	communicationService,
 	context,
 	eventsRepository,
+	isFanTakeoverLoaded,
 	scrollListener,
 	slotService,
 	utils,
@@ -60,7 +61,7 @@ export class FmrRotator {
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
 			({ slot }) => {
 				if (slot.getSlotName().substring(0, this.fmrPrefix.length) === this.fmrPrefix) {
-					if (context.get('state.provider') === 'prebidium') {
+					if (isFanTakeoverLoaded() || context.get('state.provider') === 'prebidium') {
 						communicationService.onSlotEvent(
 							AdSlotStatus.STATUS_SUCCESS,
 							() => {
