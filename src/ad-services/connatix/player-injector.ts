@@ -8,7 +8,10 @@ export interface PlayerInjectorInterface {
 
 export class PlayerInjector implements PlayerInjectorInterface {
 	get playerId(): string {
-		return context.get('services.connatix.playerId');
+		const queryParams = new URLSearchParams(window.location.search);
+		const overriddenPlayerId = queryParams.get('cnxPlayerId');
+
+		return overriddenPlayerId ?? context.get('services.connatix.playerId');
 	}
 
 	get renderId(): string {

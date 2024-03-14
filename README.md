@@ -345,6 +345,32 @@ npm run test
 npm run lint
 ```
 
+## Bundle analyzer
+
+To check webpack bundle analyzer run
+
+```bash
+npm run bundle-analyzer
+```
+
+It will open new browser tab with results from bundle analyzer.
+
+## Dependency graph
+
+To check dependency graph run
+
+```bash
+npm run graph
+```
+
+Behind the scenes it uses madge, which requires graphviz to be installed. You can install it using brew:
+
+```bash
+brew install graphviz
+```
+
+Look for `graph.svg` file in the root directory.
+
 ## Code Coverage
 
 To check code coverage run
