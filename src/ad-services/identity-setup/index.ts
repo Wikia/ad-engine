@@ -65,8 +65,8 @@ export class IdentitySetup implements DiProcess {
 				if (isDirectedAtChildren) {
 					targetingService.set('monetization', utils.isCoppaSubject() ? 'restricted' : 'regular');
 				}
-				
-        const topicsApiAvailable: number =
+
+				const topicsApiAvailable: number =
 					'browsingTopics' in document &&
 					'featurePolicy' in document &&
 					// @ts-expect-error document.featurePolicy is not available in TS dom lib
@@ -84,8 +84,8 @@ export class IdentitySetup implements DiProcess {
 						? 1
 						: 0;
 				targetingService.set('pa_available', protectedAudienceApiAvailable.toString());
-        
-        // TODO: Remove once OneTrust replaces Tracking Opt In
+
+				// TODO: Remove once OneTrust replaces Tracking Opt In
 				targetingService.set('cmp', this.getCmp());
 
 				utils.logger(this.logGroup, 'ready');
