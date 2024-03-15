@@ -50,35 +50,35 @@ describe('Prebid Id Retriever', () => {
 		const retriever = IdRetriever.get();
 		pbjsStub.getUserIdsAsEids.returns([{ source: 'foo', uids: [{ id: 'bar' }] }]);
 		const idString = await retriever.generateBoiString();
-		expect(idString).to.equal('AAAAxxxxxxxxxxxx');
+		expect(idString).to.equal('AAAAAxxxxxxxxxxx');
 	});
 
 	it('can generate boi string with one partner', async () => {
 		const retriever = IdRetriever.get();
 		pbjsStub.getUserIdsAsEids.returns([{ source: 'liveintent.com', uids: [{ id: 'bar' }] }]);
 		const idString = await retriever.generateBoiString();
-		expect(idString).to.equal('AAAPxxxxxxxxxxxx');
+		expect(idString).to.equal('AAAPAxxxxxxxxxxx');
 	});
 
 	it('can generate proper status for id5=0', async () => {
 		const retriever = IdRetriever.get();
 		pbjsStub.getUserIdsAsEids.returns([{ source: 'id5-sync.com', uids: [{ id: '0' }] }]);
 		const idString = await retriever.generateBoiString();
-		expect(idString).to.equal('AZAAxxxxxxxxxxxx');
+		expect(idString).to.equal('AZAAAxxxxxxxxxxx');
 	});
 
 	it('can generate proper status for id5=abc', async () => {
 		const retriever = IdRetriever.get();
 		pbjsStub.getUserIdsAsEids.returns([{ source: 'id5-sync.com', uids: [{ id: 'abc' }] }]);
 		const idString = await retriever.generateBoiString();
-		expect(idString).to.equal('APAAxxxxxxxxxxxx');
+		expect(idString).to.equal('APAAAxxxxxxxxxxx');
 	});
 
 	it('can generate proper status for LiveIntent HEM', async () => {
 		getItemStub.withArgs('liveConnect').returns({ data: 'abc4', expires: 4299837050986 });
 		const retriever = IdRetriever.get();
 		const idString = await retriever.generateBoiString();
-		expect(idString).to.equal('AALAxxxxxxxxxxxx');
+		expect(idString).to.equal('AALAAxxxxxxxxxxx');
 	});
 
 	it('can generate proper status for MediaWiki HEM', async () => {
@@ -86,6 +86,6 @@ describe('Prebid Id Retriever', () => {
 
 		const retriever = IdRetriever.get();
 		const idString = await retriever.generateBoiString();
-		expect(idString).to.equal('AAMAxxxxxxxxxxxx');
+		expect(idString).to.equal('AAMAAxxxxxxxxxxx');
 	});
 });

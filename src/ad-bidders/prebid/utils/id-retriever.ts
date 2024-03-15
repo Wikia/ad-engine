@@ -12,6 +12,7 @@ export class IdRetriever {
 		'1': (sources: PrebidEids[]) => this.getID5BitStatus(sources),
 		'2': () => this.getHEMBitStatus(),
 		'3': (sources: PrebidEids[]) => this.getDefaultBitStatus(sources, 'liveintent.com'),
+		'4': (sources: PrebidEids[]) => this.getDefaultBitStatus(sources, 'pubcid.org'),
 	};
 
 	static get(): IdRetriever {
