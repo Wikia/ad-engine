@@ -1,5 +1,4 @@
 import { displayAndVideoAdsSyncContext, utils } from '@ad-engine/core';
-/*import { updateSlotsTargeting } from '../../../templates/uap/universal-ad-package';*/
 
 /*
  * Supports Video and Display Takeover synchronisation by resolving a promise when either
