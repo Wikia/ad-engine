@@ -1,25 +1,10 @@
-// blockadblock doesn't export anything meaningful
-// it sets blockAdBlock and BlockAdBlock properties on window
-import 'blockadblock';
 import currentDevice from 'current-device';
 
-let bab: BlockAdBlock;
 let browser: string = null;
-let isBabInitialised = false;
 let operatingSystem: string = null;
 
 export type DeviceType = 'tablet' | 'smartphone' | 'desktop';
 export type DeviceMode = 'desktop' | 'mobile';
-
-function setupBab(): void {
-	bab = new BlockAdBlock({
-		checkOnLoad: false,
-		resetOnEnd: true,
-		loopCheckTime: 50,
-		loopMaxNumber: 5,
-	});
-	isBabInitialised = true;
-}
 
 class Client {
 	isSmartphone(): boolean {
@@ -32,39 +17,6 @@ class Client {
 
 	isDesktop(): boolean {
 		return !this.isSmartphone() && !this.isTablet();
-	}
-
-	checkBlocking(
-		enabled = () => {
-			// feel free to overwrite
-		},
-		disabled = () => {
-			// feel free to overwrite
-		},
-	): Promise<boolean> {
-		return new Promise((resolve) => {
-			if (!isBabInitialised) {
-				if (typeof BlockAdBlock === 'undefined') {
-					resolve(true);
-
-					return;
-				}
-				setupBab();
-			}
-
-			bab.onDetected(() => resolve(true));
-			bab.onNotDetected(() => resolve(false));
-
-			bab.check(true);
-		}).then((detected: boolean): boolean => {
-			if (detected) {
-				enabled();
-			} else {
-				disabled();
-			}
-
-			return detected;
-		});
 	}
 
 	getDeviceType(): DeviceType {
