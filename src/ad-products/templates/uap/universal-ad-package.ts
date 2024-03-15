@@ -4,7 +4,7 @@ import {
 	eventsRepository,
 	ofType,
 } from '@ad-engine/communication';
-import { AdSlotEvent, AdSlotStatus, context, targetingService } from '@ad-engine/core';
+import { AdSlotEvent, AdSlotStatus, context } from '@ad-engine/core';
 import { filter, take } from 'rxjs/operators';
 import * as constants from './constants';
 
@@ -75,15 +75,6 @@ export function getUapId(): string {
 export const getType = (): string => {
 	return uapType;
 };
-
-export function updateSlotsTargeting(lineItemId, creativeId): void {
-	const slots = context.get('slots') || {};
-
-	Object.keys(slots).forEach((slotId) => {
-		targetingService.set('uap', lineItemId, slotId);
-		targetingService.set('uap_c', creativeId, slotId);
-	});
-}
 
 export const isFanTakeoverLoaded = (): boolean => {
 	return (

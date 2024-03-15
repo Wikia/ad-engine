@@ -1,5 +1,5 @@
 import { displayAndVideoAdsSyncContext, utils } from '@ad-engine/core';
-import { updateSlotsTargeting } from '../../../templates/uap/universal-ad-package';
+/*import { updateSlotsTargeting } from '../../../templates/uap/universal-ad-package';*/
 
 /*
  * Supports Video and Display Takeover synchronisation by resolving a promise when either
@@ -37,22 +37,21 @@ export class VideoDisplayTakeoverSynchronizer {
 		return displayAndVideoAdsSyncContext.getSyncTimeout();
 	}
 
-	resolve(lineItemId: string | null = null, creativeId: string | null = null): void {
+	// Removing the lineItemId and creativeId, since we don't want to block additional slots
+	// for UAP for this experiment. We want to make sure indirect ads can make it to these slots.
+	// For the purpose of this experiment, removing the blocking logic should be enough without
+	// risking video breaking as a whole for the numerous cases where this function gets called.
+	resolve(): void {
+		utils.logger(this.logGroup, 'Inside resolve.');
+
 		if (!this.isEnabled()) {
 			utils.logger(this.logGroup, 'is disabled');
 			return;
 		}
 
-		if (
-			lineItemId &&
-			creativeId &&
-			displayAndVideoAdsSyncContext.getVideoSyncedWithDisplayLines().includes(lineItemId)
-		) {
-			updateSlotsTargeting(lineItemId, creativeId);
-			utils.logger(this.logGroup, 'video ad is from UAP:JWP campaign - updating key-vals');
-		} else {
-			utils.logger(this.logGroup, 'video ad is not from UAP:JWP campaign');
-		}
+		// Slot resolution has been deleted,
+		// since direct ads won't be run for the strip down of the indirect package.
+		utils.logger(this.logGroup, 'video ad is not from UAP:JWP campaign.');
 
 		this.initialized.resolve(null);
 	}
