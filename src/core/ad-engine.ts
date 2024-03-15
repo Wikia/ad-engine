@@ -7,7 +7,7 @@ import {
 	btfBlockerService,
 	context,
 	messageBus,
-	registerCustomAdLoader,
+	// registerCustomAdLoader,
 	slotService,
 	slotTweaker,
 	templateService,
@@ -20,6 +20,7 @@ import {
 	AD_ENGINE_STACK_START
 } from "../communication/events/events-ad-engine";
 import { PLATFORM_BEFORE_PAGE_CHANGE } from "../communication/events/events-platform-nar";
+import { loadNewUap } from "./services/load-new-uap";
 
 const logGroup = 'ad-engine';
 
@@ -61,7 +62,8 @@ export class AdEngine {
 		this.setupAdStack();
 		btfBlockerService.init();
 
-		registerCustomAdLoader(context.get('options.customAdLoader.globalMethodName'));
+		// registerCustomAdLoader(context.get('options.customAdLoader.globalMethodName'));
+		loadNewUap();
 		messageBus.init();
 		templateService.subscribeCommunicator();
 		slotTweaker.registerMessageListener(slotService.get.bind(slotService));
