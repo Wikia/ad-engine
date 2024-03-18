@@ -21,8 +21,8 @@ export class Medianet extends PrebidAdapter {
 		if (context.get(`slots.${code}.isVideo`)) {
 			return this.getVideoConfig(code, cid, crid);
 		}
-
-		return this.getStandardConfig(code, sizes, cid, crid);
+		const newSizes = this.filterSizesForRefreshing(code, sizes);
+		return this.getStandardConfig(code, newSizes, cid, crid);
 	}
 
 	private getVideoConfig(code, cid, crid): PrebidAdUnit {

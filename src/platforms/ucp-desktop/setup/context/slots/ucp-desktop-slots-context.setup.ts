@@ -38,6 +38,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 					createLabel: false,
 					adLabelParent: '.top-ads-container',
 				},
+				slotRefreshing: true,
 			},
 			top_boxad: {
 				adProduct: 'top_boxad',
@@ -50,6 +51,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'top',
 				},
+				slotRefreshing: true,
 			},
 			incontent_leaderboard: {
 				adProduct: 'incontent_leaderboard',
@@ -77,6 +79,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 			bottom_leaderboard: {
 				adProduct: 'bottom_leaderboard',
+				slotName: 'bottom_leaderboard',
 				group: 'PF',
 				sizes: [
 					{
@@ -104,6 +107,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 					createLabel: false,
 					adLabelParent: '.bottom-ads-container',
 				},
+				slotRefreshing: true,
 			},
 			incontent_player: {
 				adProduct: 'incontent_player',

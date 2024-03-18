@@ -53,6 +53,7 @@ export interface SlotConfig extends BaseSlotConfig {
 	autoplay?: boolean;
 	placeholder?: SlotPlaceholderContextConfig;
 	videoDepth?: number;
+	slotRefreshing?: boolean;
 }
 
 export interface WinningBidderDetails {
@@ -335,6 +336,11 @@ export class AdSlot {
 
 	getPushTime(): number {
 		return this.pushTime;
+	}
+
+	updatePushTimeAfterBid() {
+		const timeout = context.get('bidders.timeout') || 2000;
+		this.pushTime = new Date().getTime() + timeout;
 	}
 
 	setStatus(status: null | string = null): void {

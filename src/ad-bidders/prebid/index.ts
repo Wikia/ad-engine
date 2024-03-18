@@ -182,6 +182,15 @@ export class PrebidProvider extends BidderProvider {
 		this.registerBidsTracking();
 		this.enableATSAnalytics();
 
+		communicationService.on(
+			eventsRepository.SLOT_REFRESHER_SET_MAXIMUM_SLOT_HEIGHT,
+			({ adSlot }) => {
+				const slotName = adSlot.getSlotName();
+				this.setMaximumAdSlotHeight(slotName);
+			},
+			false,
+		);
+
 		utils.logger(logGroup, 'prebid created', this.prebidConfig);
 	}
 
@@ -621,5 +630,19 @@ export class PrebidProvider extends BidderProvider {
 	 */
 	calculatePrices(): void {
 		return;
+	}
+
+	setMaximumAdSlotHeight(slotName: string): void {
+		const slotRefresherConfig = context.get('slotConfig.slotRefresher.sizes');
+
+		if (!slotRefresherConfig) return;
+
+		const slotHeightLimit = slotRefresherConfig[slotName][1];
+
+		if (!slotHeightLimit) return;
+
+		adaptersRegistry.getAdapters().forEach((adapter) => {
+			adapter.setMaximumAdSlotHeight(slotName, slotHeightLimit);
+		});
 	}
 }

@@ -24,12 +24,12 @@ export class Seedtag extends PrebidAdapter {
 		if (context.get(`slots.${code}.isVideo`)) {
 			return this.getVideoConfig(code, publisherId, adUnitId);
 		}
-
+		const newSizes = this.filterSizesForRefreshing(code, sizes);
 		return {
 			code,
 			mediaTypes: {
 				banner: {
-					sizes,
+					sizes: newSizes,
 				},
 			},
 			bids: [

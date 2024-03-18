@@ -95,7 +95,6 @@ class AdaptersRegistry {
 
 	setupAdUnits(bidGroup: string): PrebidAdUnit[] {
 		const adUnits: PrebidAdUnit[] = [];
-
 		adaptersRegistry.getAdapters().forEach((adapter) => {
 			if (adapter && adapter.enabled) {
 				const adapterAdUnits = adapter.prepareAdUnits();
