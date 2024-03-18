@@ -1,4 +1,3 @@
-//only testing
 import { Apstag } from '@wikia/ad-bidders';
 import { A9Provider } from '@wikia/ad-bidders/a9';
 import { context, DEFAULT_MAX_DELAY, targetingService } from '@wikia/core';
