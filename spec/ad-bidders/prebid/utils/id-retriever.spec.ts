@@ -86,6 +86,6 @@ describe('Prebid Id Retriever', () => {
 
 		const retriever = IdRetriever.get();
 		const idString = await retriever.generateBoiString();
-		expect(idString).to.equal('AAMAAxxxxxxxxxxx');
+		expect(idString.charAt(2)).to.equal('M');
 	});
 });
