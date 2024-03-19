@@ -1,7 +1,7 @@
 import {
 	BaseContextSetup,
 	ConsentManagementPlatformSetup,
-	ensureGeoCookie,
+	ensureGeoAvailable,
 	InstantConfigSetup,
 	NoAdsDetector,
 	NoAdsMode,
@@ -34,7 +34,7 @@ export class BingeBotPlatform {
 		context.extend(basicContext);
 
 		this.pipeline.add(
-			async () => await ensureGeoCookie(),
+			async () => await ensureGeoAvailable(),
 			parallel(InstantConfigSetup, ConsentManagementPlatformSetup),
 			BaseContextSetup,
 			BingeBotSlotsContextSetup,

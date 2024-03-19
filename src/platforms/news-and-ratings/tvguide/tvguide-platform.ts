@@ -1,7 +1,7 @@
 import {
 	BiddersStateSetup,
 	ConsentManagementPlatformSetup,
-	ensureGeoCookie,
+	ensureGeoAvailable,
 	InstantConfigSetup,
 	LoadTimesSetup,
 	MetricReporterSetup,
@@ -51,7 +51,7 @@ export class TvGuidePlatform {
 		context.set('state.isMobile', !utils.client.isDesktop());
 
 		this.pipeline.add(
-			async () => await ensureGeoCookie(),
+			async () => await ensureGeoAvailable(),
 			parallel(
 				sequential(InstantConfigSetup, PreloadedLibrariesSetup),
 				ConsentManagementPlatformSetup,
