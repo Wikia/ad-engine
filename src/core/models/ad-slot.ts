@@ -91,7 +91,9 @@ export class AdSlot {
 	viewed: Promise<void> = null;
 
 	constructor(ad: AdStackPayload) {
+		utils.logger('DJ:ad', ad);
 		this.config = context.get(`slots.${ad.id}`) || {};
+		utils.logger('DJ:config', this.config);
 		this.enabled = !this.config.disabled;
 
 		if (!this.config.uid) {
@@ -292,7 +294,12 @@ export class AdSlot {
 	}
 
 	getTargeting(): SlotTargeting {
-		return this.parseTargetingParams(targetingService.dump<SlotTargeting>(this.getSlotName()));
+		let targeting = {};
+		if (this.config.bidderAlias) {
+			targeting = targetingService.dump<SlotTargeting>(this.config.bidderAlias);
+		}
+		targeting = { ...targeting, ...targetingService.dump<SlotTargeting>(this.getSlotName()) };
+		return this.parseTargetingParams(targeting);
 	}
 
 	private parseTargetingParams(targetingParams: Dictionary): SlotTargeting {
@@ -309,7 +316,7 @@ export class AdSlot {
 				result[key] = value;
 			}
 		});
-
+		utils.logger('DJ', result);
 		return result as SlotTargeting;
 	}
 
