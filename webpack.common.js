@@ -36,14 +36,6 @@ module.exports = () => ({
 				include,
 				use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
 			},
-			{
-				test: path.resolve(__dirname, 'src/core/log-version.ts'),
-				loader: 'string-replace-loader',
-				options: {
-					search: '<?= PACKAGE(version) ?>',
-					replace: pkg.version,
-				},
-			},
 		],
 	},
 
