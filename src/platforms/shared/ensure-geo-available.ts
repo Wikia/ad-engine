@@ -15,7 +15,7 @@ interface GeoData {
 }
 
 export async function ensureGeoAvailable(): Promise<void> {
-	if (window.ads.geo !== undefined) {
+	if (window.ads?.geo !== undefined) {
 		setUpGeoData(window.ads.geo);
 		return;
 	}
@@ -43,7 +43,6 @@ export async function ensureGeoAvailable(): Promise<void> {
 }
 
 function setUpGeoData(geoData: GeoData) {
-	console.log('XXX AE', geoData);
 	context.set('geo.region', geoData.region);
 	context.set('geo.country', geoData.country);
 	context.set('geo.continent', geoData.continent);
