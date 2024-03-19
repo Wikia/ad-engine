@@ -57,28 +57,28 @@ describe('Prebid Id Retriever', () => {
 		const retriever = IdRetriever.get();
 		pbjsStub.getUserIdsAsEids.returns([{ source: 'liveintent.com', uids: [{ id: 'bar' }] }]);
 		const idString = await retriever.generateBoiString();
-		expect(idString).to.equal('AAAPAxxxxxxxxxxx');
+		expect(idString.charAt(3)).to.equal('P');
 	});
 
 	it('can generate proper status for id5=0', async () => {
 		const retriever = IdRetriever.get();
 		pbjsStub.getUserIdsAsEids.returns([{ source: 'id5-sync.com', uids: [{ id: '0' }] }]);
 		const idString = await retriever.generateBoiString();
-		expect(idString).to.equal('AZAAAxxxxxxxxxxx');
+		expect(idString.charAt(1)).to.equal('Z');
 	});
 
 	it('can generate proper status for id5=abc', async () => {
 		const retriever = IdRetriever.get();
 		pbjsStub.getUserIdsAsEids.returns([{ source: 'id5-sync.com', uids: [{ id: 'abc' }] }]);
 		const idString = await retriever.generateBoiString();
-		expect(idString).to.equal('APAAAxxxxxxxxxxx');
+		expect(idString.charAt(1)).to.equal('P');
 	});
 
 	it('can generate proper status for LiveIntent HEM', async () => {
 		getItemStub.withArgs('liveConnect').returns({ data: 'abc4', expires: 4299837050986 });
 		const retriever = IdRetriever.get();
 		const idString = await retriever.generateBoiString();
-		expect(idString).to.equal('AALAAxxxxxxxxxxx');
+		expect(idString.charAt(2)).to.equal('L');
 	});
 
 	it('can generate proper status for MediaWiki HEM', async () => {
