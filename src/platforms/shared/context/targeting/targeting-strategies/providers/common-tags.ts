@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { context, SlotTargeting, utils } from '@wikia/ad-engine';
 import { getDomain } from '../../../../utils/get-domain';
 import { getMediaWikiVariable } from '../../../../utils/get-media-wiki-variable';

@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { BaseServiceSetup, communicationService, eventsRepository, utils } from '@wikia/ad-engine';
 
 const GPT_TIMEOUT_MS = 10 * 1000;

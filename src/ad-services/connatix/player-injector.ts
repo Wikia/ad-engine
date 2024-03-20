@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { AdSlot, context, utils } from '@ad-engine/core';
 import { ConnatixPlayerApi, ConnatixPlayerInterface } from './connatix-player';
 import { logGroup } from './index';

@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Dictionary, FuncPipeline, FuncPipelineStep, messageBus } from '@ad-engine/core';
 
 export const TrackingTarget = {

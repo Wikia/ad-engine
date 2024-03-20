@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { context, utils } from '@wikia/ad-engine';
 
 interface EndpointInfo {

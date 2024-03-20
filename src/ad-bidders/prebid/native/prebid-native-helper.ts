@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 export class PrebidNativeHelper {
 	static triggerPixel(url: string, done: () => any, timeout: number): void {
 		const img = new Image();

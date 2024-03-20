@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { utils, VideoData, VideoEventProvider, VideoTracker } from '@ad-engine/core';
 import { ConnatixPlayerApi, ConnatixPlayerType } from './connatix-player';
 

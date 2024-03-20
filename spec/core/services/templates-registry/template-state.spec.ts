@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { TemplateTransition } from '@wikia/core';
 import { TemplateState } from '@wikia/core/services/templates-registry/template-state';
 import { assert, expect } from 'chai';

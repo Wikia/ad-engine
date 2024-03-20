@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { context, Dictionary, SlotTargeting } from '@ad-engine/core';
 
 enum VpaidMode {

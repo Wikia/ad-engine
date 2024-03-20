@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { AdSlot } from '..';
 
 export interface ElementOffset {

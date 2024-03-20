@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { context } from '@wikia/core';
 import { WaitFor } from '@wikia/core/utils';
 import { TrackingParametersSetup } from '@wikia/platforms/shared';

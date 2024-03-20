@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { AdSlot, AdSlotStatus, slotService, utils } from '@ad-engine/core';
 import { GoogleImaWrapper } from './google-ima-wrapper';

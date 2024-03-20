@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import {
 	AD_LABEL_CLASS,
 	getTopOffset,

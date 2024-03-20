@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { context, DiProcess, targetingService, utils } from '@wikia/ad-engine';
 
 export class GamespotInfiniteScrollObserverSetup implements DiProcess {
