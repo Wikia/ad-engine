@@ -91,9 +91,7 @@ export class AdSlot {
 	viewed: Promise<void> = null;
 
 	constructor(ad: AdStackPayload) {
-		utils.logger('DJ:ad', ad);
 		this.config = context.get(`slots.${ad.id}`) || {};
-		utils.logger('DJ:config', this.config);
 		this.enabled = !this.config.disabled;
 
 		if (!this.config.uid) {
@@ -316,7 +314,6 @@ export class AdSlot {
 				result[key] = value;
 			}
 		});
-		utils.logger('DJ', result);
 		return result as SlotTargeting;
 	}
 
