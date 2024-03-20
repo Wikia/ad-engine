@@ -31,6 +31,10 @@ export class IdentitySetup implements DiProcess {
 				if (ppid) {
 					targetingService.set('ppid', ppid);
 				}
+				const pvUID = globalContextService.getValue('tracking', 'pvUID');
+				if (pvUID) {
+					targetingService.set('pvuid', pvUID);
+				}
 
 				targetingService.set(
 					'browser',
@@ -62,9 +66,6 @@ export class IdentitySetup implements DiProcess {
 					targetingService.set('monetization', utils.isCoppaSubject() ? 'restricted' : 'regular');
 				}
 
-				// TODO: Remove once OneTrust replaces Tracking Opt In
-				targetingService.set('cmp', this.getCmp());
-
 				const topicsApiAvailable: number =
 					'browsingTopics' in document &&
 					'featurePolicy' in document &&
@@ -83,6 +84,9 @@ export class IdentitySetup implements DiProcess {
 						? 1
 						: 0;
 				targetingService.set('pa_available', protectedAudienceApiAvailable.toString());
+
+				// TODO: Remove once OneTrust replaces Tracking Opt In
+				targetingService.set('cmp', this.getCmp());
 
 				utils.logger(this.logGroup, 'ready');
 				resolve();

@@ -135,7 +135,7 @@ export class TrackingSetup {
 			return;
 		}
 
-		bidderTracker.register(({ data }: Dictionary) => {
+		bidderTracker.register(({ data }) => {
 			this.dwTracker.track(data, trackingUrls.AD_ENG_BIDDERS);
 		});
 	}
@@ -183,6 +183,9 @@ export class TrackingSetup {
 		if (experimentsGroups) {
 			this.labradorTracker.track(experimentsGroups);
 		}
+		communicationService.on(eventsRepository.INTENT_IQ_GROUP_OBTAINED, ({ abTestGroup }) => {
+			this.labradorTracker.track(`intentIQ_${abTestGroup}`);
+		});
 	}
 
 	private interventionTracker(): void {

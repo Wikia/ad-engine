@@ -114,6 +114,10 @@ interface PrebidBidResponse {
 	getStatusCode: () => number;
 	getSize: () => string;
 	mediaType: string;
+	meta?: {
+		// TODO: Create proper typing based on the responses from Prebid (TACO-478)
+		dsa?: object;
+	};
 	originalCpm?: number;
 	originalCurrency?: string;
 	status: string;
