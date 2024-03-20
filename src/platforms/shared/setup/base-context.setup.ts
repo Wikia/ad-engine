@@ -209,6 +209,9 @@ export class BaseContextSetup implements DiProcess {
 			'bidders.liveRampATSAnalytics.enabled',
 			this.instantConfig.get('icLiveRampATSAnalytics'),
 		);
+
+		context.set('bidders.fledge.enabled', this.instantConfig.get('icPrebidFledgeGPS'));
+		context.set('bidders.fledge.partners', this.instantConfig.get('icPrebidFledgePartners'));
 	}
 
 	private setupStickySlotContext(): void {
