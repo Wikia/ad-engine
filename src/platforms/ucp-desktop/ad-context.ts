@@ -142,7 +142,7 @@ export const basicContext = {
 			configurationTimeout: 500,
 			configurationDelay: 50,
 			partnersTimeout: 600,
-			partnersDelay: 100,
+			partnersDelay: 50,
 			firstAdCallTimeout: 2000,
 		},
 	},
