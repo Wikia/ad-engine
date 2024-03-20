@@ -69,7 +69,7 @@
 		"dev:platforms": "webpack-dev-server --progress --config webpack.platforms.js --mode=development",
 		"dev-https:platforms": "npm run dev:platforms -- --server-type https",
 		"bundle-analyzer": "npm run build:platforms -- --env bundleAnalyzer",
-		"ci-check": "npm run test && npm run lint",
+		"ci-check": "npm run test && npm run lint && npm run tsc",
 		"lint": "npx eslint . --ext .ts --max-warnings 0",
 		"format": "npm run prettier",
 		"graph": "madge --image graph.svg --extensions ts --webpack-config webpack.platforms.js --ts-config tsconfig.json src/",
