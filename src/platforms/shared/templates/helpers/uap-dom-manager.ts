@@ -1,9 +1,11 @@
 import {
 	AdSlot,
 	communicationService,
+	context,
 	eventsRepository,
 	TEMPLATE,
 	UapParams,
+	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { PAGE } from '../configs/uap-dom-elements';
@@ -52,7 +54,16 @@ export class UapDomManager {
 		this.setSlotHeight(`${this.reader.getSlotHeightImpact()}px`);
 	}
 
+	private addTransitionProperty() {
+		const transition = `height 300ms ${universalAdPackage.CSS_TIMING_EASE_IN_CUBIC}`;
+
+		const topAdsContainerElement: HTMLElement = document.querySelector('.top-ads-container');
+		this.manipulator.element(this.adSlot.getElement()).setProperty('transition', transition);
+		this.manipulator.element(topAdsContainerElement).setProperty('transition', transition);
+	}
+
 	private setSlotHeight(height: string): void {
+		this.addTransitionProperty();
 		this.manipulator.element(this.adSlot.getElement()).setProperty('height', height);
 	}
 
@@ -63,11 +74,29 @@ export class UapDomManager {
 	}
 
 	setPlaceholderHeightResolved(): void {
-		this.setPlaceholderHeight(`${this.reader.getSlotHeightResolved()}px`);
+		const slotRefresherConfig = context.get('slotConfig.slotRefresher.sizes') || {};
+		if (this.adSlot.getSlotName() in slotRefresherConfig) {
+			const iframe = this.adSlot.getIframe();
+			const placeholderHeight = `${Number(iframe.height) + 39}px`;
+
+			this.setSlotHeight(placeholderHeight);
+			this.setPlaceholderHeight(placeholderHeight);
+		} else {
+			this.setPlaceholderHeight(`${this.reader.getSlotHeightResolved()}px`);
+		}
 	}
 
 	setPlaceholderHeightImpact(): void {
-		this.setPlaceholderHeight(`${this.reader.getSlotHeightImpact()}px`);
+		const slotRefresherConfig = context.get('slotConfig.slotRefresher.sizes') || {};
+		if (this.adSlot.getSlotName() in slotRefresherConfig) {
+			const iframe = this.adSlot.getIframe();
+			const placeholderHeight = `${Number(iframe.height) + 39}px`;
+
+			this.setSlotHeight(placeholderHeight);
+			this.setPlaceholderHeight(placeholderHeight);
+		} else {
+			this.setPlaceholderHeight(`${this.reader.getSlotHeightImpact()}px`);
+		}
 	}
 
 	private setPlaceholderHeight(height: string): void {
