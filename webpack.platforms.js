@@ -6,7 +6,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const platformsConfig = require('./src/platforms/platforms.json');
 const common = require('./webpack.common.js');
 
-const platforms = ({ entry }, bundleAnalyzer = false) => ({
+const platforms = ({ entry }, env, bundleAnalyzer = false) => ({
 	entry,
 
 	output: {
@@ -22,8 +22,8 @@ const platforms = ({ entry }, bundleAnalyzer = false) => ({
 				return `${name.includes('/') ? name.split('/')[1] : name}/styles.css`;
 			},
 		}),
-		new webpack.ProvidePlugin({
-			process: 'process/browser',
+		new webpack.DefinePlugin({
+			ENV: JSON.stringify(env),
 		}),
 		bundleAnalyzer
 			? new BundleAnalyzerPlugin({})
@@ -72,6 +72,7 @@ module.exports = (env, argv) => {
 						[env.platform]: path.resolve(__dirname, `src/platforms/${env.platform}/index.ts`),
 					},
 				},
+				argv.mode,
 				env && env.bundleAnalyzer,
 			),
 		);
@@ -89,6 +90,7 @@ module.exports = (env, argv) => {
 					{},
 				),
 			},
+			argv.mode,
 			env && env.bundleAnalyzer,
 		),
 	);
