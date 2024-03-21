@@ -7,10 +7,6 @@ describe('Id5', () => {
 		name: 'id5Id',
 		params: {
 			partner: 1139,
-			abTesting: {
-				enabled: false,
-				controlGroupPct: undefined,
-			},
 		},
 		storage: {
 			type: 'html5',
