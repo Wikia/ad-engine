@@ -9,7 +9,7 @@ export class IdRetriever {
 
 	private readonly ID_MAP: Record<string, (sources: PrebidEids[]) => string> = {
 		'0': (sources: PrebidEids[]) => this.getDefaultBitStatus(sources, 'yahoo.com'),
-		'1': (sources: PrebidEids[]) => this.getID5BitStatus(sources),
+		'1': (sources: PrebidEids[]) => this.getDefaultBitStatus(sources, 'id5-sync.com'),
 		'2': () => this.getHEMBitStatus(),
 		'3': (sources: PrebidEids[]) => this.getDefaultBitStatus(sources, 'liveintent.com'),
 	};
@@ -68,15 +68,6 @@ export class IdRetriever {
 
 	private getBitPlaceholder(): string {
 		return 'x';
-	}
-
-	// ID5 bit status is determined by the test group. If user is in test group, and contains 0 as their ID, we put Z.
-	private getID5BitStatus(prebidUserIds: PrebidEids[]): string {
-		const id5IdentityObject = prebidUserIds.find((obj) => obj.source === 'id5-sync.com');
-		if (!id5IdentityObject) {
-			return 'A';
-		}
-		return id5IdentityObject.uids[0]?.id === '0' ? 'Z' : 'P';
 	}
 
 	// HEM bit status is determined by the presence of HEM provided by LiveIntent (L) or MediaWiki (M).
