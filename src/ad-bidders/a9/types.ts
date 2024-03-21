@@ -14,6 +14,9 @@ export interface ApstagConfig extends Partial<A9CCPA> {
 	pubID: string;
 	videoAdServer: 'DFP';
 	deals: boolean;
+	gdpr?: {
+		cmpTimeout: number;
+	};
 	signals: {
 		ortb2: OpenRtb2Object;
 	};
