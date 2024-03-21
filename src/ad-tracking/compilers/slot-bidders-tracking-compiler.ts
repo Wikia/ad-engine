@@ -26,7 +26,6 @@ async function getBiddersPrices(
 		bidder_2: transformBidderPrice('appnexus'),
 		bidder_4: transformBidderPrice('rubicon'),
 		bidder_8: transformBidderPrice('wikiaVideo'),
-		bidder_9: transformBidderPrice('openx'),
 		bidder_10: transformBidderPrice('appnexusAst'),
 		bidder_11: transformBidderPrice('rubicon_display'),
 		bidder_12: transformBidderPrice('a9'),
@@ -34,15 +33,6 @@ async function getBiddersPrices(
 		bidder_17: transformBidderPrice('kargo'),
 		bidder_19: transformBidderPrice('gumgum'),
 		bidder_21: transformBidderPrice('triplelift'),
-		bidder_25: transformBidderPrice('nobid'),
-		bidder_28: transformBidderPrice('verizon'),
-		bidder_30: transformBidderPrice('medianet'),
-		bidder_31: transformBidderPrice('roundel'),
-		bidder_32: transformBidderPrice('ogury'),
-		bidder_33: transformBidderPrice('criteo'),
-		bidder_34: transformBidderPrice('yahoossp'),
-		bidder_37: transformBidderPrice('webAds'),
-		bidder_38: transformBidderPrice('seedtag'),
 	};
 }
 

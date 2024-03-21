@@ -3,9 +3,7 @@ import {
 	communicationService,
 	context,
 	eventsRepository,
-	getAdProductInfo,
 	getAdUnitString,
-	PorvataParams,
 	runtimeVariableSetter,
 	slotService,
 } from '@wikia/ad-engine';
@@ -16,8 +14,6 @@ export interface SlotsContextInterface {
 	setSlotSize(slotName: string, size: [number, number]): void;
 
 	setupSlotVideoContext(): void;
-
-	setupSlotVideoAdUnit(adSlot: AdSlot, params: PorvataParams): void;
 
 	setState(slotName: string, state: boolean, status?: string): void;
 }
@@ -37,23 +33,6 @@ class SlotsContext implements SlotsContextInterface {
 				sizeMap.sizes.push(size);
 			});
 		}
-	}
-
-	removeSlotSize(slotName: string, sizeToRemove: [number, number]): void {
-		if (!context.get(`slots.${slotName}`)) {
-			throw new Error('Requested ad slot is not defined in the ad context');
-		}
-
-		const defaultSizes = context
-			.get(`slots.${slotName}.defaultSizes`)
-			.filter((size) => size != sizeToRemove);
-
-		const sizes = context
-			.get(`slots.${slotName}.sizes`)
-			.map((size) => size.sizes.filter((size) => size != sizeToRemove));
-
-		context.set(`slots.${slotName}.defaultSizes`, defaultSizes);
-		context.set(`slots.${slotName}.sizes`, sizes);
 	}
 
 	setSlotSize(slotName: string, size: [number, number]): void {
@@ -97,17 +76,6 @@ class SlotsContext implements SlotsContextInterface {
 
 			runtimeVariableSetter.addVariable('video', { adUnit });
 		});
-	}
-
-	setupSlotVideoAdUnit(adSlot: AdSlot, params: PorvataParams): void {
-		const adProductInfo = getAdProductInfo(adSlot.getSlotName(), params.type, params.adProduct);
-		const slotConfig = {
-			group: adProductInfo.adGroup,
-			adProduct: adProductInfo.adProduct,
-		};
-		const adUnit = getAdUnitString(adSlot.getSlotName(), slotConfig);
-
-		context.set(`slots.${adSlot.getSlotName()}.videoAdUnit`, adUnit);
 	}
 
 	setState(slotName: string, state: boolean, status?: string): void {

@@ -5,7 +5,7 @@ export class PrebidBidFactory {
 		cpm: 0.05,
 		status: 'available',
 		bidderCode: 'bidderA',
-		timeToRespond: 2000,
+		timeToRespond: 1000,
 		adserverTargeting: {},
 		getStatusCode: () => validResponseStatusCode,
 	} as PrebidBidResponse;

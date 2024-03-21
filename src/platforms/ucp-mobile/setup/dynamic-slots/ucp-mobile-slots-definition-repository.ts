@@ -1,4 +1,4 @@
-import { activateFloorAdhesionOnUAP, SlotSetupDefinition } from '@platforms/shared';
+import { SlotSetupDefinition } from '@platforms/shared';
 import {
 	AdSlot,
 	communicationService,
@@ -6,13 +6,9 @@ import {
 	CookieStorageAdapter,
 	eventsRepository,
 	InstantConfigService,
-	OpenWeb,
 	RepeatableSlotPlaceholderConfig,
-	scrollListener,
-	SlotPlaceholderConfig,
 	slotPlaceholderInjector,
 	UapLoadStatus,
-	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { UcpMobileTopBoxadExperiment } from '../experiments/ucp-mobile-top-boxad-experiment';
@@ -21,7 +17,6 @@ import { UcpMobileTopBoxadExperiment } from '../experiments/ucp-mobile-top-boxad
 export class UcpMobileSlotsDefinitionRepository {
 	constructor(
 		protected instantConfig: InstantConfigService,
-		private openWeb: OpenWeb,
 		private ucpMobileTopBoxadExperiment: UcpMobileTopBoxadExperiment,
 	) {}
 
@@ -168,28 +163,12 @@ export class UcpMobileSlotsDefinitionRepository {
 			classList: ['ad-slot-placeholder', 'incontent-boxad', 'is-loading'],
 			anchorSelector: context.get('templates.incontentAnchorSelector'),
 			insertMethod: 'before',
-			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder', '.incontent-boxad', '.openweb-slot'],
+			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder', '.incontent-boxad'],
 			repeatStart: 1,
 			repeatLimit: count,
-			repeatExceptions: [this.buildOpenWebReplacement()],
 		};
 
 		slotPlaceholderInjector.injectAndRepeat(icbPlaceholderConfig, adSlotCategory);
-	}
-
-	private buildOpenWebReplacement(): (repeat: number) => SlotPlaceholderConfig | null {
-		const newConfigOverride: SlotPlaceholderConfig = <SlotPlaceholderConfig>{
-			classList: ['openweb-slot'],
-			anchorSelector: context.get('templates.incontentAnchorSelector'),
-			insertMethod: 'before',
-			noLabel: true,
-		};
-
-		return (repeat) => {
-			return repeat === OpenWeb.MOBILE_REPLACE_REPEAT_SLOT_IDX && this.openWeb.isActive()
-				? newConfigOverride
-				: null;
-		};
 	}
 
 	getMobilePrefooterConfig(): SlotSetupDefinition {
@@ -311,25 +290,7 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	getFloorAdhesionConfig(): SlotSetupDefinition {
-		let slotPushed = false;
 		const slotName = 'floor_adhesion';
-		const activateFloorAdhesion = () => {
-			if (slotPushed) {
-				return;
-			}
-
-			const numberOfViewportsFromTopToPush: number =
-				this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
-
-			if (numberOfViewportsFromTopToPush === -1) {
-				context.push('state.adStack', { id: slotName });
-			} else {
-				const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
-				scrollListener.addSlot(slotName, { distanceFromTop: distance });
-			}
-
-			slotPushed = true;
-		};
 
 		return {
 			slotCreatorConfig: {
@@ -338,7 +299,6 @@ export class UcpMobileSlotsDefinitionRepository {
 				insertMethod: 'append',
 				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
-			activator: () => activateFloorAdhesionOnUAP(activateFloorAdhesion, false),
 		};
 	}
 

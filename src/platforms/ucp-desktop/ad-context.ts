@@ -8,7 +8,7 @@ export const basicContext = {
 		'/{custom.wikiIdentifier}-{targeting.s0}',
 	bidders: {
 		enabled: false,
-		timeout: 2000,
+		timeout: 1000,
 		a9: {
 			enabled: false,
 			videoEnabled: false,
@@ -68,18 +68,6 @@ export const basicContext = {
 			},
 			libraryUrl: 'https://player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/lre.js',
 		},
-		doubleVerify: {
-			slots: [
-				'top_leaderboard',
-				'top_boxad',
-				'incontent_boxad_1',
-				'incontent_leaderboard',
-				'gallery_leaderboard',
-				'bottom_leaderboard',
-				'featured',
-				'incontent_player',
-			],
-		},
 		durationMedia: {
 			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',
 		},
@@ -102,9 +90,6 @@ export const basicContext = {
 		},
 		externalLogger: {
 			endpoint: '/wikia.php?controller=AdEngine&method=postLog',
-		},
-		openWeb: {
-			placementSelector: '#WikiaAdInContentPlaceHolder',
 		},
 	},
 	slotGroups: {
@@ -133,7 +118,6 @@ export const basicContext = {
 		},
 		preload: {
 			gpt: false,
-			audigent: true,
 			prebid: true,
 			apstag: false,
 			intentIq: true,

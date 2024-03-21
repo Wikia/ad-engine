@@ -4,23 +4,18 @@ import {
 	eventsRepository,
 	ofType,
 } from '@ad-engine/communication';
-import {
-	AdSlot,
-	AdSlotEvent,
-	AdSlotStatus,
-	btfBlockerService,
-	context,
-	runtimeVariableSetter,
-	slotService,
-	targetingService,
-	utils,
-} from '@ad-engine/core';
+import { AdSlotEvent, AdSlotStatus, context } from '@ad-engine/core';
 import { filter, take } from 'rxjs/operators';
 import * as constants from './constants';
 
-let uapCreativeId = constants.DEFAULT_UAP_ID;
-let uapId = constants.DEFAULT_UAP_ID;
-let uapType = constants.DEFAULT_UAP_TYPE;
+/* These are all leftovers from the UAP package that are referenced in multiple places outside of UAP.
+ * Removing these interfaces, variables and functions breaks certain Ad functionality.
+ *
+ * One notable feature that broke if the registerUapListener() function was not invoked at the bottom of this file,
+ * was the inability to load incontent ads when a Top Leaderboard ad loaded, specifically when scrolling down the page. */
+
+const uapId = constants.DEFAULT_UAP_ID;
+const uapType = constants.DEFAULT_UAP_TYPE;
 
 export interface UapState<T> {
 	default: T;
@@ -73,113 +68,24 @@ export interface UapParams {
 	useVideoSpecialAdUnit: boolean;
 }
 
-function getUapId(): string {
+export function getUapId(): string {
 	return uapId;
 }
 
-function setIds(lineItemId, creativeId): void {
-	uapId = lineItemId || constants.DEFAULT_UAP_ID;
-	uapCreativeId = creativeId || constants.DEFAULT_UAP_ID;
-
-	updateSlotsTargeting(uapId, uapCreativeId);
-}
-
-function getType(): string {
+export const getType = (): string => {
 	return uapType;
-}
+};
 
-function setType(type): void {
-	uapType = type;
-}
-
-function updateSlotsTargeting(lineItemId, creativeId): void {
-	const slots = context.get('slots') || {};
-
-	Object.keys(slots).forEach((slotId) => {
-		targetingService.set('uap', lineItemId, slotId);
-		targetingService.set('uap_c', creativeId, slotId);
-	});
-}
-
-function enableSlots(slotsToEnable): void {
-	slotsToEnable.forEach((slotName) => {
-		btfBlockerService.unblock(slotName);
-	});
-}
-
-function disableSlots(slotsToDisable): void {
-	slotsToDisable.forEach((slotName) => {
-		slotService.disable(slotName);
-	});
-}
-
-function initSlot(params: UapParams): void {
-	const adSlot: AdSlot = slotService.get(params.slotName);
-
-	params.container = adSlot.getElement();
-
-	if (params.isDarkTheme) {
-		params.container.classList.add('is-dark');
-	}
-
-	if (params.isMobile) {
-		params.container.classList.add('is-mobile-layout');
-	}
-
-	if (utils.client.isSmartphone() || utils.client.isTablet()) {
-		params.container.classList.add('is-mobile-device');
-	}
-
-	if (params.useVideoSpecialAdUnit) {
-		adSlot.setConfigProperty('videoAdUnit', constants.SPECIAL_VIDEO_AD_UNIT);
-	}
-}
-
-function reset(): void {
-	setType(constants.DEFAULT_UAP_TYPE);
-	setIds(constants.DEFAULT_UAP_ID, constants.DEFAULT_UAP_ID);
-}
-
-function isFanTakeoverLoaded(): boolean {
+export const isFanTakeoverLoaded = (): boolean => {
 	return (
 		getUapId() !== constants.DEFAULT_UAP_ID &&
 		constants.FAN_TAKEOVER_TYPES.indexOf(getType()) !== -1
 	);
-}
-
-export const universalAdPackage = {
-	...constants,
-	init(params: UapParams, slotsToEnable: string[] = [], slotsToDisable: string[] = []): void {
-		runtimeVariableSetter.addVariable('disableBtf', true);
-
-		let adProduct = 'uap';
-
-		if (this.isVideoEnabled(params)) {
-			adProduct = 'vuap';
-		}
-
-		params.adProduct = params.adProduct || adProduct;
-
-		setIds(params.lineItemId || params.uap, params.creativeId);
-		disableSlots(slotsToDisable);
-		enableSlots(slotsToEnable);
-		setType(params.adProduct);
-
-		if (params.slotName) {
-			initSlot(params);
-		}
-	},
-	isFanTakeoverLoaded,
-	getType,
-	getUapId,
-	isVideoEnabled(params): boolean {
-		return params.thumbnail;
-	},
-	reset,
-	updateSlotsTargeting,
 };
 
-export function registerUapListener(): void {
+// Let's leave this, since there's a lot of spaghetti logic which prevent incontent ads from being started
+// Let's remove the function export, since this function is only invoked in this file
+function registerUapListener(): void {
 	communicationService.action$
 		.pipe(
 			ofType(communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
@@ -201,11 +107,19 @@ export function registerUapListener(): void {
 		)
 		.subscribe(() => {
 			communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
-				isLoaded: universalAdPackage.isFanTakeoverLoaded(),
-				adProduct: universalAdPackage.getType(),
+				isLoaded: false,
+				adProduct: getType(),
 			});
 		});
 }
+
+// Constants are still being referenced in multiple places
+// Due to linting rules setup in AdEng, constants cannot be imported by themselves
+// through direct paths. They must all be stored in a variable, and resurfaced up through
+// a chain of index.ts files
+export const uapConsts = {
+	...constants,
+};
 
 // Side effect
 registerUapListener();

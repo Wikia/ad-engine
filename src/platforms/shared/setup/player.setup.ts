@@ -147,10 +147,7 @@ export class PlayerSetup extends BaseServiceSetup {
 
 		if (eventName === 'adImpression') {
 			videoAdImpressionEmitted = true;
-			videoDisplayTakeoverSynchronizer.resolve(
-				state.vastParams.lineItemId,
-				state.vastParams.creativeId,
-			);
+			videoDisplayTakeoverSynchronizer.resolve();
 			adSlot.setStatus(AdSlotStatus.STATUS_SUCCESS);
 			adSlot.emit(AdSlotEvent.VIDEO_AD_IMPRESSION);
 		} else if (wasPlayEmittedBeforeAd(eventName)) {

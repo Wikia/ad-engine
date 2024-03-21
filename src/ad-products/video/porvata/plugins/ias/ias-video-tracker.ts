@@ -1,31 +1,9 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { context, slotService, utils } from '@ad-engine/core';
-import { PorvataPlayer } from '../../porvata-player';
-import { PorvataSettings } from '../../porvata-settings';
-import { PorvataPlugin } from '../porvata-plugin';
+import { utils } from '@ad-engine/core';
 
 const scriptUrl = '//static.adsafeprotected.com/vans-adapter-google-ima.js';
-const logGroup = 'ias-video-tracking';
 
-interface IasConfig {
-	anId: string;
-	campId: string;
-	chanId?: string;
-	pubOrder?: any;
-	placementId?: string;
-	pubCreative?: string;
-	pubId?: string;
-	custom?: string;
-	custom2?: string;
-	custom3?: string;
-}
-
-class IasVideoTracker implements PorvataPlugin {
+class IasVideoTracker {
 	private scriptPromise: Promise<Event>;
-
-	isEnabled(videoSettings: PorvataSettings): boolean {
-		return videoSettings.isIasTrackingEnabled();
-	}
 
 	load(): Promise<Event> {
 		if (!this.scriptPromise) {
@@ -33,34 +11,6 @@ class IasVideoTracker implements PorvataPlugin {
 		}
 
 		return this.scriptPromise;
-	}
-
-	init(player: PorvataPlayer, settings: PorvataSettings): Promise<void> {
-		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
-			status: 'ias_start',
-		});
-		return this.load().then(() => {
-			const config: IasConfig = context.get('options.video.iasTracking.config');
-			const slotName = settings.getSlotName();
-			const { src, pos, loc } = slotService.get(slotName).getTargeting();
-
-			config.custom = src;
-			config.custom2 = pos;
-			config.custom3 = loc;
-
-			utils.logger(logGroup, 'ready');
-
-			window.googleImaVansAdapter.init(
-				window.google,
-				player.getAdsManager(),
-				player.dom.getVideoContainer(),
-				config,
-			);
-
-			communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
-				status: 'ias_done',
-			});
-		});
 	}
 }
 

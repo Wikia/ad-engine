@@ -92,7 +92,7 @@ export class VastTaglessRequest {
 
 			utils.logger(this.logGroup, 'Ad received: ', vastData?.lineItemId);
 
-			videoDisplayTakeoverSynchronizer.resolve(vastData?.lineItemId, vastData?.creativeId);
+			videoDisplayTakeoverSynchronizer.resolve();
 			return vastData;
 		} catch {
 			utils.logger(this.logGroup, 'No XML available - not a VAST response from the ad server?');

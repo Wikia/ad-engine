@@ -11,7 +11,7 @@ const contextObject: ContextObject = {
 	adUnitId: '',
 	bidders: {
 		enabled: false,
-		timeout: 2000,
+		timeout: 1000,
 		a9: {
 			enabled: false,
 			videoEnabled: false,

@@ -16,8 +16,8 @@ import {
 	DiProcess,
 	eventsRepository,
 	slotService,
+	uapConsts,
 	UapLoadStatus,
-	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { UcpDesktopSlotsDefinitionRepository } from './ucp-desktop-slots-definition-repository';
@@ -85,7 +85,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 		slotsContext.addSlotSize(
 			'top_boxad',
-			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['5x5'].size,
+			uapConsts.UAP_ADDITIONAL_SIZES.companionSizes['5x5'].size,
 		);
 
 		if (!context.get('custom.hasFeaturedVideo') || context.get('templates.stickyTlb.withFV')) {
@@ -94,13 +94,13 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 		if (!context.get('custom.hasFeaturedVideo')) {
 			if (context.get('wiki.targeting.pageType') !== 'special') {
-				slotsContext.addSlotSize(slotName, universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop);
-				slotsContext.addSlotSize(slotName, universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.unified);
+				slotsContext.addSlotSize(slotName, uapConsts.UAP_ADDITIONAL_SIZES.bfaSize.desktop);
+				slotsContext.addSlotSize(slotName, uapConsts.UAP_ADDITIONAL_SIZES.bfaSize.unified);
 			}
 
 			slotsContext.addSlotSize(
 				'incontent_boxad_1',
-				universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['5x5'].size,
+				uapConsts.UAP_ADDITIONAL_SIZES.companionSizes['5x5'].size,
 			);
 		} else {
 			context.set(`slots.${slotName}.sizes`, [
@@ -112,7 +112,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			context.set('slots.incontent_boxad_1.defaultSizes', [[300, 250]]);
 			slotsContext.addSlotSize(
 				'incontent_boxad_1',
-				universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
+				uapConsts.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
 			);
 		}
 	}

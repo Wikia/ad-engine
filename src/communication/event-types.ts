@@ -14,15 +14,6 @@ interface GeneralPayload {
 	state: string;
 }
 
-interface ViewRenderedProps {
-	viewType: string;
-	beaconId: string;
-	pvNumber: number;
-	pvNumberGlobal: number;
-	pvUID: string;
-	sessionId: string;
-}
-
 export interface AdIntervention {
 	id: string;
 	message: string;
@@ -205,9 +196,6 @@ export const eventsRepository = {
 	ANYCLIP_LATE_INJECT: {
 		name: 'Anyclip late inject',
 	},
-	SYSTEM1_STARTED: {
-		name: 'System1 started',
-	},
 	NO_NATIVE_PREBID_AD: {
 		name: 'No native prebid ad',
 		payload: props<{ slotName: string }>(),
@@ -244,25 +232,6 @@ export const eventsRepository = {
 	},
 
 	// Platforms events //
-	BINGEBOT_AD_SLOT_INJECTED: {
-		category: '[BingeBot]',
-		name: 'ad slot injected',
-		payload: props<{ slotId: string }>(),
-	},
-	BINGEBOT_BEFORE_VIEW_CHANGE: {
-		category: '[BingeBot]',
-		name: 'before view change',
-	},
-	BINGEBOT_DESTROY_AD_SLOT: {
-		category: '[BingeBot]',
-		name: 'destroy ad slot',
-		payload: props<{ slotId: string }>(),
-	},
-	BINGEBOT_VIEW_RENDERED: {
-		category: '[BingeBot]',
-		name: 'view rendered',
-		payload: props<ViewRenderedProps>(),
-	},
 	F2_HIDE_SMART_BANNER: {
 		category: '[AdEngine F2 Templates]',
 		name: 'hide smart banner',

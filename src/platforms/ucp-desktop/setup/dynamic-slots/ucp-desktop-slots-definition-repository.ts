@@ -1,8 +1,4 @@
-import {
-	activateFloorAdhesionOnUAP,
-	SlotsDefinitionRepository,
-	SlotSetupDefinition,
-} from '@platforms/shared';
+import { SlotsDefinitionRepository, SlotSetupDefinition } from '@platforms/shared';
 import {
 	AdSlot,
 	btRec,
@@ -11,7 +7,6 @@ import {
 	eventsRepository,
 	InstantConfigService,
 	RepeatableSlotPlaceholderConfig,
-	scrollListener,
 	slotPlaceholderInjector,
 	UapLoadStatus,
 	utils,
@@ -279,18 +274,6 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 
 		const slotName = 'floor_adhesion';
 
-		const activateFloorAdhesion = () => {
-			const numberOfViewportsFromTopToPush: number =
-				this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
-
-			if (numberOfViewportsFromTopToPush === -1) {
-				context.push('state.adStack', { id: slotName });
-			} else {
-				const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
-				scrollListener.addSlot(slotName, { distanceFromTop: distance });
-			}
-		};
-
 		return {
 			slotCreatorConfig: {
 				slotName,
@@ -298,11 +281,6 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 				insertMethod: 'before',
 				classList: [AdSlot.HIDDEN_AD_CLASS, 'ad-slot'],
 			},
-			activator: () =>
-				activateFloorAdhesionOnUAP(
-					activateFloorAdhesion,
-					!context.get('options.isFloorAdhesionNonUapApplicable'),
-				),
 		};
 	}
 

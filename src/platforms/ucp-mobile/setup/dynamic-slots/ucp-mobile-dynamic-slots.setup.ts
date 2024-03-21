@@ -20,13 +20,15 @@ import {
 	CookieStorageAdapter,
 	DiProcess,
 	eventsRepository,
+	getType,
 	globalContextService,
 	InstantConfigService,
+	isFanTakeoverLoaded,
 	Nativo,
 	slotImpactWatcher,
 	slotService,
+	uapConsts,
 	UapLoadStatus,
-	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -82,8 +84,8 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
 				btfBlockerService.finishFirstCall();
 				communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
-					isLoaded: universalAdPackage.isFanTakeoverLoaded(),
-					adProduct: universalAdPackage.getType(),
+					isLoaded: isFanTakeoverLoaded(),
+					adProduct: getType(),
 				});
 			});
 		}
@@ -102,29 +104,23 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			!context.get('custom.hasFeaturedVideo') &&
 			context.get('wiki.targeting.pageType') !== 'search'
 		) {
-			slotsContext.addSlotSize(
-				'top_leaderboard',
-				universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile,
-			);
-			slotsContext.addSlotSize(
-				'top_leaderboard',
-				universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.unified,
-			);
+			slotsContext.addSlotSize('top_leaderboard', uapConsts.UAP_ADDITIONAL_SIZES.bfaSize.mobile);
+			slotsContext.addSlotSize('top_leaderboard', uapConsts.UAP_ADDITIONAL_SIZES.bfaSize.unified);
 
 			context.push('slots.top_leaderboard.defaultTemplates', 'stickyTlb');
 		}
 
 		slotsContext.addSlotSize(
 			'top_boxad',
-			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
+			uapConsts.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
 		);
 		slotsContext.addSlotSize(
 			'incontent_boxad_1',
-			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
+			uapConsts.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
 		);
 		slotsContext.addSlotSize(
 			'mobile_prefooter',
-			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
+			uapConsts.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
 		);
 	}
 

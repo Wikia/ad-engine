@@ -49,10 +49,7 @@ export class JWPlayerHandler {
 				this.helper.setSlotParams(state.vastParams);
 				this.helper.setSlotElementAttributes('success', state.vastParams);
 				this.helper.emitVideoAdImpression();
-				videoDisplayTakeoverSynchronizer.resolve(
-					state.vastParams.lineItemId,
-					state.vastParams.creativeId,
-				);
+				videoDisplayTakeoverSynchronizer.resolve();
 			}),
 		);
 	}
@@ -65,7 +62,7 @@ export class JWPlayerHandler {
 				this.helper.setSlotParams(state.vastParams);
 				this.helper.setSlotElementAttributes('error', state.vastParams);
 				this.helper.emitVideoAdError(payload.adErrorCode);
-				videoDisplayTakeoverSynchronizer.resolve();
+				/*videoDisplayTakeoverSynchronizer.resolve();*/
 			}),
 		);
 	}

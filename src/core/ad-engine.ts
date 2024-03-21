@@ -29,7 +29,7 @@ export function getAdStack(): OldLazyQueue<AdStackPayload> {
 	return adStack;
 }
 
-export const DEFAULT_MAX_DELAY = 2000;
+export const DEFAULT_MAX_DELAY = 1000;
 
 export class AdEngine {
 	started = false;

@@ -1,7 +1,6 @@
 @import '../shared/styles/index';
 @import '../shared/styles/mixin';
 @import '../shared/styles/uap/uap-variables';
-@import '../shared/styles/uap-porvata/porvata';
 
 @mixin ucp-mobile-uap-styles() {
 	.has-uap {
@@ -22,8 +21,6 @@
 
 		#top_leaderboard,
 		#bottom_leaderboard {
-			@include uap-porvata();
-			@include uap-porvata-learn-more();
 			@include uap-advertisement-label();
 			@include uap-button-close();
 
@@ -165,22 +162,6 @@
 	@include hidden-ad(false);
 }
 
-.ad-slot.porvata-outstream {
-	margin-bottom: 20px;
-
-	.porvata-interface {
-		.volume-button {
-			height: auto;
-			padding: 14px 12px 7px 7px;
-			width: auto;
-
-			svg {
-				position: static;
-			}
-		}
-	}
-}
-
 #incontent_player {
 	margin-bottom: 24px;
 }
@@ -201,10 +182,6 @@
 	}
 
 	@include translatable-label();
-
-	.porvata-outstream.porvata3::before {
-		display: none;
-	}
 
 	&.is-loading {
 		.ae-translatable-label {
@@ -306,18 +283,5 @@ body.mw-special-Search {
 			font-size: 25px;
 			line-height: 30px;
 		}
-	}
-}
-.openweb-slot {
-	display: flex;
-	flex-direction: column;
-	position: relative;
-	padding-bottom: 20px;
-
-	@include translatable-label();
-
-	#spotim-specific#spotim-specific div[class^='ads__AdChoiceContainer__wrapping'] {
-		color: #858585;
-		color: var(--theme-page-text-color);
 	}
 }

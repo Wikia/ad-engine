@@ -8,7 +8,7 @@ export const basicContext = {
 		'/{custom.wikiIdentifier}-{targeting.s0}',
 	bidders: {
 		enabled: false,
-		timeout: 2000,
+		timeout: 1000,
 		a9: {
 			enabled: false,
 			videoEnabled: false,
@@ -73,16 +73,6 @@ export const basicContext = {
 			renderId: '6904d585951f416c9bab403a6c60c5af',
 			latePageInject: true,
 		},
-		doubleVerify: {
-			slots: [
-				'top_leaderboard',
-				'top_boxad',
-				'incontent_boxad_1',
-				'bottom_leaderboard',
-				'featured',
-				'incontent_player',
-			],
-		},
 		durationMedia: {
 			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',
 		},
@@ -98,9 +88,6 @@ export const basicContext = {
 				'featured',
 				'incontent_player',
 			],
-		},
-		openWeb: {
-			placementSelector: 'div[class*="openweb-slot"]',
 		},
 	},
 	slotGroups: {
@@ -126,7 +113,6 @@ export const basicContext = {
 		},
 		preload: {
 			gpt: false,
-			audigent: true,
 			prebid: true,
 			apstag: false,
 			intentIq: true,

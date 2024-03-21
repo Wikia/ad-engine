@@ -12,7 +12,6 @@ import {
 	PlatformContextSetup,
 	PostAdStackPartnersSetup,
 	PreloadedLibrariesSetup,
-	SequentialMessagingSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 	UcpTargetingSetup,
@@ -66,7 +65,6 @@ export class UcpMobilePlatform {
 			UcpMobileA9ConfigSetup,
 			UcpMobileDynamicSlotsSetup,
 			UcpMobileTemplatesSetup,
-			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM will break
 			BiddersStateSetup,
 			BiddersTargetingUpdater,
 			LabradorSetup,

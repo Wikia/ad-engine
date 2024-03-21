@@ -7,8 +7,8 @@ import {
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
+	uapConsts,
 	UapLoadStatus,
-	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
@@ -38,7 +38,7 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 	}
 
 	private blockStickyTLB(reason: string): void {
-		this.adSlot.emitEvent(universalAdPackage.SLOT_STICKINESS_DISABLED);
+		this.adSlot.emitEvent(uapConsts.SLOT_STICKINESS_DISABLED);
 		this.logger(`Template 'stickyTlb' could not be applied for ${reason}`);
 	}
 

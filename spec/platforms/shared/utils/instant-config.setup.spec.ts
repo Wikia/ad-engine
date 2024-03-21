@@ -28,12 +28,7 @@ describe('InstantConfigSetup', () => {
 	});
 
 	it('should bind InstantConfigService to container', async () => {
-		global.sandbox
-			.stub(InstantConfigService.prototype, 'get')
-			.withArgs('icPrebid')
-			.returns(false)
-			.withArgs('icAudigent')
-			.returns(false);
+		global.sandbox.stub(InstantConfigService.prototype, 'get').withArgs('icPrebid').returns(false);
 		const instantConfigSetup = new InstantConfigSetup(container);
 
 		await instantConfigSetup.execute();

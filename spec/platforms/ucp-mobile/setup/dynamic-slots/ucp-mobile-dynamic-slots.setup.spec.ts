@@ -16,10 +16,6 @@ describe('floor_adhesion on ucp-mobile', () => {
 		get: () => [],
 	} as any;
 
-	const openWebService = {
-		isActive: () => false,
-	} as any;
-
 	const ucpMobileExperiments = {
 		getConfig: () => {
 			return {
@@ -31,7 +27,6 @@ describe('floor_adhesion on ucp-mobile', () => {
 
 	const slotDefinitionRepositoryMock = new UcpMobileSlotsDefinitionRepository(
 		instantConfig,
-		openWebService,
 		ucpMobileExperiments,
 	);
 	const nativoDefinitionRepositoryMock = new NativoSlotsDefinitionRepository(new DomListener());
@@ -40,7 +35,7 @@ describe('floor_adhesion on ucp-mobile', () => {
 	const connatixMock = new Connatix(null, null, null, null);
 	const galleryLightboxAdsMock = {
 		handler: new GalleryLightboxAdsHandler(
-			new UcpMobileSlotsDefinitionRepository(instantConfig, openWebService, ucpMobileExperiments),
+			new UcpMobileSlotsDefinitionRepository(instantConfig, ucpMobileExperiments),
 		),
 		initialized: true,
 	};

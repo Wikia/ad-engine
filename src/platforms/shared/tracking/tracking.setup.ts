@@ -13,7 +13,6 @@ import {
 	InstantConfigCacheStorage,
 	InstantConfigService,
 	interventionTracker,
-	porvataTracker,
 	PostmessageTracker,
 	slotTracker,
 	targetingService,
@@ -41,7 +40,6 @@ export class TrackingSetup {
 	) {}
 
 	execute(): void {
-		this.porvataTracker();
 		this.slotTracker();
 		this.viewabilityTracker();
 		this.bidderTracker();
@@ -78,18 +76,6 @@ export class TrackingSetup {
 				false,
 			);
 		}
-	}
-
-	private porvataTracker(): void {
-		communicationService.on(
-			eventsRepository.VIDEO_PLAYER_TRACKING,
-			({ eventInfo }) => {
-				this.dwTracker.track(eventInfo, trackingUrls.AD_ENG_PLAYER_INFO);
-			},
-			false,
-		);
-
-		porvataTracker.register();
 	}
 
 	private slotTracker(): void {

@@ -8,28 +8,17 @@ export class BiddersStateSetup implements DiProcess {
 		appnexus: 'icPrebidAppNexus',
 		appnexusAst: 'icPrebidAppNexusAst',
 		appnexusNative: 'icPrebidAppNexusNative',
-		criteo: 'icPrebidCriteo',
 		gumgum: 'icPrebidGumGum',
 		indexExchange: 'icPrebidIndexExchange',
 		kargo: 'icPrebidKargo',
-		medianet: 'icPrebidMedianet',
 		mgnipbs: 'icPrebidMagniteS2s',
-		nobid: 'icPrebidNobid',
-		ogury: 'icPrebidOgury',
-		ozone: 'icPrebidOzone',
-		openx: 'icPrebidOpenX',
 		pubmatic: 'icPrebidPubmatic',
-		relevantdigital: 'icPrebidWebAds',
 		rubicon_display: 'icPrebidRubiconDisplay',
-		roundel: 'icPrebidRoundel',
 		rubicon: 'icPrebidRubicon',
-		seedtag: 'icPrebidSeedtag',
 		triplelift: 'icPrebidTriplelift',
-		verizon: 'icPrebidVerizon',
-		yahoossp: 'icPrebidYahooSsp',
 		yahooConnectId: 'icPrebidYahooConnectId',
 	};
-	private notCoppaCompliantBidders: Array<keyof typeof this.prebidBidders> = ['kargo', 'verizon'];
+	private notCoppaCompliantBidders: Array<keyof typeof this.prebidBidders> = ['kargo'];
 
 	constructor(private instantConfig: InstantConfigService) {
 		this.selectedBidder = utils.queryString.get('select_bidder') || '';
@@ -55,15 +44,6 @@ export class BiddersStateSetup implements DiProcess {
 
 			for (const [bidderName, icVariable] of Object.entries(this.prebidBidders)) {
 				this.enableIfApplicable(bidderName, icVariable);
-			}
-
-			const testBidderConfig: object = this.instantConfig.get('icPrebidTestBidder');
-			if (testBidderConfig) {
-				context.set('bidders.prebid.testBidder', {
-					name: testBidderConfig['name'],
-					slots: testBidderConfig['slots'],
-				});
-				this.enableIfApplicable('testBidder', 'icPrebidTestBidder');
 			}
 
 			context.set(
