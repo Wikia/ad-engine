@@ -92,7 +92,7 @@ $out-of-page-z-index: 402;
 		width: calc(100% - #{$navbar-width}) !important;
 
 		> .button-close {
-			background: transparent;
+			background: transparent !important;
 			top: 0;
 			height: fit-content;
 			width: 1.5rem;
