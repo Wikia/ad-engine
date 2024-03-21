@@ -195,34 +195,20 @@ export class UcpDesktopSlotsDefinitionRepository implements SlotsDefinitionRepos
 				},
 			},
 			activator: () => {
+				const rotator = new FmrRotator(slotName, slotNamePrefix, btRec, {
+					topPositionToRun: 65,
+					bidders: {
+						bidGroup: bidGroup,
+						a9Alias: slotName,
+						bidderAlias: slotName,
+					},
+				});
+
 				communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
-					if (this.isFmrApplicable(slotName)) {
-						const rotator = new FmrRotator(slotName, slotNamePrefix, btRec, {
-							topPositionToRun: 65,
-							bidders: {
-								bidGroup: bidGroup,
-								a9Alias: slotName,
-								bidderAlias: slotName,
-							},
-						});
-						rotator.rotateSlot();
-					} else {
-						utils.logger('ad-engine', 'ICB disabled');
-					}
+					rotator.rotateSlot();
 				});
 			},
 		};
-	}
-
-	private isFmrApplicable(slotName: string): boolean {
-		const fmrRecirculationElement = document.querySelector(
-			context.get(`slots.${slotName}.recirculationElementSelector`),
-		);
-		if (fmrRecirculationElement === null) {
-			return false;
-		}
-		const displayValue = window.getComputedStyle(fmrRecirculationElement, null).display;
-		return displayValue !== 'none';
 	}
 
 	private isRightRailApplicable(rightRailBreakingPoint = 1024): boolean {
