@@ -1,4 +1,11 @@
-import { context, DiProcess, InstantConfigService, trackingUrls, utils } from '@wikia/ad-engine';
+import {
+	context,
+	DiProcess,
+	InstantConfigService,
+	targetingService,
+  trackingUrls,
+	utils,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -28,6 +35,10 @@ export class TrackingParametersSetup implements DiProcess {
 					: false,
 			);
 		});
+
+		if (window.ads?.version?.ae) {
+			targetingService.set('aeVer', window.ads.version.ae);
+		}
 	}
 
 	private async getTrackingParameters(): Promise<Partial<ITrackingParameters>> {

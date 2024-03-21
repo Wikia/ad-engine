@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "146.13.4",
+	"version": "146.15.1",
 	"description": "Wikia AdEngine",
 	"license": "Apache-2.0",
 	"repository": {
@@ -9,7 +9,7 @@
 	},
 	"dependencies": {
 		"@wikia/dependency-injection": "2.2.3",
-		"@wikia/instant-config-loader": "github:Wikia/instant-config-loader#semver:0.10.0",
+		"@wikia/instant-config-loader": "github:Wikia/instant-config-loader#semver:0.17.0",
 		"@wikia/post-quecast": "2.0.1",
 		"blockadblock": "3.2.1",
 		"current-device": "0.10.2",
@@ -51,10 +51,8 @@
 		"nyc": "15.1.0",
 		"prettier": "2.8.4",
 		"prettier-plugin-organize-imports": "3.2.2",
-		"process": "0.11.10",
 		"sass-loader": "13.2.0",
 		"sinon": "15.0.1",
-		"string-replace-loader": "3.1.0",
 		"tsconfig-paths-webpack-plugin": "4.0.1",
 		"tslib": "2.5.0",
 		"typescript": "4.9.5",
