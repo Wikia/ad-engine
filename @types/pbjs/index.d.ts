@@ -180,9 +180,6 @@ interface PrebidTargetingForAdUnits {
 interface PrebidUserIds {
 	id5id?: {
 		uid?: string;
-		ext?: {
-			abTestingControlGroup?: boolean;
-		};
 	};
 	pubcid?: string;
 	connectId?: string;

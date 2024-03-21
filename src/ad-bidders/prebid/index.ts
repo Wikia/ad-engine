@@ -269,7 +269,7 @@ export class PrebidProvider extends BidderProvider {
 		}
 	}
 
-	private async configureId5(): Promise<void> {
+	private configureId5(): void {
 		const id5Config = id5.getConfig();
 
 		if (!id5Config) {
@@ -278,12 +278,6 @@ export class PrebidProvider extends BidderProvider {
 
 		this.prebidConfig.userSync.userIds.push(id5Config);
 
-		const pbjs: Pbjs = await pbjsFactory.init();
-		if (id5Config.params.abTesting.enabled) {
-			id5.trackControlGroup(pbjs);
-		}
-
-		id5.enableAnalytics(pbjs);
 		communicationService.emit(eventsRepository.PARTNER_LOAD_STATUS, {
 			status: 'id5_started',
 		});
