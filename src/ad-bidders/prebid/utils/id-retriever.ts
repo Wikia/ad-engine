@@ -2,16 +2,26 @@ import { communicationService, eventsRepository } from '@ad-engine/communication
 import { context, pbjsFactory, targetingService, UniversalStorage, utils } from '@ad-engine/core';
 
 export class IdRetriever {
+	public static YAHOO_BIT = 0;
+	public static ID5_BIT = 1;
+	public static HEM_BIT = 2;
+	public static LIVEINTENT_BIT = 3;
+	public static PUBCID_BIT = 4;
+
 	private static _instance: IdRetriever;
 	private readonly ID_STRING_LENGTH = 16;
 	private readonly logGroup = 'bidder-id-retriever';
 	private pbjs: Pbjs;
 
 	private readonly ID_MAP: Record<string, (sources: PrebidEids[]) => string> = {
-		'0': (sources: PrebidEids[]) => this.getDefaultBitStatus(sources, 'yahoo.com'),
-		'1': (sources: PrebidEids[]) => this.getID5BitStatus(sources),
-		'2': () => this.getHEMBitStatus(),
-		'3': (sources: PrebidEids[]) => this.getDefaultBitStatus(sources, 'liveintent.com'),
+		[IdRetriever.YAHOO_BIT.toString()]: (sources: PrebidEids[]) =>
+			this.getDefaultBitStatus(sources, 'yahoo.com'),
+		[IdRetriever.ID5_BIT.toString()]: (sources: PrebidEids[]) => this.getID5BitStatus(sources),
+		[IdRetriever.HEM_BIT.toString()]: () => this.getHEMBitStatus(),
+		[IdRetriever.LIVEINTENT_BIT.toString()]: (sources: PrebidEids[]) =>
+			this.getDefaultBitStatus(sources, 'liveintent.com'),
+		[IdRetriever.PUBCID_BIT.toString()]: (sources: PrebidEids[]) =>
+			this.getDefaultBitStatus(sources, 'pubcid.org'),
 	};
 
 	static get(): IdRetriever {
@@ -26,7 +36,7 @@ export class IdRetriever {
 		const prebidUserIds = await this.getIds();
 		let idString = '';
 		for (let i = 0; i < this.ID_STRING_LENGTH; i++) {
-			const idProvider = this.ID_MAP[i];
+			const idProvider = this.ID_MAP[i.toString()];
 			if (idProvider) {
 				const bitStatus = idProvider(prebidUserIds);
 				idString += bitStatus;

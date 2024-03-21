@@ -5,11 +5,14 @@ on:
 
 jobs:
   pr-labeler:
-    if: ${{ (!contains( github.event.pull_request.labels.*.name, 'Major change')) && (!contains( github.event.pull_request.labels.*.name, 'Minor change')) && (!contains( github.event.pull_request.labels.*.name, 'Patch change')) }}
+    if: ${{ github.actor != 'dependabot[bot]' && (!contains( github.event.pull_request.labels.*.name, 'Major change')) && (!contains( github.event.pull_request.labels.*.name, 'Minor change')) && (!contains( github.event.pull_request.labels.*.name, 'Patch change')) }}
+    permissions:
+      contents: read
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
-      - uses: TimonVS/pr-labeler-action@v3
+      - uses: actions/labeler@v5.0.0
         with:
-          configuration-path: .github/pr-labeler.yml
+          configuration-path: .github/labeler.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
