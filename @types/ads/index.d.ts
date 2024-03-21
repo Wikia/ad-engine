@@ -1,5 +1,4 @@
 interface MediaWikiAds {
-	adEngineVersion: string;
 	adContext: any;
 	adTargeting: any;
 	consentQueue: any;
@@ -7,6 +6,9 @@ interface MediaWikiAds {
 	debug: (groups: string | null) => void;
 	pushToConsentQueue: (callback: any) => void;
 	runtime: Runtime;
+	version?: {
+		ae?: string;
+	};
 }
 
 interface AdsContext {

@@ -9,6 +9,7 @@ describe('Prebid Id Retriever', () => {
 	let pbjsStub: PbjsStub;
 	let dispatchSpy: SinonSpy;
 	let getItemStub, contextGetStub: SinonStub;
+
 	beforeEach(() => {
 		pbjsStub = stubPbjs(global.sandbox).pbjsStub;
 		dispatchSpy = global.sandbox.spy(communicationService, 'dispatch');
@@ -20,6 +21,7 @@ describe('Prebid Id Retriever', () => {
 		global.sandbox.restore();
 		getItemStub.resetHistory();
 	});
+
 	it('can be initialized', () => {
 		const retriever = IdRetriever.get();
 		expect(retriever).to.be.instanceOf(IdRetriever);
@@ -46,39 +48,79 @@ describe('Prebid Id Retriever', () => {
 		);
 	});
 
-	it('can generate boi empty string', async () => {
-		const retriever = IdRetriever.get();
-		pbjsStub.getUserIdsAsEids.returns([{ source: 'foo', uids: [{ id: 'bar' }] }]);
-		const idString = await retriever.generateBoiString();
-		expect(idString).to.equal('AAAAxxxxxxxxxxxx');
-	});
+	describe('generateBoiString', () => {
+		it('can generate boi empty string', async () => {
+			const retriever = IdRetriever.get();
+			pbjsStub.getUserIdsAsEids.returns([{ source: 'foo', uids: [{ id: 'bar' }] }]);
+			const idString = await retriever.generateBoiString();
+			expect(idString.charAt(IdRetriever.YAHOO_BIT)).to.equal('A');
+			expect(idString.charAt(IdRetriever.ID5_BIT)).to.equal('A');
+			expect(idString.charAt(IdRetriever.HEM_BIT)).to.equal('A');
+			expect(idString.charAt(IdRetriever.LIVEINTENT_BIT)).to.equal('A');
+			expect(idString.charAt(IdRetriever.PUBCID_BIT)).to.equal('A');
+		});
 
-	it('can generate boi string with one partner', async () => {
-		const retriever = IdRetriever.get();
-		pbjsStub.getUserIdsAsEids.returns([{ source: 'liveintent.com', uids: [{ id: 'bar' }] }]);
-		const idString = await retriever.generateBoiString();
-		expect(idString).to.equal('AAAPxxxxxxxxxxxx');
-	});
+		describe('YAHOO_BIT', () => {
+			const bit = IdRetriever.YAHOO_BIT;
 
-	it('can generate proper status for id5=abc', async () => {
-		const retriever = IdRetriever.get();
-		pbjsStub.getUserIdsAsEids.returns([{ source: 'id5-sync.com', uids: [{ id: 'abc' }] }]);
-		const idString = await retriever.generateBoiString();
-		expect(idString).to.equal('APAAxxxxxxxxxxxx');
-	});
+			it('can generate proper status for Yahoo', async () => {
+				const retriever = IdRetriever.get();
+				pbjsStub.getUserIdsAsEids.returns([{ source: 'yahoo.com', uids: [{ id: 'bar' }] }]);
+				const idString = await retriever.generateBoiString();
+				expect(idString.charAt(bit)).to.equal('P');
+			});
+		});
 
-	it('can generate proper status for LiveIntent HEM', async () => {
-		getItemStub.withArgs('liveConnect').returns({ data: 'abc4', expires: 4299837050986 });
-		const retriever = IdRetriever.get();
-		const idString = await retriever.generateBoiString();
-		expect(idString).to.equal('AALAxxxxxxxxxxxx');
-	});
+		describe('ID5_BIT', () => {
+			const bit = IdRetriever.ID5_BIT;
 
-	it('can generate proper status for MediaWiki HEM', async () => {
-		contextGetStub.withArgs('wiki.opts.userEmailHashes').returns(['md5', 'sha1', 'sha256']);
+			it('can generate proper status for id5=abc', async () => {
+				const retriever = IdRetriever.get();
+				pbjsStub.getUserIdsAsEids.returns([{ source: 'id5-sync.com', uids: [{ id: 'abc' }] }]);
+				const idString = await retriever.generateBoiString();
+				expect(idString.charAt(bit)).to.equal('P');
+			});
+		});
 
-		const retriever = IdRetriever.get();
-		const idString = await retriever.generateBoiString();
-		expect(idString).to.equal('AAMAxxxxxxxxxxxx');
+		describe('HEM_BIT', () => {
+			const bit = IdRetriever.HEM_BIT;
+
+			it('can generate proper status for LiveIntent HEM', async () => {
+				getItemStub.withArgs('liveConnect').returns({ data: 'abc4', expires: 4299837050986 });
+				const retriever = IdRetriever.get();
+				const idString = await retriever.generateBoiString();
+				expect(idString.charAt(bit)).to.equal('L');
+			});
+
+			it('can generate proper status for MediaWiki HEM', async () => {
+				contextGetStub.withArgs('wiki.opts.userEmailHashes').returns(['md5', 'sha1', 'sha256']);
+
+				const retriever = IdRetriever.get();
+				const idString = await retriever.generateBoiString();
+				expect(idString.charAt(bit)).to.equal('M');
+			});
+		});
+
+		describe('LIVEINTENT_BIT', () => {
+			const bit = IdRetriever.LIVEINTENT_BIT;
+
+			it('can generate proper status for LiveIntent ID', async () => {
+				const retriever = IdRetriever.get();
+				pbjsStub.getUserIdsAsEids.returns([{ source: 'liveintent.com', uids: [{ id: 'bar' }] }]);
+				const idString = await retriever.generateBoiString();
+				expect(idString.charAt(bit)).to.equal('P');
+			});
+		});
+
+		describe('PUBCID_BIT', () => {
+			const bit = IdRetriever.PUBCID_BIT;
+
+			it('can generate proper status for pubcid.org', async () => {
+				const retriever = IdRetriever.get();
+				pbjsStub.getUserIdsAsEids.returns([{ source: 'pubcid.org', uids: [{ id: 'bar' }] }]);
+				const idString = await retriever.generateBoiString();
+				expect(idString.charAt(bit)).to.equal('P');
+			});
+		});
 	});
 });
