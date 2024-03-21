@@ -55,6 +55,7 @@ export class BidAuctionSplitExperimentSetup extends BaseServiceSetup {
 
 	private enableAuctionSplit() {
 		context.set('custom.bidAuctionSplitEnabled', true);
+		context.set('events.pushOnScroll.threshold', 250);
 	}
 
 	private setupExperimentVariants() {
