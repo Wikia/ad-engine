@@ -8,6 +8,11 @@ import {
 	utils,
 } from '@ad-engine/core';
 
+export enum CmpType {
+	ONE_TRUST = '1t',
+	TRACKING_OPT_IN = 'toi',
+}
+
 export class IdentitySetup implements DiProcess {
 	private logGroup = 'identity-setup';
 
@@ -80,6 +85,9 @@ export class IdentitySetup implements DiProcess {
 						: 0;
 				targetingService.set('pa_available', protectedAudienceApiAvailable.toString());
 
+				// TODO: Remove once OneTrust replaces Tracking Opt In
+				targetingService.set('cmp', this.getCmp());
+
 				utils.logger(this.logGroup, 'ready');
 				resolve();
 			});
@@ -94,5 +102,9 @@ export class IdentitySetup implements DiProcess {
 				targetingService.set('over_18', over18);
 			}
 		});
+	}
+
+	private getCmp(): CmpType {
+		return window.OneTrust !== undefined ? CmpType.ONE_TRUST : CmpType.TRACKING_OPT_IN;
 	}
 }
