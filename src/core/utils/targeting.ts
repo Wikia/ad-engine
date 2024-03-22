@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Dictionary } from '../models';
 import { CookieStorageAdapter, targetingService } from '../services/';
 import { context } from '../services/context-service';

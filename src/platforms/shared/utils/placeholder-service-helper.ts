@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { AdSlot, AdSlotEvent, AdSlotStatus } from '@wikia/ad-engine';
 
 export class PlaceholderServiceHelper {

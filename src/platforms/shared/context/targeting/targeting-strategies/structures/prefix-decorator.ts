@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { TargetingProvider } from '../interfaces/targeting-provider';
 
 export class PrefixDecorator implements TargetingProvider<TaxonomyTags> {

@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { NativoProvider } from '@wikia/core/providers/nativo/nativo-provider';
 import { expect } from 'chai';
 import { adSlotFake } from '../../ad-slot-fake';

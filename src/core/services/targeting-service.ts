@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { debug } from './debug';
 
 export type ChangeCallback = (key: string | null, value: any) => void;

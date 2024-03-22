@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { createIcon, icons } from '../icons';
 
 export class ToggleFullscreen {

@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { GamespotTargetingSetup } from '@wikia/platforms/news-and-ratings/gamespot/setup/context/targeting/gamespot-targeting.setup';
 import { expect } from 'chai';
 

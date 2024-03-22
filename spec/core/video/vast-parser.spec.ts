@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { TargetingObject, TargetingService, targetingService } from '@wikia/core';
 import { context } from '@wikia/core/services/context-service';
 import { vastParser } from '@wikia/core/video/vast-parser';

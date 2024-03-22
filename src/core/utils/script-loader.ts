@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 export interface ScriptLoaderInterface {
 	loadScript(src: string): Promise<Event>;
 }

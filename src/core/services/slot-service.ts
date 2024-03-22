@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { AdSlotEvent, getAdStack, targetingService, utils } from '../';
 import { AdSlot, Dictionary, SlotConfig } from '../models';

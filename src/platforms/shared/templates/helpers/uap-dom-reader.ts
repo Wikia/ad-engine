@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { AdSlot, context, TEMPLATE, UapParams } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { NAVBAR } from '../configs/uap-dom-elements';

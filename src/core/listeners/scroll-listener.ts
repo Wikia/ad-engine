@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Dictionary } from '../';
 import { slotService } from '../services';
 import { getTopOffset, getViewportHeight, logger } from '../utils';
