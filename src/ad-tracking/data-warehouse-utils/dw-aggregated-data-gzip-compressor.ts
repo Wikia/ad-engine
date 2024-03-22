@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { utils } from '@ad-engine/core';
 import { Compressed, DwAggregatedDataCompressor } from './dw-aggregated-data-sender';
 

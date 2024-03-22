@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { InstantConfigCacheStorage, InstantConfigService, targetingService } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';

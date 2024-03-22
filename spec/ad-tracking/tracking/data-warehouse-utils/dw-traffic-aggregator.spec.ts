@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { DataWarehouseParams, DwTrafficAggregator, TrackingUrl } from '@wikia/ad-tracking';
 import { expect } from 'chai';
 import sinon from 'sinon';

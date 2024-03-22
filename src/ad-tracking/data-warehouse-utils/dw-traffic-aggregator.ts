@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Dictionary } from '@ad-engine/core';
 import { DataWarehouseParams } from '../data-warehouse';
 import { TrackingUrl } from '../tracking-urls';

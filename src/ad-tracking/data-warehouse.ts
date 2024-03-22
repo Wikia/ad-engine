@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { context, targetingService, trackingOptIn, utils } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
 import { BatchProcessor } from './batch-processor';
