@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { slotService } from '@ad-engine/core';
 import { CompilerPartial } from '../trackers/base-tracker';
 

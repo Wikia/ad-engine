@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import {
 	context,
 	InstantConfigCacheStorage,
@@ -5,8 +6,8 @@ import {
 	targetingService,
 	utils,
 } from '@ad-engine/core';
-import { CompilerPartial } from '../trackers/base-tracker';
 import { CmpType } from '../../ad-services';
+import { CompilerPartial } from '../trackers/base-tracker';
 
 function checkOptIn(): string {
 	if (context.get('options.geoRequiresConsent')) {

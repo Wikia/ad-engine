@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { utils } from '@ad-engine/core';
 
 export class NativeFullscreen {

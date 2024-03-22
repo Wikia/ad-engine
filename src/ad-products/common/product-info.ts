@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { context, Dictionary, utils } from '@ad-engine/core';
 import { FAN_TAKEOVER_TYPES } from '../templates/uap/constants';
 

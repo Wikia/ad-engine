@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { BaseServiceSetup, context, utils } from '@ad-engine/core';
 
 const logGroup = 'duration-media';

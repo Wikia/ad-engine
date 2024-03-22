@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import '@stardazed/streams-polyfill'; // provides types missing in currently used version of node
 import { DwAggregatedDataGzipCompressor } from '@wikia/ad-tracking';
 import { expect } from 'chai';

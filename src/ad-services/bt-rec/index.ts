@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { context, utils } from '@ad-engine/core';
 import { trackBab } from '../../ad-tracking';
 

@@ -19,7 +19,7 @@
 		"importHelpers": true,
 		"lib": ["ESNext", "dom"],
 		"outDir": "dist",
-		"typeRoots": ["node_modules/@types", "node_modules/@alugha/ima", "@types"],
+		"typeRoots": ["node_modules/@types", "@types"],
 		"paths": {
 			// Unit tests
 			"@wikia/*": ["src/*"],
@@ -34,7 +34,12 @@
 			// Platforms
 			"@wikia/ad-engine": ["src/index.ts"],
 			"@platforms/shared": ["src/platforms/shared/index.ts"]
-		}
+		},
+		"plugins": [
+			{
+				"name": "typescript-strict-plugin"
+			}
+		]
 	},
 	"include": ["src", "spec"],
 	"exclude": ["@types", "node_modules", "**/dist/**/*"]

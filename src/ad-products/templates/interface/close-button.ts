@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Button } from './button';
 import { createIcon, icons } from './icons';
 import { UiComponent } from './ui-component';

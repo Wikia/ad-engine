@@ -1,5 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { utils } from '@ad-engine/core';
+
 import { DataWarehouseTracker } from '../data-warehouse';
 import { trackingUrls } from '../tracking-urls';
 

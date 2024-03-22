@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { FandomContext, Page, Site } from '../models/fandom-context';
 
 export function createFandomContext() {

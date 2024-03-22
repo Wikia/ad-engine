@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { CompilerPartial } from '../trackers/base-tracker';
 
 export const viewabilityPropertiesTrackingCompiler = ({

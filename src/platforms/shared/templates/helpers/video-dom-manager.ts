@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { PorvataPlayer, TEMPLATE, UapParams } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { DomManipulator } from './manipulators/dom-manipulator';

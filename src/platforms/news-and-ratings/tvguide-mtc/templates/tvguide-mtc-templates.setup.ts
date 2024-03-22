@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { DiProcess, logTemplates, TemplateRegistry, templateService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';

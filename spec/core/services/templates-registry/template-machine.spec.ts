@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { TemplateAction } from '@wikia/core/services/templates-registry/template-action';
 import { TemplateMachine } from '@wikia/core/services/templates-registry/template-machine';
 import { assert, expect } from 'chai';

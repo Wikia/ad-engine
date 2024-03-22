@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 /**
  * @deprecated
  * Please use LazyQueue class instead

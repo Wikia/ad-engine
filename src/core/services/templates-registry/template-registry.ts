@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { Container, Injectable } from '@wikia/dependency-injection';
 import { Observable, Subject } from 'rxjs';
