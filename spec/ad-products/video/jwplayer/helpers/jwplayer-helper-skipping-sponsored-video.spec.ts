@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { expect } from 'chai';
 
 import { JwplayerHelperSkippingSponsoredVideo } from '@wikia/ad-products/video/jwplayer/helpers';

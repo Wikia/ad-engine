@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import Cookies from 'js-cookie';
 import {
 	SequenceState,

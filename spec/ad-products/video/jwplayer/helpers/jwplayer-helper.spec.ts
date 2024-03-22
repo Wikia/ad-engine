@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { expect } from 'chai';
 
 import { JWPlayerConfig } from '@wikia/ad-products/video/jwplayer/external-types/jwplayer-config';

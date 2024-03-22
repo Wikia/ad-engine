@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 interface Task {
 	[key: string]: string;
 }

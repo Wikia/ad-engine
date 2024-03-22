@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 export class FandomContext {
 	constructor(
 		public readonly site: Site,

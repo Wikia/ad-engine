@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 export class Usp {
 	get exists(): boolean {
 		return !!window.__uspapi;

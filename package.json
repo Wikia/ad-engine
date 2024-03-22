@@ -56,6 +56,7 @@
 		"tsconfig-paths-webpack-plugin": "4.0.1",
 		"tslib": "2.5.0",
 		"typescript": "4.9.5",
+		"typescript-strict-plugin": "2.4.0",
 		"webpack": "5.76.0",
 		"webpack-bundle-analyzer": "4.8.0",
 		"webpack-cli": "5.0.1",
@@ -68,7 +69,7 @@
 		"dev:platforms": "webpack-dev-server --progress --config webpack.platforms.js --mode=development",
 		"dev-https:platforms": "npm run dev:platforms -- --server-type https",
 		"bundle-analyzer": "npm run build:platforms -- --env bundleAnalyzer",
-		"ci-check": "npm run test && npm run lint",
+		"ci-check": "npm run test && npm run lint && npm run tsc",
 		"lint": "npx eslint . --ext .ts --max-warnings 0",
 		"format": "npm run prettier",
 		"graph": "madge --image graph.svg --extensions ts --webpack-config webpack.platforms.js --ts-config tsconfig.json src/",
@@ -78,7 +79,8 @@
 		"preversion": "./maintenance/preversion.sh",
 		"test": "instant-mocha './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.js --require ./spec/helpers/sandbox-hook.js",
 		"test:watch": "npm run test -- -w",
-		"test-coverage": "nyc instant-mocha './src/!(platforms)*/**/*.ts' './src/platforms/shared/**/*.ts' './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.coverage.js --require ./spec/helpers/sandbox-hook.js"
+		"test-coverage": "nyc instant-mocha './src/!(platforms)*/**/*.ts' './src/platforms/shared/**/*.ts' './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.coverage.js --require ./spec/helpers/sandbox-hook.js",
+		"tsc": "tsc --noEmit && tsc-strict"
 	},
 	"lint-staged": {
 		"*.ts": [

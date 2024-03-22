@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 export function getMagniteS2sContext(video = false): object {
 	const context = {
 		enabled: false,

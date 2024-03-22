@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { createAdapterSpecificSettings } from '@wikia/ad-bidders/prebid/prebid-settings';
 import { expect } from 'chai';
 
