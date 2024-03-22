@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { PrebidNativeConfig } from '@wikia/ad-bidders';
 import { expect } from 'chai';
 

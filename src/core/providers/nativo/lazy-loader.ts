@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Observable } from 'rxjs';
 import { filter, take, tap } from 'rxjs/operators';
 

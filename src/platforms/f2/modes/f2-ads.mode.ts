@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { AdEngineStackSetup, GptSetup, PlayerSetup, WadRunner } from '@platforms/shared';
 import {
 	Audigent,

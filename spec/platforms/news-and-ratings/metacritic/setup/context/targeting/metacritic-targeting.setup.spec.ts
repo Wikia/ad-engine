@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { MetacriticTargetingSetup } from '@wikia/platforms/news-and-ratings/metacritic/setup/context/targeting/metacritic-targeting.setup';
 import { expect } from 'chai';
 

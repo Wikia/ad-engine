@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Bidders } from '@wikia/ad-bidders';
 import { A9Provider } from '@wikia/ad-bidders/a9';
 import { PrebidProvider } from '@wikia/ad-bidders/prebid';

@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { SlotCreator, SlotCreatorConfig, SlotCreatorWrapperConfig } from '@wikia/core';
 import { expect } from 'chai';
 import { SinonStub } from 'sinon';
