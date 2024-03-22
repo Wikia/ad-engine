@@ -1,7 +1,7 @@
 import { logger } from '../utils';
 
 function browserPhasePromise(
-	check: () => boolean,
+	predicate: () => boolean,
 	timeout: number,
 	container: any,
 	event: string,
@@ -26,21 +26,20 @@ function browserPhasePromise(
 			}
 		}
 
-		if (check()) {
-			setResolvedState('resolved by check');
+		if (predicate()) {
+			setResolvedState('resolved by predicate');
 			return;
 		}
-		if (timeout <= 0) {
-			setResolvedState('resolved after timeout');
-			return;
-		}
-
-		const timeoutId = setTimeout(() => {
-			setResolvedState('resolved by timeout');
-		}, timeout);
+		const timeoutId =
+			timeout > 0 &&
+			setTimeout(() => {
+				setResolvedState('resolved by timeout');
+			}, timeout);
 
 		container.addEventListener(event, () => {
-			clearTimeout(timeoutId);
+			if (timeoutId) {
+				clearTimeout(timeoutId);
+			}
 			setResolvedState('resolved on event', true);
 		});
 	});
