@@ -31,7 +31,7 @@ export class AdEnginePhasesSetup implements DiProcess {
 
 		adEnginePhases.firstAdCall = waitForEventPromise(
 			eventsRepository.AD_ENGINE_SLOT_LOADED,
-			context.get('options.phases.firstAdCallTimeout') || DEFAULT_AD_CALL_WAIT_TIMEOUT,
+			context.get('options.phases.firstAdCallTimeout') ?? DEFAULT_AD_CALL_WAIT_TIMEOUT,
 		);
 	}
 }
