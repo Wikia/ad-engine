@@ -26,7 +26,7 @@ export class AdEnginePhasesSetup implements DiProcess {
 
 		adEnginePhases.partners = documentLoadedPromise(
 			context.get('options.phases.partnersTimeout') ?? DEFAULT_PARTNERS_PHASE_WAIT_TIMEOUT,
-			context.get('options.phases.partnersDelay') || DEFAULT_PARTNERS_PHASE_DELAY,
+			context.get('options.phases.partnersDelay') ?? DEFAULT_PARTNERS_PHASE_DELAY,
 		);
 
 		adEnginePhases.firstAdCall = waitForEventPromise(
