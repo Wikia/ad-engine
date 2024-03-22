@@ -4,21 +4,21 @@ import { Dictionary } from "../../core/models/dictionary";
 
 export const AD_ENGINE_SLOT_ADDED = {
     name: 'Ad Slot added',
-        payload: props<{ name: string; slot; state: string }>(),
+    payload: props<{ name: string; slot; state: string }>(),
 } as const;
 export const AD_ENGINE_SLOT_EVENT = {
     name: 'Ad Slot event',
-        payload: props<AdSlotEventPayload>(),
+    payload: props<AdSlotEventPayload>(),
 } as const;
 export const AD_ENGINE_SLOT_LOADED = {
     name: 'Ad Slot loaded',
-        payload: props<GeneralPayload>(),
+    payload: props<GeneralPayload>(),
 } as const;
 export const AD_ENGINE_AD_RESIZED = {
     name: 'Ad slot resized',
-        payload: props<{ slot; sizes: Dictionary }>(),
+    payload: props<{ slot; sizes: Dictionary }>(),
 } as const;
 export const AD_ENGINE_INVALIDATE_SLOT_TARGETING = {
     name: 'Invalidate slot targeting',
-        payload: props<{ slot }>(),
+    payload: props<{ slotName: string }>(),
 } as const;

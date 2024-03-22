@@ -5,9 +5,12 @@ import { CloseButton } from "../../../../ad-products/templates/interface/close-b
 
 import { CloseButtonHelper } from './helpers/close-button-helper';
 import { communicationServiceSlot } from "../../utils/communication-service-slot";
+import { takeUntil } from "rxjs/operators";
+import { Subject } from "rxjs";
 
 export class CloseToTransitionButtonHandler implements TemplateStateHandler {
     private button: HTMLButtonElement;
+    private unsubscribe$ = new Subject<void>();
 
     constructor(private params: UapParams, private helper: CloseButtonHelper) {}
 
@@ -19,10 +22,14 @@ export class CloseToTransitionButtonHandler implements TemplateStateHandler {
             },
         }).render();
 
-        this.helper.appendOnScroll(this.button);
+        this.helper.appendOnScroll(this.button).pipe(takeUntil(this.unsubscribe$)).subscribe();
+        console.log('>>> close enter', this.button);
     }
 
+
     async onLeave(): Promise<void> {
+        console.log('>>> close leave', this.button);
+        this.unsubscribe$.next();
         this.button.remove();
     }
 }

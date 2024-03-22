@@ -51,7 +51,7 @@ export function getCustomParameters(
 		setTargetingValue(key, targetingData[key]);
 	});
 
-	communicationService.emit(AD_ENGINE_INVALIDATE_SLOT_TARGETING, { slot });
+	communicationService.emit(AD_ENGINE_INVALIDATE_SLOT_TARGETING, { slotName: slot.getSlotName() });
 
 	const params: Dictionary = {
 		...targeting,

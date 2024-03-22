@@ -107,7 +107,7 @@ export class A9Provider extends BidderProvider {
 				);
 				communicationService.on(
 					AD_ENGINE_INVALIDATE_SLOT_TARGETING,
-					({ slot }) => this.invalidateSlotTargeting(slot),
+					({ slotName }) => { this.invalidateSlotTargeting(slotService.get(slotName)) },
 					false,
 				);
 			}

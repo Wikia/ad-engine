@@ -2,6 +2,7 @@ import { Action, Communicator, setupPostQuecast } from '@wikia/post-quecast';
 import { globalAction } from "../../../communication/global-action";
 import { EventOptions } from "../../../communication/events/event-options";
 import { AD_ENGINE_SLOT_EVENT } from "../../../communication/events/events-ad-engine-slot";
+import { CommunicationService } from "../../../communication/communication-service";
 
 interface PostQuecastSettings {
     channelId?: string;
@@ -77,7 +78,7 @@ export class CommunicationServiceSlim {
     }
 
     private runOnce(action: Action, actionToListen: Action, callback: (payload?: any) => void): void {
-        const key = actionToListen.category + ' ' + actionToListen.name;
+        const key = actionToListen.action().type;
 
         if (!this.ofType(action, actionToListen)) {
             return;
@@ -135,10 +136,11 @@ export class CommunicationServiceSlim {
 
     private ofType(action: Action, actionToListen: Action): boolean {
         return (
-            (action.category === actionToListen.category && action.name === actionToListen.name) ||
-            action.type === actionToListen.category + ' ' + actionToListen.name
+            action.type === actionToListen.type
+            // action.type === actionToListen.action().type
         );
     }
 }
 
-export const communicationServiceSlim = new CommunicationServiceSlim();
+export const communicationServiceSlim = new CommunicationService();
+// export const communicationServiceSlim = new CommunicationServiceSlim();

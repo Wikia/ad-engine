@@ -20,6 +20,17 @@ import { getDomElements } from "./handlers/manipulators/dom-elements-retriever";
 import { StickinessTimeout } from "./handlers/helpers/stickiness-timeout";
 import { CloseButtonHelper } from "./handlers/helpers/close-button-helper";
 import { ScrollCorrector } from "./handlers/helpers/scroll-corrector";
+import { VideoBootstrapHandler } from "./handlers/video-bootstrap-handler";
+import { VideoCtpHandler } from "./handlers/video-ctp-handler";
+import { VideoRestartHandler } from "./handlers/video-restart-handler";
+import { VideoSizeResolvedHandler } from "./handlers/video-size-resolved-handler";
+import { VideoLearnMoreHandler } from "./handlers/video-learn-more-handler";
+import { VideoSizeImpactToResolvedHandler } from "./handlers/video-size-impact-to-resolved-handler";
+import { VideoCompletedHandler } from "./handlers/video-completed-handler";
+import { PlayerRegistry } from "./handlers/video/player-registry";
+import { Porvata } from "./handlers/video/porvata/porvata";
+import { VideoDomManager } from "./handlers/video/utils/video-dom-manager";
+import { VideoDomReader } from "./handlers/video/utils/video-dom-reader";
 
 export class UapTemplateSetup {
     private activeState = 'zero';
@@ -36,9 +47,9 @@ export class UapTemplateSetup {
     }
 
     private async activateState(stateName: string): Promise<void> {
-        this.runHandlersLeaving(this.getHandlers(stateName));
+        await this.runHandlersLeaving(this.getHandlers(stateName));
         this.activeState = stateName;
-        this.runHandlersEntering(this.getHandlers(stateName));
+        await this.runHandlersEntering(this.getHandlers(stateName));
 
         Promise.resolve({});
     }
@@ -47,16 +58,20 @@ export class UapTemplateSetup {
         return this.handlersPerState[stateName] ?? [];
     }
 
-    private runHandlersLeaving(handlers) {
-        handlers.forEach(handler => {
-            if (handler.onLeave && typeof handler.onLeave === 'function') handler.onLeave();
+    private async runHandlersLeaving(handlers) {
+        console.log('>>>> LEAVING', this.activeState);
+        handlers.forEach(async (handler) => {
+            if (handler.onLeave && typeof handler.onLeave === 'function') {
+                await handler.onLeave();
+            }
         });
     }
 
-    private runHandlersEntering(handlers) {
-        handlers.forEach(handler => {
+    private async runHandlersEntering(handlers) {
+        console.log('>>>> ENTERING', this.activeState);
+        handlers.forEach(async (handler) => {
             if (handler.onEnter && typeof handler.onEnter === 'function') {
-                handler.onEnter(this.activateState.bind(this)); // TemplateTransition
+                await handler.onEnter(this.activateState.bind(this)); // TemplateTransition
             }
         });
     }
@@ -71,7 +86,7 @@ export class UapTemplateSetup {
             domManipulator,
             domReader,
         );
-        const domCleanup = new DomCleanupHandler(params);
+        const domCleanup = new DomCleanupHandler(domManipulator);
         const scrollCorrector = new ScrollCorrector(<HTMLElement>domElements['footer']);
 
         const slotSizeResolverWithPlaceholder = new SlotSizeResolvedWithPlaceholderHandler(domListener,domManager);
@@ -85,13 +100,21 @@ export class UapTemplateSetup {
         );
         const slotSizeImpactResolverWithPlaceholder = new SlotSizeImpactWithPlaceholderHandler(params, domListener,domManager);
 
+        const porvata = new Porvata(params, domListener);
+        const playerRegistry = new PlayerRegistry(params, porvata);
+        const videoDomReader = new VideoDomReader(params, domReader);
+        const videoDomManager = new VideoDomManager(params, domManipulator, videoDomReader);
+        const videoSizeResolvedHandler = new VideoSizeResolvedHandler(playerRegistry, domListener, videoDomManager);
+        const videoSizeImpactToResolvedHandler = new VideoSizeImpactToResolvedHandler(playerRegistry, domListener, videoDomManager);
+        const videoCompletedHandler = new VideoCompletedHandler(params, playerRegistry);
+
         const templateStates = {
             initial: [
                 new BfaaConfigHandler(params), //
                 new BfaaBootstrapHandler(params), //
-                // VideoBootstrapHandler,
-                // VideoCtpHandler,
-                // VideoRestartHandler,
+                new VideoBootstrapHandler(params, playerRegistry),
+                new VideoCtpHandler(playerRegistry),
+                new VideoRestartHandler(playerRegistry),
                 new AdvertisementLabelHandler(params), //
                 new DebugTransitionHandler(params.type), //
             ],
@@ -99,20 +122,20 @@ export class UapTemplateSetup {
             sticky: [
                 slotSizeResolverWithPlaceholder,
                 new SlotDecisionTimeoutHandler(params, domListener, new StickinessTimeout(params)), //
-                new CloseToTransitionButtonHandler(params, new CloseButtonHelper(params)), //
-                // VideoSizeResolvedHandler,
+                new CloseToTransitionButtonHandler(params, new CloseButtonHelper(params, domListener)), //
+                videoSizeResolvedHandler,
                 domCleanup,
             ],
             transition: [
                 slotSizeResolverWithPlaceholder,
                 new SlotTransitionHandler(params, scrollCorrector, domManipulator, domReader), //
-                // VideoSizeResolvedHandler,
+                videoSizeResolvedHandler,
                 domCleanup,
             ],
             resolved: [
                 slotSizeResolverWithPlaceholder,
                 slotHeightClipping,
-                // VideoSizeResolvedHandler,
+                videoSizeResolvedHandler,
                 domCleanup,
             ],
         };
@@ -122,9 +145,9 @@ export class UapTemplateSetup {
                 slotSizeImpactResolverWithPlaceholder,
                 new SlotSizeImpactToResolvedHandler(domListener,domManager), //
                 slotDecisionImpactResolver,
-                // VideoSizeImpactToResolvedHandler,
-                // VideoCompletedHandler,
-                // VideoLearnMoreHandler,
+                videoSizeImpactToResolvedHandler,
+                videoCompletedHandler,
+                new VideoLearnMoreHandler(playerRegistry, domManipulator),
                 domCleanup,
             ];
         } else {
@@ -132,8 +155,8 @@ export class UapTemplateSetup {
                 slotSizeImpactResolverWithPlaceholder,
                 slotDecisionImpactResolver,
                 slotHeightClipping,
-                // VideoSizeImpactToResolvedHandler,
-                // VideoCompletedHandler,
+                videoSizeImpactToResolvedHandler,
+                videoCompletedHandler,
                 domCleanup,
             ];
         }

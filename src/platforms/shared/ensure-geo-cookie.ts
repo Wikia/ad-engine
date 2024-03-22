@@ -1,4 +1,5 @@
-import { context, CookieStorageAdapter } from '@wikia/ad-engine';
+import { CookieStorageAdapter } from "../../core/services/cookie-storage-adapter";
+import { context } from "../../core/services/context-service";
 
 interface GeoResponse {
 	continent_code: string;

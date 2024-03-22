@@ -4,7 +4,7 @@ import { AdSlotEvent } from '../models/ad-slot-event';
 import { LazyQueue, logger } from '../utils';
 import { context } from './context-service';
 import { slotService } from './slot-service';
-import { AD_ENGINE_UAP_LOAD_STATUS } from "../../communication/events/events-ad-engine-uap";
+import { AD_ENGINE_UAP_LOAD_STATUS, AD_ENGINE_UAP_UNLOCK } from "../../communication/events/events-ad-engine-uap";
 
 type FillInCallback = (adSlot: AdSlot) => void;
 
@@ -46,6 +46,8 @@ class BtfBlockerService {
 				this.finishFirstCall();
 			}
 		});
+
+		this.unblockOnCall();
 
 		const enabledFirstCallSlots = slotService
 			.getFirstCallSlotNames()
@@ -122,6 +124,13 @@ class BtfBlockerService {
 
 		this.unblockedSlotNames.push(slotName);
 		slotService.enable(slotName);
+	}
+
+	unblockOnCall(): void {
+		communicationService.on(
+			AD_ENGINE_UAP_UNLOCK,
+			({ slotName }) => { this.unblock(slotName) }
+		);
 	}
 }
 

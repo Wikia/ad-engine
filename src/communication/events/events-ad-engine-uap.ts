@@ -12,3 +12,7 @@ export const AD_ENGINE_UAP_LOAD_STATUS = {
 export const AD_ENGINE_UAP_NTC_LOADED = {
     name: 'UAP NTC loaded',
 } as const;
+export const AD_ENGINE_UAP_UNLOCK = {
+    name: 'Invalidate slot targeting',
+    payload: props<{ slotName: string }>(),
+} as const;

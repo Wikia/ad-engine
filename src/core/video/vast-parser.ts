@@ -1,6 +1,6 @@
 import { Dictionary } from '../models';
-import { ADX } from '../providers';
 import { queryString } from '../utils';
+import { Adx } from "../providers/gpt-provider-const";
 
 export interface VideoAdInfo {
 	lineItemId: string;
@@ -74,8 +74,8 @@ class VastParser {
 		const wrapperAdSystems: string[] = imaAd.getWrapperAdSystems() || [];
 
 		if (wrapperAdSystems && wrapperAdSystems.indexOf('AdSense/AdX') !== -1) {
-			adInfo.lineItemId = ADX;
-			adInfo.creativeId = ADX;
+			adInfo.lineItemId = Adx;
+			adInfo.creativeId = Adx;
 		}
 
 		return adInfo;

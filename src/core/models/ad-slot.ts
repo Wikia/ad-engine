@@ -19,6 +19,7 @@ import {
 	AD_ENGINE_SLOT_LOADED
 } from "../../communication/events/events-ad-engine-slot";
 import { GAM_AD_DELAYED_COLLAPSE } from "../../communication/events/events-gam";
+import { AdSlotClass } from "./ad-slot-class";
 
 export interface RepeatConfig {
 	index: number;
@@ -69,9 +70,9 @@ export interface WinningBidderDetails {
 export class AdSlot {
 	static LOG_GROUP = 'AdSlot';
 
-	static AD_CLASS = 'gpt-ad';
-	static AD_SLOT_PLACEHOLDER_CLASS = 'ad-slot-placeholder';
-	static HIDDEN_AD_CLASS = 'hidead';
+	static AD_CLASS = AdSlotClass.AD_CLASS;
+	static AD_SLOT_PLACEHOLDER_CLASS = AdSlotClass.AD_SLOT_PLACEHOLDER_CLASS;
+	static HIDDEN_AD_CLASS = AdSlotClass.HIDDEN_AD_CLASS;
 
 	private customIframe: HTMLIFrameElement = null;
 
