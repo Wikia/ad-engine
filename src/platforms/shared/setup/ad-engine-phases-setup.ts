@@ -21,7 +21,7 @@ export class AdEnginePhasesSetup implements DiProcess {
 		adEnginePhases.configuration = domContentLoadedPromise(
 			context.get('options.phases.configurationTimeout') ??
 				DEFAULT_CONFIGURATION_PHASE_WAIT_TIMEOUT,
-			context.get('options.phases.configurationDelay') || DEFAULT_CONFIGURATION_PHASE_DELAY,
+			context.get('options.phases.configurationDelay') ?? DEFAULT_CONFIGURATION_PHASE_DELAY,
 		);
 
 		adEnginePhases.partners = documentLoadedPromise(
