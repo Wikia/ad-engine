@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { insertSlots } from '@platforms/shared';
 import { context, DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';

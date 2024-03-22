@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { createIcon, icons } from '../icons';
 import { onVideoOverlayClick } from '../listeners/player-overlay-click-listener';

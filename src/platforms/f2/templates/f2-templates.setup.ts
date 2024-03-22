@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { StickedBoxadHelper } from '@platforms/shared';
 import {
 	context,

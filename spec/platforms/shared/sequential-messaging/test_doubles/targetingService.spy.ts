@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { ChangeCallback, TargetingObject, TargetingServiceInterface } from '@wikia/core';
 import { createStubInstance, SinonStubbedInstance } from 'sinon';
 

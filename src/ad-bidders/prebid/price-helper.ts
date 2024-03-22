@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Dictionary } from '@ad-engine/core';
 import { adaptersRegistry } from './adapters-registry';
 import { getWinningBid } from './prebid-helper';

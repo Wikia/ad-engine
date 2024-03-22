@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 type Condition = () => boolean;
 
 export class WaitFor {

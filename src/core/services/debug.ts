@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { queryString } from '../utils/query-string';
 import { CookieStorageAdapter } from './cookie-storage-adapter';
 

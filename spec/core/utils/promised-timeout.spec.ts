@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { utils } from '@wikia/core';
 import { expect } from 'chai';
 import { SinonFakeTimers } from 'sinon';

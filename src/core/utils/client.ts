@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 // blockadblock doesn't export anything meaningful
 // it sets blockAdBlock and BlockAdBlock properties on window
 import 'blockadblock';
