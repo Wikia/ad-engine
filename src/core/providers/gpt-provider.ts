@@ -57,6 +57,11 @@ function configure(): void {
 
 	tag.addEventListener('slotRequested', (event: googletag.events.SlotRequestedEvent) => {
 		const adSlot = getAdSlotFromEvent(event);
+
+		if (!adSlot) {
+			return;
+		}
+
 		adSlot.setStatus(AdSlotStatus.STATUS_REQUESTED);
 		adSlot.emit(AdSlotEvent.SLOT_REQUESTED_EVENT);
 	});
@@ -64,7 +69,7 @@ function configure(): void {
 	tag.addEventListener('slotOnload', (event: googletag.events.SlotOnloadEvent) => {
 		const adSlot = getAdSlotFromEvent(event);
 
-		adSlot.emit(AdSlotEvent.SLOT_LOADED_EVENT);
+		adSlot?.emit(AdSlotEvent.SLOT_LOADED_EVENT);
 	});
 
 	tag.addEventListener('slotRenderEnded', (event: googletag.events.SlotRenderEndedEvent) => {
@@ -72,6 +77,11 @@ function configure(): void {
 		// Let's launch our callback in a setTimeout instead.
 		defer(() => {
 			const adSlot = getAdSlotFromEvent(event);
+
+			if (!adSlot) {
+				return;
+			}
+
 			const adType = getAdType(event, adSlot.getIframe());
 
 			adjustIframeSize(adSlot);
@@ -83,7 +93,7 @@ function configure(): void {
 	tag.addEventListener('impressionViewable', (event: googletag.events.ImpressionViewableEvent) => {
 		const adSlot = getAdSlotFromEvent(event);
 
-		adSlot.emit(AdSlotEvent.SLOT_VIEWED_EVENT);
+		adSlot?.emit(AdSlotEvent.SLOT_VIEWED_EVENT);
 	});
 
 	tag.addEventListener(
@@ -91,12 +101,16 @@ function configure(): void {
 		function (event: googletag.events.SlotVisibilityChangedEvent) {
 			const adSlot = getAdSlotFromEvent(event);
 
-			adSlot?.emit(AdSlotEvent.SLOT_VISIBILITY_CHANGED, event);
+			if (!adSlot) {
+				return;
+			}
+
+			adSlot.emit(AdSlotEvent.SLOT_VISIBILITY_CHANGED, event);
 
 			if (event.inViewPercentage > 50) {
-				return adSlot?.emit(AdSlotEvent.SLOT_BACK_TO_VIEWPORT, event);
+				return adSlot.emit(AdSlotEvent.SLOT_BACK_TO_VIEWPORT, event);
 			} else if (event.inViewPercentage < 50) {
-				return adSlot?.emit(AdSlotEvent.SLOT_LEFT_VIEWPORT, event);
+				return adSlot.emit(AdSlotEvent.SLOT_LEFT_VIEWPORT, event);
 			}
 		},
 	);
