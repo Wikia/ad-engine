@@ -1,5 +1,6 @@
 import {
 	Apstag,
+	Ats,
 	Audigent,
 	CcpaSignalPayload,
 	communicationService,
@@ -18,6 +19,7 @@ export class NoAdsMode implements DiProcess {
 	constructor(
 		private pipeline: PartnerPipeline,
 		private noAdsDetector: NoAdsDetector,
+		private ats: Ats,
 		private audigent: Audigent,
 	) {}
 
@@ -41,6 +43,7 @@ export class NoAdsMode implements DiProcess {
 		}
 
 		this.pipeline
+			.add(this.ats)
 			.add(this.audigent)
 			.execute()
 			.then(() => {
