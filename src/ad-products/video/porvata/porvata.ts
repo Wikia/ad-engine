@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { AdSlotEvent, slotService, SlotTargeting, utils } from '@ad-engine/core';
 import { PorvataFactory } from './porvata-factory';
 import { PorvataListener } from './porvata-listener';

@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Dictionary } from '@wikia/ad-engine';
 import { TrackingUrl } from '../../setup/tracking-urls';
 import { DataWarehouseParams } from '../data-warehouse';

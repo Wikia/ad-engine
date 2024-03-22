@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { jwpEvents } from '@wikia/ad-products/video/jwplayer/streams/jwplayer-events';
 import {
 	createJwpStream,

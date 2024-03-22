@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { TEMPLATE, UapParams, UapState } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { UapDomReader } from './uap-dom-reader';

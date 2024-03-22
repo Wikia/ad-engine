@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { AdSlot, AdSlotEvent, TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { DomManipulator } from '../../helpers/manipulators/dom-manipulator';

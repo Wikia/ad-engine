@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { DiProcess, targetingService } from '@wikia/ad-engine';
 
 export class UcpNoAdsWikiContextSetup implements DiProcess {

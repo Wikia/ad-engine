@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Injectable } from '@wikia/dependency-injection';
 import { ElementManipulator } from './element-manipulator';
 

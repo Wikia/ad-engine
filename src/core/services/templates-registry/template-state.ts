@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { createExtendedPromise } from '../../utils';
 import { TemplateStateHandler } from './template-state-handler';
 import { TemplateTransition } from './template-state-transition';

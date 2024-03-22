@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { AdSlot, RepeatConfig, SlotConfig } from '../models';
 import { generateUniqueId, logger, stringBuilder } from '../utils';
 import { context } from './context-service';

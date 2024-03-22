@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { SlotCreator, SlotCreatorConfig, SlotCreatorWrapperConfig, utils } from '@wikia/ad-engine';
 import { slotsContext } from '../slots/slots-context';
 

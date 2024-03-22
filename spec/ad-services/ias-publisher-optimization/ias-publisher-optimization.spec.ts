@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { IasPublisherOptimization } from '@wikia/ad-services';
 import {
 	context,
