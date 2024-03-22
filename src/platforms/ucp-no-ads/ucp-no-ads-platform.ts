@@ -2,6 +2,7 @@ import {
 	ensureGeoCookie,
 	InstantConfigSetup,
 	MetricReporterSetup,
+	NoAdsMode,
 	PlatformContextSetup,
 	TrackingParametersSetup,
 } from '@platforms/shared';
@@ -28,6 +29,7 @@ export class UcpNoAdsPlatform {
 			UcpNoAdsBaseContextSetup,
 			IdentitySetup,
 			UcpNoAdsTrackingSetup,
+			NoAdsMode,
 		);
 		this.pipeline.execute();
 	}
