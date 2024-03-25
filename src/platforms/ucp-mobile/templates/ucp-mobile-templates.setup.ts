@@ -3,7 +3,6 @@ import { registerInterstitialTemplate } from '@platforms/shared';
 import { DiProcess, logTemplates, TemplateRegistry, templateService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
-import { registerBfaaTemplate } from './bfaa-template';
 import { registerBfabTemplate } from './bfab-template';
 import { registerFloorAdhesionTemplate } from './floor-adhesion-template';
 import { registerRoadblockTemplate } from './roadblock-template';
@@ -16,13 +15,12 @@ export class UcpMobileTemplatesSetup implements DiProcess {
 	}
 
 	execute(): void {
-		const bfaa$ = registerBfaaTemplate(this.registry);
 		const bfab$ = registerBfabTemplate(this.registry);
 		const stickyTlb$ = registerStickyTlbTemplate(this.registry);
 		const roadblock$ = registerRoadblockTemplate(this.registry);
 		const floorAdhesion$ = registerFloorAdhesionTemplate(this.registry);
 		const interstitial$ = registerInterstitialTemplate(this.registry);
 
-		logTemplates(merge(bfaa$, bfab$, stickyTlb$, roadblock$, floorAdhesion$, interstitial$));
+		logTemplates(merge(bfab$, stickyTlb$, roadblock$, floorAdhesion$, interstitial$));
 	}
 }

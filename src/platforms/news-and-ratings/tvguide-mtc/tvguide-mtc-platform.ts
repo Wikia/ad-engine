@@ -15,7 +15,6 @@ import { basicContext } from './ad-context';
 import { MtcAdsMode } from './setup/MtcAdsMode';
 import { TvGuideMtcSlotsContextSetup } from './setup/slots/tvguide-mtc-slots-context.setup';
 import { TvGuideMTCContextSetup } from './setup/wiki-context.setup';
-import { TvGuideMtcTemplatesSetup } from './templates/tvguide-mtc-templates.setup';
 
 @Injectable()
 export class TvGuideMTCPlatform {
@@ -33,7 +32,6 @@ export class TvGuideMTCPlatform {
 			IdentitySetup,
 			TrackingSetup,
 			TvGuideMTCContextSetup,
-			TvGuideMtcTemplatesSetup,
 			TvGuideMtcSlotsContextSetup,
 			MtcAdsMode,
 			NoAdsMode,

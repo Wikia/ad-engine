@@ -23,13 +23,13 @@ export class CloseToTransitionButtonHandler implements TemplateStateHandler {
         }).render();
 
         this.helper.appendOnScroll(this.button).pipe(takeUntil(this.unsubscribe$)).subscribe();
-        console.log('>>> close enter', this.button);
     }
 
 
     async onLeave(): Promise<void> {
-        console.log('>>> close leave', this.button);
         this.unsubscribe$.next();
-        this.button.remove();
+        if (this.button) {
+            this.button.remove();
+        }
     }
 }

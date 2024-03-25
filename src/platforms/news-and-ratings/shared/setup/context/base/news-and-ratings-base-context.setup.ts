@@ -1,5 +1,6 @@
 import { context, Dictionary, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { loadNewUap } from "../../../../../../core/services/load-new-uap";
 
 @Injectable()
 export class NewsAndRatingsBaseContextSetup implements DiProcess {
@@ -11,6 +12,8 @@ export class NewsAndRatingsBaseContextSetup implements DiProcess {
 		this.setupServicesOptions();
 		this.setupVideo();
 		this.setupStickySlotContext();
+		context.set('uap.slots.toEnable', Object.keys(context.get('slots')));
+		loadNewUap();
 	}
 
 	private setBaseState(): void {

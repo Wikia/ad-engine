@@ -3,7 +3,6 @@ import { DiProcess, logTemplates, TemplateRegistry, templateService } from '@wik
 import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
 import {
-	registerBfaaTemplate,
 	registerFloorAdhesionTemplate,
 	registerStickyTlbTemplate,
 } from '../../shared';
@@ -16,10 +15,9 @@ export class MetacriticNeutronTemplatesSetup implements DiProcess {
 	}
 
 	execute(): void {
-		const bfaa$ = registerBfaaTemplate(this.registry, registerUapDomElements);
 		const floorAdhesion$ = registerFloorAdhesionTemplate(this.registry);
 		const stickyTlb$ = registerStickyTlbTemplate(this.registry, registerUapDomElements);
 
-		logTemplates(merge(bfaa$, floorAdhesion$, stickyTlb$));
+		logTemplates(merge(floorAdhesion$, stickyTlb$));
 	}
 }

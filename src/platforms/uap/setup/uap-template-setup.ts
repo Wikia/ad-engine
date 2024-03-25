@@ -33,22 +33,17 @@ import { VideoDomManager } from "./handlers/video/utils/video-dom-manager";
 import { VideoDomReader } from "./handlers/video/utils/video-dom-reader";
 
 export class UapTemplateSetup {
-    private activeState = 'zero';
     private handlersPerState;
-    private params;
 
     start(params) {
-        this.params = params;
         this.handlersPerState = this.getTemplateState(params);
         this.activateState('initial');
-        console.log('>>> UapTemplateSetup >>>', this.handlersPerState, this.params, this.activeState);
 
         // @TODO: add listener to slot destroying and call function "runHandlersDestroy"
     }
 
     private async activateState(stateName: string): Promise<void> {
         await this.runHandlersLeaving(this.getHandlers(stateName));
-        this.activeState = stateName;
         await this.runHandlersEntering(this.getHandlers(stateName));
 
         Promise.resolve({});
@@ -59,7 +54,6 @@ export class UapTemplateSetup {
     }
 
     private async runHandlersLeaving(handlers) {
-        console.log('>>>> LEAVING', this.activeState);
         handlers.forEach(async (handler) => {
             if (handler.onLeave && typeof handler.onLeave === 'function') {
                 await handler.onLeave();
@@ -68,7 +62,6 @@ export class UapTemplateSetup {
     }
 
     private async runHandlersEntering(handlers) {
-        console.log('>>>> ENTERING', this.activeState);
         handlers.forEach(async (handler) => {
             if (handler.onEnter && typeof handler.onEnter === 'function') {
                 await handler.onEnter(this.activateState.bind(this)); // TemplateTransition

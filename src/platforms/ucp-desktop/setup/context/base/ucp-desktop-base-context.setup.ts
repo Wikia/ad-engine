@@ -1,6 +1,7 @@
 import { BaseContextSetup } from '@platforms/shared';
 import { context } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { loadNewUap } from "../../../../../core/services/load-new-uap";
 
 @Injectable()
 export class UcpDesktopBaseContextSetup extends BaseContextSetup {
@@ -16,5 +17,14 @@ export class UcpDesktopBaseContextSetup extends BaseContextSetup {
 			'options.userId',
 			(window.mw as any).config.get('wgTrackID') || (window.mw as any).config.get('wgUserId'),
 		);
+
+		context.set('uap.slots.toEnable', [
+			'top_boxad',
+			'incontent_boxad_1',
+			'bottom_leaderboard',
+			'gallery_leaderboard',
+			'fandom_dt_galleries',
+		]);
+		loadNewUap();
 	}
 }

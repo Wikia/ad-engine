@@ -39,17 +39,8 @@ export class Porvata {
 	) {}
 
 	private addOnViewportChangeListener(
-		// params: PorvataTemplateParams,
 		listener: (isVisible: boolean) => void,
 	) {
-		// return viewportObserver.addListener(
-		// 	params.viewportHookElement || params.container,
-		// 	listener,
-		// 	{
-		// 		offsetTop: params.viewportOffsetTop || 0,
-		// 		offsetBottom: params.viewportOffsetBottom || 0,
-		// 	},
-		// );
 		return this.domListener.scroll$
 			.pipe(
 				tap(() => listener),
@@ -108,7 +99,7 @@ export class Porvata {
 				}
 			}
 
-			function setupAutoPlayMethod(): void {
+			const setupAutoPlayMethod = () => {
 				if (!params.startInViewportOnly && params.autoPlay && !autoPlayed) {
 					autoPlayed = true;
 					player.play();
@@ -116,8 +107,6 @@ export class Porvata {
 					this.addOnViewportChangeListener(inViewportCallback);
 				}
 			}
-
-			setupAutoPlayMethod.bind(this);
 
 			porvataListener.registerVideoEvents(player);
 
