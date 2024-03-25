@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Action, Communicator, setupPostQuecast } from '@wikia/post-quecast';
 import { fromEventPattern, merge, Observable, Subject } from 'rxjs';
 import { filter, shareReplay, skip, take } from 'rxjs/operators';

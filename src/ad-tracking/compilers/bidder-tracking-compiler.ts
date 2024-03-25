@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { slotService } from '@ad-engine/core';
 import { CompilerPartial } from '../base-tracker';
 
@@ -19,6 +20,10 @@ export const bidderTrackingCompiler = ({ bid, data }: CompilerPartial): Compiler
 
 	if (bid.buyerId) {
 		additionalFlags.push(`buyer_id=${bid.buyerId}`);
+	}
+
+	if (bid.additionalInfo?.dsa) {
+		additionalFlags.push(`dsa=${JSON.stringify(bid.additionalInfo.dsa)}`);
 	}
 
 	return {

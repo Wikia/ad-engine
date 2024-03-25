@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { communicationService } from '@ad-engine/communication';
 import { utils } from '@ad-engine/core';
 import { AD_ENGINE_VIDEO_TOGGLE_UI_OVERLAY_CLICKED } from "../../../../communication/events/events-ad-engine-video";

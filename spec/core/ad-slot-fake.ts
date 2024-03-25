@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { communicationService } from '@wikia/communication';
 import { AD_ENGINE_SLOT_EVENT } from "@wikia/communication/events/events-ad-engine-slot";
 

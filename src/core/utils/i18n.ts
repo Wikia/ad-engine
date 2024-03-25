@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { context } from '../services/context-service';
 import { TRANSLATIONS } from './translations';
 

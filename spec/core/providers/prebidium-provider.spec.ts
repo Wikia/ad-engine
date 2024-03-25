@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { communicationService } from '@wikia/communication';
 import { PrebidiumProvider, targetingService } from '@wikia/core';
 import { IframeBuilder } from '@wikia/core/utils';

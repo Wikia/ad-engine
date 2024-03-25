@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Dictionary } from '../models';
 import { queryString } from '../utils';
 import { Adx } from "../providers/gpt-provider-const";

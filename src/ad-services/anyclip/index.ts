@@ -1,17 +1,14 @@
+// @ts-strict-ignore
 import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
 import {
 	AdSlot,
 	BaseServiceSetup,
 	context,
-	incontentVideoRemovalExperimentName,
-	incontentVideoRemovalVariationName,
-	isIncontentPlayerRemovalVariationActive,
 	slotDataParamsUpdater,
 	slotService,
 	targetingService,
 	utils,
 } from '@ad-engine/core';
-import { DataWarehouseTracker } from '../../platforms/shared';
 import { AnyclipBidsRefresher } from './anyclip-bids-refresher';
 import { AnyclipTracker } from './anyclip-tracker';
 import { AD_ENGINE_UAP_LOAD_STATUS } from "../../communication/events/events-ad-engine-uap";
@@ -64,32 +61,10 @@ export class Anyclip extends BaseServiceSetup {
 
 	private tracker: AnyclipTracker;
 	private bidRefresher: AnyclipBidsRefresher;
-	private dwTracker: DataWarehouseTracker;
 
 	call() {
 		if (!this.isEnabled('services.anyclip.enabled', false)) {
 			utils.logger(logGroup, 'disabled');
-			return;
-		}
-
-		this.dwTracker = new DataWarehouseTracker();
-
-		if (Anyclip.isApplicable()) {
-			this.dwTracker.track({
-				value: 'anyclip-in-content',
-				action: 'impression',
-				label: incontentVideoRemovalVariationName,
-				category: incontentVideoRemovalExperimentName,
-			});
-		}
-
-		if (Anyclip.isApplicable() && isIncontentPlayerRemovalVariationActive()) {
-			this.dwTracker.track({
-				value: 'anyclip-in-content',
-				action: 'player-removed',
-				label: incontentVideoRemovalVariationName,
-				category: incontentVideoRemovalExperimentName,
-			});
 			return;
 		}
 

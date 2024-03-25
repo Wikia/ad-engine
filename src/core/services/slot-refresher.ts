@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { communicationService, UapLoadStatus } from '@ad-engine/communication';
 import { AdSlot, AdSlotEvent } from '../models';
 import { GptProvider } from '../providers';

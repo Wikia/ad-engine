@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { communicationService } from '@ad-engine/communication';
 import { utils } from '@ad-engine/core';
 import { createIcon, icons } from '../icons';

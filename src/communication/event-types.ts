@@ -36,6 +36,9 @@ export interface TrackingBidDefinition {
 	slotName: string;
 	size: string;
 	timeToRespond: number;
+	additionalInfo?: {
+		dsa?: object;
+	};
 }
 
 export interface UapLoadStatus {

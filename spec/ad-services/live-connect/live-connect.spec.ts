@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { LiveConnect } from '@wikia/ad-services';
 import { communicationService, eventsRepository } from '@wikia/communication';
 import { context, InstantConfigService, utils } from '@wikia/core';

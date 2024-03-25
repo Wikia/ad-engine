@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { RxJsOperator } from '@ad-engine/core';
 import { Action } from '@wikia/post-quecast';
 import { Observable } from 'rxjs';

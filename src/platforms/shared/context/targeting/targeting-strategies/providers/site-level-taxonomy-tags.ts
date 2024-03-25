@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { TargetingProvider } from '../interfaces/targeting-provider';
 import { FandomContext } from '../models/fandom-context';
 

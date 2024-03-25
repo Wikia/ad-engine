@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { communicationService, UapLoadStatus } from '@ad-engine/communication';
 import { context, Dictionary, targetingService } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';

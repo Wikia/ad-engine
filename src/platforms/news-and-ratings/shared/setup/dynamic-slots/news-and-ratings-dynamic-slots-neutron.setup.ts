@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { insertSlots, SlotSetupDefinition } from '@platforms/shared';
 import {
 	AdSlot,

@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { slotTweaker } from '@ad-engine/core';
 import { PorvataPlayer } from '../../../video/porvata/porvata-player';
 

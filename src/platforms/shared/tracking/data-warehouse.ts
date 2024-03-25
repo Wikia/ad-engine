@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { context, targetingService, trackingOptIn, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { AdEngineStageSetup } from '../setup/ad-engine-stage.setup';

@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 export class IframeBuilder {
 	create(element: HTMLElement, htmlContent?: string): HTMLIFrameElement {
 		const iframe = this.createEmptyIframe();

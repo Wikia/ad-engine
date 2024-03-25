@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { logger } from '../utils/logger';
 
 export enum GlobalContextCategories {

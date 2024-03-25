@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Anyclip, Connatix } from '@wikia/ad-services';
 import { communicationService, eventsRepository } from '@wikia/communication';
 import { AdSlot, AdSlotStatus, context, DomListener, InstantConfigService } from '@wikia/core';
@@ -37,7 +38,7 @@ describe('floor_adhesion on ucp-mobile', () => {
 	const nativoDefinitionRepositoryMock = new NativoSlotsDefinitionRepository(new DomListener());
 	const quizDefinitionRepositoryMock = new QuizSlotsDefinitionRepository();
 	const anyclipMock = new Anyclip();
-	const connatixMock = new Connatix(null, null, null, null, null);
+	const connatixMock = new Connatix(null, null, null, null);
 	const galleryLightboxAdsMock = {
 		handler: new GalleryLightboxAdsHandler(
 			new UcpMobileSlotsDefinitionRepository(instantConfig, openWebService, ucpMobileExperiments),

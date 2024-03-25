@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { communicationService, UapLoadStatus } from '@ad-engine/communication';
 import {
 	BaseServiceSetup,
@@ -8,7 +9,7 @@ import {
 } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
 import { PlacementsHandler } from './utils/placements-handler';
-import {AD_ENGINE_UAP_LOAD_STATUS} from "../../communication/events/events-ad-engine-uap";
+import { AD_ENGINE_UAP_LOAD_STATUS } from "../../communication/events/events-ad-engine-uap";
 
 const logGroup = 'open-web';
 

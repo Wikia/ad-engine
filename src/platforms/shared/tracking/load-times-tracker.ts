@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { communicationService, eventsRepository, utils } from '@wikia/ad-engine';
 import { trackingUrls } from '../setup/tracking-urls';
 import { DataWarehouseTracker } from './data-warehouse';
