@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Injectable } from '@wikia/dependency-injection';
 import { context, InstantConfigService } from '../../../services';
 import { isCoppaSubject, logger, WaitFor } from '../../../utils';

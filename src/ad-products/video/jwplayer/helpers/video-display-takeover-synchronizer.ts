@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { displayAndVideoAdsSyncContext, utils } from '@ad-engine/core';
 import { universalAdPackage } from '../../../templates';
 

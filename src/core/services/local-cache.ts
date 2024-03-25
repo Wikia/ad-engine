@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Dictionary } from '../models';
 import { Storage, UniversalStorage } from './universal-storage';
 

@@ -17,6 +17,7 @@ interface Window {
 	beacon_id?: string;
 	captify_kw_query_12974?: string;
 	canPlayVideo?: any;
+	fandomIsVideoPossible?: () => boolean;
 	cnx?: any;
 	confiant?: Confiant;
 	dataLayer: any;
@@ -63,4 +64,5 @@ interface Window {
 	wgCookiePath?: string;
 	XMLHttpRequest?: any;
 	pathfinderModulesReady?: bool;
+	OneTrust?: any;
 }

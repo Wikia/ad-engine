@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { TargetingObject, TargetingService, targetingService } from '@wikia/core';
 import { AdSlot } from '@wikia/core/models/ad-slot';
 import { context } from '@wikia/core/services/context-service';

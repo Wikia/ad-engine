@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { context } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
@@ -37,7 +38,6 @@ export class Triplelift extends PrebidAdapter {
 		{ sizes, inventoryCodes }: PrebidAdSlotConfig,
 	): PrebidAdUnit {
 		const newSizes = this.filterSizesForRefreshing(code, sizes);
-		// TODO inventory code
 		return {
 			code,
 			mediaTypes: {

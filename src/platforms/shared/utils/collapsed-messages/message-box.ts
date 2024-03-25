@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { communicationService, eventsRepository, type AdSlot } from '@wikia/ad-engine';
 import type { MessageBoxType } from './message-box-type';
 

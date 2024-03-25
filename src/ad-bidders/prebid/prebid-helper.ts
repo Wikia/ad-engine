@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { context, Dictionary, pbjsFactory, slotService } from '@ad-engine/core';
 import { isUsedAsAlias } from '../bidder-helper';
 import { intentIQ } from './intent-iq';

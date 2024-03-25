@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Anyclip, Connatix } from '@wikia/ad-services';
 import { communicationService, eventsRepository } from '@wikia/communication';
 import { AdSlot, AdSlotStatus, context, DomListener, InstantConfigService } from '@wikia/core';

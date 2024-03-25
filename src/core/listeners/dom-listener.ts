@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Injectable } from '@wikia/dependency-injection';
 import { animationFrameScheduler, fromEvent, Observable } from 'rxjs';
 import { observeOn, publish, refCount } from 'rxjs/operators';
