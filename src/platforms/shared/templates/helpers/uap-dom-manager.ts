@@ -73,30 +73,27 @@ export class UapDomManager {
 			.setProperty('clip', this.reader.getSlotHeightClipping());
 	}
 
-	resizePlaceholderToIframe(adSlot: AdSlot) {
-		const iframe = adSlot.getIframe();
-		const placeholderHeight = `${Number(iframe.height) + 39}px`;
+	resizePlaceholderToIframe(height: number) {
+		const PLACEHOLDER_HEIGHT_OVERHEAD = 39;
+		const slotRefresherConfig = context.get('slotConfig.slotRefresher.sizes') || {};
 
-		this.setSlotHeight(placeholderHeight);
-		this.setPlaceholderHeight(placeholderHeight);
+		if (this.adSlot.getSlotName() in slotRefresherConfig) {
+			const iframe = this.adSlot.getIframe();
+			const placeholderHeight = `${Number(iframe.height) + PLACEHOLDER_HEIGHT_OVERHEAD}px`;
+
+			this.setSlotHeight(placeholderHeight);
+			this.setPlaceholderHeight(placeholderHeight);
+		} else {
+			this.setPlaceholderHeight(`${height}px`);
+		}
 	}
 
 	setPlaceholderHeightResolved(): void {
-		const slotRefresherConfig = context.get('slotConfig.slotRefresher.sizes') || {};
-		if (this.adSlot.getSlotName() in slotRefresherConfig) {
-			this.resizePlaceholderToIframe(this.adSlot);
-		} else {
-			this.setPlaceholderHeight(`${this.reader.getSlotHeightResolved()}px`);
-		}
+		this.resizePlaceholderToIframe(this.reader.getSlotHeightResolved());
 	}
 
 	setPlaceholderHeightImpact(): void {
-		const slotRefresherConfig = context.get('slotConfig.slotRefresher.sizes') || {};
-		if (this.adSlot.getSlotName() in slotRefresherConfig) {
-			this.resizePlaceholderToIframe(this.adSlot);
-		} else {
-			this.setPlaceholderHeight(`${this.reader.getSlotHeightImpact()}px`);
-		}
+		this.resizePlaceholderToIframe(this.reader.getSlotHeightImpact());
 	}
 
 	private setPlaceholderHeight(height: string): void {
