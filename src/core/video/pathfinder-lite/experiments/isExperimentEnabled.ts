@@ -7,6 +7,6 @@ export default function isExperimentEnabled(
 	instantConfig: InstantConfigService,
 	experimentName: string,
 	experiment: RunningExperimentType,
-): Experiment {
-	return instantConfig.get('icExperiments', []).includes(experimentName) && experiment;
+): boolean {
+	return instantConfig.get('icExperiments', []).includes(experimentName) && !!experiment;
 }

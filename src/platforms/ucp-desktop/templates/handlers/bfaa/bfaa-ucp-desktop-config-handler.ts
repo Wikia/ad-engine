@@ -12,17 +12,17 @@ import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })
 export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
+	private defaultEnabledSlots: string[] = ['top_boxad', 'incontent_boxad_1', 'bottom_leaderboard'];
 	private enabledSlots: string[] = [
-		'top_boxad',
-		'incontent_boxad_1',
-		'bottom_leaderboard',
-		'floor_adhesion',
+		...this.defaultEnabledSlots,
+		'gallery_leaderboard',
+		'fandom_dt_galleries',
 	];
 
 	constructor(@Inject(TEMPLATE.PARAMS) private params: UapParams) {}
 
 	async onEnter(): Promise<void> {
-		document.body.classList.add('floor-adhesion-container');
+		this.configureFloorAdhesionExperiment();
 
 		if (this.params.newTakeoverConfig) {
 			communicationService.emit(eventsRepository.AD_ENGINE_UAP_NTC_LOADED);
@@ -46,5 +46,13 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 			'bottom_leaderboard',
 			universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.unified,
 		);
+	}
+
+	private configureFloorAdhesionExperiment() {
+		if (!context.get('options.disableFloorAdhesion')) {
+			this.enabledSlots = [...this.defaultEnabledSlots, 'floor_adhesion'];
+
+			document.body.classList.add('floor-adhesion-container');
+		}
 	}
 }
