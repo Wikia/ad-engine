@@ -21,6 +21,10 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { UcpDesktopSlotsDefinitionRepository } from './ucp-desktop-slots-definition-repository';
+import {
+	AD_ENGINE_UAP_LOAD_STATUS,
+	AD_ENGINE_UAP_NTC_LOADED
+} from "../../../../communication/events/events-ad-engine-uap";
 
 @Injectable()
 export class UcpDesktopDynamicSlotsSetup implements DiProcess {
@@ -53,7 +57,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
 			slotService.enable('floor_adhesion');
 		} else {
-			communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () =>
+			communicationService.on(AD_ENGINE_UAP_NTC_LOADED, () =>
 				insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]),
 			);
 		}
@@ -127,7 +131,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				porvataClosedActive = true;
 
 				communicationService.on(
-					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+					AD_ENGINE_UAP_LOAD_STATUS,
 					(action: UapLoadStatus) => {
 						if (!action.isLoaded || action.adProduct === 'ruap') {
 							communicationService.onSlotEvent(AdSlotEvent.VIDEO_AD_IMPRESSION, () => {

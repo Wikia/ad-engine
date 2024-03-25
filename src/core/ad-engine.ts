@@ -1,5 +1,5 @@
 // @ts-strict-ignore
-import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { communicationService } from '@ad-engine/communication';
 import { scrollListener } from './listeners';
 import { AdSlot } from './models';
 import { GptProvider, Nativo, NativoProvider, PrebidiumProvider, Provider } from './providers';
@@ -8,13 +8,20 @@ import {
 	btfBlockerService,
 	context,
 	messageBus,
-	registerCustomAdLoader,
+	// registerCustomAdLoader,
 	slotService,
 	slotTweaker,
 	templateService,
 } from './services';
 import { slotRefresher } from './services/slot-refresher';
 import { LazyQueue, logger, makeLazyQueue, OldLazyQueue } from './utils';
+import {
+	AD_ENGINE_PARTNERS_READY,
+	AD_ENGINE_STACK_COMPLETED,
+	AD_ENGINE_STACK_START
+} from "../communication/events/events-ad-engine";
+import { PLATFORM_BEFORE_PAGE_CHANGE } from "../communication/events/events-platform-nar";
+import { loadNewUap } from "./services/load-new-uap";
 
 const logGroup = 'ad-engine';
 
@@ -43,7 +50,7 @@ export class AdEngine {
 		window.ads.runtime = window.ads.runtime || ({} as Runtime);
 
 		communicationService.on(
-			eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE,
+			PLATFORM_BEFORE_PAGE_CHANGE,
 			() => {
 				slotService.removeAll();
 			},
@@ -56,7 +63,8 @@ export class AdEngine {
 		this.setupAdStack();
 		btfBlockerService.init();
 
-		registerCustomAdLoader(context.get('options.customAdLoader.globalMethodName'));
+		// registerCustomAdLoader(context.get('options.customAdLoader.globalMethodName'));
+		loadNewUap();
 		messageBus.init();
 		templateService.subscribeCommunicator();
 		slotTweaker.registerMessageListener(slotService.get.bind(slotService));
@@ -135,13 +143,13 @@ export class AdEngine {
 	}
 
 	runAdQueue() {
-		communicationService.on(eventsRepository.AD_ENGINE_PARTNERS_READY, () => {
+		communicationService.on(AD_ENGINE_PARTNERS_READY, () => {
 			if (!this.started) {
-				communicationService.emit(eventsRepository.AD_ENGINE_STACK_START);
+				communicationService.emit(AD_ENGINE_STACK_START);
 				this.started = true;
 				this.adStack.start();
 
-				communicationService.emit(eventsRepository.AD_ENGINE_STACK_COMPLETED);
+				communicationService.emit(AD_ENGINE_STACK_COMPLETED);
 			}
 		});
 	}

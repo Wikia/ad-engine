@@ -1,5 +1,5 @@
 import { registerUapListener, universalAdPackage } from '@wikia/ad-products';
-import { communicationService, eventsRepository } from '@wikia/communication';
+import { communicationService } from '@wikia/communication';
 import {
 	AdSlotEvent,
 	AdSlotStatus,
@@ -11,6 +11,8 @@ import {
 import { expect } from 'chai';
 import { BehaviorSubject } from 'rxjs';
 import { SinonSpy, SinonStubbedInstance } from 'sinon';
+import { AD_ENGINE_UAP_LOAD_STATUS } from "@wikia/communication/events/events-ad-engine-uap";
+import { AD_ENGINE_SLOT_EVENT } from "@wikia/communication/events/events-ad-engine-slot";
 
 describe('UniversalAdPackage', () => {
 	const UAP_ID = 666;
@@ -19,7 +21,7 @@ describe('UniversalAdPackage', () => {
 	let contextStub: SinonStubbedInstance<Context>;
 	let targetingServiceStub: SinonStubbedInstance<TargetingService>;
 	const uapLoadStatus = communicationService.getGlobalAction(
-		eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+		AD_ENGINE_UAP_LOAD_STATUS,
 	);
 
 	beforeEach(() => {
@@ -92,7 +94,7 @@ describe('UniversalAdPackage', () => {
 		it('should emit event with load status if slot collapsed', () => {
 			global.sandbox.stub(communicationService, 'action$').value(
 				new BehaviorSubject(
-					communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
+					communicationService.getGlobalAction(AD_ENGINE_SLOT_EVENT)({
 						adSlotName,
 						event: AdSlotStatus.STATUS_COLLAPSE,
 					}),
@@ -113,7 +115,7 @@ describe('UniversalAdPackage', () => {
 		it('should emit event with load status if slot forcibly collapsed', () => {
 			global.sandbox.stub(communicationService, 'action$').value(
 				new BehaviorSubject(
-					communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
+					communicationService.getGlobalAction(AD_ENGINE_SLOT_EVENT)({
 						adSlotName,
 						event: AdSlotStatus.STATUS_FORCED_COLLAPSE,
 					}),
@@ -134,7 +136,7 @@ describe('UniversalAdPackage', () => {
 		it('should emit event with load status when templates are loaded', () => {
 			global.sandbox.stub(communicationService, 'action$').value(
 				new BehaviorSubject(
-					communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
+					communicationService.getGlobalAction(AD_ENGINE_SLOT_EVENT)({
 						adSlotName,
 						event: AdSlotEvent.TEMPLATES_LOADED,
 					}),

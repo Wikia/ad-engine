@@ -1,10 +1,11 @@
 // @ts-strict-ignore
-import { communicationService, eventsRepository } from '@wikia/communication';
+import { communicationService } from '@wikia/communication';
 import { PrebidiumProvider, targetingService } from '@wikia/core';
 import { IframeBuilder } from '@wikia/core/utils';
 import { assert } from 'chai';
 import { BehaviorSubject } from 'rxjs';
 import { PbjsStub, stubPbjs } from '../services/pbjs.stub';
+import { BIDDERS_BIDDING_DONE } from "@wikia/communication/events/events-bidders";
 
 describe('PrebidiumProvider', () => {
 	let prebidiumProvider: PrebidiumProvider;
@@ -42,7 +43,7 @@ describe('PrebidiumProvider', () => {
 
 			global.sandbox.stub(communicationService, 'action$').value(
 				new BehaviorSubject(
-					communicationService.getGlobalAction(eventsRepository.BIDDERS_BIDDING_DONE)({
+					communicationService.getGlobalAction(BIDDERS_BIDDING_DONE)({
 						slotName: mock.slotName,
 						provider: 'prebid',
 					}),

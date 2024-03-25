@@ -1,5 +1,6 @@
 // @ts-strict-ignore
-import { communicationService, eventsRepository } from '@wikia/communication';
+import { communicationService } from '@wikia/communication';
+import { AD_ENGINE_SLOT_EVENT } from "@wikia/communication/events/events-ad-engine-slot";
 
 const dataset = {};
 let offsetTop = 1000;
@@ -106,7 +107,7 @@ export const adSlotFake = {
 		offsetTop = offset;
 	},
 	emit(event): void {
-		communicationService.emit(eventsRepository.AD_ENGINE_SLOT_EVENT, {
+		communicationService.emit(AD_ENGINE_SLOT_EVENT, {
 			event,
 			slot: this,
 			adSlotName: this.getSlotName(),

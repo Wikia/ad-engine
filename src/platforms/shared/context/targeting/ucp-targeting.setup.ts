@@ -2,7 +2,6 @@ import {
 	communicationService,
 	context,
 	DiProcess,
-	eventsRepository,
 	InstantConfigService,
 	targetingService,
 	UapLoadStatus,
@@ -14,6 +13,7 @@ import { createOpenRtb2Context } from './targeting-strategies/factories/create-o
 import { createSelectedStrategy } from './targeting-strategies/factories/create-selected-strategy';
 import { TargetingTags } from './targeting-strategies/interfaces/taxonomy-tags';
 import { FandomContext } from './targeting-strategies/models/fandom-context';
+import { AD_ENGINE_UAP_LOAD_STATUS } from "../../../../communication/events/events-ad-engine-uap";
 
 @Injectable()
 export class UcpTargetingSetup implements DiProcess {
@@ -35,7 +35,7 @@ export class UcpTargetingSetup implements DiProcess {
 
 		if (context.get('options.uapExtendedSrcTargeting')) {
 			communicationService.on(
-				eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+				AD_ENGINE_UAP_LOAD_STATUS,
 				(action: UapLoadStatus) => {
 					if (action.isLoaded || action.adProduct === 'ruap') {
 						context.push('src', 'uap');

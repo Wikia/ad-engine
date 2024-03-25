@@ -1,6 +1,7 @@
 // @ts-strict-ignore
-import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { communicationService } from '@ad-engine/communication';
 import { utils } from '@ad-engine/core';
+import { AD_ENGINE_VIDEO_TOGGLE_UI_OVERLAY_CLICKED } from "../../../../communication/events/events-ad-engine-video";
 
 const FADE_OUT_TIMEOUT = 3000;
 const FADE_OUT_ANIMATION_TIME = 1000;
@@ -64,7 +65,7 @@ export class ToggleUI {
 
 			overlay.addEventListener('click', () => {
 				top.open(params.clickThroughURL, '_blank');
-				communicationService.emit(eventsRepository.AD_ENGINE_VIDEO_TOGGLE_UI_OVERLAY_CLICKED, {
+				communicationService.emit(AD_ENGINE_VIDEO_TOGGLE_UI_OVERLAY_CLICKED, {
 					adSlotName: video.settings.getSlotName(),
 					ad_status: 'video-click',
 				});

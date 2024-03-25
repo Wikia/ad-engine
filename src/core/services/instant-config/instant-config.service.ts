@@ -1,5 +1,5 @@
 // @ts-strict-ignore
-import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { communicationService } from '@ad-engine/communication';
 import {
 	BrowserMatcher,
 	DeviceMatcher,
@@ -13,6 +13,7 @@ import {
 } from '@wikia/instant-config-loader';
 import { InstantConfigCacheStorage, utils } from '../../index';
 import { Dictionary } from '../../models';
+import { AD_ENGINE_INSTANT_CONFIG_CACHE_RESET } from "../../../communication/events/events-ad-engine";
 
 const logGroup = 'instant-config-service';
 
@@ -49,7 +50,7 @@ export class InstantConfigService implements InstantConfigServiceInterface {
 		utils.logger(logGroup, 'instantiated with', this.repository);
 
 		communicationService.on(
-			eventsRepository.AD_ENGINE_INSTANT_CONFIG_CACHE_RESET,
+			AD_ENGINE_INSTANT_CONFIG_CACHE_RESET,
 			() => {
 				this.repository = this.interpreter.getValues();
 			},

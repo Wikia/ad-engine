@@ -17,7 +17,6 @@ import {
 	communicationService,
 	conditional,
 	context,
-	eventsRepository,
 	IdentitySetup,
 	logVersion,
 	parallel,
@@ -33,6 +32,7 @@ import { F2SlotsContextSetup } from './setup/context/slots/f2-slots-context.setu
 import { F2TargetingSetup } from './setup/context/targeting/f2-targeting.setup';
 import { F2DynamicSlotsSetup } from './setup/dynamic-slots/f2-dynamic-slots.setup';
 import { F2TemplatesSetup } from './templates/f2-templates.setup';
+import { AD_ENGINE_CONFIGURED } from "../../communication/events/events-ad-engine";
 
 @Injectable()
 export class F2Platform {
@@ -62,7 +62,7 @@ export class F2Platform {
 			LabradorSetup,
 			TrackingSetup,
 			BiddersTargetingUpdater,
-			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
+			() => communicationService.emit(AD_ENGINE_CONFIGURED),
 		);
 
 		// Run

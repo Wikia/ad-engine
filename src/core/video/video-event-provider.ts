@@ -1,7 +1,8 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { communicationService } from '@ad-engine/communication';
 import { utils } from '../index';
 import { VideoData, VideoEventData } from '../listeners';
 import { context, targetingService } from '../services';
+import { VIDEO_EVENT, VIDEO_PLAYER_TRACKING } from "../../communication/events/events-video";
 
 export class VideoEventProvider {
 	static getEventData(videoData: VideoData): VideoEventData {
@@ -36,10 +37,10 @@ export class VideoEventProvider {
 			return;
 		}
 
-		communicationService.emit(eventsRepository.VIDEO_PLAYER_TRACKING, { eventInfo });
+		communicationService.emit(VIDEO_PLAYER_TRACKING, { eventInfo });
 	}
 
 	static emitVideoEvent(videoEvent): void {
-		communicationService.emit(eventsRepository.VIDEO_EVENT, { videoEvent });
+		communicationService.emit(VIDEO_EVENT, { videoEvent });
 	}
 }

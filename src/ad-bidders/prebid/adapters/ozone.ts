@@ -1,8 +1,9 @@
 // @ts-strict-ignore
-import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
+import { communicationService, UapLoadStatus } from '@ad-engine/communication';
 import { context, Dictionary, targetingService } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
+import { AD_ENGINE_UAP_LOAD_STATUS } from "../../../communication/events/events-ad-engine-uap";
 
 export class Ozone extends PrebidAdapter {
 	static bidderName = 'ozone';
@@ -41,7 +42,7 @@ export class Ozone extends PrebidAdapter {
 			});
 
 			communicationService.on(
-				eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+				AD_ENGINE_UAP_LOAD_STATUS,
 				(action: UapLoadStatus) => {
 					if (action.adProduct && action.adProduct !== 'none') {
 						Object.keys(ozoneContext.slots).forEach((slotName) => {

@@ -1,7 +1,6 @@
 import {
 	communicationService,
 	context,
-	eventsRepository,
 	TEMPLATE,
 	TemplateDependency,
 	TemplateStateHandler,
@@ -9,6 +8,7 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { RoadblockParams } from './roadblock-params';
+import { AD_ENGINE_UAP_NTC_LOADED } from "../../../../../communication/events/events-ad-engine-uap";
 
 const ROADBLOCK_CONFIG = Symbol('Roadblock Config');
 
@@ -39,7 +39,7 @@ export class RoadblockHandler implements TemplateStateHandler {
 				this.config.enabledSlots.push('floor_adhesion');
 			}
 
-			communicationService.emit(eventsRepository.AD_ENGINE_UAP_NTC_LOADED);
+			communicationService.emit(AD_ENGINE_UAP_NTC_LOADED);
 		}
 
 		if (this.params.stickedTlb) {

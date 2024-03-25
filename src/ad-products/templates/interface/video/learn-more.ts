@@ -1,7 +1,8 @@
 // @ts-strict-ignore
-import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { communicationService } from '@ad-engine/communication';
 import { utils } from '@ad-engine/core';
 import { createIcon, icons } from '../icons';
+import { AD_ENGINE_VIDEO_LEARN_MORE_CLICKED } from "../../../../communication/events/events-ad-engine-video";
 
 export class LearnMore {
 	static add(video, container, params): void {
@@ -17,7 +18,7 @@ export class LearnMore {
 		learnMore.addEventListener('click', () => {
 			top.open(params.clickThroughURL, '_blank');
 
-			communicationService.emit(eventsRepository.AD_ENGINE_VIDEO_LEARN_MORE_CLICKED, {
+			communicationService.emit(AD_ENGINE_VIDEO_LEARN_MORE_CLICKED, {
 				adSlotName: video.settings.getSlotName(),
 				ad_status: 'learn-more-click',
 			});

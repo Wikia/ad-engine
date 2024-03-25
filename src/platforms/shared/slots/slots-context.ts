@@ -3,13 +3,14 @@ import {
 	AdSlot,
 	communicationService,
 	context,
-	eventsRepository,
 	getAdProductInfo,
 	getAdUnitString,
 	PorvataParams,
 	runtimeVariableSetter,
 	slotService,
 } from '@wikia/ad-engine';
+import { AD_ENGINE_STACK_START } from "../../../communication/events/events-ad-engine";
+import { AD_ENGINE_SLOT_ADDED } from "../../../communication/events/events-ad-engine-slot";
 
 export interface SlotsContextInterface {
 	addSlotSize(slotName: string, size: [number, number]): void;
@@ -68,7 +69,7 @@ class SlotsContext implements SlotsContextInterface {
 
 	setupSlotVideoContext(): void {
 		communicationService.on(
-			eventsRepository.AD_ENGINE_SLOT_ADDED,
+			AD_ENGINE_SLOT_ADDED,
 			({ slot }) => {
 				context.onChange(`slots.${slot.getSlotName()}.audio`, () => this.setupSlotParameters(slot));
 				context.onChange(`slots.${slot.getSlotName()}.videoDepth`, () =>
@@ -83,7 +84,7 @@ class SlotsContext implements SlotsContextInterface {
 	}
 
 	setupCustomPlayerAdUnit(slotName = 'incontent_player'): void {
-		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+		communicationService.on(AD_ENGINE_STACK_START, () => {
 			const params = {
 				group: 'VIDEO',
 				adProduct: 'incontent_video',

@@ -2,7 +2,6 @@
 import {
 	CcpaSignalPayload,
 	communicationService,
-	eventsRepository,
 	GdprConsentPayload,
 	TrackingBidDefinition,
 } from '@ad-engine/communication';
@@ -28,6 +27,13 @@ import {
 import { BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { Apstag } from '../wrappers';
 import { A9Bid, A9Bids, A9Config, A9SlotConfig, A9SlotDefinition, PriceMap } from './types';
+import {
+	A9_WITHOUT_CONSENTS,
+	BIDDERS_BIDS_REFRESH,
+	BIDDERS_BIDS_RESPONSE
+} from "../../communication/events/events-bidders";
+import { AD_ENGINE_INVALIDATE_SLOT_TARGETING } from "../../communication/events/events-ad-engine-slot";
+import { AD_ENGINE_CONSENT_READY, AD_ENGINE_CONSENT_UPDATE } from "../../communication/events/events-ad-engine";
 
 const logGroup = 'A9Provider';
 
@@ -103,8 +109,8 @@ export class A9Provider extends BidderProvider {
 					this.removeBids(slot),
 				);
 				communicationService.on(
-					eventsRepository.AD_ENGINE_INVALIDATE_SLOT_TARGETING,
-					({ slot }) => this.invalidateSlotTargeting(slot),
+					AD_ENGINE_INVALIDATE_SLOT_TARGETING,
+					({ slotName }) => { this.invalidateSlotTargeting(slotService.get(slotName)) },
 					false,
 				);
 			}
@@ -117,12 +123,12 @@ export class A9Provider extends BidderProvider {
 					this.apstag.sendHEM(record, consents);
 				}
 			}, 500);
-			communicationService.on(eventsRepository.AD_ENGINE_CONSENT_UPDATE, listener, false);
-			communicationService.on(eventsRepository.AD_ENGINE_CONSENT_READY, listener, true);
+			communicationService.on(AD_ENGINE_CONSENT_UPDATE, listener, false);
+			communicationService.on(AD_ENGINE_CONSENT_READY, listener, true);
 
 			if (!trackingOptIn.isOptedIn() || trackingOptIn.isOptOutSale()) {
 				utils.logger(logGroup, 'A9 was initialized without consents');
-				communicationService.emit(eventsRepository.A9_WITHOUT_CONSENTS);
+				communicationService.emit(A9_WITHOUT_CONSENTS);
 			}
 
 			this.loaded = true;
@@ -193,7 +199,7 @@ export class A9Provider extends BidderProvider {
 
 				this.updateBidSlot(slotName, keys, bidTargeting, expirationDate);
 
-				communicationService.emit(eventsRepository.BIDDERS_BIDS_RESPONSE, {
+				communicationService.emit(BIDDERS_BIDS_RESPONSE, {
 					bidResponse: A9Provider.mapResponseToTrackingBidDefinition(
 						bid.slotID,
 						bidTargeting,
@@ -209,7 +215,7 @@ export class A9Provider extends BidderProvider {
 		if (refresh) {
 			const refreshedSlotNames = slots.map((slot) => slot.slotName);
 
-			communicationService.emit(eventsRepository.BIDDERS_BIDS_REFRESH, {
+			communicationService.emit(BIDDERS_BIDS_REFRESH, {
 				refreshedSlotNames,
 			});
 		}

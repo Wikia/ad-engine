@@ -2,17 +2,29 @@
 import { communicationService, eventsRepository, utils } from '@wikia/ad-engine';
 import { trackingUrls } from '../setup/tracking-urls';
 import { DataWarehouseTracker } from './data-warehouse';
+import { AD_ENGINE_SLOT_LOADED } from "../../../communication/events/events-ad-engine-slot";
+import {
+	AD_ENGINE_CONFIGURED,
+	AD_ENGINE_LOAD_TIME_INIT,
+	AD_ENGINE_STACK_START
+} from "../../../communication/events/events-ad-engine";
+import {
+	A9_APSTAG_HEM_SENT,
+	A9_WITHOUT_CONSENTS,
+	BIDDERS_AUCTION_DONE,
+	BIDDERS_BIDS_CALLED
+} from "../../../communication/events/events-bidders";
 
 const eventsToTrack = {
-	ad_engine_configured: eventsRepository.AD_ENGINE_CONFIGURED,
-	ad_engine_stack_start: eventsRepository.AD_ENGINE_STACK_START,
-	prebid_auction_started: eventsRepository.BIDDERS_BIDS_CALLED,
-	prebid_auction_ended: eventsRepository.BIDDERS_AUCTION_DONE,
+	ad_engine_configured: AD_ENGINE_CONFIGURED,
+	ad_engine_stack_start: AD_ENGINE_STACK_START,
+	prebid_auction_started: BIDDERS_BIDS_CALLED,
+	prebid_auction_ended: BIDDERS_AUCTION_DONE,
 	live_connect_cached: eventsRepository.LIVE_CONNECT_CACHED,
 	live_connect_started: eventsRepository.LIVE_CONNECT_STARTED,
 	live_connect_responded_uuid: eventsRepository.LIVE_CONNECT_RESPONDED_UUID,
-	a9_without_consents: eventsRepository.A9_WITHOUT_CONSENTS,
-	a9_apstag_hem_sent: eventsRepository.A9_APSTAG_HEM_SENT,
+	a9_without_consents: A9_WITHOUT_CONSENTS,
+	a9_apstag_hem_sent: A9_APSTAG_HEM_SENT,
 	yahoo_started: eventsRepository.YAHOO_STARTED,
 };
 
@@ -42,7 +54,7 @@ export class LoadTimesTracker {
 			this.startTime = utils.getTimeOrigin();
 			this.tzOffset = now.getTimezoneOffset();
 		}
-		communicationService.emit(eventsRepository.AD_ENGINE_LOAD_TIME_INIT, {
+		communicationService.emit(AD_ENGINE_LOAD_TIME_INIT, {
 			timestamp: this.startTime,
 		});
 	}
@@ -56,7 +68,7 @@ export class LoadTimesTracker {
 	}
 
 	initLoadTimesTracker(): void {
-		communicationService.on(eventsRepository.AD_ENGINE_LOAD_TIME_INIT, (payload) => {
+		communicationService.on(AD_ENGINE_LOAD_TIME_INIT, (payload) => {
 			this.trackLoadTime('load_time_init', payload.timestamp);
 		});
 
@@ -66,7 +78,7 @@ export class LoadTimesTracker {
 			});
 		});
 
-		communicationService.on(eventsRepository.AD_ENGINE_SLOT_LOADED, (payload) => {
+		communicationService.on(AD_ENGINE_SLOT_LOADED, (payload) => {
 			if (payload.name == 'top_leaderboard') {
 				this.trackLoadTime('top_leaderboard_loaded', Date.now());
 			}

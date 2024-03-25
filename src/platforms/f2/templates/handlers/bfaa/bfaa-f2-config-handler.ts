@@ -2,13 +2,13 @@ import { slotsContext } from '@platforms/shared';
 import {
 	communicationService,
 	context,
-	eventsRepository,
 	TEMPLATE,
 	TemplateStateHandler,
 	UapParams,
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
+import { AD_ENGINE_UAP_NTC_LOADED } from "../../../../../communication/events/events-ad-engine-uap";
 
 @Injectable({ autobind: false })
 export class BfaaF2ConfigHandler implements TemplateStateHandler {
@@ -24,7 +24,7 @@ export class BfaaF2ConfigHandler implements TemplateStateHandler {
 		}
 
 		if (this.params.newTakeoverConfig) {
-			communicationService.emit(eventsRepository.AD_ENGINE_UAP_NTC_LOADED);
+			communicationService.emit(AD_ENGINE_UAP_NTC_LOADED);
 
 			if (isMobile) {
 				this.enabledSlots.push('floor_adhesion');

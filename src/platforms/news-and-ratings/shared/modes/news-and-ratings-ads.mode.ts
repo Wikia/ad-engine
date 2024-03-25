@@ -9,7 +9,6 @@ import {
 	DiProcess,
 	DoubleVerify,
 	DurationMedia,
-	eventsRepository,
 	Experian,
 	IasPublisherOptimization,
 	LiveConnect,
@@ -18,6 +17,7 @@ import {
 	PartnerPipeline,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { AD_ENGINE_PARTNERS_READY } from "../../../../communication/events/events-ad-engine";
 
 @Injectable()
 export class NewsAndRatingsAdsMode implements DiProcess {
@@ -76,7 +76,7 @@ export class NewsAndRatingsAdsMode implements DiProcess {
 					window.Phoenix.Events.trigger('ads_initialized');
 				}
 
-				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);
+				communicationService.emit(AD_ENGINE_PARTNERS_READY);
 			});
 	}
 }

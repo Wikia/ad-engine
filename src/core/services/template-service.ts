@@ -1,7 +1,6 @@
 // @ts-strict-ignore
 import {
 	communicationService,
-	eventsRepository,
 	LoadTemplatePayload,
 	ofType,
 } from '@ad-engine/communication';
@@ -9,6 +8,7 @@ import { tap } from 'rxjs/operators';
 import { AdSlot, Dictionary } from '../models';
 import { logger } from '../utils';
 import { context, slotService } from './';
+import { GAM_LOAD_TEMPLATE } from "../../communication/events/events-gam";
 
 const logGroup = 'template-service';
 
@@ -66,7 +66,7 @@ class TemplateService {
 	subscribeCommunicator(): void {
 		communicationService.action$
 			.pipe(
-				ofType(communicationService.getGlobalAction(eventsRepository.GAM_LOAD_TEMPLATE)),
+				ofType(communicationService.getGlobalAction(GAM_LOAD_TEMPLATE)),
 				tap(({ payload }: { payload: LoadTemplatePayload }) => {
 					const adSlot = slotService.get(payload.slotName);
 

@@ -1,7 +1,8 @@
 import { Wunderkind } from '@wikia/ad-services';
-import { communicationService, EventOptions } from '@wikia/communication';
+import { communicationService } from '@wikia/communication';
 import { context, InstantConfigService, utils } from '@wikia/core';
 import { expect } from 'chai';
+import { EventOptions } from "@wikia/communication/events/event-options";
 
 describe('Wunderkind', () => {
 	let loadScriptStub, instantConfigStub, contextStub, communicationServiceStub;

@@ -5,12 +5,13 @@ import {
 	communicationService,
 	context,
 	DiProcess,
-	eventsRepository,
 	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { NewsAndRatingsSlotsDefinitionRepository } from './news-and-ratings-slots-definition-repository';
+import { AD_ENGINE_STACK_COMPLETED } from "../../../../../communication/events/events-ad-engine";
+import { AD_ENGINE_UAP_LOAD_STATUS } from "../../../../../communication/events/events-ad-engine-uap";
 
 @Injectable()
 export class NewsAndRatingsDynamicSlotsSetup implements DiProcess {
@@ -63,9 +64,9 @@ export class NewsAndRatingsDynamicSlotsSetup implements DiProcess {
 		context.set('state.topLeaderboardExists', tlbExists);
 
 		if (!tlbExists) {
-			communicationService.on(eventsRepository.AD_ENGINE_STACK_COMPLETED, () => {
+			communicationService.on(AD_ENGINE_STACK_COMPLETED, () => {
 				btfBlockerService.finishFirstCall();
-				communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
+				communicationService.emit(AD_ENGINE_UAP_LOAD_STATUS, {
 					isLoaded: universalAdPackage.isFanTakeoverLoaded(),
 					adProduct: universalAdPackage.getType(),
 				});

@@ -1,10 +1,11 @@
 // @ts-strict-ignore
-import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { communicationService } from '@ad-engine/communication';
 import { AdSlotEvent, getAdStack, targetingService, utils } from '../';
 import { AdSlot, Dictionary, SlotConfig } from '../models';
 import { getTopOffset, logger } from '../utils';
 import { context } from './context-service';
 import { slotTweaker } from './slot-tweaker';
+import { AD_ENGINE_SLOT_ADDED } from "../../communication/events/events-ad-engine-slot";
 
 const groupName = 'slot-service';
 
@@ -53,7 +54,7 @@ class SlotService {
 		}
 
 		slotTweaker.addDefaultClasses(adSlot);
-		communicationService.emit(eventsRepository.AD_ENGINE_SLOT_ADDED, {
+		communicationService.emit(AD_ENGINE_SLOT_ADDED, {
 			name: slotName,
 			slot: adSlot,
 			state: AdSlotEvent.SLOT_ADDED_EVENT,

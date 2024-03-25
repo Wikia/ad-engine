@@ -2,7 +2,6 @@
 import {
 	AdSlotEventPayload,
 	communicationService,
-	eventsRepository,
 	ofType,
 } from '@ad-engine/communication';
 import {
@@ -18,6 +17,8 @@ import {
 } from '@ad-engine/core';
 import { filter, take } from 'rxjs/operators';
 import * as constants from './constants';
+import { AD_ENGINE_UAP_LOAD_STATUS } from "../../../communication/events/events-ad-engine-uap";
+import { AD_ENGINE_SLOT_EVENT } from "../../../communication/events/events-ad-engine-slot";
 
 let uapCreativeId = constants.DEFAULT_UAP_ID;
 let uapId = constants.DEFAULT_UAP_ID;
@@ -144,7 +145,7 @@ function reset(): void {
 function isFanTakeoverLoaded(): boolean {
 	return (
 		getUapId() !== constants.DEFAULT_UAP_ID &&
-		constants.FAN_TAKEOVER_TYPES.indexOf(getType()) !== -1
+		constants.FAN_TAKEOVER_TYPES.indexOf(<'uap'|'vuap'>getType()) !== -1
 	);
 }
 
@@ -183,7 +184,7 @@ export const universalAdPackage = {
 export function registerUapListener(): void {
 	communicationService.action$
 		.pipe(
-			ofType(communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
+			ofType(communicationService.getGlobalAction(AD_ENGINE_SLOT_EVENT)),
 			filter((action: AdSlotEventPayload) => {
 				const isFirstCallAdSlot = !!context.get(`slots.${action.adSlotName}.firstCall`);
 
@@ -201,7 +202,7 @@ export function registerUapListener(): void {
 			take(1),
 		)
 		.subscribe(() => {
-			communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
+			communicationService.emit(AD_ENGINE_UAP_LOAD_STATUS, {
 				isLoaded: universalAdPackage.isFanTakeoverLoaded(),
 				adProduct: universalAdPackage.getType(),
 			});

@@ -2,10 +2,10 @@ import {
 	AdSlot,
 	AdSlotEvent,
 	communicationService,
-	eventsRepository,
 	utils,
 } from '@wikia/ad-engine';
 import { MetricReporterSender } from './metric-reporter/metric-reporter-sender';
+import { AD_ENGINE_GPT_READY } from "../../../communication/events/events-ad-engine";
 
 const REPORTABLE_SLOTS = {
 	stateMetric: ['top_leaderboard'],
@@ -39,7 +39,7 @@ export class MetricReporter {
 	}
 
 	private trackGptLibReady(): void {
-		communicationService.on(eventsRepository.AD_ENGINE_GPT_READY, () => {
+		communicationService.on(AD_ENGINE_GPT_READY, () => {
 			this.sender.sendToMeteringSystem({
 				action: 'gpt-ready',
 				duration: Math.round(utils.getTimeDelta()),

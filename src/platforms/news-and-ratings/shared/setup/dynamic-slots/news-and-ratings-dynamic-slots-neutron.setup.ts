@@ -7,12 +7,17 @@ import {
 	context,
 	Dictionary,
 	DiProcess,
-	eventsRepository,
 	targetingService,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { NewsAndRatingsSlotsDefinitionRepository } from '../../../shared';
+import {
+	PLATFORM_AD_PLACEMENT_READY,
+	PLATFORM_BEFORE_PAGE_CHANGE,
+	PLATFORM_PAGE_CHANGED
+} from "../../../../../communication/events/events-platform-nar";
+import { AD_ENGINE_STACK_START } from "../../../../../communication/events/events-ad-engine";
 
 const logGroup = 'dynamic-slots';
 
@@ -26,9 +31,9 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 	private firstCallSlotName: string;
 
 	execute(): void {
-		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+		communicationService.on(AD_ENGINE_STACK_START, () => {
 			communicationService.on(
-				eventsRepository.PLATFORM_AD_PLACEMENT_READY,
+				PLATFORM_AD_PLACEMENT_READY,
 				({ placementId }) => {
 					if (!placementId) {
 						return;
@@ -72,7 +77,7 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 		});
 
 		communicationService.on(
-			eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE,
+			PLATFORM_BEFORE_PAGE_CHANGE,
 			() => {
 				utils.logger(logGroup, 'Cleaning slots repositories');
 				this.repeatedSlotsCounter = {};
@@ -87,7 +92,7 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 		);
 
 		communicationService.on(
-			eventsRepository.PLATFORM_PAGE_CHANGED,
+			PLATFORM_PAGE_CHANGED,
 			() => {
 				this.refreshStaleSlots();
 			},
@@ -118,7 +123,7 @@ export class NewsAndRatingsDynamicSlotsNeutronSetup implements DiProcess {
 
 		domSlotsElements.forEach((slot) => {
 			utils.logger(logGroup, 'Reinjecting stale slot', slot.getAttribute('data-ad'));
-			communicationService.emit(eventsRepository.PLATFORM_AD_PLACEMENT_READY, {
+			communicationService.emit(PLATFORM_AD_PLACEMENT_READY, {
 				placementId: slot.getAttribute('data-ad'),
 			});
 		});

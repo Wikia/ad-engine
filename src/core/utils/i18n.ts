@@ -10,16 +10,3 @@ export function getTranslation(key: string): string {
 
 	return TRANSLATIONS[language][key] || TRANSLATIONS[defaultLanguage][key];
 }
-
-export function translateLabels(): void {
-	const labels = document.querySelectorAll('.ae-translatable-label');
-
-	labels.forEach((label: HTMLElement) => {
-		const key = label.dataset.key;
-		const translation = getTranslation(key);
-
-		if (translation) {
-			label.innerText = translation;
-		}
-	});
-}

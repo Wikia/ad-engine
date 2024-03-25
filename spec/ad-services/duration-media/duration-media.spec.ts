@@ -1,7 +1,8 @@
 import { DurationMedia } from '@wikia/ad-services';
-import { communicationService, eventsRepository } from '@wikia/communication';
+import { communicationService } from '@wikia/communication';
 import { context, InstantConfigService, utils } from '@wikia/core';
 import { expect } from 'chai';
+import { AD_ENGINE_GPT_READY } from "@wikia/communication/events/events-ad-engine";
 
 describe('Duration media service', () => {
 	let durationMedia: DurationMedia;
@@ -41,7 +42,7 @@ describe('Duration media service', () => {
 
 		await durationMedia.call();
 
-		communicationService.emit(eventsRepository.AD_ENGINE_GPT_READY);
+		communicationService.emit(AD_ENGINE_GPT_READY);
 
 		expect(loadScriptStub.called).to.equal(true);
 		expect(

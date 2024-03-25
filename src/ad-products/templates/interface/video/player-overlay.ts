@@ -1,7 +1,8 @@
 // @ts-strict-ignore
-import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { communicationService } from '@ad-engine/communication';
 import { createIcon, icons } from '../icons';
 import { onVideoOverlayClick } from '../listeners/player-overlay-click-listener';
+import { AD_ENGINE_VIDEO_OVERLAY_CLICKED } from "../../../../communication/events/events-ad-engine-video";
 
 // @TODO Clean up this P1 ADEN-10294 hack
 // It forces Safari to repaint the thumbnail
@@ -63,7 +64,7 @@ export class PlayerOverlay {
 			onVideoOverlayClick(
 				video,
 				communicationService,
-				eventsRepository.AD_ENGINE_VIDEO_OVERLAY_CLICKED,
+				AD_ENGINE_VIDEO_OVERLAY_CLICKED,
 			);
 		});
 

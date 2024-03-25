@@ -21,7 +21,6 @@ import {
 	communicationService,
 	conditional,
 	context,
-	eventsRepository,
 	IdentitySetup,
 	logVersion,
 	parallel,
@@ -37,6 +36,7 @@ import { UcpDesktopPrebidConfigSetup } from './setup/context/prebid/ucp-desktop-
 import { UcpDesktopSlotsContextSetup } from './setup/context/slots/ucp-desktop-slots-context.setup';
 import { UcpDesktopDynamicSlotsSetup } from './setup/dynamic-slots/ucp-desktop-dynamic-slots.setup';
 import { UcpDesktopTemplatesSetup } from './templates/ucp-desktop-templates.setup';
+import { AD_ENGINE_CONFIGURED } from "../../communication/events/events-ad-engine";
 
 @Injectable()
 export class UcpDesktopPlatform {
@@ -74,7 +74,7 @@ export class UcpDesktopPlatform {
 				no: NoAdsMode,
 			}),
 			TrackingSetup,
-			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
+			() => communicationService.emit(AD_ENGINE_CONFIGURED),
 			PostAdStackPartnersSetup,
 		);
 

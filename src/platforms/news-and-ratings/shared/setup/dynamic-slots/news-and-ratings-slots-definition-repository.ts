@@ -5,12 +5,12 @@ import {
 	Anyclip,
 	communicationService,
 	context,
-	eventsRepository,
 	InstantConfigService,
 	scrollListener,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { AD_ENGINE_STACK_START } from "../../../../../communication/events/events-ad-engine";
 
 const logGroup = 'dynamic-slots';
 @Injectable()
@@ -47,7 +47,7 @@ export class NewsAndRatingsSlotsDefinitionRepository {
 			if (numberOfViewportsFromTopToPush === -1) {
 				context.push('state.adStack', { id: slotName });
 			} else {
-				communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+				communicationService.on(AD_ENGINE_STACK_START, () => {
 					const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
 					scrollListener.addSlot(slotName, { distanceFromTop: distance });
 				});

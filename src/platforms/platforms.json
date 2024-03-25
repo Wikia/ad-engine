@@ -1,6 +1,5 @@
 {
 	"list": [
-		"bingebot",
 		"f2",
 		"news-and-ratings/comicvine",
 		"news-and-ratings/gamefaqs",
@@ -13,6 +12,7 @@
 		"sports",
 		"ucp-desktop",
 		"ucp-mobile",
-		"ucp-no-ads"
+		"ucp-no-ads",
+		"uap"
 	]
 }

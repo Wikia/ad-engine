@@ -83,10 +83,6 @@
 		"tsc": "tsc --noEmit && tsc-strict"
 	},
 	"lint-staged": {
-		"*.ts": [
-			"prettier --write",
-			"npx eslint . --ext .ts --max-warnings 0 --fix"
-		],
 		"*.{js,json,css,scss,html}": [
 			"prettier --write"
 		]

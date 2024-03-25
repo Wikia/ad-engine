@@ -4,10 +4,10 @@ import {
 	AdSlotStatus,
 	communicationService,
 	context,
-	eventsRepository,
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { AD_ENGINE_UAP_NTC_LOADED } from "../../../communication/events/events-ad-engine-uap";
 
 interface StickedBoxadHelperConfiguration {
 	slotName: string;
@@ -46,7 +46,7 @@ export class StickedBoxadHelper {
 		}
 
 		communicationService.on(
-			eventsRepository.AD_ENGINE_UAP_NTC_LOADED,
+			AD_ENGINE_UAP_NTC_LOADED,
 			this.registerSuccessListener.bind(this),
 		);
 	}

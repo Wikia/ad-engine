@@ -1,12 +1,13 @@
 import { communicationService, eventsRepository, ofType, UapLoadStatus } from '@wikia/ad-engine';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AD_ENGINE_UAP_LOAD_STATUS } from "../../../communication/events/events-ad-engine-uap";
 
 export function fanFeedNativeAdListener(
 	nativeAdInjector: (uapLoadStatusAction: UapLoadStatus) => void,
 ): void {
 	const uap$ = communicationService.action$.pipe(
-		ofType(communicationService.getGlobalAction(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS)),
+		ofType(communicationService.getGlobalAction(AD_ENGINE_UAP_LOAD_STATUS)),
 		map(({ isLoaded, adProduct }) => {
 			return { isLoaded, adProduct };
 		}),

@@ -4,6 +4,7 @@ import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engin
 import { AdSlotStatus } from '../../models';
 import { Context, slotService, targetingService } from '../../services';
 import { logger, scriptLoader } from '../../utils';
+import { AD_ENGINE_SLOT_EVENT } from "../../../communication/events/events-ad-engine-slot";
 
 const logGroup = 'nativo';
 const NATIVO_LIBRARY_URL = '//s.ntv.io/serve/load.js';
@@ -112,7 +113,7 @@ export class Nativo {
 		};
 
 		communicationService.dispatch(
-			communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)(payload),
+			communicationService.getGlobalAction(AD_ENGINE_SLOT_EVENT)(payload),
 		);
 	}
 

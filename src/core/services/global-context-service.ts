@@ -1,5 +1,5 @@
 // @ts-strict-ignore
-import { utils } from '../index';
+import { logger } from '../utils/logger';
 
 export enum GlobalContextCategories {
 	site = 'site',
@@ -19,7 +19,7 @@ export class GlobalContextService {
 	}
 
 	private createEmptyContext(): void {
-		utils.logger(this.logGroup, 'Creating empty fandomContext');
+		logger(this.logGroup, 'Creating empty fandomContext');
 		window.fandomContext = {
 			site: {},
 			page: {},
@@ -74,7 +74,7 @@ export class GlobalContextService {
 		if (categoryObj) {
 			return categoryObj[key];
 		}
-		utils.logger(
+		logger(
 			this.logGroup,
 			`Attempting to retrieve invalid category "${category}" in context!`,
 		);

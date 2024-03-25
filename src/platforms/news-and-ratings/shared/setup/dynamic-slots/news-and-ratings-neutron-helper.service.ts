@@ -1,13 +1,13 @@
 import { TrackingParametersSetup } from '@platforms/shared';
 import {
 	communicationService,
-	eventsRepository,
 	ProcessPipeline,
 	targetingService,
 	updateGptTargeting,
 	utils,
 } from '@wikia/ad-engine';
 import { Container, Injectable } from '@wikia/dependency-injection';
+import { PLATFORM_PAGE_CHANGED, PLATFORM_PAGE_EXTENDED } from "../../../../../communication/events/events-platform-nar";
 
 const logGroup = 'SPA';
 
@@ -15,7 +15,7 @@ const logGroup = 'SPA';
 export class NewsAndRatingsNeutronHelper {
 	setupPageExtendedWatcher(container: Container, ...steps: any[]) {
 		communicationService.on(
-			eventsRepository.PLATFORM_PAGE_EXTENDED,
+			PLATFORM_PAGE_EXTENDED,
 			() => {
 				utils.logger(logGroup, 'page extended', location.href);
 
@@ -32,7 +32,7 @@ export class NewsAndRatingsNeutronHelper {
 
 	setupPageChangedWatcher(container: Container, ...steps: any[]) {
 		communicationService.on(
-			eventsRepository.PLATFORM_PAGE_CHANGED,
+			PLATFORM_PAGE_CHANGED,
 			async () => {
 				utils.logger(logGroup, 'url changed', location.href);
 
