@@ -91,6 +91,7 @@ export class MetacriticNeutronPlatform {
 			NewsAndRatingsTargetingSetup,
 			MetacriticNeutronSlotsContextSetup,
 			MetacriticNeutronNextPageAdsMode,
+			TrackingSetup,
 			MetacriticNeutronSeeMoreButtonClickListenerSetup,
 		);
 	}
