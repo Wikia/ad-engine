@@ -15,7 +15,7 @@ export class GptSetup extends BaseServiceSetup {
 			utils.logger('gpt-provider', 'loading GPT...');
 			this.loadPromise = utils.scriptLoader.loadScript(GPT_LIBRARY_URL).then(() => {
 				utils.logger('gpt-provider', 'ready');
-				communicationService.emit(eventsRepository.AD_ENGINE_GPT_READY, {
+				communicationService.emit(AD_ENGINE_GPT_READY, {
 					time: utils.getTimeDelta(),
 				});
 			});
