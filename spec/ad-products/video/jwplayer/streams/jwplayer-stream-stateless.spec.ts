@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { jwpEvents } from '@wikia/ad-products/video/jwplayer/streams/jwplayer-events';
 import { ofJwpEvent } from '@wikia/ad-products/video/jwplayer/streams/jwplayer-stream';
 import { createJwpStatelessStream } from '@wikia/ad-products/video/jwplayer/streams/jwplayer-stream-stateless';

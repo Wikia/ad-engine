@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { addExperimentGroupToTargeting } from '@platforms/shared';
 import {
 	context,

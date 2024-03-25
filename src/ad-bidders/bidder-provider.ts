@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { DEFAULT_MAX_DELAY, Dictionary, utils } from '@ad-engine/core';
 
 export interface BidderConfig {

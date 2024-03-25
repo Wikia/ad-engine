@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 export function withDebounce(
 	original: (...args: unknown[]) => void,
 	timeout: number,

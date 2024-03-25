@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { PrebidAdapter } from '../prebid-adapter';
 import {
 	PrebidAdSlotConfig,

@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { context } from '@wikia/core';
 import {
 	FandomContext,

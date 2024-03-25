@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { AdSlot, AdSlotStatus, Dictionary, utils } from '@ad-engine/core';
 import { GoogleImaWrapper } from './google-ima-wrapper';
 import { NativeFullscreen } from './native-fullscreen';

@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Dictionary } from '@wikia/core';
 import { OpenRtb2ContentCategories, OpenRtb2Object } from '@wikia/platforms/shared';
 import {

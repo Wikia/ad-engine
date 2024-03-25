@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Container, Injectable } from '@wikia/dependency-injection';
 import { Type } from '../../../models/dictionary';
 import { Pipeline } from '../../pipeline';

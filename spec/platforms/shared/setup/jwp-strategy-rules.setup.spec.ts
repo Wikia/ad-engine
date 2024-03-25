@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { context, InstantConfigService } from '@wikia/core';
 import { JwpStrategyRulesSetup } from '@wikia/platforms/shared';
 import { expect } from 'chai';

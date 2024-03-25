@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { logger } from './utils';
 
 export function logVersion(): void {

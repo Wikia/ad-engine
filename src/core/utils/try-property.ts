@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Dictionary } from '../models';
 
 export function whichProperty(obj: Dictionary = {}, properties: string[] = []): string | undefined {

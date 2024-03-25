@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import type { CacheDictionary } from './instant-config-cache-storage';
 
 const KEY_SEPARATOR = '|';

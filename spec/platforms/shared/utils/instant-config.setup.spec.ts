@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { InstantConfigService } from '@wikia/core';
 import { Binding, Container } from '@wikia/dependency-injection';
 import { InstantConfigSetup } from '@wikia/platforms/shared';

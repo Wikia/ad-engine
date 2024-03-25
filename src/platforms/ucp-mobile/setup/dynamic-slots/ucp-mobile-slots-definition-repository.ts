@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { activateFloorAdhesionOnUAP, SlotSetupDefinition } from '@platforms/shared';
 import {
 	AdSlot,

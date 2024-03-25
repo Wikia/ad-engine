@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { OpenWeb, PlacementsBuilder, PlacementsHandler } from '@wikia/ad-services';
 import { communicationService, EventOptions } from '@wikia/communication';
 import { context, InstantConfigService, utils } from '@wikia/core';
