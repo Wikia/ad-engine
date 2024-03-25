@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { communicationService, EventOptions, eventsRepository } from '@wikia/communication';
 import { CommunicationService } from '@wikia/communication/communication-service';
 import { AdSlot, context } from '@wikia/core';

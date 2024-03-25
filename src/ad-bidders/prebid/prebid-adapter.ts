@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Aliases, context, Dictionary, targetingService, utils } from '@ad-engine/core';
 import { PrebidAdapterConfig, PrebidAdSlotConfig } from './prebid-models';
 

@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { context } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
 import {
