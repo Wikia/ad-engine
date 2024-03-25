@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { SlotTweaker } from '@wikia/core/services/slot-tweaker';
 import { expect } from 'chai';
 import { adSlotFake } from '../ad-slot-fake';

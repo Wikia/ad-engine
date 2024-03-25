@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 export const wait = (milliseconds = 0) =>
 	new Promise((resolve, reject) => {
 		if (typeof milliseconds !== 'number') {

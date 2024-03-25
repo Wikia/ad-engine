@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 export function decorate(decorator: any): any {
 	return function (target: any, key: string | symbol, descriptor: PropertyDescriptor) {
 		const fn = descriptor.value;

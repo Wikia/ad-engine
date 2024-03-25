@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { communicationService, EventOptions, eventsRepository } from '@ad-engine/communication';
 import { AdSlot, AdSlotEvent, AdSlotStatus, Dictionary, slotService, utils } from '@ad-engine/core';
 import { BaseTracker, BaseTrackerInterface } from './base-tracker';

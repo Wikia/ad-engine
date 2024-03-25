@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 export class Panel {
 	private panelContainer: HTMLDivElement;
 

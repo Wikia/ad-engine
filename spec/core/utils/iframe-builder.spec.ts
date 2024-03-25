@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { IframeBuilder } from '@wikia/core/utils';
 import { assert } from 'chai';
 

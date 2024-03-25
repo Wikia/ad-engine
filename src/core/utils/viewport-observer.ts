@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { scrollListener } from '../listeners';
 import { isInViewport } from './dimensions';
 

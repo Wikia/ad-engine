@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { slotsContext } from '@platforms/shared';
 import {
 	communicationService,

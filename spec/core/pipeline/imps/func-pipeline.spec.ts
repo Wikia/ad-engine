@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { FuncPipeline, FuncPipelineStep } from '@wikia/core';
 import { PipelineTestSuite } from './pipeline-test-suite';
 

@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { BaseServiceSetup, context, tcf, usp, utils } from '@ad-engine/core';
 

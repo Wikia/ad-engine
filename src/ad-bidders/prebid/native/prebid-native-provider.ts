@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { AdSlotStatus, BaseServiceSetup, slotService, utils } from '@ad-engine/core';
 import { PrebidNativeData } from './native-models';

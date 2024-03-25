@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { AdSlot, VideoData, VideoEventData, VideoEventProvider } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
 import Cookies from 'js-cookie';

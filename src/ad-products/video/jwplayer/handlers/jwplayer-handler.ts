@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { utils } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge, Observable } from 'rxjs';

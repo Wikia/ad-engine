@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { logger, scriptLoader } from '../utils';
 import { context } from './context-service';
 
