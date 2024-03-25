@@ -33,7 +33,7 @@ export class BidAuctionSplitExperimentSetup extends BaseServiceSetup {
 		this.setupExperimentVariants();
 		this.activeExperimentVariant = getExperiment(this.experimentVariants);
 
-		if (!this.isExperimentEnabled()) return;
+		if (!this.isExperimentEnabled() || this.activeExperimentVariant === null) return;
 
 		addExperimentGroupToTargeting(this.activeExperimentVariant.name);
 
@@ -94,13 +94,15 @@ export class BidAuctionSplitExperimentSetup extends BaseServiceSetup {
 
 	private isExperimentEnabled() {
 		return (
-			this.instantConfig.get('icExperiments', []).includes('bidAuctionSplit') &&
+			this.instantConfig.get('icExperiments', [] as string[]).includes('bidAuctionSplit') &&
 			this.activeExperimentVariant
 		);
 	}
 
 	private isExperimentEnabledGlobally() {
-		return this.instantConfig.get('icExperiments', []).includes('bidAuctionSplitGlobally');
+		return this.instantConfig
+			.get('icExperiments', [] as string[])
+			.includes('bidAuctionSplitGlobally');
 	}
 
 	private isControlVariant() {
