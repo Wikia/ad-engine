@@ -7,6 +7,7 @@ import {
 	eventsRepository,
 	waitForEventPromise,
 } from '@wikia/ad-engine';
+import { addExperimentGroupToTargeting } from '../utils/experiment-targeting';
 
 const DEFAULT_CONFIGURATION_PHASE_WAIT_TIMEOUT = 200;
 const DEFAULT_CONFIGURATION_PHASE_DELAY = 100;
@@ -18,6 +19,8 @@ const DEFAULT_AD_CALL_WAIT_TIMEOUT = 2000;
 
 export class AdEnginePhasesSetup implements DiProcess {
 	execute(): void {
+		addExperimentGroupToTargeting('warp');
+
 		adEnginePhases.configuration = domContentLoadedPromise(
 			context.get('options.phases.configurationTimeout') ??
 				DEFAULT_CONFIGURATION_PHASE_WAIT_TIMEOUT,
