@@ -94,6 +94,5 @@ export * from './utils/get-domain';
 export * from './utils/get-media-wiki-variable';
 export * from './utils/insert-slots';
 export * from './utils/instant-config.setup';
-export * from './utils/pathfinder';
 export * from './utils/placeholder-service';
 export * from './utils/placeholder-service-helper';
