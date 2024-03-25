@@ -22,6 +22,8 @@ export class UapDomManager {
 		private reader: UapDomReader,
 	) {}
 
+	static PLACEHOLDER_HEIGHT_OVERHEAD = 39;
+
 	addClassToPage(className: string): void {
 		this.manipulator.element(this.page).addClass(className);
 	}
@@ -74,12 +76,13 @@ export class UapDomManager {
 	}
 
 	resizePlaceholderToIframe(height: number) {
-		const PLACEHOLDER_HEIGHT_OVERHEAD = 39;
 		const slotRefresherConfig = context.get('slotConfig.slotRefresher.sizes') || {};
 
 		if (this.adSlot.getSlotName() in slotRefresherConfig) {
 			const iframe = this.adSlot.getIframe();
-			const placeholderHeight = `${Number(iframe.height) + PLACEHOLDER_HEIGHT_OVERHEAD}px`;
+			const placeholderHeight = `${
+				Number(iframe.height) + UapDomManager.PLACEHOLDER_HEIGHT_OVERHEAD
+			}px`;
 
 			this.setSlotHeight(placeholderHeight);
 			this.setPlaceholderHeight(placeholderHeight);
