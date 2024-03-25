@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Subject } from 'rxjs';
 import { Dictionary } from '../../models';
 import { TemplateAction } from './template-action';

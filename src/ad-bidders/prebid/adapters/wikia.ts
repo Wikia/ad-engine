@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { context, Dictionary, pbjsFactory, utils } from '@ad-engine/core';
 import { PrebidNativeConfig } from '../native';
 import { PrebidAdapter } from '../prebid-adapter';

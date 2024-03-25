@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { PorvataPlayer, TemplateStateHandler } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';

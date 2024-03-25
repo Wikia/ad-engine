@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { UserSequentialMessageState } from '@wikia/platforms/shared/sequential-messaging/domain/data-structures/user-sequential-message-state';
 import { UserSequentialMessageStateStoreInterface } from '@wikia/platforms/shared/sequential-messaging/domain/interfaces/user-sequential-message-state-store.interface';
 import { createStubInstance, SinonStubbedInstance } from 'sinon';

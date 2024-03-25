@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { context, targetingService } from '../services';
 
 class StringBuilder {

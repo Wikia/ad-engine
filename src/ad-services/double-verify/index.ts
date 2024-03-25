@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { BaseServiceSetup, context, SlotConfig, targetingService, utils } from '@ad-engine/core';
 
 const logGroup = 'double-verify';

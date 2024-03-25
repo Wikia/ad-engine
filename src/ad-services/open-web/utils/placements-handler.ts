@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { context } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
 import { PlacementsBuilder } from './placements-builder';

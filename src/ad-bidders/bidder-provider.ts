@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { DEFAULT_MAX_DELAY, Dictionary, utils } from '@ad-engine/core';
 
 export interface BidderConfig {
@@ -52,6 +53,12 @@ export abstract class BidderProvider {
 		this.onResponseCallbacks.flush();
 
 		utils.logger(this.logGroup, 'respond');
+	}
+
+	protected onNoSlotsError(): void {
+		this.response = true;
+
+		this.onResponseCallbacks.flush();
 	}
 
 	getSlotBestPrice(slotName: string): Promise<Dictionary<number | string>> {

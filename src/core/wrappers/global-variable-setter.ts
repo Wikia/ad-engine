@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 export class RuntimeVariableSetter {
 	addVariable(name, value): void {
 		window.ads.runtime = window.ads.runtime || ({} as Runtime);

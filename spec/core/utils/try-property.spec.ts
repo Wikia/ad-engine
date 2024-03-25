@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { tryProperty, whichProperty } from '@wikia/core/utils';
 import { expect } from 'chai';
 

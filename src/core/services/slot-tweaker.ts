@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { AdSlot } from '../models';
 import { isIframe, logger } from '../utils';
 import { messageBus } from './message-bus';

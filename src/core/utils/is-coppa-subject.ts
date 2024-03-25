@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { GlobalContextCategories, globalContextService } from '../index';
 
 export function isCoppaSubject(): boolean {

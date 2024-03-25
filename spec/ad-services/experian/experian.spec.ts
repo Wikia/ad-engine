@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Experian } from '@wikia/ad-services';
 import { context, InstantConfigService } from '@wikia/core';
 import { expect } from 'chai';
