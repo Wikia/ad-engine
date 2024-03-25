@@ -3,16 +3,11 @@ import { BucketType } from '../types';
 export const DEFAULT_BUCKET_INDEX = 0;
 export const ALLOWED_BUCKET_CHAR = /[0-9a-zA-Z_-]/;
 export const ALLOWED_BUCKETS_STRING = /[0-9a-zA-Z_-]+/;
-export const CONTROL_BUCKETS_CHAR = /[a-d]/;
 
-/** Validates whether a bucket is not part of Control buckets nor isn't a restricted value */
+/** Validates whether a bucket isn't a restricted value */
 export function validateBucket(buckets: string[]): BucketType {
 	if (buckets.map((bucket) => !ALLOWED_BUCKET_CHAR.test(bucket)).some(Boolean)) {
 		return BucketType.Invalid;
-	}
-
-	if (buckets.map((bucket) => CONTROL_BUCKETS_CHAR.test(bucket)).some(Boolean)) {
-		return BucketType.Control;
 	}
 
 	return BucketType.Valid;
