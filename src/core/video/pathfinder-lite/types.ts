@@ -1,12 +1,9 @@
 export enum BucketType {
-	/** Bucket is valid and not part of Control buckets nor isn't a restricted value */
+	/** Bucket is valid when it's not part of a restricted value */
 	Valid = 'Valid',
 
-	/** Bucket is invalid (is part of Control buckets or does not conform to valid characters) */
+	/** Bucket is invalid (does not conform to valid characters) */
 	Invalid = 'Invalid',
-
-	/** Bucket is part of Control buckets */
-	Control = 'Control',
 }
 
 /** Logger type for dev console */
