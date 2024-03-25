@@ -1,4 +1,5 @@
 // @ts-strict-ignore
+import { addExperimentGroupToTargeting } from '@platforms/shared';
 import {
 	context,
 	defineExperiment,
@@ -6,7 +7,6 @@ import {
 	getExperiment,
 	InsertMethodType,
 	InstantConfigService,
-	targetingService,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -140,10 +140,7 @@ export class UcpMobileTopBoxadExperiment {
 	}
 
 	private addToTargeting(experimentGroup: string) {
-		const targetingData = targetingService.get('experiment_groups') || [];
-		targetingData.push(experimentGroup);
-
-		targetingService.set('experiment_groups', targetingData);
+		addExperimentGroupToTargeting(experimentGroup);
 	}
 
 	private prepareConfig(

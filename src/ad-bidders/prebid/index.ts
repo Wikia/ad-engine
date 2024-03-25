@@ -1,9 +1,5 @@
 // @ts-strict-ignore
-import {
-	communicationService,
-	eventsRepository,
-	TrackingBidDefinition,
-} from '@ad-engine/communication';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import {
 	AdSlot,
 	AdSlotEvent,
@@ -16,17 +12,14 @@ import {
 	tcf,
 	utils,
 } from '@ad-engine/core';
-import {
-	defaultSlotBidGroup,
-	getSlotAliasOrName,
-	getSlotNameByBidderAlias,
-} from '../bidder-helper';
+import { defaultSlotBidGroup, getSlotAliasOrName } from '../bidder-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
 import { id5 } from './id5';
-import { intentIQ } from './intent-iq';
 import { connectedId } from './liveintent-connected-id';
-import { liveRampId, LiveRampIdTypes } from './liveramp-id';
+import { liveRampId } from './liveramp-id';
+import { prebidDataTracking } from './prebid-data-tracking';
+import { requestBids } from './prebid-helper';
 import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice, roundBucketCpm } from './price-helper';
 import { prebidIdRetriever } from './utils/id-retriever';
@@ -179,9 +172,7 @@ export class PrebidProvider extends BidderProvider {
 
 		this.applyConfig(this.prebidConfig);
 		this.configureAdUnits();
-		this.registerBidsRefreshing();
-		this.registerBidsTracking();
-		this.enableATSAnalytics();
+		prebidDataTracking.configure(this.adUnits);
 
 		utils.logger(logGroup, 'prebid created', this.prebidConfig);
 	}
@@ -330,26 +321,6 @@ export class PrebidProvider extends BidderProvider {
 		});
 	}
 
-	private enableATSAnalytics(): void {
-		if (
-			context.get('bidders.liveRampATSAnalytics.enabled') &&
-			context.get('bidders.liveRampId.enabled')
-		) {
-			utils.logger(logGroup, 'prebid enabling ATS Analytics');
-
-			(window as any).pbjs.que.push(() => {
-				(window as any).pbjs.enableAnalytics([
-					{
-						provider: 'atsAnalytics',
-						options: {
-							pid: LiveRampIdTypes.PLACEMENT_ID,
-						},
-					},
-				]);
-			});
-		}
-	}
-
 	private configureTCF(): object {
 		if (this.tcf.exists) {
 			return {
@@ -490,16 +461,22 @@ export class PrebidProvider extends BidderProvider {
 		}
 
 		if (this.adUnits.length === 0) {
+			utils.logger(logGroup, 'there is no slots to fetch bids');
+			this.onNoSlotsError();
 			return;
 		}
 
 		this.applySettings();
 		this.removeAdUnits();
 		this.saveBidIds();
-		this.requestBids(this.adUnits, () => {
-			bidsBackHandler();
-			communicationService.emit(eventsRepository.BIDDERS_AUCTION_DONE);
-		});
+		requestBids(
+			this.adUnits,
+			() => {
+				bidsBackHandler();
+				communicationService.emit(eventsRepository.BIDDERS_AUCTION_DONE);
+			},
+			this.timeout,
+		);
 
 		communicationService.emit(eventsRepository.BIDDERS_BIDS_CALLED);
 	}
@@ -543,78 +520,6 @@ export class PrebidProvider extends BidderProvider {
 		const slotAlias: string = getSlotAliasOrName(slotName);
 
 		return this.adUnits && this.adUnits.some((adUnit) => adUnit.code === slotAlias);
-	}
-
-	async registerBidsRefreshing(): Promise<void> {
-		const pbjs: Pbjs = await pbjsFactory.init();
-
-		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
-
-		const refreshUsedBid = (winningBid) => {
-			if (this.bidsRefreshing.slots.indexOf(winningBid.adUnitCode) !== -1) {
-				communicationService.emit(eventsRepository.BIDDERS_BIDS_REFRESH, {
-					refreshedSlotNames: [winningBid.adUnitCode],
-				});
-
-				const adUnitsToRefresh = this.adUnits.filter(
-					(adUnit) =>
-						adUnit.code === winningBid.adUnitCode &&
-						adUnit.bids &&
-						adUnit.bids[0] &&
-						adUnit.bids[0].bidder === winningBid.bidderCode,
-				);
-
-				this.requestBids(adUnitsToRefresh, this.bidsRefreshing.bidsBackHandler);
-			}
-		};
-
-		pbjs.onEvent('bidWon', refreshUsedBid);
-	}
-
-	async registerBidsTracking(): Promise<void> {
-		const pbjs: Pbjs = await pbjsFactory.init();
-
-		const trackBid = (response) => {
-			communicationService.emit(eventsRepository.BIDDERS_BIDS_RESPONSE, {
-				bidResponse: this.mapResponseToTrackingBidDefinition(response),
-			});
-		};
-
-		pbjs.onEvent('bidResponse', trackBid);
-		pbjs.onEvent(
-			'adRenderSucceeded',
-			(response: { adId: string; bid: PrebidBidResponse; doc: Document | null }) =>
-				intentIQ.reportPrebidWin(response.bid),
-		);
-	}
-
-	private mapResponseToTrackingBidDefinition(response: PrebidBidResponse): TrackingBidDefinition {
-		utils.logger(logGroup, 'Response: ', response);
-		return {
-			bidderName: response.bidderCode,
-			price: response.cpm.toString(),
-			responseTimestamp: response.responseTimestamp,
-			slotName: getSlotNameByBidderAlias(response.adUnitCode),
-			size: response.size,
-			timeToRespond: response.timeToRespond,
-			additionalInfo: response?.meta?.dsa ? { dsa: response.meta.dsa } : undefined,
-		};
-	}
-
-	async requestBids(
-		adUnits: PrebidAdUnit[],
-		bidsBackHandler: (...args: any[]) => void,
-		timeout: number = this.timeout,
-	): Promise<void> {
-		const pbjs: Pbjs = await pbjsFactory.init();
-
-		await intentIQ.initialize(pbjs);
-
-		pbjs.requestBids({
-			adUnits,
-			bidsBackHandler,
-			timeout,
-		});
 	}
 
 	/**
