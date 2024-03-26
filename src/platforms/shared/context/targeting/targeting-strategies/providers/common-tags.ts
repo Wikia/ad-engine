@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { context, SlotTargeting, utils } from '@wikia/ad-engine';
 import { getDomain } from '../../../../utils/get-domain';
 import { getMediaWikiVariable } from '../../../../utils/get-media-wiki-variable';
@@ -57,6 +58,8 @@ export class CommonTags implements TargetingProvider<Partial<SlotTargeting>> {
 		const hasFeaturedVideo = !!videoStatus.hasVideoOnPage;
 		const hasIncontentPlayer =
 			!hasFeaturedVideo &&
+			// COTECH-1007: No video experiment - function set in UCP
+			!window.fandomIsVideoPossible?.() &&
 			!!document.querySelector(context.get('templates.incontentAnchorSelector'));
 
 		this.updateVideoContext(hasFeaturedVideo, hasIncontentPlayer);

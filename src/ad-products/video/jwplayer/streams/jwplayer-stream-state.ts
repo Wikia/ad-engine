@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { RxJsOperator, VastParams, vastParser } from '@ad-engine/core';
 import { combineLatest, merge, Observable } from 'rxjs';
 import { map, scan, shareReplay, startWith, withLatestFrom } from 'rxjs/operators';

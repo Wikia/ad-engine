@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { expect } from 'chai';
 import { SinonSpy, SinonStub } from 'sinon';
 

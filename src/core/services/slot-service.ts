@@ -1,7 +1,9 @@
+// @ts-strict-ignore
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlotEvent, getAdStack, targetingService, utils } from '../';
+import { AdSlotEvent, AdStackPayload, getAdStack, targetingService, utils } from '../';
+import { bidBeforeRunIfNecessary } from '../../platforms/shared';
 import { AdSlot, Dictionary, SlotConfig } from '../models';
-import { getTopOffset, logger } from '../utils';
+import { getTopOffset, logger, OldLazyQueue } from '../utils';
 import { context } from './context-service';
 import { slotTweaker } from './slot-tweaker';
 
@@ -231,16 +233,26 @@ class SlotService {
 	}
 
 	pushSlot(node: HTMLElement): void {
+		this.pushSlotById(node.id);
+	}
+
+	pushSlotById(id: string) {
 		const adStack = getAdStack();
 
 		if (adStack) {
-			logger(groupName, `Push slot ${node.id} to adStack.`);
-			adStack.push({
-				id: node.id,
-			});
+			logger(groupName, `Push slot ${id} to adStack.`);
+			this.addToAdStack(adStack, id);
 		} else {
-			logger(groupName, `Could not push slot ${node.id} because adStack is not present.`);
+			logger(groupName, `Could not push slot ${id} because adStack is not present.`);
 		}
+	}
+
+	private addToAdStack(adStack: OldLazyQueue<AdStackPayload>, id: string) {
+		bidBeforeRunIfNecessary(id, () => {
+			adStack.push({
+				id: id,
+			});
+		});
 	}
 
 	/**

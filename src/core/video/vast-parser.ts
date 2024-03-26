@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Dictionary } from '../models';
 import { ADX } from '../providers';
 import { queryString } from '../utils';

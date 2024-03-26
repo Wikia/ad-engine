@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { TrackingBidDefinition } from '@ad-engine/communication';
 import { AdSlot, Dictionary } from '@ad-engine/core';
 

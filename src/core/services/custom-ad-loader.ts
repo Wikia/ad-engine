@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { AdSlot, Dictionary } from '../models';
 import { slotService } from './slot-service';
 import { templateService } from './template-service';

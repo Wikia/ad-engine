@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { utils } from '../index';
 
 export enum GlobalContextCategories {

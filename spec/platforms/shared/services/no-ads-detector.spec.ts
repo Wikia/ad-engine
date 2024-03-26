@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { NoAdsDetector } from '@wikia/platforms/shared';
 import { expect } from 'chai';
 

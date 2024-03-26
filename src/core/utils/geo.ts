@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { CacheData, context, InstantConfigCacheStorage } from '../services';
 
 const cacheMarker = '-cached';

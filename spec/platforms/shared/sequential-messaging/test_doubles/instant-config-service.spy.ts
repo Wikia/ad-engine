@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { InstantConfigServiceInterface } from '@wikia/core';
 import { InstantConfigValue } from '@wikia/instant-config-loader';
 import { createStubInstance, SinonStubbedInstance } from 'sinon';
