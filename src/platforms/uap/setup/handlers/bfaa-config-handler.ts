@@ -3,7 +3,7 @@ import { universalAdPackage, UapParams, registerUap } from "../../utils/universa
 
 import { AD_ENGINE_UAP_LOADED, AD_ENGINE_UAP_NTC_LOADED } from "../../../../communication/events/events-ad-engine-uap";
 import { communicationServiceSlim } from "../../utils/communication-service-slim";
-import { context } from "@wikia/ad-engine";
+import { context } from "../../../../core/services/context-service";
 
 export class BfaaConfigHandler implements TemplateStateHandler {
     constructor(private params: UapParams) {}

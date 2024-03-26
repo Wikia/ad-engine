@@ -1,5 +1,5 @@
 // @ts-strict-ignore
-import { DiProcess, logTemplates, TemplateRegistry, templateService } from '@wikia/ad-engine';
+import { context, DiProcess, logTemplates, TemplateRegistry, templateService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
 import {
@@ -12,6 +12,9 @@ import { registerUapDomElements } from './configs/register-uap-dom-elements';
 export class TvGuideTemplatesSetup implements DiProcess {
 	constructor(private registry: TemplateRegistry) {
 		templateService.setInitializer(this.registry);
+
+		context.set('uap.dom.nav', '.c-siteHeader');
+		context.set('uap.dom.footer', 'footer.c-siteFooter');
 	}
 
 	execute(): void {

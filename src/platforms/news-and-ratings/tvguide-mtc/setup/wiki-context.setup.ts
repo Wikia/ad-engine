@@ -8,6 +8,9 @@ export class TvGuideMTCContextSetup implements DiProcess {
 		context.set('state.provider', 'nothing');
 		context.set('state.external.adengine', 'mtc');
 
+		context.set('uap.slots.toEnable', Object.keys(context.get('slots')));
+		context.set('uap.dom.nav', '.c-siteHeader');
+		context.set('uap.dom.footer', 'footer.c-siteFooter');
 		loadNewUap();
 	}
 }

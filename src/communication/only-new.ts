@@ -1,5 +1,5 @@
 // @ts-strict-ignore
-import { RxJsOperator } from '@ad-engine/core';
+import { RxJsOperator } from '../core/rxjs/rxjs-operator';
 import { Action } from '@wikia/post-quecast';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';

@@ -5,7 +5,7 @@ import { scriptLoader } from "../../../../../../../../core/utils/script-loader";
 import { logger } from "../../../../../../../../core/utils/logger";
 import { communicationServiceSlim } from "../../../../../../utils/communication-service-slim";
 import { eventsRepository } from "../../../../../../../../communication/event-types";
-import { SlotTargeting, targetingService } from "@wikia/ad-engine";
+import { SlotTargeting, targetingService } from "../../../../../../../../core/services/targeting-service";
 import { parseTargetingParams } from "../../../../helpers/parsing-targeting-params";
 import { context } from "../../../../../../../../core/services/context-service";
 
