@@ -54,6 +54,8 @@ export interface SlotConfig extends BaseSlotConfig {
 	autoplay?: boolean;
 	placeholder?: SlotPlaceholderContextConfig;
 	videoDepth?: number;
+
+	slotRefreshing?: boolean;
 }
 
 export interface WinningBidderDetails {

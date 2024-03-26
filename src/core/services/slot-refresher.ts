@@ -4,6 +4,7 @@ import { AdSlot, AdSlotEvent } from '../models';
 import { GptProvider } from '../providers';
 import { logger } from '../utils';
 import { context } from './context-service';
+import { slotService } from './slot-service';
 
 const logGroup = 'slot-refresher';
 
@@ -63,11 +64,23 @@ class SlotRefresher {
 		}, this.config.timeoutMS);
 	}
 
+	private addSlotsConfiguredToRefreshing() {
+		const allSlots = slotService.slotConfigsMap;
+		Object.entries(allSlots).forEach(([, slotConfiguration]) => {
+			if (slotConfiguration.slotRefreshing) {
+				this.config.slots.push(slotConfiguration.slotName);
+			}
+		});
+	}
+
 	setupSlotRefresher(additionalConfig: Config, isUap: boolean, logger) {
 		this.config = {
 			...defaultConfig,
 			...additionalConfig,
 		};
+
+		this.addSlotsConfiguredToRefreshing();
+
 		const disabled = this.config.slots.length < 1;
 
 		if (disabled || isUap) {

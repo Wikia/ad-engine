@@ -23,7 +23,7 @@ export const GAMOrigins: string[] = [
 	'https://tpc.googlesyndication.com',
 	'https://googleads.g.doubleclick.net',
 ];
-const AllViewportSizes = [0, 0];
+// const AllViewportSizes = [0, 0];
 
 function postponeExecutionUntilGptLoads(method: () => void): any {
 	return function (...args: any): void {
@@ -332,12 +332,15 @@ export class GptProvider implements Provider {
 	static refreshSlot(adSlot: AdSlot): void {
 		const activeSlots = window.googletag.pubads().getSlots();
 		const gptSlot = activeSlots.find((slot) => slot.getSlotElementId() === adSlot.getSlotName());
-		gptSlot.clearTargeting();
-		const mapping = window.googletag
-			.sizeMapping()
-			.addSize(AllViewportSizes, adSlot.getCreativeSizeAsArray())
-			.build();
-		gptSlot.defineSizeMapping(mapping);
+		// gptSlot.clearTargeting();
+		// const sizeMapping = window.googletag.sizeMapping();
+		// console.log('>>> [AE], refreshSlot', adSlot, adSlot.getDefaultSizes());
+		// adSlot.getDefaultSizes().forEach(adSize => {
+		// 	sizeMapping.addSize(AllViewportSizes, adSize);
+		// 	console.log('>>> [AE], addSize', sizeMapping, adSize);
+		// });
+		//
+		// gptSlot.defineSizeMapping(sizeMapping.build());
 		window.googletag.pubads().refresh([gptSlot]);
 	}
 }
