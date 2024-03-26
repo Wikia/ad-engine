@@ -1,7 +1,7 @@
 import {
 	BiddersStateSetup,
 	ConsentManagementPlatformSetup,
-	ensureGeoCookie,
+	ensureGeoAvailable,
 	InstantConfigSetup,
 	LoadTimesSetup,
 	MetricReporterSetup,
@@ -48,7 +48,7 @@ export class GameSpotPlatform {
 		context.set('state.isMobile', !utils.client.isDesktop());
 
 		this.pipeline.add(
-			async () => await ensureGeoCookie(),
+			async () => await ensureGeoAvailable(),
 			parallel(
 				sequential(InstantConfigSetup, PreloadedLibrariesSetup),
 				ConsentManagementPlatformSetup,
