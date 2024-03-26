@@ -4,6 +4,11 @@ interface MediaWikiAds {
 	consentQueue: any;
 	context: AdsContext;
 	debug: (groups: string | null) => void;
+	geo?: {
+		country: string;
+		continent: string;
+		region: string;
+	};
 	pushToConsentQueue: (callback: any) => void;
 	runtime: Runtime;
 	version?: {

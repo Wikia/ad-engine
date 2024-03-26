@@ -12,28 +12,33 @@ interface GeoData {
 	continent: string;
 	country: string;
 	region: string;
-	city: string;
-	country_name: string;
 }
 
-export async function ensureGeoCookie(): Promise<void> {
+export async function ensureGeoAvailable(): Promise<void> {
+	if (window.ads?.geo !== undefined) {
+		setUpGeoData(window.ads.geo);
+		return;
+	}
+
 	const cookieAdapter = new CookieStorageAdapter();
 	const geoCookie = cookieAdapter.getItem('Geo');
 
-	if (!geoCookie) {
+	if (geoCookie) {
 		try {
-			return getGeoData().then((geoData) => {
-				cookieAdapter.setItem('Geo', encodeURIComponent(JSON.stringify(geoData)));
-				setUpGeoData(geoData);
-			});
+			setUpGeoData(JSON.parse(decodeURIComponent(geoCookie)) || {});
+			return;
 		} catch (e) {
-			// do nothing
+			throw new Error('Invalid JSON in the cookie');
 		}
 	}
+
 	try {
-		setUpGeoData(JSON.parse(decodeURIComponent(geoCookie)) || {});
+		return getGeoData().then((geoData) => {
+			cookieAdapter.setItem('Geo', encodeURIComponent(JSON.stringify(geoData)));
+			setUpGeoData(geoData);
+		});
 	} catch (e) {
-		throw new Error('Invalid JSON in the cookie');
+		// do nothing
 	}
 }
 
@@ -65,8 +70,6 @@ function getGeoData(): Promise<GeoData> {
 						continent: geoResponse.continent_code,
 						country: geoResponse.country_code,
 						region: geoResponse.region,
-						city: geoResponse.city,
-						country_name: geoResponse.country_name,
 					});
 				}
 			};
