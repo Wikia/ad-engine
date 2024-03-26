@@ -10,4 +10,8 @@ export interface CommonTargetingParams {
 	s2?: string;
 	wpage?: string;
 	word_count?: string;
+	// The following code will be removed in INC2 of DTCO
+	main_vertical?: string;
+	main_entity_type?: string;
+	// End of code to be removed in INC2 of DTCO
 }

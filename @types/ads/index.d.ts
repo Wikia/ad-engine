@@ -32,6 +32,12 @@ interface AdsContext {
 	// context set only on MediaWiki
 	opts?: MediaWikiAdsOpts;
 	targeting?: MediaWikiAdsTargeting;
+	// The following code will be removed in INC2 of DTCO
+	taxonomy?: {
+		main_entity_type: string;
+		main_vertical: string;
+	};
+	// End of code to be removed in INC2 of DTCO
 }
 
 interface MediaWikiAdsOpts {

@@ -46,6 +46,14 @@ export class CommonTags implements TargetingProvider<Partial<SlotTargeting>> {
 			word_count: this.fandomContext.page.wordCount?.toString() || '',
 		};
 
+		// The following code will be removed in INC2 of DTCO
+		/* istanbul ignore if */
+		if (wiki?.taxonomy) {
+			commonContextParams.main_vertical = wiki.taxonomy.main_vertical;
+			commonContextParams.main_entity_type = wiki.taxonomy.main_entity_type;
+		}
+		// End of code to be removed in INC2 of DTCO
+
 		return {
 			...commonParams,
 			...commonContextParams,
