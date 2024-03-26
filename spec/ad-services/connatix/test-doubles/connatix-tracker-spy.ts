@@ -4,6 +4,7 @@ class ConatixTrackerSpy {
 	register(): void {}
 	setPlayerApi(): void {}
 	trackInit(): void {}
+	trackEligible(): void {}
 	trackReady(): void {}
 }
 

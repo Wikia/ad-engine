@@ -44,6 +44,11 @@ export class ConnatixTracker implements VideoTracker {
 		this.track(eventName, VideoEventProvider.getEventData(this.getVideoData(eventName)));
 	}
 
+	trackEligible() {
+		const eventName = 'eligible';
+		this.track(eventName, VideoEventProvider.getEventData(this.getVideoData(eventName)));
+	}
+
 	trackReady() {
 		const eventName = 'ready';
 		this.track(eventName, VideoEventProvider.getEventData(this.getVideoData(eventName)));
