@@ -1,4 +1,5 @@
 import {
+	BidAuctionSplitExperimentSetup,
 	BiddersStateSetup,
 	BiddersTargetingUpdater,
 	ConsentManagementPlatformSetup,
@@ -55,6 +56,7 @@ export class UcpMobilePlatform {
 				sequential(InstantConfigSetup, PreloadedLibrariesSetup),
 				ConsentManagementPlatformSetup,
 			),
+			BidAuctionSplitExperimentSetup,
 			TrackingParametersSetup,
 			MetricReporterSetup,
 			UcpMobileBaseContextSetup,

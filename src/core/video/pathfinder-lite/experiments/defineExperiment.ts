@@ -19,9 +19,9 @@ export default function defineExperiment({
 		disabledByMisconfiguration = true;
 	}
 
-	// check if buckets are valid and not in a control group
+	// check if buckets are valid
 	const bucketValidation = validateBucket(buckets);
-	if (BucketType.Control === bucketValidation || BucketType.Invalid === bucketValidation) {
+	if (BucketType.Invalid === bucketValidation) {
 		log.debug(
 			`The current bucket(s) [${buckets}] for experiment [${name}], are invalid. Experiment will not be active.`,
 		);
