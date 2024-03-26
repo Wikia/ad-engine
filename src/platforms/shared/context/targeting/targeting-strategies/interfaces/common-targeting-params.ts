@@ -10,8 +10,7 @@ export interface CommonTargetingParams {
 	s2?: string;
 	wpage?: string;
 	word_count?: string;
-	// The following code will be removed in INC2 of DTCO
+	// Cleanup in https://fandom.atlassian.net/browse/ADEN-13986
 	main_vertical?: string;
 	main_entity_type?: string;
-	// End of code to be removed in INC2 of DTCO
 }
