@@ -1,7 +1,7 @@
 import {
 	BiddersTargetingUpdater,
 	ConsentManagementPlatformSetup,
-	ensureGeoCookie,
+	ensureGeoAvailable,
 	InstantConfigSetup,
 	LabradorSetup,
 	LoadTimesSetup,
@@ -46,7 +46,7 @@ export class F2Platform {
 		// Config
 		this.pipeline.add(
 			PlatformContextSetup,
-			async () => await ensureGeoCookie(),
+			async () => await ensureGeoAvailable(),
 			parallel(InstantConfigSetup, ConsentManagementPlatformSetup),
 			F2IocSetup,
 			TrackingParametersSetup,

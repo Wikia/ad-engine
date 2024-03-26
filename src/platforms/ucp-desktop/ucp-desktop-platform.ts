@@ -4,7 +4,7 @@ import {
 	BiddersStateSetup,
 	BiddersTargetingUpdater,
 	ConsentManagementPlatformSetup,
-	ensureGeoCookie,
+	ensureGeoAvailable,
 	InstantConfigSetup,
 	LabradorSetup,
 	LoadTimesSetup,
@@ -53,7 +53,7 @@ export class UcpDesktopPlatform {
 		this.pipeline.add(
 			AdEnginePhasesSetup,
 			PlatformContextSetup,
-			async () => await ensureGeoCookie(),
+			async () => await ensureGeoAvailable(),
 			async () => await adEnginePhases.configuration,
 			parallel(
 				sequential(InstantConfigSetup, PreloadedLibrariesSetup),
