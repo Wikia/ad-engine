@@ -12,7 +12,7 @@ describe('ensureGeoAvailable', () => {
 
 	it('should retrieve geolocation when window.ads.geo is defined', async () => {
 		// given
-		window.ads.geo = {
+		(window.ads as MediaWikiAds).geo = {
 			country: 'PL',
 			continent: 'EU',
 			region: '12',
