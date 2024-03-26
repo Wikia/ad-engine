@@ -10,7 +10,7 @@ export * from './dynamic-slots/fan-feed-native-ad-listener';
 export * from './dynamic-slots/nativo-slots-definition-repository';
 export * from './dynamic-slots/quiz-slots-definition-repository';
 export * from './dynamic-slots/sticked-boxad-helper';
-export * from './ensure-geo-cookie';
+export * from './ensure-geo-available';
 export * from './experiments/bid-auction-split-experiment-setup';
 export * from './experiments/experiment';
 export * from './handlers/gallery-lightbox-handler';
