@@ -1,5 +1,4 @@
 // @ts-strict-ignore
-import { communicationService, eventsRepository } from '@ad-engine/communication';
 import {
 	BrowserMatcher,
 	DeviceMatcher,
@@ -46,14 +45,6 @@ export class InstantConfigService implements InstantConfigServiceInterface {
 		this.repository = this.interpreter.getValues();
 
 		utils.logger(logGroup, 'instantiated with', this.repository);
-
-		communicationService.on(
-			eventsRepository.AD_ENGINE_INSTANT_CONFIG_CACHE_RESET,
-			() => {
-				this.repository = this.interpreter.getValues();
-			},
-			false,
-		);
 
 		return this;
 	}

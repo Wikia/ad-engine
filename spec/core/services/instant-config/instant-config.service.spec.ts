@@ -1,4 +1,3 @@
-import { communicationService, eventsRepository } from '@wikia/communication';
 import { utils } from '@wikia/core';
 import { InstantConfigService } from '@wikia/core/services/instant-config/instant-config.service';
 import {
@@ -76,20 +75,6 @@ describe('Instant Config Service', () => {
 				{ globals: true },
 				utils.geoService.isProperGeo,
 			]);
-		});
-
-		it('should call getValues again after emitting reset event', async () => {
-			getConfigStub.returns(Promise.resolve({}));
-			getValuesStub.returns({});
-
-			await new InstantConfigService({
-				appName: 'testapp',
-			}).init();
-			const numberOfCalls = getValuesStub.getCalls().length;
-
-			communicationService.emit(eventsRepository.AD_ENGINE_INSTANT_CONFIG_CACHE_RESET);
-
-			expect(getValuesStub.getCalls().length).to.be.greaterThan(numberOfCalls);
 		});
 	});
 
