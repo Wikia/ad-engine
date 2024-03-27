@@ -37,6 +37,11 @@ interface AdsContext {
 	// context set only on MediaWiki
 	opts?: MediaWikiAdsOpts;
 	targeting?: MediaWikiAdsTargeting;
+	// Cleanup in https://fandom.atlassian.net/browse/ADEN-13986
+	taxonomy?: {
+		main_entity_type: string;
+		main_vertical: string;
+	};
 }
 
 interface MediaWikiAdsOpts {

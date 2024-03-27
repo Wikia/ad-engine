@@ -10,4 +10,7 @@ export interface CommonTargetingParams {
 	s2?: string;
 	wpage?: string;
 	word_count?: string;
+	// Cleanup in https://fandom.atlassian.net/browse/ADEN-13986
+	main_vertical?: string;
+	main_entity_type?: string;
 }
