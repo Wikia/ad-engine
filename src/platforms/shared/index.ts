@@ -48,6 +48,7 @@ export * from './templates/handlers/prevent-scrolling-handler';
 export * from './templates/handlers/roadblock/roadblock-handler';
 export * from './templates/handlers/roadblock/roadblock-params';
 export * from './templates/handlers/slot/slot-decision-impact-to-resolved-handler';
+export * from './templates/handlers/slot/slot-decision-impact-to-sticky-handler';
 export * from './templates/handlers/slot/slot-decision-on-viewability-handler';
 export * from './templates/handlers/slot/slot-decision-timeout-handler';
 export * from './templates/handlers/slot/slot-height-clipping-handler';

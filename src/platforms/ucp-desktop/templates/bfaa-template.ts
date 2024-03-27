@@ -9,6 +9,7 @@ import {
 	PlayerRegistry,
 	ScrollCorrector,
 	SlotDecisionImpactToResolvedHandler,
+	SlotDecisionStickyToResolvedHandler,
 	SlotDecisionTimeoutHandler,
 	SlotHeightClippingHandler,
 	SlotSizeImpactWithPlaceholderHandler,
@@ -27,12 +28,34 @@ import {
 	VideoSizeImpactToResolvedHandler,
 	VideoSizeResolvedHandler,
 } from '@platforms/shared';
-import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
+import { context, TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
 import { registerUcpDesktopUapDomElements } from './configs/register-ucp-desktop-uap-dom-elements';
 import { BfaaUcpDesktopConfigHandler } from './handlers/bfaa/bfaa-ucp-desktop-config-handler';
 
 export function registerBfaaTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
+	// Use the correct class based on the stick leaderboard context
+	const slotDecisionResolvedHandler = () =>
+		context.get('options.disableStickyTopLeaderboard')
+			? SlotDecisionImpactToResolvedHandler
+			: SlotDecisionStickyToResolvedHandler;
+
+	// Default stickly handlers
+	let stickyHandlers = [
+		SlotSizeResolvedWithPlaceholderHandler,
+		SlotDecisionTimeoutHandler,
+		SlotStateStickedHandler,
+		CloseToTransitionButtonHandler,
+		VideoSizeResolvedHandler,
+		DomCleanupHandler,
+	];
+
+	// Remove 'SlotDecisionTimeoutHandler' to prevent top leaderboard from disappearing
+	// when sticky leaderboard is active
+	if (!context.get('options.disableStickyTopLeaderboard')) {
+		stickyHandlers = stickyHandlers.filter((handler) => handler !== SlotDecisionTimeoutHandler);
+	}
+
 	return registry.register(
 		'bfaa',
 		{
@@ -47,20 +70,13 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 			],
 			impact: [
 				SlotSizeImpactWithPlaceholderHandler,
-				SlotDecisionImpactToResolvedHandler,
+				slotDecisionResolvedHandler(),
 				SlotHeightClippingHandler,
 				VideoSizeImpactToResolvedHandler,
 				VideoCompletedHandler,
 				DomCleanupHandler,
 			],
-			sticky: [
-				SlotSizeResolvedWithPlaceholderHandler,
-				SlotDecisionTimeoutHandler,
-				SlotStateStickedHandler,
-				CloseToTransitionButtonHandler,
-				VideoSizeResolvedHandler,
-				DomCleanupHandler,
-			],
+			sticky: stickyHandlers,
 			transition: [
 				SlotSizeResolvedWithPlaceholderHandler,
 				SlotStateStickedHandler,
