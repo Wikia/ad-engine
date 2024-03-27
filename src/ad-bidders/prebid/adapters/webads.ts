@@ -18,11 +18,12 @@ export class WebAds extends PrebidAdapter {
 	}
 
 	prepareConfigForAdUnit(code, { sizes, placementId }: PrebidAdSlotConfig): PrebidAdUnit {
+		const newSizes = this.filterSizesForRefreshing(code, sizes);
 		return {
 			code,
 			mediaTypes: {
 				banner: {
-					sizes,
+					sizes: newSizes,
 				},
 			},
 			ortb2Imp: this.getOrtb2Imp(code),

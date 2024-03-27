@@ -347,6 +347,11 @@ export const eventsRepository = {
 		name: 'Call per group',
 		payload: props<{ group: string; callback: () => void }>(),
 	},
+	SLOT_REFRESHER_SET_MAXIMUM_SLOT_HEIGHT: {
+		category: '[Bidders]',
+		name: 'Filter adSlot sizes taller than rendered adSlot',
+		payload: props<{ adSlot: AdSlot }>(),
+	},
 	// Video events //
 	VIDEO_SETUP: {
 		category: '[Video]',

@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
 
@@ -13,7 +14,8 @@ export class YahooSsp extends PrebidAdapter {
 	}
 
 	prepareConfigForAdUnit(code, { sizes, pubId }: PrebidAdSlotConfig): PrebidAdUnit {
-		return this.getStandardConfig(code, sizes, pubId);
+		const newSizes = this.filterSizesForRefreshing(code, sizes);
+		return this.getStandardConfig(code, newSizes, pubId);
 	}
 
 	getStandardConfig(code, sizes, pubId): PrebidAdUnit {

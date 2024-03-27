@@ -29,13 +29,15 @@ export class Appnexus extends PrebidAdapter {
 		code,
 		{ sizes, placementId, position = 'mobile' }: PrebidAdSlotConfig,
 	): PrebidAdUnit {
+		const newSizes = this.filterSizesForRefreshing(code, sizes);
+
 		if (context.get(`slots.${code}.isNative`)) {
 			if (context.get('bidders.prebid.native.enabled') && this.isNativeModeOn()) {
-				return this.prepareNativeConfig(code, { sizes, placementId, position });
+				return this.prepareNativeConfig(code, { sizes: newSizes, placementId, position });
 			}
 		}
 
-		return this.prepareStandardConfig(code, { sizes, placementId, position });
+		return this.prepareStandardConfig(code, { sizes: newSizes, placementId, position });
 	}
 
 	prepareStandardConfig(code, { sizes, placementId, position }: PrebidAdSlotConfig): PrebidAdUnit {

@@ -54,6 +54,7 @@ export interface SlotConfig extends BaseSlotConfig {
 	autoplay?: boolean;
 	placeholder?: SlotPlaceholderContextConfig;
 	videoDepth?: number;
+	slotRefreshing?: boolean;
 }
 
 export interface WinningBidderDetails {
@@ -85,6 +86,7 @@ export class AdSlot {
 	winningBidderDetails: null | WinningBidderDetails = null;
 	trackStatusAfterRendered = false;
 	slotViewed = false;
+	refreshable = false;
 
 	requested: Promise<void> = null;
 	loaded: Promise<void> = null;
@@ -102,6 +104,7 @@ export class AdSlot {
 		this.config.slotName = this.config.slotName || ad.id;
 		this.config.slotNameSuffix = this.config.slotNameSuffix || '';
 		this.setUpSlotTargeting();
+		this.setupRefreshableListener();
 		delete this.config.targeting;
 
 		this.requested = new Promise<void>((resolve) => {
@@ -342,6 +345,11 @@ export class AdSlot {
 		return this.pushTime;
 	}
 
+	updatePushTimeAfterBid() {
+		const timeout = context.get('bidders.timeout') || 2000;
+		this.pushTime = new Date().getTime() + timeout;
+	}
+
 	setStatus(status: null | string = null): void {
 		this.status = status;
 		if (status !== null) {
@@ -452,6 +460,13 @@ export class AdSlot {
 			},
 			false,
 		);
+	}
+
+	private setupRefreshableListener() {
+		communicationService.onSlotEvent(AdSlotEvent.SLOT_REFRESHABLE, ({ payload }) => {
+			const { isSlotRefreshable } = payload;
+			this.refreshable = isSlotRefreshable;
+		});
 	}
 
 	collapse(status: string = AdSlotStatus.STATUS_COLLAPSE): void {

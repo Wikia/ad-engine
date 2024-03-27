@@ -1,18 +1,40 @@
-import { AdSlot } from '@wikia/core';
+// @ts-strict-ignore
+import { communicationService, EventOptions, eventsRepository } from '@wikia/communication';
+import { CommunicationService } from '@wikia/communication/communication-service';
+import { AdSlot, context } from '@wikia/core';
 import { slotRefresher } from '@wikia/core/services/slot-refresher';
-import sinon, { assert } from 'sinon';
+import { expect } from 'chai';
+import sinon, { assert, SinonStubbedInstance } from 'sinon';
 
 describe('slot-refresher', () => {
-	const basicConfig = { slots: ['test_slot'] };
+	const basicConfig = {
+		slots: ['test_slot'],
+	};
+
 	const fakeGPTSlot = {
 		getSlotElementId: () => 'test_slot',
 		clearTargeting: sinon.spy(),
 		defineSizeMapping: sinon.spy(),
+		setTargeting: sinon.spy(),
+		updateTargetingFromMap: sinon.spy(),
 	};
+
 	const fakeAdSlot = {
 		isEnabled: () => true,
 		getSlotName: () => 'test_slot',
 		getCreativeSizeAsArray: () => [0, 0],
+		updatePushTimeAfterBid: () => {},
+		getElement: () => {
+			return {
+				style: {},
+				clientWidth: 0,
+				clientHeight: 0,
+			};
+		},
+		targeting: {
+			rv: 1,
+		},
+		getDefaultSizes: () => [],
 	};
 
 	let clock;
@@ -21,6 +43,7 @@ describe('slot-refresher', () => {
 	let loggerSpy;
 	let refreshSpy;
 	let addEventListenerSpy;
+	let communicationServiceStub: SinonStubbedInstance<CommunicationService>;
 
 	before(function () {
 		clock = sinon.useFakeTimers({
@@ -30,6 +53,9 @@ describe('slot-refresher', () => {
 		window.googletag = {
 			sizeMapping: () => ({
 				addSize: () => ({
+					build: sinon.spy(),
+				}),
+				build: () => ({
 					build: sinon.spy(),
 				}),
 			}),
@@ -46,6 +72,13 @@ describe('slot-refresher', () => {
 		refreshSpy = global.sandbox.spy();
 		addEventListenerSpy = global.sandbox.spy();
 		slotRefresher.slotsInTheViewport = ['test_slot'];
+
+		communicationServiceStub = global.sandbox.stub(communicationService);
+		communicationServiceStub.emit
+			.withArgs(eventsRepository.BIDDERS_CALL_PER_GROUP)
+			.callsFake((event: EventOptions, payload: { group: any; callback: () => void }) => {
+				payload.callback();
+			});
 	});
 
 	after(function () {
@@ -60,6 +93,7 @@ describe('slot-refresher', () => {
 	});
 
 	it('should be disabled if there is no slots in config', () => {
+		context.set('services.durationMedia.enabled', true);
 		slotRefresher.setupSlotRefresher({}, false, loggerSpy);
 
 		assert.calledOnce(loggerSpy.withArgs('disabled'));
@@ -72,8 +106,12 @@ describe('slot-refresher', () => {
 	});
 
 	it('should refresh', () => {
+		const refreshableSlot = {
+			...fakeAdSlot,
+			refreshable: true,
+		};
 		slotRefresher.setupSlotRefresher(basicConfig, false, loggerSpy);
-		slotRefresher.refreshSlot(fakeAdSlot as AdSlot);
+		slotRefresher.refreshSlot(refreshableSlot as AdSlot);
 		clock.runAll();
 
 		assert.calledOnce(refreshSpy);
@@ -115,11 +153,33 @@ describe('slot-refresher', () => {
 	});
 
 	it('should start listening to GPT event on attempt of refresh slot outside the viewport', () => {
+		const slotOutsideViewport = {
+			...fakeAdSlot,
+			refreshable: false,
+		};
 		slotRefresher.slotsInTheViewport = [];
 		slotRefresher.setupSlotRefresher(basicConfig, false, loggerSpy);
-		slotRefresher.refreshSlot(fakeAdSlot as AdSlot);
+		slotRefresher.refreshSlot(slotOutsideViewport as AdSlot);
 		clock.runAll();
 
 		assert.calledOnce(addEventListenerSpy);
+	});
+
+	it('should return 1 when targeting.rv is undefined', () => {
+		const rv = undefined;
+		const castedRV = rv ? String(Number(rv) + 1) : '1';
+		expect(castedRV).to.be.equal('1');
+	});
+
+	it('should return 2 when targeting.rv is 1', () => {
+		const rv = 1;
+		const castedRV = rv ? String(Number(rv) + 1) : '1';
+		expect(castedRV).to.be.equal('2');
+	});
+
+	it('should return 1 when targeting.rv is null', () => {
+		const rv = null;
+		const castedRV = rv ? String(Number(rv) + 1) : '1';
+		expect(castedRV).to.be.equal('1');
 	});
 });

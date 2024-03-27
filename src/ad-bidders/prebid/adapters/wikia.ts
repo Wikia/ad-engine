@@ -60,7 +60,9 @@ export class Wikia extends PrebidAdapter {
 		if (context.get(`slots.${code}.isNative`)) {
 			return this.prepareNativeConfig(PrebidNativeConfig.getPrebidNativeTemplate(), code);
 		} else {
-			return this.prepareStandardConfig(code, { sizes });
+			const newSizes = this.filterSizesForRefreshing(code, sizes);
+
+			return this.prepareStandardConfig(code, { sizes: newSizes });
 		}
 	}
 

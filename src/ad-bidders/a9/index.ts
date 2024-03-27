@@ -87,6 +87,15 @@ export class A9Provider extends BidderProvider {
 		this.slots = this.bidderConfig.slots;
 		this.slotsNames = Object.keys(this.slots);
 		this.bidsRefreshing = context.get('bidders.a9.bidsRefreshing') || {};
+
+		communicationService.on(
+			eventsRepository.SLOT_REFRESHER_SET_MAXIMUM_SLOT_HEIGHT,
+			({ adSlot }) => {
+				const slotName = adSlot.getSlotName();
+				this.setMaximumAdSlotHeight(slotName);
+			},
+			false,
+		);
 	}
 
 	getTargetingKeys(): string[] {
@@ -166,6 +175,22 @@ export class A9Provider extends BidderProvider {
 			.filter((slot) => slot !== null);
 	}
 
+	filterBidSizes(currentBids: A9Bid[], slotRefresherConfig) {
+		const slotsAvailableForRefreshing = Object.keys(slotRefresherConfig);
+		const filteredBids = currentBids.filter((bid) => {
+			if (!slotsAvailableForRefreshing.includes(bid.slotID)) {
+				return true;
+			}
+
+			const sizeParts = bid.size.split('x');
+			const height = parseInt(sizeParts[1], 10);
+			const heightLimit = slotRefresherConfig[bid.slotID]?.[1];
+			return heightLimit === undefined || height <= heightLimit;
+		});
+
+		return filteredBids;
+	}
+
 	/**
 	 * Fetches bids from A9.
 	 * Calls this.onBidResponse() upon success.
@@ -181,14 +206,24 @@ export class A9Provider extends BidderProvider {
 
 		const startTime = new Date().getTime();
 		const currentBids: A9Bid[] = await this.apstag.fetchBids({ slots, timeout: this.timeout });
+		let filteredBids: A9Bid[];
+
+		const slotRefresherConfig = context.get('slotConfig.slotRefresher.sizes');
+
+		if (slotRefresherConfig) {
+			filteredBids = this.filterBidSizes(currentBids, slotRefresherConfig);
+		}
+
+		const bidsToMap = slotRefresherConfig ? filteredBids : currentBids;
 		const endTime: number = new Date().getTime();
 		const expirationDate = new Date(endTime + A9Provider.VIDEO_TTL);
 
 		utils.logger(logGroup, 'bids fetched for slots', slots, 'bids', currentBids);
+
 		this.configureApstagOnce();
 
 		await Promise.all(
-			currentBids.map(async (bid) => {
+			bidsToMap.map(async (bid) => {
 				const slotName: string = bid.slotID;
 				const { keys, bidTargeting } = await this.getBidTargetingWithKeys(bid);
 
@@ -290,6 +325,7 @@ export class A9Provider extends BidderProvider {
 	 */
 	createSlotDefinition(slotName: string): A9SlotDefinition | null {
 		const config: A9SlotConfig = this.slots[slotName];
+
 		const definition: A9SlotDefinition = {
 			slotName,
 			slotID: slotName,
@@ -397,5 +433,22 @@ export class A9Provider extends BidderProvider {
 		return slotConfig && Object.keys(slotConfig).length > 0
 			? slotService.getState(slotID)
 			: someEnabledByAlias;
+	}
+
+	setMaximumAdSlotHeight(slotName: string): void {
+		const slotRefresherConfig = context.get('slotConfig.slotRefresher.sizes');
+
+		if (!slotRefresherConfig) return;
+
+		const slotHeightLimit = slotRefresherConfig[slotName][1];
+
+		if (!slotHeightLimit) return;
+
+		context.set(
+			`bidders.a9.slots.${slotName}.sizes`,
+			context
+				.get(`bidders.a9.slots.${slotName}.sizes`)
+				.filter((size: [number, number]) => size[1] <= slotHeightLimit),
+		);
 	}
 }

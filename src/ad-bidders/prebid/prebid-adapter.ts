@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Aliases, context, Dictionary, targetingService, utils } from '@ad-engine/core';
 import { PrebidAdapterConfig, PrebidAdSlotConfig } from './prebid-models';
 
@@ -39,6 +40,25 @@ export abstract class PrebidAdapter {
 		);
 	}
 
+	filterSizesForRefreshing(code: string, sizes: [number, number][]) {
+		if (!sizes) {
+			return sizes;
+		}
+
+		const slotRefresherConfig = context.get('slotConfig.slotRefresher');
+
+		if (!slotRefresherConfig || !slotRefresherConfig.sizes) {
+			return sizes;
+		}
+
+		const slotsAvailableForRefreshing = Object.keys(slotRefresherConfig.sizes);
+		const adUnitSizeLimit = slotRefresherConfig.sizes[code];
+
+		return slotsAvailableForRefreshing.includes(code)
+			? sizes.filter((size) => size[1] <= adUnitSizeLimit[1])
+			: sizes;
+	}
+
 	protected getTargeting(placementName: string, customTargeting = {}): Dictionary {
 		return {
 			...this.pageTargeting,
@@ -64,5 +84,38 @@ export abstract class PrebidAdapter {
 				slotNameSuffix: '',
 			},
 		});
+	}
+
+	setMaximumAdSlotHeight(slotName: string, slotHeightLimit: number) {
+		const sizeKey = context.get(`bidders.prebid.${this.bidderName}.slots.${slotName}`);
+		const filterCallback = (size: [number, number]) => size[1] <= slotHeightLimit;
+		if (!sizeKey || !('sizes' in sizeKey)) return;
+
+		context.set(
+			`bidders.prebid.${this.bidderName}.slots.${slotName}.sizes`,
+			context
+				.get(`bidders.prebid.${this.bidderName}.slots.${slotName}.sizes`)
+				.filter(filterCallback),
+		);
+	}
+
+	extractSizeFromString(input: string, bidderName: string): number[] | null {
+		let regex: RegExp;
+
+		if (bidderName === 'pubmatic') {
+			regex = /@(\d+)x(\d+)/;
+		} else if (bidderName === 'triplelift') {
+			regex = /_(\d+)x(\d+)_/;
+		} else {
+			console.error('extractSizeFromString', 'Invalid type specified');
+		}
+
+		if (input.match(regex)) {
+			const width = parseInt(input.match(regex)[1], 10);
+			const height = parseInt(input.match(regex)[2], 10);
+			return [width, height];
+		}
+
+		return null;
 	}
 }

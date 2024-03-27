@@ -2,9 +2,11 @@
 import {
 	AdSlot,
 	communicationService,
+	context,
 	eventsRepository,
 	TEMPLATE,
 	UapParams,
+	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { PAGE } from '../configs/uap-dom-elements';
@@ -20,6 +22,8 @@ export class UapDomManager {
 		private manipulator: DomManipulator,
 		private reader: UapDomReader,
 	) {}
+
+	static PLACEHOLDER_HEIGHT_OVERHEAD = 39;
 
 	addClassToPage(className: string): void {
 		this.manipulator.element(this.page).addClass(className);
@@ -53,7 +57,16 @@ export class UapDomManager {
 		this.setSlotHeight(`${this.reader.getSlotHeightImpact()}px`);
 	}
 
+	private addTransitionProperty() {
+		const transition = `height 300ms ${universalAdPackage.CSS_TIMING_EASE_IN_CUBIC}`;
+
+		const topAdsContainerElement: HTMLElement = document.querySelector('.top-ads-container');
+		this.manipulator.element(this.adSlot.getElement()).setProperty('transition', transition);
+		this.manipulator.element(topAdsContainerElement).setProperty('transition', transition);
+	}
+
 	private setSlotHeight(height: string): void {
+		this.addTransitionProperty();
 		this.manipulator.element(this.adSlot.getElement()).setProperty('height', height);
 	}
 
@@ -63,12 +76,28 @@ export class UapDomManager {
 			.setProperty('clip', this.reader.getSlotHeightClipping());
 	}
 
+	resizePlaceholderToIframe(height: number) {
+		const slotRefresherConfig = context.get('slotConfig.slotRefresher.sizes') || {};
+
+		if (this.adSlot.getSlotName() in slotRefresherConfig) {
+			const iframe = this.adSlot.getIframe();
+			const placeholderHeight = `${
+				Number(iframe.height) + UapDomManager.PLACEHOLDER_HEIGHT_OVERHEAD
+			}px`;
+
+			this.setSlotHeight(placeholderHeight);
+			this.setPlaceholderHeight(placeholderHeight);
+		} else {
+			this.setPlaceholderHeight(`${height}px`);
+		}
+	}
+
 	setPlaceholderHeightResolved(): void {
-		this.setPlaceholderHeight(`${this.reader.getSlotHeightResolved()}px`);
+		this.resizePlaceholderToIframe(this.reader.getSlotHeightResolved());
 	}
 
 	setPlaceholderHeightImpact(): void {
-		this.setPlaceholderHeight(`${this.reader.getSlotHeightImpact()}px`);
+		this.resizePlaceholderToIframe(this.reader.getSlotHeightImpact());
 	}
 
 	private setPlaceholderHeight(height: string): void {

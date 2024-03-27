@@ -21,9 +21,11 @@ export class MagniteS2s extends PrebidAdapter {
 	}
 
 	prepareConfigForAdUnit(code, { sizes }: PrebidAdSlotConfig): PrebidAdUnit {
+		const newSizes = this.filterSizesForRefreshing(code, sizes);
+
 		let mediaTypes: object = {
 			banner: {
-				sizes,
+				sizes: newSizes,
 			},
 		};
 

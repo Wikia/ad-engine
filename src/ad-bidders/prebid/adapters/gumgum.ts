@@ -14,11 +14,13 @@ export class Gumgum extends PrebidAdapter {
 	}
 
 	prepareConfigForAdUnit(code: string, { sizes, inScreen }: PrebidAdSlotConfig): PrebidAdUnit {
+		const newSizes = this.filterSizesForRefreshing(code, sizes);
+
 		return {
 			code,
 			mediaTypes: {
 				banner: {
-					sizes,
+					sizes: newSizes,
 				},
 			},
 			bids: [

@@ -14,11 +14,13 @@ export class Ogury extends PrebidAdapter {
 	}
 
 	prepareConfigForAdUnit(code, { adUnitId, assetKey, sizes }: PrebidAdSlotConfig): PrebidAdUnit {
+		const newSizes = this.filterSizesForRefreshing(code, sizes);
+
 		return {
 			code,
 			mediaTypes: {
 				banner: {
-					sizes,
+					sizes: newSizes,
 				},
 			},
 			bids: [

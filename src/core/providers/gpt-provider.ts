@@ -23,6 +23,7 @@ export const GAMOrigins: string[] = [
 	'https://tpc.googlesyndication.com',
 	'https://googleads.g.doubleclick.net',
 ];
+
 const AllViewportSizes = [0, 0];
 
 function postponeExecutionUntilGptLoads(method: () => void): any {
@@ -100,12 +101,14 @@ function configure(): void {
 		'slotVisibilityChanged',
 		function (event: googletag.events.SlotVisibilityChangedEvent) {
 			const adSlot = getAdSlotFromEvent(event);
+			const isSlotRefreshable = event.inViewPercentage > 0;
 
 			if (!adSlot) {
 				return;
 			}
 
-			adSlot.emit(AdSlotEvent.SLOT_VISIBILITY_CHANGED, event);
+			adSlot?.emit(AdSlotEvent.SLOT_VISIBILITY_CHANGED, event);
+			adSlot?.emit(AdSlotEvent.SLOT_REFRESHABLE, { isSlotRefreshable });
 
 			if (event.inViewPercentage > 50) {
 				return adSlot.emit(AdSlotEvent.SLOT_BACK_TO_VIEWPORT, event);
@@ -167,6 +170,14 @@ function SmLogger(targeting: SlotTargeting) {
 	if (isTlb && smLoggerLoaded) {
 		window['smTracking'].recordRequestTargeting(targeting);
 	}
+}
+
+function updateGptSlotTargeting(gptSlot: googletag.Slot, adSlot: AdSlot, targeting: SlotTargeting) {
+	const castedRV = targeting.rv ? String(Number(targeting.rv) + 1) : '1';
+
+	gptSlot.updateTargetingFromMap(targeting);
+	gptSlot.setTargeting('rv', castedRV);
+	targetingService.set('rv', castedRV, adSlot.getSlotName());
 }
 
 export class GptProvider implements Provider {
@@ -332,12 +343,19 @@ export class GptProvider implements Provider {
 	static refreshSlot(adSlot: AdSlot): void {
 		const activeSlots = window.googletag.pubads().getSlots();
 		const gptSlot = activeSlots.find((slot) => slot.getSlotElementId() === adSlot.getSlotName());
+		const { targeting } = adSlot;
 		gptSlot.clearTargeting();
-		const mapping = window.googletag
-			.sizeMapping()
-			.addSize(AllViewportSizes, adSlot.getCreativeSizeAsArray())
-			.build();
-		gptSlot.defineSizeMapping(mapping);
+
+		const sizeMapping = window.googletag.sizeMapping();
+		adSlot.getDefaultSizes().forEach((adSize) => {
+			if (adSize[1] <= adSlot.getElement().clientHeight) {
+				sizeMapping.addSize(AllViewportSizes, adSize);
+			}
+		});
+
+		gptSlot.defineSizeMapping(sizeMapping.build());
+		updateGptSlotTargeting(gptSlot, adSlot, targeting);
+
 		window.googletag.pubads().refresh([gptSlot]);
 	}
 }

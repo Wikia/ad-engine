@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
 
@@ -16,7 +17,8 @@ export class Criteo extends PrebidAdapter {
 	}
 
 	prepareConfigForAdUnit(code, { sizes }: PrebidAdSlotConfig): PrebidAdUnit {
-		return this.getStandardConfig(code, sizes);
+		const newSizes = this.filterSizesForRefreshing(code, sizes);
+		return this.getStandardConfig(code, newSizes);
 	}
 
 	getStandardConfig(code, sizes): PrebidAdUnit {

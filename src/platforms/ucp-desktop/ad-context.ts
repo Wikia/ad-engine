@@ -18,10 +18,12 @@ export const basicContext = {
 			amazonId: '3115',
 			bidsRefreshing: {
 				slots: [
+					'top_leaderboard',
+					'top_boxad',
 					'featured',
+					'bottom_leaderboard',
 					'gallery_leaderboard',
 					'incontent_leaderboard',
-					'bottom_leaderboard',
 					'incontent_boxad_1',
 				],
 			},
@@ -30,10 +32,13 @@ export const basicContext = {
 			enabled: false,
 			bidsRefreshing: {
 				slots: [
+					'top_leaderboard',
+					'top_boxad',
+					'featured',
+					'bottom_leaderboard',
 					'gallery_leaderboard',
 					'incontent_leaderboard',
 					'incontent_player',
-					'bottom_leaderboard',
 					'incontent_boxad_1',
 				],
 			},

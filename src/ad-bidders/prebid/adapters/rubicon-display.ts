@@ -33,11 +33,13 @@ export class RubiconDisplay extends PrebidAdapter {
 		code,
 		{ siteId, zoneId, sizes, position, targeting }: PrebidAdSlotConfig,
 	): PrebidAdUnit {
+		const newSizes = this.filterSizesForRefreshing(code, sizes);
+
 		return {
 			code,
 			mediaTypes: {
 				banner: {
-					sizes,
+					sizes: newSizes,
 				},
 			},
 			ortb2Imp: this.getOrtb2Imp(code),

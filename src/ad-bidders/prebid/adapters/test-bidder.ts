@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { context } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
@@ -20,8 +21,8 @@ export class TestBidder extends PrebidAdapter {
 		if (context.get(`slots.${code}.isVideo`)) {
 			return this.getVideoConfig(code, parameters);
 		}
-
-		return this.getStandardConfig(code, { sizes, parameters });
+		const newSizes = this.filterSizesForRefreshing(code, sizes);
+		return this.getStandardConfig(code, { sizes: newSizes, parameters });
 	}
 
 	private getVideoConfig(code, parameters): PrebidAdUnit {

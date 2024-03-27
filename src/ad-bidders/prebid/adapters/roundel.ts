@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { context } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
 import {
@@ -27,8 +28,8 @@ export class Roundel extends PrebidAdapter {
 		if (context.get(`slots.${code}.isVideo`)) {
 			return this.getVideoConfig(code, siteId);
 		}
-
-		return this.getStandardConfig(code, { sizes, siteId });
+		const newSizes = this.filterSizesForRefreshing(code, sizes);
+		return this.getStandardConfig(code, { sizes: newSizes, siteId });
 	}
 
 	private getVideoConfig(code, siteId): PrebidAdUnit {

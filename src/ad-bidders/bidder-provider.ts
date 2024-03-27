@@ -114,4 +114,6 @@ export abstract class BidderProvider {
 	protected abstract getTargetingParams(slotName: string): Promise<Dictionary>;
 
 	protected abstract isSupported(slotName: string): boolean;
+
+	abstract setMaximumAdSlotHeight(slotName: string): void;
 }

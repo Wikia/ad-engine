@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import {
 	AdSlot,
 	AdSlotEvent,
@@ -10,6 +11,8 @@ import { MetricReporterSender } from './metric-reporter/metric-reporter-sender';
 const REPORTABLE_SLOTS = {
 	stateMetric: ['top_leaderboard'],
 	timingMetric: ['top_leaderboard'],
+	reportedGamSlotRequests: [],
+	reportedGamSlotRenders: [],
 };
 
 export class MetricReporter {
@@ -49,13 +52,17 @@ export class MetricReporter {
 
 	private trackGamSlotRequest(): void {
 		communicationService.onSlotEvent(AdSlotEvent.SLOT_REQUESTED_EVENT, ({ slot }) => {
+			if (REPORTABLE_SLOTS.reportedGamSlotRequests.includes(slot.getSlotName())) return;
 			this.sendSlotInfoToMeteringSystem(slot, 'request');
+			REPORTABLE_SLOTS.reportedGamSlotRequests.push(slot.getSlotName());
 		});
 	}
 
 	private trackGamSlotRendered(): void {
 		communicationService.onSlotEvent(AdSlotEvent.SLOT_RENDERED_EVENT, ({ slot }) => {
+			if (REPORTABLE_SLOTS.reportedGamSlotRenders.includes(slot.getSlotName())) return;
 			this.sendSlotInfoToMeteringSystem(slot, 'render');
+			REPORTABLE_SLOTS.reportedGamSlotRenders.push(slot.getSlotName());
 		});
 	}
 

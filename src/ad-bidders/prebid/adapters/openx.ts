@@ -54,11 +54,13 @@ export class Openx extends PrebidAdapter {
 	}
 
 	private getStandardConfig(code, sizes, unit): PrebidAdUnit {
+		const newSizes = this.filterSizesForRefreshing(code, sizes);
+
 		return {
 			code,
 			mediaTypes: {
 				banner: {
-					sizes,
+					sizes: newSizes,
 				},
 			},
 			ortb2Imp: this.getOrtb2Imp(code),
