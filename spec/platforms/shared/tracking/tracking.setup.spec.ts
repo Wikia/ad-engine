@@ -5,7 +5,7 @@ import { DataWarehouseTracker, TrackingSetup, trackingUrls } from '@wikia/platfo
 import { AdSizeTracker } from '@wikia/platforms/shared/tracking/ad-size-tracker';
 import { LabradorTracker } from '@wikia/platforms/shared/tracking/labrador-tracker';
 import { expect } from 'chai';
-import { SinonSpy } from 'sinon';
+import { SinonSpy, SinonStub } from 'sinon';
 
 describe('TrackingSetup', () => {
 	const dwTracker = new DataWarehouseTracker();
@@ -17,9 +17,14 @@ describe('TrackingSetup', () => {
 	const globalTimeout = new GlobalTimeout();
 	const bidders = new Bidders(instantConfig, globalTimeout);
 	let trackSpy: SinonSpy;
+	let getActiveLabradorKeyValuesStub: SinonStub;
 
 	beforeEach(() => {
 		trackSpy = global.sandbox.spy(dwTracker, 'track');
+		getActiveLabradorKeyValuesStub = global.sandbox.stub(
+			instantConfig,
+			'getActiveLabradorKeyValues',
+		);
 	});
 
 	afterEach(() => {
@@ -37,6 +42,7 @@ describe('TrackingSetup', () => {
 			bidders,
 			instantConfig,
 		);
+		getActiveLabradorKeyValuesStub.returns(['labradorVal']);
 
 		// when
 		trackingSetup.execute();
@@ -71,6 +77,7 @@ describe('TrackingSetup', () => {
 			bidders,
 			instantConfig,
 		);
+		getActiveLabradorKeyValuesStub.returns([]);
 
 		// when
 		trackingSetup.execute();

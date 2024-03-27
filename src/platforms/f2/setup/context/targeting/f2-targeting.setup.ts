@@ -2,7 +2,6 @@
 import {
 	context,
 	DiProcess,
-	InstantConfigCacheStorage,
 	InstantConfigService,
 	SlotTargeting,
 	targetingService,
@@ -20,7 +19,6 @@ export class F2TargetingSetup implements DiProcess {
 		@Inject(F2_ENV) private f2Env: F2Environment,
 		@Inject(F2_STATE) private f2State: F2State,
 		private instantConfig: InstantConfigService,
-		private cacheStorage: InstantConfigCacheStorage,
 	) {}
 
 	execute(): void {
@@ -42,9 +40,7 @@ export class F2TargetingSetup implements DiProcess {
 			s1: '_fandom',
 			s2: this.f2State.pageType === 'topic' ? 'vertical' : this.f2State.pageType,
 			rating: 'esrb:teen',
-			labrador: this.cacheStorage.mapSamplingResults(
-				this.instantConfig.get('icLABradorGamKeyValues'),
-			),
+			labrador: this.instantConfig.getActiveLabradorKeyValues(),
 			is_mobile: context.get('state.isMobile') ? '1' : '0',
 		};
 

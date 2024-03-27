@@ -11,7 +11,6 @@ import {
 	eventsRepository,
 	GAMOrigins,
 	globalAction,
-	InstantConfigCacheStorage,
 	InstantConfigService,
 	interventionTracker,
 	porvataTracker,
@@ -175,9 +174,8 @@ export class TrackingSetup {
 	}
 
 	private experimentGroupsTracker(): void {
-		const cacheStorage = InstantConfigCacheStorage.make();
 		const experimentsGroups = [
-			...cacheStorage.getSamplingResults(),
+			...this.instantConfig.getActiveLabradorKeyValues(),
 			...(targetingService.get('experiment_groups') || []),
 		].join(';');
 

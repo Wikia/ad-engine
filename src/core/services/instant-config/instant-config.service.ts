@@ -11,7 +11,7 @@ import {
 	InstantConfigValue,
 	RegionMatcher,
 } from '@wikia/instant-config-loader';
-import { InstantConfigCacheStorage, utils } from '../../index';
+import { utils } from '../../index';
 import { Dictionary } from '../../models';
 
 const logGroup = 'instant-config-service';
@@ -33,7 +33,6 @@ export class InstantConfigService implements InstantConfigServiceInterface {
 			new DeviceMatcher(utils.client.getDeviceType() as unknown as string),
 			new DomainMatcher(),
 			new RegionMatcher(),
-			InstantConfigCacheStorage.make(),
 		);
 
 		this.interpreter = await instantConfigLoader
@@ -67,5 +66,9 @@ export class InstantConfigService implements InstantConfigServiceInterface {
 		} catch (e) {
 			return defaultValue;
 		}
+	}
+
+	getActiveLabradorKeyValues(): string[] {
+		return this.interpreter.getActiveLabradorKeyValues();
 	}
 }
