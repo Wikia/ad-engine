@@ -217,5 +217,19 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 		context.set('slots', slots);
 		context.set('slots.featured.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
 		context.set('slots.incontent_player.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
+		this.configureBidAuctionSplitExperiment();
+	}
+
+	private configureBidAuctionSplitExperiment() {
+		if (context.get('custom.bidAuctionSplitEnabled')) {
+			context.set('slots.incontent_boxad_1.bidGroup', 'incontent_boxad_1');
+			context.set('slots.incontent_boxad_1.bidBeforeRun', true);
+
+			context.set('slots.mobile_prefooter.bidGroup', 'mobile_prefooter');
+			context.set('slots.mobile_prefooter.bidBeforeRun', true);
+
+			context.set('slots.floor_adhesion.bidGroup', 'floor_adhesion');
+			context.set('slots.floor_adhesion.bidBeforeRun', true);
+		}
 	}
 }

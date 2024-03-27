@@ -3,7 +3,7 @@ import { Container, Injectable } from '@wikia/dependency-injection';
 import {
 	BiddersStateSetup,
 	ConsentManagementPlatformSetup,
-	ensureGeoCookie,
+	ensureGeoAvailable,
 	InstantConfigSetup,
 	LoadTimesSetup,
 	MetricReporterSetup,
@@ -52,7 +52,7 @@ export class MetacriticNeutronPlatform {
 		context.set('state.isMobile', !utils.client.isDesktop());
 
 		this.pipeline.add(
-			async () => await ensureGeoCookie(),
+			async () => await ensureGeoAvailable(),
 			parallel(
 				sequential(InstantConfigSetup, PreloadedLibrariesSetup),
 				ConsentManagementPlatformSetup,

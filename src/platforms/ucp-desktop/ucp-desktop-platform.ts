@@ -1,8 +1,9 @@
 import {
+	BidAuctionSplitExperimentSetup,
 	BiddersStateSetup,
 	BiddersTargetingUpdater,
 	ConsentManagementPlatformSetup,
-	ensureGeoCookie,
+	ensureGeoAvailable,
 	InstantConfigSetup,
 	LabradorSetup,
 	LoadTimesSetup,
@@ -49,11 +50,12 @@ export class UcpDesktopPlatform {
 		// Config
 		this.pipeline.add(
 			PlatformContextSetup,
-			async () => await ensureGeoCookie(),
+			async () => await ensureGeoAvailable(),
 			parallel(
 				sequential(InstantConfigSetup, PreloadedLibrariesSetup),
 				ConsentManagementPlatformSetup,
 			),
+			BidAuctionSplitExperimentSetup,
 			TrackingParametersSetup,
 			MetricReporterSetup,
 			UcpDesktopBaseContextSetup,

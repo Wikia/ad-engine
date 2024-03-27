@@ -1,7 +1,7 @@
 import {
 	BaseContextSetup,
 	ConsentManagementPlatformSetup,
-	ensureGeoCookie,
+	ensureGeoAvailable,
 	InstantConfigSetup,
 	MetricReporterSetup,
 	NoAdsMode,
@@ -27,7 +27,7 @@ export class TvGuideMTCPlatform {
 			parallel(InstantConfigSetup, ConsentManagementPlatformSetup),
 			BaseContextSetup,
 			PlatformContextSetup,
-			async () => await ensureGeoCookie(),
+			async () => await ensureGeoAvailable(),
 			TrackingParametersSetup,
 			MetricReporterSetup,
 			IdentitySetup,

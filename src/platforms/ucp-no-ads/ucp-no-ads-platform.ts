@@ -1,5 +1,7 @@
 import {
-	ensureGeoCookie,
+	BaseContextSetup,
+	ConsentManagementPlatformSetup,
+	ensureGeoAvailable,
 	InstantConfigSetup,
 	MetricReporterSetup,
 	NoAdsMode,
@@ -22,7 +24,7 @@ export class UcpNoAdsPlatform {
 		this.pipeline.add(
 			UcpNoAdsWikiContextSetup,
 			PlatformContextSetup,
-			async () => await ensureGeoCookie(),
+			async () => await ensureGeoAvailable(),
 			parallel(InstantConfigSetup),
 			TrackingParametersSetup,
 			MetricReporterSetup,
