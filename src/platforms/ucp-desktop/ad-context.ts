@@ -9,18 +9,33 @@ export const basicContext = {
 	bidders: {
 		enabled: false,
 		timeout: 2000,
+		timeoutByGroup: {
+			'not-defined': 1000,
+		},
 		a9: {
 			enabled: false,
 			videoEnabled: false,
 			amazonId: '3115',
 			bidsRefreshing: {
-				slots: ['featured', 'gallery_leaderboard', 'incontent_leaderboard'],
+				slots: [
+					'featured',
+					'gallery_leaderboard',
+					'incontent_leaderboard',
+					'bottom_leaderboard',
+					'incontent_boxad_1',
+				],
 			},
 		},
 		prebid: {
 			enabled: false,
 			bidsRefreshing: {
-				slots: ['gallery_leaderboard', 'incontent_leaderboard', 'incontent_player'],
+				slots: [
+					'gallery_leaderboard',
+					'incontent_leaderboard',
+					'incontent_player',
+					'bottom_leaderboard',
+					'incontent_boxad_1',
+				],
 			},
 		},
 	},
