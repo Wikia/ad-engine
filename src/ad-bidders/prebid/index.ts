@@ -164,6 +164,7 @@ export class PrebidProvider extends BidderProvider {
 			...this.configureS2sBidding(),
 			...this.configureJwpRtd(),
 			...this.configureDSA(),
+			...this.configureFledge(),
 			...context.get('bidders.prebid.config'),
 		};
 
@@ -415,6 +416,19 @@ export class PrebidProvider extends BidderProvider {
 							},
 						},
 					},
+				},
+			};
+		}
+		return {};
+	}
+
+	private configureFledge(): object {
+		if (context.get('bidders.fledge.enabled')) {
+			return {
+				fledgeForGpt: {
+					enabled: true,
+					bidders: context.get('bidders.fledge.partners') || [],
+					defaultForSlots: 1,
 				},
 			};
 		}
