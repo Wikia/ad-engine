@@ -16,6 +16,8 @@ export class SlotDecisionOnViewabilityHandler implements TemplateStateHandler {
 	private readonly additionalHideTime?: number;
 	private readonly timeoutHideTime?: number;
 
+	private readonly displayFloorAdhesionClass = 'floor-adhesion-container--showing';
+
 	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot, instantConfig: InstantConfigService) {
 		this.additionalHideTime = instantConfig.get('icFloorAdhesionDelay');
 		this.timeoutHideTime = instantConfig.get('icFloorAdhesionTimeout');
@@ -29,6 +31,9 @@ export class SlotDecisionOnViewabilityHandler implements TemplateStateHandler {
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
+
+		// Mark that the ad is showing
+		document.body.classList.add(this.displayFloorAdhesionClass);
 	}
 
 	private getViewabilityStream(): Observable<unknown> {
@@ -45,5 +50,7 @@ export class SlotDecisionOnViewabilityHandler implements TemplateStateHandler {
 
 	async onLeave(): Promise<void> {
 		this.unsubscribe$.next();
+
+		document.body.classList.remove(this.displayFloorAdhesionClass);
 	}
 }

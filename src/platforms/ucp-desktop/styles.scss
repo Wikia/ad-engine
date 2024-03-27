@@ -73,19 +73,39 @@ $out-of-page-z-index: 402;
 }
 
 @mixin wiki-floor-adhesion() {
-	.floor-adhesion-experiment.theme-fandomdesktop-light {
-		.floor-adhesion {
-			background: rgba(255, 255, 255, 0.8);
+	.floor-adhesion-container {
+		&.theme-fandomdesktop-light .floor-adhesion {
+			background: white;
 
 			.button-close {
-				background: #fff;
-				fill: #000;
+				background: white;
+				fill: black;
 			}
+		}
+
+		&.theme-fandomdesktop-dark .floor-adhesion {
+			background: black;
+
+			.button-close {
+				background: black;
+				fill: white;
+			}
+		}
+
+		&--showing :is(.WikiaBarWrapper, .WikiaBarCollapseWrapper):not(.hidden) {
+			bottom: 99px !important;
 		}
 	}
 
 	.floor-adhesion.out-of-page-template {
 		width: calc(100% - #{$navbar-width}) !important;
+
+		> .button-close {
+			background: transparent !important;
+			top: 0;
+			height: fit-content;
+			width: 1.5rem;
+		}
 	}
 
 	@include floor-adhesion($navbar-width);

@@ -12,10 +12,9 @@ import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })
 export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
+	private defaultEnabledSlots: string[] = ['top_boxad', 'incontent_boxad_1', 'bottom_leaderboard'];
 	private enabledSlots: string[] = [
-		'top_boxad',
-		'incontent_boxad_1',
-		'bottom_leaderboard',
+		...this.defaultEnabledSlots,
 		'gallery_leaderboard',
 		'fandom_dt_galleries',
 	];
@@ -50,15 +49,10 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 	}
 
 	private configureFloorAdhesionExperiment() {
-		if (context.get('options.ntc.floorEnabled')) {
-			this.enabledSlots = [
-				'top_boxad',
-				'incontent_boxad_1',
-				'bottom_leaderboard',
-				'floor_adhesion',
-			];
+		if (!context.get('options.disableFloorAdhesion')) {
+			this.enabledSlots = [...this.defaultEnabledSlots, 'floor_adhesion'];
 
-			document.body.classList.add('floor-adhesion-experiment');
+			document.body.classList.add('floor-adhesion-container');
 		}
 	}
 }
