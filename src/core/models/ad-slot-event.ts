@@ -9,7 +9,6 @@ export enum AdSlotEvent {
 	SLOT_BACK_TO_VIEWPORT = 'slotBackToViewport',
 	SLOT_LEFT_VIEWPORT = 'slotLeftViewport',
 	SLOT_STATUS_CHANGED = 'slotStatusChanged',
-	SLOT_REFRESHABLE = 'slotRefreshable',
 	DESTROYED_EVENT = 'slotDestroyed',
 	DESTROY_EVENT = 'slotDestroy',
 	HIDDEN_EVENT = 'slotHidden',

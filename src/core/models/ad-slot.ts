@@ -86,7 +86,6 @@ export class AdSlot {
 	winningBidderDetails: null | WinningBidderDetails = null;
 	trackStatusAfterRendered = false;
 	slotViewed = false;
-	refreshable = false;
 
 	requested: Promise<void> = null;
 	loaded: Promise<void> = null;
@@ -104,7 +103,6 @@ export class AdSlot {
 		this.config.slotName = this.config.slotName || ad.id;
 		this.config.slotNameSuffix = this.config.slotNameSuffix || '';
 		this.setUpSlotTargeting();
-		this.setupRefreshableListener();
 		delete this.config.targeting;
 
 		this.requested = new Promise<void>((resolve) => {
@@ -460,13 +458,6 @@ export class AdSlot {
 			},
 			false,
 		);
-	}
-
-	private setupRefreshableListener() {
-		communicationService.onSlotEvent(AdSlotEvent.SLOT_REFRESHABLE, ({ payload }) => {
-			const { isSlotRefreshable } = payload;
-			this.refreshable = isSlotRefreshable;
-		});
 	}
 
 	collapse(status: string = AdSlotStatus.STATUS_COLLAPSE): void {
