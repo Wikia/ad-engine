@@ -87,6 +87,90 @@ describe('PreloadedLibrariesSetup', () => {
 		).to.be.true;
 	});
 
+	it('should load prebid from dev location', async () => {
+		const instantConfig: InstantConfigServiceInterface = {
+			get: global.sandbox
+				.stub()
+				.withArgs('icPrebid')
+				.returns(true)
+				.withArgs('icAudigent')
+				.returns(false)
+				.withArgs('icPrebidVersion', 'latest/min.js')
+				.returns(
+					'//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v127.0.1/dev/20342-min.js',
+				),
+		};
+		const contextSetStub = global.sandbox.stub(context, 'set');
+
+		await new PreloadedLibrariesSetup(
+			instantConfig as InstantConfigService,
+			new GptSetup(),
+		).execute();
+
+		expect(
+			contextSetStub.calledWith(
+				'bidders.prebid.libraryUrl',
+				'//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v127.0.1/dev/20342-min.js',
+			),
+		).to.be.true;
+	});
+
+	it('should load prebid from prod location', async () => {
+		const instantConfig: InstantConfigServiceInterface = {
+			get: global.sandbox
+				.stub()
+				.withArgs('icPrebid')
+				.returns(true)
+				.withArgs('icAudigent')
+				.returns(false)
+				.withArgs('icPrebidVersion', 'latest/min.js')
+				.returns(
+					'//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v127.0.1/prod/20342-min.js',
+				),
+		};
+		const contextSetStub = global.sandbox.stub(context, 'set');
+
+		await new PreloadedLibrariesSetup(
+			instantConfig as InstantConfigService,
+			new GptSetup(),
+		).execute();
+
+		expect(
+			contextSetStub.calledWith(
+				'bidders.prebid.libraryUrl',
+				'//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v127.0.1/prod/20342-min.js',
+			),
+		).to.be.true;
+	});
+
+	it('should not load prebid from location different than prod or dev', async () => {
+		const instantConfig: InstantConfigServiceInterface = {
+			get: global.sandbox
+				.stub()
+				.withArgs('icPrebid')
+				.returns(true)
+				.withArgs('icAudigent')
+				.returns(false)
+				.withArgs('icPrebidVersion', 'latest/min.js')
+				.returns(
+					'//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v127.0.1/somedir/20342-min.js',
+				),
+		};
+		const contextSetStub = global.sandbox.stub(context, 'set');
+
+		await new PreloadedLibrariesSetup(
+			instantConfig as InstantConfigService,
+			new GptSetup(),
+		).execute();
+
+		expect(
+			contextSetStub.calledWith(
+				'bidders.prebid.libraryUrl',
+				'//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/latest/min.js',
+			),
+		).to.be.true;
+	});
+
 	it('should not load prebid from non fandom location', async () => {
 		const instantConfig: InstantConfigServiceInterface = {
 			get: global.sandbox

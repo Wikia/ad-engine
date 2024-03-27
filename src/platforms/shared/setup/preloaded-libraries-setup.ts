@@ -12,7 +12,7 @@ import { GptSetup } from './gpt.setup';
 
 const prebidLibraryUrlLocation = '//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/';
 const prebidLibraryUrlPattern = new RegExp(
-	`^(${prebidLibraryUrlLocation.replaceAll('.', '\\.')})?[^/]+/[^/]+$`,
+	`^(${prebidLibraryUrlLocation.replaceAll('.', '\\.')})?[^/]+/((dev|prod)/)?[^/]+$`,
 );
 
 export interface PreloadOptions {
