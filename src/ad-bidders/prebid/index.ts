@@ -147,7 +147,7 @@ export class PrebidProvider extends BidderProvider {
 					},
 				},
 				userIds: [],
-				auctionDelay: context.get('bidders.prebid.auctionDelay') || 50,
+				auctionDelay: context.get('bidders.prebid.auctionDelay'),
 				syncsPerBidder: 3,
 				syncDelay: 6000,
 			},

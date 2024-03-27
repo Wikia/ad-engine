@@ -4,6 +4,7 @@ export * from './ad-engine';
 export * from './listeners';
 export { logVersion } from './log-version';
 export * from './models';
+export * from './phase';
 export * from './pipeline/imps/func-pipeline';
 export * from './pipeline/imps/partner-pipeline';
 export * from './pipeline/imps/process-pipeline/compound-processes/conditional-process';

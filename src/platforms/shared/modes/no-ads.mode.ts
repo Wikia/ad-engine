@@ -8,11 +8,8 @@ import {
 	context,
 	DiProcess,
 	eventsRepository,
-	Experian,
 	GdprConsentPayload,
 	jwpSetup,
-	LiveConnect,
-	LiveRampPixel,
 	PartnerPipeline,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -25,9 +22,6 @@ export class NoAdsMode implements DiProcess {
 		private noAdsDetector: NoAdsDetector,
 		private ats: Ats,
 		private audigent: Audigent,
-		private liveConnect: LiveConnect,
-		private experian: Experian,
-		private liveRampPixel: LiveRampPixel,
 	) {}
 
 	execute(): void {
@@ -50,7 +44,8 @@ export class NoAdsMode implements DiProcess {
 		}
 
 		this.pipeline
-			.add(this.liveRampPixel, this.ats, this.audigent, this.liveConnect, this.experian)
+			.add(this.ats)
+			.add(this.audigent)
 			.execute()
 			.then(() => {
 				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);

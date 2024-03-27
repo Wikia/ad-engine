@@ -144,10 +144,17 @@ export const basicContext = {
 		},
 		preload: {
 			gpt: false,
-			audigent: true,
+			audigent: false,
 			prebid: true,
 			apstag: false,
 			intentIq: true,
+		},
+		phases: {
+			configurationTimeout: 300,
+			configurationDelay: 50,
+			partnersTimeout: 500,
+			partnersDelay: 50,
+			firstAdCallTimeout: 2000,
 		},
 	},
 };

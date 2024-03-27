@@ -1,8 +1,6 @@
 import {
-	AdSlotEvent,
 	BrandMetrics,
 	Captify,
-	communicationService,
 	DiProcess,
 	Experian,
 	LiveConnect,
@@ -16,11 +14,6 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class PostAdStackPartnersSetup implements DiProcess {
-	private firstCallSlotName = 'top_leaderboard';
-	private safeTimeout = 5000;
-	private fired = false;
-	private logGroup = 'ad-stack-partners';
-
 	constructor(
 		private pipeline: PartnerPipeline,
 		private brandMetrics: BrandMetrics,
@@ -33,26 +26,7 @@ export class PostAdStackPartnersSetup implements DiProcess {
 	) {}
 
 	execute(): void {
-		utils.logger(this.logGroup, 'waiting ...');
-		setTimeout(() => {
-			this.pipelineExecute();
-		}, this.safeTimeout);
-		communicationService.onSlotEvent(
-			AdSlotEvent.SLOT_RENDERED_EVENT,
-			() => {
-				utils.logger(this.logGroup, 'starting');
-				this.pipelineExecute();
-			},
-			this.firstCallSlotName,
-		);
-	}
-
-	private pipelineExecute(): void {
-		if (this.fired) {
-			return;
-		}
-		this.fired = true;
-
+		utils.logger('post-ad-stack-partners', 'starting');
 		this.pipeline
 			.add(
 				this.lotame,
@@ -65,7 +39,7 @@ export class PostAdStackPartnersSetup implements DiProcess {
 			)
 			.execute()
 			.then(() => {
-				utils.logger(this.logGroup, 'finished');
+				utils.logger('post-ad-stack-partners', 'finished');
 			});
 	}
 }

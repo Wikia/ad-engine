@@ -1,4 +1,5 @@
 import {
+	AdEnginePhasesSetup,
 	BaseContextSetup,
 	ConsentManagementPlatformSetup,
 	ensureGeoAvailable,
@@ -6,10 +7,17 @@ import {
 	MetricReporterSetup,
 	NoAdsMode,
 	PlatformContextSetup,
+	PostAdStackPartnersSetup,
 	TrackingParametersSetup,
 	TrackingSetup,
 } from '@platforms/shared';
-import { IdentitySetup, logVersion, parallel, ProcessPipeline } from '@wikia/ad-engine';
+import {
+	adEnginePhases,
+	IdentitySetup,
+	logVersion,
+	parallel,
+	ProcessPipeline,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { UcpNoAdsWikiContextSetup } from './setup/wiki-context.setup';
 
@@ -21,9 +29,11 @@ export class UcpNoAdsPlatform {
 		logVersion();
 
 		this.pipeline.add(
+			AdEnginePhasesSetup,
 			UcpNoAdsWikiContextSetup,
 			PlatformContextSetup,
 			async () => await ensureGeoAvailable(),
+			async () => await adEnginePhases.configuration,
 			parallel(InstantConfigSetup, ConsentManagementPlatformSetup),
 			TrackingParametersSetup,
 			MetricReporterSetup,
@@ -31,6 +41,8 @@ export class UcpNoAdsPlatform {
 			IdentitySetup,
 			TrackingSetup,
 			NoAdsMode,
+			async () => await adEnginePhases.partners,
+			PostAdStackPartnersSetup,
 		);
 		this.pipeline.execute();
 	}
