@@ -86,7 +86,6 @@ export class AdSlot {
 	winningBidderDetails: null | WinningBidderDetails = null;
 	trackStatusAfterRendered = false;
 	slotViewed = false;
-	refreshable = false;
 
 	requested: Promise<void> = null;
 	loaded: Promise<void> = null;
