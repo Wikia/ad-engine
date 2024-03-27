@@ -64,5 +64,5 @@ interface Window {
 	wgCookiePath?: string;
 	XMLHttpRequest?: any;
 	pathfinderModulesReady?: bool;
-  OneTrust?: any;
+	OneTrust?: any;
 }

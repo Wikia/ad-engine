@@ -61,6 +61,8 @@ export class Connatix extends BaseServiceSetup {
 	}
 
 	private loadOnUapStatus({ isLoaded, adProduct }: UapLoadStatus) {
+		this.tracker.trackEligible();
+
 		if (!isLoaded && adProduct !== 'ruap') {
 			const isConnatixLazyLoaded = context.get('services.connatix.latePageInject');
 			utils.logger(logGroup, 'No Fan Takeover loaded - injecting Connatix player');

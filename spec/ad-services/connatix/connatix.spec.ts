@@ -44,6 +44,7 @@ describe('Connatix', () => {
 
 		sinon.assert.calledWith(playerInjectorSpy.insertPlayerContainer, connatix.cid);
 		sinon.assert.called(playerTrackerSpy.trackInit);
+		sinon.assert.called(playerTrackerSpy.trackEligible);
 	});
 
 	it('is not inserted when there is a Fan Takeover', async () => {
@@ -68,6 +69,7 @@ describe('Connatix', () => {
 
 		sinon.assert.notCalled(playerInjectorSpy.insertPlayerContainer);
 		sinon.assert.notCalled(playerTrackerSpy.trackInit);
+		sinon.assert.notCalled(playerTrackerSpy.trackEligible);
 	});
 
 	it('is not inserted when there is a roadblock on the page', async () => {
@@ -92,6 +94,7 @@ describe('Connatix', () => {
 
 		sinon.assert.notCalled(playerInjectorSpy.insertPlayerContainer);
 		sinon.assert.notCalled(playerTrackerSpy.trackInit);
+		sinon.assert.notCalled(playerTrackerSpy.trackEligible);
 	});
 
 	it('is not inserted when disabled', async () => {
@@ -110,6 +113,7 @@ describe('Connatix', () => {
 
 		sinon.assert.notCalled(playerInjectorSpy.insertPlayerContainer);
 		sinon.assert.notCalled(playerTrackerSpy.trackInit);
+		sinon.assert.notCalled(playerTrackerSpy.trackEligible);
 	});
 
 	it('is not inserted when not really enabled or disabled', async () => {
@@ -127,6 +131,7 @@ describe('Connatix', () => {
 		await connatix.call();
 
 		sinon.assert.notCalled(playerInjectorSpy.insertPlayerContainer);
+		sinon.assert.notCalled(playerTrackerSpy.trackEligible);
 	});
 
 	it('is called when enabled but does not insert player without cid defined', async () => {
@@ -144,6 +149,7 @@ describe('Connatix', () => {
 		await connatix.call();
 
 		sinon.assert.notCalled(playerInjectorSpy.insertPlayerContainer);
+		sinon.assert.notCalled(playerTrackerSpy.trackEligible);
 	});
 
 	it('is inserted when there is no Fan Takeover and sends tracking of ready event', async () => {
@@ -165,6 +171,7 @@ describe('Connatix', () => {
 		await connatix.call();
 
 		sinon.assert.called(playerTrackerSpy.trackInit);
+		sinon.assert.called(playerTrackerSpy.trackEligible);
 		sinon.assert.called(playerTrackerSpy.trackReady);
 	});
 
@@ -187,6 +194,7 @@ describe('Connatix', () => {
 		await connatix.call();
 
 		sinon.assert.called(playerTrackerSpy.trackInit);
+		sinon.assert.called(playerTrackerSpy.trackEligible);
 		sinon.assert.notCalled(playerTrackerSpy.trackReady);
 	});
 });

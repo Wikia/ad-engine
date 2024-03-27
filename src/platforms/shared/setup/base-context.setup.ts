@@ -121,8 +121,10 @@ export class BaseContextSetup implements DiProcess {
 			'options.video.experiments.disabled.incontentPlayerRemoval',
 			this.instantConfig.get('icDisableIncontentPlayerRemoval'),
 		);
-
-		context.set('services.anyclip.enabled', this.instantConfig.get('icAnyclipPlayer'));
+		context.set(
+			'services.anyclip.enabled',
+			this.instantConfig.get('icAnyclipPlayer') && !this.instantConfig.get('icConnatixPlayer'),
+		);
 		context.set('services.anyclip.isApplicable', () => {
 			return !context.get('custom.hasFeaturedVideo') && !this.instantConfig.get('icConnatixPlayer');
 		});
