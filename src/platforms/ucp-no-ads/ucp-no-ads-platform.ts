@@ -1,6 +1,4 @@
 import {
-	BaseContextSetup,
-	ConsentManagementPlatformSetup,
 	ensureGeoAvailable,
 	InstantConfigSetup,
 	MetricReporterSetup,
