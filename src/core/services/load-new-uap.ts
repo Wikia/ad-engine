@@ -1,4 +1,4 @@
-import { UapTemplateSetup } from "../../platforms/uap/setup/uap-template-setup";
+import { UapTemplateSetup } from "../../ad-products/modules/uap/setup/uap-template-setup";
 
 export function loadNewUap(): void {
         window['loadCustomAd'] = (params) => {
