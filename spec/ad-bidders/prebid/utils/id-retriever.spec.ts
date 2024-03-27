@@ -74,13 +74,6 @@ describe('Prebid Id Retriever', () => {
 		describe('ID5_BIT', () => {
 			const bit = IdRetriever.ID5_BIT;
 
-			it('can generate proper status for id5=0', async () => {
-				const retriever = IdRetriever.get();
-				pbjsStub.getUserIdsAsEids.returns([{ source: 'id5-sync.com', uids: [{ id: '0' }] }]);
-				const idString = await retriever.generateBoiString();
-				expect(idString.charAt(bit)).to.equal('Z');
-			});
-
 			it('can generate proper status for id5=abc', async () => {
 				const retriever = IdRetriever.get();
 				pbjsStub.getUserIdsAsEids.returns([{ source: 'id5-sync.com', uids: [{ id: 'abc' }] }]);
