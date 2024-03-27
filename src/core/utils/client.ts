@@ -1,7 +1,7 @@
 import currentDevice from 'current-device';
 
-let browser: string = null;
-let operatingSystem: string = null;
+let browser: string | null = null;
+let operatingSystem: string | null = null;
 
 export type DeviceType = 'tablet' | 'smartphone' | 'desktop';
 export type DeviceMode = 'desktop' | 'mobile';
@@ -67,7 +67,7 @@ class Client {
 		}
 
 		const { appName, appVersion, userAgent } = window.navigator;
-		let temp: RegExpMatchArray;
+		let temp: RegExpMatchArray | null;
 		let matches =
 			userAgent.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
 

@@ -74,7 +74,7 @@ export class AdSlot {
 	static AD_SLOT_PLACEHOLDER_CLASS = AdSlotClass.AD_SLOT_PLACEHOLDER_CLASS;
 	static HIDDEN_AD_CLASS = AdSlotClass.HIDDEN_AD_CLASS;
 
-	private customIframe: HTMLIFrameElement = null;
+	private customIframe: HTMLIFrameElement | null = null;
 
 	config: SlotConfig;
 	element: null | HTMLElement = null;
@@ -82,7 +82,7 @@ export class AdSlot {
 	isEmpty = true;
 	pushTime: number;
 	enabled: boolean;
-	adUnit: string;
+	adUnit: string | null = null;
 	advertiserId: null | string = null;
 	orderId: null | string | number = null;
 	creativeId: null | string | number = null;
@@ -92,14 +92,15 @@ export class AdSlot {
 	trackStatusAfterRendered = false;
 	slotViewed = false;
 
-	requested: Promise<void> = null;
-	loaded: Promise<void> = null;
-	rendered: Promise<void> = null;
-	viewed: Promise<void> = null;
+	requested: Promise<void> | null = null;
+	loaded: Promise<void> | null = null;
+	rendered: Promise<void> | null = null;
+	viewed: Promise<void> | null = null;
 
 	constructor(ad: AdStackPayload) {
 		this.config = context.get(`slots.${ad.id}`) || {};
 		this.enabled = !this.config.disabled;
+		this.pushTime = 0;
 
 		if (!this.config.uid) {
 			context.set(`slots.${ad.id}.uid`, utils.generateUniqueId());
