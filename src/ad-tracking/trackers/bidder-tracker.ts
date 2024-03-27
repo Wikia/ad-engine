@@ -1,6 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { bidderTrackingCompiler } from '../compilers';
 import { BaseTracker, BaseTrackerInterface } from './base-tracker';
-import { bidderTrackingCompiler } from './compilers';
 
 class BidderTracker extends BaseTracker implements BaseTrackerInterface {
 	compilers = [bidderTrackingCompiler];

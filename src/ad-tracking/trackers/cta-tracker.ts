@@ -1,8 +1,8 @@
 // @ts-strict-ignore
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { slotService } from '@ad-engine/core';
+import { slotTrackingCompiler } from '../compilers';
 import { BaseTracker, BaseTrackerInterface } from './base-tracker';
-import { slotTrackingCompiler } from './compilers';
 
 class CtaTracker extends BaseTracker implements BaseTrackerInterface {
 	compilers = [slotTrackingCompiler];

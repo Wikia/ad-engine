@@ -1,7 +1,9 @@
 // @ts-strict-ignore
-import { communicationService, eventsRepository, utils } from '@wikia/ad-engine';
-import { trackingUrls } from '../setup/tracking-urls';
-import { DataWarehouseTracker } from './data-warehouse';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { utils } from '@ad-engine/core';
+
+import { DataWarehouseTracker } from '../data-warehouse';
+import { trackingUrls } from '../tracking-urls';
 
 const eventsToTrack = {
 	ad_engine_configured: eventsRepository.AD_ENGINE_CONFIGURED,

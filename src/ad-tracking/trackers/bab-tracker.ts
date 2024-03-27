@@ -1,4 +1,4 @@
-import { DataWarehouseTracker } from './data-warehouse';
+import { DataWarehouseTracker } from '../data-warehouse';
 
 /**
  * Tracks WAD rec detection result to GA and DW

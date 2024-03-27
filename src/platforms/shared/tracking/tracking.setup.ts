@@ -1,60 +1,59 @@
 // @ts-strict-ignore
 import {
 	adClickTracker,
+	AdSizeTracker,
 	Apstag,
+	BaseTrackingSetup,
 	Bidders,
 	bidderTracker,
 	communicationService,
 	context,
 	ctaTracker,
+	DataWarehouseTracker,
 	Dictionary,
 	eventsRepository,
 	GAMOrigins,
 	globalAction,
-	InstantConfigCacheStorage,
 	InstantConfigService,
 	interventionTracker,
+	LabradorTracker,
 	porvataTracker,
 	PostmessageTracker,
 	slotTracker,
-	targetingService,
 	TrackingMessage,
 	TrackingTarget,
+	trackingUrls,
 	viewabilityTracker,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { props } from 'ts-action';
-import { trackingUrls } from '../setup/tracking-urls';
-import { AdSizeTracker } from './ad-size-tracker';
-import { DataWarehouseTracker } from './data-warehouse';
-import { LabradorTracker } from './labrador-tracker';
 
 const adClickedAction = globalAction('[AdEngine] Ad clicked', props<Dictionary>());
 
 @Injectable()
-export class TrackingSetup {
+export class TrackingSetup extends BaseTrackingSetup {
 	constructor(
-		private labradorTracker: LabradorTracker,
-		private adSizeTracker: AdSizeTracker,
-		private dwTracker: DataWarehouseTracker,
+		protected labradorTracker: LabradorTracker,
+		protected dwTracker: DataWarehouseTracker,
+		protected instantConfig: InstantConfigService,
 		private bidders: Bidders,
-		private instantConfig: InstantConfigService = null,
-	) {}
+		private adSizeTracker: AdSizeTracker,
+	) {
+		super(labradorTracker, dwTracker, instantConfig);
+	}
 
 	execute(): void {
 		this.porvataTracker();
 		this.slotTracker();
+		this.identityTracker();
 		this.viewabilityTracker();
 		this.bidderTracker();
 		this.postmessageTrackingTracker();
-		this.experimentGroupsTracker();
 		this.interventionTracker();
 		this.adClickTracker();
 		this.ctaTracker();
-		this.identityTracker();
-		this.keyValsTracker();
-		this.googleTopicsTracker();
 		this.adSizeTracker.init();
+		super.execute();
 	}
 
 	private identityTracker(): void {
@@ -174,52 +173,7 @@ export class TrackingSetup {
 		);
 	}
 
-	private experimentGroupsTracker(): void {
-		const cacheStorage = InstantConfigCacheStorage.make();
-		const experimentsGroups = [
-			...cacheStorage.getSamplingResults(),
-			...(targetingService.get('experiment_groups') || []),
-		].join(';');
-
-		if (experimentsGroups) {
-			this.labradorTracker.track(experimentsGroups);
-		}
-		communicationService.on(eventsRepository.INTENT_IQ_GROUP_OBTAINED, ({ abTestGroup }) => {
-			this.labradorTracker.track(`intentIQ_${abTestGroup}`);
-		});
-	}
-
 	private interventionTracker(): void {
 		interventionTracker.register();
-	}
-
-	private keyValsTracker(): void {
-		const keyVals = { ...targetingService.dump() };
-
-		// Remove Audigent segments
-		delete keyVals.AU_SEG;
-
-		this.dwTracker.track(
-			{
-				keyvals: JSON.stringify(keyVals),
-			},
-			trackingUrls.KEY_VALS,
-		);
-	}
-
-	private async googleTopicsTracker(): Promise<void> {
-		if (targetingService.get('topics_available') !== '1') {
-			return;
-		}
-
-		// @ts-expect-error Google Topics API is not available in TS dom lib
-		const topics: unknown[] = await document.browsingTopics({ skipObservation: true });
-		this.dwTracker.track(
-			{
-				ppid: targetingService.get('ppid'),
-				topic: JSON.stringify(topics),
-			},
-			trackingUrls.TOPICS,
-		);
 	}
 }

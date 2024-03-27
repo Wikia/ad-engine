@@ -1,5 +1,5 @@
+import { MetricReporter, MetricReporterSender } from '@wikia/ad-tracking';
 import { utils } from '@wikia/core';
-import { MetricReporter, MetricReporterSender } from '@wikia/platforms/shared';
 import { expect } from 'chai';
 import sinon from 'sinon';
 

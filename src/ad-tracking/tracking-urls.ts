@@ -1,4 +1,6 @@
-import { Dictionary } from '@wikia/ad-engine';
+interface Dictionary<T = any> {
+	[key: string]: T;
+}
 
 interface TrackingConfigOfAllowedOptions {
 	sampling: boolean;

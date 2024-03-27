@@ -1,7 +1,5 @@
 // @ts-strict-ignore
-import { DataWarehouseParams } from '@wikia/platforms/shared';
-import { TrackingUrl } from '@wikia/platforms/shared/setup/tracking-urls';
-import { DwTrafficAggregator } from '@wikia/platforms/shared/tracking/data-warehouse-utils/dw-traffic-aggregator';
+import { DataWarehouseParams, DwTrafficAggregator, TrackingUrl } from '@wikia/ad-tracking';
 import { expect } from 'chai';
 import sinon from 'sinon';
 

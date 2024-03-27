@@ -1,7 +1,12 @@
-import { context, DiProcess, InstantConfigService, utils } from '@wikia/ad-engine';
+import {
+	context,
+	DiProcess,
+	InstantConfigService,
+	MetricReporter,
+	metricReporterSender,
+	utils,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { MetricReporter } from '../tracking/metric-reporter';
-import { metricReporterSender } from '../tracking/metric-reporter/metric-reporter-sender';
 
 @Injectable()
 export class MetricReporterSetup implements DiProcess {

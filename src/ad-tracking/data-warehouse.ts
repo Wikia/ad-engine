@@ -1,11 +1,10 @@
 // @ts-strict-ignore
-import { context, targetingService, trackingOptIn, utils } from '@wikia/ad-engine';
+import { context, targetingService, trackingOptIn, utils } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
-import { AdEngineStageSetup } from '../setup/ad-engine-stage.setup';
-import { TrackingUrl, trackingUrls } from '../setup/tracking-urls';
 import { BatchProcessor } from './batch-processor';
 import { dwTrafficAggregator } from './data-warehouse-utils/dw-traffic-aggregator';
 import { TrackingParams } from './models/tracking-params';
+import { TrackingUrl, trackingUrls } from './tracking-urls';
 
 const logGroup = 'data-warehouse-trackingParams';
 const eventUrl = trackingUrls.TRACKING_EVENT.url;
@@ -20,11 +19,9 @@ export type DataWarehouseParams = TrackingParams & TimeBasedParams;
 
 @Injectable()
 export class DataWarehouseTracker {
-	private adEngineStageSetup: AdEngineStageSetup;
 	private eventsArray = [];
 
 	constructor() {
-		this.adEngineStageSetup = new AdEngineStageSetup();
 		this.init();
 	}
 
@@ -174,8 +171,7 @@ export class DataWarehouseTracker {
 	private handleDwEvent(url: string, params: DataWarehouseParams, type = 'Event'): void {
 		const event = { url, params, type };
 		if (context.get('options.delayEvents.enabled')) {
-			this.adEngineStageSetup
-				.afterDocumentCompleted()
+			this.afterDocumentCompleted()
 				.then(() => {
 					this.sendRequest(event);
 				})
@@ -201,5 +197,15 @@ export class DataWarehouseTracker {
 		);
 
 		request.send();
+	}
+
+	private async afterDocumentCompleted(): Promise<void> {
+		return new Promise((resolve, reject) => {
+			if (document.readyState === 'complete') {
+				resolve();
+			} else {
+				reject();
+			}
+		});
 	}
 }

@@ -1,13 +1,13 @@
 // @ts-strict-ignore
 import { communicationService } from '@ad-engine/communication';
 import { AdSlotEvent, AdSlotStatus } from '@ad-engine/core';
-import { BaseTracker, BaseTrackerInterface } from './base-tracker';
 import {
 	pageTrackingCompiler,
 	slotBiddersTrackingCompiler,
 	slotPropertiesTrackingCompiler,
 	slotTrackingCompiler,
-} from './compilers';
+} from '../compilers';
+import { BaseTracker, BaseTrackerInterface } from './base-tracker';
 
 class SlotTracker extends BaseTracker implements BaseTrackerInterface {
 	onRenderEndedStatusToTrack: string[] = [

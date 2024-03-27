@@ -3,10 +3,10 @@ import {
 	DiProcess,
 	InstantConfigService,
 	targetingService,
+  trackingUrls,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { trackingUrls } from './tracking-urls';
 
 @Injectable()
 export class TrackingParametersSetup implements DiProcess {

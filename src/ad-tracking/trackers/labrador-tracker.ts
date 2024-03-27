@@ -1,6 +1,6 @@
 import { Injectable } from '@wikia/dependency-injection';
-import { trackingUrls } from '../setup/tracking-urls';
-import { DataWarehouseTracker } from './data-warehouse';
+import { DataWarehouseTracker } from '../data-warehouse';
+import { trackingUrls } from '../tracking-urls';
 
 /**
  * Wrapper for labrador info warehouse trackingParams

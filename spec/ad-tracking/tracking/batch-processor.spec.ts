@@ -1,4 +1,4 @@
-import { BatchProcessor } from '@wikia/platforms/shared/tracking/batch-processor';
+import { BatchProcessor } from '@wikia/ad-tracking';
 import { expect } from 'chai';
 import sinon from 'sinon';
 

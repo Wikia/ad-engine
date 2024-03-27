@@ -1,7 +1,7 @@
 // @ts-strict-ignore
-import { Dictionary } from '@wikia/ad-engine';
-import { TrackingUrl } from '../../setup/tracking-urls';
+import { Dictionary } from '@ad-engine/core';
 import { DataWarehouseParams } from '../data-warehouse';
+import { TrackingUrl } from '../tracking-urls';
 import { DwAggregatedDataSender } from './dw-aggregated-data-sender';
 
 interface AggregateQueue {

@@ -1,5 +1,5 @@
 // @ts-strict-ignore
-import { context, utils } from '@wikia/ad-engine';
+import { context, utils } from '@ad-engine/core';
 
 interface EndpointInfo {
 	baseUrl: string;
