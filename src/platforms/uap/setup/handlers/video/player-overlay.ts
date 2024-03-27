@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { onVideoOverlayClick } from '../../../../../ad-products/templates/interface/listeners/player-overlay-click-listener';
 import { AD_ENGINE_VIDEO_OVERLAY_CLICKED } from "../../../../../communication/events/events-ad-engine-video";
 import { communicationServiceSlim } from "../../../utils/communication-service-slim";

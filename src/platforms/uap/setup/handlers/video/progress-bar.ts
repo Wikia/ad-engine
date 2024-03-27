@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { PorvataPlayer } from './porvata/porvata-player';
 
 interface ProgressBarElement extends HTMLDivElement {

@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { DomManipulator } from './dom-manipulator';
 import { DomReader } from './dom-reader';
 import { AD_ENGINE_UAP_DOM_CHANGED } from "../../../../../communication/events/events-ad-engine-uap";

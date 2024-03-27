@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { ElementManipulator } from './element-manipulator';
 
 export class DomManipulator {

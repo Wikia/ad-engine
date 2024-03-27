@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { DomReader } from "../../manipulators/dom-reader";
 import { UapParams, UapState } from "../../../../utils/universal-ad-package";
 

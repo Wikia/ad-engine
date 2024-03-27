@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { AdSlot, TEMPLATE, TemplateDependency, UapParams, utils } from '@wikia/ad-engine';
 import { Container, Inject, Injectable } from '@wikia/dependency-injection';
 import { from, merge, Observable, of } from 'rxjs';

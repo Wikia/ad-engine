@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { UapParams } from "./universal-ad-package";
 // eslint-disable-next-line no-restricted-imports
 import { logger } from "../../../core/utils/logger";

@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { TemplateStateHandler } from "../../../../core/services/templates-registry/template-state-handler";
 import { resolvedState } from "../../utils/resolved-state";
 import { UapParams } from "../../utils/universal-ad-package";

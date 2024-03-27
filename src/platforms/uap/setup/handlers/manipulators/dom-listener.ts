@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { animationFrameScheduler, fromEvent, Observable } from 'rxjs';
 import { observeOn, publish, refCount } from 'rxjs/operators';
 

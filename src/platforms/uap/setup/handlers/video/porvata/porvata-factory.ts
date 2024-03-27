@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { GoogleImaWrapper } from './google-ima-wrapper';
 import { iasVideoTracker } from './plugins/ias/ias-video-tracker';
 import { PorvataPlugin } from './plugins/porvata-plugin';

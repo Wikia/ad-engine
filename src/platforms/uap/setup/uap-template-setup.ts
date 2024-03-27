@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { context } from "../../../core/services/context-service";
 import { BfaaBootstrapHandler } from "./handlers/bfaa-bootstrap-handler";
 import { BfaaConfigHandler } from "./handlers/bfaa-config-handler";

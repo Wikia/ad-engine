@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { PorvataSettings } from './porvata-settings';
 import { communicationServiceSlim } from "../../../../utils/communication-service-slim";
 import { AdSlotEvent } from "../../../../../../core/models/ad-slot-event";

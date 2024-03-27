@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { context } from '../../../../../../core/services/context-service';
 import { Dictionary } from '../../../../../../core/models/dictionary';
 import { SlotTargeting } from '../../../../../../core/services/targeting-service';

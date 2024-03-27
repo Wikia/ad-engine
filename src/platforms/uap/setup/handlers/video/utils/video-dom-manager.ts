@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { DomManipulator } from '../../manipulators/dom-manipulator';
 import { UapParams } from "../../../../utils/universal-ad-package";
 import { PorvataPlayer } from "../porvata/porvata-player";

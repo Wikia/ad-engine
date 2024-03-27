@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { AdvertisementLabel } from "../../../../ad-products/templates/interface/advertisement-label";
 import { TemplateStateHandler } from "../../../../core/services/templates-registry/template-state-handler";
 import { UapParams } from "../../utils/universal-ad-package";

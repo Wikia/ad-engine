@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { PorvataPlayer } from './porvata-player';
 import { vastParser } from "../../../../../../core/video/vast-parser";
 import { VideoData, VideoEventListener } from "../../../../../../core/listeners/listeners";

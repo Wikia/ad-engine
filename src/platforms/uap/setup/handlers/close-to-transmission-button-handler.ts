@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { AdSlotEvent } from "../../../../core/models/ad-slot-event";
 import { TemplateStateHandler } from "../../../../core/services/templates-registry/template-state-handler";
 import { universalAdPackage, UapParams } from "../../utils/universal-ad-package";

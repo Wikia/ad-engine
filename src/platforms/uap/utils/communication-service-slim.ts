@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Action, Communicator, setupPostQuecast } from '@wikia/post-quecast';
 import { globalAction } from "../../../communication/global-action";
 import { EventOptions } from "../../../communication/events/event-options";

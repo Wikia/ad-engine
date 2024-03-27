@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { client } from "../../../../../core/utils";
 import { communicationServiceSlim } from "../../../utils/communication-service-slim";
 import { AD_ENGINE_VIDEO_TOGGLE_UI_OVERLAY_CLICKED } from "../../../../../communication/events/events-ad-engine-video";

@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { UapParams } from "../../../utils/universal-ad-package";
 import SlotPlaceholderRetriever from "../../../utils/slot-placeholder-retriever";
 import { Observable } from "rxjs";

@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { fromEvent, merge, Observable, Subject } from 'rxjs';
 import { debounceTime, mergeMap, take, takeUntil, tap } from 'rxjs/operators';
 import { TemplateStateHandler } from "../../../../core/services/templates-registry/template-state-handler";

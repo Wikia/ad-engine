@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { from, merge, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UapParams } from "../../../utils/universal-ad-package";

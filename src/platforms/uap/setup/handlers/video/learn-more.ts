@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { AD_ENGINE_VIDEO_LEARN_MORE_CLICKED } from "../../../../../communication/events/events-ad-engine-video";
 import { communicationServiceSlim } from "../../../utils/communication-service-slim";
 import { getTranslation } from "../../../../../core/utils/i18n";

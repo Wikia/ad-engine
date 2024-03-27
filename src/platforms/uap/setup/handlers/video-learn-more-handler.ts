@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { Subject } from 'rxjs';
 import { take, takeUntil, tap } from 'rxjs/operators';
 import { TemplateStateHandler } from "../../../../core/services/templates-registry/template-state-handler";

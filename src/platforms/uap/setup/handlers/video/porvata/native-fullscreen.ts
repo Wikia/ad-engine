@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { tryProperty, whichProperty } from "../../../../../../core/utils";
 
 export class NativeFullscreen {

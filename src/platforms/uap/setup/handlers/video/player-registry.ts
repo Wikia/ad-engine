@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { ReplaySubject } from 'rxjs';
 import { UapParams } from "../../../utils/universal-ad-package";
 import { Porvata, PorvataTemplateParams } from "./porvata/porvata";

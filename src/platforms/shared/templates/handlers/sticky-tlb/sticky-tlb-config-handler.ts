@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { AdSlot, TEMPLATE, TemplateStateHandler, universalAdPackage } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 

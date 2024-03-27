@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { AdSlotClass } from "../../../../../../core/models/ad-slot-class";
 import { vastDebugger } from "../../../../../../core/video/vast-debugger";
 

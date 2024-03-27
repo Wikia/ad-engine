@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { PorvataPlayer } from '../../porvata-player';
 import { PorvataSettings } from '../../porvata-settings';
 import { PorvataPlugin } from '../porvata-plugin';

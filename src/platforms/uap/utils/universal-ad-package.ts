@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { context } from "../../../core/services/context-service";
 import { runtimeVariableSetter } from "../../../core/wrappers/global-variable-setter";
 import { client } from "../../../core/utils/client";

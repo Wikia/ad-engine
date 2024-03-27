@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import { GoogleImaWrapper } from './google-ima-wrapper';
 import { NativeFullscreen } from './native-fullscreen';
 import { PorvataDom } from './porvata-dom';
