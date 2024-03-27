@@ -1,5 +1,4 @@
 // @ts-strict-ignore
-import { communicationService, eventsRepository } from '@ad-engine/communication';
 import {
 	BrowserMatcher,
 	DeviceMatcher,
@@ -11,7 +10,7 @@ import {
 	InstantConfigValue,
 	RegionMatcher,
 } from '@wikia/instant-config-loader';
-import { InstantConfigCacheStorage, utils } from '../../index';
+import { utils } from '../../index';
 import { Dictionary } from '../../models';
 
 const logGroup = 'instant-config-service';
@@ -33,7 +32,6 @@ export class InstantConfigService implements InstantConfigServiceInterface {
 			new DeviceMatcher(utils.client.getDeviceType() as unknown as string),
 			new DomainMatcher(),
 			new RegionMatcher(),
-			InstantConfigCacheStorage.make(),
 		);
 
 		this.interpreter = await instantConfigLoader
@@ -48,14 +46,6 @@ export class InstantConfigService implements InstantConfigServiceInterface {
 
 		utils.logger(logGroup, 'instantiated with', this.repository);
 
-		communicationService.on(
-			eventsRepository.AD_ENGINE_INSTANT_CONFIG_CACHE_RESET,
-			() => {
-				this.repository = this.interpreter.getValues();
-			},
-			false,
-		);
-
 		return this;
 	}
 
@@ -67,5 +57,9 @@ export class InstantConfigService implements InstantConfigServiceInterface {
 		} catch (e) {
 			return defaultValue;
 		}
+	}
+
+	getActiveLabradorKeyValues(): string[] {
+		return this.interpreter.getActiveLabradorKeyValues();
 	}
 }

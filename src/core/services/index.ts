@@ -5,7 +5,6 @@ export * from './cookie-storage-adapter';
 export * from './custom-ad-loader';
 export * from './external-logger';
 export * from './global-context-service';
-export * from './instant-config-cache-storage';
 export * from './instant-config/instant-config.service';
 export * from './local-cache';
 export * from './message-bus';

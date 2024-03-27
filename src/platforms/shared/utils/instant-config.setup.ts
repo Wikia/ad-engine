@@ -4,7 +4,6 @@ import {
 	context,
 	DiProcess,
 	globalAction,
-	InstantConfigCacheStorage,
 	InstantConfigService,
 } from '@wikia/ad-engine';
 import { Container, Injectable } from '@wikia/dependency-injection';
@@ -37,7 +36,6 @@ export class InstantConfigSetup implements DiProcess {
 		context.set('services.instantConfig.appName', appName);
 
 		this.container.bind(InstantConfigService).value(instantConfig);
-		this.container.bind(InstantConfigCacheStorage).value(InstantConfigCacheStorage.make());
 		communicationService.dispatch(setInstantConfig({ instantConfig }));
 	}
 }
